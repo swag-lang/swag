@@ -1387,7 +1387,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::ArrayPointerIndex:
     {
         auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
-        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
+        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
         {
             CONCAT_FIXED_STR(concat, "dref ");
             SWAG_CHECK(outputNode(context, concat, arrayNode->array));

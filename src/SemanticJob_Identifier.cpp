@@ -71,10 +71,15 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     }
 
     // Symbol is in fact a constant value : no need for bytecode
-    if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+    if (node->resolvedSymbolOverload &&
+        (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        node->setFlagsValueIsComputed();
-        *node->computedValue = node->resolvedSymbolOverload->computedValue;
+        if (!(node->flags & AST_VALUE_COMPUTED))
+        {
+            node->setFlagsValueIsComputed();
+            *node->computedValue = node->resolvedSymbolOverload->computedValue;
+        }
+
         node->flags |= AST_NO_BYTECODE_CHILDS;
 
         // If literal is stored in a data segment, then it's still a left value (we can take the address for example)
@@ -801,6 +806,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     if (identifierRef->previousResolvedNode && symbol->kind == SymbolKind::Variable)
     {
         auto prevNode = identifierRef->previousResolvedNode;
+        identifier->flags |= AST_L_VALUE;
 
         // Direct reference to a constexpr typeinfo
         if (prevNode->flags & AST_VALUE_IS_TYPEINFO)

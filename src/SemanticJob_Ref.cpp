@@ -514,7 +514,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF))
+    if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         node->inheritAndFlag1(AST_CONST_EXPR);
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
@@ -592,7 +592,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF))
+        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
             return context->report(diag);
@@ -628,7 +628,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         else
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0481), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)};
-            if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
+            if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
                 diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
             return context->report(diag);
         }
@@ -639,8 +639,8 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Array:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
-        arrayNode->typeInfo    = typePtr->pointedType;
+        auto typeArray         = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+        arrayNode->typeInfo    = typeArray->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
 
         // Try to dereference as a constant if we can
@@ -652,15 +652,10 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
             arrayNode->setFlagsValueIsComputed();
             arrayNode->computedValue->storageOffset  = storageOffset;
             arrayNode->computedValue->storageSegment = storageSegment;
-            if (arrayNode->resolvedSymbolOverload)
-            {
-                SWAG_ASSERT(arrayNode->resolvedSymbolOverload->computedValue.storageSegment == storageSegment);
-                arrayNode->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
-            }
         }
         else
         {
-            SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
+            SWAG_CHECK(boundCheck(context, arrayNode->access, typeArray->count));
         }
         break;
     }
@@ -679,7 +674,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
         if (arrayType->isTuple())
         {
-            if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
+            if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
             {
                 Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
                 diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
@@ -805,7 +800,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     if (arrayType->isTuple())
     {
-        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
+        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
         {
             Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
             diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
@@ -856,7 +851,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF))
+        if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         {
             Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
             return context->report(diag);
@@ -1012,7 +1007,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), arrayNode->array->typeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0021);
-        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_ISDEREF)
+        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
             diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Hnt(Hnt0060));
         return context->report(diag);
     }

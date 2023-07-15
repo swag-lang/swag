@@ -822,7 +822,7 @@ struct AstTypeLambda : public AstType
 
 struct AstArrayPointerIndex : public AstNode
 {
-    static const uint16_t SPECFLAG_ISDEREF = 0x0001;
+    static const uint16_t SPECFLAG_IS_DREF = 0x0001;
 
     AstNode* clone(CloneContext& context);
 

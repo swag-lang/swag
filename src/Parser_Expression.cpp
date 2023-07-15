@@ -462,7 +462,7 @@ bool Parser::doDeRef(AstNode* parent, AstNode** result)
     auto identifierRef     = Ast::newIdentifierRef(sourceFile, parent, this);
     auto arrayNode         = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef);
     arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
-    arrayNode->specFlags   = AstArrayPointerIndex::SPECFLAG_ISDEREF;
+    arrayNode->specFlags   = AstArrayPointerIndex::SPECFLAG_IS_DREF;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));

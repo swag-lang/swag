@@ -1,4 +1,4 @@
-func toto(x: s32)
+func totoXXX(x: s32)
 {
 }
 
@@ -6,7 +6,7 @@ func toto(x: s32)
 //#[Swag.PrintBc]
 #test
 {
-    let ptr = @typeof(toto)
+    let ptr = @typeof(totoXXX)
     let ptr1 = &ptr.parameters[0]
     @assert(ptr1.name == "x")
 }

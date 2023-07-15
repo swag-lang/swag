@@ -1,4 +1,3 @@
 #global export
 
-const NULL    = cast(const *void) null
-alias size_t  = u64
+alias size_t = u64

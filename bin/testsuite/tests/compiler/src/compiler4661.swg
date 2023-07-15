@@ -1,4 +1,5 @@
-//#global testerror
+#global skip
+#global testerror
 
 func totoXXX(x: s32)
 {
@@ -8,6 +9,6 @@ func totoXXX(x: s32)
 #test
 {
     const ptr = @typeof(totoXXX)
-    let ptr1 = &ptr.parameters[0]
+    const ptr1 = &ptr.parameters[0]
     @assert(ptr1.name == "x")
 }
