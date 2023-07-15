@@ -195,7 +195,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         if (!note->display)
             continue;
 
-        if (note->showFileName)
+        if (note->showFileName || !note->showSourceCode)
         {
             if (prevNote)
                 prevNote->closeFileName = true;
