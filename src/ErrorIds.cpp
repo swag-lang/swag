@@ -395,7 +395,7 @@ void initErrors()
     SWAG_ERROR(Err0811, "a 'Swag.Foreign' module name should not be empty");
     SWAG_ERROR(Err0813, "a 'Swag.Foreign' module name should not have a file extension starting with '.'");
     SWAG_ERROR(Err0595, "a 'Swag.Pack' value should be 0 or a power of two ('%d' provided)");
-    SWAG_ERROR(Err0833, "a bit inversion operation is not allowed on type '%s'");
+    SWAG_ERROR(Err0833, "the bit inversion operation is not allowed on type '%s'");
     SWAG_ERROR(Err0060, "a compiler constant cannot be referenced at runtime");
     SWAG_ERROR(Err0298, "a constant should be explicitly initialized");
     SWAG_ERROR(Err0419, "a cycle has been detected during resolution of %s '%s'");

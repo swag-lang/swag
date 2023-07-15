@@ -152,6 +152,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 
 bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 {
+    auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(child->typeInfo);
 
     switch (typeInfo->nativeType)
@@ -165,8 +166,22 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
         break;
+
+    case NativeTypeKind::Any:
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0833), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(child, Hnt(Hnt0116));
+        return context->report(diag);
+    }
+
     default:
-        return context->report({child, Fmt(Err(Err0833), typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0833), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(child, Diagnostic::isType(child));
+        return context->report(diag);
+    }
     }
 
     if (child->flags & AST_VALUE_COMPUTED)
