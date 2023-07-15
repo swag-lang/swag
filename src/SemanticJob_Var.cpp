@@ -1099,15 +1099,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
 
-            // Cannot have a pointer in a constant
-            if (node->typeInfo->isPointer() &&
-                node->assignment &&
-                !(node->assignment->flags & AST_VALUE_IS_TYPEINFO) &&
-                !node->typeInfo->isPointerNull())
-            {
-                return context->report({node, "toto"});
-            }
-
             // A constant array cannot be initialized with just one value (this is for variables)
             if (typeInfo->isArray() && node->assignment)
             {

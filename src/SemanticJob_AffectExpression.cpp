@@ -73,10 +73,10 @@ bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
 
 bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    bool isConst = false;
-
     // Check that left type is mutable
-    if ((left->flags & AST_IS_CONST) ||
+    bool isConst = false;
+    if ((left->flags & AST_CONST_EXPR) ||
+        (left->flags & AST_IS_CONST) ||
         !(left->flags & AST_L_VALUE) ||
         (left->typeInfo->isFakeAlias() && left->typeInfo->isConst()) ||
         (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))

@@ -1,5 +1,4 @@
-#global skip
-#global testerror
+//#global testerror
 
 func totoXXX(x: s32)
 {

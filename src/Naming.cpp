@@ -60,6 +60,12 @@ Utf8 Naming::kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uin
         return "function parameter";
     }
 
+    if (overFlags & OVERLOAD_CONSTANT)
+    {
+        article = "a";
+        return "constant";
+    }
+
     if (overFlags & OVERLOAD_VAR_GLOBAL)
     {
         article = "a";
@@ -76,12 +82,6 @@ Utf8 Naming::kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uin
     {
         article = "a";
         return "field";
-    }
-
-    if (overFlags & OVERLOAD_CONSTANT)
-    {
-        article = "a";
-        return "constant";
     }
 
     if (node->kind == AstNodeKind::FuncDecl && node->attributeFlags & ATTRIBUTE_MACRO)

@@ -832,6 +832,21 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             }
         }
 
+        // Direct reference to a pointer
+        if ((prevNode->flags & AST_VALUE_COMPUTED) && prevNode->typeInfo->isPointer())
+        {
+            SWAG_ASSERT(prevNode->computedValue->storageSegment);
+            SWAG_ASSERT(prevNode->computedValue->storageOffset != UINT32_MAX);
+            auto ptr = prevNode->computedValue->storageSegment->address(prevNode->computedValue->storageOffset);
+            if (derefLiteralStruct(context, ptr, overload, prevNode->computedValue->storageSegment))
+            {
+                identifierRef->previousResolvedNode = context->node;
+                identifier->resolvedSymbolName      = overload->symbol;
+                identifier->resolvedSymbolOverload  = overload;
+                return true;
+            }
+        }
+
         // Direct reference of a struct field inside a const array
         if (prevNode->kind == AstNodeKind::ArrayPointerIndex && prevNode->typeInfo->isStruct())
         {

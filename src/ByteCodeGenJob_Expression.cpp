@@ -282,17 +282,13 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     typeInfo      = TypeManager::concreteType(typeInfo);
 
     // A reference to a segment
-    if (node->forceTakeAddress())
+    if (node->forceTakeAddress() || (typeInfo->isPointer() && !typeInfo->isPointerNull()))
     {
         if (node->computedValue->storageSegment && node->computedValue->storageOffset != UINT32_MAX)
         {
             regList = reserveRegisterRC(context);
             emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
             return true;
-        }
-        else
-        {
-            return Report::internalError(context->node, Fmt("emitLiteral, unsupported ptr type '%s'", typeInfo->getDisplayNameC()).c_str());
         }
     }
 

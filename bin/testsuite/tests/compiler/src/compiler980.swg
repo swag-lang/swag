@@ -6,10 +6,10 @@ struct Point
 	y: s32
 }
 
-const nullPoint: Point{10, 50}
+const NullPoint: Point{10, 50}
 
 //#[Swag.PrintBc]
 #test
 {
-	nullPoint.x = 10
+	NullPoint.x = 10
 }
