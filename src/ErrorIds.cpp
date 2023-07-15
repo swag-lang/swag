@@ -757,10 +757,10 @@ void initErrors()
     SWAG_ERROR(Err0038, "the operation '%s' is not allowed because the right expression is an enum type ('%s') not marked with 'Swag.EnumFlags'");
     SWAG_ERROR(Err0005, "the operation '%s' is not allowed on type '%s'");
     SWAG_ERROR(Err0143, "the operator '%s' does not accept a left expression of type '%s'");
-    SWAG_ERROR(Err0164, "the operator '&' does not accept type '%s' as a left expression");
+    SWAG_ERROR(Err0164, nullptr);
     SWAG_ERROR(Err0142, "the operator '+' does not accept an operand of type '%s'");
     SWAG_ERROR(Err0146, "the operator '-' does not accept an operand of type '%s'");
-    SWAG_ERROR(Err0163, "the operator '|' does not accept type '%s' as a left expression");
+    SWAG_ERROR(Err0163, nullptr);
     SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is now provided)");
     SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing (and '%s' is now provided)");
     SWAG_ERROR(Err0431, "the runtime variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with 'undefined' if this is intended");
@@ -914,7 +914,7 @@ void initErrors()
     SWAG_ERROR(Err0165, "use of unknown type '%s'");
     SWAG_ERROR(Err0180, "missing index when dereferencing slice '%s'");
     SWAG_ERROR(Err0181, "a type 'any' without a cast can only be compared to 'null'");
-    SWAG_ERROR(Err0183, nullptr);
+    SWAG_ERROR(Err0183, "the operator '%s' does not accept a right expression of type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0073, "'with' should not be used on an enum variable (type is '%s')");
     SWAG_ERROR(Err0080, "ambiguous resolution of enum value '%s'");

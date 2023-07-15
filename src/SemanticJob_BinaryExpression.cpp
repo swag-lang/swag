@@ -79,6 +79,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
 
     SWAG_VERIFY(rightTypeInfo->isNative(), context->report({right, Fmt(Err(Err0142), rightTypeInfo->getDisplayNameC())}));
+
     PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, [leftTypeInfo, rightTypeInfo]()
                       { return Fmt(Err(Err0196), "add", leftTypeInfo->getDisplayNameC(), "and", rightTypeInfo->getDisplayNameC()); });
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
@@ -711,7 +712,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
         break;
     default:
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0163), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
@@ -822,7 +823,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         break;
     default:
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
@@ -946,7 +947,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
         break;
     default:
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0164), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
@@ -1078,6 +1079,22 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         default:
             break;
         }
+    }
+
+    if (leftTypeInfo->isAny())
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(left, Hnt(Hnt0116));
+        return context->report(diag);
+    }
+
+    if (rightTypeInfo->isAny())
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0183), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(right, Hnt(Hnt0116));
+        return context->report(diag);
     }
 
     switch (node->tokenId)
