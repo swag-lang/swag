@@ -89,12 +89,14 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         note->collectRanges();
     }
 
-    for (auto note : notes)
+    for (int inote = 0; inote < notes.size(); inote++)
     {
+        auto note = notes[inote];
         if (!note->display)
             continue;
-        for (auto note1 : notes)
+        for (int inote1 = 0; inote1 < notes.size(); inote1++)
         {
+            auto note1 = notes[inote1];
             if (note == note1)
                 continue;
             if (!note1->display)
@@ -109,7 +111,9 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 sourceFile0 == sourceFile1 &&
                 note->showFileName &&
                 note->display &&
-                !note1->forceSourceFile)
+                !note1->forceSourceFile &&
+                inote1 > inote &&
+                note1->textMsg.empty())
             {
                 note1->showFileName = false;
             }
