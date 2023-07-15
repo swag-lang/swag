@@ -1120,6 +1120,12 @@ SWAG_ERROR(Hnt0121),
 SWAG_ERROR(Hnt0122),
 SWAG_ERROR(Hnt0123),
 SWAG_ERROR(Hnt0124),
+SWAG_ERROR(Hnt0125),
+SWAG_ERROR(Hnt0126),
+SWAG_ERROR(Hnt0127),
+SWAG_ERROR(Hnt0128),
+SWAG_ERROR(Hnt0129),
+SWAG_ERROR(Hnt0130),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

@@ -9,10 +9,28 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
-bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount)
+bool SemanticJob::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {
     if (!(arrayAccess->flags & AST_VALUE_COMPUTED))
         return true;
+
+    if (maxCount == 0)
+    {
+        if (forType->isSlice())
+        {
+            Diagnostic diag{arrayAccess, Err(Err0164)};
+            diag.addRange(arrayNode, Hnt(Hnt0125));
+            return context->report(diag);
+        }
+
+        if (forType->isString())
+        {
+            Diagnostic diag{arrayAccess, Err(Err0142)};
+            diag.addRange(arrayNode, Hnt(Hnt0126));
+            return context->report(diag);
+        }
+    }
+
     auto idx = arrayAccess->computedValue->reg.u64;
     if (idx >= maxCount)
         return context->report({arrayAccess, Fmt(Err(Err0468), idx, maxCount - 1)});
@@ -644,7 +662,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         }
         else
         {
-            SWAG_CHECK(boundCheck(context, arrayNode->access, typeArray->count));
+            SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, typeArray->count));
         }
         break;
     }
@@ -728,7 +746,7 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
     {
         bool     isConstAccess = true;
         uint64_t offsetAccess  = arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
-        SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
+        SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, typePtr->count));
 
         // Deal with array of array
         auto subArray = arrayNode;
@@ -743,7 +761,7 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
                 else
                 {
                     auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
-                    SWAG_CHECK(boundCheck(context, subArray->access, subTypePtr->count));
+                    SWAG_CHECK(boundCheck(context, subArray->array->typeInfo, subArray->array, subArray->access, subTypePtr->count));
                     offsetAccess += subArray->access->computedValue->reg.u64 * subTypePtr->pointedType->sizeOf;
                     typePtr = subTypePtr;
                 }
@@ -826,7 +844,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 arrayNode->setFlagsValueIsComputed();
                 auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
-                SWAG_CHECK(boundCheck(context, arrayNode->access, text.length()));
+                SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, text.length()));
                 auto idx                         = arrayAccess->computedValue->reg.u32;
                 arrayNode->computedValue->reg.u8 = text[idx];
             }
@@ -909,7 +927,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
-                SWAG_CHECK(boundCheck(context, arrayNode->access, arrayNode->array->computedValue->reg.u32));
+                SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, arrayNode->array->computedValue->reg.u32));
                 auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
                 SWAG_ASSERT(computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(computedValue.storageSegment != nullptr);

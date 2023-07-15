@@ -757,8 +757,8 @@ void initErrors()
     SWAG_ERROR(Err0038, "the operation '%s' is not allowed because the right expression is an enum type ('%s') not marked with 'Swag.EnumFlags'");
     SWAG_ERROR(Err0005, "the operation '%s' is not allowed on type '%s'");
     SWAG_ERROR(Err0143, "the operator '%s' does not accept a left expression of type '%s'");
-    SWAG_ERROR(Err0164, nullptr);
-    SWAG_ERROR(Err0142, nullptr);
+    SWAG_ERROR(Err0164, "dereferencing an empty slice");
+    SWAG_ERROR(Err0142, "dereferencing an empty string");
     SWAG_ERROR(Err0146, nullptr);
     SWAG_ERROR(Err0163, nullptr);
     SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is now provided)");
@@ -1151,6 +1151,12 @@ void initErrors()
     SWAG_ERROR(Hnt0122, "this is the thrown error");
     SWAG_ERROR(Hnt0123, "the array contains %d elements of type '%s', which does not fit in a slice of type '%s'");
     SWAG_ERROR(Hnt0124, "add 'impl' before if this is intended");
+    SWAG_ERROR(Hnt0125, "this slice is null or empty");
+    SWAG_ERROR(Hnt0126, "this string is null or empty");
+    SWAG_ERROR(Hnt0127, nullptr);
+    SWAG_ERROR(Hnt0128, nullptr);
+    SWAG_ERROR(Hnt0129, nullptr);
+    SWAG_ERROR(Hnt0130, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    const a: [..] s32 = null;
+    const a: string = null
     #[Swag.Safety("", true)]
     if a[0] == 0
     {

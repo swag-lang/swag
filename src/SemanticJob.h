@@ -319,7 +319,7 @@ struct SemanticJob : public Job
     static void           propagateReturn(AstNode* node);
     static bool           resolveMakePointer(SemanticContext* context);
     static bool           resolveMakePointerLambda(SemanticContext* context);
-    static bool           boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount);
+    static bool           boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
     static bool           getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
     static void           forceConstType(SemanticContext* context, AstTypeExpression* node);
     static void           setVarDeclResolve(AstVarDecl* varNode);
