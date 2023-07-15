@@ -174,10 +174,9 @@ void Diagnostic::printErrorLevel()
 
 void Diagnostic::printRemarks()
 {
-    if (!remarks.empty())
+    if (!autoRemarks.empty())
     {
         printMargin(true, true);
-
         for (auto r : autoRemarks)
         {
             if (r.empty())
@@ -187,10 +186,11 @@ void Diagnostic::printRemarks()
             g_Log.print(r);
             g_Log.eol();
         }
+    }
 
-        if (!autoRemarks.empty() && !remarks.empty())
-            printMargin(true, true);
-
+    if (!remarks.empty())
+    {
+        printMargin(true, true);
         for (auto r : remarks)
         {
             if (r.empty())
@@ -856,19 +856,19 @@ void Diagnostic::report(bool verboseMode)
     {
         printSourceCode(verboseMode);
         printRanges();
-
-        if (closeFileName)
-        {
-            printMarginLineNo(0);
-            g_Log.setColor(marginBorderColor);
-            g_Log.print(LogSymbol::DownRight);
-            g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.eol();
-        }
     }
 
     // Code remarks
     printRemarks();
+
+    if (showSourceCode && closeFileName)
+    {
+        printMarginLineNo(0);
+        g_Log.setColor(marginBorderColor);
+        g_Log.print(LogSymbol::DownRight);
+        g_Log.print(LogSymbol::HorizontalLine);
+        g_Log.eol();
+    }
 
     g_Log.setDefaultColor();
 }
