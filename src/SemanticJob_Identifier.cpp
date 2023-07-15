@@ -835,12 +835,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             {
                 if (arrayNode->access->flags & AST_VALUE_COMPUTED)
                 {
-                    auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
-                    SWAG_ASSERT(arrayOver->computedValue.storageOffset != UINT32_MAX);
                     SWAG_ASSERT(arrayOver->computedValue.storageSegment);
-                    auto ptr = arrayOver->computedValue.storageSegment->address(arrayOver->computedValue.storageOffset);
+                    SWAG_ASSERT(arrayOver->computedValue.storageOffset != UINT32_MAX);
+
+                    auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
+                    auto ptr     = arrayOver->computedValue.storageSegment->address(arrayOver->computedValue.storageOffset);
                     ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
-                    if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
+                    if (derefLiteralStruct(context, ptr, overload, arrayOver->computedValue.storageSegment))
                     {
                         identifierRef->previousResolvedNode = context->node;
                         identifier->resolvedSymbolName      = overload->symbol;
