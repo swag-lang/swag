@@ -808,10 +808,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             if (derefLiteralStruct(context, identifierRef, overload))
             {
                 identifierRef->previousResolvedNode = context->node;
+                identifier->resolvedSymbolName      = overload->symbol;
+                identifier->resolvedSymbolOverload  = overload;
                 return true;
             }
-
-            identifier->flags |= AST_R_VALUE;
         }
 
         // Direct reference to a constexpr structure
@@ -824,8 +824,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 identifier->resolvedSymbolOverload  = overload;
                 return true;
             }
-
-            identifier->flags |= AST_R_VALUE;
         }
 
         // Direct reference of a struct field inside a const array
@@ -849,8 +847,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                         identifier->resolvedSymbolOverload  = overload;
                         return true;
                     }
-
-                    identifier->flags |= AST_R_VALUE;
                 }
             }
         }
