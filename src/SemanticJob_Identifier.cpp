@@ -798,63 +798,60 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         pp.param->resolvedParameter = pp.resolvedParameter;
     }
 
-    // Direct reference to a constexpr typeinfo
-    if (identifierRef->previousResolvedNode &&
-        (identifierRef->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
-        symbol->kind == SymbolKind::Variable)
+    if (identifierRef->previousResolvedNode && symbol->kind == SymbolKind::Variable)
     {
-        if (derefLiteralStruct(context, identifierRef, overload))
+        auto prevNode = identifierRef->previousResolvedNode;
+
+        // Direct reference to a constexpr typeinfo
+        if (prevNode->flags & AST_VALUE_IS_TYPEINFO)
         {
-            identifierRef->previousResolvedNode = context->node;
-            return true;
-        }
-
-        identifier->flags |= AST_R_VALUE;
-    }
-
-    // Direct reference to a constexpr structure
-    if (identifierRef->previousResolvedNode &&
-        (identifierRef->previousResolvedNode->flags & AST_VALUE_COMPUTED) &&
-        identifierRef->previousResolvedNode->typeInfo->isStruct() &&
-        symbol->kind == SymbolKind::Variable)
-    {
-        if (derefLiteralStruct(context, identifierRef, overload))
-        {
-            identifierRef->previousResolvedNode = context->node;
-            identifier->resolvedSymbolName      = overload->symbol;
-            identifier->resolvedSymbolOverload  = overload;
-            return true;
-        }
-
-        identifier->flags |= AST_R_VALUE;
-    }
-
-    // Direct reference of a struct field inside a const array
-    if (identifierRef->previousResolvedNode &&
-        identifierRef->previousResolvedNode->kind == AstNodeKind::ArrayPointerIndex &&
-        identifierRef->previousResolvedNode->typeInfo->isStruct() &&
-        symbol->kind == SymbolKind::Variable)
-    {
-        auto arrayNode = CastAst<AstArrayPointerIndex>(identifierRef->previousResolvedNode, AstNodeKind::ArrayPointerIndex);
-        auto arrayOver = arrayNode->array->resolvedSymbolOverload;
-        if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE))
-        {
-            if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+            if (derefLiteralStruct(context, identifierRef, overload))
             {
-                auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
-                SWAG_ASSERT(arrayOver->computedValue.storageOffset != UINT32_MAX);
-                SWAG_ASSERT(arrayOver->computedValue.storageSegment);
-                auto ptr = arrayOver->computedValue.storageSegment->address(arrayOver->computedValue.storageOffset);
-                ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
-                if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
-                {
-                    identifierRef->previousResolvedNode = context->node;
-                    identifier->resolvedSymbolName      = overload->symbol;
-                    identifier->resolvedSymbolOverload  = overload;
-                    return true;
-                }
+                identifierRef->previousResolvedNode = context->node;
+                return true;
+            }
 
-                identifier->flags |= AST_R_VALUE;
+            identifier->flags |= AST_R_VALUE;
+        }
+
+        // Direct reference to a constexpr structure
+        if ((prevNode->flags & AST_VALUE_COMPUTED) && prevNode->typeInfo->isStruct())
+        {
+            if (derefLiteralStruct(context, identifierRef, overload))
+            {
+                identifierRef->previousResolvedNode = context->node;
+                identifier->resolvedSymbolName      = overload->symbol;
+                identifier->resolvedSymbolOverload  = overload;
+                return true;
+            }
+
+            identifier->flags |= AST_R_VALUE;
+        }
+
+        // Direct reference of a struct field inside a const array
+        if (prevNode->kind == AstNodeKind::ArrayPointerIndex && prevNode->typeInfo->isStruct())
+        {
+            auto arrayNode = CastAst<AstArrayPointerIndex>(identifierRef->previousResolvedNode, AstNodeKind::ArrayPointerIndex);
+            auto arrayOver = arrayNode->array->resolvedSymbolOverload;
+            if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE))
+            {
+                if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+                {
+                    auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
+                    SWAG_ASSERT(arrayOver->computedValue.storageOffset != UINT32_MAX);
+                    SWAG_ASSERT(arrayOver->computedValue.storageSegment);
+                    auto ptr = arrayOver->computedValue.storageSegment->address(arrayOver->computedValue.storageOffset);
+                    ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
+                    if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
+                    {
+                        identifierRef->previousResolvedNode = context->node;
+                        identifier->resolvedSymbolName      = overload->symbol;
+                        identifier->resolvedSymbolOverload  = overload;
+                        return true;
+                    }
+
+                    identifier->flags |= AST_R_VALUE;
+                }
             }
         }
     }

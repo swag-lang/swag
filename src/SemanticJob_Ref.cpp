@@ -117,6 +117,18 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto child    = node->childs.front();
     auto typeInfo = child->typeInfo;
 
+    if (!child->resolvedSymbolName &&
+        child->flags & AST_VALUE_COMPUTED &&
+        child->computedValue->storageSegment &&
+        child->computedValue->storageOffset != UINT32_MAX)
+    {
+        node->setFlagsValueIsComputed();
+        node->computedValue->reg.pointer = child->computedValue->storageSegment->address(child->computedValue->storageOffset);
+        node->flags |= AST_R_VALUE;
+        node->typeInfo = g_TypeMgr->makePointerTo(typeInfo, TYPEINFO_CONST);
+        return true;
+    }
+
     if (!child->resolvedSymbolName)
     {
         Diagnostic diag{node, node->token, Err(Err0047)};
