@@ -885,8 +885,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto storageOffset  = arrayNode->array->computedValue->storageOffset;
             auto offset         = arrayNode->access->computedValue->reg.u32 * typePtr->pointedType->sizeOf;
             auto ptr            = storageSegment->address(storageOffset + offset);
-            if (derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
-                arrayNode->setFlagsValueIsComputed();
+            derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr);
         }
 
         break;
@@ -906,20 +905,19 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         if (storageSegment)
         {
             auto ptr = storageSegment->address(storageOffset);
-            if (derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
+            if (!derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
             {
-                arrayNode->setFlagsValueIsComputed();
-            }
-            else if (typePtr->finalType->isStruct())
-            {
-                arrayNode->setFlagsValueIsComputed();
-                arrayNode->computedValue->storageSegment = storageSegment;
-                arrayNode->computedValue->storageOffset  = storageOffset;
-                arrayNode->typeInfo                      = typePtr->finalType;
-                if (arrayNode->resolvedSymbolOverload)
+                if (typePtr->finalType->isStruct())
                 {
-                    SWAG_ASSERT(arrayNode->resolvedSymbolOverload->computedValue.storageSegment == storageSegment);
-                    arrayNode->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
+                    arrayNode->setFlagsValueIsComputed();
+                    arrayNode->computedValue->storageSegment = storageSegment;
+                    arrayNode->computedValue->storageOffset  = storageOffset;
+                    arrayNode->typeInfo                      = typePtr->finalType;
+                    if (arrayNode->resolvedSymbolOverload)
+                    {
+                        SWAG_ASSERT(arrayNode->resolvedSymbolOverload->computedValue.storageSegment == storageSegment);
+                        arrayNode->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
+                    }
                 }
             }
         }
@@ -945,8 +943,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 SWAG_ASSERT(computedValue.storageSegment != nullptr);
                 auto ptr = computedValue.storageSegment->address(computedValue.storageOffset);
                 ptr += arrayNode->access->computedValue->reg.u64 * typeSlice->pointedType->sizeOf;
-                if (derefConstantValue(context, arrayNode, typeSlice->pointedType, computedValue.storageSegment, ptr))
-                    arrayNode->setFlagsValueIsComputed();
+                derefConstantValue(context, arrayNode, typeSlice->pointedType, computedValue.storageSegment, ptr);
             }
         }
 
@@ -1170,71 +1167,83 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     if (kind != TypeInfoKind::Native)
         return false;
 
-    node->allocateComputedValue();
     switch (nativeKind)
     {
     case NativeTypeKind::String:
+        node->setFlagsValueIsComputed();
         node->computedValue->text = *(const char**) ptr;
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoString;
         break;
 
     case NativeTypeKind::S8:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS8;
         node->computedValue->reg.s8 = *(int8_t*) ptr;
         break;
     case NativeTypeKind::U8:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU8;
         node->computedValue->reg.u8 = *(uint8_t*) ptr;
         break;
     case NativeTypeKind::S16:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS16;
         node->computedValue->reg.s16 = *(int16_t*) ptr;
         break;
     case NativeTypeKind::U16:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU16;
         node->computedValue->reg.u16 = *(uint16_t*) ptr;
         break;
     case NativeTypeKind::S32:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS32;
         node->computedValue->reg.s32 = *(int32_t*) ptr;
         break;
     case NativeTypeKind::U32:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU32;
         node->computedValue->reg.u32 = *(uint32_t*) ptr;
         break;
     case NativeTypeKind::F32:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoF32;
         node->computedValue->reg.f32 = *(float*) ptr;
         break;
     case NativeTypeKind::Rune:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoRune;
         node->computedValue->reg.ch = *(uint32_t*) ptr;
         break;
     case NativeTypeKind::S64:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS64;
         node->computedValue->reg.s64 = *(int64_t*) ptr;
         break;
     case NativeTypeKind::U64:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU64;
         node->computedValue->reg.u64 = *(uint64_t*) ptr;
         break;
     case NativeTypeKind::F64:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoF64;
         node->computedValue->reg.f64 = *(double*) ptr;
         break;
     case NativeTypeKind::Bool:
+        node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoBool;
         node->computedValue->reg.b = *(bool*) ptr;
