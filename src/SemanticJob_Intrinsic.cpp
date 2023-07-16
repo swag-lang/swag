@@ -245,8 +245,26 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
 
     if (typeInfo->isString())
     {
-        node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+        node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
+        if (expression->flags & AST_VALUE_COMPUTED)
+        {
+            node->setFlagsValueIsComputed();
+            if (expression->computedValue->text.buffer == nullptr)
+            {
+                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->computedValue->storageSegment = nullptr;
+                node->computedValue->storageOffset  = UINT32_MAX;
+            }
+            else
+            {
+                node->computedValue->storageSegment = SemanticJob::getConstantSegFromContext(node);
+                node->computedValue->storageOffset  = node->computedValue->storageSegment->addString(expression->computedValue->text);
+            }
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+        }
     }
     else if (typeInfo->isSlice())
     {
