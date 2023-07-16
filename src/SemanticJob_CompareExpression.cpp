@@ -68,6 +68,16 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::String:
             node->computedValue->reg.b = left->computedValue->text == right->computedValue->text;
             break;
+        case NativeTypeKind::Any:
+        {
+            // Can only be compared to null
+            SWAG_ASSERT(left->computedValue->storageSegment);
+            SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
+            SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
+            ExportedAny* any           = (ExportedAny*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+            node->computedValue->reg.b = !any->type;
+            break;
+        }
 
         default:
         {
