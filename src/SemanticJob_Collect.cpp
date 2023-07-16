@@ -77,7 +77,6 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         SwagSlice* ptrSlice = (SwagSlice*) ptrDest;
         if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())
         {
-            printf("x");
             ptrSlice->buffer = nullptr;
             ptrSlice->count  = 0;
         }
