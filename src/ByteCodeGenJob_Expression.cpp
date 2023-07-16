@@ -281,6 +281,13 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     auto typeInfo = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
     typeInfo      = TypeManager::concreteType(typeInfo);
 
+    AstIdentifierRef* identifierRef = nullptr;
+    if (node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        identifierRef   = identifier->identifierRef();
+    }
+
     // A reference to a segment
     if (node->forceTakeAddress() || (typeInfo->isPointer() && !typeInfo->isPointerNull()))
     {
@@ -288,6 +295,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         {
             regList = reserveRegisterRC(context);
             emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
+            if (identifierRef)
+                identifierRef->resultRegisterRC = regList;
             return true;
         }
     }
