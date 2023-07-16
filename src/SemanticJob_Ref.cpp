@@ -877,6 +877,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode);
+
+        // Try to dereference as a constant if we can
+        if (arrayNode->array->flags & AST_VALUE_COMPUTED && arrayNode->access->flags & AST_VALUE_COMPUTED)
+        {
+            int a = 0;
+        }
+
         break;
     }
 

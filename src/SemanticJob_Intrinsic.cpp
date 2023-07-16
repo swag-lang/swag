@@ -242,6 +242,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = TypeManager::concreteType(expression->typeInfo);
+
     if (typeInfo->isString())
     {
         node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
@@ -267,7 +268,34 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         node->typeInfo->forceComputeName();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
-    else if (typeInfo->isAny() || typeInfo->isInterface())
+    else if (typeInfo->isAny())
+    {
+        node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+        if (expression->flags & AST_VALUE_COMPUTED)
+        {
+            node->inheritComputedValue(expression);
+            if (expression->computedValue->storageSegment)
+            {
+                SWAG_ASSERT(expression->computedValue->storageOffset != UINT32_MAX);
+                ExportedAny* any = (ExportedAny*) expression->computedValue->storageSegment->address(expression->computedValue->storageOffset);
+                if (!any->value)
+                {
+                    node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                    node->computedValue->storageSegment = nullptr;
+                    node->computedValue->storageOffset  = UINT32_MAX;
+                }
+                else
+                {
+                    node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->value);
+                }
+            }
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+        }
+    }
+    else if (typeInfo->isInterface())
     {
         node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
