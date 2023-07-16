@@ -1280,6 +1280,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->reg.pointer    = (uint8_t*) overload->typeInfo;
         node->flags |= AST_VALUE_IS_TYPEINFO;
+        setupIdentifierRef(context, node);
     }
     else if (concreteType->isArray())
     {
