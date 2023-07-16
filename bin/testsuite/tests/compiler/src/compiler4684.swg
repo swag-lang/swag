@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 func convertAny(value: any, strFormat: string)
 {
     convertInt(cast(s64) value, strFormat)

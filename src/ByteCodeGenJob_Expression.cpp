@@ -301,11 +301,22 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         }
     }
 
-    // If we need a cast to an any, then first resolve literal with its real type
     if (typeInfo->isAny())
     {
-        SWAG_ASSERT(node->castedTypeInfo);
-        typeInfo = node->castedTypeInfo;
+        // If we need a cast to an any, then first resolve literal with its real type
+        if (node->castedTypeInfo)
+        {
+            typeInfo = node->castedTypeInfo;
+        }
+
+        // Otherwise we dereference the any in 2 registers
+        else
+        {
+            reserveLinearRegisterRC2(context, regList);
+            emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList);
+            EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, regList[0], regList[1]);
+            return true;
+        }
     }
 
     // We have null
