@@ -882,9 +882,17 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         if (arrayNode->array->flags & AST_VALUE_COMPUTED && arrayNode->access->flags & AST_VALUE_COMPUTED)
         {
             auto storageSegment = arrayNode->array->computedValue->storageSegment;
-            auto storageOffset  = arrayNode->array->computedValue->storageOffset;
-            auto offset         = arrayNode->access->computedValue->reg.u32 * typePtr->pointedType->sizeOf;
-            auto ptr            = storageSegment->address(storageOffset + offset);
+            if (!storageSegment)
+            {
+                Diagnostic diag{arrayNode, Err(Err0146)};
+                return context->report(diag);
+            }
+
+            auto storageOffset = arrayNode->array->computedValue->storageOffset;
+            SWAG_ASSERT(storageOffset != UINT32_MAX);
+
+            auto offset = arrayNode->access->computedValue->reg.u32 * typePtr->pointedType->sizeOf;
+            auto ptr    = storageSegment->address(storageOffset + offset);
             derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr);
         }
 

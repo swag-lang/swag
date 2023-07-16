@@ -73,7 +73,7 @@ void initErrors()
     SWAG_ERROR(Saf0020, "[safety 'bool'] invalid boolean value (neither 'true' nor 'false')");
     SWAG_ERROR(Saf0021, "[safety 'nan'] invalid float value (NaN)");
     SWAG_ERROR(Saf0019, "[safety 'switch'] unexpected switch value (switch is marked with 'Swag.Complete')");
-    SWAG_ERROR(Saf0001, "[safety 'null'] dereferencing of a null pointer");
+    SWAG_ERROR(Saf0001, "[safety 'null'] dereferencing a null pointer");
     SWAG_ERROR(Saf0002, "[safety 'any'] invalid dynamic cast from type 'any' to type '%s'");
     SWAG_ERROR(Saf0028, "[safety 'any'] value is null and cannot be casted to '%s'");
     SWAG_ERROR(Saf0029, "[safety 'overflow'] value '%s' ('%I64u' in decimal) does not fit in the type '%s'");
@@ -759,7 +759,7 @@ void initErrors()
     SWAG_ERROR(Err0143, "the operator '%s' does not accept a left expression of type '%s'");
     SWAG_ERROR(Err0164, "dereferencing an empty slice");
     SWAG_ERROR(Err0142, "dereferencing an empty string");
-    SWAG_ERROR(Err0146, nullptr);
+    SWAG_ERROR(Err0146, "dereferencing a null pointer");
     SWAG_ERROR(Err0163, nullptr);
     SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is now provided)");
     SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing (and '%s' is now provided)");
