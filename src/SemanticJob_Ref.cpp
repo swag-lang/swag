@@ -893,7 +893,16 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
             auto offset = arrayNode->access->computedValue->reg.u32 * typePtr->pointedType->sizeOf;
             auto ptr    = storageSegment->address(storageOffset + offset);
-            derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr);
+            if (!derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
+            {
+                if (typePtr->pointedType->isStruct())
+                {
+                    arrayNode->setFlagsValueIsComputed();
+                    arrayNode->computedValue->storageSegment = storageSegment;
+                    arrayNode->computedValue->storageOffset  = storageOffset;
+                    arrayNode->typeInfo                      = typePtr->pointedType;
+                }
+            }
         }
 
         break;
@@ -921,11 +930,6 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                     arrayNode->computedValue->storageSegment = storageSegment;
                     arrayNode->computedValue->storageOffset  = storageOffset;
                     arrayNode->typeInfo                      = typePtr->finalType;
-                    if (arrayNode->resolvedSymbolOverload)
-                    {
-                        SWAG_ASSERT(arrayNode->resolvedSymbolOverload->computedValue.storageSegment == storageSegment);
-                        arrayNode->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
-                    }
                 }
             }
         }
