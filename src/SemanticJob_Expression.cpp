@@ -263,10 +263,38 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(expression->typeInfo);
 
+    if (typeInfo->isStruct())
+    {
+        Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(expression, Diagnostic::isType(typeInfo));
+        return context->report(diag);
+    }
+    else if (!typeInfo->isString() &&
+             !typeInfo->isPointer() &&
+             !typeInfo->isInterface() &&
+             !typeInfo->isNativeIntegerOrRune() &&
+             !typeInfo->isNativeFloat() &&
+             !typeInfo->isLambdaClosure())
+    {
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0332), typeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(expression, Diagnostic::isType(typeInfo));
+        return context->report(diag);
+    }
+
     if (expression->flags & AST_VALUE_COMPUTED)
     {
         bool notNull = true;
-        if (typeInfo->isNativeIntegerOrRune() || typeInfo->isNativeFloat())
+        if (typeInfo->isString())
+        {
+            notNull = expression->computedValue->text.buffer != nullptr;
+        }
+        else if (typeInfo->isInterface())
+        {
+            notNull = expression->computedValue->storageSegment != nullptr;
+        }
+        else
         {
             switch (typeInfo->sizeOf)
             {
@@ -298,27 +326,6 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     }
     else
     {
-        if (typeInfo->isStruct())
-        {
-            Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
-            diag.hint = Hnt(Hnt0061);
-            diag.addRange(expression, Diagnostic::isType(typeInfo));
-            return context->report(diag);
-        }
-        else if (!typeInfo->isString() &&
-                 !typeInfo->isRune() &&
-                 !typeInfo->isPointer() &&
-                 !typeInfo->isInterface() &&
-                 !typeInfo->isNativeInteger() &&
-                 !typeInfo->isNativeFloat() &&
-                 !typeInfo->isLambdaClosure())
-        {
-            Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0332), typeInfo->getDisplayNameC())};
-            diag.hint = Hnt(Hnt0061);
-            diag.addRange(expression, Diagnostic::isType(typeInfo));
-            return context->report(diag);
-        }
-
         PushErrCxtStep ec(context, expression, ErrCxtStepKind::Hint2, [expression]()
                           { return Diagnostic::isType(expression->typeInfo); });
         PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Help, []()
