@@ -34,7 +34,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     if (typeInfo->isAny())
     {
         ExportedAny* ptrAny = (ExportedAny*) ptrDest;
-        if (!assignment->castedTypeInfo)
+        if (assignment && !assignment->castedTypeInfo)
         {
             ExportedAny* valueAny   = (ExportedAny*) value->storageSegment->address(value->storageOffset);
             *ptrAny                 = *valueAny;
@@ -43,7 +43,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
             value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
             value->storageSegment->addInitPtr(storageOffset + 8, storageOffsetType, value->storageSegment->kind);
         }
-        else if (assignment && assignment->typeInfo->isPointerNull())
+        else if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())
         {
             ptrAny->type  = nullptr;
             ptrAny->value = nullptr;
@@ -74,10 +74,12 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 
     if (typeInfo->isSlice())
     {
-        if (assignment && assignment->kind == AstNodeKind::Literal)
+        SwagSlice* ptrSlice = (SwagSlice*) ptrDest;
+        if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())
         {
-            *(void**) ptrDest                      = nullptr;
-            *(uint64_t*) (ptrDest + sizeof(void*)) = 0;
+            printf("x");
+            ptrSlice->buffer = nullptr;
+            ptrSlice->count  = 0;
         }
         else if (assignment)
         {
@@ -90,9 +92,9 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
             SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->typeInfo, assignment));
 
             // Then setup the pointer to that data, and the data count
-            auto ptrStorage                        = constSegment->address(storageOffsetValue);
-            *(void**) ptrDest                      = ptrStorage;
-            *(uint64_t*) (ptrDest + sizeof(void*)) = assignment->childs.size();
+            auto ptrStorage  = constSegment->address(storageOffsetValue);
+            ptrSlice->buffer = ptrStorage;
+            ptrSlice->count  = assignment->childs.size();
             storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
         }
 
