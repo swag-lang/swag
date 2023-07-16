@@ -2523,7 +2523,7 @@ impl Transform
 
     func getDx(pt1, pt2: IntPoint)->f64
     {
-        return (pt1.y == pt2.y) ? HorizontalVal : cast(f64) (pt2.x - pt1.x) / (pt2.y - pt1.y)
+        return (pt1.y == pt2.y) ? cast(f64) HorizontalVal : cast(f64) (pt2.x - pt1.x) / (pt2.y - pt1.y)
     }
 
     func area(op1: *OutPt)->f64
