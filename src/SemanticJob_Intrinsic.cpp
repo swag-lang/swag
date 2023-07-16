@@ -297,7 +297,20 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
             ptrFlags |= TYPEINFO_CONST;
         node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrFlags);
 
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+        if (expression->flags & AST_VALUE_COMPUTED)
+        {
+            node->inheritComputedValue(expression);
+            if (!expression->computedValue->storageSegment)
+            {
+                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->computedValue->storageSegment = nullptr;
+                node->computedValue->storageOffset  = UINT32_MAX;
+            }
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+        }
     }
     else if (typeInfo->isAny())
     {
