@@ -596,11 +596,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
     {
 #if false
-        if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+        if (node->assignment &&
+            node->assignment->flags & AST_VALUE_COMPUTED &&
+            !node->assignment->typeInfo->isLambdaClosure())
+        {
             isCompilerConstant = true;
+        }
         else
 #endif
-        symbolFlags |= OVERLOAD_IS_LET;
+            symbolFlags |= OVERLOAD_IS_LET;
     }
 
     if (isCompilerConstant)

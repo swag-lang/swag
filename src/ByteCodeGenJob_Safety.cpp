@@ -261,16 +261,6 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, u
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
-{
-    PushICFlags ic(context, BCI_SAFETY);
-
-    auto re = reserveRegisterRC(context);
-    EMIT_INST3(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
-    emitAssert(context, re, safetyMsg(SafetyMsg::IndexRange));
-    freeRegisterRC(context, re);
-}
-
 void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs)
 {
     PushICFlags ic(context, BCI_SAFETY);
@@ -321,12 +311,12 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
 
     auto re = reserveRegisterRC(context);
-    EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, re);
+    EMIT_INST3(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
     emitAssert(context, re, safetyMsg(SafetyMsg::IndexRange));
     freeRegisterRC(context, re);
 }
@@ -336,7 +326,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uin
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
 
-    emitSafetyBoundCheckLowerEqU64(context, r0, r1);
+    emitSafetyBoundCheckLowerU64(context, r0, r1);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
