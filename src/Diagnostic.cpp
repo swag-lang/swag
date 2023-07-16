@@ -183,6 +183,8 @@ void Diagnostic::printRemarks()
                 continue;
             printMargin(false, true, 0);
             g_Log.setColor(autoRemarkColor);
+            g_Log.print(LogSymbol::DotList);
+            g_Log.print(" ");
             g_Log.print(r);
             g_Log.eol();
         }
@@ -197,6 +199,8 @@ void Diagnostic::printRemarks()
                 continue;
             printMargin(false, true, 0);
             g_Log.setColor(remarkColor);
+            g_Log.print(LogSymbol::DotList);
+            g_Log.print(" ");
             g_Log.print(r);
             g_Log.eol();
         }

@@ -44,6 +44,13 @@ void Log::print(LogSymbol symbol)
             g_Log.print("\xc2\xb7");
         break;
 
+    case LogSymbol::DotList:
+        if (g_CommandLine.logAscii)
+            g_Log.print("*");
+        else
+            g_Log.print("\xE2\x80\xa2");
+        break;
+
     case LogSymbol::HorizontalLine:
         if (g_CommandLine.logAscii)
             g_Log.print("-");
