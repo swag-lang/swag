@@ -273,8 +273,21 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (ptrSlice->isConst())
             ptrFlags |= TYPEINFO_CONST;
         node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrFlags);
-        node->typeInfo->forceComputeName();
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+
+        if (expression->flags & AST_VALUE_COMPUTED)
+        {
+            node->inheritComputedValue(expression);
+            if (!expression->computedValue->storageSegment)
+            {
+                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->computedValue->storageSegment = nullptr;
+                node->computedValue->storageOffset  = UINT32_MAX;
+            }
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+        }
     }
     else if (typeInfo->isArray())
     {
@@ -283,7 +296,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (ptrArray->isConst())
             ptrFlags |= TYPEINFO_CONST;
         node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrFlags);
-        node->typeInfo->forceComputeName();
+
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isAny())
@@ -292,7 +305,13 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (expression->flags & AST_VALUE_COMPUTED)
         {
             node->inheritComputedValue(expression);
-            if (expression->computedValue->storageSegment)
+            if (!expression->computedValue->storageSegment)
+            {
+                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->computedValue->storageSegment = nullptr;
+                node->computedValue->storageOffset  = UINT32_MAX;
+            }
+            else
             {
                 SWAG_ASSERT(expression->computedValue->storageOffset != UINT32_MAX);
                 ExportedAny* any = (ExportedAny*) expression->computedValue->storageSegment->address(expression->computedValue->storageOffset);
