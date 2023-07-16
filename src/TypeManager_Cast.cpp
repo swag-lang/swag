@@ -920,50 +920,26 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        // clang-format off
+        bool canChange = (fromNode && fromNode->flags & AST_VALUE_COMPUTED) && !(castFlags & CASTFLAG_JUST_CHECK);
+        if (canChange)
+            fromNode->typeInfo = g_TypeMgr->typeInfoU8;
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Rune:
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-        case NativeTypeKind::Bool:
-        case NativeTypeKind::U16:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::U64:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->typeInfo = g_TypeMgr->typeInfoU8;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F32:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f32;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU8;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F64:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f64;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU8;
-                }
-            }
-            return true;
-        default:
-            break;
+        case NativeTypeKind::Rune:  if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::S8:    if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.s8; return true;
+        case NativeTypeKind::S16:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.s16; return true;
+        case NativeTypeKind::S32:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.s32; return true;
+        case NativeTypeKind::S64:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.s64; return true;
+        case NativeTypeKind::Bool:  if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.b ? 1 : 0; return true;
+        case NativeTypeKind::U16:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.u16; return true;
+        case NativeTypeKind::U32:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::U64:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.u64; return true;
+        case NativeTypeKind::F32:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.f32; return true;
+        case NativeTypeKind::F64:   if (canChange) fromNode->computedValue->reg.u64 = (uint8_t) fromNode->computedValue->reg.f64; return true;
+        default:                    break;
         }
+        // clang-format on
     }
 
     return castError(context, g_TypeMgr->typeInfoU8, fromType, fromNode, castFlags);
@@ -1107,50 +1083,26 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        // clang-format off
+        bool canChange = (fromNode && fromNode->flags & AST_VALUE_COMPUTED) && !(castFlags & CASTFLAG_JUST_CHECK);
+        if (canChange)
+            fromNode->typeInfo = g_TypeMgr->typeInfoU16;
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Rune:
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-        case NativeTypeKind::Bool:
-        case NativeTypeKind::U8:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::U64:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->typeInfo = g_TypeMgr->typeInfoU16;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F32:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f32;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU16;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F64:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f64;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU16;
-                }
-            }
-            return true;
-        default:
-            break;
+        case NativeTypeKind::Rune:  if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::S8:    if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.s8; return true;
+        case NativeTypeKind::S16:   if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.s16; return true;
+        case NativeTypeKind::S32:   if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.s32; return true;
+        case NativeTypeKind::S64:   if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.s64; return true;
+        case NativeTypeKind::Bool:  if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.b ? 1 : 0; return true;
+        case NativeTypeKind::U8:    if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.u8; return true;
+        case NativeTypeKind::U32:   if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::U64:   if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.u64; return true;
+        case NativeTypeKind::F32:   if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.f32; return true;
+        case NativeTypeKind::F64:   if (canChange) fromNode->computedValue->reg.u64 = (uint16_t) fromNode->computedValue->reg.f64; return true;
+        default:                    break;
         }
+        // clang-format on
     }
 
     return castError(context, g_TypeMgr->typeInfoU16, fromType, fromNode, castFlags);
@@ -1291,50 +1243,26 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        // clang-format off
+        bool canChange = (fromNode && fromNode->flags & AST_VALUE_COMPUTED) && !(castFlags & CASTFLAG_JUST_CHECK);
+        if (canChange)
+            fromNode->typeInfo = g_TypeMgr->typeInfoU32;
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Rune:
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-        case NativeTypeKind::Bool:
-        case NativeTypeKind::U8:
-        case NativeTypeKind::U16:
-        case NativeTypeKind::U64:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->typeInfo = g_TypeMgr->typeInfoU32;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F32:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.f32;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU32;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F64:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.f64;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU32;
-                }
-            }
-            return true;
-        default:
-            break;
+        case NativeTypeKind::Rune:  if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::S8:    if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.s8; return true;
+        case NativeTypeKind::S16:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.s16; return true;
+        case NativeTypeKind::S32:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.s32; return true;
+        case NativeTypeKind::S64:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.s64; return true;
+        case NativeTypeKind::Bool:  if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.b ? 1 : 0; return true;
+        case NativeTypeKind::U8:    if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.u8; return true;
+        case NativeTypeKind::U16:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.u16; return true;
+        case NativeTypeKind::U64:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.u64; return true;
+        case NativeTypeKind::F32:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.f32; return true;
+        case NativeTypeKind::F64:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.f64; return true;
+        default:                    break;
         }
+        // clang-format on
     }
 
     return castError(context, g_TypeMgr->typeInfoU32, fromType, fromNode, castFlags);
@@ -1466,51 +1394,26 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        // clang-format off
+        bool canChange = (fromNode && fromNode->flags & AST_VALUE_COMPUTED) && !(castFlags & CASTFLAG_JUST_CHECK);
+        if (canChange)
+            fromNode->typeInfo = g_TypeMgr->typeInfoU64;
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Rune:
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-        case NativeTypeKind::Bool:
-        case NativeTypeKind::U8:
-        case NativeTypeKind::U16:
-        case NativeTypeKind::U32:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->typeInfo = g_TypeMgr->typeInfoU64;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F32:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f32;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU64;
-                }
-            }
-            return true;
-
-        case NativeTypeKind::F64:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
-            {
-                if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f64;
-                    fromNode->typeInfo               = g_TypeMgr->typeInfoU64;
-                }
-            }
-            return true;
-
-        default:
-            break;
+        case NativeTypeKind::Rune:  if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::S8:    if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.s8; return true;
+        case NativeTypeKind::S16:   if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.s16; return true;
+        case NativeTypeKind::S32:   if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.s32; return true;
+        case NativeTypeKind::S64:   if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.s64; return true;
+        case NativeTypeKind::Bool:  if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.b ? 1 : 0; return true;
+        case NativeTypeKind::U8:    if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.u8; return true;
+        case NativeTypeKind::U16:   if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.u16; return true;
+        case NativeTypeKind::U32:   if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::F32:   if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f32; return true;
+        case NativeTypeKind::F64:   if (canChange) fromNode->computedValue->reg.u64 = (uint64_t) fromNode->computedValue->reg.f64; return true;
+        default:                    break;
         }
+        // clang-format on
     }
 
     return castError(context, g_TypeMgr->typeInfoU64, fromType, fromNode, castFlags);
