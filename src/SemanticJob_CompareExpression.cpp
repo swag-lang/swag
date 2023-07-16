@@ -37,55 +37,91 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();
-        switch (leftTypeInfo->nativeType)
-        {
-        case NativeTypeKind::Bool:
-            node->computedValue->reg.b = left->computedValue->reg.b == right->computedValue->reg.b;
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue->reg.b = left->computedValue->reg.f32 == right->computedValue->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue->reg.b = left->computedValue->reg.f64 == right->computedValue->reg.f64;
-            break;
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            node->computedValue->reg.b = left->computedValue->reg.u8 == right->computedValue->reg.u8;
-            break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            node->computedValue->reg.b = left->computedValue->reg.u16 == right->computedValue->reg.u16;
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue->reg.b = left->computedValue->reg.u32 == right->computedValue->reg.u32;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            node->computedValue->reg.b = left->computedValue->reg.u64 == right->computedValue->reg.u64;
-            break;
-        case NativeTypeKind::String:
-            node->computedValue->reg.b = left->computedValue->text == right->computedValue->text;
-            break;
-        case NativeTypeKind::Any:
+
+        if (leftTypeInfo->isSlice())
         {
             // Can only be compared to null
-            SWAG_ASSERT(left->computedValue->storageSegment);
-            SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
+            // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            ExportedAny* any           = (ExportedAny*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
-            node->computedValue->reg.b = !any->type;
-            break;
+            if (!left->computedValue->storageSegment)
+                node->computedValue->reg.b = true;
+            else
+            {
+                SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
+                SwagSlice* slice           = (SwagSlice*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+                node->computedValue->reg.b = !slice->buffer;
+            }
         }
-
-        default:
+        else if (leftTypeInfo->isInterface())
         {
-            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.hint = Hnt(Hnt0061);
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag);
+            // Can only be compared to null
+            // :ComparedToNull
+            SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
+            if (!left->computedValue->storageSegment)
+                node->computedValue->reg.b = true;
+            else
+            {
+                SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
+                SwagInterface* slice       = (SwagInterface*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+                node->computedValue->reg.b = !slice->itable;
+            }
         }
+        else if (leftTypeInfo->isAny())
+        {
+            // Can only be compared to null
+            // :ComparedToNull
+            SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
+            if (!left->computedValue->storageSegment)
+                node->computedValue->reg.b = true;
+            else
+            {
+                SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
+                ExportedAny* any           = (ExportedAny*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+                node->computedValue->reg.b = !any->type;
+            }
+        }
+        else
+        {
+            switch (leftTypeInfo->nativeType)
+            {
+            case NativeTypeKind::Bool:
+                node->computedValue->reg.b = left->computedValue->reg.b == right->computedValue->reg.b;
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue->reg.b = left->computedValue->reg.f32 == right->computedValue->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue->reg.b = left->computedValue->reg.f64 == right->computedValue->reg.f64;
+                break;
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                node->computedValue->reg.b = left->computedValue->reg.u8 == right->computedValue->reg.u8;
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                node->computedValue->reg.b = left->computedValue->reg.u16 == right->computedValue->reg.u16;
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue->reg.b = left->computedValue->reg.u32 == right->computedValue->reg.u32;
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                node->computedValue->reg.b = left->computedValue->reg.u64 == right->computedValue->reg.u64;
+                break;
+            case NativeTypeKind::String:
+                node->computedValue->reg.b = left->computedValue->text == right->computedValue->text;
+                break;
+
+            default:
+            {
+                Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+                diag.hint = Hnt(Hnt0061);
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                return context->report(diag);
+            }
+            }
         }
     }
     else if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
@@ -361,6 +397,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return context->report(diag);
     }
 
+    // :ComparedToNull
     if (!rightTypeInfo->isPointerNull())
     {
         // Slice can only be compared to null
