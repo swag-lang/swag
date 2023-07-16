@@ -881,7 +881,12 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         // Try to dereference as a constant if we can
         if (arrayNode->array->flags & AST_VALUE_COMPUTED && arrayNode->access->flags & AST_VALUE_COMPUTED)
         {
-            int a = 0;
+            auto storageSegment = arrayNode->array->computedValue->storageSegment;
+            auto storageOffset  = arrayNode->array->computedValue->storageOffset;
+            auto offset         = arrayNode->access->computedValue->reg.u32 * typePtr->pointedType->sizeOf;
+            auto ptr            = storageSegment->address(storageOffset + offset);
+            if (derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
+                arrayNode->setFlagsValueIsComputed();
         }
 
         break;
