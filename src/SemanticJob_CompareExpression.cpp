@@ -149,50 +149,65 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
     {
         node->typeInfo = g_TypeMgr->typeInfoS32;
         node->setFlagsValueIsComputed();
-        switch (leftTypeInfo->nativeType)
-        {
-        case NativeTypeKind::Bool:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.b, right->computedValue->reg.b);
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.f32, right->computedValue->reg.f32);
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.f64, right->computedValue->reg.f64);
-            break;
-        case NativeTypeKind::S8:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s8, right->computedValue->reg.s8);
-            break;
-        case NativeTypeKind::S16:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s16, right->computedValue->reg.s16);
-            break;
-        case NativeTypeKind::S32:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s32, right->computedValue->reg.s32);
-            break;
-        case NativeTypeKind::S64:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s64, right->computedValue->reg.s64);
-            break;
-        case NativeTypeKind::U8:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u8, right->computedValue->reg.u8);
-            break;
-        case NativeTypeKind::U16:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u16, right->computedValue->reg.u16);
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u32, right->computedValue->reg.u32);
-            break;
-        case NativeTypeKind::U64:
-            node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u64, right->computedValue->reg.u64);
-            break;
 
-        default:
+        if (leftTypeInfo->isPointer())
         {
-            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.hint = Hnt(Hnt0061);
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag);
+            if (left->computedValue->storageSegment == right->computedValue->storageSegment &&
+                left->computedValue->storageOffset == right->computedValue->storageOffset)
+                node->computedValue->reg.s32 = 0;
+            else if (left->computedValue->storageSegment < right->computedValue->storageSegment ||
+                     left->computedValue->storageOffset < right->computedValue->storageOffset)
+                node->computedValue->reg.s32 = -1;
+            else
+                node->computedValue->reg.s32 = 1;
         }
+        else
+        {
+            switch (leftTypeInfo->nativeType)
+            {
+            case NativeTypeKind::Bool:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.b, right->computedValue->reg.b);
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.f32, right->computedValue->reg.f32);
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.f64, right->computedValue->reg.f64);
+                break;
+            case NativeTypeKind::S8:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s8, right->computedValue->reg.s8);
+                break;
+            case NativeTypeKind::S16:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s16, right->computedValue->reg.s16);
+                break;
+            case NativeTypeKind::S32:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s32, right->computedValue->reg.s32);
+                break;
+            case NativeTypeKind::S64:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.s64, right->computedValue->reg.s64);
+                break;
+            case NativeTypeKind::U8:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u8, right->computedValue->reg.u8);
+                break;
+            case NativeTypeKind::U16:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u16, right->computedValue->reg.u16);
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u32, right->computedValue->reg.u32);
+                break;
+            case NativeTypeKind::U64:
+                node->computedValue->reg.s32 = CMP3(left->computedValue->reg.u64, right->computedValue->reg.u64);
+                break;
+
+            default:
+            {
+                Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+                diag.hint = Hnt(Hnt0061);
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                return context->report(diag);
+            }
+            }
         }
     }
     else if (leftTypeInfo->isStruct())
@@ -212,50 +227,59 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();
-        switch (leftTypeInfo->nativeType)
-        {
-        case NativeTypeKind::Bool:
-            node->computedValue->reg.b = left->computedValue->reg.b < right->computedValue->reg.b;
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue->reg.b = left->computedValue->reg.f32 < right->computedValue->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue->reg.b = left->computedValue->reg.f64 < right->computedValue->reg.f64;
-            break;
-        case NativeTypeKind::S8:
-            node->computedValue->reg.b = left->computedValue->reg.s8 < right->computedValue->reg.s8;
-            break;
-        case NativeTypeKind::S16:
-            node->computedValue->reg.b = left->computedValue->reg.s16 < right->computedValue->reg.s16;
-            break;
-        case NativeTypeKind::S32:
-            node->computedValue->reg.b = left->computedValue->reg.s32 < right->computedValue->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-            node->computedValue->reg.b = left->computedValue->reg.s64 < right->computedValue->reg.s64;
-            break;
-        case NativeTypeKind::U8:
-            node->computedValue->reg.b = left->computedValue->reg.u8 < right->computedValue->reg.u8;
-            break;
-        case NativeTypeKind::U16:
-            node->computedValue->reg.b = left->computedValue->reg.u16 < right->computedValue->reg.u16;
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue->reg.b = left->computedValue->reg.u32 < right->computedValue->reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            node->computedValue->reg.b = left->computedValue->reg.u64 < right->computedValue->reg.u64;
-            break;
 
-        default:
+        if (leftTypeInfo->isPointer())
         {
-            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.hint = Hnt(Hnt0061);
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag);
+            node->computedValue->reg.b = left->computedValue->storageSegment < right->computedValue->storageSegment ||
+                                         left->computedValue->storageOffset < right->computedValue->storageOffset;
         }
+        else
+        {
+            switch (leftTypeInfo->nativeType)
+            {
+            case NativeTypeKind::Bool:
+                node->computedValue->reg.b = left->computedValue->reg.b < right->computedValue->reg.b;
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue->reg.b = left->computedValue->reg.f32 < right->computedValue->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue->reg.b = left->computedValue->reg.f64 < right->computedValue->reg.f64;
+                break;
+            case NativeTypeKind::S8:
+                node->computedValue->reg.b = left->computedValue->reg.s8 < right->computedValue->reg.s8;
+                break;
+            case NativeTypeKind::S16:
+                node->computedValue->reg.b = left->computedValue->reg.s16 < right->computedValue->reg.s16;
+                break;
+            case NativeTypeKind::S32:
+                node->computedValue->reg.b = left->computedValue->reg.s32 < right->computedValue->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+                node->computedValue->reg.b = left->computedValue->reg.s64 < right->computedValue->reg.s64;
+                break;
+            case NativeTypeKind::U8:
+                node->computedValue->reg.b = left->computedValue->reg.u8 < right->computedValue->reg.u8;
+                break;
+            case NativeTypeKind::U16:
+                node->computedValue->reg.b = left->computedValue->reg.u16 < right->computedValue->reg.u16;
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue->reg.b = left->computedValue->reg.u32 < right->computedValue->reg.u32;
+                break;
+            case NativeTypeKind::U64:
+                node->computedValue->reg.b = left->computedValue->reg.u64 < right->computedValue->reg.u64;
+                break;
+
+            default:
+            {
+                Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+                diag.hint = Hnt(Hnt0061);
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                return context->report(diag);
+            }
+            }
         }
     }
     else if (leftTypeInfo->isStruct())
@@ -275,50 +299,58 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->setFlagsValueIsComputed();
-        switch (leftTypeInfo->nativeType)
+        if (leftTypeInfo->isPointer())
         {
-        case NativeTypeKind::Bool:
-            node->computedValue->reg.b = left->computedValue->reg.b > right->computedValue->reg.b;
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue->reg.b = left->computedValue->reg.f32 > right->computedValue->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue->reg.b = left->computedValue->reg.f64 > right->computedValue->reg.f64;
-            break;
-        case NativeTypeKind::S8:
-            node->computedValue->reg.b = left->computedValue->reg.s8 > right->computedValue->reg.s8;
-            break;
-        case NativeTypeKind::S16:
-            node->computedValue->reg.b = left->computedValue->reg.s16 > right->computedValue->reg.s16;
-            break;
-        case NativeTypeKind::S32:
-            node->computedValue->reg.b = left->computedValue->reg.s32 > right->computedValue->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-            node->computedValue->reg.b = left->computedValue->reg.s64 > right->computedValue->reg.s64;
-            break;
-        case NativeTypeKind::U8:
-            node->computedValue->reg.b = left->computedValue->reg.u8 > right->computedValue->reg.u8;
-            break;
-        case NativeTypeKind::U16:
-            node->computedValue->reg.b = left->computedValue->reg.u16 > right->computedValue->reg.u16;
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue->reg.b = left->computedValue->reg.u32 > right->computedValue->reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            node->computedValue->reg.b = left->computedValue->reg.u64 > right->computedValue->reg.u64;
-            break;
-
-        default:
-        {
-            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.hint = Hnt(Hnt0061);
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag);
+            node->computedValue->reg.b = left->computedValue->storageSegment > right->computedValue->storageSegment ||
+                                         left->computedValue->storageOffset > right->computedValue->storageOffset;
         }
+        else
+        {
+            switch (leftTypeInfo->nativeType)
+            {
+            case NativeTypeKind::Bool:
+                node->computedValue->reg.b = left->computedValue->reg.b > right->computedValue->reg.b;
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue->reg.b = left->computedValue->reg.f32 > right->computedValue->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue->reg.b = left->computedValue->reg.f64 > right->computedValue->reg.f64;
+                break;
+            case NativeTypeKind::S8:
+                node->computedValue->reg.b = left->computedValue->reg.s8 > right->computedValue->reg.s8;
+                break;
+            case NativeTypeKind::S16:
+                node->computedValue->reg.b = left->computedValue->reg.s16 > right->computedValue->reg.s16;
+                break;
+            case NativeTypeKind::S32:
+                node->computedValue->reg.b = left->computedValue->reg.s32 > right->computedValue->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+                node->computedValue->reg.b = left->computedValue->reg.s64 > right->computedValue->reg.s64;
+                break;
+            case NativeTypeKind::U8:
+                node->computedValue->reg.b = left->computedValue->reg.u8 > right->computedValue->reg.u8;
+                break;
+            case NativeTypeKind::U16:
+                node->computedValue->reg.b = left->computedValue->reg.u16 > right->computedValue->reg.u16;
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue->reg.b = left->computedValue->reg.u32 > right->computedValue->reg.u32;
+                break;
+            case NativeTypeKind::U64:
+                node->computedValue->reg.b = left->computedValue->reg.u64 > right->computedValue->reg.u64;
+                break;
+
+            default:
+            {
+                Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0001), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+                diag.hint = Hnt(Hnt0061);
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                return context->report(diag);
+            }
+            }
         }
     }
     else if (leftTypeInfo->isStruct())
