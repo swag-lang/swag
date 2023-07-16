@@ -80,6 +80,11 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
                 node->computedValue->reg.b = !any->type;
             }
         }
+        else if (leftTypeInfo->isPointer())
+        {
+            node->computedValue->reg.b = left->computedValue->storageSegment == right->computedValue->storageSegment &&
+                                         left->computedValue->storageOffset == right->computedValue->storageOffset;
+        }
         else
         {
             switch (leftTypeInfo->nativeType)
