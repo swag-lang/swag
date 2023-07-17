@@ -172,9 +172,9 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
         if (rawTypeInfo->isArray())
         {
-            SWAG_ASSERT(!assignNode->hasComputedValue());
             SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
+            SWAG_ASSERT(!assignNode->hasComputedValue());
 
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);

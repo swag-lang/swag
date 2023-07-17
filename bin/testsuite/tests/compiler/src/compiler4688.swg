@@ -1,4 +1,5 @@
-enum A: const [..] s32
+#global testerror
+enum A: const [2] any
 {
     BB = null
 }
