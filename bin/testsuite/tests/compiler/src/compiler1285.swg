@@ -1,7 +1,8 @@
 //#[Swag.PrintBc]
+#[Swag.Warn("wrn0009", Swag.WarnLevel.Disable)]
 #test
 {
-    let a = 666
+    var a = 666
     if a == 666
     {
         func toto()

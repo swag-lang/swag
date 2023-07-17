@@ -1,3 +1,4 @@
+//#global skip
 //var g = "toto"
 var g = 5's8
 var g1 = "toto"

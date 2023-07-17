@@ -7,7 +7,6 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Module.h"
-#include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
 #include "Naming.h"

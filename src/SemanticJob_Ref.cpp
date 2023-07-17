@@ -950,7 +950,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
-                auto slice = (SwagSlice*) computedValue.getStorageAddr();
+                auto  slice         = (SwagSlice*) computedValue.getStorageAddr();
                 SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
 
                 auto ptr = (uint8_t*) slice->buffer;
@@ -1180,11 +1180,14 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     switch (nativeKind)
     {
     case NativeTypeKind::String:
+    {
+        auto slice = (SwagSlice*) ptr;
         node->setFlagsValueIsComputed();
-        node->computedValue->text = *(const char**) ptr;
+        node->computedValue->text = Utf8{(const char*) slice->buffer, (uint32_t) slice->count};
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoString;
         break;
+    }
 
     case NativeTypeKind::S8:
         node->setFlagsValueIsComputed();
