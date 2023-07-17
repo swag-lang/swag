@@ -227,7 +227,7 @@ struct SemanticJob : public Job
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node);
     static bool checkCanTakeAddress(SemanticContext* context, AstNode* node);
-    static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node);
+    static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly = false);
     static bool checkPublicAlias(SemanticContext* context, AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static Utf8 checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied);

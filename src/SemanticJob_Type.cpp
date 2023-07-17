@@ -101,7 +101,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
+bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly)
 {
     if (node->flags & AST_R_VALUE)
         return true;
@@ -125,6 +125,8 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
         return true;
     }
 
+    if (typeOnly)
+        return true;
     return checkIsConcrete(context, node);
 }
 
@@ -500,11 +502,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
         return true;
     }
-
-    typeNode->allocateComputedValue();
-    typeNode->computedValue->reg.pointer = (uint8_t*) typeNode->typeInfo;
-    if (!(typeNode->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
-        typeNode->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE | AST_VALUE_IS_TYPEINFO;
 
     // Be sure we do not have a useless user 'const'
     auto typeC = TypeManager::concreteType(typeNode->typeInfo);

@@ -1084,8 +1084,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 if (!(varDecl->type->flags & AST_VALUE_COMPUTED))
                 {
-                    varDecl->type->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
-                    auto constSegment                            = getConstantSegFromContext(varDecl);
+                    auto constSegment = getConstantSegFromContext(varDecl);
+                    varDecl->type->setFlagsValueIsComputed();
                     varDecl->type->computedValue->storageSegment = constSegment;
                     SWAG_CHECK(collectAssignment(context, constSegment, varDecl->type->computedValue->storageOffset, varDecl));
                 }

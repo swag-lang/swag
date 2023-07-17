@@ -184,9 +184,15 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
         return context->report({first, Err(Err0790)});
 
     // Check second parameter
+    SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
-        if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK))
+        SWAG_ASSERT(second->computedValue->storageSegment);
+        SWAG_ASSERT(second->computedValue->storageOffset != UINT32_MAX);
+        auto genType  = (ExportedTypeInfo*) second->computedValue->storageSegment->address(second->computedValue->storageOffset);
+        auto realType = context->sourceFile->module->typeGen.getRealType(second->computedValue->storageSegment, genType);
+
+        if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CASTFLAG_JUST_CHECK))
         {
             Diagnostic diag{first, Err(Err0791)};
             diag.hint = Diagnostic::isType(first->typeInfo);
@@ -195,7 +201,6 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
         }
     }
 
-    SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (context->result != ContextResult::Done)
         return true;
     if (!second->typeInfo->isPointerToTypeInfo())
@@ -376,10 +381,19 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     auto typeInfo = expr->typeInfo;
 
     node->setFlagsValueIsComputed();
+    SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
+    if (context->result != ContextResult::Done)
+        return true;
+
     if (expr->computedValue)
     {
         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-            node->computedValue->text = ((TypeInfo*) expr->computedValue->reg.pointer)->scopedName;
+        {
+            SWAG_ASSERT(expr->computedValue->storageSegment);
+            SWAG_ASSERT(expr->computedValue->storageOffset != UINT32_MAX);
+            ExportedTypeInfo* t       = (ExportedTypeInfo*) expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
+            node->computedValue->text = Utf8{(const char*) t->fullName.buffer, (uint32_t) t->fullName.count};
+        }
         else if (typeInfo->isString())
             node->computedValue->text = expr->computedValue->text;
         else if (typeInfo->isNative())
@@ -423,8 +437,17 @@ bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
     auto expr = node->childs.front();
 
     node->setFlagsValueIsComputed();
+    SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
+    if (context->result != ContextResult::Done)
+        return true;
+
     if (expr->computedValue && expr->flags & AST_VALUE_IS_TYPEINFO)
-        node->computedValue->text = ((TypeInfo*) expr->computedValue->reg.pointer)->name;
+    {
+        SWAG_ASSERT(expr->computedValue->storageSegment);
+        SWAG_ASSERT(expr->computedValue->storageOffset != UINT32_MAX);
+        ExportedTypeInfo* t       = (ExportedTypeInfo*) expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
+        node->computedValue->text = Utf8{(const char*) t->name.buffer, (uint32_t) t->name.count};
+    }
     else if (expr->resolvedSymbolName)
         node->computedValue->text = expr->resolvedSymbolName->name;
     else if (expr->resolvedSymbolOverload)

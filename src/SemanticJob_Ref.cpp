@@ -1156,7 +1156,6 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         node->setFlagsValueIsComputed();
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->storageOffset  = storageSegment->offset(value);
-        node->computedValue->reg.pointer    = (uint8_t*) typeInfo;
         node->flags |= AST_VALUE_IS_TYPEINFO;
         return true;
     }
@@ -1167,7 +1166,6 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         node->setFlagsValueIsComputed();
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->storageOffset  = storageSegment->offset((uint8_t*) ptr);
-        node->computedValue->reg.pointer    = (uint8_t*) typeInfo;
         return true;
     }
 
@@ -1282,8 +1280,6 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
         node->allocateComputedValue();
         node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
         node->computedValue->storageSegment = storageSegment;
-        node->computedValue->reg.pointer    = (uint8_t*) overload->typeInfo;
-        node->flags |= AST_VALUE_IS_TYPEINFO;
         setupIdentifierRef(context, node);
     }
     else if (concreteType->isArray())
