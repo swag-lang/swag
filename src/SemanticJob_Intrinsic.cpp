@@ -280,11 +280,16 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
-            if (!expression->computedValue->storageSegment)
+            auto slice = (SwagSlice*) node->computedValue->storageSegment->address(node->computedValue->storageOffset);
+            if (!slice->buffer)
             {
                 node->typeInfo                      = g_TypeMgr->typeInfoNull;
                 node->computedValue->storageSegment = nullptr;
                 node->computedValue->storageOffset  = UINT32_MAX;
+            }
+            else
+            {
+                node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) slice->buffer);
             }
         }
         else
@@ -477,11 +482,16 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     }
 
     // :SliceLiteral
-    uint8_t* addrDst;
-    auto     storageSegment             = SemanticJob::getConstantSegFromContext(context->node);
+    auto storageSegment                 = SemanticJob::getConstantSegFromContext(context->node);
     node->computedValue->storageSegment = storageSegment;
-    node->computedValue->storageOffset  = storageSegment->reserve((uint32_t) runes.size() * sizeof(uint32_t), &addrDst);
-    node->computedValue->reg.u64        = (uint64_t) runes.size();
+
+    SwagSlice* slice;
+    node->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+    slice->count                       = (uint64_t) runes.size();
+
+    uint8_t* addrDst;
+    storageSegment->reserve((uint32_t) runes.size() * sizeof(uint32_t), &addrDst);
+    slice->buffer = addrDst;
 
     // Setup array
     memcpy(addrDst, &runes[0], runes.size() * sizeof(uint32_t));
@@ -555,11 +565,12 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         // Slice literal. This can happen for enum values
         if (expression->hasComputedValue())
         {
-            node->computedValue->reg.u64 = node->computedValue->reg.u64;
-            if (node->computedValue->reg.u64 > UINT32_MAX)
+            auto slice = (SwagSlice*) node->computedValue->storageSegment->address(node->computedValue->storageOffset);
+            if (slice->count > UINT32_MAX)
                 node->typeInfo = g_TypeMgr->typeInfoU64;
             else
                 node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+            node->computedValue->reg.u64 = slice->count;
         }
         else
         {

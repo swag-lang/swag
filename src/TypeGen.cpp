@@ -432,32 +432,13 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
     // Value
     if (realType->flags & TYPEINFOPARAM_DEFINED_VALUE)
     {
-        if (realType->typeInfo->isArray() || realType->typeInfo->isListArray())
+        if (realType->typeInfo->isArray() || realType->typeInfo->isListArray() || realType->typeInfo->isSlice())
         {
             SWAG_ASSERT(realType->value);
             SWAG_ASSERT(realType->value->storageOffset != UINT32_MAX);
             SWAG_ASSERT(realType->value->storageSegment);
             concreteType->value = realType->value->storageSegment->address(realType->value->storageOffset);
             storageSegment->addInitPtr(OFFSETOF(concreteType->value), realType->value->storageOffset, SegmentKind::Constant);
-        }
-        else if (realType->typeInfo->isSlice())
-        {
-            SWAG_ASSERT(realType->value);
-            SWAG_ASSERT(realType->value->storageOffset != UINT32_MAX);
-            SWAG_ASSERT(realType->value->storageSegment);
-
-            // :SliceLiteral
-            auto count         = realType->value->reg.u64;
-            auto offsetContent = realType->value->storageOffset;
-
-            uint64_t* ptrSlice;
-            auto      offsetSlice = storageSegment->reserve(2 * sizeof(uint64_t), (uint8_t**) &ptrSlice);
-            ptrSlice[0]           = (uint64_t) realType->value->storageSegment->address(offsetContent);
-            ptrSlice[1]           = count;
-
-            concreteType->value = ptrSlice;
-            storageSegment->addInitPtr(offsetSlice, offsetContent, SegmentKind::Constant);
-            storageSegment->addInitPtr(OFFSETOF(concreteType->value), offsetSlice);
         }
         else
         {

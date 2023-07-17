@@ -949,11 +949,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
-                SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, arrayNode->array->computedValue->reg.u32));
                 auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
                 SWAG_ASSERT(computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(computedValue.storageSegment != nullptr);
-                auto ptr = computedValue.storageSegment->address(computedValue.storageOffset);
+                auto slice = (SwagSlice*) computedValue.storageSegment->address(computedValue.storageOffset);
+                SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
+
+                auto ptr = (uint8_t*) slice->buffer;
                 ptr += arrayNode->access->computedValue->reg.u64 * typeSlice->pointedType->sizeOf;
                 derefConstantValue(context, arrayNode, typeSlice->pointedType, computedValue.storageSegment, ptr);
             }

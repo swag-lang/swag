@@ -74,21 +74,29 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 
     if (typeInfo->isSlice())
     {
-        SwagSlice* ptrSlice = (SwagSlice*) ptrDest;
+        SwagSlice* ptrSlice   = (SwagSlice*) ptrDest;
+        auto       assignType = assignment ? TypeManager::concreteType(assignment->typeInfo) : nullptr;
+
         if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())
         {
             ptrSlice->buffer = nullptr;
             ptrSlice->count  = 0;
         }
-        else if (assignment)
+        else if (assignType && assignType->isSlice())
         {
-            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, Err(Err0798)}));
+            auto slice              = (SwagSlice*) value->storageSegment->address(value->storageOffset);
+            *ptrSlice               = *slice;
+            auto storageOffsetValue = value->storageSegment->offset((uint8_t*) slice->buffer);
+            value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
+        }
+        else if (assignType && assignType->isListArray())
+        {
             SWAG_CHECK(checkIsConstExpr(context, assignment));
 
             // Store value in constant storageSegment
             uint32_t storageOffsetValue;
             auto     constSegment = getConstantSegFromContext(assignment, storageSegment->kind == SegmentKind::Compiler);
-            SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->typeInfo, assignment));
+            SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignType, assignment));
 
             // Then setup the pointer to that data, and the data count
             auto ptrStorage  = constSegment->address(storageOffsetValue);

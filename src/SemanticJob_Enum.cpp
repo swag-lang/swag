@@ -189,13 +189,25 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignNode->typeInfo, assignNode));
 
             // :SliceLiteral
             if (assignNode->typeInfo->isListArray())
             {
-                auto typeList                    = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
-                enumNode->computedValue->reg.u64 = typeList->subTypes.size();
+                SwagSlice* slice;
+                storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+
+                uint32_t storageOffsetValues;
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffsetValues, assignNode->computedValue, assignNode->typeInfo, assignNode));
+                storageSegment->addInitPtr(storageOffset, storageOffsetValues, storageSegment->kind);
+
+                auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
+                slice->buffer = storageSegment->address(storageOffsetValues);
+                slice->count  = typeList->subTypes.size();
+            }
+            else
+            {
+                SWAG_ASSERT(assignNode->typeInfo->isSlice());
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignNode->typeInfo, assignNode));
             }
 
             enumNode->computedValue->storageOffset  = storageOffset;

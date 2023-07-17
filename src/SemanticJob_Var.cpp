@@ -1104,7 +1104,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
 
             // A constant array cannot be initialized with just one value (this is for variables)
-            if (typeInfo->isArray() && node->assignment)
+            if (node->assignment && typeInfo->isArray())
             {
                 auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
                 if (!typeAssign->isArray() && !typeAssign->isListArray())
@@ -1128,6 +1128,42 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 node->assignment->computedValue->storageOffset  = storageOffset;
                 node->assignment->computedValue->storageSegment = storageSegment;
             }
+            else if (node->assignment && typeInfo->isSlice())
+            {
+                auto assignNode = node->assignment;
+                auto assignType = TypeManager::concreteType(assignNode->typeInfo);
+
+                node->assignment->setFlagsValueIsComputed();
+
+                // :SliceLiteral
+                if (assignType->isListArray())
+                {
+                    SwagSlice* slice;
+                    storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+
+                    uint32_t storageOffsetValues;
+                    SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffsetValues, assignNode->computedValue, assignNode->typeInfo, assignNode));
+
+                    auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
+                    slice->buffer = storageSegment->address(storageOffsetValues);
+                    slice->count  = typeList->subTypes.size();
+                }
+                else if (assignType->isPointerNull())
+                {
+                    SwagSlice* slice;
+                    storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+                    slice->buffer = nullptr;
+                    slice->count  = 0;
+                }
+                else
+                {
+                    SWAG_ASSERT(assignType->isSlice());
+                    SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignType, assignNode));
+                }
+
+                node->assignment->computedValue->storageOffset  = storageOffset;
+                node->assignment->computedValue->storageSegment = storageSegment;
+            }
             else if (node->assignment && node->assignment->hasComputedValue())
             {
                 storageOffset  = node->assignment->computedValue->storageOffset;
@@ -1142,19 +1178,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 node->allocateComputedValue();
                 SWAG_CHECK(collectAssignment(context, storageSegment, storageOffset, node));
-            }
-            else if (node->assignment && typeInfo->isSlice())
-            {
-                node->assignment->setFlagsValueIsComputed();
-                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
-                node->assignment->computedValue->storageOffset  = storageOffset;
-                node->assignment->computedValue->storageSegment = storageSegment;
-
-                if (node->assignment->typeInfo->kind == TypeInfoKind::TypeListArray)
-                {
-                    auto typeList                            = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
-                    node->assignment->computedValue->reg.u64 = typeList->subTypes.size();
-                }
             }
 
             node->inheritComputedValue(node->assignment);

@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "Naming.h"
+#include "DataSegment.h"
 
 bool Generic::updateGenericParameters(SemanticContext*              context,
                                       bool                          doType,
@@ -119,6 +120,17 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
             {
                 nodeParam->allocateComputedValue();
                 *nodeParam->computedValue = *param->value;
+
+                // :SliceLiteral
+                if (param->typeInfo->isListArray() && nodeParam->typeInfo->isSlice())
+                {
+                    SwagSlice* slice;
+                    auto       storageSegment               = nodeParam->computedValue->storageSegment;
+                    nodeParam->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+                    auto typeList                           = CastTypeInfo<TypeInfoList>(param->typeInfo, TypeInfoKind::TypeListArray);
+                    slice->buffer                           = storageSegment->address(param->value->storageOffset);
+                    slice->count                            = typeList->subTypes.size();
+                }
             }
         }
     }
