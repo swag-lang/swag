@@ -120,8 +120,8 @@ bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue
         if (value1->storageOffset == value2->storageOffset)
             return true;
 
-        void* addr1 = value1->storageSegment->address(value1->storageOffset);
-        void* addr2 = value2->storageSegment->address(value2->storageOffset);
+        void* addr1 = value1->getStorageAddr();
+        void* addr2 = value2->getStorageAddr();
         return memcmp(addr1, addr2, typeInfo->sizeOf) == 0;
     }
 

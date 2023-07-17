@@ -445,9 +445,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         // :SliceLiteral
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->computedValue);
-        SWAG_ASSERT(node->computedValue->storageSegment);
-        SWAG_ASSERT(node->computedValue->storageOffset != UINT32_MAX);
-        auto slice        = (SwagSlice*) node->computedValue->storageSegment->address(node->computedValue->storageOffset);
+        auto slice        = (SwagSlice*) node->computedValue->getStorageAddr();
         auto offsetValues = node->computedValue->storageSegment->offset((uint8_t*) slice->buffer);
         emitMakeSegPointer(context, node->computedValue->storageSegment, offsetValues, regList[0]);
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = slice->count;

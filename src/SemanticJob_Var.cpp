@@ -204,7 +204,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         // Copy value from compiler segment to real requested segment
         if (node->computedValue->storageSegment != wantStorageSegment)
         {
-            auto     addrSrc = node->computedValue->storageSegment->address(node->computedValue->storageOffset);
+            auto     addrSrc = node->computedValue->getStorageAddr();
             uint8_t* addrDst;
             auto     storageOffset              = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
             node->computedValue->storageSegment = wantStorageSegment;
@@ -700,9 +700,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 ok = false;
                 for (auto p : typeEnum->values)
                 {
-                    SWAG_ASSERT(p->value->storageSegment);
-                    auto ptrDest = (SwagSlice*) p->value->storageSegment->address(p->value->storageOffset);
-                    if (!ptrDest->buffer && !ptrDest->count)
+                    SWAG_ASSERT(p->value);
+                    auto slice = (SwagSlice*) p->value->getStorageAddr();
+                    if (!slice->buffer && !slice->count)
                     {
                         ok = true;
                         break;

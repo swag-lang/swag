@@ -721,10 +721,8 @@ bool AstNode::isConstantGenTypeInfo()
 ExportedTypeInfo* AstNode::getConstantGenTypeInfo()
 {
     SWAG_ASSERT(computedValue);
-    SWAG_ASSERT(computedValue->storageSegment);
-    SWAG_ASSERT(computedValue->storageOffset != UINT32_MAX);
     SWAG_ASSERT(isConstantGenTypeInfo());
-    return (ExportedTypeInfo*) computedValue->storageSegment->address(computedValue->storageOffset);
+    return (ExportedTypeInfo*) computedValue->getStorageAddr();
 }
 
 bool AstNode::isConstantTrue()

@@ -34,8 +34,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
                 node->computedValue->reg.b = true;
             else
             {
-                SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
-                SwagSlice* slice           = (SwagSlice*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+                SwagSlice* slice           = (SwagSlice*) left->computedValue->getStorageAddr();
                 node->computedValue->reg.b = !slice->buffer;
             }
         }
@@ -48,8 +47,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
                 node->computedValue->reg.b = true;
             else
             {
-                SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
-                SwagInterface* slice       = (SwagInterface*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+                auto slice                 = (SwagInterface*) left->computedValue->getStorageAddr();
                 node->computedValue->reg.b = !slice->itable;
             }
         }
@@ -62,8 +60,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
                 node->computedValue->reg.b = true;
             else
             {
-                SWAG_ASSERT(left->computedValue->storageOffset != UINT32_MAX);
-                ExportedAny* any           = (ExportedAny*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
+                ExportedAny* any           = (ExportedAny*) left->computedValue->getStorageAddr();
                 node->computedValue->reg.b = !any->type;
             }
         }

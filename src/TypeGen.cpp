@@ -435,9 +435,7 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
         if (realType->typeInfo->isArray() || realType->typeInfo->isListArray() || realType->typeInfo->isSlice())
         {
             SWAG_ASSERT(realType->value);
-            SWAG_ASSERT(realType->value->storageOffset != UINT32_MAX);
-            SWAG_ASSERT(realType->value->storageSegment);
-            concreteType->value = realType->value->storageSegment->address(realType->value->storageOffset);
+            concreteType->value = realType->value->getStorageAddr();
             storageSegment->addInitPtr(OFFSETOF(concreteType->value), realType->value->storageOffset, SegmentKind::Constant);
         }
         else
@@ -510,7 +508,7 @@ bool TypeGen::genExportedAttributes(JobContext* context, AttributeList& attribut
                 // typeinfo
                 if (typeValue->isPointerToTypeInfo())
                 {
-                    auto  addr      = oneParam.value.storageSegment->address(oneParam.value.storageOffset);
+                    auto  addr      = oneParam.value.getStorageAddr();
                     auto& mapPerSeg = getMapPerSeg(oneParam.value.storageSegment);
                     if (oneParam.value.storageSegment != storageSegment)
                         mapPerSeg.mutex.lock();

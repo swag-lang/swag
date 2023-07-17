@@ -280,7 +280,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
-            auto slice = (SwagSlice*) node->computedValue->storageSegment->address(node->computedValue->storageOffset);
+            auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
             if (!slice->buffer)
             {
                 node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -326,6 +326,8 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
+            SWAG_ASSERT(expression->computedValue);
+
             if (!expression->computedValue->storageSegment)
             {
                 node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -334,8 +336,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
             }
             else
             {
-                SWAG_ASSERT(expression->computedValue->storageOffset != UINT32_MAX);
-                ExportedAny* any = (ExportedAny*) expression->computedValue->storageSegment->address(expression->computedValue->storageOffset);
+                auto any = (ExportedAny*) expression->computedValue->getStorageAddr();
                 if (!any->value)
                 {
                     node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -565,7 +566,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         // Slice literal. This can happen for enum values
         if (expression->hasComputedValue())
         {
-            auto slice = (SwagSlice*) node->computedValue->storageSegment->address(node->computedValue->storageOffset);
+            auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
             if (slice->count > UINT32_MAX)
                 node->typeInfo = g_TypeMgr->typeInfoU64;
             else
@@ -716,9 +717,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         if (expr->hasComputedValue())
         {
             SWAG_ASSERT(expr->computedValue);
-            SWAG_ASSERT(expr->computedValue->storageSegment);
-            SWAG_ASSERT(expr->computedValue->storageOffset != UINT32_MAX);
-            ExportedAny* any                   = (ExportedAny*) expr->computedValue->storageSegment->address(expr->computedValue->storageOffset);
+            auto any                           = (ExportedAny*) expr->computedValue->getStorageAddr();
             expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->inheritComputedValue(expr);
             node->flags |= AST_VALUE_IS_GENTYPEINFO;
@@ -817,9 +816,8 @@ bool SemanticJob::resolveIntrinsicDeclType(SemanticContext* context)
         expr->computedValue->storageOffset != UINT32_MAX &&
         expr->computedValue->storageSegment != nullptr)
     {
-        auto storageSegment = expr->computedValue->storageSegment;
-        auto addr           = storageSegment->address(expr->computedValue->storageOffset);
-        auto newTypeInfo    = context->sourceFile->module->typeGen.getRealType(storageSegment, (ExportedTypeInfo*) addr);
+        auto addr        = expr->computedValue->getStorageAddr();
+        auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(expr->computedValue->storageSegment, (ExportedTypeInfo*) addr);
         if (newTypeInfo)
             typeInfo = newTypeInfo;
     }

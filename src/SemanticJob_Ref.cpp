@@ -950,9 +950,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
-                SWAG_ASSERT(computedValue.storageOffset != UINT32_MAX);
-                SWAG_ASSERT(computedValue.storageSegment != nullptr);
-                auto slice = (SwagSlice*) computedValue.storageSegment->address(computedValue.storageOffset);
+                auto slice = (SwagSlice*) computedValue.getStorageAddr();
                 SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
 
                 auto ptr = (uint8_t*) slice->buffer;
@@ -1328,16 +1326,8 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
 
 bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
 {
-    DataSegment* storageSegment;
-    uint32_t     storageOffset = UINT32_MAX;
-
     auto prevNode = parent->previousResolvedNode;
     SWAG_ASSERT(prevNode->computedValue);
-    SWAG_ASSERT(prevNode->computedValue->storageSegment);
-    SWAG_ASSERT(prevNode->computedValue->storageOffset != UINT32_MAX);
-    storageOffset  = prevNode->computedValue->storageOffset;
-    storageSegment = prevNode->computedValue->storageSegment;
-    SWAG_CHECK(derefLiteralStruct(context, storageSegment->address(storageOffset), overload, storageSegment));
-
+    SWAG_CHECK(derefLiteralStruct(context, (uint8_t*) prevNode->computedValue->getStorageAddr(), overload, prevNode->computedValue->storageSegment));
     return true;
 }

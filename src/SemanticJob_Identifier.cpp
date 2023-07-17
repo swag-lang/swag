@@ -835,9 +835,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Direct reference to a pointer
         if (prevNode->hasComputedValue() && prevNode->typeInfo->isPointer())
         {
-            SWAG_ASSERT(prevNode->computedValue->storageSegment);
-            SWAG_ASSERT(prevNode->computedValue->storageOffset != UINT32_MAX);
-            auto ptr = prevNode->computedValue->storageSegment->address(prevNode->computedValue->storageOffset);
+            auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
             if (derefLiteralStruct(context, ptr, overload, prevNode->computedValue->storageSegment))
             {
                 identifierRef->previousResolvedNode = context->node;
@@ -856,11 +854,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             {
                 if (arrayNode->access->hasComputedValue())
                 {
-                    SWAG_ASSERT(arrayOver->computedValue.storageSegment);
-                    SWAG_ASSERT(arrayOver->computedValue.storageOffset != UINT32_MAX);
-
                     auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
-                    auto ptr     = arrayOver->computedValue.storageSegment->address(arrayOver->computedValue.storageOffset);
+                    auto ptr     = (uint8_t*) arrayOver->computedValue.getStorageAddr();
                     ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
                     if (derefLiteralStruct(context, ptr, overload, arrayOver->computedValue.storageSegment))
                     {

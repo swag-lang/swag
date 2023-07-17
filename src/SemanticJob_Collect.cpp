@@ -36,7 +36,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         ExportedAny* ptrAny = (ExportedAny*) ptrDest;
         if (assignment && !assignment->castedTypeInfo)
         {
-            ExportedAny* valueAny   = (ExportedAny*) value->storageSegment->address(value->storageOffset);
+            auto valueAny           = (ExportedAny*) value->getStorageAddr();
             *ptrAny                 = *valueAny;
             auto storageOffsetValue = value->storageSegment->offset((uint8_t*) valueAny->value);
             auto storageOffsetType  = value->storageSegment->offset((uint8_t*) valueAny->type);
@@ -84,7 +84,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         }
         else if (assignType && assignType->isSlice())
         {
-            auto slice              = (SwagSlice*) value->storageSegment->address(value->storageOffset);
+            auto slice              = (SwagSlice*) value->getStorageAddr();
             *ptrSlice               = *slice;
             auto storageOffsetValue = value->storageSegment->offset((uint8_t*) slice->buffer);
             value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
@@ -145,7 +145,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     if (typeInfo->isPointerToTypeInfo())
     {
         storageSegment->addInitPtr(storageOffset, value->storageOffset, value->storageSegment->kind);
-        *(void**) ptrDest = value->storageSegment->address(value->storageOffset);
+        *(void**) ptrDest = value->getStorageAddr();
         return true;
     }
 
@@ -225,9 +225,7 @@ bool SemanticJob::collectStructLiterals(JobContext* context, DataSegment* storag
         if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
         {
             auto varType = varDecl->type;
-            SWAG_ASSERT(varType->computedValue->storageSegment);
-            SWAG_ASSERT(varType->computedValue->storageOffset != 0xFFFFFFFF);
-            auto srcAddr = varType->computedValue->storageSegment->address(varType->computedValue->storageOffset);
+            auto srcAddr = varType->computedValue->getStorageAddr();
             memcpy(ptrDest, srcAddr, typeInfo->sizeOf);
         }
     }
@@ -342,7 +340,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             {
                 uint8_t* addrDst;
                 storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, SemanticJob::alignOf(node));
-                auto addrSrc  = value->storageSegment->address(value->storageOffset);
+                auto addrSrc  = value->getStorageAddr();
                 memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             }
 
@@ -387,10 +385,8 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             SWAG_ASSERT(assign->flags & AST_CONST_EXPR);
             uint8_t* addrDst;
             storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, SemanticJob::alignOf(node));
-            SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
-            SWAG_ASSERT(overload->computedValue.storageSegment);
             SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);
-            auto addrSrc = overload->computedValue.storageSegment->address(overload->computedValue.storageOffset);
+            auto addrSrc = overload->computedValue.getStorageAddr();
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);
         }
         else
