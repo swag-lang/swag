@@ -1,6 +1,5 @@
 enum A: const [..] s32
 {
-    AA = [2, 2]
     BB = null
 }
 
@@ -8,4 +7,5 @@ enum A: const [..] s32
 //#[Swag.PrintBc]
 #test
 {
+    const x = A.BB
 }

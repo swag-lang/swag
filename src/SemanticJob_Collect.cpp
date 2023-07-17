@@ -84,10 +84,13 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
         }
         else if (assignType && assignType->isSlice())
         {
-            auto slice              = (SwagSlice*) value->getStorageAddr();
-            *ptrSlice               = *slice;
-            auto storageOffsetValue = value->storageSegment->offset((uint8_t*) slice->buffer);
-            value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
+            auto slice = (SwagSlice*) value->getStorageAddr();
+            *ptrSlice  = *slice;
+            if (slice->buffer)
+            {
+                auto storageOffsetValue = value->storageSegment->offset((uint8_t*) slice->buffer);
+                value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
+            }
         }
         else if (assignType && assignType->isListArray())
         {
