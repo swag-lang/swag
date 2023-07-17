@@ -30,39 +30,24 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            if (!left->computedValue->storageSegment)
-                node->computedValue->reg.b = true;
-            else
-            {
-                SwagSlice* slice           = (SwagSlice*) left->computedValue->getStorageAddr();
-                node->computedValue->reg.b = !slice->buffer;
-            }
+            auto slice                 = (SwagSlice*) left->computedValue->getStorageAddr();
+            node->computedValue->reg.b = !slice->buffer;
         }
         else if (leftTypeInfo->isInterface())
         {
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            if (!left->computedValue->storageSegment)
-                node->computedValue->reg.b = true;
-            else
-            {
-                auto slice                 = (SwagInterface*) left->computedValue->getStorageAddr();
-                node->computedValue->reg.b = !slice->itable;
-            }
+            auto slice                 = (SwagInterface*) left->computedValue->getStorageAddr();
+            node->computedValue->reg.b = !slice->itable;
         }
         else if (leftTypeInfo->isAny())
         {
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            if (!left->computedValue->storageSegment)
-                node->computedValue->reg.b = true;
-            else
-            {
-                ExportedAny* any           = (ExportedAny*) left->computedValue->getStorageAddr();
-                node->computedValue->reg.b = !any->type;
-            }
+            auto any                   = (ExportedAny*) left->computedValue->getStorageAddr();
+            node->computedValue->reg.b = !any->type;
         }
         else if (leftTypeInfo->isPointer())
         {

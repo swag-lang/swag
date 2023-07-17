@@ -1164,6 +1164,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 node->assignment->computedValue->storageOffset  = storageOffset;
                 node->assignment->computedValue->storageSegment = storageSegment;
             }
+            else if (node->assignment && typeInfo->isInterface() && node->assignment->castedTypeInfo && node->assignment->castedTypeInfo->isPointerNull())
+            {
+                SwagInterface* itr;
+                storageOffset = storageSegment->reserve(sizeof(SwagInterface), (uint8_t**) &itr);
+                itr->data     = nullptr;
+                itr->itable   = nullptr;
+            }
             else if (node->assignment && node->assignment->hasComputedValue())
             {
                 storageOffset  = node->assignment->computedValue->storageOffset;
