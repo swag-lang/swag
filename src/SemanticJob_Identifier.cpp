@@ -60,7 +60,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
     if (childBack->hasComputedValue())
         node->inheritComputedValue(childBack);
-    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_TYPEINFO | AST_SIDE_EFFECTS);
+    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GENTYPEINFO | AST_SIDE_EFFECTS);
 
     if (childBack->semFlags & SEMFLAG_IS_CONST_ASSIGN)
     {
@@ -809,7 +809,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifier->flags |= AST_L_VALUE;
 
         // Direct reference to a constexpr typeinfo
-        if (prevNode->hasTypeInfoValue())
+        if (prevNode->isConstantGenTypeInfo())
         {
             if (derefLiteralStruct(context, identifierRef, overload))
             {
@@ -1166,8 +1166,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Transform the variable to a constant node
         if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
-            if (overload->node->hasTypeInfoValue())
-                identifier->flags |= AST_VALUE_IS_TYPEINFO;
+            if (overload->node->isConstantGenTypeInfo())
+                identifier->flags |= AST_VALUE_IS_GENTYPEINFO;
             identifier->setFlagsValueIsComputed();
             *identifier->computedValue = overload->computedValue;
 

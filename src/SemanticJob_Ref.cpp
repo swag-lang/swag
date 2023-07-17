@@ -1156,7 +1156,7 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         node->setFlagsValueIsComputed();
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->storageOffset  = storageSegment->offset(value);
-        node->flags |= AST_VALUE_IS_TYPEINFO;
+        node->flags |= AST_VALUE_IS_GENTYPEINFO;
         return true;
     }
 

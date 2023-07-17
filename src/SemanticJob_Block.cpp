@@ -349,14 +349,14 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 else
                 {
                     auto value = expr->computedValue->reg.u64;
-                    if (expr->hasTypeInfoValue())
+                    if (expr->isConstantGenTypeInfo())
                         value = expr->computedValue->storageOffset;
 
                     int idx = val64.find(value);
                     if (idx != -1)
                     {
                         auto note = Diagnostic::note(valDef[idx], Nte(Nte0014));
-                        if (expr->hasTypeInfoValue())
+                        if (expr->isConstantGenTypeInfo())
                             return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, note);
                         if (expr->typeInfo->isEnum())
                             return context->report({expr, Fmt(Err(Err0612), expr->token.ctext())}, note);

@@ -14,25 +14,12 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
     // Compile time compare of two types
-    if ((left->hasTypeInfoValue()) && (right->hasTypeInfoValue()))
+    if (left->isConstantGenTypeInfo() && right->isConstantGenTypeInfo())
     {
+        auto ptr1 = left->getConstantGenTypeInfo();
+        auto ptr2 = right->getConstantGenTypeInfo();
         node->setFlagsValueIsComputed();
-        SWAG_ASSERT(left->computedValue->storageOffset != 0xFFFFFFFF);
-        SWAG_ASSERT(right->computedValue->storageOffset != 0xFFFFFFFF);
-        SWAG_ASSERT(left->computedValue->storageSegment);
-        SWAG_ASSERT(right->computedValue->storageSegment);
-
-        if (left->computedValue->storageOffset == right->computedValue->storageOffset &&
-            left->computedValue->storageSegment == right->computedValue->storageSegment)
-        {
-            node->computedValue->reg.b = true;
-        }
-        else
-        {
-            auto ptr1                  = (ExportedTypeInfo*) left->computedValue->storageSegment->address(left->computedValue->storageOffset);
-            auto ptr2                  = (ExportedTypeInfo*) right->computedValue->storageSegment->address(right->computedValue->storageOffset);
-            node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
-        }
+        node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
     }
     else if (left->hasComputedValue() && right->hasComputedValue())
     {

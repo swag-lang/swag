@@ -364,9 +364,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 SWAG_VERIFY(id->callParameters && id->callParameters->childs.size() >= 1, context->report({id, Err(Err0601)}));
                 for (auto c : id->callParameters->childs)
                 {
-                    SWAG_ASSERT(c->hasTypeInfoValue());
-                    SWAG_ASSERT(c->computedValue);
-                    auto ptr       = (ExportedTypeInfo*) c->computedValue->storageSegment->address(c->computedValue->storageOffset);
+                    auto ptr       = c->getConstantGenTypeInfo();
                     auto typeChild = context->sourceFile->module->typeGen.getRealType(c->computedValue->storageSegment, ptr);
                     SWAG_ASSERT(typeChild);
                     Scope* scope;

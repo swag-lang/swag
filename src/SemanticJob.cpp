@@ -91,7 +91,7 @@ bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue
         return true;
 
     // Types
-    if (flags & AST_VALUE_IS_TYPEINFO)
+    if (flags & AST_VALUE_IS_GENTYPEINFO)
     {
         if (!value1)
             return false;

@@ -763,7 +763,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     node->toCastTypeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OPAFFECT_CAST);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GENTYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OPAFFECT_CAST);
     node->inheritComputedValue(exprNode);
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
     node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
@@ -805,7 +805,7 @@ bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
     node->typeInfo = cloneType;
 
     node->byteCodeFct = ByteCodeGenJob::emitExplicitAutoCast;
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED | AST_SIDE_EFFECTS);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GENTYPEINFO | AST_VALUE_COMPUTED | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
     return true;
 }
@@ -837,6 +837,6 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();
-    node->flags |= AST_VALUE_IS_TYPEINFO;
+    node->flags |= AST_VALUE_IS_GENTYPEINFO;
     return true;
 }

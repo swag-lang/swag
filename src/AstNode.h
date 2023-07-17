@@ -36,6 +36,7 @@ struct TypeInfo;
 struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
+struct ExportedTypeInfo;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -285,17 +286,17 @@ struct AstNode
     void inheritOwners(AstNode* op);
     void inheritOwnersAndFlags(Parser* parser);
 
-    void allocateComputedValue();
-    void setFlagsValueIsComputed();
-    void inheritComputedValue(AstNode* from);
+    void              allocateComputedValue();
+    void              setFlagsValueIsComputed();
+    void              inheritComputedValue(AstNode* from);
+    bool              hasComputedValue();
+    bool              isConstantGenTypeInfo();
+    ExportedTypeInfo* getConstantGenTypeInfo();
+    bool              isConstantTrue();
+    bool              isConstantFalse();
+    bool              isConstant0();
+    bool              isConstant1();
 
-    bool hasComputedValue();
-    bool hasTypeInfoValue();
-
-    bool isConstantTrue();
-    bool isConstantFalse();
-    bool isConstant0();
-    bool isConstant1();
     bool isParentOf(AstNode* child);
     bool isValidIfParam(SymbolOverload* overload);
     bool isSameStackFrame(SymbolOverload* overload);

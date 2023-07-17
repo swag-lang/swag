@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         fromTypeInfo->isArray() ||
         fromTypeInfo->isListArray() ||
         fromTypeInfo->isListTuple() ||
-        (exprNode->hasTypeInfoValue()))
+        (exprNode->isConstantGenTypeInfo()))
     {
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], exprNode->resultRegisterRC[0]);
     }

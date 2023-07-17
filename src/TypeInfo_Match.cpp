@@ -901,7 +901,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     continue;
                 }
 
-                if (firstChild->hasComputedValue() && !firstChild->hasTypeInfoValue())
+                if (firstChild->hasComputedValue() && !firstChild->isConstantGenTypeInfo())
                     isValue = true;
 
                 if (!symbolParameter->typeInfo->isKindGeneric() && !isValue)

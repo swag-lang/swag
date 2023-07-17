@@ -699,13 +699,42 @@ void AstNode::inheritComputedValue(AstNode* from)
 {
     if (!from)
         return;
-    inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO);
+    inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GENTYPEINFO);
     if (flags & AST_VALUE_COMPUTED)
     {
         flags |= AST_CONST_EXPR | AST_R_VALUE;
         SWAG_ASSERT(from->computedValue);
         computedValue = from->computedValue;
     }
+}
+
+bool AstNode::hasComputedValue()
+{
+    return flags & AST_VALUE_COMPUTED;
+}
+
+bool AstNode::isConstantGenTypeInfo()
+{
+    return flags & AST_VALUE_IS_GENTYPEINFO;
+}
+
+ExportedTypeInfo* AstNode::getConstantGenTypeInfo()
+{
+    SWAG_ASSERT(computedValue);
+    SWAG_ASSERT(computedValue->storageSegment);
+    SWAG_ASSERT(computedValue->storageOffset != UINT32_MAX);
+    SWAG_ASSERT(isConstantGenTypeInfo());
+    return (ExportedTypeInfo*) computedValue->storageSegment->address(computedValue->storageOffset);
+}
+
+bool AstNode::isConstantTrue()
+{
+    return (flags & AST_VALUE_COMPUTED) && computedValue->reg.b;
+}
+
+bool AstNode::isConstantFalse()
+{
+    return (flags & AST_VALUE_COMPUTED) && !computedValue->reg.b;
 }
 
 bool AstNode::isGeneratedSelf()
@@ -750,26 +779,6 @@ bool AstNode::isPublic()
     }
 
     return false;
-}
-
-bool AstNode::hasComputedValue()
-{
-    return flags & AST_VALUE_COMPUTED;
-}
-
-bool AstNode::hasTypeInfoValue()
-{
-    return flags & AST_VALUE_IS_TYPEINFO;
-}
-
-bool AstNode::isConstantTrue()
-{
-    return (flags & AST_VALUE_COMPUTED) && computedValue->reg.b;
-}
-
-bool AstNode::isConstantFalse()
-{
-    return (flags & AST_VALUE_COMPUTED) && !computedValue->reg.b;
 }
 
 bool AstNode::forceTakeAddress()
