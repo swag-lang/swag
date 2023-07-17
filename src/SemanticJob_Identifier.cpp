@@ -802,6 +802,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         {
             if (derefLiteralStruct(context, identifierRef, overload))
             {
+                prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;
                 identifier->resolvedSymbolName      = overload->symbol;
                 identifier->resolvedSymbolOverload  = overload;
@@ -814,6 +815,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         {
             if (derefLiteralStruct(context, identifierRef, overload))
             {
+                prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;
                 identifier->resolvedSymbolName      = overload->symbol;
                 identifier->resolvedSymbolOverload  = overload;
@@ -827,6 +829,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
             if (derefLiteralStruct(context, ptr, overload, prevNode->computedValue->storageSegment))
             {
+                prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;
                 identifier->resolvedSymbolName      = overload->symbol;
                 identifier->resolvedSymbolOverload  = overload;
@@ -837,7 +840,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Direct reference of a struct field inside a const array
         if (prevNode->kind == AstNodeKind::ArrayPointerIndex && prevNode->typeInfo->isStruct())
         {
-            auto arrayNode = CastAst<AstArrayPointerIndex>(identifierRef->previousResolvedNode, AstNodeKind::ArrayPointerIndex);
+            auto arrayNode = CastAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
             auto arrayOver = arrayNode->array->resolvedSymbolOverload;
             if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE))
             {
@@ -848,6 +851,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
                     if (derefLiteralStruct(context, ptr, overload, arrayOver->computedValue.storageSegment))
                     {
+                        prevNode->flags |= AST_NO_BYTECODE;
                         identifierRef->previousResolvedNode = context->node;
                         identifier->resolvedSymbolName      = overload->symbol;
                         identifier->resolvedSymbolOverload  = overload;
