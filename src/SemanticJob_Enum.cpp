@@ -187,29 +187,10 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
+            auto assignType = TypeManager::concreteType(assignNode->typeInfo);
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);
-
-            // :SliceLiteral
-            if (assignNode->typeInfo->isListArray())
-            {
-                SwagSlice* slice;
-                storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
-
-                uint32_t storageOffsetValues;
-                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffsetValues, assignNode->computedValue, assignNode->typeInfo, assignNode));
-                storageSegment->addInitPtr(storageOffset, storageOffsetValues, storageSegment->kind);
-
-                auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
-                slice->buffer = storageSegment->address(storageOffsetValues);
-                slice->count  = typeList->subTypes.size();
-            }
-            else
-            {
-                SWAG_ASSERT(assignNode->typeInfo->isSlice());
-                SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignNode->typeInfo, assignNode));
-            }
-
+            SWAG_CHECK(collectConstantSlice(context, assignNode, assignType, storageSegment, storageOffset));
             enumNode->computedValue->storageOffset  = storageOffset;
             enumNode->computedValue->storageSegment = storageSegment;
         }

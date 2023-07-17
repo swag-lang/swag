@@ -461,37 +461,10 @@ bool SemanticJob::collectConstantAssignment(SemanticContext* context, DataSegmen
     {
         auto assignNode = node->assignment;
         auto assignType = TypeManager::concreteType(assignNode->typeInfo);
-
-        node->assignment->setFlagsValueIsComputed();
-
-        // :SliceLiteral
-        if (assignType->isListArray())
-        {
-            SwagSlice* slice;
-            storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
-
-            uint32_t storageOffsetValues;
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffsetValues, assignNode->computedValue, assignNode->typeInfo, assignNode));
-
-            auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
-            slice->buffer = storageSegment->address(storageOffsetValues);
-            slice->count  = typeList->subTypes.size();
-        }
-        else if (assignType->isPointerNull())
-        {
-            SwagSlice* slice;
-            storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
-            slice->buffer = nullptr;
-            slice->count  = 0;
-        }
-        else
-        {
-            SWAG_ASSERT(assignType->isSlice());
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignType, assignNode));
-        }
-
-        node->assignment->computedValue->storageOffset  = storageOffset;
-        node->assignment->computedValue->storageSegment = storageSegment;
+        assignNode->setFlagsValueIsComputed();
+        SWAG_CHECK(collectConstantSlice(context, assignNode, assignType, storageSegment, storageOffset));
+        assignNode->computedValue->storageOffset  = storageOffset;
+        assignNode->computedValue->storageSegment = storageSegment;
     }
     else if (node->assignment && typeInfo->isInterface() && node->assignment->castedTypeInfo && node->assignment->castedTypeInfo->isPointerNull())
     {
@@ -521,5 +494,37 @@ bool SemanticJob::collectConstantAssignment(SemanticContext* context, DataSegmen
 
     *storageSegmentResult = storageSegment;
     *storageOffsetResult  = storageOffset;
+    return true;
+}
+
+bool SemanticJob::collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset)
+{
+    // :SliceLiteral
+    if (assignType->isListArray())
+    {
+        SwagSlice* slice;
+        storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+
+        uint32_t storageOffsetValues;
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffsetValues, assignNode->computedValue, assignNode->typeInfo, assignNode));
+        storageSegment->addInitPtr(storageOffset, storageOffsetValues, storageSegment->kind);
+
+        auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
+        slice->buffer = storageSegment->address(storageOffsetValues);
+        slice->count  = typeList->subTypes.size();
+    }
+    else if (assignType->isPointerNull() || (assignNode && assignNode->castedTypeInfo && assignNode->castedTypeInfo->isPointerNull()))
+    {
+        SwagSlice* slice;
+        storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+        slice->buffer = nullptr;
+        slice->count  = 0;
+    }
+    else
+    {
+        SWAG_ASSERT(assignType->isSlice());
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignType, assignNode));
+    }
+
     return true;
 }

@@ -315,6 +315,7 @@ struct SemanticJob : public Job
     static bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
     static bool           waitForStructUserOps(SemanticContext* context, AstNode* node);
     static bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags);
+    static bool           collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);
     static bool           collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node);
     static void           disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
     static void           propagateReturn(AstNode* node);
