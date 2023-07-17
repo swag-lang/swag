@@ -336,7 +336,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
     regList = reserveRegisterRC(context);
 
-    if (node->flags & AST_VALUE_IS_TYPEINFO)
+    if (node->hasTypeInfoValue())
     {
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
     }

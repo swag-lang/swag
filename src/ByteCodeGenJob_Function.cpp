@@ -1370,7 +1370,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         return true;
     }
 
-    SWAG_ASSERT(defaultParam->assignment->flags & AST_VALUE_COMPUTED);
+    SWAG_ASSERT(defaultParam->assignment->hasComputedValue());
     SWAG_CHECK(emitLiteral(context, defaultParam->assignment, defaultParam->typeInfo, regList));
     return true;
 }

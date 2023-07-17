@@ -289,6 +289,9 @@ struct AstNode
     void setFlagsValueIsComputed();
     void inheritComputedValue(AstNode* from);
 
+    bool hasComputedValue();
+    bool hasTypeInfoValue();
+
     bool isConstantTrue();
     bool isConstantFalse();
     bool isConstant0();

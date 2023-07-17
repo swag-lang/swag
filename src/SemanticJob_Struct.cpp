@@ -895,7 +895,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, AstStruct* structDecl)
     // Execute #validif/#validifx block
     auto expr = structDecl->validif->childs.back();
 
-    if (!(expr->flags & AST_VALUE_COMPUTED))
+    if (!expr->hasComputedValue())
     {
         auto node                  = context->node;
         context->validIfParameters = structDecl->genericParameters;
@@ -1082,7 +1082,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
             {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                if (!(varDecl->type->flags & AST_VALUE_COMPUTED))
+                if (!varDecl->type->hasComputedValue())
                 {
                     auto constSegment = getConstantSegFromContext(varDecl);
                     varDecl->type->setFlagsValueIsComputed();

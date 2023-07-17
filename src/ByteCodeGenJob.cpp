@@ -625,7 +625,7 @@ JobResult ByteCodeGenJob::execute()
                     continue;
 
                 node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-                if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
+                if (!node->hasComputedValue() && !node->childs.empty())
                 {
                     if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
                     {
@@ -644,7 +644,7 @@ JobResult ByteCodeGenJob::execute()
                 if (!(node->flags & AST_NO_BYTECODE))
                 {
                     // Computed constexpr value. Just emit the result
-                    if (node->flags & AST_VALUE_COMPUTED)
+                    if (node->hasComputedValue())
                     {
                         context.node = node;
                         if (!emitLiteral(&context))

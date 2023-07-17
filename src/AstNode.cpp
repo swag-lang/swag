@@ -111,10 +111,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     {
         computedValue  = Allocator::alloc<ComputedValue>();
         *computedValue = *from->computedValue;
-
-        // Update typeinfo pointer if it has changed
-        if (flags & AST_VALUE_IS_TYPEINFO && typeInfo != from->typeInfo)
-            computedValue->reg.pointer = (uint8_t*) typeInfo;
     }
 
     token.text = from->token.text;
@@ -754,6 +750,16 @@ bool AstNode::isPublic()
     }
 
     return false;
+}
+
+bool AstNode::hasComputedValue()
+{
+    return flags & AST_VALUE_COMPUTED;
+}
+
+bool AstNode::hasTypeInfoValue()
+{
+    return flags & AST_VALUE_IS_TYPEINFO;
 }
 
 bool AstNode::isConstantTrue()

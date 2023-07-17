@@ -74,7 +74,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         node->access->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->access->flags & AST_VALUE_COMPUTED))
+    if (!node->access->hasComputedValue())
         emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
 
     // Pointer increment
@@ -362,7 +362,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
-        if (!(node->access->flags & AST_VALUE_COMPUTED))
+        if (!node->access->hasComputedValue())
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
         truncRegisterRC(context, node->array->resultRegisterRC, 1);
 
@@ -552,7 +552,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     }
 
     // Exclude upper bound limit
-    if (node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP && !(node->upperBound->flags & AST_VALUE_COMPUTED))
+    if (node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP && !node->upperBound->hasComputedValue())
     {
         ensureCanBeChangedRC(context, node->upperBound->resultRegisterRC);
         EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRC)->b.s64 = -1;

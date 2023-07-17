@@ -24,7 +24,7 @@ bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
                     return true;
                 }
 
-                if ((node->assignment->flags & AST_VALUE_COMPUTED) || !(node->assignment->flags & AST_SIDE_EFFECTS))
+                if (node->assignment->hasComputedValue() || !(node->assignment->flags & AST_SIDE_EFFECTS))
                 {
                     SWAG_CHECK(skipNodes(context, node));
                     return true;

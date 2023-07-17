@@ -100,7 +100,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         break;
     case NativeTypeKind::String:
     {
-        if (left->flags & AST_VALUE_COMPUTED && right->flags & AST_VALUE_COMPUTED)
+        if (left->hasComputedValue() && right->hasComputedValue())
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
@@ -125,7 +125,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
 
     node->typeInfo = leftTypeInfo;
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -289,7 +289,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     }
 
     node->typeInfo = leftTypeInfo;
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -408,7 +408,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     }
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -540,7 +540,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     }
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -638,7 +638,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         return context->report({node, Fmt(Err(Err0157), leftTypeInfo->getDisplayNameC())});
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -716,7 +716,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     }
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -764,7 +764,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             right->release();
         }
         // something | 0xff (type) => 0xff (type)
-        else if (right->flags & AST_VALUE_COMPUTED)
+        else if (right->hasComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && right->computedValue->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && right->computedValue->reg.u16 == 0xFFFF) ||
@@ -776,7 +776,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             }
         }
         // 0xff (type) | something => 0xff (type)
-        else if (left->flags & AST_VALUE_COMPUTED)
+        else if (left->hasComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && left->computedValue->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && left->computedValue->reg.u16 == 0xFFFF) ||
@@ -827,7 +827,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     }
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -869,7 +869,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         }
 
         // something & 0xFF (type) => something
-        else if (right->flags & AST_VALUE_COMPUTED)
+        else if (right->hasComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && right->computedValue->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && right->computedValue->reg.u16 == 0xFFFF) ||
@@ -883,7 +883,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         }
 
         // 0xFF (type) & something => something
-        else if (left->flags & AST_VALUE_COMPUTED)
+        else if (left->hasComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && left->computedValue->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && left->computedValue->reg.u16 == 0xFFFF) ||
@@ -903,7 +903,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    SWAG_CHECK(checkIsConstExpr(context, left->flags & AST_VALUE_COMPUTED, left));
+    SWAG_CHECK(checkIsConstExpr(context, left->hasComputedValue(), left));
 
     if (!left->typeInfo->isString())
         left->computedValue->text = Ast::literalToString(left->typeInfo, *left->computedValue);
@@ -951,7 +951,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     }
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -1170,7 +1170,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         return context->report(diag);
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -1249,7 +1249,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         return context->report(diag);
     }
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -1423,7 +1423,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
         switch (node->tokenId)

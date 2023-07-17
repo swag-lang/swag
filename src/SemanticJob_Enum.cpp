@@ -172,7 +172,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
         if (rawTypeInfo->isArray())
         {
-            SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
+            SWAG_ASSERT(!assignNode->hasComputedValue());
             SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
@@ -203,7 +203,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
         else
         {
-            SWAG_CHECK(checkIsConstExpr(context, assignNode->flags & AST_VALUE_COMPUTED, assignNode));
+            SWAG_CHECK(checkIsConstExpr(context, assignNode->hasComputedValue(), assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
             enumNode->computedValue = assignNode->computedValue;
         }

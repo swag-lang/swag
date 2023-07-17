@@ -1010,7 +1010,7 @@ bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
 
     for (auto c : node->childs)
     {
-        if (c->flags & AST_VALUE_COMPUTED)
+        if (c->hasComputedValue())
             continue;
 
         auto symbol = c->childs.front()->resolvedSymbolName;
@@ -1168,7 +1168,7 @@ void SemanticJob::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::While)
         {
             auto whileNode = CastAst<AstWhile>(breakable, AstNodeKind::While);
-            if ((whileNode->boolExpression->flags & AST_VALUE_COMPUTED) && (whileNode->boolExpression->computedValue->reg.b))
+            if ((whileNode->boolExpression->hasComputedValue()) && (whileNode->boolExpression->computedValue->reg.b))
                 whileNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
             break;
         }
@@ -1176,7 +1176,7 @@ void SemanticJob::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::For)
         {
             auto forNode = CastAst<AstFor>(breakable, AstNodeKind::For);
-            if ((forNode->boolExpression->flags & AST_VALUE_COMPUTED) && (forNode->boolExpression->computedValue->reg.b))
+            if ((forNode->boolExpression->hasComputedValue()) && (forNode->boolExpression->computedValue->reg.b))
                 forNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
             break;
         }

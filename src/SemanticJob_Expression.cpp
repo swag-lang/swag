@@ -218,7 +218,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         node->typeInfo = ifTrue->typeInfo;
 
     // Constant expression
-    if (expression->flags & AST_VALUE_COMPUTED)
+    if (expression->hasComputedValue())
     {
         node->childs.clear();
 
@@ -283,7 +283,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
         return context->report(diag);
     }
 
-    if (expression->flags & AST_VALUE_COMPUTED)
+    if (expression->hasComputedValue())
     {
         bool notNull = true;
         if (typeInfo->isString())

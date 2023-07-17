@@ -876,7 +876,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 if (firstChild->kind == AstNodeKind::ExpressionList)
                 {
                     isValue = true;
-                    if (!(firstChild->flags & AST_VALUE_COMPUTED))
+                    if (!firstChild->hasComputedValue())
                     {
                         uint32_t     storageOffset  = UINT32_MAX;
                         DataSegment* storageSegment = SemanticJob::getConstantSegFromContext(firstChild);
@@ -901,7 +901,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     continue;
                 }
 
-                if (firstChild->flags & AST_VALUE_COMPUTED && !(firstChild->flags & AST_VALUE_IS_TYPEINFO))
+                if (firstChild->hasComputedValue() && !firstChild->hasTypeInfoValue())
                     isValue = true;
 
                 if (!symbolParameter->typeInfo->isKindGeneric() && !isValue)

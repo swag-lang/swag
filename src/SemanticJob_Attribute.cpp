@@ -364,7 +364,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 SWAG_VERIFY(id->callParameters && id->callParameters->childs.size() >= 1, context->report({id, Err(Err0601)}));
                 for (auto c : id->callParameters->childs)
                 {
-                    SWAG_ASSERT(c->flags & AST_VALUE_IS_TYPEINFO);
+                    SWAG_ASSERT(c->hasTypeInfoValue());
                     SWAG_ASSERT(c->computedValue);
                     auto ptr       = (ExportedTypeInfo*) c->computedValue->storageSegment->address(c->computedValue->storageOffset);
                     auto typeChild = context->sourceFile->module->typeGen.getRealType(c->computedValue->storageSegment, ptr);
@@ -711,7 +711,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_CHECK(checkIsConstExpr(context, param->flags & AST_VALUE_COMPUTED, param, Err(Err0602)));
+                SWAG_CHECK(checkIsConstExpr(context, param->hasComputedValue(), param, Err(Err0602)));
                 SWAG_CHECK(TypeManager::makeCompatibles(context, param->resolvedParameter->typeInfo, param->typeInfo, nullptr, param, CASTFLAG_EXPLICIT));
 
                 AttributeParameter attrParam;

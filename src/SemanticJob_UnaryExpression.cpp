@@ -48,7 +48,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
     }
     }
 
-    if (child->flags & AST_VALUE_COMPUTED && !(child->semFlags & SEMFLAG_NEG_EATEN))
+    if (child->hasComputedValue() && !(child->semFlags & SEMFLAG_NEG_EATEN))
     {
         context->node->semFlags |= child->semFlags & SEMFLAG_LITERAL_SUFFIX;
         switch (typeInfo->nativeType)
@@ -117,7 +117,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
     SWAG_CHECK(checkTypeIsNative(context, context->node, typeInfo));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
 
-    if (child->flags & AST_VALUE_COMPUTED)
+    if (child->hasComputedValue())
     {
         context->node->semFlags |= child->semFlags & SEMFLAG_LITERAL_SUFFIX;
         switch (typeInfo->nativeType)
@@ -184,7 +184,7 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     }
     }
 
-    if (child->flags & AST_VALUE_COMPUTED)
+    if (child->hasComputedValue())
     {
         context->node->semFlags |= child->semFlags & SEMFLAG_LITERAL_SUFFIX;
         switch (typeInfo->nativeType)

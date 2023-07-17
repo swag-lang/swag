@@ -11,7 +11,7 @@
 
 bool SemanticJob::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {
-    if (!(arrayAccess->flags & AST_VALUE_COMPUTED))
+    if (!arrayAccess->hasComputedValue())
         return true;
 
     if (maxCount == 0)
@@ -268,7 +268,7 @@ bool SemanticJob::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    if (upperNode->flags & AST_VALUE_COMPUTED)
+    if (upperNode->hasComputedValue())
     {
         upperNode->computedValue->reg.u64 -= 1;
         upperNode->byteCodeFct = ByteCodeGenJob::emitLiteral;
@@ -300,7 +300,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // Exclude upper bound if constant
-    if (node->upperBound->flags & AST_VALUE_COMPUTED &&
+    if (node->upperBound->hasComputedValue() &&
         node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP &&
         !(node->upperBound->semFlags & SEMFLAG_ASSIGN_COMPUTED))
     {
@@ -340,7 +340,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     else if (typeVar->isString())
     {
         node->typeInfo = typeVar;
-        if (node->array->flags & AST_VALUE_COMPUTED)
+        if (node->array->hasComputedValue())
             maxBound = node->array->computedValue->text.length() - 1;
     }
 
@@ -404,7 +404,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // startBound <= endBound
-    if ((node->lowerBound->flags & AST_VALUE_COMPUTED) && (node->upperBound->flags & AST_VALUE_COMPUTED))
+    if (node->lowerBound->hasComputedValue() && node->upperBound->hasComputedValue())
     {
         if (node->lowerBound->computedValue->reg.u64 > node->upperBound->computedValue->reg.u64)
         {
@@ -416,7 +416,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // endBound < maxBound
-    if (maxBound && (node->upperBound->flags & AST_VALUE_COMPUTED))
+    if (maxBound && node->upperBound->hasComputedValue())
     {
         if (node->upperBound->computedValue->reg.u64 > maxBound)
         {
@@ -451,7 +451,7 @@ bool SemanticJob::resolveMoveRef(SemanticContext* context)
         return context->report(diag);
     }
 
-    if (front->flags & AST_VALUE_COMPUTED)
+    if (front->hasComputedValue())
     {
         Diagnostic diag(node, node->token, Err(Err0563));
         return context->report(diag);
@@ -742,7 +742,7 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
     auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
     auto typePtr   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
 
-    if (!arrayNode->typeInfo->isArray() && arrayNode->access->flags & AST_VALUE_COMPUTED)
+    if (!arrayNode->typeInfo->isArray() && arrayNode->access->hasComputedValue())
     {
         bool     isConstAccess = true;
         uint64_t offsetAccess  = arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
@@ -753,7 +753,7 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
         while (isConstAccess && subArray->array->kind == AstNodeKind::ArrayPointerIndex)
         {
             subArray      = CastAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
-            isConstAccess = isConstAccess && (subArray->access->flags & AST_VALUE_COMPUTED);
+            isConstAccess = isConstAccess && subArray->access->hasComputedValue();
             if (isConstAccess)
             {
                 if (subArray->array->typeInfo->kind != TypeInfoKind::Array)
@@ -780,7 +780,7 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
                 return true;
             }
 
-            if (subArray->array->flags & AST_VALUE_COMPUTED)
+            if (subArray->array->hasComputedValue())
             {
                 SWAG_ASSERT(subArray->array->computedValue);
                 SWAG_ASSERT(subArray->array->computedValue->storageOffset != UINT32_MAX);
@@ -838,7 +838,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     if (arrayType->isString())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+        if (arrayNode->access->hasComputedValue())
         {
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
@@ -879,7 +879,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         setupIdentifierRef(context, arrayNode);
 
         // Try to dereference as a constant if we can
-        if (arrayNode->array->flags & AST_VALUE_COMPUTED && arrayNode->access->flags & AST_VALUE_COMPUTED)
+        if (arrayNode->array->hasComputedValue() && arrayNode->access->hasComputedValue())
         {
             auto storageSegment = arrayNode->array->computedValue->storageSegment;
             if (!storageSegment)
@@ -945,7 +945,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         setupIdentifierRef(context, arrayNode);
 
         // Try to dereference as a constant if we can
-        if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+        if (arrayNode->access->hasComputedValue())
         {
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {

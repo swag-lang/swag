@@ -49,7 +49,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
     if (node->flags & AST_R_VALUE)
         return true;
-    if (node->flags & AST_VALUE_COMPUTED && !(node->flags & AST_NO_BYTECODE))
+    if (node->hasComputedValue() && !(node->flags & AST_NO_BYTECODE))
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
@@ -463,13 +463,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
             uint32_t count        = 0;
             bool     genericCount = false;
 
-            if (!(child->flags & AST_VALUE_COMPUTED) && child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+            if (!child->hasComputedValue() && child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
             {
                 genericCount = true;
             }
             else
             {
-                SWAG_CHECK(checkIsConstExpr(context, child->flags & AST_VALUE_COMPUTED, child, Err(Err0021)));
+                SWAG_CHECK(checkIsConstExpr(context, child->hasComputedValue(), child, Err(Err0021)));
                 count = (uint32_t) child->computedValue->reg.u32;
             }
 
@@ -702,7 +702,7 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
     node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
 
-    if (node->flags & AST_VALUE_COMPUTED && node->typeInfo->isNative())
+    if (node->hasComputedValue() && node->typeInfo->isNative())
     {
         switch (node->typeInfo->nativeType)
         {

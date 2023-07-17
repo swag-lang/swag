@@ -462,7 +462,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         loopNode->seekJumpExpression = context->bc->numInstructions;
 
         auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
-        if (loopNode->expression->flags & AST_VALUE_COMPUTED)
+        if (loopNode->expression->hasComputedValue())
         {
             inst->c.u64 = loopNode->expression->computedValue->reg.u64;
             inst->flags |= BCI_IMM_C;
@@ -473,7 +473,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
     // Static range
     auto rangeNode = CastAst<AstRange>(loopNode->expression, AstNodeKind::Range);
-    if (rangeNode->expressionLow->flags & AST_VALUE_COMPUTED && rangeNode->expressionUp->flags & AST_VALUE_COMPUTED)
+    if (rangeNode->expressionLow->hasComputedValue() && rangeNode->expressionUp->hasComputedValue())
     {
         bool increment = false;
         if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue->reg.s64 < rangeNode->expressionUp->computedValue->reg.s64)

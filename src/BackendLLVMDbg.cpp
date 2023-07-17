@@ -772,7 +772,7 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         auto nameU = node->getScopedName();
         auto name  = nameU.c_str();
 
-        if (node->flags & AST_VALUE_COMPUTED)
+        if (node->hasComputedValue())
         {
             llvm::Constant* constant = nullptr;
             if (typeInfo->isNative())

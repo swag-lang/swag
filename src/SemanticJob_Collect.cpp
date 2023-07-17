@@ -323,7 +323,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
     if (typeInfo->isArray())
     {
         // Already computed in the constant storageSegment for an array
-        if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+        if (node->assignment && node->assignment->hasComputedValue())
         {
             SWAG_ASSERT(value->storageOffset != UINT32_MAX);
             SWAG_ASSERT(value->storageSegment != nullptr);

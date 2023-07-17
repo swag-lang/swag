@@ -14,7 +14,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
     // Compile time compare of two types
-    if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
+    if ((left->hasTypeInfoValue()) && (right->hasTypeInfoValue()))
     {
         node->setFlagsValueIsComputed();
         SWAG_ASSERT(left->computedValue->storageOffset != 0xFFFFFFFF);
@@ -34,7 +34,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
         }
     }
-    else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    else if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -145,7 +145,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
 
 #define CMP3(__a, __b) __a < __b ? -1 : (__a > __b ? 1 : 0)
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->typeInfo = g_TypeMgr->typeInfoS32;
         node->setFlagsValueIsComputed();
@@ -224,7 +224,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     auto node         = context->node;
     auto leftTypeInfo = left->typeInfo;
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -296,7 +296,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     auto node         = context->node;
     auto leftTypeInfo = left->typeInfo;
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
         if (leftTypeInfo->isPointer())

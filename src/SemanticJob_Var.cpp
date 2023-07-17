@@ -597,14 +597,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
 #if false
         if (node->assignment &&
-            node->assignment->flags & AST_VALUE_COMPUTED &&
+            node->assignment->hasComputedValue() &&
             !node->assignment->typeInfo->isLambdaClosure())
         {
             isCompilerConstant = true;
         }
         else
 #endif
-            symbolFlags |= OVERLOAD_IS_LET;
+        symbolFlags |= OVERLOAD_IS_LET;
     }
 
     if (isCompilerConstant)
@@ -645,7 +645,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (!node->assignment && (!node->type || !concreteNodeType->isStruct()))
     {
         // A constant must be initialized
-        if (isCompilerConstant && !(node->flags & AST_VALUE_COMPUTED))
+        if (isCompilerConstant && !node->hasComputedValue())
             return context->report({node, Err(Err0298)});
         // A constant variable must be initialized
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
@@ -1128,12 +1128,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 node->assignment->computedValue->storageOffset  = storageOffset;
                 node->assignment->computedValue->storageSegment = storageSegment;
             }
-            else if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+            else if (node->assignment && node->assignment->hasComputedValue())
             {
                 storageOffset  = node->assignment->computedValue->storageOffset;
                 storageSegment = node->assignment->computedValue->storageSegment;
             }
-            else if (node->flags & AST_VALUE_COMPUTED)
+            else if (node->hasComputedValue())
             {
                 storageOffset  = node->computedValue->storageOffset;
                 storageSegment = node->computedValue->storageSegment;

@@ -20,7 +20,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Err(Err0248), node->token.text));
+        SWAG_CHECK(checkIsConstExpr(context, front->hasComputedValue(), front, Err(Err0248), node->token.text));
         SWAG_VERIFY(front->typeInfo->isString(), context->report({front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
@@ -62,7 +62,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Err(Err0248), node->token.text));
+        SWAG_CHECK(checkIsConstExpr(context, front->hasComputedValue(), front, Err(Err0248), node->token.text));
         SWAG_VERIFY(front->typeInfo->isString(), context->report({front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -83,10 +83,10 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, Err(Err0248), node->token.text));
-        SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, Err(Err0245)}));
+        SWAG_CHECK(checkIsConstExpr(context, nameNode->hasComputedValue(), nameNode, Err(Err0248), node->token.text));
+        SWAG_VERIFY(!nameNode->hasTypeInfoValue(), context->report({nameNode, Err(Err0245)}));
         SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, Fmt(Err(Err0249), node->token.ctext(), nameNode->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, Err(Err0283)}));
+        SWAG_VERIFY(!defaultVal->hasTypeInfoValue(), context->report({defaultVal, Err(Err0283)}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
         node->typeInfo = typeNode->typeInfo;
@@ -185,7 +185,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
     // Check second parameter
     SWAG_CHECK(checkIsConcreteOrType(context, second));
-    if (second->flags & AST_VALUE_IS_TYPEINFO)
+    if (second->hasTypeInfoValue())
     {
         SWAG_ASSERT(second->computedValue->storageSegment);
         SWAG_ASSERT(second->computedValue->storageOffset != UINT32_MAX);
@@ -251,7 +251,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     if (typeInfo->isString())
     {
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
-        if (expression->flags & AST_VALUE_COMPUTED)
+        if (expression->hasComputedValue())
         {
             node->setFlagsValueIsComputed();
             if (expression->computedValue->text.buffer == nullptr)
@@ -279,7 +279,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
             ptrFlags |= TYPEINFO_CONST;
         node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrFlags);
 
-        if (expression->flags & AST_VALUE_COMPUTED)
+        if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
             if (!expression->computedValue->storageSegment)
@@ -302,7 +302,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
             ptrFlags |= TYPEINFO_CONST;
         node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrFlags);
 
-        if (expression->flags & AST_VALUE_COMPUTED)
+        if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
             if (!expression->computedValue->storageSegment)
@@ -320,7 +320,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     else if (typeInfo->isAny())
     {
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-        if (expression->flags & AST_VALUE_COMPUTED)
+        if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
             if (!expression->computedValue->storageSegment)
@@ -387,7 +387,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
 
     if (expr->computedValue)
     {
-        if (expr->flags & AST_VALUE_IS_TYPEINFO)
+        if (expr->hasTypeInfoValue())
         {
             SWAG_ASSERT(expr->computedValue->storageSegment);
             SWAG_ASSERT(expr->computedValue->storageOffset != UINT32_MAX);
@@ -441,7 +441,7 @@ bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    if (expr->computedValue && expr->flags & AST_VALUE_IS_TYPEINFO)
+    if (expr->computedValue && expr->hasTypeInfoValue())
     {
         SWAG_ASSERT(expr->computedValue->storageSegment);
         SWAG_ASSERT(expr->computedValue->storageOffset != UINT32_MAX);
@@ -465,7 +465,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
-    SWAG_CHECK(checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr));
+    SWAG_CHECK(checkIsConstExpr(context, expr->hasComputedValue(), expr));
     SWAG_VERIFY(typeInfo->isString(), context->report({expr, Fmt(Err(Err0084), typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
@@ -525,7 +525,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
 
         node->typeInfo = g_TypeMgr->typeInfoU64;
-        if (expression->flags & AST_VALUE_COMPUTED)
+        if (expression->hasComputedValue())
         {
             node->setFlagsValueIsComputed();
             node->computedValue->reg.u64 = expression->computedValue->text.length();
@@ -559,7 +559,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
 
         // :SliceLiteral
         // Slice literal. This can happen for enum values
-        if (expression->flags & AST_VALUE_COMPUTED)
+        if (expression->hasComputedValue())
         {
             node->computedValue->reg.u64 = node->computedValue->reg.u64;
             if (node->computedValue->reg.u64 > UINT32_MAX)
@@ -610,7 +610,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         node->typeInfo = expression->typeInfo;
 
         SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC()), Diagnostic::isType(typeInfo)}));
-        if (expression->flags & AST_VALUE_COMPUTED)
+        if (expression->hasComputedValue())
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
             {
@@ -708,7 +708,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     {
         SWAG_CHECK(checkIsConcrete(context, expr));
 
-        if (expr->flags & AST_VALUE_COMPUTED)
+        if (expr->hasComputedValue())
         {
             SWAG_ASSERT(expr->computedValue);
             SWAG_ASSERT(expr->computedValue->storageSegment);
@@ -873,7 +873,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         }
 
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.b = (expr->flags & AST_VALUE_COMPUTED);
+        node->computedValue->reg.b = expr->hasComputedValue();
         break;
     }
 

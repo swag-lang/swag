@@ -1037,7 +1037,7 @@ void BackendX64::dbgEmitGlobalDebugS(X64Gen& pp, Concat& concat, VectorNative<As
     for (auto& p : gVars)
     {
         // Compile time constant
-        if (p->flags & AST_VALUE_COMPUTED)
+        if (p->hasComputedValue())
         {
             dbgEmitConstant(pp, concat, p, dbgGetScopedName(p));
             continue;

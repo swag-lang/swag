@@ -615,7 +615,7 @@ void Module::addCompilerFunc(ByteCode* bc)
     auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
 
     SWAG_ASSERT(funcDecl->parameters);
-    SWAG_ASSERT(funcDecl->parameters->flags & AST_VALUE_COMPUTED);
+    SWAG_ASSERT(funcDecl->parameters->hasComputedValue());
 
     // Register the function in all the corresponding buckets
     auto filter = funcDecl->parameters->computedValue->reg.u64;

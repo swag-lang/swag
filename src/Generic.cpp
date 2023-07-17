@@ -33,7 +33,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
                 {
                     param->allocateComputedValue();
                     *param->value = *genParam->computedValue;
-                    if ((genParam->flags & AST_VALUE_COMPUTED) && !(genParam->flags & AST_VALUE_IS_TYPEINFO))
+                    if (genParam->hasComputedValue() && !genParam->hasTypeInfoValue())
                         param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
                 }
             }

@@ -58,7 +58,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags |= AST_IS_CONST;
     }
 
-    if (childBack->flags & AST_VALUE_COMPUTED)
+    if (childBack->hasComputedValue())
         node->inheritComputedValue(childBack);
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_TYPEINFO | AST_SIDE_EFFECTS);
 
@@ -74,7 +74,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     if (node->resolvedSymbolOverload &&
         (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        if (!(node->flags & AST_VALUE_COMPUTED))
+        if (!node->hasComputedValue())
         {
             node->setFlagsValueIsComputed();
             *node->computedValue = node->resolvedSymbolOverload->computedValue;
@@ -214,7 +214,7 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
             // Remove assert(true)
             SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
             auto param = identifier->callParameters->childs.front();
-            if ((param->flags & AST_VALUE_COMPUTED) && param->computedValue->reg.b)
+            if (param->hasComputedValue() && param->computedValue->reg.b)
                 identifier->flags |= AST_NO_BYTECODE;
         }
         break;
@@ -364,7 +364,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
                 // We need to create a temporary variable to store the value, in order to have an address.
-                else if (front->flags & AST_VALUE_COMPUTED)
+                else if (front->hasComputedValue())
                 {
                     auto varNode = Ast::newVarDecl(sourceFile, Fmt("__7tmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
                     varNode->inheritTokenLocation(nodeCall);
@@ -610,7 +610,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 !typeParam->isListArray() &&
                 !typeParam->isAny() &&
                 !typeParam->isClosure() &&
-                (funcParam->assignment->flags & AST_VALUE_COMPUTED))
+                (funcParam->assignment->hasComputedValue()))
                 continue;
 
             bool covered = false;
@@ -809,7 +809,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifier->flags |= AST_L_VALUE;
 
         // Direct reference to a constexpr typeinfo
-        if (prevNode->flags & AST_VALUE_IS_TYPEINFO)
+        if (prevNode->hasTypeInfoValue())
         {
             if (derefLiteralStruct(context, identifierRef, overload))
             {
@@ -821,7 +821,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         }
 
         // Direct reference to a constexpr structure
-        if ((prevNode->flags & AST_VALUE_COMPUTED) && prevNode->typeInfo->isStruct())
+        if (prevNode->hasComputedValue() && prevNode->typeInfo->isStruct())
         {
             if (derefLiteralStruct(context, identifierRef, overload))
             {
@@ -833,7 +833,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         }
 
         // Direct reference to a pointer
-        if ((prevNode->flags & AST_VALUE_COMPUTED) && prevNode->typeInfo->isPointer())
+        if (prevNode->hasComputedValue() && prevNode->typeInfo->isPointer())
         {
             SWAG_ASSERT(prevNode->computedValue->storageSegment);
             SWAG_ASSERT(prevNode->computedValue->storageOffset != UINT32_MAX);
@@ -854,7 +854,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto arrayOver = arrayNode->array->resolvedSymbolOverload;
             if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE))
             {
-                if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+                if (arrayNode->access->hasComputedValue())
                 {
                     SWAG_ASSERT(arrayOver->computedValue.storageSegment);
                     SWAG_ASSERT(arrayOver->computedValue.storageOffset != UINT32_MAX);
@@ -1166,7 +1166,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Transform the variable to a constant node
         if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
-            if (overload->node->flags & AST_VALUE_IS_TYPEINFO)
+            if (overload->node->hasTypeInfoValue())
                 identifier->flags |= AST_VALUE_IS_TYPEINFO;
             identifier->setFlagsValueIsComputed();
             *identifier->computedValue = overload->computedValue;
@@ -1192,7 +1192,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             for (uint32_t i = 0; i < childIdx; i++)
             {
                 auto brother = checkParent->childs[i];
-                if (!(brother->flags & AST_VALUE_COMPUTED) &&
+                if (!(brother->hasComputedValue()) &&
                     brother->resolvedSymbolOverload &&
                     brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
                 {
@@ -4018,7 +4018,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
     if (funcDecl->validif->kind == AstNodeKind::CompilerValidIfx)
         expr->flags &= ~AST_VALUE_COMPUTED;
 
-    if (!(expr->flags & AST_VALUE_COMPUTED))
+    if (!expr->hasComputedValue())
     {
         auto node                  = context->node;
         context->validIfParameters = oneMatch->oneOverload->callParameters;

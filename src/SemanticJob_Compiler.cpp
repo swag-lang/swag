@@ -55,7 +55,7 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
 bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
-    if (node->flags & AST_VALUE_COMPUTED)
+    if (node->hasComputedValue())
         return true;
 
     if (onlyConstExpr)
@@ -82,7 +82,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
-    if (node->flags & AST_VALUE_COMPUTED)
+    if (node->hasComputedValue())
         return true;
 
     auto sourceFile = context->sourceFile;
@@ -321,7 +321,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         return true;
 
     context->node->inheritComputedValue(expression);
-    if (context->node->flags & AST_VALUE_COMPUTED)
+    if (context->node->hasComputedValue())
         context->node->flags &= ~AST_NO_BYTECODE;
 
     context->node->typeInfo = expression->typeInfo;
@@ -365,7 +365,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
         return true;
     node->specFlags |= AstCompilerSpecFunc::SPECFLAG_AST_BLOCK;
 
-    SWAG_CHECK(checkIsConstExpr(context, expression->flags & AST_VALUE_COMPUTED, expression));
+    SWAG_CHECK(checkIsConstExpr(context, expression->hasComputedValue(), expression));
 
     node->allocateExtension(ExtensionKind::Owner);
     node->extOwner()->nodesToFree.append(node->childs);
@@ -408,7 +408,7 @@ bool SemanticJob::resolveCompilerError(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, msg));
     if (context->result != ContextResult::Done)
         return true;
-    SWAG_CHECK(checkIsConstExpr(context, msg->flags & AST_VALUE_COMPUTED, msg, Fmt(Err(Err0237), node->token.ctext())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0237), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Error};
@@ -427,7 +427,7 @@ bool SemanticJob::resolveCompilerWarning(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, msg));
     if (context->result != ContextResult::Done)
         return true;
-    SWAG_CHECK(checkIsConstExpr(context, msg->flags & AST_VALUE_COMPUTED, msg, Fmt(Err(Err0237), node->token.ctext())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0237), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
@@ -733,7 +733,7 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
     auto module = context->sourceFile->module;
     auto back   = node->childs[0];
 
-    SWAG_CHECK(checkIsConstExpr(context, back->flags & AST_VALUE_COMPUTED, back, Err(Err0242)));
+    SWAG_CHECK(checkIsConstExpr(context, back->hasComputedValue(), back, Err(Err0242)));
     SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Fmt(Err(Err0243), back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 

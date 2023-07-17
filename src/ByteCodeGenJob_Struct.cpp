@@ -1385,7 +1385,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     uint64_t numToInit = 0;
     if (!node->count)
         numToInit = 1;
-    else if (node->count->flags & AST_VALUE_COMPUTED)
+    else if (node->count->hasComputedValue())
         numToInit = node->count->computedValue->reg.u64;
     else if (!(node->count->semFlags & SEMFLAG_CAST1))
     {
@@ -1418,7 +1418,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
     {
         for (auto child : parameters->childs)
         {
-            if (!(child->flags & AST_VALUE_COMPUTED))
+            if (!child->hasComputedValue())
             {
                 justClear = false;
                 break;
@@ -1610,7 +1610,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     uint64_t numToDo = 0;
     if (!node->count)
         numToDo = 1;
-    else if (node->count->flags & AST_VALUE_COMPUTED)
+    else if (node->count->hasComputedValue())
         numToDo = node->count->computedValue->reg.u64;
     else if (!(node->count->semFlags & SEMFLAG_CAST1))
     {

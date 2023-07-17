@@ -28,7 +28,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     }
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
-    if (module->mustOptimizeBytecode(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
+    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
     {
         node->boolExpression->flags |= AST_NO_BYTECODE;
         if (node->boolExpression->computedValue->reg.b)
@@ -69,7 +69,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     }
 
     // Do not evaluate while if it's constant and false
-    if (module->mustOptimizeBytecode(node) && (node->boolExpression->flags & AST_VALUE_COMPUTED))
+    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
     {
         if (!node->boolExpression->computedValue->reg.b)
         {
@@ -79,7 +79,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
         }
     }
 
-    if (node->boolExpression->flags & AST_VALUE_COMPUTED && node->boolExpression->computedValue->reg.b)
+    if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
     {
         Diagnostic diag{node->boolExpression, Err(Err0880)};
         auto       note = Diagnostic::help(Hlp(Hlp0030));
@@ -153,7 +153,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                     if (callParam->indexParam != (int) i)
                         continue;
                     orgCallParam = callParam;
-                    if (!(callParam->flags & AST_VALUE_COMPUTED))
+                    if (!callParam->hasComputedValue())
                         continue;
                     AddSymbolTypeInfo toAdd;
                     toAdd.node                = callParam;
@@ -331,7 +331,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         for (auto expr : switchCase->expressions)
         {
-            if (expr->flags & AST_VALUE_COMPUTED)
+            if (expr->hasComputedValue())
             {
                 auto typeExpr = TypeManager::concreteType(expr->typeInfo);
                 if (typeExpr->isString())
@@ -349,14 +349,14 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 else
                 {
                     auto value = expr->computedValue->reg.u64;
-                    if (expr->flags & AST_VALUE_IS_TYPEINFO)
+                    if (expr->hasTypeInfoValue())
                         value = expr->computedValue->storageOffset;
 
                     int idx = val64.find(value);
                     if (idx != -1)
                     {
                         auto note = Diagnostic::note(valDef[idx], Nte(Nte0014));
-                        if (expr->flags & AST_VALUE_IS_TYPEINFO)
+                        if (expr->hasTypeInfoValue())
                             return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, note);
                         if (expr->typeInfo->isEnum())
                             return context->report({expr, Fmt(Err(Err0612), expr->token.ctext())}, note);
@@ -371,7 +371,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
             }
             else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
             {
-                return checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr, Err(Err0615));
+                return checkIsConstExpr(context, expr->hasComputedValue(), expr, Err(Err0615));
             }
         }
     }
@@ -538,7 +538,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             node->typeInfo = node->expression->typeInfo;
 
             // Do not evaluate loop if it's constant and 0
-            if (module->mustOptimizeBytecode(node) && (node->expression->flags & AST_VALUE_COMPUTED))
+            if (module->mustOptimizeBytecode(node) && node->expression->hasComputedValue())
             {
                 if (!node->expression->computedValue->reg.u64)
                 {
