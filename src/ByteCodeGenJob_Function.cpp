@@ -1583,17 +1583,40 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     // Be sure referenced function has bytecode
     askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
+
+    int numCallParams = allParams ? (int) allParams->childs.size() : 0;
+
+    // For a untyped variadic, we need to store all parameters as 'any'
+    // So we must generate one type per parameter
+    Vector<uint32_t> storageOffsetsVariadicTypes;
+    if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
+    {
+        auto  numFuncParams  = (int) typeInfoFunc->parameters.size();
+        auto  module         = context->sourceFile->module;
+        auto& typeGen        = module->typeGen;
+        auto  storageSegment = SemanticJob::getConstantSegFromContext(allParams);
+
+        // We must export one type per parameter
+        for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
+        {
+            auto     child        = allParams->childs[i];
+            auto     concreteType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+            uint32_t storageOffset;
+            context->baseJob = context->job;
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, concreteType, storageSegment, &storageOffset));
+            if (context->result != ContextResult::Done)
+                return true;
+            storageOffsetsVariadicTypes.push_back(storageOffset);
+        }
+    }
 
     // Error, check validity.
     if (node->parent->kind == AstNodeKind::IdentifierRef)
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent->parent, typeInfoFunc));
     else
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent, typeInfoFunc));
-
-    int precallStack  = 0;
-    int numCallParams = allParams ? (int) allParams->childs.size() : 0;
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it
     bool rr0Saved = false;
@@ -1640,12 +1663,15 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // For a untyped variadic, we need to store all parameters as 'any'
+    int                    precallStack = 0;
     VectorNative<uint32_t> toFree;
     if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
     {
-        auto numFuncParams = (int) typeInfoFunc->parameters.size();
-        auto numVariadic   = (uint32_t) (numCallParams - numFuncParams) + 1;
-        int  offset        = numVariadic * 2 * sizeof(Register);
+        auto numFuncParams  = (int) typeInfoFunc->parameters.size();
+        auto numVariadic    = (uint32_t) (numCallParams - numFuncParams) + 1;
+        int  offset         = numVariadic * 2 * sizeof(Register);
+        auto storageSegment = SemanticJob::getConstantSegFromContext(allParams);
+
         for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
         {
             auto child     = allParams->childs[i];
@@ -1657,13 +1683,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store concrete type info
             auto r0 = reserveRegisterRC(context);
             toFree.push_back(r0);
-
-            SWAG_ASSERT(child->computedValue);
-            SWAG_ASSERT(child->computedValue->storageSegment2);
-            SWAG_ASSERT(child->computedValue->storageOffset2 != UINT32_MAX);
-            auto constSegment = child->computedValue->storageSegment2;
-            emitMakeSegPointer(context, constSegment, child->computedValue->storageOffset2, r0);
-
+            emitMakeSegPointer(context, storageSegment, storageOffsetsVariadicTypes.front(), r0);
+            storageOffsetsVariadicTypes.erase(storageOffsetsVariadicTypes.begin());
             EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
             maxCallParams++;
 

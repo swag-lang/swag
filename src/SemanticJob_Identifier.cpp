@@ -409,17 +409,6 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 return true;
         }
 
-        // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
-        if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
-        {
-            auto  module       = sourceFile->module;
-            auto& typeGen      = module->typeGen;
-            auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
-            nodeCall->allocateComputedValue();
-            nodeCall->computedValue->storageSegment2 = getConstantSegFromContext(nodeCall);
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, concreteType, nodeCall->computedValue->storageSegment2, &nodeCall->computedValue->storageOffset2));
-        }
-
         // If passing a closure
         // :FctCallParamClosure
         auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);

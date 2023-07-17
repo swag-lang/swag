@@ -19,9 +19,5 @@ bool ComputedValue::operator==(const ComputedValue& from) const
         return false;
     if (storageOffset != from.storageOffset)
         return false;
-    if (storageSegment2 != from.storageSegment2)
-        return false;
-    if (storageOffset2 != from.storageOffset2)
-        return false;
     return true;
 }
