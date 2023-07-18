@@ -598,14 +598,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 #if false
         if (node->assignment &&
             node->assignment->hasComputedValue() &&
-            !node->assignment->typeInfo->isLambdaClosure())
+            !node->assignment->typeInfo->isLambdaClosure() &&
+            (!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
         {
             node->specFlags |= AstVarDecl::SPECFLAG_IS_LET_TO_CONST;
             isCompilerConstant = true;
         }
         else
 #endif
-            symbolFlags |= OVERLOAD_IS_LET;
+        symbolFlags |= OVERLOAD_IS_LET;
     }
 
     if (isCompilerConstant)

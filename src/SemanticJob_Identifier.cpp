@@ -798,7 +798,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Direct reference to a constexpr typeinfo
         if (prevNode->isConstantGenTypeInfo())
         {
-            if (derefLiteralStruct(context, identifierRef, overload))
+            if (derefConstant(context, identifierRef, overload))
             {
                 prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;
@@ -811,7 +811,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Direct reference to a constexpr structure
         if (prevNode->hasComputedValue() && prevNode->typeInfo->isStruct())
         {
-            if (derefLiteralStruct(context, identifierRef, overload))
+            if (derefConstant(context, identifierRef, overload))
             {
                 prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;
@@ -825,7 +825,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (prevNode->hasComputedValue() && prevNode->typeInfo->isPointer())
         {
             auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
-            if (derefLiteralStruct(context, ptr, overload, prevNode->computedValue->storageSegment))
+            if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
             {
                 prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;
@@ -847,7 +847,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
                     auto ptr     = (uint8_t*) arrayOver->computedValue.getStorageAddr();
                     ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
-                    if (derefLiteralStruct(context, ptr, overload, arrayOver->computedValue.storageSegment))
+                    if (derefConstant(context, ptr, overload, arrayOver->computedValue.storageSegment))
                     {
                         prevNode->flags |= AST_NO_BYTECODE;
                         identifierRef->previousResolvedNode = context->node;

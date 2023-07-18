@@ -1269,7 +1269,7 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     return true;
 }
 
-bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment)
+bool SemanticJob::derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment)
 {
     auto node = context->node;
 
@@ -1281,9 +1281,16 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     {
         // :BackPtrOffset
         node->allocateComputedValue();
-        node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
-        node->computedValue->storageSegment = storageSegment;
-        setupIdentifierRef(context, node);
+        if (*(uint8_t**) ptr == nullptr)
+        {
+            node->typeInfo = g_TypeMgr->typeInfoNull;
+        }
+        else
+        {
+            node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
+            node->computedValue->storageSegment = storageSegment;
+            setupIdentifierRef(context, node);
+        }
     }
     else if (concreteType->isArray())
     {
@@ -1327,10 +1334,10 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     return true;
 }
 
-bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
+bool SemanticJob::derefConstant(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
 {
     auto prevNode = parent->previousResolvedNode;
     SWAG_ASSERT(prevNode->computedValue);
-    SWAG_CHECK(derefLiteralStruct(context, (uint8_t*) prevNode->computedValue->getStorageAddr(), overload, prevNode->computedValue->storageSegment));
+    SWAG_CHECK(derefConstant(context, (uint8_t*) prevNode->computedValue->getStorageAddr(), overload, prevNode->computedValue->storageSegment));
     return true;
 }

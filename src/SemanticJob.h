@@ -281,8 +281,8 @@ struct SemanticJob : public Job
     static bool         setupIdentifierRef(SemanticContext* context, AstNode* node);
     static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr);
     static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
-    static bool         derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
-    static bool         derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
+    static bool         derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
+    static bool         derefConstant(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static uint32_t     getMaxStackSize(AstNode* node);
     static void         setOwnerMaxStackSize(AstNode* node, uint32_t size);
     static bool         makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
