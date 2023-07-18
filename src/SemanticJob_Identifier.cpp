@@ -354,16 +354,9 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             {
                 auto front = nodeCall->childs.front();
 
-                // We have a value, and we need a reference.
-                // Force to keep the address
-                if (front->kind == AstNodeKind::IdentifierRef)
-                {
-                    front->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
-                }
-
                 // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
                 // We need to create a temporary variable to store the value, in order to have an address.
-                else if (front->hasComputedValue())
+                if (front->hasComputedValue())
                 {
                     auto varNode = Ast::newVarDecl(sourceFile, Fmt("__7tmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
                     varNode->inheritTokenLocation(nodeCall);
@@ -384,6 +377,12 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                     context->result = ContextResult::NewChilds;
                     return true;
+                }
+                // We have a value, and we need a reference.
+                // Force to keep the address
+                else if (front->kind == AstNodeKind::IdentifierRef)
+                {
+                    front->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
                 }
                 else
                     return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
