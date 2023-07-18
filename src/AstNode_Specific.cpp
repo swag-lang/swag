@@ -35,6 +35,15 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     return newNode;
 }
 
+bool AstVarDecl::isConstDecl()
+{
+    if (kind == AstNodeKind::ConstDecl)
+        return true;
+    if (specFlags & SPECFLAG_IS_LET_TO_CONST)
+        return true;
+    return false;
+}
+
 void AstIdentifierRef::computeName()
 {
     token.text.clear();

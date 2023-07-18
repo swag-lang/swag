@@ -392,7 +392,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     if (isCompilerContext(varNode))
         return &module->compilerSegment;
 
-    if (varNode->kind == AstNodeKind::ConstDecl)
+    if (varNode->isConstDecl())
         return &module->constantSegment;
     if (varNode->resolvedSymbolOverload && (varNode->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
         return &module->constantSegment;
@@ -600,11 +600,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->assignment->hasComputedValue() &&
             !node->assignment->typeInfo->isLambdaClosure())
         {
+            node->specFlags |= AstVarDecl::SPECFLAG_IS_LET_TO_CONST;
             isCompilerConstant = true;
         }
         else
 #endif
-        symbolFlags |= OVERLOAD_IS_LET;
+            symbolFlags |= OVERLOAD_IS_LET;
     }
 
     if (isCompilerConstant)
