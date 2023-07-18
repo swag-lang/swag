@@ -806,16 +806,13 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 }
                 else if (caseNode->specFlags & AstSwitchCase::SPECFLAG_IS_TRUE)
                 {
-                    printf("1");
-                    r0 = reserveRegisterRC(context);
-
-                    EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = 1;
+                    r0          = reserveRegisterRC(context);
+                    auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
+                    inst->b.u64 = 1;
                 }
                 else if (caseNode->specFlags & AstSwitchCase::SPECFLAG_IS_FALSE)
                 {
-                    printf("0");
                     r0 = reserveRegisterRC(context);
-
                     EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
                 }
                 else

@@ -311,9 +311,10 @@ bool SemanticJob::collectLiteralsToSegment(JobContext* context, DataSegment* sto
     return true;
 }
 
-bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node)
+bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo)
 {
-    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (!typeInfo)
+        typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->sizeOf == 0)
         return true;
 
@@ -459,6 +460,20 @@ bool SemanticJob::collectConstantAssignment(SemanticContext* context, DataSegmen
         SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
         node->assignment->computedValue->storageOffset  = storageOffset;
         node->assignment->computedValue->storageSegment = storageSegment;
+    }
+
+    // :SliceLiteral
+    else if (node->assignment && typeInfo->isSlice() && node->assignment->castedTypeInfo && node->assignment->castedTypeInfo->isArray())
+    {
+        uint32_t storageOffsetValues;
+        SWAG_CHECK(collectAssignment(context, storageSegment, storageOffsetValues, node, node->assignment->castedTypeInfo));
+
+        SwagSlice* slice;
+        storageOffset  = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+        auto typeArray = CastTypeInfo<TypeInfoArray>(node->assignment->castedTypeInfo, TypeInfoKind::Array);
+        slice->buffer  = storageSegment->address(storageOffsetValues);
+        storageSegment->addInitPtr(storageOffset, storageOffsetValues, storageSegment->kind);
+        slice->count = typeArray->totalCount;
     }
     else if (node->assignment && typeInfo->isSlice())
     {
