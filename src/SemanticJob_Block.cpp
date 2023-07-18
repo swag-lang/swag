@@ -500,6 +500,20 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                                       { return Fmt(Nte(Nte0052), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo); });
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
                 }
+
+                // If the switch expression is constant, and the expression is constant too, then we can do the
+                // compare right now
+                if (node->ownerSwitch->expression->hasComputedValue() && oneExpression->hasComputedValue())
+                {
+                    SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
+                    if (node->computedValue->reg.b)
+                        node->specFlags |= AstSwitchCase::SPECFLAG_IS_TRUE;
+                    else
+                        node->specFlags |= AstSwitchCase::SPECFLAG_IS_FALSE;
+                    Allocator::free<ComputedValue>(node->computedValue);
+                    node->flags &= ~AST_VALUE_COMPUTED;
+                    node->computedValue = nullptr;
+                }
             }
 
             // switch without an expression : a case is a boolean expression

@@ -755,6 +755,8 @@ struct AstSwitch : public AstBreakable
 struct AstSwitchCase : public AstNode
 {
     static const uint16_t SPECFLAG_IS_DEFAULT = 0x0001;
+    static const uint16_t SPECFLAG_IS_FALSE   = 0x0002;
+    static const uint16_t SPECFLAG_IS_TRUE    = 0x0004;
 
     AstNode* clone(CloneContext& context);
 

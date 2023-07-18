@@ -216,6 +216,20 @@ struct VectorNative
         count--;
     }
 
+    void erase_ordered_byval(const T& val)
+    {
+        for (uint32_t i = 0; i < count; i++)
+        {
+            if (buffer[i] == val)
+            {
+                erase(i);
+                return;
+            }
+        }
+
+        SWAG_ASSERT(false);
+    }
+
     void erase_unordered_byval(const T& val)
     {
         for (uint32_t i = 0; i < count; i++)
