@@ -716,7 +716,6 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
 
         if (expr->hasComputedValue())
         {
-            SWAG_ASSERT(expr->computedValue);
             auto any                           = (ExportedAny*) expr->computedValue->getStorageAddr();
             expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->inheritComputedValue(expr);
