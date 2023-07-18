@@ -23,7 +23,8 @@ func toto(x: string)
     toto("a")
     @assert(G == 3)
 
-    let v = "coucou"
+    var v = "coucou"
+    v = "coucou1"
     toto(v)
     @assert(G == 5)
 }
