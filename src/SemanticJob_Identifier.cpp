@@ -796,44 +796,19 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifier->flags |= AST_L_VALUE;
 
         // Direct reference to a constexpr typeinfo
-        if (prevNode->isConstantGenTypeInfo())
+        if (prevNode->hasComputedValue())
         {
-            auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
-            if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
+            if (prevNode->typeInfo->isStruct() || prevNode->typeInfo->isPointer())
             {
-                prevNode->flags |= AST_NO_BYTECODE;
-                identifierRef->previousResolvedNode = context->node;
-                identifier->resolvedSymbolName      = overload->symbol;
-                identifier->resolvedSymbolOverload  = overload;
-                return true;
-            }
-        }
-
-        // Direct reference to a constexpr structure
-        if (prevNode->hasComputedValue() && prevNode->typeInfo->isStruct())
-        {
-            auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
-            if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
-            {
-                prevNode->flags |= AST_NO_BYTECODE;
-                identifierRef->previousResolvedNode = context->node;
-                identifier->resolvedSymbolName      = overload->symbol;
-                identifier->resolvedSymbolOverload  = overload;
-                return true;
-            }
-        }
-
-        // Direct reference to a pointer
-        if (prevNode->hasComputedValue() && prevNode->typeInfo->isPointer())
-        {
-            auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
-            if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
-            {
-                prevNode->flags |= AST_NO_BYTECODE;
-                identifierRef->previousResolvedNode = context->node;
-                identifier->resolvedSymbolName      = overload->symbol;
-                identifier->resolvedSymbolOverload  = overload;
-                return true;
+                auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
+                if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
+                {
+                    prevNode->flags |= AST_NO_BYTECODE;
+                    identifierRef->previousResolvedNode = context->node;
+                    identifier->resolvedSymbolName      = overload->symbol;
+                    identifier->resolvedSymbolOverload  = overload;
+                    return true;
+                }
             }
         }
 
@@ -842,21 +817,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
             auto arrayOver = arrayNode->array->resolvedSymbolOverload;
-            if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE))
+            if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE) && arrayNode->access->hasComputedValue())
             {
-                if (arrayNode->access->hasComputedValue())
+                auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
+                auto ptr     = (uint8_t*) arrayOver->computedValue.getStorageAddr();
+                ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
+                if (derefConstant(context, ptr, overload, arrayOver->computedValue.storageSegment))
                 {
-                    auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
-                    auto ptr     = (uint8_t*) arrayOver->computedValue.getStorageAddr();
-                    ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
-                    if (derefConstant(context, ptr, overload, arrayOver->computedValue.storageSegment))
-                    {
-                        prevNode->flags |= AST_NO_BYTECODE;
-                        identifierRef->previousResolvedNode = context->node;
-                        identifier->resolvedSymbolName      = overload->symbol;
-                        identifier->resolvedSymbolOverload  = overload;
-                        return true;
-                    }
+                    prevNode->flags |= AST_NO_BYTECODE;
+                    identifierRef->previousResolvedNode = context->node;
+                    identifier->resolvedSymbolName      = overload->symbol;
+                    identifier->resolvedSymbolOverload  = overload;
+                    return true;
                 }
             }
         }
