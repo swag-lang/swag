@@ -798,7 +798,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Direct reference to a constexpr typeinfo
         if (prevNode->isConstantGenTypeInfo())
         {
-            if (derefConstant(context, identifierRef, overload))
+            auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
+            if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
             {
                 prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;
@@ -811,7 +812,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Direct reference to a constexpr structure
         if (prevNode->hasComputedValue() && prevNode->typeInfo->isStruct())
         {
-            if (derefConstant(context, identifierRef, overload))
+            auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
+            if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
             {
                 prevNode->flags |= AST_NO_BYTECODE;
                 identifierRef->previousResolvedNode = context->node;

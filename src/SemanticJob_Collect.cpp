@@ -721,11 +721,3 @@ bool SemanticJob::derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOv
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
     return derefConstantValue(context, node, concreteType, storageSegment, ptr);
 }
-
-bool SemanticJob::derefConstant(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)
-{
-    auto prevNode = parent->previousResolvedNode;
-    SWAG_ASSERT(prevNode->computedValue);
-    SWAG_CHECK(derefConstant(context, (uint8_t*) prevNode->computedValue->getStorageAddr(), overload, prevNode->computedValue->storageSegment));
-    return true;
-}
