@@ -595,7 +595,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
     {
-#if false
+#if true
         if (node->assignment &&
             node->assignment->hasComputedValue() &&
             !node->assignment->typeInfo->isLambdaClosure() &&

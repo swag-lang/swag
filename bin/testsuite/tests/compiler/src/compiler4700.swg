@@ -1,4 +1,4 @@
-//#global skip
+#global skip
 
 enum TOTO
 {
@@ -12,8 +12,7 @@ enum TOTO
 {
 	using Swag
 
-	var t = @typeof(TOTO)
-    t = @typeof(TOTO)
+	const t = @typeof(TOTO)
 	let ptr = cast(const *TypeInfoEnum) t
 	@assert(@countof(ptr.values) == 3)
 

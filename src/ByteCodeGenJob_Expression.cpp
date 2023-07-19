@@ -287,6 +287,10 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         identifierRef   = identifier->identifierRef();
     }
+    else if (node->kind == AstNodeKind::ArrayPointerIndex)
+    {
+        identifierRef = (AstIdentifierRef*) node->findParent(AstNodeKind::IdentifierRef);
+    }
 
     // A reference to a segment
     if (node->forceTakeAddress() || (typeInfo->isPointer() && !typeInfo->isPointerNull()))

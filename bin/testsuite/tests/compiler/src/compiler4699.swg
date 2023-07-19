@@ -1,16 +1,14 @@
-//#global testerror
 #[Swag.ExportType("methods")]
 struct AA
 {
 
 }
 
-var G = 0
 impl AA
 {
-    func toto()
+    func toto(x: s32)->s32
     {
-        G = 1
+        return x
     }
 }
 
@@ -18,7 +16,6 @@ impl AA
 {
     const t = @typeof(AA)
     let f = t.methods[0].value
-    let fn = cast(func()) f
-    fn()
-    @assert(G == 1)
+    let fn = cast(func(s32)->s32) f
+    @assert(fn(666) == 666)
 }
