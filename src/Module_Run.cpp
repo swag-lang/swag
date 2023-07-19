@@ -310,12 +310,14 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
     // generated for expression (just for functions)
+    bc->dynStackSize = bc->stackSize;
     if (node->ownerScope)
     {
         if (!params || !params->inheritSp)
         {
             auto decSP = SemanticJob::getMaxStackSize(node);
             g_RunContext->decSP(decSP);
+            bc->dynStackSize += decSP;
 
             // :opAffectConstExpr
             // Reserve room on the stack to store the result

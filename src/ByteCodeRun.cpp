@@ -893,41 +893,53 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::GetFromStack8:
+        SWAG_ASSERT(ip->b.u32 + 1 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 1);
         registersRC[ip->a.u32].u64 = *(uint8_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::GetFromStack16:
+        SWAG_ASSERT(ip->b.u32 + 2 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 2);
         registersRC[ip->a.u32].u64 = *(uint16_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::GetFromStack32:
+        SWAG_ASSERT(ip->b.u32 + 4 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 4);
         registersRC[ip->a.u32].u64 = *(uint32_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::GetFromStack64:
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::GetFromStack8x2:
+        SWAG_ASSERT(ip->b.u32 + 1 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->d.u32 + 1 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 1);
         SWAG_ASSERT(context->bp + ip->d.u32 <= context->stack + g_CommandLine.stackSizeBC - 1);
         registersRC[ip->a.u32].u64 = *(uint8_t*) (context->bp + ip->b.u32);
         registersRC[ip->c.u32].u64 = *(uint8_t*) (context->bp + ip->d.u32);
         break;
     case ByteCodeOp::GetFromStack16x2:
+        SWAG_ASSERT(ip->b.u32 + 2 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->d.u32 + 2 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 2);
         SWAG_ASSERT(context->bp + ip->d.u32 <= context->stack + g_CommandLine.stackSizeBC - 2);
         registersRC[ip->a.u32].u64 = *(uint16_t*) (context->bp + ip->b.u32);
         registersRC[ip->c.u32].u64 = *(uint16_t*) (context->bp + ip->d.u32);
         break;
     case ByteCodeOp::GetFromStack32x2:
+        SWAG_ASSERT(ip->b.u32 + 4 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->d.u32 + 4 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 4);
         SWAG_ASSERT(context->bp + ip->d.u32 <= context->stack + g_CommandLine.stackSizeBC - 4);
         registersRC[ip->a.u32].u64 = *(uint32_t*) (context->bp + ip->b.u32);
         registersRC[ip->c.u32].u64 = *(uint32_t*) (context->bp + ip->d.u32);
         break;
     case ByteCodeOp::GetFromStack64x2:
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->d.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         SWAG_ASSERT(context->bp + ip->d.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
@@ -935,29 +947,34 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::GetIncFromStack64:
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->a.u32].u64 += ip->c.u64;
         break;
     case ByteCodeOp::GetIncFromStack64DeRef8:
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->a.u32].u64 += ip->c.u64;
         registersRC[ip->a.u32].u64 = *(uint8_t*) registersRC[ip->a.u32].pointer;
         break;
     case ByteCodeOp::GetIncFromStack64DeRef16:
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->a.u32].u64 += ip->c.u64;
         registersRC[ip->a.u32].u64 = *(uint16_t*) registersRC[ip->a.u32].pointer;
         break;
     case ByteCodeOp::GetIncFromStack64DeRef32:
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->a.u32].u64 += ip->c.u64;
         registersRC[ip->a.u32].u64 = *(uint32_t*) registersRC[ip->a.u32].pointer;
         break;
     case ByteCodeOp::GetIncFromStack64DeRef64:
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->a.u32].u64 += ip->c.u64;
@@ -965,21 +982,29 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::CopyStack8:
+        SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->b.u32 + 1 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.stackSizeBC - 1);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 1);
         *(uint8_t*) (context->bp + ip->a.u32) = *(uint8_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::CopyStack16:
+        SWAG_ASSERT(ip->a.u32 + 2 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->b.u32 + 2 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.stackSizeBC - 2);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 2);
         *(uint16_t*) (context->bp + ip->a.u32) = *(uint16_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::CopyStack32:
+        SWAG_ASSERT(ip->a.u32 + 4 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->b.u32 + 4 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.stackSizeBC - 4);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 4);
         *(uint32_t*) (context->bp + ip->a.u32) = *(uint32_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::CopyStack64:
+        SWAG_ASSERT(ip->a.u32 + 8 <= context->bc->dynStackSize);
+        SWAG_ASSERT(ip->b.u32 + 8 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.stackSizeBC - 8);
         *(uint64_t*) (context->bp + ip->a.u32) = *(uint64_t*) (context->bp + ip->b.u32);
@@ -2336,24 +2361,28 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::SetAtStackPointer8:
     {
+        SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
         auto ptr        = context->bp + ip->a.u32;
         *(uint8_t*) ptr = IMMB_U8(ip);
         break;
     }
     case ByteCodeOp::SetAtStackPointer16:
     {
+        SWAG_ASSERT(ip->a.u32 + 2 <= context->bc->dynStackSize);
         auto ptr         = context->bp + ip->a.u32;
         *(uint16_t*) ptr = IMMB_U16(ip);
         break;
     }
     case ByteCodeOp::SetAtStackPointer32:
     {
+        SWAG_ASSERT(ip->a.u32 + 4 <= context->bc->dynStackSize);
         auto ptr         = context->bp + ip->a.u32;
         *(uint32_t*) ptr = IMMB_U32(ip);
         break;
     }
     case ByteCodeOp::SetAtStackPointer64:
     {
+        SWAG_ASSERT(ip->a.u32 + 8 <= context->bc->dynStackSize);
         auto ptr         = context->bp + ip->a.u32;
         *(uint64_t*) ptr = IMMB_U64(ip);
         break;
@@ -2362,10 +2391,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::SetAtStackPointer8x2:
     {
         {
+            SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
             auto ptr        = context->bp + ip->a.u32;
             *(uint8_t*) ptr = IMMB_U8(ip);
         }
         {
+            SWAG_ASSERT(ip->c.u32 + 1 <= context->bc->dynStackSize);
             auto ptr        = context->bp + ip->c.u32;
             *(uint8_t*) ptr = IMMD_U8(ip);
         }
@@ -2374,10 +2405,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::SetAtStackPointer16x2:
     {
         {
+            SWAG_ASSERT(ip->a.u32 + 2 <= context->bc->dynStackSize);
             auto ptr         = context->bp + ip->a.u32;
             *(uint16_t*) ptr = IMMB_U16(ip);
         }
         {
+            SWAG_ASSERT(ip->c.u32 + 2 <= context->bc->dynStackSize);
             auto ptr         = context->bp + ip->c.u32;
             *(uint16_t*) ptr = IMMD_U16(ip);
         }
@@ -2386,10 +2419,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::SetAtStackPointer32x2:
     {
         {
+            SWAG_ASSERT(ip->a.u32 + 4 <= context->bc->dynStackSize);
             auto ptr         = context->bp + ip->a.u32;
             *(uint32_t*) ptr = IMMB_U32(ip);
         }
         {
+            SWAG_ASSERT(ip->c.u32 + 4 <= context->bc->dynStackSize);
             auto ptr         = context->bp + ip->c.u32;
             *(uint32_t*) ptr = IMMD_U32(ip);
         }
@@ -2398,10 +2433,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::SetAtStackPointer64x2:
     {
         {
+            SWAG_ASSERT(ip->a.u32 + 8 <= context->bc->dynStackSize);
             auto ptr         = context->bp + ip->a.u32;
             *(uint64_t*) ptr = IMMB_U64(ip);
         }
         {
+            SWAG_ASSERT(ip->c.u32 + 8 <= context->bc->dynStackSize);
             auto ptr         = context->bp + ip->c.u32;
             *(uint64_t*) ptr = IMMD_U64(ip);
         }

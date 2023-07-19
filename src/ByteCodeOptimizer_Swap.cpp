@@ -3,6 +3,8 @@
 
 bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 {
+    return true;
+
     bool restart = true;
     while (restart)
     {
@@ -12,21 +14,24 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
-            case ByteCodeOp::MakeStackPointer:
-            case ByteCodeOp::GetFromStack8:
+            /*case ByteCodeOp::GetFromStack8:
             case ByteCodeOp::GetFromStack16:
             case ByteCodeOp::GetFromStack32:
             case ByteCodeOp::GetFromStack64:
+            case ByteCodeOp::GetIncFromStack64:
+                break;*/
+
+            case ByteCodeOp::MakeStackPointer:
             case ByteCodeOp::GetParam8:
             case ByteCodeOp::GetParam16:
             case ByteCodeOp::GetParam32:
             case ByteCodeOp::GetParam64:
             case ByteCodeOp::GetIncParam64:
-            case ByteCodeOp::GetIncFromStack64:
             case ByteCodeOp::SetImmediate32:
             case ByteCodeOp::SetImmediate64:
             case ByteCodeOp::MakeConstantSegPointer:
                 break;
+
             case ByteCodeOp::IncPointer64:
                 if (!(ip->flags & BCI_IMM_B))
                     continue;

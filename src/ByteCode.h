@@ -237,6 +237,8 @@ struct ByteCode
     double         profilePerCall   = 0;
     Set<ByteCode*> profileChilds;
 
+    uint32_t stackSize             = 0;
+    uint32_t dynStackSize          = 0;
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;
     int32_t  maxCallResults        = 0;

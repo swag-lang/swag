@@ -15,8 +15,10 @@ impl CStr
 }
 
 //#[Swag.Macro]
+//#[Swag.PrintBc]
 func cstr(x: string)->CStr
 {
+    //@breakpoint()
     var tmp: retval = undefined
     let countof = @countof(x)
     let dataof = @dataof(x)
@@ -27,7 +29,6 @@ func cstr(x: string)->CStr
     return tmp
 }
 
-//#[Swag.PrintBc]
 #test
 {
     var v = cstr("toto")

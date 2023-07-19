@@ -2237,6 +2237,9 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize > g_CommandLine.stackSizeRT)
         Report::report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine.stackSizeRT).c_str())});
 
+    context->bc->stackSize    = funcNode->stackSize;
+    context->bc->dynStackSize = funcNode->stackSize;
+
     if (funcNode->stackSize == 0)
         EMIT_INST0(context, ByteCodeOp::SetBP);
     else
