@@ -134,6 +134,8 @@ bool ByteCodeGenJob::emitImplicitKindOf(ByteCodeGenContext* context)
 {
     auto node = context->node;
     SWAG_ASSERT(node->resultRegisterRC.size() == 2);
+
+    ensureCanBeChangedRC(context, node->resultRegisterRC);
     auto rc = node->resultRegisterRC[1];
     freeRegisterRC(context, node->resultRegisterRC[0]);
     node->resultRegisterRC = rc;
@@ -146,6 +148,7 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
     auto front = node->childs.front();
     SWAG_ASSERT(front->resultRegisterRC.size() == 2);
 
+    ensureCanBeChangedRC(context, front->resultRegisterRC);
     node->resultRegisterRC         = front->resultRegisterRC[1];
     node->parent->resultRegisterRC = node->resultRegisterRC;
     freeRegisterRC(context, front->resultRegisterRC[0]);

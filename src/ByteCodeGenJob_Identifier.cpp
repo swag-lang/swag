@@ -427,6 +427,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         if (node->isSilentCall())
         {
+            SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
             node->resultRegisterRC = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
@@ -434,8 +435,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (node->semFlags & SEMFLAG_FROM_REF)
         {
             node->resultRegisterRC = reserveRegisterRC(context);
-            auto inst              = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
-            inst->b.u64            = resolved->computedValue.storageOffset;
+            if (resolved->flags & OVERLOAD_HINT_AS_REG)
+            {
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->registers[0]);
+            }
+            else
+            {
+                auto inst   = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
+                inst->b.u64 = resolved->computedValue.storageOffset;
+            }
+
             if (!node->forceTakeAddress())
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
         }
@@ -444,6 +453,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->isListArray() ||
                  typeInfo->isStruct())
         {
+            SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64            = resolved->computedValue.storageOffset;
@@ -451,12 +461,21 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
-            node->resultRegisterRC = reserveRegisterRC(context);
-            auto inst              = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64            = resolved->computedValue.storageOffset;
-            inst->c.pointer        = (uint8_t*) resolved;
-            if (node->parent->flags & AST_ARRAY_POINTER_REF)
-                EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            if (resolved->flags & OVERLOAD_HINT_AS_REG)
+            {
+                node->resultRegisterRC            = resolved->registers[0];
+                node->resultRegisterRC.cannotFree = true;
+                SWAG_ASSERT(node->parent->flags & AST_ARRAY_POINTER_REF);
+            }
+            else
+            {
+                node->resultRegisterRC = reserveRegisterRC(context);
+                auto inst              = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+                inst->b.u64            = resolved->computedValue.storageOffset;
+                inst->c.pointer        = (uint8_t*) resolved;
+                if (node->parent->flags & AST_ARRAY_POINTER_REF)
+                    EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
@@ -496,53 +515,48 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isClosure())
         {
+            SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64            = resolved->computedValue.storageOffset;
             inst->c.pointer        = (uint8_t*) resolved;
         }
+        else if (resolved->flags & OVERLOAD_HINT_AS_REG)
+        {
+            node->resultRegisterRC            = resolved->registers;
+            node->resultRegisterRC.cannotFree = true;
+        }
+        else if (typeInfo->numRegisters() == 2)
+        {
+            reserveLinearRegisterRC2(context, node->resultRegisterRC);
+            auto inst0   = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0]);
+            inst0->b.u64 = resolved->computedValue.storageOffset;
+            auto inst1   = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1]);
+            inst1->b.u64 = resolved->computedValue.storageOffset + 8;
+        }
         else
         {
-            if (resolved->flags & OVERLOAD_HINT_AS_REG)
+            node->resultRegisterRC = reserveRegisterRC(context);
+            SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
+            ByteCodeInstruction* inst = nullptr;
+            switch (typeInfo->sizeOf)
             {
-                node->resultRegisterRC            = resolved->registers;
-                node->resultRegisterRC.cannotFree = true;
+            case 1:
+                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack8, node->resultRegisterRC);
+                break;
+            case 2:
+                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack16, node->resultRegisterRC);
+                break;
+            case 4:
+                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack32, node->resultRegisterRC);
+                break;
+            case 8:
+                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
+                break;
             }
-            else
-            {
-                if (typeInfo->numRegisters() == 2)
-                {
-                    reserveLinearRegisterRC2(context, node->resultRegisterRC);
-                    auto inst0   = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0]);
-                    inst0->b.u64 = resolved->computedValue.storageOffset;
-                    auto inst1   = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1]);
-                    inst1->b.u64 = resolved->computedValue.storageOffset + 8;
-                }
-                else
-                {
-                    node->resultRegisterRC = reserveRegisterRC(context);
-                    SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
-                    ByteCodeInstruction* inst = nullptr;
-                    switch (typeInfo->sizeOf)
-                    {
-                    case 1:
-                        inst = EMIT_INST1(context, ByteCodeOp::GetFromStack8, node->resultRegisterRC);
-                        break;
-                    case 2:
-                        inst = EMIT_INST1(context, ByteCodeOp::GetFromStack16, node->resultRegisterRC);
-                        break;
-                    case 4:
-                        inst = EMIT_INST1(context, ByteCodeOp::GetFromStack32, node->resultRegisterRC);
-                        break;
-                    case 8:
-                        inst = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
-                        break;
-                    }
 
-                    inst->b.u64 = resolved->computedValue.storageOffset;
-                    SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
-                }
-            }
+            inst->b.u64 = resolved->computedValue.storageOffset;
+            SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 
         identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;

@@ -148,16 +148,19 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 isLet = false;
             }
 
-            isLet = false; // TEMP, no optim for now
-            if (isLet)
+            //if (context->sourceFile->name != "compiler995.swg")
             {
-                SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
-                SWAG_ASSERT(resolved->registers.size() == 0);
+                int a = 0;
+                isLet = false;
+            }
 
+            if (isLet && !(resolved->flags & OVERLOAD_HINT_AS_REG))
+            {
+                SWAG_ASSERT(resolved->registers.size() == 0);
                 context->bc->staticRegs += node->resultRegisterRC.size();
                 resolved->flags |= OVERLOAD_HINT_AS_REG;
-                resolved->registers               = node->resultRegisterRC;
                 node->resultRegisterRC.cannotFree = true;
+                resolved->registers               = node->resultRegisterRC;
             }
 
             // Store value to stack
