@@ -49,6 +49,10 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             auto any                   = (ExportedAny*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !any->type;
         }
+        else if (leftTypeInfo->isPointerNull())
+        {
+            node->computedValue->reg.b = right->typeInfo->isPointerNull();
+        }
         else if (leftTypeInfo->isPointer())
         {
             node->computedValue->reg.b = left->computedValue->storageSegment == right->computedValue->storageSegment &&

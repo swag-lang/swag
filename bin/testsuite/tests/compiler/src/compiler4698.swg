@@ -1,4 +1,3 @@
-#global skip
 #test
 {
 	const z = "null"
