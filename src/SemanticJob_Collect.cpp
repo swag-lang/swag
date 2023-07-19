@@ -569,15 +569,10 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         return true;
     }
 
-    return derefConstantValue(context, node, typeInfo->kind, typeInfo->nativeType, ptr);
-}
-
-bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr)
-{
-    if (kind != TypeInfoKind::Native)
+    if (typeInfo->kind != TypeInfoKind::Native)
         return false;
 
-    switch (nativeKind)
+    switch (typeInfo->nativeType)
     {
     case NativeTypeKind::String:
     {
