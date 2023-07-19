@@ -547,25 +547,68 @@ bool SemanticJob::collectConstantSlice(SemanticContext* context, AstNode* assign
     return true;
 }
 
-bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr)
+bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr)
 {
-    // Dereferencing a type descriptor. Convert it to a literal.
     if (typeInfo->isPointerToTypeInfo())
     {
-        auto value = *(uint8_t**) ptr;
         node->setFlagsValueIsComputed();
-        node->computedValue->storageSegment = storageSegment;
-        node->computedValue->storageOffset  = storageSegment->offset(value);
-        node->flags |= AST_VALUE_IS_GENTYPEINFO;
+        if (*(uint8_t**) ptr == nullptr)
+        {
+            node->typeInfo = g_TypeMgr->typeInfoNull;
+        }
+        else
+        {
+            // :BackPtrOffset
+            node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
+            node->computedValue->storageSegment = storageSegment;
+            setupIdentifierRef(context, node);
+            node->flags |= AST_VALUE_IS_GENTYPEINFO;
+        }
+
         return true;
     }
 
-    // Any
-    if (typeInfo->isAny())
+    if (typeInfo->isPointer())
+    {
+        return false;
+    }
+
+    if (typeInfo->isArray())
     {
         node->setFlagsValueIsComputed();
+        node->computedValue->storageOffset  = storageSegment->offset(ptr);
         node->computedValue->storageSegment = storageSegment;
-        node->computedValue->storageOffset  = storageSegment->offset((uint8_t*) ptr);
+        node->typeInfo                      = typeInfo;
+        return true;
+    }
+
+    if (typeInfo->isSlice())
+    {
+        // Convert slice to a static constant array
+        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto ptrSlice  = (SwagSlice*) ptr;
+        node->setFlagsValueIsComputed();
+        node->computedValue->storageOffset  = ptrSlice->buffer ? storageSegment->offset((uint8_t*) ptrSlice->buffer) : UINT32_MAX;
+        node->computedValue->storageSegment = storageSegment;
+        node->computedValue->reg.u64        = ptrSlice->count;
+        auto typeArray                      = makeType<TypeInfoArray>();
+        typeArray->count                    = (uint32_t) ((SwagSlice*) ptr)->count;
+        typeArray->totalCount               = typeArray->count;
+        typeArray->pointedType              = typeSlice->pointedType;
+        typeArray->finalType                = typeSlice->pointedType;
+        typeArray->sizeOf                   = typeArray->totalCount * typeArray->pointedType->sizeOf;
+        typeArray->computeName();
+        node->typeInfo = typeArray;
+        return true;
+    }
+
+    if (typeInfo->isStruct())
+    {
+        node->setFlagsValueIsComputed();
+        node->computedValue->storageOffset  = storageSegment->offset(ptr);
+        node->computedValue->storageSegment = storageSegment;
+        node->typeInfo                      = typeInfo;
+        setupIdentifierRef(context, node);
         return true;
     }
 
@@ -583,6 +626,12 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
             node->typeInfo = g_TypeMgr->typeInfoString;
         break;
     }
+
+    case NativeTypeKind::Any:
+        node->setFlagsValueIsComputed();
+        node->computedValue->storageSegment = storageSegment;
+        node->computedValue->storageOffset  = storageSegment->offset((uint8_t*) ptr);
+        break;
 
     case NativeTypeKind::S8:
         node->setFlagsValueIsComputed();
@@ -658,85 +707,19 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
         break;
 
     default:
-        break;
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 bool SemanticJob::derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment)
 {
     auto node = context->node;
     ptr += overload->computedValue.storageOffset;
-    node->typeInfo = overload->typeInfo;
-
+    node->typeInfo    = overload->typeInfo;
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
-    if (concreteType->isPointerToTypeInfo())
-    {
-        node->setFlagsValueIsComputed();
-        if (*(uint8_t**) ptr == nullptr)
-        {
-            node->typeInfo = g_TypeMgr->typeInfoNull;
-        }
-        else
-        {
-            // :BackPtrOffset
-            node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
-            node->computedValue->storageSegment = storageSegment;
-            setupIdentifierRef(context, node);
-        }
-
-        return true;
-    }
-
-    if (concreteType->isPointer())
-    {
-        return false;
-    }
-
-    if (concreteType->isArray())
-    {
-        node->setFlagsValueIsComputed();
-        node->computedValue->storageOffset  = storageSegment->offset(ptr);
-        node->computedValue->storageSegment = storageSegment;
-        node->typeInfo                      = concreteType;
-        return true;
-    }
-
-    if (concreteType->isSlice())
-    {
-        // Convert slice to a static constant array
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
-        auto ptrSlice  = (SwagSlice*) ptr;
-        node->setFlagsValueIsComputed();
-        node->computedValue->storageOffset  = ptrSlice->buffer ? storageSegment->offset((uint8_t*) ptrSlice->buffer) : UINT32_MAX;
-        node->computedValue->storageSegment = storageSegment;
-        node->computedValue->reg.u64        = ptrSlice->count;
-        auto typeArray                      = makeType<TypeInfoArray>();
-        typeArray->count                    = (uint32_t) ((SwagSlice*) ptr)->count;
-        typeArray->totalCount               = typeArray->count;
-        typeArray->pointedType              = typeSlice->pointedType;
-        typeArray->finalType                = typeSlice->pointedType;
-        typeArray->sizeOf                   = typeArray->totalCount * typeArray->pointedType->sizeOf;
-        typeArray->computeName();
-        node->typeInfo = typeArray;
-        return true;
-    }
-
-    if (concreteType->isStruct())
-    {
-        node->setFlagsValueIsComputed();
-        node->computedValue->storageOffset  = storageSegment->offset(ptr);
-        node->computedValue->storageSegment = storageSegment;
-        node->typeInfo                      = concreteType;
-        setupIdentifierRef(context, node);
-        return true;
-    }
-
-    if (derefConstantValue(context, node, concreteType, storageSegment, ptr))
-        return true;
-
-    return false;
+    return derefConstantValue(context, node, concreteType, storageSegment, ptr);
 }
 
 bool SemanticJob::derefConstant(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload)

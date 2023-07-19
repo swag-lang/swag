@@ -2642,7 +2642,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             {
                 fromNode->typeInfo       = newTypeInfo;
                 fromNode->castedTypeInfo = nullptr;
-                SWAG_CHECK(SemanticJob::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue->storageSegment, any->value));
+                SWAG_CHECK(SemanticJob::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue->storageSegment, (uint8_t*) any->value));
             }
 
             return true;

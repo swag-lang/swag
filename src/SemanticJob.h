@@ -279,7 +279,7 @@ struct SemanticJob : public Job
     static void         inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
     static void         inheritAttributesFromOwnerFunc(AstNode* child);
     static bool         setupIdentifierRef(SemanticContext* context, AstNode* node);
-    static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr);
+    static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
     static bool         derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
     static bool         derefConstant(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static uint32_t     getMaxStackSize(AstNode* node);
