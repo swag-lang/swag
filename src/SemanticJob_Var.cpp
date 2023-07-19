@@ -593,9 +593,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     uint32_t symbolFlags = 0;
 
+    // Transform let to constant if possible
     if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
     {
-#if true
         if (node->assignment &&
             node->assignment->hasComputedValue() &&
             !node->assignment->typeInfo->isLambdaClosure() &&
@@ -605,8 +605,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             isCompilerConstant = true;
         }
         else
-#endif
-        symbolFlags |= OVERLOAD_IS_LET;
+        {
+            symbolFlags |= OVERLOAD_IS_LET;
+        }
     }
 
     if (isCompilerConstant)
