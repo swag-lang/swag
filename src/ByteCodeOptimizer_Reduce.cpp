@@ -2695,20 +2695,6 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
         break;
 
     case ByteCodeOp::MakeStackPointer:
-        // Occurs when setting a string.
-        if (ip[2].op == ByteCodeOp::IncPointer64 &&
-            ip[3].op == ByteCodeOp::SetAtPointer64 &&
-            ip[0].a.u32 == ip[2].a.u32 &&
-            ip[2].c.u32 == ip[3].a.u32 &&
-            ip[2].a.u32 == ip[2].c.u32 &&
-            ip[2].flags & BCI_IMM_B &&
-            ip[2].b.s64 > 0)
-        {
-            SET_OP(ip + 3, ByteCodeOp::SetAtStackPointer64);
-            ip[3].a.u32 = ip[0].b.u32 + ip[2].b.u32;
-            break;
-        }
-
         // MakeStackPointer Reg, ImmB
         // IncPointer64     Reg, Reg, ImmB
         // We can change the offset of the MakeStackPointer and remove the IncPointer

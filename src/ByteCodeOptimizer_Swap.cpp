@@ -3,8 +3,6 @@
 
 bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 {
-    return true;
-
     bool restart = true;
     while (restart)
     {
