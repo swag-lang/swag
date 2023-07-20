@@ -645,7 +645,7 @@ bool ModuleCfgManager::execute()
                 pathSrc.append(m.second->name.c_str());
                 if (!filesystem::exists(pathSrc, err) && !filesystem::create_directories(pathSrc, err))
                 {
-                    Report::errorOS(Fmt(Err(Err0604), pathSrc.c_str()));
+                    Report::errorOS(Fmt(Err(Err0604), pathSrc.string().c_str()));
                     ok = false;
                     continue;
                 }

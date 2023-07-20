@@ -92,7 +92,7 @@ JobResult FetchModuleFileSystemJob::execute()
 
             if (!filesystem::remove(n))
             {
-                Report::errorOS(Fmt(Err(Err0603), n.c_str()));
+                Report::errorOS(Fmt(Err(Err0603), n.string().c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -110,7 +110,7 @@ JobResult FetchModuleFileSystemJob::execute()
         error_code err;
         if (!filesystem::exists(folder, err) && !filesystem::create_directories(folder, err))
         {
-            Report::errorOS(Fmt(Err(Err0604), folder.c_str()));
+            Report::errorOS(Fmt(Err(Err0604), folder.string().c_str()));
             return JobResult::ReleaseJob;
         }
 

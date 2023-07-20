@@ -23,7 +23,7 @@ JobResult CopyFileJob::execute()
     if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
     {
         module->numErrors++;
-        Report::errorOS(Fmt(Err(Err0502), sourcePath.c_str()));
+        Report::errorOS(Fmt(Err(Err0502), sourcePath.string().c_str()));
         return JobResult::ReleaseJob;
     }
 
