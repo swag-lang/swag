@@ -65,9 +65,11 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
 
 bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
 {
-    AstNode* node          = context->node;
-    auto     front         = node->childs[0];
+    AstNode* node  = context->node;
+    auto     front = node->childs[0];
+
     node->resultRegisterRC = front->resultRegisterRC;
+    ensureCanBeChangedRC(context, node->resultRegisterRC);
 
     if (!(node->semFlags & SEMFLAG_EMIT_OP))
     {
