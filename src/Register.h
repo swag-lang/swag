@@ -84,7 +84,12 @@ struct RegisterList
         cannotFree   = false;
     }
 
-    bool operator==(const RegisterList& other)
+    bool operator==(const RegisterList& other) const
+    {
+        return isSame(other);
+    }
+
+    bool isSame(const RegisterList& other) const
     {
         if (countResults != other.countResults)
             return false;
