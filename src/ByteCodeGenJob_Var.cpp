@@ -139,11 +139,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!node->typeInfo->isNativeIntegerOrRune() &&
                 !node->typeInfo->isNativeFloat() &&
                 !node->typeInfo->isPointer() &&
-                !node->typeInfo->isInterface() &&
-                !node->typeInfo->isBool() &&
-                !node->typeInfo->isAny() &&
-                !node->typeInfo->isString() &&
-                !node->typeInfo->isSlice())
+                !node->typeInfo->isBool())
             {
                 isLet = false;
             }

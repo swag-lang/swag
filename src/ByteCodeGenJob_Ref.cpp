@@ -108,6 +108,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     // Slice is already dereferenced ? (from function parameter)
     if (node->array->resultRegisterRC.size() != 2)
     {
+        ensureCanBeChangedRC(context, node->array->resultRegisterRC);
         node->array->resultRegisterRC += reserveRegisterRC(context);
         EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
     }
