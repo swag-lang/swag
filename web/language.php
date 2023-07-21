@@ -1218,9 +1218,9 @@ You can use the instrinsic <code>@stringof</code> to return at compile time the 
 <p>
 To declare a variable, use the <code>let</code> or <code>var</code> keyword, followed by <code>:</code> and then the type. </p>
 <p>
-<code>let</code> is used for a variable that cannot be changed after the initial set. </p>
+<code>let</code> is used for a variable that cannot be changed after the initial affectation. </p>
 <p>
-<code>var</code> is used for a variable that can be changed after the initial set. </p>
+<code>var</code> is used for a variable that can be changed again after the initial affectation. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#6A9955">// Variable 'a' is of type 'u32' and its value is '1'. It cannot be changed.</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">u32</span><span style="color:#0"> = </span><span style="color:#74A35B">1</span><span style="color:#0">
@@ -1715,7 +1715,7 @@ A slice is a pointer on a buffer of datas, and a <code>u64</code> to count the n
 
   You can create a slice with your own <code>pointer</code> and <code>count</code> using <code>@mkslice</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> array: [</span><span style="color:#74A35B">4</span><span style="color:#0">] </span><span style="color:#ED9A11">u32</span><span style="color:#0"> = [</span><span style="color:#74A35B">10</span><span style="color:#0">, </span><span style="color:#74A35B">20</span><span style="color:#0">, </span><span style="color:#74A35B">30</span><span style="color:#0">, </span><span style="color:#74A35B">40</span><span style="color:#0">]
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">4</span><span style="color:#0">] </span><span style="color:#ED9A11">u32</span><span style="color:#0"> = [</span><span style="color:#74A35B">10</span><span style="color:#0">, </span><span style="color:#74A35B">20</span><span style="color:#0">, </span><span style="color:#74A35B">30</span><span style="color:#0">, </span><span style="color:#74A35B">40</span><span style="color:#0">]
 
     </span><span style="color:#6A9955">// Creates a slice of 'array' (a view, or subpart) starting at index 2, with 2 elements.</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> slice: [..] </span><span style="color:#ED9A11">u32</span><span style="color:#0"> = </span><span style="color:#B4B44A">@mkslice</span><span style="color:#0">(&array[</span><span style="color:#74A35B">0</span><span style="color:#0">] + </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">)
@@ -1802,7 +1802,7 @@ A slice is a pointer on a buffer of datas, and a <code>u64</code> to count the n
 
   You can transform a pointer to a slice. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> arr = [</span><span style="color:#74A35B">10</span><span style="color:#0">, </span><span style="color:#74A35B">20</span><span style="color:#0">, </span><span style="color:#74A35B">30</span><span style="color:#0">, </span><span style="color:#74A35B">40</span><span style="color:#0">]
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> arr = [</span><span style="color:#74A35B">10</span><span style="color:#0">, </span><span style="color:#74A35B">20</span><span style="color:#0">, </span><span style="color:#74A35B">30</span><span style="color:#0">, </span><span style="color:#74A35B">40</span><span style="color:#0">]
     </span><span style="color:#3186CD">let</span><span style="color:#0"> ptr = &arr[</span><span style="color:#74A35B">2</span><span style="color:#0">]
     </span><span style="color:#3186CD">let</span><span style="color:#0"> slice = ptr[</span><span style="color:#74A35B">0</span><span style="color:#0">..</span><span style="color:#74A35B">1</span><span style="color:#0">]
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(slice[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#74A35B">30</span><span style="color:#0">)
@@ -1830,14 +1830,14 @@ A slice is a pointer on a buffer of datas, and a <code>u64</code> to count the n
 
   You can take the address of something with <code>&</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> arr = </span><span style="color:#74A35B">1</span><span style="color:#0">
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> arr = </span><span style="color:#74A35B">1</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> ptr = &arr </span><span style="color:#6A9955">// Take the address of the variable 'arr'</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(ptr) == </span><span style="color:#3186CD">const</span><span style="color:#0"> *</span><span style="color:#ED9A11">s32</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(ptr) == *</span><span style="color:#ED9A11">s32</span><span style="color:#0">)
 }</span></code></pre><p>
 
   You can get the pointed value with <code>dref</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> arr = </span><span style="color:#74A35B">42</span><span style="color:#0">
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> arr = </span><span style="color:#74A35B">42</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> ptr = &arr
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">dref</span><span style="color:#0"> ptr == </span><span style="color:#74A35B">42</span><span style="color:#0">)
 }</span></code></pre><p>
@@ -1876,7 +1876,7 @@ If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multip
 
   As pointer arithmetic is enabled, you can dereference that kind of pointer by index. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> arr = [</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">]
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> arr = [</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">]
     </span><span style="color:#3186CD">let</span><span style="color:#0"> ptr = &arr[</span><span style="color:#74A35B">0</span><span style="color:#0">]
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(ptr) == ^</span><span style="color:#ED9A11">s32</span><span style="color:#0">)
 
@@ -1966,17 +1966,19 @@ Note that declaring a tuple type or a struct type is equivalent to a constant re
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> a: </span><span style="color:#ED9A11">any</span><span style="color:#0">
 
-    </span><span style="color:#6A9955">// Store a s32</span><span style="color:#0">
+    </span><span style="color:#6A9955">// Store a 's32' literal value</span><span style="color:#0">
     a = </span><span style="color:#74A35B">6</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">6</span><span style="color:#0">)
 
-    </span><span style="color:#6A9955">// Then store a string instead</span><span style="color:#0">
+    </span><span style="color:#6A9955">// In order to reference the value inside the 'any', you need to cast to the wanted type.</span><span style="color:#0">
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) a == </span><span style="color:#74A35B">6</span><span style="color:#0">)
+
+    </span><span style="color:#6A9955">// Then now we store a string instead of the 's32' value</span><span style="color:#0">
     a = </span><span style="color:#BB6643">"string"</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#BB6643">"string"</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">string</span><span style="color:#0">) a == </span><span style="color:#BB6643">"string"</span><span style="color:#0">)
 
-    </span><span style="color:#6A9955">// Then store a bool instead</span><span style="color:#0">
+    </span><span style="color:#6A9955">// Then we store a bool instead</span><span style="color:#0">
     a = </span><span style="color:#3186CD">true</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#3186CD">true</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">bool</span><span style="color:#0">) a == </span><span style="color:#3186CD">true</span><span style="color:#0">)
 }</span></code></pre><p>
 
   <code>any</code> is in fact a pointer to the value, and a <code>typeinfo</code>. <code>@dataof</code> can be used to retrieve the pointer to the value. </p>
@@ -2004,10 +2006,10 @@ Note that declaring a tuple type or a struct type is equivalent to a constant re
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@kindof</span><span style="color:#0">(array[</span><span style="color:#74A35B">2</span><span style="color:#0">]) == </span><span style="color:#ED9A11">f32</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@kindof</span><span style="color:#0">(array[</span><span style="color:#74A35B">3</span><span style="color:#0">]) == </span><span style="color:#ED9A11">string</span><span style="color:#0">)
 
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#3186CD">true</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#74A35B">2</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">2</span><span style="color:#0">] == </span><span style="color:#74A35B">3.0</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">3</span><span style="color:#0">] == </span><span style="color:#BB6643">"4"</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">bool</span><span style="color:#0">) array[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#3186CD">true</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) array[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#74A35B">2</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">f32</span><span style="color:#0">) array[</span><span style="color:#74A35B">2</span><span style="color:#0">] == </span><span style="color:#74A35B">3.0</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">string</span><span style="color:#0">) array[</span><span style="color:#74A35B">3</span><span style="color:#0">] == </span><span style="color:#BB6643">"4"</span><span style="color:#0">)
 }</span></code></pre><p>
 
   An <code>any</code> can be set to null, and tested against null. </p>
@@ -2016,10 +2018,10 @@ Note that declaring a tuple type or a struct type is equivalent to a constant re
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#3186CD">null</span><span style="color:#0">)
     x = </span><span style="color:#74A35B">6</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x != </span><span style="color:#3186CD">null</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">6</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) x == </span><span style="color:#74A35B">6</span><span style="color:#0">)
     x = </span><span style="color:#BB6643">"string"</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x != </span><span style="color:#3186CD">null</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#BB6643">"string"</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">string</span><span style="color:#0">) x == </span><span style="color:#BB6643">"string"</span><span style="color:#0">)
     x = </span><span style="color:#3186CD">null</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#3186CD">null</span><span style="color:#0">)
 }</span></code></pre>

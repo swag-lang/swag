@@ -163,16 +163,16 @@ func addLine(line: string)
         {
             var linkName: String
             i += 1
-            while line[i] and line[i] != "]"'u8
+            while i < @countof(line) and line[i] != "]"'u8
             {
                 linkName += line[i]
                 i += 1
             }
 
-            if line[i]
+            if i < @countof(line)
                 i += 1
 
-            if line[i] != "("'u8
+            if i >= @countof(line) or line[i] != "("'u8
             {
                 g_Buf += "["
                 g_Buf += linkName

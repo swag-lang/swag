@@ -12,12 +12,12 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
-            /*case ByteCodeOp::GetFromStack8:
-            case ByteCodeOp::GetFromStack16:
-            case ByteCodeOp::GetFromStack32:
-            case ByteCodeOp::GetFromStack64:
-            case ByteCodeOp::GetIncFromStack64:
-                break;*/
+                /*case ByteCodeOp::GetFromStack8:
+                case ByteCodeOp::GetFromStack16:
+                case ByteCodeOp::GetFromStack32:
+                case ByteCodeOp::GetFromStack64:
+                case ByteCodeOp::GetIncFromStack64:
+                    break;*/
 
             case ByteCodeOp::MakeStackPointer:
             case ByteCodeOp::GetParam8:

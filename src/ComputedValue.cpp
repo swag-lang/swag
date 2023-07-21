@@ -3,7 +3,7 @@
 #include "DataSegment.h"
 
 void* ComputedValue::getStorageAddr() const
-{    
+{
     SWAG_ASSERT(storageSegment);
     SWAG_ASSERT(storageOffset != UINT32_MAX);
     return storageSegment->address(storageOffset);
