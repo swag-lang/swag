@@ -1,11 +1,11 @@
 var G = 0
 var G1 = 1
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #[Swag.Optim("", false)]
 #test
 {
-//@breakpoint()
+    //@breakpoint()
 
     let firstIdx = G
     let lastIdx = G1

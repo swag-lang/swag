@@ -330,29 +330,33 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
 {
     bool forDbg = curIp != nullptr;
 
-    // Instruction rank
     if (forDbg && ip == curIp)
         g_Log.setColor(LogColor::Green);
     else if (forDbg)
         g_Log.setColor(LogColor::Gray);
     else
         g_Log.setColor(LogColor::Cyan);
+
+    // Instruction rank
     g_Log.print(line.rank);
 
+    if (forDbg && ip == curIp)
+        g_Log.setColor(LogColor::Green);
+    else if (forDbg)
+        g_Log.setColor(LogColor::Gray);
+    else
+        g_Log.setColor(LogColor::White);
+
     // Instruction name
-    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::White);
     g_Log.print(line.name);
 
     // Parameters
-    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::White);
     g_Log.print(line.instRef);
 
     // Flags
-    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::Gray);
     g_Log.print(line.flags);
 
     // Pretty
-    g_Log.setColor(forDbg ? LogColor::Gray : LogColor::White);
     g_Log.print(line.pretty);
 
 #ifdef SWAG_DEV_MODE
