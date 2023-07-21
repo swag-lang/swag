@@ -2640,9 +2640,40 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::GetFromBssSeg8:
+            pp.emit_Symbol_RelocationAddr(RAX, pp.symBSIndex, 0);
+            pp.emit_LoadU8U64_Indirect(ip->b.u32, RAX, RAX);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            break;
+        case ByteCodeOp::GetFromBssSeg16:
+            pp.emit_Symbol_RelocationAddr(RAX, pp.symBSIndex, 0);
+            pp.emit_LoadU16U64_Indirect(ip->b.u32, RAX, RAX);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            break;
+        case ByteCodeOp::GetFromBssSeg32:
+            pp.emit_Symbol_RelocationAddr(RAX, pp.symBSIndex, 0);
+            pp.emit_Load32_Indirect(ip->b.u32, RAX, RAX);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            break;
         case ByteCodeOp::GetFromBssSeg64:
             pp.emit_Symbol_RelocationAddr(RAX, pp.symBSIndex, 0);
             pp.emit_Load64_Indirect(ip->b.u32, RAX, RAX);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            break;
+
+        case ByteCodeOp::GetFromMutableSeg8:
+            pp.emit_Symbol_RelocationAddr(RAX, pp.symMSIndex, 0);
+            pp.emit_LoadU8U64_Indirect(ip->b.u32, RAX, RAX);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            break;
+        case ByteCodeOp::GetFromMutableSeg16:
+            pp.emit_Symbol_RelocationAddr(RAX, pp.symMSIndex, 0);
+            pp.emit_LoadU16U64_Indirect(ip->b.u32, RAX, RAX);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            break;
+        case ByteCodeOp::GetFromMutableSeg32:
+            pp.emit_Symbol_RelocationAddr(RAX, pp.symMSIndex, 0);
+            pp.emit_Load32_Indirect(ip->b.u32, RAX, RAX);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::GetFromMutableSeg64:

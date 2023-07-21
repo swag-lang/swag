@@ -1142,6 +1142,63 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         memset((void*) registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u64 * ip->c.u64);
         break;
 
+    case ByteCodeOp::GetFromMutableSeg8:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
+        // the cache initiliazed by one module, and used by another one, which is bad (because the first module
+        // could be destroyed)
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint8_t*) module->mutableSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint8_t*) (ip->d.pointer);
+        }
+        break;
+    }
+    case ByteCodeOp::GetFromMutableSeg16:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
+        // the cache initiliazed by one module, and used by another one, which is bad (because the first module
+        // could be destroyed)
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint16_t*) module->mutableSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint16_t*) (ip->d.pointer);
+        }
+        break;
+    }
+    case ByteCodeOp::GetFromMutableSeg32:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
+        // the cache initiliazed by one module, and used by another one, which is bad (because the first module
+        // could be destroyed)
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint32_t*) module->mutableSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint32_t*) (ip->d.pointer);
+        }
+        break;
+    }
     case ByteCodeOp::GetFromMutableSeg64:
     {
         auto module = context->jc.sourceFile->module;
@@ -1161,6 +1218,55 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         }
         break;
     }
+
+    case ByteCodeOp::GetFromBssSeg8:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint8_t*) module->bssSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint8_t*) (ip->d.pointer);
+        }
+        break;
+    }
+    case ByteCodeOp::GetFromBssSeg16:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint16_t*) module->bssSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint16_t*) (ip->d.pointer);
+        }
+        break;
+    }
+    case ByteCodeOp::GetFromBssSeg32:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint32_t*) module->bssSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint32_t*) (ip->d.pointer);
+        }
+        break;
+    }
     case ByteCodeOp::GetFromBssSeg64:
     {
         auto module = context->jc.sourceFile->module;
@@ -1174,6 +1280,55 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             if (OS::atomicTestNull((void**) &ip->d.pointer))
                 OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
             registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
+        }
+        break;
+    }
+
+    case ByteCodeOp::GetFromCompilerSeg8:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint8_t*) module->compilerSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->compilerSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint8_t*) (ip->d.pointer);
+        }
+        break;
+    }
+    case ByteCodeOp::GetFromCompilerSeg16:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint16_t*) module->compilerSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->compilerSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint16_t*) (ip->d.pointer);
+        }
+        break;
+    }
+    case ByteCodeOp::GetFromCompilerSeg32:
+    {
+        auto module = context->jc.sourceFile->module;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].u64 = *(uint32_t*) module->compilerSegment.address(ip->b.u32);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->compilerSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *(uint32_t*) (ip->d.pointer);
         }
         break;
     }

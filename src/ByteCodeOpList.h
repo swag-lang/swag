@@ -289,8 +289,19 @@ BYTECODE_OP(MakeStackPointer, OPFLAG_IS_REGONLY | OPFLAG_WRITE_A | OPFLAG_READ_V
 BYTECODE_OP(MakeStackPointerx2, OPFLAG_IS_REGONLY | OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_WRITE_C | OPFLAG_READ_VAL32_D, "_ra_ = stack + _rbu32_; _rc_ = stack + _rdu32_")
 BYTECODE_OP(MakeStackPointerRT, OPFLAG_IS_REGONLY | OPFLAG_READ_VAL32_A, "resultPtr = stack + _rau32_")
 
+BYTECODE_OP(GetFromCompilerSeg8, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .cdata[_rbu32_]")
+BYTECODE_OP(GetFromCompilerSeg16, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .cdata[_rbu32_]")
+BYTECODE_OP(GetFromCompilerSeg32, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .cdata[_rbu32_]")
 BYTECODE_OP(GetFromCompilerSeg64, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .cdata[_rbu32_]")
+
+BYTECODE_OP(GetFromBssSeg8, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .bss[_rbu32_]")
+BYTECODE_OP(GetFromBssSeg16, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .bss[_rbu32_]")
+BYTECODE_OP(GetFromBssSeg32, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .bss[_rbu32_]")
 BYTECODE_OP(GetFromBssSeg64, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .bss[_rbu32_]")
+
+BYTECODE_OP(GetFromMutableSeg8, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .data[_rbu32_]")
+BYTECODE_OP(GetFromMutableSeg16, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .data[_rbu32_]")
+BYTECODE_OP(GetFromMutableSeg32, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .data[_rbu32_]")
 BYTECODE_OP(GetFromMutableSeg64, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .data[_rbu32_]")
 
 BYTECODE_OP(MakeCompilerSegPointer, OPFLAG_IS_REGONLY | OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = .cdata + _rbu32_")

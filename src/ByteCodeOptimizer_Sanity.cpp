@@ -612,8 +612,17 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::MakeConstantSegPointer:
         case ByteCodeOp::MakeMutableSegPointer:
         case ByteCodeOp::MakeCompilerSegPointer:
+        case ByteCodeOp::GetFromMutableSeg8:
+        case ByteCodeOp::GetFromMutableSeg16:
+        case ByteCodeOp::GetFromMutableSeg32:
         case ByteCodeOp::GetFromMutableSeg64:
+        case ByteCodeOp::GetFromBssSeg8:
+        case ByteCodeOp::GetFromBssSeg16:
+        case ByteCodeOp::GetFromBssSeg32:
         case ByteCodeOp::GetFromBssSeg64:
+        case ByteCodeOp::GetFromCompilerSeg8:
+        case ByteCodeOp::GetFromCompilerSeg16:
+        case ByteCodeOp::GetFromCompilerSeg32:
         case ByteCodeOp::GetFromCompilerSeg64:
         case ByteCodeOp::CopySP:
         case ByteCodeOp::CopyRTtoRC:

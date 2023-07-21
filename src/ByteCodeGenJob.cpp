@@ -269,18 +269,68 @@ ByteCodeInstruction* ByteCodeGenJob::emitMakeSegPointer(ByteCodeGenContext* cont
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0)
+ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits)
 {
     SWAG_ASSERT(storageSegment);
-    switch (storageSegment->kind)
+
+    if (numBits == 8)
     {
-    case SegmentKind::Data:
-        return EMIT_INST2(context, ByteCodeOp::GetFromMutableSeg64, r0, storageOffset);
-    case SegmentKind::Bss:
-        return EMIT_INST2(context, ByteCodeOp::GetFromBssSeg64, r0, storageOffset);
-    case SegmentKind::Compiler:
-        return EMIT_INST2(context, ByteCodeOp::GetFromCompilerSeg64, r0, storageOffset);
-    default:
+        switch (storageSegment->kind)
+        {
+        case SegmentKind::Data:
+            return EMIT_INST2(context, ByteCodeOp::GetFromMutableSeg8, r0, storageOffset);
+        case SegmentKind::Bss:
+            return EMIT_INST2(context, ByteCodeOp::GetFromBssSeg8, r0, storageOffset);
+        case SegmentKind::Compiler:
+            return EMIT_INST2(context, ByteCodeOp::GetFromCompilerSeg8, r0, storageOffset);
+        default:
+            SWAG_ASSERT(false);
+        }
+    }
+    else if (numBits == 16)
+    {
+        switch (storageSegment->kind)
+        {
+        case SegmentKind::Data:
+            return EMIT_INST2(context, ByteCodeOp::GetFromMutableSeg16, r0, storageOffset);
+        case SegmentKind::Bss:
+            return EMIT_INST2(context, ByteCodeOp::GetFromBssSeg16, r0, storageOffset);
+        case SegmentKind::Compiler:
+            return EMIT_INST2(context, ByteCodeOp::GetFromCompilerSeg16, r0, storageOffset);
+        default:
+            SWAG_ASSERT(false);
+        }
+    }
+    else if (numBits == 32)
+    {
+        switch (storageSegment->kind)
+        {
+        case SegmentKind::Data:
+            return EMIT_INST2(context, ByteCodeOp::GetFromMutableSeg32, r0, storageOffset);
+        case SegmentKind::Bss:
+            return EMIT_INST2(context, ByteCodeOp::GetFromBssSeg32, r0, storageOffset);
+        case SegmentKind::Compiler:
+            return EMIT_INST2(context, ByteCodeOp::GetFromCompilerSeg32, r0, storageOffset);
+        default:
+            SWAG_ASSERT(false);
+        }
+    }
+    else if (numBits == 64)
+    {
+        switch (storageSegment->kind)
+        {
+        case SegmentKind::Data:
+            return EMIT_INST2(context, ByteCodeOp::GetFromMutableSeg64, r0, storageOffset);
+        case SegmentKind::Bss:
+            return EMIT_INST2(context, ByteCodeOp::GetFromBssSeg64, r0, storageOffset);
+        case SegmentKind::Compiler:
+            return EMIT_INST2(context, ByteCodeOp::GetFromCompilerSeg64, r0, storageOffset);
+        default:
+            SWAG_ASSERT(false);
+        }
+    }
+    else
+    {
         SWAG_ASSERT(false);
     }
 
