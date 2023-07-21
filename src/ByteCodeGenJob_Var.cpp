@@ -144,7 +144,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 isLet = false;
             }
 
-            isLet = false;
+            // isLet = false;
             if (isLet && !(resolved->flags & OVERLOAD_HINT_AS_REG))
             {
                 SWAG_ASSERT(resolved->registers.size() == 0);
@@ -152,6 +152,18 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 resolved->flags |= OVERLOAD_HINT_AS_REG;
                 node->resultRegisterRC.cannotFree = true;
                 resolved->registers               = node->resultRegisterRC;
+                switch (resolved->typeInfo->sizeOf)
+                {
+                case 1:
+                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRC)->b.u64 = 0x000000FF;
+                    break;
+                case 2:
+                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRC)->b.u64 = 0x0000FFFF;
+                    break;
+                case 4:
+                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRC)->b.u64 = 0xFFFFFFFF;
+                    break;
+                }
             }
 
             // Store value to stack

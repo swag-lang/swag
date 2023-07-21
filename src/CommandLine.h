@@ -66,6 +66,7 @@ struct CommandLine
 
     // Display
     bool silent                = false;
+    bool ignoreBadParams       = false;
     bool logColors             = true;
     bool logAscii              = false;
     bool verbose               = false;

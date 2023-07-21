@@ -12,6 +12,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("all",                 "--silent",               "-s",       CommandLineType::Bool,          &cmdLine->silent, nullptr, "do not log messages");
     addArg("all",                 "--log-colors",           nullptr,    CommandLineType::Bool,          &cmdLine->logColors, nullptr, "output to console can be colored");
     addArg("all",                 "--log-ascii",            nullptr,    CommandLineType::Bool,          &cmdLine->logAscii, nullptr, "output to console only use ascii characters (no unicode)");
+    addArg("all",                 "--ignore-bad-params",    nullptr,    CommandLineType::Bool,          &cmdLine->ignoreBadParams, nullptr, "ignore unknown params instead of raising an error");
+    
                                                                                                         
     addArg("all",                 "--verbose-cmdline",      nullptr,    CommandLineType::Bool,          &cmdLine->verboseCmdLine, nullptr, "log swag command line");
     addArg("bu sc doc",           "--verbose-path",         nullptr,    CommandLineType::Bool,          &cmdLine->verbosePath, nullptr, "log global paths");
@@ -285,8 +287,11 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             it = shortNameArgs.find(command);
             if (it == shortNameArgs.end())
             {
-                Report::error(Fmt(Err(Err0720), command.c_str()));
-                result = false;
+                if (!g_CommandLine.ignoreBadParams)
+                {
+                    Report::error(Fmt(Err(Err0720), command.c_str()));
+                    result = false;
+                }
                 continue;
             }
         }
@@ -296,8 +301,12 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         // Be sure the argument is valid for the swag command
         if (!isArgValidFor(swagCmd, arg))
         {
-            Report::error(Fmt(Err(Err0720), command.c_str()));
-            result = false;
+            if (!g_CommandLine.ignoreBadParams)
+            {
+                Report::error(Fmt(Err(Err0720), command.c_str()));
+                result = false;
+            }
+
             continue;
         }
 
