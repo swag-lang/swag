@@ -1,5 +1,6 @@
 ..\bin\swag_devmode clean --script %1 %2 %3 %4
 
+..\bin\swag_devmode ..\bin\examples\scripts\taquin.swgs     --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode ..\bin\examples\scripts\chess.swgs      --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode ..\bin\examples\scripts\mine.swgs       --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode ..\bin\examples\scripts\pong.swgs       --args:"swag.test" %1 %2 %3 %4
