@@ -55,7 +55,7 @@ void Stats::printFreq()
             }
         }
 
-        if (!countOpFreq[bestI][bestJ].load())
+        if (countOpFreq[bestI][bestJ].load())
         {
             g_Log.setColor(LogColor::DarkCyan);
             g_Log.print(Fmt("%5d ", countOpFreq[bestI][bestJ].load()));
