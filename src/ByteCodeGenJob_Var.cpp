@@ -144,7 +144,6 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 isLet = false;
             }
 
-            // isLet = false;
             if (isLet && !(resolved->flags & OVERLOAD_HINT_AS_REG))
             {
                 SWAG_ASSERT(resolved->registers.size() == 0);
