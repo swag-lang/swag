@@ -26,7 +26,10 @@ struct CommandLine
 
     // Stats
 #ifdef SWAG_STATS
-    bool stats   = false;
+    bool stats     = false;
+    bool statsFreq = false;
+    Utf8 statsFreqOp0;
+    Utf8 statsFreqOp1;
     bool profile = false;
     Utf8 profileFilter;
     int  profileChildsLevel = 0;

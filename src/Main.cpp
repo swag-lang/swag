@@ -135,6 +135,7 @@ int main(int argc, const char* argv[])
     // Prints stats, then exit
 #ifdef SWAG_STATS
     g_Stats.print();
+    g_Stats.printFreq();
     profiler();
 #endif
 

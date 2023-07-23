@@ -8,6 +8,67 @@
 #ifdef SWAG_STATS
 Stats g_Stats;
 
+void Stats::printFreq()
+{
+    if (!g_CommandLine.statsFreq)
+        return;
+
+    Utf8 str0 = g_CommandLine.statsFreqOp0;
+    str0.makeLower();
+    Utf8 str1 = g_CommandLine.statsFreqOp1;
+    str1.makeLower();
+
+    for (int cpt = 0; cpt < 50; cpt++)
+    {
+        int best  = -1;
+        int bestI = 0;
+        int bestJ = 0;
+        for (int i = 0; i < (int) ByteCodeOp::End; i++)
+        {
+            // Filter by name
+            if (!str0.empty())
+            {
+                Utf8 str2 = g_ByteCodeOpDesc[i].name;
+                str2.makeLower();
+                if (str2.find(str0) == -1)
+                    continue;
+            }
+
+            for (int j = 0; j < (int) ByteCodeOp::End; j++)
+            {
+                // Filter by name
+                if (!str1.empty())
+                {
+                    Utf8 str2 = g_ByteCodeOpDesc[j].name;
+                    str2.makeLower();
+                    if (str2.find(str1) == -1)
+                        continue;
+                }
+
+                if (countOpFreq[i][j] > best)
+                {
+                    best  = countOpFreq[i][j];
+                    bestI = i;
+                    bestJ = j;
+                }
+            }
+        }
+
+        if (countOpFreq[bestI][bestJ].load())
+        {
+            g_Log.setColor(LogColor::DarkCyan);
+            g_Log.print(Fmt("%5d ", countOpFreq[bestI][bestJ].load()));
+            g_Log.setColor(LogColor::DarkYellow);
+            g_Log.print(Fmt("%s ", g_ByteCodeOpDesc[bestI].name));
+            g_Log.setColor(LogColor::DarkCyan);
+            g_Log.print(Fmt("%s\n", g_ByteCodeOpDesc[bestJ].name));
+            countOpFreq[bestI][bestJ] = 0;
+        }
+    }
+
+    g_Log.setDefaultColor();
+}
+
 void Stats::print()
 {
     if (!g_CommandLine.stats)

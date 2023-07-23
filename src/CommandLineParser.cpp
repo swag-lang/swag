@@ -87,6 +87,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
                                   
 #ifdef SWAG_STATS                 
     addArg("all",                 "--stats",                nullptr,    CommandLineType::Bool,          &cmdLine->stats, nullptr, "[stats] display statistics at the end");
+    addArg("all",                 "--stats-freq",           nullptr,    CommandLineType::Bool,          &cmdLine->statsFreq, nullptr, "[stats] display statistics about bytecode op usage");
+    addArg("all",                 "--stats-freq-op0",       nullptr,    CommandLineType::String,        &cmdLine->statsFreqOp0, nullptr, "[stats] name of the bytecode op to display statistics about");
+    addArg("all",                 "--stats-freq-op1",       nullptr,    CommandLineType::String,        &cmdLine->statsFreqOp1, nullptr, "[stats] name of the bytecode op to display statistics about");
     addArg("bu sc ru te",         "--profile",              nullptr,    CommandLineType::Bool,          &cmdLine->profile, nullptr, "[stats] profile bytecode execution");
     addArg("bu sc ru te",         "--profile-filter",       nullptr,    CommandLineType::String,        &cmdLine->profileFilter, nullptr, "[stats] filter profile output names");
     addArg("bu sc ru te",         "--profile-childs",       nullptr,    CommandLineType::Int,           &cmdLine->profileChildsLevel, nullptr, "[stats] diplay to the a given amount of sub-functions level");
