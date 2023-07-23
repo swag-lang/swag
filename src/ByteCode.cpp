@@ -21,8 +21,8 @@ void ByteCode::release()
 ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool getInline)
 {
     SWAG_ASSERT(bc && ip);
-    SWAG_ASSERT(ip->node && ip->node->ownerScope);
-    SWAG_ASSERT(bc->sourceFile);
+    if (!ip->node || !ip->node->ownerScope || !bc->sourceFile)
+        return {};
 
     ByteCode::Location loc;
 

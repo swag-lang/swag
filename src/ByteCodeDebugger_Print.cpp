@@ -77,7 +77,8 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         g_Log.print("generated: ", LogColor::DarkYellow);
         g_Log.print(context->debugCxtBc->name.c_str(), LogColor::Cyan);
         g_Log.print(" ");
-        g_Log.print(context->debugCxtBc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
+        if (context->debugCxtBc->typeInfoFunc)
+            g_Log.print(context->debugCxtBc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
         g_Log.eol();
         printSomething = true;
     }

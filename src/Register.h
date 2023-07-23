@@ -17,6 +17,12 @@ union Register
     uint32_t ch;
     bool     b;
 
+    struct
+    {
+        uint32_t low;
+        uint32_t high;
+    } u64u32;
+
     Register() = default;
     Register(uint64_t val)
         : u64{val}

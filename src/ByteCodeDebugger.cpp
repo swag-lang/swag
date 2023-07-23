@@ -438,6 +438,12 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
         }
 
+        if (!ip->node)
+        {
+            zapCurrentIp = true;
+            break;
+        }
+
         // If last break was in a real function, and now we are in an inline block
         if (!context->debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
         {
@@ -556,8 +562,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     static mutex dbgMutex;
     ScopedLock   sc(dbgMutex);
 
-    auto ip     = context->ip;
-    auto module = context->bc->sourceFile->module;
+    auto ip = context->ip;
 
     if (context->debugEntry)
     {
@@ -583,9 +588,18 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             g_Log.eol();
 
             g_Log.print(Fmt("build configuration            = '%s'\n", g_CommandLine.buildCfg.c_str()));
-            g_Log.print(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"));
-            g_Log.print(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
-            g_Log.print(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
+
+            Module* module = nullptr;
+            if (context->bc->sourceFile)
+                module = context->bc->sourceFile->module;
+            if (!module && context->bc->node && context->bc->node->sourceFile)
+                module = context->bc->node->sourceFile->module;
+            if (module)
+            {
+                g_Log.print(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"));
+                g_Log.print(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
+                g_Log.print(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
+            }
 
             for (int i = 0; i < LINE_W; i++)
                 g_Log.print(LogSymbol::HorizontalLine2);

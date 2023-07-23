@@ -67,15 +67,14 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->parent->resultRegisterRC                = node->resultRegisterRC;
 
         // Get capture block pointer (first parameter)
-        auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-        inst->b.u64 = node->ownerFct->parameters->childs.front()->resolvedSymbolOverload->computedValue.storageOffset;
-        inst->c.u64 = 0;
+        auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+        inst->b.u64u32.low = node->ownerFct->parameters->childs.front()->resolvedSymbolOverload->computedValue.storageOffset;
 
         // :VariadicAndClosure
         // If function is variable, then parameter of the capture context is 2 (after the slice), and not 0.
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
         if (typeFunc->isVariadic())
-            inst->c.u64 = 2;
+            inst->b.u64u32.high = 2;
 
         if (typeInfo->isArray() ||
             typeInfo->isListTuple() ||
@@ -245,9 +244,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->semFlags & SEMFLAG_FROM_REF)
         {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
-            inst->c.u64 = resolved->storageIndex;
+            auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+            inst->b.u64u32.high = resolved->storageIndex;
             if (!node->forceTakeAddress())
             {
                 auto ptrPointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
@@ -259,21 +258,21 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
             {
-                auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-                inst->b.u64 = resolved->computedValue.storageOffset;
-                inst->c.u64 = resolved->storageIndex;
+                auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+                inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+                inst->b.u64u32.high = resolved->storageIndex;
             }
             else if (typeInfo->isSlice())
             {
                 reserveLinearRegisterRC2(context, node->resultRegisterRC);
 
-                auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[0]);
-                inst->b.u64 = resolved->computedValue.storageOffset;
-                inst->c.u64 = resolved->storageIndex;
+                auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[0]);
+                inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+                inst->b.u64u32.high = resolved->storageIndex;
 
-                inst        = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[1]);
-                inst->b.u64 = resolved->computedValue.storageOffset;
-                inst->c.u64 = resolved->storageIndex + 1;
+                inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[1]);
+                inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+                inst->b.u64u32.high = resolved->storageIndex + 1;
             }
             else
             {
@@ -284,9 +283,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
-            inst->c.u64 = resolved->storageIndex;
+            auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+            inst->b.u64u32.high = resolved->storageIndex;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = 8;
             else // Get the structure pointer
@@ -297,40 +296,40 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             // Get the ITable pointer
             if (node->flags & AST_FROM_UFCS)
             {
-                auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-                inst->b.u64 = resolved->computedValue.storageOffset + 8;
-                inst->c.u64 = resolved->storageIndex + 1;
+                auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+                inst->b.u64u32.low  = resolved->computedValue.storageOffset + 8;
+                inst->b.u64u32.high = resolved->storageIndex + 1;
             }
             // Get the structure pointer
             else
             {
-                auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-                inst->b.u64 = resolved->computedValue.storageOffset;
-                inst->c.u64 = resolved->storageIndex;
+                auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+                inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+                inst->b.u64u32.high = resolved->storageIndex;
             }
         }
         else if (typeInfo->isClosure())
         {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
-            inst->c.u64 = resolved->storageIndex;
+            auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+            inst->b.u64u32.high = resolved->storageIndex;
         }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[0]);
-            inst->b.u64 = resolved->computedValue.storageOffset;
-            inst->c.u64 = resolved->storageIndex;
-            inst        = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[1]);
-            inst->b.u64 = resolved->computedValue.storageOffset + 8;
-            inst->c.u64 = resolved->storageIndex + 1;
+            auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[0]);
+            inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+            inst->b.u64u32.high = resolved->storageIndex;
+            inst                = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC[1]);
+            inst->b.u64u32.low  = resolved->computedValue.storageOffset + 8;
+            inst->b.u64u32.high = resolved->storageIndex + 1;
         }
         else
         {
             SWAG_ASSERT(typeInfo->numRegisters() == 1);
-            auto inst   = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
-            inst->c.u64 = resolved->storageIndex;
+            auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            inst->b.u64u32.low  = resolved->computedValue.storageOffset;
+            inst->b.u64u32.high = resolved->storageIndex;
             SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
         }
 

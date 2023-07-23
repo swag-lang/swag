@@ -181,7 +181,7 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
                 case ByteCodeOp::GetParam16:
                 case ByteCodeOp::GetParam32:
                 case ByteCodeOp::GetParam64:
-                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32 && ipScan->c.u32 == ip->c.u32)
+                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
                     {
                         canRemove = true;
                         return true;
@@ -189,7 +189,7 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
                     break;
 
                 case ByteCodeOp::GetIncParam64:
-                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32 && ipScan->c.u32 == ip->c.u32 && ipScan->d.u64 == ip->d.u64)
+                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64 && ipScan->d.u64 == ip->d.u64)
                     {
                         canRemove = true;
                         return true;

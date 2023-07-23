@@ -63,6 +63,8 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_raf64_", Fmt("%lf", ip->a.f64));
         str.replace("_rax32_", Fmt("0x%x", ip->a.u32));
         str.replace("_rax64_", Fmt("0x%llx", ip->a.u64));
+        str.replace("_rah32_", Fmt("%u", ip->a.u64u32.high));
+        str.replace("_ral32_", Fmt("%u", ip->a.u64u32.low));
     }
 
     if (ip->flags & BCI_IMM_B || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
@@ -79,6 +81,8 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rbf64_", Fmt("%lf", ip->b.f64));
         str.replace("_rbx32_", Fmt("0x%x", ip->b.u32));
         str.replace("_rbx64_", Fmt("0x%llx", ip->b.u64));
+        str.replace("_rbh32_", Fmt("%u", ip->b.u64u32.high));
+        str.replace("_rbl32_", Fmt("%u", ip->b.u64u32.low));
     }
 
     if (ip->flags & BCI_IMM_C || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
@@ -95,6 +99,8 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rcf64_", Fmt("%lf", ip->c.f64));
         str.replace("_rcx32_", Fmt("0x%x", ip->c.u32));
         str.replace("_rcx64_", Fmt("0x%llx", ip->c.u64));
+        str.replace("_rch32_", Fmt("%u", ip->c.u64u32.high));
+        str.replace("_rcl32_", Fmt("%u", ip->c.u64u32.low));
     }
 
     if (ip->flags & BCI_IMM_D || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
@@ -111,6 +117,8 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rdf64_", Fmt("%lf", ip->d.f64));
         str.replace("_rdx32_", Fmt("0x%x", ip->d.u32));
         str.replace("_rdx64_", Fmt("0x%llx", ip->d.u64));
+        str.replace("_rdh32_", Fmt("%u", ip->d.u64u32.high));
+        str.replace("_rdl32_", Fmt("%u", ip->d.u64u32.low));
     }
 
     if (flags & (OPFLAG_READ_A | OPFLAG_WRITE_A))
