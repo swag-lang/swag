@@ -3662,6 +3662,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::LocalCallPopParam:
+            pushRAParams.push_back(ip->d.u32);
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:

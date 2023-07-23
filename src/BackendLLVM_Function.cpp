@@ -5013,6 +5013,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::LocalCallPopParam:
+            pushRAParams.push_back(ip->d.u32);
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:

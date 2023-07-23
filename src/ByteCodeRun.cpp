@@ -542,6 +542,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::LocalCallPopParam:
+        context->push(registersRC[ip->d.u32].u64);
+        localCall(context, (ByteCode*) ip->a.pointer, 0, UINT32_MAX, ip->c.u32);
+        break;
+
     case ByteCodeOp::LocalCall:
         localCall(context, (ByteCode*) ip->a.pointer);
         break;

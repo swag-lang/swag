@@ -35,6 +35,14 @@ static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
                     ByteCodeOptimizer::setNop(context, ipe + 2);
                 }
             }
+            else if (ipe[1].op == ByteCodeOp::LocalCallPopParam)
+            {
+                if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                {
+                    ByteCodeOptimizer::setNop(context, ipe);
+                    ByteCodeOptimizer::setNop(context, ipe + 1);
+                }
+            }
         }
 
         ipe++;
@@ -163,6 +171,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             while (ip->op != ByteCodeOp::End &&
                    ip->op != ByteCodeOp::LocalCall &&
                    ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::LocalCallPopParam &&
                    ip->op != ByteCodeOp::LocalCallPopRC &&
                    ip->op != ByteCodeOp::ForeignCall &&
                    ip->op != ByteCodeOp::ForeignCallPop &&
@@ -275,6 +284,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
             while (ip->op != ByteCodeOp::End &&
                    ip->op != ByteCodeOp::LocalCall &&
                    ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::LocalCallPopParam &&
                    ip->op != ByteCodeOp::LocalCallPopRC &&
                    ip->op != ByteCodeOp::ForeignCall &&
                    ip->op != ByteCodeOp::ForeignCallPop &&

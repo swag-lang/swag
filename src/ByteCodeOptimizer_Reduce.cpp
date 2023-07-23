@@ -299,6 +299,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             // An InternalClearErr followed by a function call which will clear the error also
             if (ipScan->op == ByteCodeOp::LocalCall ||
                 ipScan->op == ByteCodeOp::LocalCallPop ||
+                ipScan->op == ByteCodeOp::LocalCallPopParam ||
                 ipScan->op == ByteCodeOp::LocalCallPopRC ||
                 ipScan->op == ByteCodeOp::LambdaCall ||
                 ipScan->op == ByteCodeOp::LambdaCallPop ||
@@ -421,6 +422,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                     ipScan[0].op == ByteCodeOp::LambdaCallPop ||
                     ipScan[0].op == ByteCodeOp::LocalCall ||
                     ipScan[0].op == ByteCodeOp::LocalCallPop ||
+                    ipScan[0].op == ByteCodeOp::LocalCallPopParam ||
                     ipScan[0].op == ByteCodeOp::LocalCallPopRC ||
                     ipScan[0].op == ByteCodeOp::ForeignCall ||
                     ipScan[0].op == ByteCodeOp::ForeignCallPop)
@@ -468,7 +470,10 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
 void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC)
+    if (ip->op == ByteCodeOp::LocalCall ||
+        ip->op == ByteCodeOp::LocalCallPop ||
+        ip->op == ByteCodeOp::LocalCallPopParam ||
+        ip->op == ByteCodeOp::LocalCallPopRC)
     {
         auto destBC = (ByteCode*) ip->a.pointer;
         if (destBC->isEmpty.load() != true)
@@ -490,6 +495,7 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
             while (backIp != context->bc->out &&
                    backIp->op != ByteCodeOp::LocalCall &&
                    backIp->op != ByteCodeOp::LocalCallPop &&
+                   backIp->op != ByteCodeOp::LocalCallPopParam &&
                    backIp->op != ByteCodeOp::LocalCallPopRC &&
                    backIp->op != ByteCodeOp::ForeignCall &&
                    backIp->op != ByteCodeOp::ForeignCallPop &&
@@ -908,7 +914,14 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        break;
+        if (ip[1].op == ByteCodeOp::LocalCallPop &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::LocalCallPopParam);
+            ip[1].d.u32 = ip[0].a.u32;
+            setNop(context, ip);
+            break;
+        }
 
     case ByteCodeOp::PushRAParam2:
         if (ip[1].op == ByteCodeOp::PushRAParam &&

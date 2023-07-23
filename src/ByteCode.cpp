@@ -261,7 +261,10 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
         }
 
         // Compare if the 2 bytes codes or their alias are the same
-        if (specialCall && (ip0->op == ByteCodeOp::LocalCall || ip0->op == ByteCodeOp::LocalCallPop || ip0->op == ByteCodeOp::LocalCallPopRC))
+        if (specialCall && (ip0->op == ByteCodeOp::LocalCall ||
+                            ip0->op == ByteCodeOp::LocalCallPop ||
+                            ip0->op == ByteCodeOp::LocalCallPopParam ||
+                            ip0->op == ByteCodeOp::LocalCallPopRC))
         {
             ByteCode* bc0 = (ByteCode*) ip0->a.u64;
             ByteCode* bc1 = (ByteCode*) ip1->a.u64;
@@ -312,7 +315,10 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
         oldCrc = Crc32::compute8((const uint8_t*) &ip->d.u64, oldCrc);
 
     // Special call. We add the alias if it exitsts instead of the called bytecode
-    if (specialCall && (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC))
+    if (specialCall && (ip->op == ByteCodeOp::LocalCall ||
+                        ip->op == ByteCodeOp::LocalCallPop ||
+                        ip->op == ByteCodeOp::LocalCallPopParam ||
+                        ip->op == ByteCodeOp::LocalCallPopRC))
     {
         ByteCode* bc = (ByteCode*) ip->a.u64;
         if (bc && bc->alias)

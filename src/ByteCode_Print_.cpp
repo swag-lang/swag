@@ -295,6 +295,7 @@ void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction*
 
     case ByteCodeOp::LocalCall:
     case ByteCodeOp::LocalCallPop:
+    case ByteCodeOp::LocalCallPopParam:
     case ByteCodeOp::LocalCallPopRC:
     {
         auto bc = (ByteCode*) ip->a.pointer;

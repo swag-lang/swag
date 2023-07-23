@@ -19,7 +19,7 @@ void Stats::printFreq()
     Utf8 str1 = g_CommandLine.statsFreqOp1;
     str1.makeLower();
 
-    for (int cpt = 0; cpt < 50; cpt++)
+    for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
         int best  = -1;
         int bestI = 0;
@@ -55,7 +55,7 @@ void Stats::printFreq()
             }
         }
 
-        if (countOpFreq[bestI][bestJ].load())
+        if (!countOpFreq[bestI][bestJ].load())
         {
             g_Log.setColor(LogColor::DarkCyan);
             g_Log.print(Fmt("%5d ", countOpFreq[bestI][bestJ].load()));
