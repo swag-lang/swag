@@ -13,6 +13,7 @@ void Stats::printFreq()
     if (!g_CommandLine.statsFreq)
         return;
 
+    g_Log.eol();
     Utf8 str0 = g_CommandLine.statsFreqOp0;
     str0.makeLower();
     Utf8 str1 = g_CommandLine.statsFreqOp1;
