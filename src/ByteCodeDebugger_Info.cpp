@@ -38,7 +38,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             {
                 Utf8 str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
                 auto loc = ByteCode::getLocation(bc, bc->out);
-                str += Fmt(" (%s%s%s) ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
+                str += Fmt(" %s%s%s ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
                 if (loc.file)
                     str += Fmt("%s", loc.file->name.c_str());
                 if (loc.location)
@@ -55,7 +55,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     }
 
     sort(all.begin(), all.end(), [](const Utf8& a, const Utf8& b)
-         { return a < b; });
+         { return strcmp(a.c_str(), b.c_str()) < 0; });
     for (auto& o : all)
     {
         if (OS::longOpStopKeyPressed())
