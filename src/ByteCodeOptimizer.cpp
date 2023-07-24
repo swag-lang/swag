@@ -73,6 +73,7 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
     case ByteCodeOp::MakeConstantSegPointer:
     case ByteCodeOp::MakeMutableSegPointer:
     case ByteCodeOp::GetParam64:
+    case ByteCodeOp::GetParam64x2:
     case ByteCodeOp::GetIncParam64:
     case ByteCodeOp::GetParam64DeRef8:
     case ByteCodeOp::GetParam64DeRef16:

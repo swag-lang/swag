@@ -1032,6 +1032,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(context->bp + ip->b.u64u32.low <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u64u32.low);
         break;
+    case ByteCodeOp::GetParam64x2:
+        SWAG_ASSERT(context->bp + ip->b.u64u32.low <= context->stack + g_CommandLine.stackSizeBC - 8);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u64u32.low);
+        SWAG_ASSERT(context->bp + ip->d.u64u32.low <= context->stack + g_CommandLine.stackSizeBC - 8);
+        registersRC[ip->c.u32].u64 = *(uint64_t*) (context->bp + ip->d.u64u32.low);
+        break;
     case ByteCodeOp::GetIncParam64:
         SWAG_ASSERT(context->bp + ip->b.u64u32.low <= context->stack + g_CommandLine.stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u64u32.low);

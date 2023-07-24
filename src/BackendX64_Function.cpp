@@ -3579,6 +3579,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::GetParam64:
             emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8);
             break;
+        case ByteCodeOp::GetParam64x2:
+            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8);
+            emitGetParam(pp, coffFct, ip->c.u32, ip->d.u64u32.high, 8);
+            break;
         case ByteCodeOp::GetIncParam64:
             emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64);
             break;

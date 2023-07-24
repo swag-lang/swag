@@ -6,6 +6,18 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 {
     switch (ip->op)
     {
+    case ByteCodeOp::GetParam64:
+        if (ip[1].op == ByteCodeOp::GetParam64 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetParam64x2);
+            ip[0].c.u64 = ip[1].a.u64;
+            ip[0].d.u64 = ip[1].b.u64;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
     case ByteCodeOp::CopyRBtoRA64:
         if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
             !(ip[1].flags & BCI_START_STMT))
@@ -60,7 +72,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
         break;
 
-        // MakeStackPointer
     case ByteCodeOp::MakeStackPointer:
         if (ip[1].op == ByteCodeOp::MakeStackPointer &&
             !(ip[1].flags & BCI_START_STMT))
@@ -73,7 +84,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
         }
         break;
 
-        // SetAtStackPointer x2
     case ByteCodeOp::SetAtStackPointer8:
         if (ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
             !(ip[1].flags & BCI_START_STMT))
@@ -128,7 +138,6 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
         }
         break;
 
-    // GetFromStack
     case ByteCodeOp::GetFromStack8:
         if (ip[1].op == ByteCodeOp::GetFromStack8 &&
             !(ip[1].flags & BCI_START_STMT))

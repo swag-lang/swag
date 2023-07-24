@@ -4759,6 +4759,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetParam64:
             SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.u64u32.high, allocR));
             break;
+        case ByteCodeOp::GetParam64x2:
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.u64u32.high, allocR));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, ip->d.u64u32.high, allocR));
+            break;
         case ByteCodeOp::GetIncParam64:
             SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.u64u32.high, allocR, 0, ip->d.u64));
             break;
