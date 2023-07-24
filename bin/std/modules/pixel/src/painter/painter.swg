@@ -148,6 +148,7 @@ struct Painter
 
     curState:           PaintState
     stackState:         Array'PaintState
+    stackTransform:     Array'Transform2
     lastTexture0Type:   BrushType = SolidColor
 
     stackRT:            Array'*RenderTarget
@@ -544,6 +545,18 @@ impl Painter
         var tr = Transform2.createScale(x, y, 0, 0)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
+    }
+
+    // Push the current transformation
+    mtd pushTransform()
+    {
+        stackTransform.add(curState.transform)
+    }
+
+    // Restore the pushed transformation
+    mtd popTransform()
+    {
+        setTransform(stackTransform.popBack())
     }
 
     // Reset the paint position, rotation, scale
