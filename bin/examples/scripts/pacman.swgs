@@ -1,0 +1,332 @@
+// Based on the pacman project by Alex Macpherson at https://github.com/alexjamesmacpherson/pacman/blob/master.
+// Original code has been modified for Swag.
+
+/*
+BSD 3-Clause License
+
+Copyright (c) 2017, Alex Macpherson
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Gui, Core, Pixel
+const Scale = 3.0
+
+var g_MapTex:       Texture
+var g_PillTex:      Texture
+var g_BigPillTex:   [2] Texture
+var g_Pac0Tex:      Texture
+var g_Pac1Tex:      Texture
+var g_Pac2Tex:      Texture
+var g_ReadyTex:     Texture
+
+var g_Wnd:          *Wnd
+var g_DataPath:     String
+var g_Painter:      *Painter
+var g_Mode:         GameMode = READY
+var g_Ticks:        s32
+var g_PacMan:       Pacman
+
+struct Pacman
+{
+    x: f32          // X position relative to map - float allows for smooth movement between tiles
+    y: f32          // Y position relative to map - float allows for smooth movement between tiles
+    texCount: s32   // Counter to determine which texture to draw
+}
+
+impl Pacman
+{
+    mtd draw()
+    {
+        g_Painter.pushState()
+        translateMapOrigin()
+        translateMapCoords(x,y)
+        g_Painter.translateTransform(-2,-2)
+
+        // Determine which texture to draw based on tick-incremented counter
+        var pacmanTex: Texture
+        if texCount % 20 < 5
+            pacmanTex = g_Pac0Tex
+        elif texCount % 20 < 10 or texCount % 20 >= 15
+            pacmanTex = g_Pac1Tex
+        else
+            pacmanTex = g_Pac2Tex
+
+        // Draw Pac-Man sprite with determined texture at determined angle
+        g_Painter.drawTexture(0, 0, 13, 13, pacmanTex)
+
+        // Increment texture counter only if moving
+        // If stationary, continue until sprite animation cycle is complete
+        //if !(dir == NONE && tex_count % 20 < 5) && ready
+          //  tex_count++;
+
+        g_Painter.popState()
+    }
+}
+
+/**
+ * Game modes defined as enum:
+ *      READY:    Set game to starting state, display READY! text until game begins
+ *      PLAY:     Game is in play
+ *      FRUIT:    Pause game briefly during play upon eating a fruit
+ *      EAT:      Pause game briefly during play upon eating a ghost - the two differ only in what is drawn
+ *      PAUSE:    Game is paused, draw help screen
+ *      DEATH:    Pac-Man has been eaten, play death sequence
+ *      GAMEOVER: Game is over, display GAME OVER text until quit/restart
+ * Gamemode is defined as new type for ease of use.
+ * Default starting mode is READY
+ */
+enum GameMode
+{
+    NONE
+    READY
+    PLAY
+    FRUIT
+    EAT
+    PAUSE
+    DEATH
+    GAMEOVER
+}
+
+/**
+ * Tile types defined as enum:
+ *      W: Wall
+ *      G: Gate
+ *      P: Portal
+ *      n: Non-Filled Path
+ *      o: Pill
+ *      e: Eaten Pill
+ *      O: Big Pill
+ *      E: Eaten Big Pill
+ *      F: Fruit
+ * Tile is defined as new type for ease of use.
+ * Each tile-type is used to determine behaviour of Pac-Man & Ghosts.
+ */
+enum Tile {W; G; P; n; o; e; O; E; F;}
+
+var g_Map: [28, 31] Tile = [
+    [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W],
+    [W,o,o,o,o,W,W,O,o,o,o,W,n,n,n,W,n,W,n,n,n,W,o,o,o,o,O,o,o,o,W],
+    [W,o,W,W,o,W,W,o,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,o,o,o,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,W,W,W,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,W,W,W,W,W,o,W,W,W,W,W,n,W,W,W,W,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W],
+    [W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,n,W,W,W,W,W,W,W,W,o,W,W,W,o,W],
+    [W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,n,W,W,W,W,W,W,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,o,o,o,W,W,o,n,n,n,n,n,n,n,n,n,W,W,o,o,o,o,W,W,W,o,W],
+    [W,o,W,W,o,W,W,o,W,W,o,W,W,n,W,W,W,W,W,n,W,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,W,W,o,W,W,o,W,W,n,W,W,n,n,W,n,W,W,o,W,W,o,W,W,W,o,W],
+    [W,o,o,o,o,W,W,o,o,o,o,W,W,n,W,W,n,n,W,n,n,n,o,W,W,o,o,o,o,o,W],
+    [W,o,W,W,W,W,W,n,W,W,W,W,W,n,W,W,n,n,G,n,W,W,W,W,W,o,W,W,W,W,W],
+    [W,o,W,W,W,W,W,n,W,W,W,W,W,n,W,W,n,n,G,n,W,W,W,W,W,o,W,W,W,W,W],
+    [W,o,o,o,o,W,W,o,o,o,o,W,W,n,W,W,n,n,W,n,n,n,o,W,W,o,o,o,o,o,W],
+    [W,o,W,W,o,W,W,o,W,W,o,W,W,n,W,W,n,n,W,n,W,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,W,W,o,W,W,o,W,W,n,W,W,W,W,W,n,W,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,o,o,o,W,W,o,n,n,n,n,n,n,n,n,n,W,W,o,o,o,o,W,W,W,o,W],
+    [W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,n,W,W,W,W,W,W,W,W,o,W,W,W,o,W],
+    [W,o,W,W,W,W,W,o,W,W,o,W,W,W,W,W,n,W,W,W,W,W,W,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,W],
+    [W,o,W,W,o,W,W,W,W,W,o,W,W,W,W,W,n,W,W,W,W,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,W,W,W,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,o,o,o,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
+    [W,o,W,W,o,W,W,o,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
+    [W,o,o,o,o,W,W,O,o,o,o,W,n,n,n,W,n,W,n,n,n,W,o,o,o,o,O,o,o,o,W],
+    [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W]
+    ]
+
+func loadBindTextures()
+{
+    func loadAndBindTexture(name: string)->Texture
+    {
+        let img = assume Image.load(Path.combine(g_DataPath, name))
+        return g_Wnd.getApp().getRenderer().addImage(img)
+    }
+
+    g_DataPath = Path.getDirectoryName(#location.fileName)
+    g_DataPath = Path.combine(g_DataPath, "datas")
+    g_DataPath = Path.combine(g_DataPath, "pacman")
+
+    // Bind map textures
+    g_MapTex        = loadAndBindTexture("map/map.png")
+    g_PillTex       = loadAndBindTexture("map/pill.png")
+    g_BigPillTex[0] = loadAndBindTexture("map/big-0.png")
+    g_BigPillTex[1] = loadAndBindTexture("map/big-1.png")
+    // Bind Pac-Man textures
+    g_Pac0Tex       = loadAndBindTexture("pacman/0.png")
+    g_Pac1Tex       = loadAndBindTexture("pacman/1.png")
+    g_Pac2Tex       = loadAndBindTexture("pacman/2.png")
+    // Bind UI textures
+    g_ReadyTex      = loadAndBindTexture("ui/ready.png")
+}
+
+func translateMapOrigin()
+{
+    g_Painter.translateTransform(38.0, 26.0)
+}
+
+func translateMapCoords(x, y: f32)
+{
+    g_Painter.translateTransform(x*8*Scale, y*8*Scale)
+}
+
+func getTile(x, y: s32)->Tile
+{
+    return g_Map[x, 30-y]
+}
+
+func drawMap()
+{
+    g_Painter.pushState()
+    translateMapOrigin()
+
+    // Map
+    g_Painter.drawTexture(0, 0, 224, 248, g_MapTex)
+
+    // Content
+    loop x: 28
+    {
+        g_Painter.pushState()
+        loop y: 31
+        {
+            // Determine size of big pills to draw depending on ticks
+            let bigPill = cast(s32) Math.floor((g_Ticks%40) / 20.0)
+
+            switch getTile(x,y) // Draw pills as sprites
+            {
+                case o:
+                    g_Painter.drawTexture(0, 0, 8, 8, g_PillTex)
+                case O:
+                    g_Painter.drawTexture(0, 0, 8, 8, g_BigPillTex[bigPill]) // Draw big pill of determined size
+                //case F:
+                    //drawFruit(x,y); break;  // Method to determine which fruit should be drawn at current location
+            }
+
+            translateMapCoords(0,1)    // Increment Y pos
+        }
+
+        g_Painter.popState()
+        translateMapCoords(1,0)        // Increment X pos
+    }
+
+    g_Painter.popState()
+}
+
+func drawLevel()
+{
+}
+
+func drawPlayScreen()
+{
+    drawMap()
+    drawLevel()
+    /*drawScore()
+    drawLives()
+    drawFruits()
+    drawHelp()  */
+}
+
+func drawCharacters()
+{
+    g_PacMan.draw();
+}
+
+func drawReady()
+{
+    g_Painter.pushState()
+
+    translateMapOrigin()      // Translate to map origin
+    translateMapCoords(11,13) // Translate to point within map at which READY! tooltip should be drawn
+    g_Painter.drawTexture(0, 0, 48, 8, g_ReadyTex) // Draw READY! sprite at current location
+
+    g_Painter.popState()
+}
+
+func gameLoop()
+{
+    switch g_Mode
+    {
+    case READY: // After 240 ticks, enter PLAY mode
+        if g_Ticks > 240
+            g_Mode = PLAY
+
+    case PLAY: // Main play loop
+        break
+    }
+
+    // Increment game ticks once the frame is drawn, but only if not paused
+    if g_Mode != .NONE
+        g_Ticks += 1
+}
+
+func display()
+{
+    let rect = g_Wnd.getClientRect()
+    g_Painter.fillRect(rect, Argb.Black)
+    g_Painter.scaleTransform(Scale, Scale)
+
+    switch g_Mode
+    {
+    case READY:
+        drawPlayScreen()
+        drawCharacters()
+        drawReady()
+
+    case PLAY:
+        drawPlayScreen()
+        drawCharacters()
+    }
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Wnd = wnd
+        loadBindTextures()
+
+    case Paint:
+        let paintEvt = cast(*PaintEvent) evt
+        g_Painter = paintEvt.bc.painter
+        gameLoop()
+        display()
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(4100, 100, 1024, 1024, title = "Pacman", hook = &onEvent)
+}
