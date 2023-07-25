@@ -633,7 +633,7 @@ void initErrors()
     SWAG_ERROR(Err0205, "not enough arguments in the tuple initialization ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0035, "not enough generic arguments for %s");
     SWAG_ERROR(Err0158, "not enough hexadecimal digit, %s");
-    SWAG_ERROR(Err0157, "operator '%' does not accept type '%s'");
+    SWAG_ERROR(Err0157, nullptr);
     SWAG_ERROR(Err0111, "pointer arithmetic is not allowed on type 'void'");
     SWAG_ERROR(Err0579, "pointer arithmetic is not allowed with operand type '%s'");
     SWAG_ERROR(Err0192, "pointer arithmetic is not allowed");

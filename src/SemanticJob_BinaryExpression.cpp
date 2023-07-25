@@ -635,7 +635,12 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     case NativeTypeKind::Rune:
         break;
     default:
-        return context->report({node, Fmt(Err(Err0157), leftTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Hnt(Hnt0061);
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
     }
 
     if (left->hasComputedValue() && right->hasComputedValue())
