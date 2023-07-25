@@ -100,16 +100,21 @@ var g_TimeStamp = -1
 
 var g_PacMan: Pacman
 var g_Ghosts: [4] Ghost = [
-    {13.5, 30-19, GhostColor.RED},
-    {13.5, 30-16, GhostColor.PINK},
-    {11.5, 30-16, GhostColor.BLUE},
-    {15.5, 30-16, GhostColor.YELLOW}
+    {13.5, 19, GhostColor.RED},
+    {13.5, 16, GhostColor.PINK},
+    {11.5, 16, GhostColor.BLUE},
+    {15.5, 16, GhostColor.YELLOW}
 ]
+
+struct Dest
+{
+    x, y: s32
+}
 
 struct Pacman
 {
     x           = 13.5      // X position relative to map - float allows for smooth movement between tiles
-    y           = 30-7.0       // Y position relative to map - float allows for smooth movement between tiles
+    y           = 7.0       // Y position relative to map - float allows for smooth movement between tiles
     dir:        Direction   // Direction of movement
     tempDir:    Direction   // Temporary direction storage
     saveDir:    Direction   // Secondary direction storage for stopping and starting animation
@@ -299,6 +304,21 @@ impl Ghost
 
     mtd aiScatter()
     {
+        var target: Dest
+        switch colour              // Each colour selects a unique corner to target
+        {
+        case RED:
+            target = {25, 33}
+        case PINK:
+            target = {2, 33}
+        case BLUE:
+            target = {27, -2}
+        case YELLOW:
+            target = {0, -2}
+        }
+
+        dir = targetTile(target) // Set direction at junction to head towards SCATTER point
+        setSpeed(100) // Ensure movement speed is set to 100%
     }
 
     mtd aiChase(redGhost: Ghost)
@@ -311,6 +331,92 @@ impl Ghost
 
     mtd aiDead()
     {
+    }
+
+    /**
+     * Calculate and return the straight line distance between two points (tiles) in the map
+     *
+     * @param p1 - Vector storing the x,y map coordinates of the first point
+     * @param p2 - Vector storing the x,y map coordinates of the second point
+     * @return -   Straight line distance between p1 and p2, floating point precision
+     */
+    func distanceBetween(p1, p2: Dest)->f32
+    {
+        let d_x = cast(f32) p1.x - p2.x
+        let d_y = cast(f32) p1.y - p2.y
+        return Math.sqrt((d_x * d_x) + (d_y * d_y)) // Simple pythagorean calculation
+    }
+
+    /**
+     * Determine the direction from the current junction which yields the closest straight line distance to a target tile
+     *      Method checks the next tile in every traversible direction from the junction
+     *      The optimal direction is only updated should it prove closer than previously checked exits
+     *
+     * Note: this does not always give the shortest PATH to the target
+     *      However, this behaviour is as the original Pac-Man was designed
+     *
+     * @param target - Vector storing the x,y map coordinates of the target tile
+     * @return -       Direction of shortest straight line distance to target
+     */
+    mtd targetTile(target: Dest)->Direction
+    {
+        var next_pos: Dest    // Initialise next position, updated in each possible direction
+        var distance = 999.0    // Set max distance to unreachable value
+        var newDir: Direction       // Initialise returned direction
+
+        // Check UP exit
+        // UP exits have an additional condition such that, at 4 specific intersections, the ghost cannot opt to travel UP
+        if !(getY() == 19 and (getX() == 12 or getX() == 15)) and !(getY() == 7 and (getX() == 12 or getX() == 15))
+        {
+            if dir != .DOWN and !isImpassible(getNextTile(.UP))   // Prevent direction reversing and ensure exit is traversible
+            {
+                next_pos = {getX(), getY() + 1}
+                let d = distanceBetween(next_pos, target)    // Get distance between target and next tile in exit direction
+                if d < distance                                // If distance is shorter than any previously found, update direction to be returned
+                {                                               // Also update lowest found distance for future checks
+                    distance = d
+                    newDir = .UP                                // This process is repeated for all traversible exits from the current junction
+                }
+            }
+        }
+
+        // Check RIGHT exit
+        if dir != .LEFT and !isImpassible(getNextTile(.RIGHT))
+        {
+            next_pos = {getX() + 1, getY()};
+            let d = distanceBetween(next_pos, target)
+            if d < distance
+            {
+                distance = d;
+                newDir = .RIGHT
+            }
+        }
+
+        // Check DOWN exit
+        if dir != .UP and !isImpassible(getNextTile(.DOWN))
+        {
+            next_pos = {getX(), getY() - 1}
+            let d = distanceBetween(next_pos, target)
+            if d < distance
+            {
+                distance = d
+                newDir = .DOWN
+            }
+        }
+
+        // Check LEFT exit
+        if dir != .RIGHT and !isImpassible(getNextTile(.LEFT))
+        {
+            next_pos = {getX() - 1, getY()}
+            let d = distanceBetween(next_pos, target)
+            if d < distance
+            {
+                distance = d
+                newDir = .LEFT
+            }
+        }
+
+        return newDir  // Return newly found direction, yielding lowest straight line distance to target
     }
 
     mtd reverseDirection()
@@ -456,7 +562,6 @@ impl Ghost
             turnCorner()
         elif countExits() > 2   // Ghost is at junction - run targeting AI and update direction
         {
-            @breakpoint()
             switch ai
             {
             case SCATTER:       // Scatter all ghosts to each of the four corners
@@ -743,11 +848,10 @@ impl Pacman
     }
 }
 
-func invY(y: f32)                   => 30.0-y
 func translateMapOrigin()           = g_Painter.translateTransform(38.0, 26.0)
 func translateMapCoords(x, y: f32)  = g_Painter.translateTransform(x*8*Scale, y*8*Scale)
-func getTile(x, y: s32)->Tile       => g_Map[x, 30-y]
-func setTile(x, y: s32, t: Tile)    = g_Map[x, 30-y] = t
+func getTile(x, y: s32)->Tile       => g_Map[x, y]
+func setTile(x, y: s32, t: Tile)    = g_Map[x, y] = t
 func isImpassible(t: Tile)          => t == .W or t == .G
 
 func drawMap()
@@ -832,7 +936,7 @@ func drawScore()
     g_Painter.pushTransform()
 
     translateMapOrigin()                            // Translate to map origin
-    translateMapCoords(6.5, invY(32.5))             // Translate to point above map at which the score tooltip should be drawn
+    translateMapCoords(6.5, 32.5)             // Translate to point above map at which the score tooltip should be drawn
     g_Painter.drawTexture(0, 0, 80, 8, g_ScoreTex)  // Draw SCORE tooltip at current location
 
     translateMapCoords(4,-1)                        // Translate to point above map at which the high score should be drawn
@@ -862,7 +966,7 @@ func drawHelp()
 {
     g_Painter.pushTransform()
     translateMapOrigin()      // Translate to map origin
-    translateMapCoords(19,invY(32)) // Translate to point above map at which the HELP tooltip should be drawn
+    translateMapCoords(19,32) // Translate to point above map at which the HELP tooltip should be drawn
     g_Painter.drawTexture(0, 0, 64, 8, g_HelpTex) // Draw HELP tooltip at current location
     g_Painter.popTransform()
 }
@@ -871,7 +975,7 @@ func drawReady()
 {
     g_Painter.pushTransform()
     translateMapOrigin()      // Translate to map origin
-    translateMapCoords(11,invY(13)) // Translate to point within map at which READY! tooltip should be drawn
+    translateMapCoords(11,13) // Translate to point within map at which READY! tooltip should be drawn
     g_Painter.drawTexture(0, 0, 48, 8, g_ReadyTex) // Draw READY! sprite at current location
     g_Painter.popTransform()
 }
@@ -891,7 +995,7 @@ func drawQuit()
 {
     g_Painter.pushTransform()
     translateMapOrigin()      // Translate to map origin
-    translateMapCoords(19,invY(32)) // Translate to point above map at which the QUIT tooltip should be drawn
+    translateMapCoords(19,32) // Translate to point above map at which the QUIT tooltip should be drawn
     g_Painter.drawTexture(0, 0, 64, 8, g_QuitTex) // Draw QUIT tooltip at current location
     g_Painter.popTransform()
 }
