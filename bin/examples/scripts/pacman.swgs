@@ -248,12 +248,53 @@ impl Ghost
     {
     }
 
+    /**
+     * Special movement behaviour:
+     *      Very simply move ghost up and down within the SPAWN pen
+     */
     mtd aiSpawn()
     {
+        setSpeed(50)   // Set movement speed to 50%
+        if cast(s32)(y * 10.0) % 10 == 5 and cast(s32)(x * 10.0) % 10 == 5 and isImpassible(getNextTile(dir))
+        {
+            switch dir // Switch direction upon hitting a WALL
+            {
+            case UP:    dir = DOWN
+            case DOWN:  dir = UP
+            }
+        }
     }
 
+    /**
+     * Special movement behaviour:
+     *      If within SPAWN pen and not heading down, move towards the center of the enclosure
+     *      Once at center of pen, head up until exited PEN
+     *      Immediately head LEFT and set speed to 100%
+     *      Once the first tile center is reached, enter AI of current wave
+     */
     mtd aiLeave()
     {
+        if y < 19 and dir != .DOWN
+        {
+            setSpeed(50) // Set movement speed to 50%
+            if x < 13.4  // Move towards the center
+                dir = .RIGHT
+            elif x > 13.6
+                dir = .LEFT
+            else
+            {
+                x = 13.5   // Truly center position when center of pen is reached
+                dir = .UP   // Then set direction to move out of the SPAWN
+            }
+        }
+        elif y >= 19 // Once out of the SPAWN, act as a normal ghost
+        {
+            dir = .LEFT    // Begin heading LEFT
+            ai = g_Wave    // Enter the current AI wave
+            setSpeed(100)  // Ensure speed is correctly set to 100%
+        }
+        elif cast(s32)(y * 10.0) % 10 == 5 and isImpassible(getNextTile(dir))
+            dir = .UP
     }
 
     mtd aiScatter()
@@ -276,10 +317,10 @@ impl Ghost
     {
         switch dir
         {
-            case UP:    dir = DOWN
-            case RIGHT: dir = LEFT
-            case DOWN:  dir = UP
-            case LEFT:  dir = RIGHT
+        case UP:    dir = DOWN
+        case RIGHT: dir = LEFT
+        case DOWN:  dir = UP
+        case LEFT:  dir = RIGHT
         }
 
         reverse = false
@@ -415,6 +456,7 @@ impl Ghost
             turnCorner()
         elif countExits() > 2   // Ghost is at junction - run targeting AI and update direction
         {
+            @breakpoint()
             switch ai
             {
             case SCATTER:       // Scatter all ghosts to each of the four corners
@@ -436,22 +478,22 @@ impl Ghost
         // Round the unchanging position coordinate, preventing directional query mishaps
         switch dir
         {
-        case UP:
-            y += dPos
-            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD
-                x = Math.round(x)
-        case RIGHT:
-            x += dPos;
-            if ai != .LEAVE
-                y = Math.round(y)
-        case DOWN:
-            y -= dPos;
-            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD
-                x = Math.round(x)
         case LEFT:
             x -= dPos
             if ai != .LEAVE
                 y = Math.round(y)
+        case RIGHT:
+            x += dPos
+            if ai != .LEAVE
+                y = Math.round(y)
+        case UP:
+            y += dPos
+            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD
+                x = Math.round(x)
+        case DOWN:
+            y -= dPos
+            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD
+                x = Math.round(x)
         }
     }
 
@@ -607,16 +649,11 @@ impl Pacman
         // Return next tile in given direction
         switch d
         {
-        case UP:
-            return getTile(getX(), getY()+1)
-        case RIGHT:
-            return getTile(getX()+1, getY())
-        case DOWN:
-            return getTile(getX(), getY()-1)
-        case LEFT:
-            return getTile(getX()-1, getY())
-        default:
-            return getTile(getX(), getY())  // If d=NONE, return current tile
+        case UP:    return getTile(getX(), getY()+1)
+        case RIGHT: return getTile(getX()+1, getY())
+        case DOWN:  return getTile(getX(), getY()-1)
+        case LEFT:  return getTile(getX()-1, getY())
+        default:    return getTile(getX(), getY())  // If d=NONE, return current tile
         }
     }
 
@@ -711,16 +748,7 @@ func translateMapOrigin()           = g_Painter.translateTransform(38.0, 26.0)
 func translateMapCoords(x, y: f32)  = g_Painter.translateTransform(x*8*Scale, y*8*Scale)
 func getTile(x, y: s32)->Tile       => g_Map[x, 30-y]
 func setTile(x, y: s32, t: Tile)    = g_Map[x, 30-y] = t
-
-/**
-* Return true if the given tile is impassible (a WALL or GATE)
-* @param t - tile for which to check passibility
-* @return -  bool, true if tile is impassible
-*/
-func isImpassible(t: Tile)->bool
-{
-    return t == .W or t == .G
-}
+func isImpassible(t: Tile)          => t == .W or t == .G
 
 func drawMap()
 {
@@ -938,7 +966,7 @@ func gameLoop()
     switch g_Mode
     {
     case READY: // After 240 ticks, enter PLAY mode
-        if g_Ticks > 240
+        //if g_Ticks > 240
             g_Mode = PLAY
 
     case PLAY: // Main play loop
@@ -1034,14 +1062,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 g_Wnd.postQuitEvent()
             }
 
-        case Left:
-            g_PacMan.tempDir = .LEFT
-        case Right:
-            g_PacMan.tempDir = .RIGHT
-        case Down:
-            g_PacMan.tempDir = .UP
-        case Up:
-            g_PacMan.tempDir = .DOWN
+        case Left:  g_PacMan.tempDir = .LEFT
+        case Right: g_PacMan.tempDir = .RIGHT
+        case Down:  g_PacMan.tempDir = .UP
+        case Up:    g_PacMan.tempDir = .DOWN
 
         default:
             if g_Mode == .PAUSE and g_TempMode != .GAMEOVER
