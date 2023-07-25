@@ -517,7 +517,7 @@ impl Painter
         setTransform(curState.transform)
     }
 
-    // Set the paint rotation, in degrees
+    // Set the paint rotation
     mtd rotateTransform(angle: Math.Angle)
     {
         if isZeroEpsilon(angle.rad)
@@ -527,7 +527,18 @@ impl Painter
         setTransform(curState.transform)
     }
 
-    // Set the paint rotation, in degrees
+    // Set the paint rotation.
+    // Will rotate around the current transformation position.
+    mtd rotateTransformInPlace(angle: Math.Angle)
+    {
+        if isZeroEpsilon(angle.rad)
+            return
+        var tr = Transform2.createRotation(angle.rad, curState.transform.tx, curState.transform.ty)
+        curState.transform.multiply(tr)
+        setTransform(curState.transform)
+    }
+
+    // Set the paint rotation
     mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
         if isZeroEpsilon(angle.rad)

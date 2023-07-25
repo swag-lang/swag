@@ -2,9 +2,10 @@
 #global namespace Time
 using Swag
 
+// Represents a delay, expressed in seconds.
 struct Duration
 {
-    timeInSeconds: f32
+    timeInSeconds: f32      // The duration in seconds
 }
 
 impl Duration
@@ -30,6 +31,15 @@ impl Duration
             #error "invalid duration literal suffix '" ++ suffix ++ "'"
     }
 
+    // Returns the value in milliseconds
     #[Inline]
     mtd const toMs()->u32 => cast(u32) (timeInSeconds * 1000)
+
+    // Returns a duration initialized with milliseconds
+    func fromMs(valueMs: u32)->Duration
+    {
+        var result: retval = undefined
+        result.timeInSeconds = valueMs / 1000.0
+        return result
+    }
 }

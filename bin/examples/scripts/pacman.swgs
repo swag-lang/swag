@@ -52,12 +52,33 @@ var g_PauseTex:     Texture
 var g_PauseAltTex:  Texture
 var g_QuitTex:      Texture
 var g_HelpTex:      Texture
+var g_ScoreTex:     Texture
+var g_Num0Tex:      Texture
+var g_Num1Tex:      Texture
+var g_Num2Tex:      Texture
+var g_Num3Tex:      Texture
+var g_Num4Tex:      Texture
+var g_Num5Tex:      Texture
+var g_Num6Tex:      Texture
+var g_Num7Tex:      Texture
+var g_Num8Tex:      Texture
+var g_Num9Tex:      Texture
+var g_GhostTexR:    [2] Texture    // Array storing red        ghost sprites
+var g_GhostTexP:    [2] Texture    // Array storing pink       ghost sprites
+var g_GhostTexB:    [2] Texture    // Array storing blue       ghost sprites
+var g_GhostTexY:    [2] Texture    // Array storing yellow     ghost sprites
+var g_GhostTexF:    [4] Texture    // Array storing frightened ghost sprites
 
 var g_Wnd:          *Wnd
 var g_DataPath:     String
 var g_Painter:      *Painter
 var g_Mode:         GameMode = READY
 var g_TempMode:     GameMode = READY
+var g_LastTime:     u64
+
+var g_Score:        s32
+var g_HighScore:    s32
+var g_PillsLeft     = 244
 
 // Game ticks, effectively enacting a frame counter
 var g_Ticks:        s32
@@ -70,7 +91,13 @@ var g_Ticks:        s32
  */
 var g_TimeStamp = -1
 
-var g_PacMan:       Pacman
+var g_PacMan: Pacman
+var g_Ghosts: [4] Ghost = [
+    {13.5, 30-19, GhostColor.RED},
+    {13.5, 30-16, GhostColor.PINK},
+    {11.5, 30-16, GhostColor.BLUE},
+    {15.5, 30-16, GhostColor.YELLOW}
+]
 
 struct Pacman
 {
@@ -82,6 +109,29 @@ struct Pacman
     texCount    = 10        // Counter to determine which texture to draw
     ready       = false     // Flag prevents incorrect Pac-Man texture or position rounding at start of game
 }
+
+struct Ghost
+{
+    xInit:  f32   // Initial X position stored for later resets
+    yInit:  f32   // Initial Y position stored for later resets
+    colour: GhostColor  // Colour of ghost
+
+    x:      f32   // X position relative to map - float allows for smooth movement between tiles
+    y:      f32   // Y position relative to map - float allows for smooth movement between tiles
+
+    //float d_pos = 0.1;      // Delta position - the amount the ghost should move each tick
+
+    dir: Direction   // Direction of movement
+    texCount: s32   // Counter to determine which texture to draw
+
+    //movement ai;    // Movement AI type
+    //bool reverse;   // Flag determining whether to reverse the ghost
+    //int timeout;    // Timeout used to determine when to leave FRIGHTENED mode AI, -1 = default
+    //bool drawScore; // Flag determining whether to draw the score for eating this ghost
+}
+
+// Enum defines possible ghost colours
+enum GhostColor {RED; PINK; BLUE; YELLOW;}
 
 /**
  * Game modes defined as enum:
@@ -157,6 +207,72 @@ var g_Map: [28, 31] Tile = [
     [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W]
 ]
 
+impl Ghost
+{
+    mtd reset()
+    {
+        x = xInit
+        y = yInit
+        //d_pos = 0.1f
+        texCount = 0
+        //reverse = false;
+        //timeout = -1;
+        //drawScore = false;
+
+        // Reset starting direction and movement type based on colour
+        switch colour
+        {
+        case RED:
+            dir = .LEFT
+            //ai = wave;      // RED starts outside the pen and is immediately in the first targeting mode defined by wave
+        case PINK:
+            dir = .DOWN
+            //ai = LEAVE;     // PINK starts in LEAVE mode, leaving the SPAWN pen straight away
+        case BLUE, YELLOW:   // YELLOW and BLUE both start facing UP, trapped within the SPAWN
+            dir = .UP
+            //ai = SPAWN;
+        }
+    }
+
+    mtd draw()
+    {
+        g_Painter.pushTransform()
+
+        translateMapOrigin()               // Translate to map origin
+        translateMapCoords(x,y)            // Translate to current (x,y)
+        g_Painter.translateTransform(7, 7)
+        //glTranslatef(-3.0f, -3.0f, 0.0f);   // Account for over-sized sprite (14x14 on 8x8 tile) 
+
+        // Determine which colour ghost to draw and whether it is the alternate texture (wiggle animation)
+        var ghostTex: Texture
+        let ghostAlt = cast(s32) Math.floor(texCount % 20 / 10.0)
+
+        /*if(ai == FRIGHTENED)    // If in FRIGHTENED mode, draw the correct skin
+        {
+            if(timeout >= 480 && tex_count % 30 >= 15)  // Draw white (flashing) skin when FRIGHTENED mode is nearing its end
+                ghostTex = ghost_f_tex[ghostAlt + 2];
+            else
+                ghostTex = ghost_f_tex[ghostAlt];
+        }
+        else if(ai != DEAD)*/
+        {
+            switch colour // If not in FRIGHTENED or DEAD AI, draw the ghost according to colour
+            {
+                case RED:       ghostTex = g_GhostTexR[ghostAlt]
+                case PINK:      ghostTex = g_GhostTexP[ghostAlt]
+                case BLUE:      ghostTex = g_GhostTexB[ghostAlt]
+                case YELLOW:    ghostTex = g_GhostTexY[ghostAlt]
+            }
+        }
+
+        // Draw ghost sprite with determined texture at current location only if not DEAD
+        //if(ai != DEAD)
+            g_Painter.drawTexture(-7, -7, 14, 14, ghostTex)
+
+        g_Painter.popTransform()
+    }
+}
+
 impl Pacman
 {
     /**
@@ -199,6 +315,54 @@ impl Pacman
     func isImpassible(t: Tile)->bool
     {
         return t == .W or t == .G
+    }
+
+    mtd eat()->s32
+    {
+        if !atTileCenter()
+            return 0
+        
+        switch getTile(getX(), getY())
+        {
+        case o:
+            setTile(getX(),getY(),e)
+            g_PillsLeft -= 1
+            return 10
+        case O:
+            setTile(getX(),getY(),E)
+            g_PillsLeft -= 1
+            return 50
+        case P:
+            if dir == .RIGHT
+                x = 1
+            else
+                x = 26
+            return 0
+        /*case F:
+            setTile(getX(),getY(),e)
+            fruitSpawned = false
+            switch fruits++
+            {
+                case 0:
+                    return 100;
+                case 1:
+                    return 300;
+                case 2:
+                    return 500;
+                case 3:
+                    return 700;
+                case 4:
+                    return 1000;
+                case 5:
+                    return 2000;
+                case 6:
+                    return 3000;
+                case 7:
+                    return 5000;
+            }*/
+        }
+
+        return 0
     }
 
     /**
@@ -276,6 +440,19 @@ impl Pacman
         translateMapOrigin()
         translateMapCoords(x,y)
         g_Painter.translateTransform(-2*Scale,-2*Scale)
+        g_Painter.translateTransform(6.5*Scale,6.5*Scale)
+
+        // Determine rotation angle of sprite based on direction
+        var angle: f32
+        switch dir
+        {
+        case UP:    angle = 270.0
+        case RIGHT: angle = 180.0
+        case DOWN:  angle = 90.0
+        case LEFT:  angle = 0.0
+        }
+
+        g_Painter.rotateTransformInPlace(Math.toRadians(angle))
 
         // Determine which texture to draw based on tick-incremented counter
         var pacmanTex: Texture
@@ -287,7 +464,7 @@ impl Pacman
             pacmanTex = g_Pac2Tex
 
         // Draw Pac-Man sprite with determined texture at determined angle
-        g_Painter.drawTexture(0, 0, 13, 13, pacmanTex)
+        g_Painter.drawTexture(-6.5, -6.5, 13, 13, pacmanTex)
 
         // Increment texture counter only if moving
         // If stationary, continue until sprite animation cycle is complete
@@ -345,8 +522,56 @@ func drawLevel()
 {
 }
 
+/**
+ * Draws a number as a set of sprites
+ *
+ * @param number - integer number to draw
+ */
+func drawNumberAsSprite(number: s32)
+{
+    g_Painter.pushTransform()
+
+    let str = Format.toString("%", number) // Convert number to string to allow iteration
+    loop i: str.length-1..0
+    {
+        switch str[i]
+        {
+        case "0"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)     // Draw number 0 sprite at current location
+        case "1"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num1Tex);    // Draw number 1 sprite at current location
+        case "2"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num2Tex)     // Draw number 2 sprite at current location
+        case "3"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num3Tex)     // Draw number 3 sprite at current location
+        case "4"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num4Tex)     // Draw number 4 sprite at current location
+        case "5"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num5Tex)     // Draw number 5 sprite at current location
+        case "6"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num6Tex)     // Draw number 6 sprite at current location
+        case "7"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num7Tex)     // Draw number 7 sprite at current location
+        case "8"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num8Tex)     // Draw number 8 sprite at current location
+        case "9"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num9Tex)     // Draw number 9 sprite at current location
+        }
+
+        translateMapCoords(-1,0)    // Translate one tile left for next digit
+    }
+
+    // If number is a single digit, justify with another zero
+    if str.length == 1
+        g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)
+
+    g_Painter.popTransform()
+}
+
 func drawScore()
 {
+    g_Painter.pushTransform()
+
+    translateMapOrigin()                            // Translate to map origin
+    translateMapCoords(6.5, invY(32.5))             // Translate to point above map at which the score tooltip should be drawn
+    g_Painter.drawTexture(0, 0, 80, 8, g_ScoreTex)  // Draw SCORE tooltip at current location
+
+    translateMapCoords(4,-1)                        // Translate to point above map at which the high score should be drawn
+    drawNumberAsSprite(Math.min(g_HighScore,99999)) // Draw high score sprites at current location
+    translateMapCoords(6,0)                         // Translate to point above map at which the score should be drawn
+    drawNumberAsSprite(Math.min(g_Score,99999))     // Draw score sprites at current location
+
+    g_Painter.popTransform()
 }
 
 func drawLives()
@@ -360,6 +585,8 @@ func drawFruits()
 func drawCharacters()
 {
     g_PacMan.draw();
+    loop i: 4
+        g_Ghosts[i].draw()
 }
 
 func drawHelp()
@@ -437,8 +664,36 @@ func display()
     }
 }
 
+/**
+ * Check all possible collisions:
+ *      Call Pac-Man to eat its current tile, incrementing score accordingly
+ *       - If all pills are eaten, move to the next level
+ *       - Once score exceeds 10,000, award a bonus life
+ *       - On eating a big pill, set ghosts to FRIGHTENED
+ *       - Release ghosts from the SPAWN pen after a specific number of pills have been eaten
+ *       - If a fruit is eaten, pause the game briefly to display the score for eating it
+ *      Check whether Pac-Man has collided with a ghost
+ *       - Set mode=DEATH if collision has occurred with alive ghost
+ *       - If the ghost is frightened, eat it (set AI=DEAD)
+ */
+func checkCollisions()
+{
+    // Eat current tile, increment score
+    let scoreIncrement = g_PacMan.eat()
+    g_Score += scoreIncrement
+}
+
 func gameLoop()
 {
+    let curTime = Time.nowMilliseconds()
+    if curTime - g_LastTime < 16
+    {
+        let delay = cast(u32) (16 - (curTime - g_LastTime))
+        Threading.Thread.sleep(Time.Duration.fromMs(delay))
+    }
+
+    g_LastTime = curTime
+
     switch g_Mode
     {
     case READY: // After 240 ticks, enter PLAY mode
@@ -448,7 +703,9 @@ func gameLoop()
     case PLAY: // Main play loop
         if g_TimeStamp == -1
         {
+            checkCollisions()
             g_PacMan.move()
+            checkCollisions()
         }
         else
         {
@@ -480,16 +737,25 @@ func resetMap()
     }
 }
 
+func resetLevel()
+{
+    loop i: 4
+        g_Ghosts[i].reset()
+}
+
 func restartGame()
 {
-    /*score = 0
+
+    /*
     level = 1
     lives = 2
     extraLife = false
-    pillsLeft = 244
     fruits = 0*/
+
+    g_Score = 0
+    g_PillsLeft = 244
     resetMap()
-    //resetLevel()
+    resetLevel()
 }
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
@@ -497,6 +763,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Create:
+        restartGame()
         g_Wnd = wnd
         loadBindTextures()
 
@@ -565,15 +832,39 @@ func loadBindTextures()
     g_Pac0Tex       = loadAndBindTexture("pacman/0.png")
     g_Pac1Tex       = loadAndBindTexture("pacman/1.png")
     g_Pac2Tex       = loadAndBindTexture("pacman/2.png")
+    // Bind ghost textures
+    g_GhostTexR[0]  = loadAndBindTexture("ghosts/r-0.png");
+    g_GhostTexR[1]  = loadAndBindTexture("ghosts/r-1.png");
+    g_GhostTexP[0]  = loadAndBindTexture("ghosts/p-0.png");
+    g_GhostTexP[1]  = loadAndBindTexture("ghosts/p-1.png");
+    g_GhostTexB[0]  = loadAndBindTexture("ghosts/b-0.png");
+    g_GhostTexB[1]  = loadAndBindTexture("ghosts/b-1.png");
+    g_GhostTexY[0]  = loadAndBindTexture("ghosts/y-0.png");
+    g_GhostTexY[1]  = loadAndBindTexture("ghosts/y-1.png");
+    g_GhostTexF[0]  = loadAndBindTexture("ghosts/f-0.png");
+    g_GhostTexF[1]  = loadAndBindTexture("ghosts/f-1.png");
+    g_GhostTexF[2]  = loadAndBindTexture("ghosts/f-2.png");
+    g_GhostTexF[3]  = loadAndBindTexture("ghosts/f-3.png");
     // Bind UI textures
+    g_Num0Tex       = loadAndBindTexture("ui/0.png")
+    g_Num1Tex       = loadAndBindTexture("ui/1.png")
+    g_Num2Tex       = loadAndBindTexture("ui/2.png")
+    g_Num3Tex       = loadAndBindTexture("ui/3.png")
+    g_Num4Tex       = loadAndBindTexture("ui/4.png")
+    g_Num5Tex       = loadAndBindTexture("ui/5.png")
+    g_Num6Tex       = loadAndBindTexture("ui/6.png")
+    g_Num7Tex       = loadAndBindTexture("ui/7.png")
+    g_Num8Tex       = loadAndBindTexture("ui/8.png")
+    g_Num9Tex       = loadAndBindTexture("ui/9.png")
     g_ReadyTex      = loadAndBindTexture("ui/ready.png")
-    g_PauseTex      = loadAndBindTexture("ui/pause.png");
-    g_PauseAltTex   = loadAndBindTexture("ui/pause_alt.png");
-    g_QuitTex       = loadAndBindTexture("ui/quit.png");
-    g_HelpTex       = loadAndBindTexture("ui/help.png");
+    g_PauseTex      = loadAndBindTexture("ui/pause.png")
+    g_PauseAltTex   = loadAndBindTexture("ui/pause_alt.png")
+    g_QuitTex       = loadAndBindTexture("ui/quit.png")
+    g_HelpTex       = loadAndBindTexture("ui/help.png")
+    g_ScoreTex      = loadAndBindTexture("ui/score.png")
 }
 
 #run
 {
-    Application.runSurface(4100, 100, cast(s32) (300 * Scale), cast(s32) (340 * Scale), title = "Pacman", hook = &onEvent)
+    Application.runSurface(100, 100, cast(s32) (300 * Scale), cast(s32) (340 * Scale), title = "Pacman", hook = &onEvent)
 }
