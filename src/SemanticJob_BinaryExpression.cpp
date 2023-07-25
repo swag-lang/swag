@@ -502,7 +502,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     auto sourceFile    = context->sourceFile;
     auto module        = sourceFile->module;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     if (leftTypeInfo->isStruct())
     {
@@ -636,6 +636,14 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         break;
     default:
     {
+        if (rightTypeInfo->isNativeFloat())
+        {
+            Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+            diag.hint = Hnt(Hnt0061);
+            diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+            return context->report(diag);
+        }
+
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.hint = Hnt(Hnt0061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));

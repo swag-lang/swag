@@ -756,7 +756,7 @@ void initErrors()
     SWAG_ERROR(Err0037, "the operation '%s' is not allowed because the left expression is an enum type ('%s') not marked with 'Swag.EnumFlags'");
     SWAG_ERROR(Err0038, "the operation '%s' is not allowed because the right expression is an enum type ('%s') not marked with 'Swag.EnumFlags'");
     SWAG_ERROR(Err0005, "the operation '%s' is not allowed on type '%s'");
-    SWAG_ERROR(Err0143, "the operator '%s' does not accept a left expression of type '%s'");
+    SWAG_ERROR(Err0143, "the operator '%s' does not accept an operand of type '%s'");
     SWAG_ERROR(Err0164, "dereferencing an empty slice");
     SWAG_ERROR(Err0142, "dereferencing an empty string");
     SWAG_ERROR(Err0146, "dereferencing a null pointer");

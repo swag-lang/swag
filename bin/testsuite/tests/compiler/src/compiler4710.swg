@@ -1,3 +1,4 @@
+#global testerror
 #test
 {
     let y = 1.0
