@@ -68,6 +68,10 @@ var g_GhostTexP:    [2] Texture    // Array storing pink       ghost sprites
 var g_GhostTexB:    [2] Texture    // Array storing blue       ghost sprites
 var g_GhostTexY:    [2] Texture    // Array storing yellow     ghost sprites
 var g_GhostTexF:    [4] Texture    // Array storing frightened ghost sprites
+var g_EyeTexU:      Texture
+var g_EyeTexR:      Texture
+var g_EyeTexD:      Texture
+var g_EyeTexL:      Texture
 
 var g_Wnd:          *Wnd
 var g_DataPath:     String
@@ -79,6 +83,9 @@ var g_LastTime:     u64
 var g_Score:        s32
 var g_HighScore:    s32
 var g_PillsLeft     = 244
+
+// Ghost AI targeting is wave-based, varying between CHASE and SCATTER over time
+var g_Wave = Movement.SCATTER
 
 // Game ticks, effectively enacting a frame counter
 var g_Ticks:        s32
@@ -116,22 +123,25 @@ struct Ghost
     yInit:  f32   // Initial Y position stored for later resets
     colour: GhostColor  // Colour of ghost
 
-    x:      f32   // X position relative to map - float allows for smooth movement between tiles
-    y:      f32   // Y position relative to map - float allows for smooth movement between tiles
+    x:      f32     // X position relative to map - float allows for smooth movement between tiles
+    y:      f32     // Y position relative to map - float allows for smooth movement between tiles
 
-    //float d_pos = 0.1;      // Delta position - the amount the ghost should move each tick
+    dPos:   f32     // Delta position - the amount the ghost should move each tick
 
-    dir: Direction   // Direction of movement
-    texCount: s32   // Counter to determine which texture to draw
+    dir: Direction      // Direction of movement
+    texCount: s32       // Counter to determine which texture to draw
 
-    //movement ai;    // Movement AI type
-    //bool reverse;   // Flag determining whether to reverse the ghost
-    //int timeout;    // Timeout used to determine when to leave FRIGHTENED mode AI, -1 = default
-    //bool drawScore; // Flag determining whether to draw the score for eating this ghost
+    ai:         Movement    // Movement AI type
+    reverse:    bool        // Flag determining whether to reverse the ghost
+    timeout:    s32         // Timeout used to determine when to leave FRIGHTENED mode AI, -1 = default
+    drawScore:  bool        // Flag determining whether to draw the score for eating this ghost
 }
 
 // Enum defines possible ghost colours
 enum GhostColor {RED; PINK; BLUE; YELLOW;}
+
+// Enum defines possible ghost movement types
+enum Movement {CHASE; SCATTER; FRIGHTENED; DEAD; LEAVE; SPAWN;}
 
 /**
  * Game modes defined as enum:
@@ -213,24 +223,235 @@ impl Ghost
     {
         x = xInit
         y = yInit
-        //d_pos = 0.1f
+        dPos = 0.1
         texCount = 0
-        //reverse = false;
-        //timeout = -1;
-        //drawScore = false;
+        reverse = false
+        timeout = -1
+        drawScore = false
 
         // Reset starting direction and movement type based on colour
         switch colour
         {
         case RED:
             dir = .LEFT
-            //ai = wave;      // RED starts outside the pen and is immediately in the first targeting mode defined by wave
+            ai = g_Wave         // RED starts outside the pen and is immediately in the first targeting mode defined by wave
         case PINK:
             dir = .DOWN
-            //ai = LEAVE;     // PINK starts in LEAVE mode, leaving the SPAWN pen straight away
-        case BLUE, YELLOW:   // YELLOW and BLUE both start facing UP, trapped within the SPAWN
+            ai = .LEAVE         // PINK starts in LEAVE mode, leaving the SPAWN pen straight away
+        case BLUE, YELLOW:      // YELLOW and BLUE both start facing UP, trapped within the SPAWN
             dir = .UP
-            //ai = SPAWN;
+            ai = .SPAWN
+        }
+    }
+
+    mtd checkSpecialCases()
+    {
+    }
+
+    mtd aiSpawn()
+    {
+    }
+
+    mtd aiLeave()
+    {
+    }
+
+    mtd aiScatter()
+    {
+    }
+
+    mtd aiChase(redGhost: Ghost)
+    {
+    }
+
+    mtd aiFrightened()
+    {
+    }
+
+    mtd aiDead()
+    {
+    }
+
+    mtd reverseDirection()
+    {
+        switch dir
+        {
+            case UP:    dir = DOWN
+            case RIGHT: dir = LEFT
+            case DOWN:  dir = UP
+            case LEFT:  dir = RIGHT
+        }
+
+        reverse = false
+    }
+
+    mtd turnCorner()
+    {
+        if dir != .DOWN and !isImpassible(getNextTile(.UP))
+            dir = .UP
+        elif dir != .LEFT and !isImpassible(getNextTile(.RIGHT))
+            dir = .RIGHT
+        elif dir != .UP and !isImpassible(getNextTile(.DOWN))
+            dir = .DOWN
+        elif dir != .RIGHT and !isImpassible(getNextTile(.LEFT))
+            dir = .LEFT
+    }
+
+    /**
+     * When setting the speed of a ghost, it is necessary to round the ghost's coordinates to the correct degree of precision
+     *
+     * Rounding prevents errors such as being unable to recognise the center of a tile or overshooting a junction when changing speeds
+     *      EXAMPLE CASE:   Ghost is travelling at 50% speed (FRIGHTENED) so increases position by 0.05 each tick
+     *                      Upon death, its speed is incremented to 200%, moving by 0.2 tiles each tick
+     *                      Suppose the ghost was eaten at x=12.05 - possible when moving at 50% speed
+     *                      Its position will now be unable to round to x=12.0 to ascertain it is at the center of a tile
+     *
+     * Because of cases like the above, position rounding is necessary when changing speeds
+     */
+    mtd roundPosition()
+    {
+        x = Math.round(x / dPos) * dPos
+        y = Math.round(y / dPos) * dPos
+    }
+
+    /**
+     * Set the speed of the ghost and round the position to account for movement precision inaccuracies
+     *
+     * @param percentage - Float representing speed. 100% sets d_pos=0.1f (normal playing speed)
+     */
+    mtd setSpeed(percentage: f32)
+    {
+        dPos = percentage / 1000
+        roundPosition()
+    }
+
+    mtd countExits()->s32
+    {
+        var exits = 0
+        if atTileCenter()
+        {
+            if !isImpassible(getNextTile(.UP))
+                exits += 1
+            if !isImpassible(getNextTile(.RIGHT))
+                exits += 1
+            if !isImpassible(getNextTile(.DOWN))
+                exits += 1
+            if !isImpassible(getNextTile(.LEFT))
+                exits += 1
+        }
+
+        return exits
+    }
+
+    /**
+     * Determines and returns absolute X coordinate of map tile on which ghost resides
+     *
+     * @return - integer, X coordinate of current tile
+     */
+    mtd getX() => cast(s32) Math.round(x)
+
+    /**
+     * Determines and returns absolute Y coordinate of map tile on which ghost resides
+     *
+     * @return - integer, Y coordinate of current tile
+     */
+    mtd getY() => cast(s32) Math.round(y)
+
+    /**
+     * Determines and returns the next tile in the given direction of movement
+     *
+     * @param d - direction of movement in which to check to the next tile
+     * @return -  next tile in direction d
+     */
+    mtd getNextTile(d: Direction)->Tile
+    {
+        // Return next tile in given direction
+        switch d
+        {
+        case UP:    return getTile(getX(), getY()+1)
+        case RIGHT: return getTile(getX()+1, getY())
+        case DOWN:  return getTile(getX(), getY()-1)
+        case LEFT:  return getTile(getX()-1, getY())
+        default:    return getTile(getX(), getY())  // If d=NONE, return current tile
+        }
+    }
+
+    /**
+     * Determines whether ghost is currently at the center of a tile
+     * Expression basically validates that the first decimal point of each coordinate is a zero
+     * If each is a zero, ghost is at the center of his tile
+     *
+     * @return - boolean, true if at center
+     */
+    mtd atTileCenter()->bool
+    {
+        let mod = cast(s32) (1/dPos)
+        return cast(s32) Math.round(y * mod) % mod == 0 and cast(s32) Math.round(x * mod) % mod == 0
+    }
+
+    mtd move(redGhost: Ghost)
+    {
+        // Check any special case AI behaviour
+        checkSpecialCases()
+
+        // Handle special case movement behaviours
+        if ai == .SPAWN     // Behaviour within SPAWN pen
+            aiSpawn()
+        elif ai == .LEAVE   // AI to LEAVE SPAWN pen
+            aiLeave()
+        // Handle PORTAL collision - only teleport if at center of tile
+        elif atTileCenter() and getTile(getX(), getY()) == .P
+        {
+            if dir == .RIGHT
+                x = 1
+            else
+                x = 26
+        }
+        // If the a new AI mode has been set, reverse the current direction
+        elif reverse
+            reverseDirection()
+        // If no special case exists, direction can only be changed when 2 or more exits exist
+        elif countExits() == 2 and isImpassible(getNextTile(dir))    // Ghost is at corner so must turn
+            turnCorner()
+        elif countExits() > 2   // Ghost is at junction - run targeting AI and update direction
+        {
+            switch ai
+            {
+            case SCATTER:       // Scatter all ghosts to each of the four corners
+                aiScatter()
+            case CHASE:         // Target and hunt Pac-Man, passing RED ghost for BLUE's AI
+                aiChase(redGhost)
+            case FRIGHTENED:    // Flee from Pac-Man randomly
+                aiFrightened()
+            case DEAD:
+                aiDead()
+            }
+        }
+
+        // Half speed when travelling down PORTAL corridors
+        if getY() == 16 and (getX() < 6 or getX() > 21) and ai != .DEAD
+            setSpeed(50)
+
+        // Perform smooth movement between tiles in the current direction of movement
+        // Round the unchanging position coordinate, preventing directional query mishaps
+        switch dir
+        {
+        case UP:
+            y += dPos
+            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD
+                x = Math.round(x)
+        case RIGHT:
+            x += dPos;
+            if ai != .LEAVE
+                y = Math.round(y)
+        case DOWN:
+            y -= dPos;
+            if ai != .SPAWN and ai != .LEAVE and ai != .DEAD
+                x = Math.round(x)
+        case LEFT:
+            x -= dPos
+            if ai != .LEAVE
+                y = Math.round(y)
         }
     }
 
@@ -241,20 +462,20 @@ impl Ghost
         translateMapOrigin()               // Translate to map origin
         translateMapCoords(x,y)            // Translate to current (x,y)
         g_Painter.translateTransform(7, 7)
-        //glTranslatef(-3.0f, -3.0f, 0.0f);   // Account for over-sized sprite (14x14 on 8x8 tile) 
+        //glTranslatef(-3.0f, -3.0f, 0.0f);   // Account for over-sized sprite (14x14 on 8x8 tile)
 
         // Determine which colour ghost to draw and whether it is the alternate texture (wiggle animation)
         var ghostTex: Texture
         let ghostAlt = cast(s32) Math.floor(texCount % 20 / 10.0)
 
-        /*if(ai == FRIGHTENED)    // If in FRIGHTENED mode, draw the correct skin
+        if ai == .FRIGHTENED    // If in FRIGHTENED mode, draw the correct skin
         {
-            if(timeout >= 480 && tex_count % 30 >= 15)  // Draw white (flashing) skin when FRIGHTENED mode is nearing its end
-                ghostTex = ghost_f_tex[ghostAlt + 2];
+            if timeout >= 480 and texCount % 30 >= 15   // Draw white (flashing) skin when FRIGHTENED mode is nearing its end
+                ghostTex = g_GhostTexF[ghostAlt + 2]
             else
-                ghostTex = ghost_f_tex[ghostAlt];
+                ghostTex = g_GhostTexF[ghostAlt]
         }
-        else if(ai != DEAD)*/
+        else if ai != .DEAD
         {
             switch colour // If not in FRIGHTENED or DEAD AI, draw the ghost according to colour
             {
@@ -266,8 +487,28 @@ impl Ghost
         }
 
         // Draw ghost sprite with determined texture at current location only if not DEAD
-        //if(ai != DEAD)
+        if ai != .DEAD
             g_Painter.drawTexture(-7, -7, 14, 14, ghostTex)
+
+        // Only draw the ghost's eyes if it's not FRIGHTENED
+        if ai != .FRIGHTENED
+        {
+            // Determine which way the ghost's eyes should be facing
+            var eyesTex: Texture
+            switch dir
+            {
+            case UP:    eyesTex = g_EyeTexU
+            case RIGHT: eyesTex = g_EyeTexR
+            case DOWN:  eyesTex = g_EyeTexD
+            case LEFT:  eyesTex = g_EyeTexL
+            }
+
+            // Draw direction-based eyes sprite atop ghost body
+            g_Painter.drawTexture(-7, -7, 14, 14, eyesTex)
+        }
+
+        // Increment texture counter every frame
+        texCount += 1
 
         g_Painter.popTransform()
     }
@@ -307,21 +548,11 @@ impl Pacman
         return cast(s32) Math.round(y)
     }
 
-    /**
-    * Return true if the given tile is impassible (a WALL or GATE)
-    * @param t - tile for which to check passibility
-    * @return -  bool, true if tile is impassible
-    */
-    func isImpassible(t: Tile)->bool
-    {
-        return t == .W or t == .G
-    }
-
     mtd eat()->s32
     {
         if !atTileCenter()
             return 0
-        
+
         switch getTile(getX(), getY())
         {
         case o:
@@ -480,6 +711,16 @@ func translateMapOrigin()           = g_Painter.translateTransform(38.0, 26.0)
 func translateMapCoords(x, y: f32)  = g_Painter.translateTransform(x*8*Scale, y*8*Scale)
 func getTile(x, y: s32)->Tile       => g_Map[x, 30-y]
 func setTile(x, y: s32, t: Tile)    = g_Map[x, 30-y] = t
+
+/**
+* Return true if the given tile is impassible (a WALL or GATE)
+* @param t - tile for which to check passibility
+* @return -  bool, true if tile is impassible
+*/
+func isImpassible(t: Tile)->bool
+{
+    return t == .W or t == .G
+}
 
 func drawMap()
 {
@@ -706,6 +947,10 @@ func gameLoop()
             checkCollisions()
             g_PacMan.move()
             checkCollisions()
+            // Move each ghost - pass RED ghost for BLUE's CHASE mode AI
+            loop i: 4
+                g_Ghosts[i].move(g_Ghosts[0])
+
         }
         else
         {
@@ -833,18 +1078,23 @@ func loadBindTextures()
     g_Pac1Tex       = loadAndBindTexture("pacman/1.png")
     g_Pac2Tex       = loadAndBindTexture("pacman/2.png")
     // Bind ghost textures
-    g_GhostTexR[0]  = loadAndBindTexture("ghosts/r-0.png");
-    g_GhostTexR[1]  = loadAndBindTexture("ghosts/r-1.png");
-    g_GhostTexP[0]  = loadAndBindTexture("ghosts/p-0.png");
-    g_GhostTexP[1]  = loadAndBindTexture("ghosts/p-1.png");
-    g_GhostTexB[0]  = loadAndBindTexture("ghosts/b-0.png");
-    g_GhostTexB[1]  = loadAndBindTexture("ghosts/b-1.png");
-    g_GhostTexY[0]  = loadAndBindTexture("ghosts/y-0.png");
-    g_GhostTexY[1]  = loadAndBindTexture("ghosts/y-1.png");
-    g_GhostTexF[0]  = loadAndBindTexture("ghosts/f-0.png");
-    g_GhostTexF[1]  = loadAndBindTexture("ghosts/f-1.png");
-    g_GhostTexF[2]  = loadAndBindTexture("ghosts/f-2.png");
-    g_GhostTexF[3]  = loadAndBindTexture("ghosts/f-3.png");
+    g_GhostTexR[0]  = loadAndBindTexture("ghosts/r-0.png")
+    g_GhostTexR[1]  = loadAndBindTexture("ghosts/r-1.png")
+    g_GhostTexP[0]  = loadAndBindTexture("ghosts/p-0.png")
+    g_GhostTexP[1]  = loadAndBindTexture("ghosts/p-1.png")
+    g_GhostTexB[0]  = loadAndBindTexture("ghosts/b-0.png")
+    g_GhostTexB[1]  = loadAndBindTexture("ghosts/b-1.png")
+    g_GhostTexY[0]  = loadAndBindTexture("ghosts/y-0.png")
+    g_GhostTexY[1]  = loadAndBindTexture("ghosts/y-1.png")
+    g_GhostTexF[0]  = loadAndBindTexture("ghosts/f-0.png")
+    g_GhostTexF[1]  = loadAndBindTexture("ghosts/f-1.png")
+    g_GhostTexF[2]  = loadAndBindTexture("ghosts/f-2.png")
+    g_GhostTexF[3]  = loadAndBindTexture("ghosts/f-3.png")
+    // Bind ghost eye textures
+    g_EyeTexU       = loadAndBindTexture("eyes/u.png");
+    g_EyeTexR       = loadAndBindTexture("eyes/r.png");
+    g_EyeTexD       = loadAndBindTexture("eyes/d.png");
+    g_EyeTexL       = loadAndBindTexture("eyes/l.png");
     // Bind UI textures
     g_Num0Tex       = loadAndBindTexture("ui/0.png")
     g_Num1Tex       = loadAndBindTexture("ui/1.png")
