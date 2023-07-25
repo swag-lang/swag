@@ -48,49 +48,38 @@ var g_Pac0Tex:      Texture
 var g_Pac1Tex:      Texture
 var g_Pac2Tex:      Texture
 var g_ReadyTex:     Texture
+var g_PauseTex:     Texture
+var g_PauseAltTex:  Texture
+var g_QuitTex:      Texture
 
 var g_Wnd:          *Wnd
 var g_DataPath:     String
 var g_Painter:      *Painter
 var g_Mode:         GameMode = READY
+var g_TempMode:     GameMode = READY
+
+// Game ticks, effectively enacting a frame counter
 var g_Ticks:        s32
+
+/**
+ * Timestamp represents symbolic points in the game, allowing specific frame-based timing from a certain tick:
+ *      -1: default, unset state
+ * Set to current ticks in a number of situations, effecting a short pause in the game
+ * Set to current ticks on entering DEATH-mode, ensuring READY-mode is entered a given number of ticks later
+ */
+var g_TimeStamp = -1
+
 var g_PacMan:       Pacman
 
 struct Pacman
 {
-    x: f32          // X position relative to map - float allows for smooth movement between tiles
-    y: f32          // Y position relative to map - float allows for smooth movement between tiles
-    texCount: s32   // Counter to determine which texture to draw
-}
-
-impl Pacman
-{
-    mtd draw()
-    {
-        g_Painter.pushState()
-        translateMapOrigin()
-        translateMapCoords(x,y)
-        g_Painter.translateTransform(-2,-2)
-
-        // Determine which texture to draw based on tick-incremented counter
-        var pacmanTex: Texture
-        if texCount % 20 < 5
-            pacmanTex = g_Pac0Tex
-        elif texCount % 20 < 10 or texCount % 20 >= 15
-            pacmanTex = g_Pac1Tex
-        else
-            pacmanTex = g_Pac2Tex
-
-        // Draw Pac-Man sprite with determined texture at determined angle
-        g_Painter.drawTexture(0, 0, 13, 13, pacmanTex)
-
-        // Increment texture counter only if moving
-        // If stationary, continue until sprite animation cycle is complete
-        //if !(dir == NONE && tex_count % 20 < 5) && ready
-          //  tex_count++;
-
-        g_Painter.popState()
-    }
+    x           = 13.5      // X position relative to map - float allows for smooth movement between tiles
+    y           = 30-7.0       // Y position relative to map - float allows for smooth movement between tiles
+    dir:        Direction   // Direction of movement
+    tempDir:    Direction   // Temporary direction storage
+    saveDir:    Direction   // Secondary direction storage for stopping and starting animation
+    texCount    = 10        // Counter to determine which texture to draw
+    ready       = false     // Flag prevents incorrect Pac-Man texture or position rounding at start of game
 }
 
 /**
@@ -133,6 +122,9 @@ enum GameMode
  */
 enum Tile {W; G; P; n; o; e; O; E; F;}
 
+// Enum defines possible movement directions
+enum Direction {NONE; UP; RIGHT; DOWN; LEFT;}
+
 var g_Map: [28, 31] Tile = [
     [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W],
     [W,o,o,o,o,W,W,O,o,o,o,W,n,n,n,W,n,W,n,n,n,W,o,o,o,o,O,o,o,o,W],
@@ -162,7 +154,403 @@ var g_Map: [28, 31] Tile = [
     [W,o,W,W,o,W,W,o,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
     [W,o,o,o,o,W,W,O,o,o,o,W,n,n,n,W,n,W,n,n,n,W,o,o,o,o,O,o,o,o,W],
     [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W]
-    ]
+]
+
+impl Pacman
+{
+    /**
+     * Determines whether Pac-Man is currently at the center of a tile
+     * Expression basically validates that the first decimal point of each coordinate is a zero
+     * If each is a zero, Pac-Man is at the center of his tile
+     *
+     * @return - boolean, true if at center
+     */
+    mtd atTileCenter()->bool
+    {
+        return cast(s32) Math.round(y * 10.0) % 10 == 0 and cast(s32) Math.round(x * 10.0) % 10 == 0
+    }
+
+    /**
+     * Determines and returns absolute X coordinate of map tile on which Pac-Man resides
+     *
+     * @return - integer, X coordinate of current tile
+     */
+    mtd getX()->s32
+    {
+        return cast(s32) Math.round(x)
+    }
+
+    /**
+     * Determines and returns absolute Y coordinate of map tile on which Pac-Man resides
+     *
+     * @return - integer, Y coordinate of current tile
+     */
+    mtd getY()->s32
+    {
+        return cast(s32) Math.round(y)
+    }
+
+    /**
+    * Return true if the given tile is impassible (a WALL or GATE)
+    * @param t - tile for which to check passibility
+    * @return -  bool, true if tile is impassible
+    */
+    func isImpassible(t: Tile)->bool
+    {
+        return t == .W or t == .G
+    }
+
+    /**
+     * Determines and returns the next tile in the given direction of movement
+     *
+     * @param d - direction of movement in which to check to the next tile
+     * @return -  next tile in direction d
+     */
+    mtd getNextTile(d: Direction)->Tile
+    {
+        // Return next tile in given direction
+        switch d
+        {
+        case UP:
+            return getTile(getX(), getY()+1)
+        case RIGHT:
+            return getTile(getX()+1, getY())
+        case DOWN:
+            return getTile(getX(), getY()-1)
+        case LEFT:
+            return getTile(getX()-1, getY())
+        default:
+            return getTile(getX(), getY())  // If d=NONE, return current tile
+        }
+    }
+
+    mtd move()
+    {
+        // Ascertain whether direction can be changed
+        // Direction can only be changed at the center of a tile
+        if atTileCenter()
+        {
+            if !isImpassible(getNextTile(tempDir)) // If the proposed direction is not impassible, update direction
+                dir = tempDir
+            elif isImpassible(getNextTile(dir)) // If the current direction is impassible, set dir=NONE
+                dir = .NONE
+        }
+
+        // The only exception to the above rule is at game start (when ready=false), as Pac-Man starts between two tiles
+        if !ready and tempDir != .NONE and !isImpassible(getNextTile(tempDir))
+        {
+            dir = tempDir
+            if !ready
+                ready = true   // Ready flag is set to true, enabling position rounding when dir=NONE and correct texture drawing
+        }
+
+        // Perform smooth movement between tiles in the current direction of movement
+        // While moving, round the unchanging position coordinate, preventing directional query mishaps
+        switch dir
+        {
+        case LEFT:
+            x -= 0.1
+            y = Math.round(y)
+        case RIGHT:
+            x += 0.1
+            y = Math.round(y)
+        case UP:
+            y += 0.1
+            x = Math.round(x)
+        case DOWN:
+            y -= 0.1
+            x = Math.round(x)
+        default:                // If not moving, round both coordinates, centering Pac-Man within the tile
+            if ready            // Only do if Pac-Man has already moved (ready=true)
+            {                   // This allows starting X position to be non-rounded
+                x = Math.round(x)
+                y = Math.round(y)
+            }
+        }
+    }
+
+    mtd draw()
+    {
+        g_Painter.pushTransform()
+        translateMapOrigin()
+        translateMapCoords(x,y)
+        g_Painter.translateTransform(-2,-2)
+
+        // Determine which texture to draw based on tick-incremented counter
+        var pacmanTex: Texture
+        if texCount % 20 < 5
+            pacmanTex = g_Pac0Tex
+        elif texCount % 20 < 10 or texCount % 20 >= 15
+            pacmanTex = g_Pac1Tex
+        else
+            pacmanTex = g_Pac2Tex
+
+        // Draw Pac-Man sprite with determined texture at determined angle
+        g_Painter.drawTexture(0, 0, 13, 13, pacmanTex)
+
+        // Increment texture counter only if moving
+        // If stationary, continue until sprite animation cycle is complete
+        if !(dir == .NONE and texCount % 20 < 5) and ready
+            texCount += 1
+
+        g_Painter.popTransform()
+    }
+}
+
+func translateMapOrigin()
+{
+    g_Painter.translateTransform(38.0, 26.0)
+}
+
+func translateMapCoords(x, y: f32)
+{
+    g_Painter.translateTransform(x*8*Scale, y*8*Scale)
+}
+
+func getTile(x, y: s32)->Tile
+{
+    return g_Map[x, 30-y]
+}
+
+func setTile(x, y: s32, t: Tile)
+{
+    g_Map[x, 30-y] = t
+}
+
+func drawMap()
+{
+    g_Painter.pushTransform()
+    translateMapOrigin()
+
+    // Map
+    g_Painter.drawTexture(0, 0, 224, 248, g_MapTex)
+
+    // Content
+    loop x: 28
+    {
+        g_Painter.pushTransform()
+        loop y: 31
+        {
+            // Determine size of big pills to draw depending on ticks
+            let bigPill = cast(s32) Math.floor((g_Ticks%40) / 20.0)
+
+            switch getTile(x,y) // Draw pills as sprites
+            {
+                case o:
+                    g_Painter.drawTexture(0, 0, 8, 8, g_PillTex)
+                case O:
+                    g_Painter.drawTexture(0, 0, 8, 8, g_BigPillTex[bigPill]) // Draw big pill of determined size
+                //case F:
+                    //drawFruit(x,y); break;  // Method to determine which fruit should be drawn at current location
+            }
+
+            translateMapCoords(0,1) // Increment Y pos
+        }
+
+        g_Painter.popTransform()
+        translateMapCoords(1,0) // Increment X pos
+    }
+
+    g_Painter.popTransform()
+}
+
+func drawLevel()
+{
+}
+
+func drawScore()
+{
+}
+
+func drawLives()
+{
+}
+
+func drawFruits()
+{
+}
+
+func drawHelp()
+{
+}
+
+func drawCharacters()
+{
+    g_PacMan.draw();
+}
+
+func drawReady()
+{
+    g_Painter.pushTransform()
+    translateMapOrigin()      // Translate to map origin
+    translateMapCoords(11,13) // Translate to point within map at which READY! tooltip should be drawn
+    g_Painter.drawTexture(0, 0, 48, 8, g_ReadyTex) // Draw READY! sprite at current location
+    g_Painter.popTransform()
+}
+
+func drawPause(gameover: bool)
+{
+    g_Painter.pushTransform()
+    translateMapOrigin()      // Translate to map origin
+    if !gameover
+        g_Painter.drawTexture(0, 0, 224, 248, g_PauseTex) // Draw PAUSE screen as a sprite
+    else
+        g_Painter.drawTexture(0, 0, 224, 248, g_PauseAltTex) // Draw alternate PAUSE screen as a sprite (restart text only when mode=GAMEOVER)
+    g_Painter.popTransform()
+}
+
+func drawQuit()
+{
+    g_Painter.pushTransform()
+    translateMapOrigin()      // Translate to map origin
+    translateMapCoords(19,32) // Translate to point above map at which the QUIT tooltip should be drawn
+    g_Painter.drawTexture(0, 0, 64, 8, g_QuitTex) // Draw QUIT tooltip at current location
+    g_Painter.popTransform()
+}
+
+func drawPlayScreen()
+{
+    drawMap()
+    drawLevel()
+    drawScore()
+    drawLives()
+    drawFruits()
+    drawHelp()
+}
+
+func display()
+{
+    let rect = g_Wnd.getClientRect()
+    g_Painter.fillRect(rect, Argb.Black)
+    g_Painter.scaleTransform(Scale, Scale)
+
+    switch g_Mode
+    {
+    case READY:
+        drawPlayScreen()
+        drawCharacters()
+        drawReady()
+
+    case PLAY:
+        drawPlayScreen()
+        drawCharacters()
+
+    case PAUSE:
+        drawPause(g_TempMode == GAMEOVER)
+        drawLevel()
+        drawScore()
+        drawLives()
+        drawFruits()
+        drawQuit()
+    }
+}
+
+func gameLoop()
+{
+    switch g_Mode
+    {
+    case READY: // After 240 ticks, enter PLAY mode
+        if g_Ticks > 240
+            g_Mode = PLAY
+
+    case PLAY: // Main play loop
+        if g_TimeStamp == -1
+        {
+            g_PacMan.move()
+        }
+        else
+        {
+            //...
+        }
+
+        break
+    }
+
+    // Increment game ticks once the frame is drawn, but only if not paused
+    if g_Mode != .NONE
+        g_Ticks += 1
+}
+
+func resetMap()
+{
+    loop x: 28
+    {
+        loop y: 31
+        {
+            switch getTile(x,y)
+            {
+            case F, e: // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+                setTile(x,y,.o)
+            case E:
+                setTile(x,y,.O)
+            }
+        }
+    }
+}
+
+func restartGame()
+{
+    /*score = 0
+    level = 1
+    lives = 2
+    extraLife = false
+    pillsLeft = 244
+    fruits = 0*/
+    resetMap()
+    //resetLevel()
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Wnd = wnd
+        loadBindTextures()
+
+    case Paint:
+        let paintEvt = cast(*PaintEvent) evt
+        g_Painter = paintEvt.bc.painter
+        gameLoop()
+        display()
+        wnd.invalidate()
+
+    case KeyPressed:
+        let keyEvt = cast(*KeyEvent) evt
+        switch keyEvt.key
+        {
+        case Escape:
+            if g_Mode != .PAUSE
+            {
+                g_TempMode = g_Mode // Save gamemode to re-enter on unpausing game
+                g_Mode = .PAUSE
+            }
+            elif g_Mode == .PAUSE
+            {
+                g_Wnd.postQuitEvent()
+            }
+
+        case Left:
+            g_PacMan.tempDir = .LEFT
+        case Right:
+            g_PacMan.tempDir = .RIGHT
+        case Down:
+            g_PacMan.tempDir = .UP
+        case Up:
+            g_PacMan.tempDir = .DOWN
+
+        default:
+            if g_Mode == .PAUSE and g_TempMode != .GAMEOVER
+                g_Mode = g_TempMode
+            elif g_Mode == .GAMEOVER or g_Mode == .PAUSE
+                restartGame()
+        }
+
+        break
+    }
+
+    return false
+}
 
 func loadBindTextures()
 {
@@ -187,143 +575,9 @@ func loadBindTextures()
     g_Pac2Tex       = loadAndBindTexture("pacman/2.png")
     // Bind UI textures
     g_ReadyTex      = loadAndBindTexture("ui/ready.png")
-}
-
-func translateMapOrigin()
-{
-    g_Painter.translateTransform(38.0, 26.0)
-}
-
-func translateMapCoords(x, y: f32)
-{
-    g_Painter.translateTransform(x*8*Scale, y*8*Scale)
-}
-
-func getTile(x, y: s32)->Tile
-{
-    return g_Map[x, 30-y]
-}
-
-func drawMap()
-{
-    g_Painter.pushState()
-    translateMapOrigin()
-
-    // Map
-    g_Painter.drawTexture(0, 0, 224, 248, g_MapTex)
-
-    // Content
-    loop x: 28
-    {
-        g_Painter.pushState()
-        loop y: 31
-        {
-            // Determine size of big pills to draw depending on ticks
-            let bigPill = cast(s32) Math.floor((g_Ticks%40) / 20.0)
-
-            switch getTile(x,y) // Draw pills as sprites
-            {
-                case o:
-                    g_Painter.drawTexture(0, 0, 8, 8, g_PillTex)
-                case O:
-                    g_Painter.drawTexture(0, 0, 8, 8, g_BigPillTex[bigPill]) // Draw big pill of determined size
-                //case F:
-                    //drawFruit(x,y); break;  // Method to determine which fruit should be drawn at current location
-            }
-
-            translateMapCoords(0,1)    // Increment Y pos
-        }
-
-        g_Painter.popState()
-        translateMapCoords(1,0)        // Increment X pos
-    }
-
-    g_Painter.popState()
-}
-
-func drawLevel()
-{
-}
-
-func drawPlayScreen()
-{
-    drawMap()
-    drawLevel()
-    /*drawScore()
-    drawLives()
-    drawFruits()
-    drawHelp()  */
-}
-
-func drawCharacters()
-{
-    g_PacMan.draw();
-}
-
-func drawReady()
-{
-    g_Painter.pushState()
-
-    translateMapOrigin()      // Translate to map origin
-    translateMapCoords(11,13) // Translate to point within map at which READY! tooltip should be drawn
-    g_Painter.drawTexture(0, 0, 48, 8, g_ReadyTex) // Draw READY! sprite at current location
-
-    g_Painter.popState()
-}
-
-func gameLoop()
-{
-    switch g_Mode
-    {
-    case READY: // After 240 ticks, enter PLAY mode
-        if g_Ticks > 240
-            g_Mode = PLAY
-
-    case PLAY: // Main play loop
-        break
-    }
-
-    // Increment game ticks once the frame is drawn, but only if not paused
-    if g_Mode != .NONE
-        g_Ticks += 1
-}
-
-func display()
-{
-    let rect = g_Wnd.getClientRect()
-    g_Painter.fillRect(rect, Argb.Black)
-    g_Painter.scaleTransform(Scale, Scale)
-
-    switch g_Mode
-    {
-    case READY:
-        drawPlayScreen()
-        drawCharacters()
-        drawReady()
-
-    case PLAY:
-        drawPlayScreen()
-        drawCharacters()
-    }
-}
-
-func onEvent(wnd: *Wnd, evt: *Event)->bool
-{
-    switch evt.kind
-    {
-    case Create:
-        g_Wnd = wnd
-        loadBindTextures()
-
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
-        g_Painter = paintEvt.bc.painter
-        gameLoop()
-        display()
-        wnd.invalidate()
-    }
-
-    return false
+    g_PauseTex      = loadAndBindTexture("ui/pause.png");
+    g_PauseAltTex   = loadAndBindTexture("ui/pause_alt.png");
+    g_QuitTex       = loadAndBindTexture("ui/quit.png");
 }
 
 #run
