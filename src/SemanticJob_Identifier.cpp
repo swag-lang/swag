@@ -2642,10 +2642,21 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         return true;
 
     // We go up in the hierarchy until we find a statement, or a contextual type to return
-    auto parent = node->parent;
+    bool canScanChilds = true;
+    auto parent        = node->parent;
     while (parent)
     {
+        if (canScanChilds && (parent->kind == AstNodeKind::BinaryOp ||
+                              parent->kind == AstNodeKind::FactorOp ||
+                              parent->kind == AstNodeKind::AffectOp ||
+                              parent->kind == AstNodeKind::VarDecl ||
+                              parent->kind == AstNodeKind::ConstDecl ||
+                              parent->kind == AstNodeKind::FuncDeclParam ||
+                              parent->kind == AstNodeKind::Switch))
         {
+            if (parent->kind != AstNodeKind::FactorOp)
+                canScanChilds = false;
+
             SharedLock lk(parent->mutex);
             for (auto c : parent->childs)
             {
@@ -2656,6 +2667,15 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                     result.push_back_once(typeEnum);
             }
         }
+        else
+        {
+            SharedLock lk(parent->mutex);
+            auto       typeEnum = findEnumTypeInContext(context, parent->typeInfo);
+            if (typeEnum)
+                has.push_back_once({parent, typeEnum});
+            if (typeEnum && typeEnum->contains(node->token.text))
+                result.push_back_once(typeEnum);
+        }
 
         if (!result.empty())
             return true;
@@ -2665,7 +2685,9 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             parent->kind == AstNodeKind::FuncDecl ||
             parent->kind == AstNodeKind::File ||
             parent->kind == AstNodeKind::Module ||
-            parent->kind == AstNodeKind::VarDecl)
+            parent->kind == AstNodeKind::FuncDeclParam ||
+            parent->kind == AstNodeKind::VarDecl ||
+            parent->kind == AstNodeKind::ConstDecl)
             break;
 
         parent = parent->parent;
@@ -2802,18 +2824,18 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                 else
                 {
                     auto withNodeP = node->findParent(AstNodeKind::With);
-                    if (!withNodeP && hasEnum.size() == 1)
-                    {
-                        Diagnostic diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
-                        diag.hint        = findClosestMatchesMsg(context, node, {{hasEnum[0].second->scope}});
-                        Diagnostic* note = nullptr;
-                        if (hasEnum[0].first)
-                            note = Diagnostic::note(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first));
-                        return context->report(diag, note, Diagnostic::hereIs(hasEnum[0].second->declNode));
-                    }
-
                     if (!withNodeP)
                     {
+                        if (hasEnum.size())
+                        {
+                            Diagnostic diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            diag.hint        = findClosestMatchesMsg(context, node, {{hasEnum[0].second->scope}});
+                            Diagnostic* note = nullptr;
+                            if (hasEnum[0].first)
+                                note = Diagnostic::note(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first));
+                            return context->report(diag, note, Diagnostic::hereIs(hasEnum[0].second->declNode));
+                        }
+
                         Diagnostic diag{identifierRef, Fmt(Err(Err0881), node->token.ctext())};
                         return context->report(diag);
                     }
