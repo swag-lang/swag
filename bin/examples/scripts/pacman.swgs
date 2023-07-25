@@ -51,6 +51,7 @@ var g_ReadyTex:     Texture
 var g_PauseTex:     Texture
 var g_PauseAltTex:  Texture
 var g_QuitTex:      Texture
+var g_HelpTex:      Texture
 
 var g_Wnd:          *Wnd
 var g_DataPath:     String
@@ -274,7 +275,7 @@ impl Pacman
         g_Painter.pushTransform()
         translateMapOrigin()
         translateMapCoords(x,y)
-        g_Painter.translateTransform(-2,-2)
+        g_Painter.translateTransform(-2*Scale,-2*Scale)
 
         // Determine which texture to draw based on tick-incremented counter
         var pacmanTex: Texture
@@ -297,25 +298,11 @@ impl Pacman
     }
 }
 
-func translateMapOrigin()
-{
-    g_Painter.translateTransform(38.0, 26.0)
-}
-
-func translateMapCoords(x, y: f32)
-{
-    g_Painter.translateTransform(x*8*Scale, y*8*Scale)
-}
-
-func getTile(x, y: s32)->Tile
-{
-    return g_Map[x, 30-y]
-}
-
-func setTile(x, y: s32, t: Tile)
-{
-    g_Map[x, 30-y] = t
-}
+func invY(y: f32)                   => 30.0-y
+func translateMapOrigin()           = g_Painter.translateTransform(38.0, 26.0)
+func translateMapCoords(x, y: f32)  = g_Painter.translateTransform(x*8*Scale, y*8*Scale)
+func getTile(x, y: s32)->Tile       => g_Map[x, 30-y]
+func setTile(x, y: s32, t: Tile)    = g_Map[x, 30-y] = t
 
 func drawMap()
 {
@@ -370,20 +357,25 @@ func drawFruits()
 {
 }
 
-func drawHelp()
-{
-}
-
 func drawCharacters()
 {
     g_PacMan.draw();
+}
+
+func drawHelp()
+{
+    g_Painter.pushTransform()
+    translateMapOrigin()      // Translate to map origin
+    translateMapCoords(19,invY(32)) // Translate to point above map at which the HELP tooltip should be drawn
+    g_Painter.drawTexture(0, 0, 64, 8, g_HelpTex) // Draw HELP tooltip at current location
+    g_Painter.popTransform()
 }
 
 func drawReady()
 {
     g_Painter.pushTransform()
     translateMapOrigin()      // Translate to map origin
-    translateMapCoords(11,13) // Translate to point within map at which READY! tooltip should be drawn
+    translateMapCoords(11,invY(13)) // Translate to point within map at which READY! tooltip should be drawn
     g_Painter.drawTexture(0, 0, 48, 8, g_ReadyTex) // Draw READY! sprite at current location
     g_Painter.popTransform()
 }
@@ -403,7 +395,7 @@ func drawQuit()
 {
     g_Painter.pushTransform()
     translateMapOrigin()      // Translate to map origin
-    translateMapCoords(19,32) // Translate to point above map at which the QUIT tooltip should be drawn
+    translateMapCoords(19,invY(32)) // Translate to point above map at which the QUIT tooltip should be drawn
     g_Painter.drawTexture(0, 0, 64, 8, g_QuitTex) // Draw QUIT tooltip at current location
     g_Painter.popTransform()
 }
@@ -578,9 +570,10 @@ func loadBindTextures()
     g_PauseTex      = loadAndBindTexture("ui/pause.png");
     g_PauseAltTex   = loadAndBindTexture("ui/pause_alt.png");
     g_QuitTex       = loadAndBindTexture("ui/quit.png");
+    g_HelpTex       = loadAndBindTexture("ui/help.png");
 }
 
 #run
 {
-    Application.runSurface(4100, 100, 1024, 1024, title = "Pacman", hook = &onEvent)
+    Application.runSurface(4100, 100, cast(s32) (300 * Scale), cast(s32) (340 * Scale), title = "Pacman", hook = &onEvent)
 }
