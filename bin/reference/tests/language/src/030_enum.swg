@@ -1,17 +1,34 @@
 #test
 {
-    // Enums values, unlike C/C++, must end with `;` or an `eol` (like a normal Swag declaration).
+    // Enums values, unlike C/C++, can end with `;`, ',' or an `eol`.
     {
-        enum Values
+        enum Values0
         {
             A
             B
         }
+
+        enum Values1
+        {
+            A,
+            B,
+        }
+
+        // The last comma is not necessary
+        enum Values2
+        {
+            A,
+            B
+        }
+
+        enum Values3 { A, B }
+        enum Values4 { A; B; }
+        enum Values5 { A; B }
     }
 
     // By default, an enum is of type `s32`.
     {
-        enum Values { A; B; }
+        enum Values { A, B }
         let type = @typeof(Values)
 
         // 'type' here is a 'typeinfo' dedicated to the enum type.
@@ -22,7 +39,7 @@
 
     // `@kindof` will return the underlying type of the enum.
     {
-        enum RGB { R; G; B; }
+        enum RGB { R, G, B }
         #assert @typeof(RGB) == RGB
         #assert @kindof(RGB) != RGB
         #assert @kindof(RGB) == s32

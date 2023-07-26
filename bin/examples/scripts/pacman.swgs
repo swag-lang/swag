@@ -152,10 +152,10 @@ struct Ghost
 }
 
 // Enum defines possible ghost colours
-enum GhostColor {RED; PINK; BLUE; YELLOW;}
+enum GhostColor {RED, PINK, BLUE, YELLOW}
 
 // Enum defines possible ghost movement types
-enum Movement {CHASE; SCATTER; FRIGHTENED; DEAD; LEAVE; SPAWN;}
+enum Movement {CHASE, SCATTER, FRIGHTENED, DEAD, LEAVE, SPAWN}
 
 /**
  * Game modes defined as enum:
@@ -169,20 +169,10 @@ enum Movement {CHASE; SCATTER; FRIGHTENED; DEAD; LEAVE; SPAWN;}
  * Gamemode is defined as new type for ease of use.
  * Default starting mode is READY
  */
-enum GameMode
-{
-    NONE
-    READY
-    PLAY
-    FRUIT
-    EAT
-    PAUSE
-    DEATH
-    GAMEOVER
-}
+enum GameMode{NONE, READY, PLAY, FRUIT, EAT, PAUSE, DEATH, GAMEOVER}
 
 // Enum defines possible movement directions
-enum Direction {NONE; UP; RIGHT; DOWN; LEFT;}
+enum Direction {NONE, UP, RIGHT, DOWN, LEFT}
 
 /**
  * Tile types defined as enum:

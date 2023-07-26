@@ -181,6 +181,14 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
         enumValue->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
-    SWAG_CHECK(eatSemiCol("enum value"));
+    if (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(eatToken());
+    }
+    else if (token.id != TokenId::SymRightCurly)
+    {
+        SWAG_CHECK(eatSemiCol("enum value"));
+    }
+
     return true;
 }
