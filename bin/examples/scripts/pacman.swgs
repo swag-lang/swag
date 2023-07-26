@@ -1131,8 +1131,8 @@ func drawMap()
                     g_Painter.drawTexture(0, 0, 8, 8, g_PillTex)
                 case O:
                     g_Painter.drawTexture(0, 0, 8, 8, g_BigPillTex[bigPill]) // Draw big pill of determined size
-                //case F:
-                    //drawFruit(x,y); break;  // Method to determine which fruit should be drawn at current location
+                case F:
+                    drawFruit(x,y)  // Method to determine which fruit should be drawn at current location
             }
 
             translateMapCoords(0,1) // Increment Y pos
@@ -1594,6 +1594,28 @@ func gameLoop()
     // Increment game ticks once the frame is drawn, but only if not paused
     if g_Mode != .NONE
         g_Ticks += 1
+}
+
+/**
+ * Determine which fruit to draw based on how many have already been consumed
+ * If the timer exceeds 600 ticks (approx 15s) remove the fruit and reset the timer
+ */
+func drawFruit(x, y: s32)
+{
+    if g_FruitTimer <= 900
+    {
+        g_Painter.pushTransform()
+        //glTranslatef(-3.0f, -3.0f, 0.0f);   // Account for over-sized sprite (14x14 on 8x8 tile)
+        // Determine which fruit sprite to draw from the array based on current fruit consumption count
+        g_Painter.drawTexture(0, 0, 14, 14, g_FruitsTex[g_Fruits])  // Draw fruit at current location
+        g_Painter.popTransform()
+        g_FruitTimer += 1
+    }
+    else
+    {
+        setTile(x,y,.e)
+        g_FruitTimer = -1
+    }
 }
 
 /**
