@@ -1,7 +1,8 @@
 /*
     :LICENCE
     Based on the pacman project by Alex Macpherson (https://github.com/alexjamesmacpherson/pacman/blob/master).
-    The original code has been modified for Swag
+    The original code has been modified for Swag.
+    Most of comments are from the original code.
 
     BSD 3-Clause License
 
@@ -188,7 +189,7 @@ enum Direction {NONE, UP, RIGHT, DOWN, LEFT}
  * Tile is defined as new type for ease of use.
  * Each tile-type is used to determine behaviour of Pac-Man & Ghosts.
  */
-enum Tile {W; G; P; n; o; e; O; E; F;}
+enum Tile {W, G, P, n, o, e, O, E, F}
 
 var g_Map: [28, 31] Tile = [
     [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W],
@@ -298,6 +299,7 @@ impl Ghost
                 ai = g_Wave     // If FRIGHTENED, enter wave-based AI
                 setSpeed(100)   // Ensure speed is correctly reset to 100%
             }
+
             timeout = -1
             g_GhostsEaten = 0   // Reset eaten ghosts count to zero as effects of big pill have ended - score bonus should not carry
         }
@@ -354,6 +356,7 @@ impl Ghost
         if y < 19 and dir != .DOWN
         {
             setSpeed(50)
+
             // Move towards the center
             if x < 13.4
                 dir = .RIGHT
@@ -368,17 +371,25 @@ impl Ghost
         // Once out of the SPAWN, act as a normal ghost
         elif y >= 19
         {
-            dir = .LEFT    // Begin heading LEFT
-            ai = g_Wave    // Enter the current AI wave
-            setSpeed(100)  // Ensure speed is correctly set to 100%
+            dir = .LEFT
+            ai = g_Wave
+            setSpeed(100)
         }
         elif cast(s32)(y * 10.0) % 10 == 5 and isImpassible(getNextTile(dir))
             dir = .UP
     }
 
+    /**
+     * SCATTER movement AI attempts to force all ghosts to disperse from one another
+     * Each ghost is set to target a point outside the map (one in each of the four corners) based on their colour
+     *
+     * If left in SCATTER mode, this will cause each to loop around a small section of the map in a different corner
+     * SCATTER mode is not normally enabled long enough for this to occur, instead just forcing ghosts to separate
+     */
     mtd aiScatter()
     {
         var target: Dest
+
         // Each colour selects a unique corner to target
         switch colour
         {
@@ -416,7 +427,7 @@ impl Ghost
         case LEFT:  offset.x -= offsetSize
         }
 
-        return offset  // Return the new target vector, accounting for the offset
+        return offset
     }
 
     /**
@@ -434,8 +445,8 @@ impl Ghost
     {
         var target:     Dest = {g_PacMan.getX(), g_PacMan.getY()}   // Default target for RED and (sometimes) YELLOW
         var currentPos: Dest = {getX(), getY()}
-        var dx: s32    // Delta X initialised for use in BLUE's targeting
-        var dy: s32    // Delta Y initialised for use in BLUE's targeting
+        var dx: s32
+        var dy: s32
 
         // Determine ghost chasing behaviour based on their colour
         switch colour
@@ -584,6 +595,9 @@ impl Ghost
         return newDir
     }
 
+    /**
+     * Reverse the ghost's direction of movement, then resetting the corresponding flag
+     */
     mtd reverseDirection()
     {
         switch dir
@@ -597,6 +611,9 @@ impl Ghost
         reverse = false
     }
 
+    /**
+     * Method updates direction to navigate around a corner
+     */
     mtd turnCorner()
     {
         if dir != .DOWN and !isImpassible(getNextTile(.UP))
@@ -637,6 +654,16 @@ impl Ghost
         roundPosition()
     }
 
+    /**
+     * Count the number of exits from the current position
+     * If the ghost is not at the tile center, exits=0
+     * If the ghost is at the tile center, exit count can determine what kind of junction the ghost is at
+     *      2 Exits: Straight/Corner (corner requires && isImpassible(getNextTile(dir)) to confirm)
+     *      3 Exits: T-Junction
+     *      4 Exits: X-Intersection
+     *
+     * @return integer number of exits from the current position
+     */
     mtd countExits()->s32
     {
         var exits = 0
@@ -886,20 +913,14 @@ impl Pacman
      *
      * @return - integer, X coordinate of current tile
      */
-    mtd getX()->s32
-    {
-        return cast(s32) Math.round(x)
-    }
+    mtd const getX() => cast(s32) Math.round(x)
 
     /**
      * Determines and returns absolute Y coordinate of map tile on which Pac-Man resides
      *
      * @return - integer, Y coordinate of current tile
      */
-    mtd getY()->s32
-    {
-        return cast(s32) Math.round(y)
-    }
+    mtd const getY() => cast(s32) Math.round(y)
 
     mtd eat()->s32
     {
@@ -912,16 +933,19 @@ impl Pacman
             setTile(getX(),getY(),e)
             g_PillsLeft -= 1
             return 10
+
         case O:
             setTile(getX(),getY(),E)
             g_PillsLeft -= 1
             return 50
+
         case P:
             if dir == .RIGHT
                 x = 1
             else
                 x = 26
             return 0
+
         case F:
             setTile(getX(),getY(),.e)
             g_FruitSpawned = false
@@ -985,18 +1009,10 @@ impl Pacman
         // While moving, round the unchanging position coordinate, preventing directional query mishaps
         switch dir
         {
-        case LEFT:
-            x -= 0.1
-            y = Math.round(y)
-        case RIGHT:
-            x += 0.1
-            y = Math.round(y)
-        case UP:
-            y += 0.1
-            x = Math.round(x)
-        case DOWN:
-            y -= 0.1
-            x = Math.round(x)
+        case LEFT:  x -= 0.1; y = Math.round(y)
+        case RIGHT: x += 0.1; y = Math.round(y)
+        case UP:    y += 0.1; x = Math.round(x)
+        case DOWN:  y -= 0.1; x = Math.round(x)
 
         // If not moving, round both coordinates, centering Pac-Man within the tile
         // Only do if Pac-Man has already moved (ready=true)
@@ -1118,9 +1134,9 @@ impl Pacman
 
 func translateMapOrigin()           = g_Painter.translateTransform(38.0, 26.0)
 func translateMapCoords(x, y: f32)  = g_Painter.translateTransform(x*8*Scale, y*8*Scale)
+func isImpassible(t: Tile)          => t == .W or t == .G
 func getTile(x, y: s32)->Tile       => g_Map[x, y]
 func setTile(x, y: s32, t: Tile)    = g_Map[x, y] = t
-func isImpassible(t: Tile)          => t == .W or t == .G
 
 func drawMap()
 {
@@ -1674,11 +1690,13 @@ func gameLoop()
 
     switch g_Mode
     {
-    case READY: // After 240 ticks, enter PLAY mode
-        if g_Ticks > 240
+    // After 120 ticks, enter PLAY mode
+    case READY:
+        if g_Ticks > 120
             g_Mode = PLAY
 
-    case PLAY: // Main play loop
+    // Main play loop
+    case PLAY:
         if g_TimeStamp == -1
         {
             checkCollisions()
@@ -1725,7 +1743,8 @@ func gameLoop()
             g_Mode = .PLAY
         }
 
-    case DEATH:     // 180 ticks after death, enter READY (reset level) or GAMEOVER mode depending on remaining lives
+    // 180 ticks after death, enter READY (reset level) or GAMEOVER mode depending on remaining lives
+    case DEATH:
         if g_Ticks > g_TimeStamp + 180
         {
             if g_Lives == 0
