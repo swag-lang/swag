@@ -228,7 +228,7 @@ var g_Map: [28, 31] Tile = [
     [W,o,W,W,o,o,o,o,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
     [W,o,W,W,o,W,W,o,W,W,o,W,n,n,n,W,n,W,n,n,n,W,o,W,W,o,W,W,W,o,W],
     [W,o,o,o,o,W,W,O,o,o,o,W,n,n,n,W,n,W,n,n,n,W,o,o,o,o,O,o,o,o,W],
-    [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W]
+    [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W],
 ]
 
 impl Ghost
@@ -550,11 +550,11 @@ impl Ghost
         // Check RIGHT exit
         if dir != .LEFT and !isImpassible(getNextTile(.RIGHT))
         {
-            nextPos = {getX() + 1, getY()};
+            nextPos = {getX() + 1, getY()}
             let d = distanceBetween(nextPos, target)
             if d < distance
             {
-                distance = d;
+                distance = d
                 newDir = .RIGHT
             }
         }
@@ -1201,9 +1201,9 @@ func drawLevel()
 {
     g_Painter.pushTransform()
     translateMapOrigin()
-    translateMapCoords(1,32.5)
+    translateMapCoords(1,-2.5)
     g_Painter.drawTexture(0, 0, 24, 8, g_OneUpTex)
-    translateMapCoords(3,-1)
+    translateMapCoords(3,1)
     drawNumberAsSprite(g_Level)
     g_Painter.popTransform()
 }
@@ -1213,10 +1213,10 @@ func drawScore()
     g_Painter.pushTransform()
 
     translateMapOrigin()
-    translateMapCoords(6.5, 32.5)
+    translateMapCoords(6.5,-2.5)
     g_Painter.drawTexture(0, 0, 80, 8, g_ScoreTex)
 
-    translateMapCoords(4,-1)
+    translateMapCoords(4,1)
     drawNumberAsSprite(Math.min(g_HighScore,99999))
     translateMapCoords(6,0)
     drawNumberAsSprite(Math.min(g_Score,99999))
@@ -1227,8 +1227,8 @@ func drawScore()
 func drawLives()
 {
     g_Painter.pushTransform()
-    translateMapOrigin();
-    translateMapCoords(1,-2.5)
+    translateMapOrigin()
+    translateMapCoords(1,31.5)
     loop i: g_Lives
     {
         g_Painter.drawTexture(0, 0, 14, 14, g_LifeTex)
@@ -1241,7 +1241,7 @@ func drawFruits()
 {
     g_Painter.pushTransform()
     translateMapOrigin()
-    translateMapCoords(25,-2.5)
+    translateMapCoords(25,31.5)
     loop i: g_Fruits
     {
         g_Painter.drawTexture(0, 0, 14, 14, g_FruitsTex[i])
@@ -1252,7 +1252,7 @@ func drawFruits()
 
 func drawCharacters()
 {
-    g_PacMan.draw();
+    g_PacMan.draw()
     loop i: 4
         g_Ghosts[i].draw()
 }
@@ -1678,7 +1678,7 @@ func gameLoop()
             checkCollisions()
             g_PacMan.move()
             checkCollisions()
-            aiWave()               // Update the ghost AI targeting wave
+            aiWave()
             // Move each ghost - pass RED ghost for BLUE's CHASE mode AI
             loop i: 4
                 g_Ghosts[i].move(g_Ghosts[0])
@@ -1688,19 +1688,24 @@ func gameLoop()
                 spawnFruit()
 
         }
-        elif g_Ticks == g_TimeStamp + 90    // If timestamp is set, incur a short pause
-        {                               // Timestamp is only set in PLAY-mode when Pac-Man dies or level is complete
-            if g_PillsLeft == 0          // If no pills remain, level is complete
-            {                           // Reset map & pill count and enter READY-mode for next level
+        // If timestamp is set, incur a short pause
+        // Timestamp is only set in PLAY-mode when Pac-Man dies or level is complete
+        elif g_Ticks == g_TimeStamp + 90
+        {
+            // If no pills remain, level is complete
+            if g_PillsLeft == 0
+            {
+                // Reset map & pill count and enter READY-mode for next level
                 g_PillsLeft = 244
                 g_Level += 1
                 resetMap()
                 resetLevel()
             }
-            else                        // If there are still pills remaining, Pac-Man has died
+            // If there are still pills remaining, Pac-Man has died
+            else
             {
-                g_TimeStamp = g_Ticks      // Set timestamp for correct death animation timing
-                g_Mode = .DEATH           // Enter DEATH-mode
+                g_TimeStamp = g_Ticks   // Set timestamp for correct death animation timing
+                g_Mode = .DEATH         // Enter DEATH-mode
             }
         }
 
@@ -1723,7 +1728,7 @@ func gameLoop()
                 if g_Score > g_HighScore
                 {
                     g_HighScore = g_Score
-                    //setHighscore();
+                    //setHighscore()
                 }
             }
             else
@@ -1763,7 +1768,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         case Escape:
             if g_Mode != .PAUSE
             {
-                g_TempMode = g_Mode // Save gamemode to re-enter on unpausing game
+                g_TempMode = g_Mode
                 g_Mode = .PAUSE
             }
             elif g_Mode == .PAUSE
@@ -1836,27 +1841,27 @@ func loadBindTextures()
     g_GhostTexF[2]  = loadAndBindTexture("ghosts/f-2.png")
     g_GhostTexF[3]  = loadAndBindTexture("ghosts/f-3.png")
     // Bind ghost eye textures
-    g_EyeTexU       = loadAndBindTexture("eyes/u.png");
-    g_EyeTexR       = loadAndBindTexture("eyes/r.png");
-    g_EyeTexD       = loadAndBindTexture("eyes/d.png");
-    g_EyeTexL       = loadAndBindTexture("eyes/l.png");
+    g_EyeTexU       = loadAndBindTexture("eyes/u.png")
+    g_EyeTexR       = loadAndBindTexture("eyes/r.png")
+    g_EyeTexD       = loadAndBindTexture("eyes/d.png")
+    g_EyeTexL       = loadAndBindTexture("eyes/l.png")
     // Bind fruit textures
-    g_FruitsTex[0]  = loadAndBindTexture("fruits/cherry.png");
-    g_FruitsTex[1]  = loadAndBindTexture("fruits/strawberry.png");
-    g_FruitsTex[2]  = loadAndBindTexture("fruits/orange.png");
-    g_FruitsTex[3]  = loadAndBindTexture("fruits/apple.png");
-    g_FruitsTex[4]  = loadAndBindTexture("fruits/melon.png");
-    g_FruitsTex[5]  = loadAndBindTexture("fruits/boss.png");
-    g_FruitsTex[6]  = loadAndBindTexture("fruits/bell.png");
-    g_FruitsTex[7]  = loadAndBindTexture("fruits/key.png");
-    g_FScoreTex[0]  = loadAndBindTexture("ui/100.png");
-    g_FScoreTex[1]  = loadAndBindTexture("ui/300.png");
-    g_FScoreTex[2]  = loadAndBindTexture("ui/500.png");
-    g_FScoreTex[3]  = loadAndBindTexture("ui/700.png");
-    g_FScoreTex[4]  = loadAndBindTexture("ui/1000.png");
-    g_FScoreTex[5]  = loadAndBindTexture("ui/2000.png");
-    g_FScoreTex[6]  = loadAndBindTexture("ui/3000.png");
-    g_FScoreTex[7]  = loadAndBindTexture("ui/5000.png");
+    g_FruitsTex[0]  = loadAndBindTexture("fruits/cherry.png")
+    g_FruitsTex[1]  = loadAndBindTexture("fruits/strawberry.png")
+    g_FruitsTex[2]  = loadAndBindTexture("fruits/orange.png")
+    g_FruitsTex[3]  = loadAndBindTexture("fruits/apple.png")
+    g_FruitsTex[4]  = loadAndBindTexture("fruits/melon.png")
+    g_FruitsTex[5]  = loadAndBindTexture("fruits/boss.png")
+    g_FruitsTex[6]  = loadAndBindTexture("fruits/bell.png")
+    g_FruitsTex[7]  = loadAndBindTexture("fruits/key.png")
+    g_FScoreTex[0]  = loadAndBindTexture("ui/100.png")
+    g_FScoreTex[1]  = loadAndBindTexture("ui/300.png")
+    g_FScoreTex[2]  = loadAndBindTexture("ui/500.png")
+    g_FScoreTex[3]  = loadAndBindTexture("ui/700.png")
+    g_FScoreTex[4]  = loadAndBindTexture("ui/1000.png")
+    g_FScoreTex[5]  = loadAndBindTexture("ui/2000.png")
+    g_FScoreTex[6]  = loadAndBindTexture("ui/3000.png")
+    g_FScoreTex[7]  = loadAndBindTexture("ui/5000.png")
     // Bind UI textures
     g_Num0Tex       = loadAndBindTexture("ui/0.png")
     g_Num1Tex       = loadAndBindTexture("ui/1.png")
@@ -1877,10 +1882,10 @@ func loadBindTextures()
     g_LifeTex       = loadAndBindTexture("ui/life.png")
     g_OneUpTex      = loadAndBindTexture("ui/1up.png")
     g_GameOverTex   = loadAndBindTexture("ui/gameover.png")
-    g_GScoreTex[0]  = loadAndBindTexture("ui/200.png");
-    g_GScoreTex[1]  = loadAndBindTexture("ui/400.png");
-    g_GScoreTex[2]  = loadAndBindTexture("ui/800.png");
-    g_GScoreTex[3]  = loadAndBindTexture("ui/1600.png");
+    g_GScoreTex[0]  = loadAndBindTexture("ui/200.png")
+    g_GScoreTex[1]  = loadAndBindTexture("ui/400.png")
+    g_GScoreTex[2]  = loadAndBindTexture("ui/800.png")
+    g_GScoreTex[3]  = loadAndBindTexture("ui/1600.png")
 }
 
 #run
