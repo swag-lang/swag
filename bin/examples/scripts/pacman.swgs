@@ -790,12 +790,15 @@ impl Ghost
 
     mtd draw()
     {
+        // Reset drawScore flag - when eaten, drawEaten() is called during pause, do not draw score again
+        drawScore = false
+
         g_Painter.pushTransform()
 
         translateMapOrigin()               // Translate to map origin
         translateMapCoords(x,y)            // Translate to current (x,y)
-        g_Painter.translateTransform(7, 7)
-        //glTranslatef(-3.0f, -3.0f, 0.0f);   // Account for over-sized sprite (14x14 on 8x8 tile)
+        g_Painter.translateTransform(-3*Scale, -3*Scale)// Account for over-sized sprite (14x14 on 8x8 tile)
+        g_Painter.translateTransform(7*Scale, 7*Scale)
 
         // Determine which colour ghost to draw and whether it is the alternate texture (wiggle animation)
         var ghostTex: Texture
@@ -1027,7 +1030,8 @@ impl Pacman
 
         translateMapOrigin()               // Translate to map origin
         translateMapCoords(x,y)            // Translate to current (x,y)
-        //glTranslatef(-3.0f, -4.0f, 0.0f);   // Account for over-sized sprite (15x15 on 8x8 tile)
+        g_Painter.translateTransform(-3*Scale, -4*Scale) // Account for over-sized sprite (15x15 on 8x8 tile)
+        g_Painter.translateTransform(7.5*Scale, 7.5*Scale)
 
         // Determine which texture to draw based on tick-incremented counter
         let deadFrame = cast(s32) Math.floor(dead_tex_count / 5)
@@ -1036,7 +1040,7 @@ impl Pacman
         if dead_tex_count < 55
         {
             let pacman_tex = g_DeadTex[deadFrame]
-            g_Painter.drawTexture(0, 0, 15, 15, pacman_tex)
+            g_Painter.drawTexture(-7.5, -7.5, 15, 15, pacman_tex)
         }
 
         // Increment dead texture counter
@@ -1054,10 +1058,11 @@ impl Pacman
 
         translateMapOrigin()               // Translate to map origin
         translateMapCoords(x,y)            // Translate to current (x,y)
-        g_Painter.translateTransform(-6.0, 0.0)   // Account for over-sized sprite (20x8 on 8x8 tile)
+        g_Painter.translateTransform(-6*Scale, 0)   // Account for over-sized sprite (20x8 on 8x8 tile)
+        g_Painter.translateTransform(10*Scale, 4*Scale)
 
         // Determine which fruit score texture to draw based on how many fruits have been eaten
-        g_Painter.drawTexture(0, 0, 20, 8, g_FScoreTex[g_Fruits - 1])
+        g_Painter.drawTexture(-10, -4, 20, 8, g_FScoreTex[g_Fruits - 1])
 
         g_Painter.popTransform()
     }
@@ -1525,7 +1530,7 @@ func gameLoop()
     switch g_Mode
     {
     case READY: // After 240 ticks, enter PLAY mode
-        //if g_Ticks > 240
+        if g_Ticks > 240
             g_Mode = PLAY
 
     case PLAY: // Main play loop
@@ -1605,9 +1610,10 @@ func drawFruit(x, y: s32)
     if g_FruitTimer <= 900
     {
         g_Painter.pushTransform()
-        //glTranslatef(-3.0f, -3.0f, 0.0f);   // Account for over-sized sprite (14x14 on 8x8 tile)
+        g_Painter.translateTransform(-3*Scale, -3*Scale)   // Account for over-sized sprite (14x14 on 8x8 tile)
+        g_Painter.translateTransform(7*Scale, 7*Scale)
         // Determine which fruit sprite to draw from the array based on current fruit consumption count
-        g_Painter.drawTexture(0, 0, 14, 14, g_FruitsTex[g_Fruits])  // Draw fruit at current location
+        g_Painter.drawTexture(-7, -7, 14, 14, g_FruitsTex[g_Fruits])  // Draw fruit at current location
         g_Painter.popTransform()
         g_FruitTimer += 1
     }
@@ -1647,7 +1653,8 @@ func resetMap()
         {
             switch getTile(x,y)
             {
-            case F, e: // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+            // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+            case F, e:
                 setTile(x,y,.o)
             case E:
                 setTile(x,y,.O)
@@ -1667,7 +1674,8 @@ func resetFruit()
         {
             switch getTile(x,y)
             {
-                case F:     // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+                // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+                case F:
                     setTile(x,y,.e)
             }
         }
