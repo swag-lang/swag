@@ -289,6 +289,20 @@ impl Ghost
         timeout = 0
     }
 
+    /**
+     * On each call to move(), there are a number of special cases which must be assessed prior to any other logic being computed
+     *
+     * If a timeout is set, the ghost is (or was) in FRIGHTENED mode:
+     *      If the timeout exceeds 600 ticks, exit FRIGHTENED (if still in it) and enter the correct wave AI type
+     *      Also reset timeout and ghostsEaten count
+     *      Otherwise, increment the timeout counter every tick
+     *
+     * If the ghost is DEAD, check its current position
+     *      If directly above the SPAWN pen, correctly center X coordinate and begin entering the pen at 50% speed
+     *      Once within the pen, set AI mode to LEAVE, allowing the ghost to 'respawn'
+     *
+     * These cases are checked every tick that move() is called
+     */
     mtd checkSpecialCases()
     {
         // Timeout exceeds max time to be in FRIGHTENED mode
@@ -445,8 +459,7 @@ impl Ghost
     {
         var target:     Dest = {g_PacMan.getX(), g_PacMan.getY()}   // Default target for RED and (sometimes) YELLOW
         var currentPos: Dest = {getX(), getY()}
-        var dx: s32
-        var dy: s32
+        var dx, dy: s32
 
         // Determine ghost chasing behaviour based on their colour
         switch colour
@@ -1584,6 +1597,7 @@ func spawnFruit()
     {
         let x = cast(s32) Random.shared().nextU32(0, 27) + 1    // Generate random X within the map (excluding outer walls)
         let y = cast(s32) Random.shared().nextU32(0, 10) + 1    // Generate random Y within the lower third of the map (excluding outer walls)
+
         // Randomly selected tile must be empty
         if getTile(x, y) == .e
         {
@@ -1704,8 +1718,8 @@ func gameLoop()
             checkCollisions()
             aiWave()
             // Move each ghost - pass RED ghost for BLUE's CHASE mode AI
-            loop i: 4
-                g_Ghosts[i].move(g_Ghosts[0])
+            visit g: g_Ghosts
+                g.move(g_Ghosts[0])
             // If no fruit is currently spawned, enough pills have been eaten,
             // The eaten fruit count doesn't exceed the level and a random quantifier is satisfied, spawn a fruit
             if !g_FruitSpawned and g_Fruits < g_Level and g_PillsLeft <= 240 - 30 and Random.shared().nextU32() % 1500 == 0
@@ -1796,7 +1810,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 g_TempMode = g_Mode
                 g_Mode = .PAUSE
             }
-            elif g_Mode == .PAUSE
+            else
             {
                 g_Wnd.postQuitEvent()
             }
@@ -1812,8 +1826,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             elif g_Mode == .GAMEOVER or g_Mode == .PAUSE
                 restartGame()
         }
-
-        break
     }
 
     return false
@@ -1915,5 +1927,5 @@ func loadBindTextures()
 
 #run
 {
-    Application.runSurface(100, 100, cast(s32) (300 * Scale), cast(s32) (340 * Scale), title = "Pacman", hook = &onEvent)
+    Application.runSurface(4100, 100, cast(s32) (300 * Scale), cast(s32) (345 * Scale), title = "Pacman", hook = &onEvent)
 }
