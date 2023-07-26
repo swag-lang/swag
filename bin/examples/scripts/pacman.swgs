@@ -1000,9 +1000,13 @@ impl Pacman
         case DOWN:
             y -= 0.1
             x = Math.round(x)
-        default:                // If not moving, round both coordinates, centering Pac-Man within the tile
-            if ready            // Only do if Pac-Man has already moved (ready=true)
-            {                   // This allows starting X position to be non-rounded
+
+        // If not moving, round both coordinates, centering Pac-Man within the tile
+        // Only do if Pac-Man has already moved (ready=true)
+        // This allows starting X position to be non-rounded
+        default:
+            if ready
+            {
                 x = Math.round(x)
                 y = Math.round(y)
             }
@@ -1036,8 +1040,8 @@ impl Pacman
     {
         g_Painter.pushTransform()
 
-        translateMapOrigin()               // Translate to map origin
-        translateMapCoords(x,y)            // Translate to current (x,y)
+        translateMapOrigin()
+        translateMapCoords(x,y)
         g_Painter.translateTransform(-3*Scale, -4*Scale) // Account for over-sized sprite (15x15 on 8x8 tile)
         g_Painter.translateTransform(7.5*Scale, 7.5*Scale)
 
@@ -1064,8 +1068,8 @@ impl Pacman
     {
         g_Painter.pushTransform()
 
-        translateMapOrigin()               // Translate to map origin
-        translateMapCoords(x,y)            // Translate to current (x,y)
+        translateMapOrigin()
+        translateMapCoords(x,y)
         g_Painter.translateTransform(-6*Scale, 0)   // Account for over-sized sprite (20x8 on 8x8 tile)
         g_Painter.translateTransform(10*Scale, 4*Scale)
 
