@@ -1,36 +1,37 @@
-// Based on the pacman project by Alex Macpherson at https://github.com/alexjamesmacpherson/pacman/blob/master.
-// Original code has been modified for Swag.
-
 /*
-BSD 3-Clause License
+    :LICENCE
+    Based on the pacman project by Alex Macpherson (https://github.com/alexjamesmacpherson/pacman/blob/master).
+    The original code has been modified for Swag
 
-Copyright (c) 2017, Alex Macpherson
-All rights reserved.
+    BSD 3-Clause License
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+    Copyright (c) 2017, Alex Macpherson
+    All rights reserved.
 
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
 
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
+    * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
 
-* Neither the name of the copyright holder nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
+    * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    * Neither the name of the copyright holder nor the names of its
+    contributors may be used to endorse or promote products derived from
+    this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #dependencies
@@ -40,6 +41,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using Gui, Core, Pixel
 const Scale = 3.0
+
+var g_Wnd:          *Wnd
+var g_DataPath:     String
+var g_Painter:      *Painter
 
 var g_MapTex:       Texture
 var g_PillTex:      Texture
@@ -63,12 +68,12 @@ var g_Num6Tex:      Texture
 var g_Num7Tex:      Texture
 var g_Num8Tex:      Texture
 var g_Num9Tex:      Texture
-var g_DeadTex:      [11] Texture // Array storing all death animation frames
-var g_GhostTexR:    [2] Texture    // Array storing red        ghost sprites
-var g_GhostTexP:    [2] Texture    // Array storing pink       ghost sprites
-var g_GhostTexB:    [2] Texture    // Array storing blue       ghost sprites
-var g_GhostTexY:    [2] Texture    // Array storing yellow     ghost sprites
-var g_GhostTexF:    [4] Texture    // Array storing frightened ghost sprites
+var g_DeadTex:      [11] Texture    // Array storing all death animation frames
+var g_GhostTexR:    [2] Texture     // Array storing red        ghost sprites
+var g_GhostTexP:    [2] Texture     // Array storing pink       ghost sprites
+var g_GhostTexB:    [2] Texture     // Array storing blue       ghost sprites
+var g_GhostTexY:    [2] Texture     // Array storing yellow     ghost sprites
+var g_GhostTexF:    [4] Texture     // Array storing frightened ghost sprites
 var g_EyeTexU:      Texture
 var g_EyeTexR:      Texture
 var g_EyeTexD:      Texture
@@ -80,31 +85,21 @@ var g_FScoreTex:    [8] Texture     // Array storing all fruit score textures
 var g_GScoreTex:    [4] Texture     // Array storing all ghosts score textures
 var g_GameOverTex:  Texture
 
-var g_Wnd:          *Wnd
-var g_DataPath:     String
-var g_Painter:      *Painter
 var g_Mode:         GameMode = READY
 var g_TempMode:     GameMode = READY
 var g_LastTime:     u64
-
 var g_Score:        s32
 var g_HighScore:    s32
 var g_Level         = 1
 var g_Lives         = 2
 var g_PillsLeft     = 244
 var g_Fruits:       s32
-var g_ExtraLife:    bool // True if received
+var g_ExtraLife:    bool        // True if received
 var g_FruitSpawned  = false
-var g_GhostsEaten:  s32 // Counts how many ghosts have been eaten since consuming the last big pill
-
-// Fruit timer incremented with each frame - fruit is removed after approx 10s if not eaten
-var g_FruitTimer = -1
-
-// Ghost AI targeting is wave-based, varying between CHASE and SCATTER over time
-var g_Wave = Movement.SCATTER
-
-// Game ticks, effectively enacting a frame counter
-var g_Ticks:        s32
+var g_GhostsEaten:  s32         // Counts how many ghosts have been eaten since consuming the last big pill
+var g_FruitTimer = -1           // Fruit timer incremented with each frame - fruit is removed after approx 10s if not eaten
+var g_Wave = Movement.SCATTER   // Ghost AI targeting is wave-based, varying between CHASE and SCATTER over time
+var g_Ticks:        s32         // Game ticks, effectively enacting a frame counter
 
 /**
  * Timestamp represents symbolic points in the game, allowing specific frame-based timing from a certain tick:
@@ -129,31 +124,27 @@ struct Dest
 
 struct Pacman
 {
-    x           = 13.5      // X position relative to map - float allows for smooth movement between tiles
-    y           = 7.0       // Y position relative to map - float allows for smooth movement between tiles
-    dir:        Direction   // Direction of movement
-    tempDir:    Direction   // Temporary direction storage
-    saveDir:    Direction   // Secondary direction storage for stopping and starting animation
-    texCount    = 10        // Counter to determine which texture to draw
-    ready       = false     // Flag prevents incorrect Pac-Man texture or position rounding at start of game
-    dead_tex_count: f32   // Counter to determine which sprite of death animation sequence to draw
-    angle:      f32
+    x               = 13.5      // X position relative to map - float allows for smooth movement between tiles
+    y               = 7.0       // Y position relative to map - float allows for smooth movement between tiles
+    dir:            Direction   // Direction of movement
+    tempDir:        Direction   // Temporary direction storage
+    saveDir:        Direction   // Secondary direction storage for stopping and starting animation
+    texCount        = 10        // Counter to determine which texture to draw
+    deadTexCount:   f32         // Counter to determine which sprite of death animation sequence to draw
+    angle:          f32         // Angle at which to draw the sprite - class var to retain angle when dir=NONE
+    ready           = false     // Flag prevents incorrect Pac-Man texture or position rounding at start of game
 }
 
 struct Ghost
 {
-    xInit:  f32   // Initial X position stored for later resets
-    yInit:  f32   // Initial Y position stored for later resets
-    colour: GhostColor  // Colour of ghost
-
-    x:      f32     // X position relative to map - float allows for smooth movement between tiles
-    y:      f32     // Y position relative to map - float allows for smooth movement between tiles
-
-    dPos:   f32     // Delta position - the amount the ghost should move each tick
-
-    dir: Direction      // Direction of movement
-    texCount: s32       // Counter to determine which texture to draw
-
+    xInit:      f32         // Initial X position stored for later resets
+    yInit:      f32         // Initial Y position stored for later resets
+    colour:     GhostColor  // Colour of ghost
+    x:          f32         // X position relative to map - float allows for smooth movement between tiles
+    y:          f32         // Y position relative to map - float allows for smooth movement between tiles
+    dPos:       f32         // Delta position - the amount the ghost should move each tick
+    dir:        Direction   // Direction of movement
+    texCount:   s32         // Counter to determine which texture to draw
     ai:         Movement    // Movement AI type
     reverse:    bool        // Flag determining whether to reverse the ghost
     timeout:    s32         // Timeout used to determine when to leave FRIGHTENED mode AI, -1 = default
@@ -190,6 +181,9 @@ enum GameMode
     GAMEOVER
 }
 
+// Enum defines possible movement directions
+enum Direction {NONE; UP; RIGHT; DOWN; LEFT;}
+
 /**
  * Tile types defined as enum:
  *      W: Wall
@@ -205,9 +199,6 @@ enum GameMode
  * Each tile-type is used to determine behaviour of Pac-Man & Ghosts.
  */
 enum Tile {W; G; P; n; o; e; O; E; F;}
-
-// Enum defines possible movement directions
-enum Direction {NONE; UP; RIGHT; DOWN; LEFT;}
 
 var g_Map: [28, 31] Tile = [
     [W,W,W,W,W,W,W,W,W,W,W,W,n,n,n,W,P,W,n,n,n,W,W,W,W,W,W,W,W,W,W],
@@ -303,37 +294,41 @@ impl Ghost
      */
     mtd zeroTimeout()
     {
-        timeout = 0;    // FRIGHTENED mode requires a timeout to ensure ghosts don't remain FRIGHTENED indefinitely
+        // FRIGHTENED mode requires a timeout to ensure ghosts don't remain FRIGHTENED indefinitely
+        timeout = 0
     }
 
     mtd checkSpecialCases()
     {
-        if timeout >= 600      // Timeout exceeds max time to be in FRIGHTENED mode
+        // Timeout exceeds max time to be in FRIGHTENED mode
+        if timeout >= 600
         {
             if ai == .FRIGHTENED
             {
                 ai = g_Wave     // If FRIGHTENED, enter wave-based AI
                 setSpeed(100)   // Ensure speed is correctly reset to 100%
             }
-            timeout = -1       // Reset timeout
-            g_GhostsEaten = 0    // Reset eaten ghosts count to zero as effects of big pill have ended - score bonus should not carry
+            timeout = -1
+            g_GhostsEaten = 0   // Reset eaten ghosts count to zero as effects of big pill have ended - score bonus should not carry
         }
-        elif timeout != -1  // If not at max timeout, increment counter
+
+        // If not at max timeout, increment counter
+        elif timeout != -1
             timeout += 1
 
         if ai == .DEAD
         {
             if x >= 13.4 and x <= 13.6  // Check X position to check centrality
             {
-                if getY() == 19    // Check ghost is also directly above the SPAWN pen
+                if getY() == 19         // Check ghost is also directly above the SPAWN pen
                 {
-                    x = 13.5       // Correctly center X coordinate
-                    dir = .DOWN     // Set ghost to enter the SPAWN pen
+                    x = 13.5            // Correctly center X coordinate
+                    dir = .DOWN         // Set ghost to enter the SPAWN pen
                     setSpeed(50)
                 }
                 elif getY() < 17 and getY() >= 15
                 {
-                    ai = .LEAVE     // Once far enough into the pen, set AI to LEAVE to 'respawn' the ghost
+                    ai = .LEAVE         // Once far enough into the pen, set AI to LEAVE to 'respawn' the ghost
                 }
             }
         }
@@ -345,10 +340,11 @@ impl Ghost
      */
     mtd aiSpawn()
     {
-        setSpeed(50)   // Set movement speed to 50%
+        setSpeed(50)
         if cast(s32)(y * 10.0) % 10 == 5 and cast(s32)(x * 10.0) % 10 == 5 and isImpassible(getNextTile(dir))
         {
-            switch dir // Switch direction upon hitting a WALL
+            // Switch direction upon hitting a WALL
+            switch dir
             {
             case UP:    dir = DOWN
             case DOWN:  dir = UP
@@ -367,18 +363,20 @@ impl Ghost
     {
         if y < 19 and dir != .DOWN
         {
-            setSpeed(50) // Set movement speed to 50%
-            if x < 13.4  // Move towards the center
+            setSpeed(50)
+            // Move towards the center
+            if x < 13.4
                 dir = .RIGHT
             elif x > 13.6
                 dir = .LEFT
             else
             {
-                x = 13.5   // Truly center position when center of pen is reached
+                x = 13.5    // Truly center position when center of pen is reached
                 dir = .UP   // Then set direction to move out of the SPAWN
             }
         }
-        elif y >= 19 // Once out of the SPAWN, act as a normal ghost
+        // Once out of the SPAWN, act as a normal ghost
+        elif y >= 19
         {
             dir = .LEFT    // Begin heading LEFT
             ai = g_Wave    // Enter the current AI wave
@@ -391,7 +389,8 @@ impl Ghost
     mtd aiScatter()
     {
         var target: Dest
-        switch colour              // Each colour selects a unique corner to target
+        // Each colour selects a unique corner to target
+        switch colour
         {
         case RED:
             target = {25, 33}
@@ -403,8 +402,9 @@ impl Ghost
             target = {0, -2}
         }
 
-        dir = targetTile(target) // Set direction at junction to head towards SCATTER point
-        setSpeed(100) // Ensure movement speed is set to 100%
+        // Set direction at junction to head towards SCATTER point
+        dir = targetTile(target)
+        setSpeed(100)
     }
 
     /**
@@ -416,7 +416,9 @@ impl Ghost
     func targetPacmanOffsetBy(offsetSize: s32)->Dest
     {
         var offset: retval = {g_PacMan.getX(), g_PacMan.getY()}
-        switch g_PacMan.dir   // Apply offset to correct coordinate based on Pacman's direction
+
+        // Apply offset to correct coordinate based on Pacman's direction
+        switch g_PacMan.dir
         {
         case UP:    offset.y += offsetSize
         case RIGHT: offset.x += offsetSize
@@ -440,24 +442,24 @@ impl Ghost
      */
     mtd aiChase(redGhost: Ghost)
     {
-        var target: Dest = {g_PacMan.getX(), g_PacMan.getY()}   // Default target for RED and (sometimes) YELLOW
-        var current_pos: Dest = {getX(), getY()}            // Current position, stored as vector
-        var d_x: s32    // Delta X initialised for use in BLUE's targeting
-        var d_y: s32    // Delta Y initialised for use in BLUE's targeting
+        var target:     Dest = {g_PacMan.getX(), g_PacMan.getY()}   // Default target for RED and (sometimes) YELLOW
+        var currentPos: Dest = {getX(), getY()}
+        var dx: s32    // Delta X initialised for use in BLUE's targeting
+        var dy: s32    // Delta Y initialised for use in BLUE's targeting
 
         // Determine ghost chasing behaviour based on their colour
         switch colour
         {
-        case PINK:                            // PINK looks ahead of Pac-Man and tries to ambush him
-            target = targetPacmanOffsetBy(4)   // Update target to reflect offset in Pac-Man's direction of movement
+        case PINK:                              // PINK looks ahead of Pac-Man and tries to ambush him
+            target = targetPacmanOffsetBy(4)    // Update target to reflect offset in Pac-Man's direction of movement
         case BLUE:
-            target = targetPacmanOffsetBy(2)   // Start by finding the point 2 tiles ahead of Pac-Man in his direction of movement
-            d_x = target.x - redGhost.getX()  // Find the X difference between this point and RED ghost
-            d_y = target.y - redGhost.getY()  // Find the Y difference between this point and RED ghost
+            target = targetPacmanOffsetBy(2)    // Start by finding the point 2 tiles ahead of Pac-Man in his direction of movement
+            dx = target.x - redGhost.getX()    // Find the X difference between this point and RED ghost
+            dy = target.y - redGhost.getY()    // Find the Y difference between this point and RED ghost
             // BLUE's target is then twice the change in X and Y from RED's position
-            target = {redGhost.getX() + 2 * d_x, redGhost.getY() + 2 * d_y}
+            target = {redGhost.getX() + 2 * dx, redGhost.getY() + 2 * dy}
         case YELLOW:
-            if distanceBetween(current_pos, target) <= 8   // If YELLOW is closer than 8 tiles to Pac-Man, he chases as RED does
+            if distanceBetween(currentPos, target) <= 8   // If YELLOW is closer than 8 tiles to Pac-Man, he chases as RED does
                 target = {0, -2}                           // If closer than 8 tiles, it emulates SCATTER AI behaviour
         }
 
@@ -473,7 +475,8 @@ impl Ghost
         var newDir: Direction
         loop
         {
-            newDir = cast(Direction) ((Random.shared().nextU32() % cast(u32) Direction.LEFT) + 1)   // Choose random direction from UP, RIGHT, DOWN or LEFT
+            // Choose random direction from UP, RIGHT, DOWN or LEFT
+            newDir = cast(Direction) ((Random.shared().nextU32() % cast(u32) Direction.LEFT) + 1)
             // Ensure random direction is traversible
             if !isImpassible(getNextTile(newDir))
             {
@@ -489,7 +492,8 @@ impl Ghost
      */
     mtd aiDead()
     {
-        let target: Dest = {14, 19}     // Coordinate directly above SPAWN entrance
+        // Coordinate directly above SPAWN entrance
+        let target: Dest = {14, 19}
         dir = targetTile(target)
         setSpeed(200)
     }
@@ -503,9 +507,9 @@ impl Ghost
      */
     func distanceBetween(p1, p2: Dest)->f32
     {
-        let d_x = cast(f32) p1.x - p2.x
-        let d_y = cast(f32) p1.y - p2.y
-        return Math.sqrt((d_x * d_x) + (d_y * d_y)) // Simple pythagorean calculation
+        let dx = cast(f32) p1.x - p2.x
+        let dy = cast(f32) p1.y - p2.y
+        return Math.sqrt((dx * dx) + (dy * dy))
     }
 
     /**
@@ -521,22 +525,24 @@ impl Ghost
      */
     mtd targetTile(target: Dest)->Direction
     {
-        var next_pos: Dest    // Initialise next position, updated in each possible direction
+        var nextPos: Dest       // Initialise next position, updated in each possible direction
         var distance = 999.0    // Set max distance to unreachable value
-        var newDir: Direction       // Initialise returned direction
+        var newDir: Direction   // Initialise returned direction
 
         // Check UP exit
         // UP exits have an additional condition such that, at 4 specific intersections, the ghost cannot opt to travel UP
         if !(getY() == 19 and (getX() == 12 or getX() == 15)) and !(getY() == 7 and (getX() == 12 or getX() == 15))
         {
-            if dir != .DOWN and !isImpassible(getNextTile(.UP))   // Prevent direction reversing and ensure exit is traversible
+            // Prevent direction reversing and ensure exit is traversible
+            if dir != .DOWN and !isImpassible(getNextTile(.UP))
             {
-                next_pos = {getX(), getY() + 1}
-                let d = distanceBetween(next_pos, target)    // Get distance between target and next tile in exit direction
-                if d < distance                                // If distance is shorter than any previously found, update direction to be returned
-                {                                               // Also update lowest found distance for future checks
+                nextPos = {getX(), getY() + 1}
+                let d = distanceBetween(nextPos, target)
+                if d < distance
+                {
                     distance = d
-                    newDir = .UP                                // This process is repeated for all traversible exits from the current junction
+                    // This process is repeated for all traversible exits from the current junction
+                    newDir = .UP
                 }
             }
         }
@@ -544,8 +550,8 @@ impl Ghost
         // Check RIGHT exit
         if dir != .LEFT and !isImpassible(getNextTile(.RIGHT))
         {
-            next_pos = {getX() + 1, getY()};
-            let d = distanceBetween(next_pos, target)
+            nextPos = {getX() + 1, getY()};
+            let d = distanceBetween(nextPos, target)
             if d < distance
             {
                 distance = d;
@@ -556,8 +562,8 @@ impl Ghost
         // Check DOWN exit
         if dir != .UP and !isImpassible(getNextTile(.DOWN))
         {
-            next_pos = {getX(), getY() - 1}
-            let d = distanceBetween(next_pos, target)
+            nextPos = {getX(), getY() - 1}
+            let d = distanceBetween(nextPos, target)
             if d < distance
             {
                 distance = d
@@ -568,8 +574,8 @@ impl Ghost
         // Check LEFT exit
         if dir != .RIGHT and !isImpassible(getNextTile(.LEFT))
         {
-            next_pos = {getX() - 1, getY()}
-            let d = distanceBetween(next_pos, target)
+            nextPos = {getX() - 1, getY()}
+            let d = distanceBetween(nextPos, target)
             if d < distance
             {
                 distance = d
@@ -577,7 +583,8 @@ impl Ghost
             }
         }
 
-        return newDir  // Return newly found direction, yielding lowest straight line distance to target
+        // Return newly found direction, yielding lowest straight line distance to target
+        return newDir
     }
 
     mtd reverseDirection()
@@ -771,21 +778,20 @@ impl Ghost
         if drawScore
         {
             g_Painter.pushTransform()
-
-            translateMapOrigin()               // Translate to map origin
-            translateMapCoords(x,y)            // Translate to current (x,y)
-            //glTranslatef(-4.0f, 0.0f, 0.0f);    // Account for over-sized sprite (16x8 on 8x8 tile)
-
+            translateMapOrigin()
+            translateMapCoords(x,y)
+            g_Painter.translateTransform(-4*Scale, 0) // Account for over-sized sprite (16x8 on 8x8 tile)
+            g_Painter.translateTransform(8*Scale, 4*Scale)
             // Determine which score sprite to draw based on the number of ghosts eaten since the last big pill was eaten
             let ghostScore = Math.min(g_GhostsEaten - 1, 3)
-
-            // Draw correct score sprite at current location
-            g_Painter.drawTexture(0, 0, 16, 8, g_GScoreTex[ghostScore])
-
+            g_Painter.drawTexture(-8, -4, 16, 8, g_GScoreTex[ghostScore])
             g_Painter.popTransform()
         }
         else
-            draw()     // If the ghost hasn't just been eaten, draw it as normal
+        {
+            // If the ghost hasn't just been eaten, draw it as normal
+            draw()
+        }
     }
 
     mtd draw()
@@ -794,9 +800,8 @@ impl Ghost
         drawScore = false
 
         g_Painter.pushTransform()
-
-        translateMapOrigin()               // Translate to map origin
-        translateMapCoords(x,y)            // Translate to current (x,y)
+        translateMapOrigin()
+        translateMapCoords(x,y)
         g_Painter.translateTransform(-3*Scale, -3*Scale)// Account for over-sized sprite (14x14 on 8x8 tile)
         g_Painter.translateTransform(7*Scale, 7*Scale)
 
@@ -804,16 +809,19 @@ impl Ghost
         var ghostTex: Texture
         let ghostAlt = cast(s32) Math.floor(texCount % 20 / 10.0)
 
-        if ai == .FRIGHTENED    // If in FRIGHTENED mode, draw the correct skin
+        // If in FRIGHTENED mode, draw the correct skin
+        if ai == .FRIGHTENED
         {
-            if timeout >= 480 and texCount % 30 >= 15   // Draw white (flashing) skin when FRIGHTENED mode is nearing its end
+            // Draw white (flashing) skin when FRIGHTENED mode is nearing its end
+            if timeout >= 480 and texCount % 30 >= 15
                 ghostTex = g_GhostTexF[ghostAlt + 2]
             else
                 ghostTex = g_GhostTexF[ghostAlt]
         }
         else if ai != .DEAD
         {
-            switch colour // If not in FRIGHTENED or DEAD AI, draw the ghost according to colour
+            // If not in FRIGHTENED or DEAD AI, draw the ghost according to colour
+            switch colour
             {
                 case RED:       ghostTex = g_GhostTexR[ghostAlt]
                 case PINK:      ghostTex = g_GhostTexP[ghostAlt]
@@ -860,7 +868,7 @@ impl Pacman
         dir = .NONE
         tempDir = .NONE
         texCount = 10
-        dead_tex_count = 0
+        deadTexCount = 0
         ready = false
     }
 
@@ -923,14 +931,14 @@ impl Pacman
             g_Fruits += 1
             switch g_Fruits-1
             {
-                case 0: return 100
-                case 1: return 300
-                case 2: return 500
-                case 3: return 700
-                case 4: return 1000
-                case 5: return 2000
-                case 6: return 3000
-                case 7: return 5000
+            case 0: return 100
+            case 1: return 300
+            case 2: return 500
+            case 3: return 700
+            case 4: return 1000
+            case 5: return 2000
+            case 6: return 3000
+            case 7: return 5000
             }
         }
 
@@ -952,7 +960,7 @@ impl Pacman
         case RIGHT: return getTile(getX()+1, getY())
         case DOWN:  return getTile(getX(), getY()-1)
         case LEFT:  return getTile(getX()-1, getY())
-        default:    return getTile(getX(), getY())  // If d=NONE, return current tile
+        default:    return getTile(getX(), getY())
         }
     }
 
@@ -1034,17 +1042,17 @@ impl Pacman
         g_Painter.translateTransform(7.5*Scale, 7.5*Scale)
 
         // Determine which texture to draw based on tick-incremented counter
-        let deadFrame = cast(s32) Math.floor(dead_tex_count / 5)
+        let deadFrame = cast(s32) Math.floor(deadTexCount / 5)
 
         // Draw current sprite of Pac-Man's death animation sequence
-        if dead_tex_count < 55
+        if deadTexCount < 55
         {
             let pacman_tex = g_DeadTex[deadFrame]
             g_Painter.drawTexture(-7.5, -7.5, 15, 15, pacman_tex)
         }
 
         // Increment dead texture counter
-        dead_tex_count += 1
+        deadTexCount += 1
 
         g_Painter.popTransform()
     }
@@ -1130,34 +1138,23 @@ func drawMap()
             // Determine size of big pills to draw depending on ticks
             let bigPill = cast(s32) Math.floor((g_Ticks%40) / 20.0)
 
-            switch getTile(x,y) // Draw pills as sprites
+            switch getTile(x,y)
             {
                 case o:
                     g_Painter.drawTexture(0, 0, 8, 8, g_PillTex)
                 case O:
-                    g_Painter.drawTexture(0, 0, 8, 8, g_BigPillTex[bigPill]) // Draw big pill of determined size
+                    g_Painter.drawTexture(0, 0, 8, 8, g_BigPillTex[bigPill])
                 case F:
-                    drawFruit(x,y)  // Method to determine which fruit should be drawn at current location
+                    drawFruit(x,y)
             }
 
-            translateMapCoords(0,1) // Increment Y pos
+            translateMapCoords(0,1)
         }
 
         g_Painter.popTransform()
-        translateMapCoords(1,0) // Increment X pos
+        translateMapCoords(1,0)
     }
 
-    g_Painter.popTransform()
-}
-
-func drawLevel()
-{
-    g_Painter.pushTransform()
-    translateMapOrigin()               // Translate to map origin
-    translateMapCoords(1,32.5)         // Translate to point above map at which the 1UP tooltip should be drawn
-    g_Painter.drawTexture(0, 0, 24, 8, g_OneUpTex)   // Draw 1UP tooltip at current location
-    translateMapCoords(3,-1)           // Translate to point above map at which the level should be drawn
-    drawNumberAsSprite(g_Level)          // Draw level sprites at new location
     g_Painter.popTransform()
 }
 
@@ -1170,30 +1167,40 @@ func drawNumberAsSprite(number: s32)
 {
     g_Painter.pushTransform()
 
-    let str = Format.toString("%", number) // Convert number to string to allow iteration
+    let str = Format.toString("%", number)
     loop i: str.length-1..0
     {
         switch str[i]
         {
-        case "0"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)     // Draw number 0 sprite at current location
-        case "1"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num1Tex);    // Draw number 1 sprite at current location
-        case "2"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num2Tex)     // Draw number 2 sprite at current location
-        case "3"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num3Tex)     // Draw number 3 sprite at current location
-        case "4"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num4Tex)     // Draw number 4 sprite at current location
-        case "5"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num5Tex)     // Draw number 5 sprite at current location
-        case "6"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num6Tex)     // Draw number 6 sprite at current location
-        case "7"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num7Tex)     // Draw number 7 sprite at current location
-        case "8"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num8Tex)     // Draw number 8 sprite at current location
-        case "9"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num9Tex)     // Draw number 9 sprite at current location
+        case "0"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)
+        case "1"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num1Tex)
+        case "2"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num2Tex)
+        case "3"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num3Tex)
+        case "4"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num4Tex)
+        case "5"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num5Tex)
+        case "6"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num6Tex)
+        case "7"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num7Tex)
+        case "8"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num8Tex)
+        case "9"'u8:    g_Painter.drawTexture(0, 0, 8, 8, g_Num9Tex)
         }
 
-        translateMapCoords(-1,0)    // Translate one tile left for next digit
+        translateMapCoords(-1,0)
     }
 
-    // If number is a single digit, justify with another zero
     if str.length == 1
         g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)
 
+    g_Painter.popTransform()
+}
+
+func drawLevel()
+{
+    g_Painter.pushTransform()
+    translateMapOrigin()
+    translateMapCoords(1,32.5)
+    g_Painter.drawTexture(0, 0, 24, 8, g_OneUpTex)
+    translateMapCoords(3,-1)
+    drawNumberAsSprite(g_Level)
     g_Painter.popTransform()
 }
 
@@ -1201,14 +1208,14 @@ func drawScore()
 {
     g_Painter.pushTransform()
 
-    translateMapOrigin()                            // Translate to map origin
-    translateMapCoords(6.5, 32.5)             // Translate to point above map at which the score tooltip should be drawn
-    g_Painter.drawTexture(0, 0, 80, 8, g_ScoreTex)  // Draw SCORE tooltip at current location
+    translateMapOrigin()
+    translateMapCoords(6.5, 32.5)
+    g_Painter.drawTexture(0, 0, 80, 8, g_ScoreTex)
 
-    translateMapCoords(4,-1)                        // Translate to point above map at which the high score should be drawn
-    drawNumberAsSprite(Math.min(g_HighScore,99999)) // Draw high score sprites at current location
-    translateMapCoords(6,0)                         // Translate to point above map at which the score should be drawn
-    drawNumberAsSprite(Math.min(g_Score,99999))     // Draw score sprites at current location
+    translateMapCoords(4,-1)
+    drawNumberAsSprite(Math.min(g_HighScore,99999))
+    translateMapCoords(6,0)
+    drawNumberAsSprite(Math.min(g_Score,99999))
 
     g_Painter.popTransform()
 }
@@ -1216,30 +1223,26 @@ func drawScore()
 func drawLives()
 {
     g_Painter.pushTransform()
-
-    translateMapOrigin();                   // Translate to map origin
-    translateMapCoords(1,-2.5)              // Translate to point beneath map, from which lives should be drawn
+    translateMapOrigin();
+    translateMapCoords(1,-2.5)
     loop i: g_Lives
     {
-        g_Painter.drawTexture(0, 0, 14, 14, g_LifeTex)    // Draw life counter sprite at current location
-        translateMapCoords(2,0)            // Translate to right where next life counter sprite should be drawn
+        g_Painter.drawTexture(0, 0, 14, 14, g_LifeTex)
+        translateMapCoords(2,0)
     }
-
     g_Painter.popTransform()
 }
 
 func drawFruits()
 {
     g_Painter.pushTransform()
-
-    translateMapOrigin()                       // Translate to map origin
-    translateMapCoords(25,-2.5)                // Translate to point beneath map, from which lives should be drawn
+    translateMapOrigin()
+    translateMapCoords(25,-2.5)
     loop i: g_Fruits
     {
-        g_Painter.drawTexture(0, 0, 14, 14, g_FruitsTex[i])   // Draw life counter sprite at current location
-        translateMapCoords(-2,0)               // Translate to right where next life counter sprite should be drawn
+        g_Painter.drawTexture(0, 0, 14, 14, g_FruitsTex[i])
+        translateMapCoords(-2,0)
     }
-
     g_Painter.popTransform()
 }
 
@@ -1253,50 +1256,53 @@ func drawCharacters()
 func drawHelp()
 {
     g_Painter.pushTransform()
-    translateMapOrigin()      // Translate to map origin
-    translateMapCoords(19,32) // Translate to point above map at which the HELP tooltip should be drawn
-    g_Painter.drawTexture(0, 0, 64, 8, g_HelpTex) // Draw HELP tooltip at current location
+    translateMapOrigin()
+    translateMapCoords(19,32)
+    g_Painter.drawTexture(0, 0, 64, 8, g_HelpTex)
     g_Painter.popTransform()
 }
 
-func drawGameover()
+func drawGameOver()
 {
     g_Painter.pushTransform()
-    translateMapOrigin()               // Translate to map origin
-    translateMapCoords(9,13)           // Translate to point within map at which GAME OVER tooltip should be drawn
-    g_Painter.drawTexture(0, 0, 80, 8, g_GameOverTex) // Draw GAME OVER sprite at current location
+    translateMapOrigin()
+    translateMapCoords(9,13)
+    g_Painter.drawTexture(0, 0, 80, 8, g_GameOverTex)
     g_Painter.popTransform()
 }
 
 func drawReady()
 {
     g_Painter.pushTransform()
-    translateMapOrigin()      // Translate to map origin
-    translateMapCoords(11,13) // Translate to point within map at which READY! tooltip should be drawn
-    g_Painter.drawTexture(0, 0, 48, 8, g_ReadyTex) // Draw READY! sprite at current location
+    translateMapOrigin()
+    translateMapCoords(11,13)
+    g_Painter.drawTexture(0, 0, 48, 8, g_ReadyTex)
     g_Painter.popTransform()
 }
 
 func drawPause(gameover: bool)
 {
     g_Painter.pushTransform()
-    translateMapOrigin()      // Translate to map origin
+    translateMapOrigin()
     if !gameover
-        g_Painter.drawTexture(0, 0, 224, 248, g_PauseTex) // Draw PAUSE screen as a sprite
+        g_Painter.drawTexture(0, 0, 224, 248, g_PauseTex)
     else
-        g_Painter.drawTexture(0, 0, 224, 248, g_PauseAltTex) // Draw alternate PAUSE screen as a sprite (restart text only when mode=GAMEOVER)
+        g_Painter.drawTexture(0, 0, 224, 248, g_PauseAltTex)
     g_Painter.popTransform()
 }
 
 func drawQuit()
 {
     g_Painter.pushTransform()
-    translateMapOrigin()      // Translate to map origin
-    translateMapCoords(19,32) // Translate to point above map at which the QUIT tooltip should be drawn
-    g_Painter.drawTexture(0, 0, 64, 8, g_QuitTex) // Draw QUIT tooltip at current location
+    translateMapOrigin()
+    translateMapCoords(19,32)
+    g_Painter.drawTexture(0, 0, 64, 8, g_QuitTex)
     g_Painter.popTransform()
 }
 
+/**
+ * Method tidies up display() switch on game mode, drawing common PLAY-mode features
+ */
 func drawPlayScreen()
 {
     drawMap()
@@ -1307,6 +1313,10 @@ func drawPlayScreen()
     drawHelp()
 }
 
+/**
+ * Draw all elements of the game, depending on the game mode
+ * Common elements have been extracted to methods in globals.h for simplicity of code
+ */
 func display()
 {
     let rect = g_Wnd.getClientRect()
@@ -1349,7 +1359,7 @@ func display()
 
     case GAMEOVER:
         drawPlayScreen()
-        drawGameover()
+        drawGameOver()
     }
 }
 
@@ -1516,6 +1526,131 @@ func aiWave()
     }
 }
 
+/**
+ * Determine which fruit to draw based on how many have already been consumed
+ * If the timer exceeds 600 ticks (approx 15s) remove the fruit and reset the timer
+ */
+func drawFruit(x, y: s32)
+{
+    if g_FruitTimer <= 900
+    {
+        g_Painter.pushTransform()
+        g_Painter.translateTransform(-3*Scale, -3*Scale)   // Account for over-sized sprite (14x14 on 8x8 tile)
+        g_Painter.translateTransform(7*Scale, 7*Scale)
+        // Determine which fruit sprite to draw from the array based on current fruit consumption count
+        g_Painter.drawTexture(-7, -7, 14, 14, g_FruitsTex[g_Fruits])  // Draw fruit at current location
+        g_Painter.popTransform()
+        g_FruitTimer += 1
+    }
+    else
+    {
+        setTile(x,y,.e)
+        g_FruitTimer = -1
+    }
+}
+
+/**
+ * Randomly spawn a fruit in the lower third of the map
+ */
+func spawnFruit()
+{
+    loop
+    {
+        let x = cast(s32) Random.shared().nextU32(0, 27) + 1    // Generate random X within the map (excluding outer walls)
+        let y = cast(s32) Random.shared().nextU32(0, 10) + 1    // Generate random Y within the lower third of the map (excluding outer walls)
+        // Randomly selected tile must be empty
+        if getTile(x, y) == .e
+        {
+            // Once randomly selected tile is empty, spawn fruit and set timer to 0
+            setTile(x,y,.F)
+            g_FruitSpawned = true
+            g_FruitTimer = 0
+            break
+        }
+    }
+}
+
+/**
+ * Iterates through map array repopulating it with pills where they have been eaten
+ */
+func resetMap()
+{
+    loop x: 28
+    {
+        loop y: 31
+        {
+            switch getTile(x,y)
+            {
+            // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+            case F, e:
+                setTile(x,y,.o)
+            case E:
+                setTile(x,y,.O)
+            }
+        }
+    }
+}
+
+/**
+ * When Pac-Man dies, remove any spawned fruits from the map
+ */
+func resetFruit()
+{
+    loop x: 28
+    {
+        loop y: 31
+        {
+            switch getTile(x,y)
+            {
+                // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+                case F:
+                    setTile(x,y,.e)
+            }
+        }
+    }
+}
+
+/**
+ * Reset level:
+ *      Set ticks, timestamp, eaten ghost count and fruit spawned flag to initial values
+ *      Call reset() method on Pac-Man and all Ghosts
+ *      Enter READY mode
+ * This function is called when advancing level, resetting a level on death, or when restarting the game
+ */
+func resetLevel()
+{
+    g_Ticks = 0
+    g_TimeStamp = -1
+    g_PacMan.reset()
+    g_Wave = .SCATTER
+    g_GhostsEaten = 0
+    g_FruitSpawned = false
+    loop i: 4
+        g_Ghosts[i].reset()
+    g_Mode = .READY
+}
+
+/**
+ * Called when any key is pressed
+ * As mode=GAMEOVER, restart the game by resetting all variables to initial values
+ * Also reset map, Pac-Man and ghosts to default
+ */
+func restartGame()
+{
+    g_Level = 1
+    g_Lives = 2
+    g_ExtraLife = false
+    g_Fruits = 0
+    g_Score = 0
+    g_PillsLeft = 244
+    resetMap()
+    resetLevel()
+}
+
+/**
+ * Compute all game logic prior to redrawing anything
+ * Logic to compute varies on gamemode
+ */
 func gameLoop()
 {
     let curTime = Time.nowMilliseconds()
@@ -1599,112 +1734,6 @@ func gameLoop()
     // Increment game ticks once the frame is drawn, but only if not paused
     if g_Mode != .NONE
         g_Ticks += 1
-}
-
-/**
- * Determine which fruit to draw based on how many have already been consumed
- * If the timer exceeds 600 ticks (approx 15s) remove the fruit and reset the timer
- */
-func drawFruit(x, y: s32)
-{
-    if g_FruitTimer <= 900
-    {
-        g_Painter.pushTransform()
-        g_Painter.translateTransform(-3*Scale, -3*Scale)   // Account for over-sized sprite (14x14 on 8x8 tile)
-        g_Painter.translateTransform(7*Scale, 7*Scale)
-        // Determine which fruit sprite to draw from the array based on current fruit consumption count
-        g_Painter.drawTexture(-7, -7, 14, 14, g_FruitsTex[g_Fruits])  // Draw fruit at current location
-        g_Painter.popTransform()
-        g_FruitTimer += 1
-    }
-    else
-    {
-        setTile(x,y,.e)
-        g_FruitTimer = -1
-    }
-}
-
-/**
- * Randomly spawn a fruit in the lower third of the map
- */
-func spawnFruit()
-{
-    loop
-    {
-        let x = cast(s32) Random.shared().nextU32(0, 27) + 1    // Generate random X within the map (excluding outer walls)
-        let y = cast(s32) Random.shared().nextU32(0, 10) + 1    // Generate random Y within the lower third of the map (excluding outer walls)
-        // Randomly selected tile must be empty
-        if getTile(x, y) == .e
-        {
-            // Once randomly selected tile is empty, spawn fruit and set timer to 0
-            setTile(x,y,.F)
-            g_FruitSpawned = true
-            g_FruitTimer = 0
-            break
-        }
-    }
-}
-
-func resetMap()
-{
-    loop x: 28
-    {
-        loop y: 31
-        {
-            switch getTile(x,y)
-            {
-            // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
-            case F, e:
-                setTile(x,y,.o)
-            case E:
-                setTile(x,y,.O)
-            }
-        }
-    }
-}
-
-/**
- * When Pac-Man dies, remove any spawned fruits from the map
- */
-func resetFruit()
-{
-    loop x: 28
-    {
-        loop y: 31
-        {
-            switch getTile(x,y)
-            {
-                // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
-                case F:
-                    setTile(x,y,.e)
-            }
-        }
-    }
-}
-
-func resetLevel()
-{
-    g_Ticks = 0
-    g_TimeStamp = -1
-    g_PacMan.reset()
-    g_Wave = .SCATTER
-    g_GhostsEaten = 0
-    g_FruitSpawned = false
-    loop i: 4
-        g_Ghosts[i].reset()
-    g_Mode = .READY
-}
-
-func restartGame()
-{
-    g_Level = 1
-    g_Lives = 2
-    g_ExtraLife = false
-    g_Fruits = 0
-    g_Score = 0
-    g_PillsLeft = 244
-    resetMap()
-    resetLevel()
 }
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
