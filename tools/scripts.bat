@@ -1,5 +1,6 @@
 ..\bin\swag clean --script %1 %2 %3 %4
 
+..\bin\swag ..\bin\examples\scripts\pacman.swgs     --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\taquin.swgs     --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\chess.swgs      --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag ..\bin\examples\scripts\mine.swgs       --args:"swag.test" %1 %2 %3 %4

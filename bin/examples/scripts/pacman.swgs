@@ -1949,5 +1949,5 @@ func loadBindTextures()
 #run
 {
     func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
-    Application.runSurface(4100, 100, cast(s32) (300 * Scale), cast(s32) (345 * Scale), title = "Pacman", hook = &onEvent, init = &test)
+    Application.runSurface(100, 100, cast(s32) (300 * Scale), cast(s32) (345 * Scale), title = "Pacman", hook = &onEvent, init = &test)
 }

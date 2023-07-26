@@ -169,7 +169,7 @@ func isCheck(board: ^Cell, white: bool)->bool
 
 func computeMoves()
 {
-    let contentToTreat = g_Game.whiteTurn ? ContentEnum.White : .Black
+    let contentToTreat = g_Game.whiteTurn ? ContentEnum.White : ContentEnum.Black
     g_Game.possibleMoves.clear()
 
     visit cell: g_Board
@@ -256,7 +256,7 @@ func getPawnMoves(board: ^Cell, from: s8, moves: *Array's8)
 func getPawnAttacks(board: ^Cell, from: s8, moves: *Array's8)
 {
     let isWhite = board[from].content == .White
-    let targetContent = isWhite ? ContentEnum.Black : .White
+    let targetContent = isWhite ? ContentEnum.Black : ContentEnum.White
     let offset = isWhite ? 12's8 : -12's8
     var target = getCellWithOffset(board, from, offset-1)
     if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target)

@@ -2497,10 +2497,42 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
 TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
 {
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
-    if (!typeInfo || !typeInfo->isEnum())
+    while (true)
+    {
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
+        if (!typeInfo)
+            return nullptr;
+
+        if (typeInfo->isArray())
+        {
+            auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            typeInfo     = typeArr->finalType;
+            continue;
+        }
+
+        if (typeInfo->isSlice())
+        {
+            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+            typeInfo       = typeSlice->pointedType;
+            continue;
+        }
+
+        if (typeInfo->isPointer())
+        {
+            auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            typeInfo         = typePointer->pointedType;
+            continue;
+        }
+
+        if (typeInfo->isEnum())
+        {
+            return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        }
+
         return nullptr;
-    return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    }
+
+    return nullptr;
 }
 
 bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has)
@@ -2660,11 +2692,22 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             SharedLock lk(parent->mutex);
             for (auto c : parent->childs)
             {
-                auto typeEnum = findEnumTypeInContext(context, c->typeInfo);
+                auto typeInfoChild = c->typeInfo;
+
+                // Take first child of an expression list
+                if (c->kind == AstNodeKind::ExpressionList)
+                {
+                    auto expr     = CastAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
+                    typeInfoChild = expr->childs[0]->typeInfo;
+                }
+
+                auto typeEnum = findEnumTypeInContext(context, typeInfoChild);
                 if (typeEnum)
+                {
                     has.push_back_once({c, typeEnum});
-                if (typeEnum && typeEnum->contains(node->token.text))
-                    result.push_back_once(typeEnum);
+                    if (typeEnum->contains(node->token.text))
+                        result.push_back_once(typeEnum);
+                }
             }
         }
         else
@@ -2672,9 +2715,11 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             SharedLock lk(parent->mutex);
             auto       typeEnum = findEnumTypeInContext(context, parent->typeInfo);
             if (typeEnum)
+            {
                 has.push_back_once({parent, typeEnum});
-            if (typeEnum && typeEnum->contains(node->token.text))
-                result.push_back_once(typeEnum);
+                if (typeEnum->contains(node->token.text))
+                    result.push_back_once(typeEnum);
+            }
         }
 
         if (!result.empty())
