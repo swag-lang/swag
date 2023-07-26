@@ -137,6 +137,7 @@ struct Pacman
     texCount    = 10        // Counter to determine which texture to draw
     ready       = false     // Flag prevents incorrect Pac-Man texture or position rounding at start of game
     dead_tex_count: f32   // Counter to determine which sprite of death animation sequence to draw
+    angle:      f32
 }
 
 struct Ghost
@@ -286,6 +287,23 @@ impl Ghost
             setSpeed(200)      // DEAD ghosts move at 200% speed, racing back to the SPAWN pen
             drawScore = true   // Flag also ensures the score for eating a ghost is displayed during the short pause
         }
+    }
+
+    /**
+     * Timeout set independently from AI, ensuring all ghosts carry the same timeout value
+     *
+     * This is necessary for how timeout is reset - take the following scenario:
+     *      Pac-Man eats a big pill and all ghosts enter FRIGHTENED
+     *      A ghost is eaten and will no longer register as FRIGHTENED
+     *      Another big pill is eaten while this ghost is dead, timeout is set to 0 for all living ghosts as they enter/remain FRIGHTENED
+     *      When the ghost respawns, it's timer is now ahead of all other FRIGHTENED ghosts
+     *      When its timer expires, the eaten ghost count is reset, removing any score multiplier accrued even though other ghosts remain FRIGHTENED
+     *
+     * Obviously, this is a very rare case, but separating the timeout being set to zero prevents it occurring
+     */
+    mtd zeroTimeout()
+    {
+        timeout = 0;    // FRIGHTENED mode requires a timeout to ensure ghosts don't remain FRIGHTENED indefinitely
     }
 
     mtd checkSpecialCases()
@@ -831,6 +849,18 @@ impl Ghost
 
 impl Pacman
 {
+    mtd reset()
+    {
+        x = 13.5
+        y = 7.0
+        angle = 0.0
+        dir = .NONE
+        tempDir = .NONE
+        texCount = 10
+        dead_tex_count = 0
+        ready = false
+    }
+
     /**
      * Determines whether Pac-Man is currently at the center of a tile
      * Expression basically validates that the first decimal point of each coordinate is a zero
@@ -969,6 +999,26 @@ impl Pacman
     }
 
     /**
+     * Stop Pac-Man's eating animation when he dies/completes level or pause it upon eating a ghost - also save tempDir
+     */
+    mtd stopChomping()
+    {
+        saveDir = tempDir
+        tempDir = .NONE
+        ready = false
+    }
+
+    /**
+     * Restart Pac-Man's eating animation, resetting tempDir if it hasn't since been changed
+     */
+    mtd startChomping()
+    {
+        if tempDir == .NONE
+            tempDir = saveDir
+        ready = true
+    }
+
+    /**
      * Draw Pac-Man's death animation sequence at his current location
      */
     mtd drawDead()
@@ -981,11 +1031,13 @@ impl Pacman
 
         // Determine which texture to draw based on tick-incremented counter
         let deadFrame = cast(s32) Math.floor(dead_tex_count / 5)
-        let pacman_tex = g_DeadTex[deadFrame]
 
         // Draw current sprite of Pac-Man's death animation sequence
         if dead_tex_count < 55
+        {
+            let pacman_tex = g_DeadTex[deadFrame]
             g_Painter.drawTexture(0, 0, 15, 15, pacman_tex)
+        }
 
         // Increment dead texture counter
         dead_tex_count += 1
@@ -1019,7 +1071,6 @@ impl Pacman
         g_Painter.translateTransform(6.5*Scale,6.5*Scale)
 
         // Determine rotation angle of sprite based on direction
-        var angle: f32
         switch dir
         {
         case UP:    angle = 270.0
@@ -1314,6 +1365,65 @@ func checkCollisions()
     // Eat current tile, increment score
     let scoreIncrement = g_PacMan.eat()
     g_Score += scoreIncrement
+
+    if scoreIncrement == 50        // If score is increased by 50, a big pill has been eaten - set ghosts to FRIGHTENED
+    {
+        loop i: 4
+        {
+            g_Ghosts[i].zeroTimeout()    // Reset ghost FRIGHT timeout
+            if g_Ghosts[i].ai == g_Wave or g_Ghosts[i].ai == .FRIGHTENED
+                g_Ghosts[i].setAI(.FRIGHTENED, true)  // Set AI to FRIGHTENED if possible
+        }
+    }
+    elif scoreIncrement >= 100  // If score is increased by more than 100, a fruit has been eaten, pause game briefly to show score
+    {
+        g_TimeStamp = g_Ticks
+        g_PacMan.stopChomping()
+        g_Mode = .FRUIT
+    }
+
+    // Award extra life for reaching 10000 points
+    if !g_ExtraLife and g_Score > 10000
+    {
+        g_Lives += 1
+        g_ExtraLife = true
+    }
+
+    // If all pills have been eaten, stop Pac-Man's animation and set timestamp to restart level after short pause
+    if g_PillsLeft == 0
+    {
+        g_TimeStamp = g_Ticks
+        g_PacMan.stopChomping()
+    }
+    // Ghosts exit SPAWN pen when a certain number of pills have been eaten
+    // To prevent all piling out at once after a death, tick timers only allow the ghosts to leave after a certain point
+    elif g_Ghosts[2].ai == .SPAWN and g_PillsLeft <= 244 - 30 and g_Ticks >= 300    // BLUE leaves after 30 pills are eaten
+        g_Ghosts[2].setAI(.LEAVE, false)
+    elif g_Ghosts[3].ai == .SPAWN and g_PillsLeft <= 244 * 2/3 and g_Ticks >= 420   // YELLOW leaves after 1/3 of the pills are eaten
+        g_Ghosts[3].setAI(.LEAVE, false)
+
+    // Check for ghost collisions
+    loop i: 4
+    {
+        if g_Ghosts[i].getX() == g_PacMan.getX() and g_Ghosts[i].getY() == g_PacMan.getY()
+        {
+            if g_Ghosts[i].ai == g_Wave   // If the ghost is alive and not FRIGHTENED, Pac-Man will die
+            {                               // Begin DEATH procedure by setting timestamp and stopping Pac-Man's animation
+                g_TimeStamp = g_Ticks
+                g_PacMan.stopChomping()
+                break
+            }
+            elif g_Ghosts[i].ai == .FRIGHTENED    // If ghost is FRIGHTENED, it can be eaten itself
+            {                                           // Set ghost AI to DEAD, increasing the score and count of ghosts eaten since the last big pill
+                g_Ghosts[i].setAI(.DEAD, false)            // Briefly pause the game to show score for eating ghost
+                g_GhostsEaten += 1
+                g_Score += 200 * cast(s32) Math.pow(2.0, cast(f32) Math.min(g_GhostsEaten, 3))
+                g_TimeStamp = g_Ticks
+                g_PacMan.stopChomping()
+                g_Mode = .EAT
+            }
+        }
+    }
 }
 
 /**
@@ -1415,7 +1525,7 @@ func gameLoop()
     switch g_Mode
     {
     case READY: // After 240 ticks, enter PLAY mode
-        if g_Ticks > 240
+        //if g_Ticks > 240
             g_Mode = PLAY
 
     case PLAY: // Main play loop
@@ -1449,6 +1559,36 @@ func gameLoop()
                 g_Mode = .DEATH           // Enter DEATH-mode
             }
         }
+
+    // Pause the game briefly on eating a fruit
+    // Also pause on eating a ghost - logical behaviour is identical so overflow switch case
+    case FRUIT, EAT:
+        if g_Ticks == g_TimeStamp + 90
+        {
+            g_TimeStamp = -1
+            g_PacMan.startChomping()
+            g_Mode = .PLAY
+        }
+
+    case DEATH:     // 180 ticks after death, enter READY (reset level) or GAMEOVER mode depending on remaining lives
+        if g_Ticks > g_TimeStamp + 180
+        {
+            if g_Lives == 0
+            {
+                g_Mode = .GAMEOVER
+                if g_Score > g_HighScore
+                {
+                    g_HighScore = g_Score
+                    //setHighscore();
+                }
+            }
+            else
+            {
+                g_Lives -= 1   // Decrease remaining lives on death
+                resetFruit()   // Remove any spawned fruits
+                resetLevel()   // Reset characters and variables to retry level
+            }
+        }
     }
 
     // Increment game ticks once the frame is drawn, but only if not paused
@@ -1463,8 +1603,8 @@ func spawnFruit()
 {
     loop
     {
-        let x = cast(s32) Random.shared().nextU32() % 27 + 1    // Generate random X within the map (excluding outer walls)
-        let y = cast(s32) Random.shared().nextU32() % 10 + 1    // Generate random Y within the lower third of the map (excluding outer walls)
+        let x = cast(s32) Random.shared().nextU32(0, 27) + 1    // Generate random X within the map (excluding outer walls)
+        let y = cast(s32) Random.shared().nextU32(0, 10) + 1    // Generate random Y within the lower third of the map (excluding outer walls)
         // Randomly selected tile must be empty
         if getTile(x, y) == .e
         {
@@ -1494,10 +1634,35 @@ func resetMap()
     }
 }
 
+/**
+ * When Pac-Man dies, remove any spawned fruits from the map
+ */
+func resetFruit()
+{
+    loop x: 28
+    {
+        loop y: 31
+        {
+            switch getTile(x,y)
+            {
+                case F:     // Fruits only spawn on empty pill tiles, not empty big pill tiles - if it still exists on map reset, reset to pill
+                    setTile(x,y,.e)
+            }
+        }
+    }
+}
+
 func resetLevel()
 {
+    g_Ticks = 0
+    g_TimeStamp = -1
+    g_PacMan.reset()
+    g_Wave = .SCATTER
+    g_GhostsEaten = 0
+    g_FruitSpawned = false
     loop i: 4
         g_Ghosts[i].reset()
+    g_Mode = .READY
 }
 
 func restartGame()
