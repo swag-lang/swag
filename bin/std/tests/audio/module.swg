@@ -1,7 +1,6 @@
 #dependencies
 {
-    #import "win32"
-    #import "xaudio2"
+    #import "audio"
 
     #run
     {
