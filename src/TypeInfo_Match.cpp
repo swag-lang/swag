@@ -26,6 +26,9 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
         symbolTypeInfos.pop_back();
         typeInfos.pop_back();
 
+        if (!callTypeInfo)
+            continue;
+
         // Do we already have mapped the generic parameter to something ?
         auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
         if (it != context.genericReplaceTypes.end())

@@ -52,6 +52,7 @@ struct OneTryMatch
     uint32_t           cptOverloads      = 0;
     uint32_t           cptOverloadsInit  = 0;
     bool               ufcs              = false;
+    bool               secondTry         = false;
 
     void reset()
     {
@@ -64,6 +65,7 @@ struct OneTryMatch
         genericParameters = nullptr;
         cptOverloads      = 0;
         ufcs              = false;
+        secondTry         = false;
     }
 };
 
@@ -88,8 +90,9 @@ struct OneMatch
     uint32_t flags = 0;
 
     bool ufcs       = false;
-    bool remove     = false;
     bool autoOpCast = false;
+    bool secondTry  = false;
+    bool remove     = false;
 
     void reset()
     {
@@ -100,8 +103,9 @@ struct OneMatch
         typeWasForced  = nullptr;
         flags          = 0;
         ufcs           = false;
-        remove         = false;
+        secondTry      = false;
         autoOpCast     = false;
+        remove         = false;
     }
 };
 
@@ -144,6 +148,7 @@ struct OneGenericMatch
     uint32_t numOverloadsWhenChecked     = 0;
     uint32_t numOverloadsInitWhenChecked = 0;
     uint32_t flags                       = 0;
+    bool     secondTry                   = false;
 
     void reset()
     {
@@ -160,6 +165,7 @@ struct OneGenericMatch
         genericParameters       = nullptr;
         numOverloadsWhenChecked = 0;
         flags                   = 0;
+        secondTry               = false;
     }
 };
 

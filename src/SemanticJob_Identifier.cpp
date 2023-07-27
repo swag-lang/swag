@@ -1891,6 +1891,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
+                    match->secondTry        = oneOverload.secondTry;
                     match->oneOverload      = &oneOverload;
                     match->flags            = oneOverload.symMatchContext.flags;
                     matches.push_back(match);
@@ -1912,6 +1913,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->solvedParameters               = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->numOverloadsWhenChecked        = oneOverload.cptOverloads;
                     match->numOverloadsInitWhenChecked    = oneOverload.cptOverloadsInit;
+                    match->secondTry                      = oneOverload.secondTry;
                     if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
                         genericMatchesSI.push_back(match);
                     else
@@ -1948,6 +1950,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
+                    match->secondTry        = oneOverload.secondTry;
                     match->autoOpCast       = oneOverload.symMatchContext.autoOpCast;
                     match->oneOverload      = &oneOverload;
                     match->typeWasForced    = typeWasForced;
@@ -3598,6 +3601,19 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             break;
         }
 
+        // Priority to 'secondTry' false
+        if (curMatch->secondTry)
+        {
+            for (size_t j = 0; j < countMatches; j++)
+            {
+                if (!matches[j]->secondTry)
+                {
+                    curMatch->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a 'moveref' call
         if (curMatch->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT)
         {
@@ -3930,6 +3946,24 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
                 genMatches[i] = genMatches.back();
                 genMatches.pop_back();
                 i--;
+            }
+        }
+    }
+
+    for (size_t i = 0; i < genMatches.size(); i++)
+    {
+        // 'secondTry' is less prio than first ufcs try
+        if (genMatches[i]->secondTry)
+        {
+            for (size_t j = 0; j < genMatches.size(); j++)
+            {
+                if (!genMatches[j]->secondTry)
+                {
+                    genMatches[i] = genMatches.back();
+                    genMatches.pop_back();
+                    i--;
+                    break;
+                }
             }
         }
     }
@@ -4478,30 +4512,38 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             // then we take the next statement, after the function, and put it as the last parameter
             SWAG_CHECK(appendLastCodeStatement(context, identifier, symbolOverload));
 
-            auto  tryMatch        = job->getTryMatch();
-            auto& symMatchContext = tryMatch->symMatchContext;
+            // Will try with ufcs, and will try without
+            for (int tryUfcs = 0; tryUfcs < 2; tryUfcs++)
+            {
+                auto  tryMatch        = job->getTryMatch();
+                auto& symMatchContext = tryMatch->symMatchContext;
 
-            tryMatch->genericParameters = identifier->genericParameters;
-            tryMatch->callParameters    = identifier->callParameters;
-            tryMatch->dependentVar      = dependentVar;
-            tryMatch->dependentVarLeaf  = dependentVarLeaf;
-            tryMatch->overload          = symbolOverload;
-            tryMatch->scope             = oneOver.scope;
-            tryMatch->ufcs              = ufcsFirstParam || hasForcedUfcs;
+                tryMatch->genericParameters = identifier->genericParameters;
+                tryMatch->callParameters    = identifier->callParameters;
+                tryMatch->dependentVar      = dependentVar;
+                tryMatch->dependentVarLeaf  = dependentVarLeaf;
+                tryMatch->overload          = symbolOverload;
+                tryMatch->scope             = oneOver.scope;
+                tryMatch->ufcs              = ufcsFirstParam || hasForcedUfcs;
+                tryMatch->cptOverloads      = oneOver.cptOverloads;
+                tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
+                tryMatch->secondTry         = tryUfcs == 1;
 
-            tryMatch->cptOverloads     = oneOver.cptOverloads;
-            tryMatch->cptOverloadsInit = oneOver.cptOverloadsInit;
+                SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, identifier, symbolOverload, ufcsFirstParam));
+                if (context->result != ContextResult::Done)
+                    return true;
+                SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, identifier, symbolOverload));
 
-            SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, identifier, symbolOverload, ufcsFirstParam));
-            if (context->result == ContextResult::Pending)
-                return true;
-            SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, identifier, symbolOverload));
+                bool notACall = isFunctionButNotACall(context, identifier, symbolOverload->symbol);
+                if (identifier->forceTakeAddress() && notACall)
+                    symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
-            bool notACall = isFunctionButNotACall(context, identifier, symbolOverload->symbol);
-            if (identifier->forceTakeAddress() && notACall)
-                symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
+                listTryMatch.push_back(tryMatch);
 
-            listTryMatch.push_back(tryMatch);
+                if (!ufcsFirstParam)
+                    break;
+                ufcsFirstParam = nullptr;
+            }
         }
 
         if (listTryMatch.empty())
