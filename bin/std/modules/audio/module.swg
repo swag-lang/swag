@@ -1,7 +1,9 @@
 #dependencies
 {
-    #import "win32"
-    #import "xaudio2"
+    #if #os == Swag.TargetOs.Windows
+    {
+        #import "xaudio2"
+    }
 
     #run
     {

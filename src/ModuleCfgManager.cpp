@@ -679,5 +679,33 @@ bool ModuleCfgManager::execute()
         ok = g_Workspace->numErrors.load() == 0;
     }
 
+    // For each modules, flatten all dependencies
+    for (auto m : allModules)
+    {
+        SetUtf8                          depNames;
+        VectorNative<ModuleDependency*>& dep = m.second->moduleDependencies;
+
+        for (auto d : m.second->moduleDependencies)
+            depNames.insert(d->module->name);
+
+        for (int i = 0; i < dep.size(); i++)
+        {
+            auto d = dep[i];
+            if (!d->module)
+                continue;
+
+            for (auto d1 : d->module->moduleDependencies)
+            {
+                if (depNames.contains(d1->module->name))
+                    continue;
+                depNames.insert(d1->module->name);
+
+                ModuleDependency* newDep = Allocator::alloc<ModuleDependency>();
+                *newDep                  = *d1;
+                dep.push_back(newDep);
+            }
+        }
+    }
+
     return ok;
 }
