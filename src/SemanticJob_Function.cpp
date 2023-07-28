@@ -1320,13 +1320,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             tryDeduce = true;
         if (tryDeduce)
         {
+            funcNode->specFlags |= AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
             typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
             typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
             auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
             if (concreteReturn->isListTuple())
             {
                 SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
-                funcNode->specFlags |= AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
                 Ast::setForceConstType(funcNode->returnType);
                 context->job->nodes.push_back(funcNode->returnType);
                 context->result = ContextResult::NewChilds;
