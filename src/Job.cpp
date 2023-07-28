@@ -235,9 +235,9 @@ void Job::setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait, AstNod
 {
     waitingSymbolSolved = symbolToWait;
     waitingKind         = waitKind;
-    waitingNode       = node;
+    waitingNode         = node;
     waitingHintNode     = nullptr;
-    waitingType       = typeInfo;
+    waitingType         = typeInfo;
 }
 
 void Job::setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo)

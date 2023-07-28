@@ -4,7 +4,6 @@
 #include "ModuleSemanticJob.h"
 #include "EnumerateModuleJob.h"
 #include "ModuleBuildJob.h"
-#include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Backend.h"
@@ -15,9 +14,7 @@
 #include "TypeGenStructJob.h"
 #include "Naming.h"
 #include "SyntaxJob.h"
-#include "SemanticJob.h"
 
-#pragma optimize("", off)
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {
     auto parent    = path.parent_path().filename();
