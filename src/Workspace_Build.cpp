@@ -15,6 +15,7 @@
 #include "TypeGenStructJob.h"
 #include "Naming.h"
 #include "SyntaxJob.h"
+#include "SemanticJob.h"
 
 #pragma optimize("", off)
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
@@ -309,7 +310,6 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 
     Utf8 msg;
     Utf8 hint;
-    bool addRemarks = false;
 
     if (depNode)
     {
@@ -327,15 +327,12 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     }
     else if (prevJob->waitingType)
     {
-        msg        = Fmt(Nte(Nte0058), prevJob->waitingType->getDisplayNameC());
-        addRemarks = true;
+        msg = Fmt(Nte(Nte0058), prevJob->waitingType->getDisplayNameC());
     }
-
     else
     {
-        msg        = Fmt(Nte(Nte0065), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
-        hint       = Diagnostic::isType(prevNode->typeInfo);
-        addRemarks = true;
+        msg  = Fmt(Nte(Nte0065), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
+        hint = Diagnostic::isType(prevNode->typeInfo);
     }
 
     if (prevJob->waitingHintNode)
@@ -358,37 +355,34 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
     note->forceSourceFile = true;
     note->hint            = hint;
 
-    if (addRemarks)
+    Utf8 remark, sym;
+    if (prevJob->waitingSymbolSolved)
+        sym = Fmt("%s '%s'", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
+
+    switch (prevJob->waitingKind)
     {
-        Utf8 remark, sym;
-        if (prevJob->waitingSymbolSolved)
-            sym = Fmt("%s '%s'", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
-
-        switch (prevJob->waitingKind)
-        {
-        case JobWaitKind::WaitMethods:
-            remark = "waiting for all methods to be solved";
-            break;
-        case JobWaitKind::WaitInterfaces:
-            remark = "waiting for all interfaces to be solved";
-            break;
-        case JobWaitKind::GenExportedType:
-        case JobWaitKind::GenExportedType1:
-            remark = "waiting for the type to be exported";
-            break;
-        case JobWaitKind::SemFullResolve:
-            remark = Fmt("waiting for %s to be fully solved", sym.c_str());
-            break;
-        case JobWaitKind::WaitSymbol:
-            remark = Fmt("waiting for %s to be solved", sym.c_str());
-            break;
-        default:
-            break;
-        }
-
-        if (!remark.empty())
-            note->remarks.push_back(remark);
+    case JobWaitKind::WaitMethods:
+        remark = "waiting for all methods to be solved";
+        break;
+    case JobWaitKind::WaitInterfaces:
+        remark = "waiting for all interfaces to be solved";
+        break;
+    case JobWaitKind::GenExportedType:
+    case JobWaitKind::GenExportedType1:
+        remark = "waiting for the type to be exported";
+        break;
+    case JobWaitKind::SemFullResolve:
+        remark = Fmt("waiting for %s to be fully solved", sym.c_str());
+        break;
+    case JobWaitKind::WaitSymbol:
+        remark = Fmt("waiting for %s to be solved", sym.c_str());
+        break;
+    default:
+        break;
     }
+
+    if (!remark.empty())
+        note->remarks.push_back(remark);
 
     return note;
 }
@@ -484,6 +478,21 @@ void Workspace::computeWaitingJobs()
 {
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
+        for (auto dep : pendingJob->dependentJobs.list)
+        {
+            dep->waitingJobs.push_back_once(pendingJob);
+        }
+
+        for (auto dep : pendingJob->jobsToAdd)
+        {
+            dep->waitingJobs.push_back_once(pendingJob);
+        }
+
+        if (pendingJob->dependentJob)
+        {
+            pendingJob->dependentJob->waitingJobs.push_back_once(pendingJob);
+        }
+
         switch (pendingJob->waitingKind)
         {
         case JobWaitKind::WaitSymbol:
@@ -495,7 +504,7 @@ void Workspace::computeWaitingJobs()
                 {
                     if (it->originalNode == it1)
                     {
-                        pendingJob->waitingJobs.push_back(it);
+                        pendingJob->waitingJobs.push_back_once(it);
                     }
                 }
             }
@@ -509,7 +518,7 @@ void Workspace::computeWaitingJobs()
                 auto it = dynamic_cast<TypeGenStructJob*>(g_ThreadMgr.waitingJobs[i]);
                 if (it && it->typeInfo == pendingJob->waitingType)
                 {
-                    pendingJob->waitingJobs.push_back(it);
+                    pendingJob->waitingJobs.push_back_once(it);
                     break;
                 }
             }
@@ -523,7 +532,7 @@ void Workspace::computeWaitingJobs()
                     auto it = g_ThreadMgr.waitingJobs[i];
                     if (it->originalNode == pendingJob->waitingNode)
                     {
-                        pendingJob->waitingJobs.push_back(it);
+                        pendingJob->waitingJobs.push_back_once(it);
                         break;
                     }
                 }
@@ -537,7 +546,7 @@ void Workspace::computeWaitingJobs()
                     auto it = g_ThreadMgr.waitingJobs[i];
                     if (it->originalNode == pendingJob->waitingType->declNode)
                     {
-                        pendingJob->waitingJobs.push_back(it);
+                        pendingJob->waitingJobs.push_back_once(it);
                         break;
                     }
                 }

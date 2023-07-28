@@ -327,6 +327,8 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;
     symbol->cptOverloadsInit++;
+    symbol->nodes.push_back(newNode);
+
     if (waitSymbol && context->result == ContextResult::Done)
         job->waitSymbolNoLock(symbol);
 
