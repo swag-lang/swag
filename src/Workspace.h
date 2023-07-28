@@ -99,7 +99,6 @@ struct Workspace
 
     MapPath<Module*> mapFirstPassModulesNames;
     MapUtf8<Module*> mapModulesNames;
-    Set<void*>       doneErrSymbols;
     Module*          filteredModule = nullptr;
     Module*          bootstrapModule;
     Module*          runtimeModule;

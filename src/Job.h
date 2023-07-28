@@ -113,24 +113,25 @@ struct Job
     DependentJobs          dependentJobs;
     VectorNative<AstNode*> nodes;
     VectorNative<Job*>     jobsToAdd;
-    VectorNative<Job*>     waitingJobs;
 
-    JobThread*  jobThread           = nullptr;
-    AstNode*    originalNode        = nullptr;
-    SourceFile* sourceFile          = nullptr;
-    Module*     module              = nullptr;
-    Job*        dependentJob        = nullptr;
-    Job*        wakeUpBy            = nullptr;
-    JobContext* baseContext         = nullptr;
-    SymbolName* waitingSymbolSolved = nullptr;
-    AstNode*    waitingIdNode       = nullptr;
-    AstNode*    waitingHintNode     = nullptr;
-    TypeInfo*   waitingIdType       = nullptr;
-    JobGroup*   jobGroup            = nullptr;
+    JobThread*  jobThread    = nullptr;
+    AstNode*    originalNode = nullptr;
+    SourceFile* sourceFile   = nullptr;
+    Module*     module       = nullptr;
+    Job*        dependentJob = nullptr;
+    Job*        wakeUpBy     = nullptr;
+    JobContext* baseContext  = nullptr;
+    JobGroup*   jobGroup     = nullptr;
 
-    JobWaitKind waitingKind     = JobWaitKind::None;
-    int32_t     waitingJobIndex = -1;
-    uint32_t    waitOnJobs      = 0;
-    uint32_t    flags           = 0;
-    uint32_t    affinity        = UINT32_MAX;
+    VectorNative<Job*> waitingJobs;
+    SymbolName*        waitingSymbolSolved = nullptr;
+    AstNode*           waitingNode         = nullptr;
+    AstNode*           waitingHintNode     = nullptr;
+    TypeInfo*          waitingType         = nullptr;
+    JobWaitKind        waitingKind         = JobWaitKind::None;
+
+    int32_t  waitingJobIndex = -1;
+    uint32_t waitOnJobs      = 0;
+    uint32_t flags           = 0;
+    uint32_t affinity        = UINT32_MAX;
 };

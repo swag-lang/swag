@@ -398,7 +398,7 @@ void initErrors()
     SWAG_ERROR(Err0833, "the bit inversion operation is not allowed on type '%s'");
     SWAG_ERROR(Err0060, "a compiler constant cannot be referenced at runtime");
     SWAG_ERROR(Err0298, "a constant should be explicitly initialized");
-    SWAG_ERROR(Err0419, "a cycle has been detected during resolution of %s '%s'");
+    SWAG_ERROR(Err0419, "a semantic cycle has been detected for the resolution of %s '%s'");
     SWAG_ERROR(Err0764, "a function cannot return a value of type '%s'");
     SWAG_ERROR(Err0742, "a function with the 'Swag.Foreign' attribute cannot have a body");
     SWAG_ERROR(Err0745, "a function with the 'Swag.Test' attribute cannot have a return value");

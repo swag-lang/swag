@@ -280,33 +280,10 @@ void Workspace::setupTarget()
         g_Log.messageVerbose(Fmt("cache path is '%s'", cachePath.string().c_str()));
 }
 
-static Utf8 errorPendingJobsType(Job* pendingJob)
-{
-    Utf8 sym;
-    if (pendingJob->waitingSymbolSolved)
-        sym = Fmt("%s '%s'", Naming::kindName(pendingJob->waitingSymbolSolved->kind).c_str(), pendingJob->waitingSymbolSolved->name.c_str());
-
-    switch (pendingJob->waitingKind)
-    {
-    case JobWaitKind::WaitInterfaces:
-        return "waiting for all interfaces to be solved";
-    case JobWaitKind::GenExportedType:
-    case JobWaitKind::GenExportedType1:
-        return "waiting for type to be generated";
-    case JobWaitKind::SemFullResolve:
-        return Fmt("waiting for %s to be fully solved", sym.c_str());
-    case JobWaitKind::WaitSymbol:
-        return Fmt("waiting for %s to be solved", sym.c_str());
-    default:
-        break;
-    }
-
-    return "";
-}
-
 Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 {
     AstNode* prevNodeLocal = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
+    SWAG_ASSERT(prevNodeLocal);
 
     // :JobNodeIsFile
     if (prevNodeLocal && prevNodeLocal->kind == AstNodeKind::File)
@@ -336,36 +313,24 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 
     if (depNode)
     {
-        msg = Fmt(Nte(Nte0046),
-                  Naming::kindName(prevNode).c_str(),
-                  prevNode->token.ctext(),
-                  Naming::kindName(depNode).c_str(),
-                  depNode->token.ctext());
+        msg = Fmt(Nte(Nte0046), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), Naming::kindName(depNode).c_str(), depNode->token.ctext());
     }
-    else if (prevNode && prevJob->waitingIdType)
+    else if (prevNode && prevJob->waitingType)
     {
-        msg  = Fmt(Nte(Nte0053),
-                  Naming::kindName(prevNode).c_str(),
-                  prevNode->token.ctext(),
-                  prevJob->waitingIdType->getDisplayNameC());
+        msg  = Fmt(Nte(Nte0053), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), prevJob->waitingType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
-    else if (prevJob->waitingIdType)
+    else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
-        if (dynamic_cast<TypeGenStructJob*>(prevJob))
-        {
-            msg      = Fmt(Nte(Nte0058), prevJob->waitingIdType->getDisplayNameC());
-            prevNode = prevJob->waitingIdType->declNode;
-        }
-        else
-        {
-            if (doneErrSymbols.find(prevJob->waitingIdType) != doneErrSymbols.end())
-                return nullptr;
-            doneErrSymbols.insert(prevJob->waitingIdType);
-            msg = Fmt(Nte(Nte0058), prevJob->waitingIdType->getDisplayNameC());
-        }
+        msg      = Fmt(Nte(Nte0058), prevJob->waitingType->getDisplayNameC());
+        prevNode = prevJob->waitingType->declNode;
+    }
+    else if (prevJob->waitingType)
+    {
+        msg        = Fmt(Nte(Nte0058), prevJob->waitingType->getDisplayNameC());
         addRemarks = true;
     }
+
     else
     {
         msg        = Fmt(Nte(Nte0065), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
@@ -389,14 +354,38 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         }
     }
 
-    prevNode              = prevNodeLocal;
-    auto note             = Diagnostic::note(prevNode, prevNode->token, msg);
+    auto note             = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
     note->forceSourceFile = true;
     note->hint            = hint;
 
     if (addRemarks)
     {
-        auto remark = errorPendingJobsType(prevJob);
+        Utf8 remark, sym;
+        if (prevJob->waitingSymbolSolved)
+            sym = Fmt("%s '%s'", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
+
+        switch (prevJob->waitingKind)
+        {
+        case JobWaitKind::WaitMethods:
+            remark = "waiting for all methods to be solved";
+            break;
+        case JobWaitKind::WaitInterfaces:
+            remark = "waiting for all interfaces to be solved";
+            break;
+        case JobWaitKind::GenExportedType:
+        case JobWaitKind::GenExportedType1:
+            remark = "waiting for the type to be exported";
+            break;
+        case JobWaitKind::SemFullResolve:
+            remark = Fmt("waiting for %s to be fully solved", sym.c_str());
+            break;
+        case JobWaitKind::WaitSymbol:
+            remark = Fmt("waiting for %s to be solved", sym.c_str());
+            break;
+        default:
+            break;
+        }
+
         if (!remark.empty())
             note->remarks.push_back(remark);
     }
@@ -430,29 +419,18 @@ bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, Set<Job
 
 void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
 {
-    doneErrSymbols.clear();
-
-    bool                      hasCycle = false;
-    bool                      doneOne  = false;
-    VectorNative<Diagnostic*> singleReports;
-
     for (auto& it : pendingJobs)
     {
         auto pendingJob = it.pendingJob;
         auto node       = it.node;
 
-        if (node->kind == AstNodeKind::FuncDeclType)
-            node = node->parent;
         if (node->sourceFile->module->hasCycleError)
             continue;
 
         // Is there a dependency cycle ?
         Set<Job*>          done;
         VectorNative<Job*> cycle;
-
-        bool isCycle = errorPendingCycle(pendingJob, pendingJob->waitingJobs, done, cycle);
-
-        // This is a resolution cycle
+        bool               isCycle = errorPendingCycle(pendingJob, pendingJob->waitingJobs, done, cycle);
         if (isCycle)
         {
             Vector<const Diagnostic*> notes;
@@ -462,14 +440,9 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             {
                 if (prevJob->nodes.size() > 1 && prevJob->originalNode->kind == AstNodeKind::FuncDecl)
                 {
-                    auto front = prevJob->nodes.front();
-                    auto back  = prevJob->nodes.back();
-                    auto msg   = Fmt(Nte(Nte0046),
-                                   Naming::kindName(front).c_str(),
-                                   front->token.ctext(),
-                                   Naming::kindName(back).c_str(),
-                                   back->token.ctext());
-
+                    auto front            = prevJob->nodes.front();
+                    auto back             = prevJob->nodes.back();
+                    auto msg              = Fmt(Nte(Nte0046), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
                     auto note             = Diagnostic::note(back, back->token, msg);
                     note->forceSourceFile = true;
                     note->hint            = Diagnostic::isType(back->typeInfo);
@@ -480,11 +453,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                 auto note   = errorPendingJob(prevJob, depJob);
                 if (note)
                     notes.push_back(note);
-
                 prevJob = depJob;
-
-                if (prevJob && prevJob->waitingSymbolSolved)
-                    doneErrSymbols.insert(prevJob->waitingSymbolSolved);
             }
 
             auto note = errorPendingJob(prevJob, pendingJob);
@@ -496,53 +465,17 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             Report::report(diag, notes);
             auto sourceFile                   = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;
-            if (!sourceFile->shouldHaveError)
-            {
-                doneOne  = true;
-                hasCycle = true;
-            }
             continue;
         }
 
-        // No need to raise multiple times an error for the same symbol
-        if (pendingJob->waitingSymbolSolved)
+        // Job is not done, and we do not wait for a specific other job...
+        if (pendingJob->waitingJobs.empty())
         {
-            if (doneErrSymbols.find(pendingJob->waitingSymbolSolved) != doneErrSymbols.end())
+            auto note = errorPendingJob(pendingJob, nullptr);
+            if (!note)
                 continue;
-            doneErrSymbols.insert(pendingJob->waitingSymbolSolved);
-        }
-
-        // Job is not done, and we do not wait for a specific identifier
-        auto note = errorPendingJob(pendingJob, nullptr);
-        if (!note)
-            continue;
-        note->errorLevel = DiagnosticLevel::Error;
-        singleReports.push_back(note);
-        doneOne = true;
-    }
-
-    // Single reports only if no cycles
-    if (!hasCycle)
-    {
-        for (auto note : singleReports)
-        {
-            auto sourceFile = Report::getDiagFile(*note);
-            if (sourceFile->module->hasCycleError)
-                continue;
+            note->errorLevel = DiagnosticLevel::Error;
             Report::report(*note);
-        }
-    }
-
-    // Because of internal bugs, it can happen than we exit silently
-    // Be sure we have logged something.
-    if (!doneOne)
-    {
-        for (auto& it : pendingJobs)
-        {
-            auto       node       = it.node;
-            auto       pendingJob = it.pendingJob;
-            Diagnostic diag{node, node->token, Fmt(Err(Err0549), pendingJob->module->name.c_str(), Naming::kindName(node).c_str(), node->token.ctext())};
-            Report::report(diag);
         }
     }
 }
@@ -551,82 +484,67 @@ void Workspace::computeWaitingJobs()
 {
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
-        for (auto p : g_ThreadMgr.waitingJobs)
+        switch (pendingJob->waitingKind)
         {
-            if (p == pendingJob)
-                continue;
-
-            if (p->dependentJobs.list.contains(pendingJob))
+        case JobWaitKind::WaitSymbol:
+            SWAG_ASSERT(pendingJob->waitingSymbolSolved);
+            for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
             {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
+                auto it = g_ThreadMgr.waitingJobs[i];
+                for (auto it1 : pendingJob->waitingSymbolSolved->nodes)
+                {
+                    if (it->originalNode == it1)
+                    {
+                        pendingJob->waitingJobs.push_back(it);
+                    }
+                }
+            }
+            break;
+
+        case JobWaitKind::GenExportedType:
+        case JobWaitKind::GenExportedType1:
+            SWAG_ASSERT(pendingJob->waitingType);
+            for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
+            {
+                auto it = dynamic_cast<TypeGenStructJob*>(g_ThreadMgr.waitingJobs[i]);
+                if (it && it->typeInfo == pendingJob->waitingType)
+                {
+                    pendingJob->waitingJobs.push_back(it);
+                    break;
+                }
+            }
+            break;
+
+        default:
+            if (pendingJob->waitingNode)
+            {
+                for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
+                {
+                    auto it = g_ThreadMgr.waitingJobs[i];
+                    if (it->originalNode == pendingJob->waitingNode)
+                    {
+                        pendingJob->waitingJobs.push_back(it);
+                        break;
+                    }
+                }
+                break;
             }
 
-            if (p->jobsToAdd.contains(pendingJob))
+            if (pendingJob->waitingType)
             {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
+                for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
+                {
+                    auto it = g_ThreadMgr.waitingJobs[i];
+                    if (it->originalNode == pendingJob->waitingType->declNode)
+                    {
+                        pendingJob->waitingJobs.push_back(it);
+                        break;
+                    }
+                }
+                break;
             }
 
-            if (p->dependentJob == pendingJob)
-            {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
-            }
-
-            if (!p->originalNode)
-                continue;
-
-            if (pendingJob->waitingSymbolSolved &&
-                p->originalNode->kind == AstNodeKind::FuncDecl &&
-                pendingJob->waitingSymbolSolved->kind == SymbolKind::Function &&
-                p->originalNode->token.text == pendingJob->waitingSymbolSolved->name)
-            {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
-            }
-
-            if (pendingJob->waitingSymbolSolved &&
-                p->originalNode->kind == AstNodeKind::StructDecl &&
-                pendingJob->waitingSymbolSolved->kind == SymbolKind::Struct &&
-                p->originalNode->token.text == pendingJob->waitingSymbolSolved->name)
-            {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
-            }
-
-            if (pendingJob->waitingSymbolSolved &&
-                p->originalNode->kind == AstNodeKind::VarDecl &&
-                pendingJob->waitingSymbolSolved->kind == SymbolKind::Variable &&
-                p->originalNode->token.text == pendingJob->waitingSymbolSolved->name)
-            {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
-            }
-
-            if (pendingJob->waitingSymbolSolved &&
-                p->originalNode->kind == AstNodeKind::ConstDecl &&
-                pendingJob->waitingSymbolSolved->kind == SymbolKind::Variable &&
-                p->originalNode->token.text == pendingJob->waitingSymbolSolved->name)
-            {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
-            }
-
-            if (pendingJob->waitingSymbolSolved &&
-                p->originalNode->kind == AstNodeKind::EnumDecl &&
-                pendingJob->waitingSymbolSolved->kind == SymbolKind::Enum &&
-                p->originalNode->token.text == pendingJob->waitingSymbolSolved->name)
-            {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
-            }
-
-            if (p->originalNode == pendingJob->waitingIdNode)
-            {
-                pendingJob->waitingJobs.push_back_once(p);
-                continue;
-            }
+            break;
         }
     }
 }
@@ -658,6 +576,8 @@ void Workspace::checkPendingJobs()
             node = pendingJob->originalNode;
         if (!node)
             continue;
+        if (node->kind == AstNodeKind::FuncDeclType)
+            node = node->parent;
 
         PendingJob pj;
         pj.pendingJob = pendingJob;
