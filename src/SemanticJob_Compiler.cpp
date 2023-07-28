@@ -274,8 +274,8 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
     {
         if (!module->waitForDependenciesDone(context->job))
         {
-            context->job->waitingKind = JobWaitKind::WaitDepDoneExec;
-            context->result           = ContextResult::Pending;
+            context->job->setPendingInfos(JobWaitKind::WaitDepDoneExec);
+            context->result = ContextResult::Pending;
             return true;
         }
     }
@@ -283,8 +283,8 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
     {
         if (!module->waitForDependenciesDone(context->job, node->extByteCode()->bc->hasForeignFunctionCallsModules))
         {
-            context->job->waitingKind = JobWaitKind::WaitDepDoneExec;
-            context->result           = ContextResult::Pending;
+            context->job->setPendingInfos(JobWaitKind::WaitDepDoneExec);
+            context->result = ContextResult::Pending;
             return true;
         }
     }
@@ -780,7 +780,7 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
         newJob->dependentJob = job->dependentJob;
         newJob->addDependentJob(job);
         job->jobsToAdd.push_back(newJob);
-        job->setPending(nullptr, JobWaitKind::LoadFile, node, nullptr);
+        job->setPending(JobWaitKind::LoadFile, nullptr, node, nullptr);
 
         // Creates return type
         auto ptrArray         = makeType<TypeInfoArray>();

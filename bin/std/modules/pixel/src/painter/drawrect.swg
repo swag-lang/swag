@@ -60,7 +60,7 @@ impl Painter
         drawPath(&sharedLinePath, pen)
     }
 
-    func drawRect(using self, rect: Rectangle, pen: Pen)
+    func drawRect(using self, rect: Math.Rectangle, pen: Pen)
     {
         drawRect(rect.x, rect.y, rect.width, rect.height, pen)
     }
@@ -89,7 +89,7 @@ impl Painter
         fillPath(&sharedLinePath, brush)
     }
 
-    func fillRect(using self, rect: Rectangle, brush: Brush)
+    func fillRect(using self, rect: Math.Rectangle, brush: Brush)
     {
         fillRect(rect.x, rect.y, rect.width, rect.height, brush)
     }
@@ -160,12 +160,12 @@ impl Painter
         drawPath(&sharedLinePath, pen)
     }
 
-    func drawRoundRect(using self, rect: Rectangle, radiusX, radiusY: f32, pen: Pen)
+    func drawRoundRect(using self, rect: Math.Rectangle, radiusX, radiusY: f32, pen: Pen)
     {
         drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, pen)
     }
 
-    func drawRoundRect(using self, rect: Rectangle, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
+    func drawRoundRect(using self, rect: Math.Rectangle, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color

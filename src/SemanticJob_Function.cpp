@@ -706,7 +706,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (!(funcNode->flags & AST_IS_GENERIC))
         {
             funcNode->pendingLambdaJob = context->job;
-            context->job->setPending(nullptr, JobWaitKind::PendingLambdaTyping, funcNode, nullptr);
+            context->job->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
         }
     }
 

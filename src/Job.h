@@ -105,7 +105,8 @@ struct Job
     void waitOverloadCompleted(SymbolOverload* overload);
     void waitFuncDeclFullResolve(AstFuncDecl* funcDecl);
     void waitTypeCompleted(TypeInfo* typeInfo);
-    void setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* node, TypeInfo* typeInfo);
+    void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
+    void setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo);
 
     SharedMutex            executeMutex;
     SharedMutex            mutexDependent;

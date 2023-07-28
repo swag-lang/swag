@@ -15,7 +15,7 @@ void Job::addDependentJob(Job* job)
 
 void Job::waitSymbolNoLock(SymbolName* symbol)
 {
-    setPending(symbol, JobWaitKind::WaitSymbol, nullptr, nullptr);
+    setPending(JobWaitKind::WaitSymbol, symbol, nullptr, nullptr);
     symbol->addDependentJobNoLock(this);
 }
 
@@ -31,7 +31,7 @@ void Job::waitAllStructInterfacesReg(TypeInfo* typeInfo)
 
     if (module->waitImplForToSolve(this, typeInfoStruct))
     {
-        setPending(nullptr, JobWaitKind::WaitInterfacesFor, nullptr, typeInfoStruct);
+        setPending(JobWaitKind::WaitInterfacesFor, nullptr, nullptr, typeInfoStruct);
         return;
     }
 
@@ -41,7 +41,7 @@ void Job::waitAllStructInterfacesReg(TypeInfo* typeInfo)
     SWAG_ASSERT(typeInfoStruct->scope);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
-    setPending(nullptr, JobWaitKind::WaitInterfacesReg, nullptr, typeInfoStruct);
+    setPending(JobWaitKind::WaitInterfacesReg, nullptr, nullptr, typeInfoStruct);
 }
 
 void Job::waitAllStructInterfaces(TypeInfo* typeInfo)
@@ -56,7 +56,7 @@ void Job::waitAllStructInterfaces(TypeInfo* typeInfo)
 
     if (module->waitImplForToSolve(this, typeInfoStruct))
     {
-        setPending(nullptr, JobWaitKind::WaitInterfacesFor, nullptr, typeInfoStruct);
+        setPending(JobWaitKind::WaitInterfacesFor, nullptr, nullptr, typeInfoStruct);
         return;
     }
 
@@ -66,7 +66,7 @@ void Job::waitAllStructInterfaces(TypeInfo* typeInfo)
     SWAG_ASSERT(typeInfoStruct->scope);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
-    setPending(nullptr, JobWaitKind::WaitInterfaces, nullptr, typeInfoStruct);
+    setPending(JobWaitKind::WaitInterfaces, nullptr, nullptr, typeInfoStruct);
 }
 
 void Job::waitAllStructSpecialMethods(TypeInfo* typeInfo)
@@ -84,7 +84,7 @@ void Job::waitAllStructSpecialMethods(TypeInfo* typeInfo)
     SWAG_ASSERT(typeInfoStruct->scope);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
-    setPending(nullptr, JobWaitKind::WaitSpecialMethods, nullptr, typeInfoStruct);
+    setPending(JobWaitKind::WaitSpecialMethods, nullptr, nullptr, typeInfoStruct);
 }
 
 void Job::waitAllStructMethods(TypeInfo* typeInfo)
@@ -102,7 +102,7 @@ void Job::waitAllStructMethods(TypeInfo* typeInfo)
     SWAG_ASSERT(typeInfoStruct->scope);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
-    setPending(nullptr, JobWaitKind::WaitMethods, nullptr, typeInfoStruct);
+    setPending(JobWaitKind::WaitMethods, nullptr, nullptr, typeInfoStruct);
 }
 
 void Job::waitStructGeneratedAlloc(TypeInfo* typeInfo)
@@ -128,7 +128,7 @@ void Job::waitStructGeneratedAlloc(TypeInfo* typeInfo)
     if (!(structNode->semFlags & SEMFLAG_STRUCT_OP_ALLOCATED))
     {
         structNode->dependentJobs.add(this);
-        setPending(structNode->resolvedSymbolName, JobWaitKind::SemByteCodeGenerated, structNode, nullptr);
+        setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName, structNode, nullptr);
     }
 }
 
@@ -157,7 +157,7 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
     if (!(structNode->semFlags & SEMFLAG_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(this);
-        setPending(structNode->resolvedSymbolName, JobWaitKind::SemByteCodeGenerated, structNode, nullptr);
+        setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName, structNode, nullptr);
     }
 }
 
@@ -185,7 +185,7 @@ void Job::waitFuncDeclFullResolve(AstFuncDecl* funcDecl)
     if (!(funcDecl->specFlags & AstFuncDecl::SPECFLAG_FULL_RESOLVE))
     {
         funcDecl->dependentJobs.add(this);
-        setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemFullResolve, funcDecl, nullptr);
+        setPending(JobWaitKind::SemFullResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
     }
 }
 
@@ -211,7 +211,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (!structNode->resolvedSymbolOverload)
     {
         structNode->dependentJobs.add(this);
-        setPending(structNode->resolvedSymbolName, JobWaitKind::WaitStructSymbol, structNode, nullptr);
+        setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName, structNode, nullptr);
         return;
     }
 
@@ -231,15 +231,20 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
         typeInfo->sizeOf = typeInfo->getFakeAlias()->sizeOf;
 }
 
-void Job::setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* node, TypeInfo* typeInfo)
+void Job::setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo)
 {
-    SWAG_ASSERT(baseContext);
-    if (baseContext->result == ContextResult::Pending)
-        return;
     waitingSymbolSolved = symbolToWait;
     waitingKind         = waitKind;
     waitingIdNode       = node;
     waitingHintNode     = nullptr;
     waitingIdType       = typeInfo;
+}
+
+void Job::setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo)
+{
+    SWAG_ASSERT(baseContext);
+    if (baseContext->result == ContextResult::Pending)
+        return;
+    setPendingInfos(waitKind, symbolToWait, node, typeInfo);
     baseContext->result = ContextResult::Pending;
 }

@@ -351,8 +351,8 @@ void ThreadManager::eatJob(Job* job)
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags |= JOB_IS_IN_THREAD;
 
-    job->waitingKind = JobWaitKind::None;
-    job->jobThread   = nullptr;
+    job->setPendingInfos(JobWaitKind::None);
+    job->jobThread = nullptr;
 
     if (job->flags & JOB_IS_OPT)
         jobsOptInThreads++;

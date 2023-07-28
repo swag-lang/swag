@@ -483,7 +483,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
         if (flags & ASKBC_WAIT_DONE)
         {
             SWAG_ASSERT(job);
-            job->setPending(nullptr, JobWaitKind::SemByteCodeGenerated, node, nullptr);
+            job->setPending(JobWaitKind::SemByteCodeGenerated, nullptr, node, nullptr);
         }
 
         node->allocateExtensionNoLock(ExtensionKind::ByteCode);
@@ -544,7 +544,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
         {
             SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->byteCodeJob);
             node->extByteCode()->byteCodeJob->dependentJobs.add(job);
-            job->setPending(nullptr, JobWaitKind::AskBcWaitResolve, node, nullptr);
+            job->setPending(JobWaitKind::AskBcWaitResolve, nullptr, node, nullptr);
             return;
         }
     }

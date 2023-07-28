@@ -849,7 +849,7 @@ bool Module::waitForDependenciesDone(Job* job, const SetUtf8& modules)
         ScopedLock lk(depModule->mutexDependency);
         if (depModule->hasBeenBuilt != BUILDRES_FULL)
         {
-            job->waitingKind = JobWaitKind::DepDone;
+            job->setPendingInfos(JobWaitKind::DepDone);
             depModule->dependentJobs.add(job);
             return false;
         }
@@ -876,7 +876,7 @@ bool Module::waitForDependenciesDone(Job* job)
         ScopedLock lk(depModule->mutexDependency);
         if (depModule->hasBeenBuilt != BUILDRES_FULL)
         {
-            job->waitingKind = JobWaitKind::DepDone;
+            job->setPendingInfos(JobWaitKind::DepDone);
             depModule->dependentJobs.add(job);
             return false;
         }

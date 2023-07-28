@@ -64,7 +64,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
                 if (itJob != mapPerSeg.exportedTypesJob.end())
                 {
                     itJob->second->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(nullptr, JobWaitKind::GenExportedType, nullptr, typeInfo);
+                    context->baseJob->setPending(JobWaitKind::GenExportedType, nullptr, nullptr, typeInfo);
                 }
             }
         }
@@ -637,7 +637,7 @@ bool TypeGen::genExportedStuct(JobContext* context, const Utf8& typeName, Export
     {
         SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::GenExportedType1);
         job->dependentJob = context->baseJob;
-        context->baseJob->setPending(nullptr, JobWaitKind::GenExportedType1, nullptr, typeInfo);
+        context->baseJob->setPending(JobWaitKind::GenExportedType1, nullptr, nullptr, typeInfo);
         context->baseJob->jobsToAdd.push_back(job);
     }
     else

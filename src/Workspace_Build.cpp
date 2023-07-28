@@ -16,6 +16,7 @@
 #include "Naming.h"
 #include "SyntaxJob.h"
 
+#pragma optimize("", off)
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {
     auto parent    = path.parent_path().filename();
@@ -450,16 +451,6 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
         VectorNative<Job*> cycle;
 
         bool isCycle = errorPendingCycle(pendingJob, pendingJob->waitingJobs, done, cycle);
-
-        // Job waiting on itself
-        if (!isCycle &&
-            pendingJob->waitingSymbolSolved &&
-            pendingJob->originalNode &&
-            pendingJob->waitingSymbolSolved == pendingJob->originalNode->resolvedSymbolName)
-        {
-            cycle.push_back(pendingJob);
-            isCycle = true;
-        }
 
         // This is a resolution cycle
         if (isCycle)

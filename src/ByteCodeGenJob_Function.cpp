@@ -2264,7 +2264,7 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     SWAG_CHECK(SemanticJob::makeInline((JobContext*) context, funcDecl, identifier));
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
-    context->job->setPending(nullptr, JobWaitKind::MakeInline, funcDecl, nullptr);
+    context->job->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);
     auto inlineNode = identifier->childs.back();
     SWAG_ASSERT(inlineNode->kind == AstNodeKind::Inline);
     auto job = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
