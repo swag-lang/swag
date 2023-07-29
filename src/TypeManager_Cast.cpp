@@ -2505,7 +2505,8 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         if (fromType->isSlice())
         {
             auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-            if (fromTypeSlice->pointedType == g_TypeMgr->typeInfoU8)
+            auto concreteType  = TypeManager::concreteType(fromTypeSlice->pointedType, CONCRETE_ALIAS);
+            if (concreteType->isNative(NativeTypeKind::U8))
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -2521,7 +2522,8 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         if (fromType->isArray())
         {
             auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-            if (fromTypeArray->pointedType == g_TypeMgr->typeInfoU8)
+            auto concreteType  = TypeManager::concreteType(fromTypeArray->pointedType, CONCRETE_ALIAS);
+            if (concreteType->isNative(NativeTypeKind::U8))
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
