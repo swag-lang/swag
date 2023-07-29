@@ -4399,6 +4399,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         }
     }
 
+    // Filter symbols
+    SWAG_CHECK(filterSymbols(context, identifier));
+    if (dependentSymbols.empty())
+        return context->report({ identifier, Fmt(Err(Err0133), identifier->token.ctext()) });
+
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto& p : dependentSymbols)
     {
@@ -4431,11 +4436,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
 
         return true;
     }
-
-    // Filter symbols
-    SWAG_CHECK(filterSymbols(context, identifier));
-    if (dependentSymbols.empty())
-        return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
 
     auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
     auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
