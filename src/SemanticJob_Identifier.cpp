@@ -4319,7 +4319,6 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
     return true;
 }
 
-#pragma optimize("", off)
 bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
 {
     auto  job                = context->job;
