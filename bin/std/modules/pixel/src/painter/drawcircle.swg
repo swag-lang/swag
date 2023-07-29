@@ -1,5 +1,5 @@
 #global public
-using Core, Core.Math
+using Core
 
 impl Painter
 {
@@ -8,7 +8,7 @@ impl Painter
     {
         if radius == 0 or color.a == 0
             return
-        if isZeroEpsilon(endAngle.rad - startAngle.rad)
+        if Math.isZeroEpsilon(endAngle.rad - startAngle.rad)
             return
         Debug.assert(endAngle.rad > startAngle.rad)
 
@@ -24,7 +24,7 @@ impl Painter
     {
         if radius == 0 or pen.brush.color.a == 0
             return
-        if isZeroEpsilon(endAngle.rad - startAngle.rad)
+        if Math.isZeroEpsilon(endAngle.rad - startAngle.rad)
             return
         Debug.assert(endAngle.rad > startAngle.rad)
 

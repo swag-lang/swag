@@ -1,17 +1,17 @@
 #global export
 using Swag
 
-struct(T) Node
+struct(T) ListNode
 {
-    prev:   *Node
-    next:   *Node
+    prev:   *ListNode
+    next:   *ListNode
     value:  T
 }
 
 struct(T) List
 {
-    head:  *Node
-    tail:  *Node
+    head:  *ListNode
+    tail:  *ListNode
     count: u64
 }
 
@@ -99,9 +99,9 @@ impl List
 
     // Add a new element on front
     #[Swag.Discardable]
-    mtd addFront(value: T)->*Node
+    mtd addFront(value: T)->*ListNode
     {
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -120,9 +120,9 @@ impl List
 
     // Add a new element on front
     #[Swag.Discardable]
-    mtd addFront(value: moveref T)->*Node
+    mtd addFront(value: moveref T)->*ListNode
     {
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 
@@ -141,9 +141,9 @@ impl List
 
     // Add a new element on front
     #[Swag.Discardable]
-    mtd addBack(value: T)->*Node
+    mtd addBack(value: T)->*ListNode
     {
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -162,9 +162,9 @@ impl List
 
     // Add a new element on front
     #[Swag.Discardable]
-    mtd addBack(value: moveref T)->*Node
+    mtd addBack(value: moveref T)->*ListNode
     {
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 
@@ -183,11 +183,11 @@ impl List
 
     // Insert a node before the reference
     #[Swag.Discardable]
-    mtd insertBefore(node: *Node, value: T)->*Node
+    mtd insertBefore(node: *ListNode, value: T)->*ListNode
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -202,11 +202,11 @@ impl List
     }
 
     #[Swag.Discardable]
-    mtd insertBefore(node: *Node, value: moveref T)->*Node
+    mtd insertBefore(node: *ListNode, value: moveref T)->*ListNode
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 
@@ -222,11 +222,11 @@ impl List
 
     // Insert a node before the reference
     #[Swag.Discardable]
-    mtd insertAfter(node: *Node, value: T)->*Node
+    mtd insertAfter(node: *ListNode, value: T)->*ListNode
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -241,11 +241,11 @@ impl List
     }
 
     #[Swag.Discardable]
-    mtd insertAfter(node: *Node, value: moveref T)->*Node
+    mtd insertAfter(node: *ListNode, value: moveref T)->*ListNode
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'Node()
+        var n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 

@@ -4264,7 +4264,49 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return resolveIdentifier(context, node, RI_ZERO);
 }
 
-bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool& needToWait)
+bool SemanticJob::needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol)
+{
+    if (symbol->kind != SymbolKind::Struct && symbol->kind != SymbolKind::Interface)
+        return true;
+    if (identifier->callParameters || identifier->genericParameters)
+        return true;
+    if (symbol->overloads.size() != 1)
+        return true;
+
+    // If this is a generic type, and it's from an instance, we must wait, because we will
+    // have to instantiate that symbol too
+    if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+        return true;
+    if (identifier->ownerFct && (identifier->ownerFct->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+        return true;
+
+    // If a structure is referencing itself, we will match the incomplete symbol for now
+    if (identifier->flags & AST_STRUCT_MEMBER)
+        return false;
+
+    // We can also do an incomplete match with the identifier of an Impl block
+    if (identifier->flags & AST_CAN_MATCH_INCOMPLETE)
+        return false;
+
+    // If identifier is in a pointer type expression, can incomplete resolve
+    if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
+    {
+        auto typeExprNode = CastAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
+        if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
+            return false;
+
+        if (typeExprNode->parent && typeExprNode->parent->kind == AstNodeKind::TypeExpression)
+        {
+            typeExprNode = CastAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
+            if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
+                return false;
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol)
 {
     if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
         return false;
@@ -4273,53 +4315,6 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
     // do not know their return type yet (short lambdas)
     if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
         return false;
-
-    needToWait = true;
-    if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface)
-    {
-        bool canIncomplete = false;
-
-        // If a structure is referencing itself, we will match the incomplete symbol for now
-        // We can also do an incomplete match with the identifier of an Impl block
-        if ((identifier->flags & AST_STRUCT_MEMBER) || (identifier->flags & AST_CAN_MATCH_INCOMPLETE))
-            canIncomplete = true;
-
-        // If identifier is in a pointer type expression, can incomplete resolve
-        if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
-        {
-            auto typeExprNode = CastAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
-            if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
-                canIncomplete = true;
-
-            if (typeExprNode->parent && typeExprNode->parent->kind == AstNodeKind::TypeExpression)
-            {
-                typeExprNode = CastAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
-                if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
-                    canIncomplete = true;
-            }
-        }
-
-        if (canIncomplete)
-        {
-            if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
-            {
-                if (!identifier->callParameters && !identifier->genericParameters)
-                {
-                    needToWait                         = false;
-                    identifier->resolvedSymbolName     = symbol;
-                    identifier->resolvedSymbolOverload = symbol->overloads[0];
-                    identifier->typeInfo               = identifier->resolvedSymbolOverload->typeInfo;
-
-                    // If this is a generic type, and it's from an instante, we must wait, because we will
-                    // have to instantiate that symbol too
-                    if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->flags & AST_FROM_GENERIC) && identifier->typeInfo->isGeneric())
-                        needToWait = true;
-                    if (identifier->ownerFct && (identifier->ownerFct->flags & AST_FROM_GENERIC) && identifier->typeInfo->isGeneric())
-                        needToWait = true;
-                }
-            }
-        }
-    }
 
     return true;
 }
@@ -4402,36 +4397,84 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
     if (dependentSymbols.empty())
-        return context->report({ identifier, Fmt(Err(Err0133), identifier->token.ctext()) });
+        return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
+
+    // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwhise it
+    // can lead to ambiguities, or even worse, take the wrong one.
+    if (dependentSymbols.size() > 1)
+    {
+        // A struct and an interface, this is legit
+        bool fine = false;
+        if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->kind == SymbolKind::Struct && dependentSymbols[1].symbol->kind == SymbolKind::Interface)
+            fine = true;
+        else if (dependentSymbols.size() == 2 && dependentSymbols[0].symbol->kind == SymbolKind::Interface && dependentSymbols[1].symbol->kind == SymbolKind::Struct)
+            fine = true;
+
+        if (!fine)
+        {
+            for (auto& p : dependentSymbols)
+            {
+                auto symbol = p.symbol;
+                if (!needToCompleteSymbol(context, identifier, symbol))
+                {
+                    Diagnostic diag{identifier, Fmt(Err(Err0116), identifier->token.ctext())};
+
+                    Vector<const Diagnostic*> notes;
+                    for (auto& p1 : dependentSymbols)
+                    {
+                        auto note                   = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
+                        note->showRange             = false;
+                        note->showMultipleCodeLines = false;
+                        notes.push_back(note);
+                    }
+
+                    return context->report(diag, notes);
+                }
+            }
+        }
+    }
 
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto& p : dependentSymbols)
     {
-        auto symbol     = p.symbol;
-        bool needToWait = false;
+        auto symbol = p.symbol;
 
         // First test, with just a SharedLock for contention
         {
             SharedLock lkn(symbol->mutex);
-            if (!needToWaitForSymbol(context, identifier, symbol, needToWait))
+            if (!needToWaitForSymbol(context, identifier, symbol))
                 continue;
         }
 
-        // If true, then do the test again, this time with a lock
-        if (needToWait)
         {
+            // Do the test again, this time with a lock
             ScopedLock lkn(symbol->mutex);
-            needToWait = false;
-            if (!needToWaitForSymbol(context, identifier, symbol, needToWait))
+            if (!needToWaitForSymbol(context, identifier, symbol))
                 continue;
-            if (needToWait)
+
+            // Can we make a partial match ?
+            if (needToCompleteSymbol(context, identifier, symbol))
             {
                 job->waitSymbolNoLock(symbol);
+                return true;
+            }
+
+            // Be sure that we have at least a registered incomplete symbol
+            SWAG_ASSERT(symbol->overloads.size() == 1);
+            if (!(symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
+            {
+                job->waitSymbolNoLock(symbol);
+                return true;
             }
         }
 
+        // Partial resolution
+        identifier->resolvedSymbolName     = symbol;
+        identifier->resolvedSymbolOverload = symbol->overloads[0];
+        identifier->typeInfo               = identifier->resolvedSymbolOverload->typeInfo;
+
         // In case identifier is part of a reference, need to initialize it
-        if (!needToWait && identifier != identifier->identifierRef()->childs.back())
+        if (identifier != identifier->identifierRef()->childs.back())
             SWAG_CHECK(setupIdentifierRef(context, identifier));
 
         return true;

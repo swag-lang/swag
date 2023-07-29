@@ -1,4 +1,4 @@
-using Core, Math
+using Core
 
 public enum DrawPathListMode
 {
@@ -8,17 +8,17 @@ public enum DrawPathListMode
 
 struct Context
 {
-    posBuffer:          Array'Vector2
+    posBuffer:          Array'Math.Vector2
     penSize:            f32
     penSize2:           f32
     beginLine:          bool
     firstLine:          bool
     lastLineInvalid:    bool
-    normalPrev:         Vector2
-    normalFirst:        Vector2
-    normal:             Vector2
+    normalPrev:         Math.Vector2
+    normalFirst:        Math.Vector2
+    normal:             Math.Vector2
     prim1, prim2:       u64
-    prev:               Vector2
+    prev:               Math.Vector2
     path:               const *LinePath
     pen:                const *Pen
     offsetPath:         f32
@@ -34,13 +34,13 @@ struct Context
 
 impl Painter
 {
-    mtd drawCapSquare(p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawCapSquare(p, d: Math.Vector2, sens: f32, pen: Pen)
     {
-        let n = Vector2{d.y * sens, -d.x * sens}
-        let v0 = Vector2{p.x + d.x, p.y + d.y}
-        let v1 = Vector2{p.x - d.x, p.y - d.y}
-        let v2 = Vector2{v1.x + n.x, v1.y + n.y}
-        let v3 = Vector2{v0.x + n.x, v0.y + n.y}
+        let n = Math.Vector2{d.y * sens, -d.x * sens}
+        let v0 = Math.Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Math.Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Math.Vector2{v1.x + n.x, v1.y + n.y}
+        let v3 = Math.Vector2{v0.x + n.x, v0.y + n.y}
 
         let prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
         let prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
@@ -55,12 +55,12 @@ impl Painter
         }
     }
 
-    mtd drawCapTriangle(p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawCapTriangle(p, d: Math.Vector2, sens: f32, pen: Pen)
     {
-        let n = Vector2{d.y * sens, -d.x * sens}
-        let v0 = Vector2{p.x + d.x, p.y + d.y}
-        let v1 = Vector2{p.x - d.x, p.y - d.y}
-        let v2 = Vector2{p.x + n.x, p.y + n.y}
+        let n = Math.Vector2{d.y * sens, -d.x * sens}
+        let v0 = Math.Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Math.Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Math.Vector2{p.x + n.x, p.y + n.y}
         let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
@@ -70,21 +70,21 @@ impl Painter
         }
     }
 
-    mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
+    mtd drawCapSquareAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
     {
         let sx = start ? pen.capStartScaleX : pen.capEndScaleX
         let sy = start ? pen.capStartScaleY : pen.capEndScaleY
 
         var p = p1
         let d = d1 * sx
-        var n = Vector2{d.y * sens, -d.x * sens}
+        var n = Math.Vector2{d.y * sens, -d.x * sens}
         n.setLengthSafe(d.length() * sy)
         p -= n * 0.5
 
-        let v0 = Vector2{p.x + d.x, p.y + d.y}
-        let v1 = Vector2{p.x - d.x, p.y - d.y}
-        let v2 = Vector2{v1.x + n.x, v1.y + n.y}
-        let v3 = Vector2{v0.x + n.x, v0.y + n.y}
+        let v0 = Math.Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Math.Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Math.Vector2{v1.x + n.x, v1.y + n.y}
+        let v3 = Math.Vector2{v0.x + n.x, v0.y + n.y}
 
         let prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
         let prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
@@ -102,22 +102,22 @@ impl Painter
             addEdgeAA(prim2, v0, v1)
         }
 
-        return Vector2.Zero
+        return Math.Vector2.Zero
     }
 
-    mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
+    mtd drawCapArrowAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
     {
         let sx = start ? pen.capStartScaleX : pen.capEndScaleX
         let sy = start ? pen.capStartScaleY : pen.capEndScaleY
 
         var p = p1
         let d = d1 * sx
-        let n = Vector2{d.y * sens * sy, -d.x * sens * sy}
+        let n = Math.Vector2{d.y * sens * sy, -d.x * sens * sy}
         p -= n
 
-        let v0 = Vector2{p.x + d.x, p.y + d.y}
-        let v1 = Vector2{p.x - d.x, p.y - d.y}
-        let v2 = Vector2{p.x + n.x, p.y + n.y}
+        let v0 = Math.Vector2{p.x + d.x, p.y + d.y}
+        let v1 = Math.Vector2{p.x - d.x, p.y - d.y}
+        let v2 = Math.Vector2{p.x + n.x, p.y + n.y}
         let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
 
         if curState.paintParams & .Antialiased
@@ -130,7 +130,7 @@ impl Painter
         return n - n.toNormalizeSafe()
     }
 
-    mtd drawCapRoundAnchor(p, d: Vector2, pen: Pen, start: bool)->Vector2
+    mtd drawCapRoundAnchor(p, d: Math.Vector2, pen: Pen, start: bool)->Math.Vector2
     {
         let sx = start ? pen.capStartScaleX : pen.capEndScaleX
 
@@ -138,10 +138,10 @@ impl Painter
         let angle1 = angle0 + Math.ConstF32.TwoPi
         let radius = sx * d.length()
         drawRound(p, radius, angle0, angle1, pen)
-        return Vector2.Zero
+        return Math.Vector2.Zero
     }
 
-    mtd drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawCapRound(p, d: Math.Vector2, sens: f32, pen: Pen)
     {
         var radius = d.length()
         if radius < 2.5
@@ -156,25 +156,25 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
+    mtd drawLineCap(capStyle: LineCapStyle, p, d: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
     {
         #[Swag.Complete]
         switch capStyle
         {
         case None:
-            return Vector2.Zero
+            return Math.Vector2.Zero
 
         case Triangle:
             drawCapTriangle(p, d, sens, pen)
-            return Vector2.Zero
+            return Math.Vector2.Zero
 
         case Round:
             drawCapRound(p, d, sens, pen)
-            return Vector2.Zero
+            return Math.Vector2.Zero
 
         case Square:
             drawCapSquare(p, d, sens, pen)
-            return Vector2.Zero
+            return Math.Vector2.Zero
 
         case SquareAnchor:
             return drawCapSquareAnchor(p, d, sens, pen, start)
@@ -186,10 +186,10 @@ impl Painter
             return drawCapRoundAnchor(p, d, pen, start)
         }
 
-        return Vector2.Zero
+        return Math.Vector2.Zero
     }
 
-    mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
+    mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Math.Vector2, sens: f32)
     {
         if penSize < 3
             return
@@ -204,24 +204,24 @@ impl Painter
         }
     }
 
-    mtd drawJoinBevel(p, d1, d2: Vector2, pen: Pen)
+    mtd drawJoinBevel(p, d1, d2: Math.Vector2, pen: Pen)
     {
         var v0 = p
 
-        var v1, v2: Vector2 = undefined
+        var v1, v2: Math.Vector2 = undefined
         if d1.x * d2.y - d1.y * d2.x < 0
         {
             v0 += d1 * 0.25
             v0 += d2 * 0.25
-            v1 = Vector2{p.x - d1.x, p.y - d1.y}
-            v2 = Vector2{p.x - d2.x, p.y - d2.y}
+            v1 = Math.Vector2{p.x - d1.x, p.y - d1.y}
+            v2 = Math.Vector2{p.x - d2.x, p.y - d2.y}
         }
         else
         {
             v0 -= d1 * 0.25
             v0 -= d2 * 0.25
-            v1 = Vector2{p.x + d1.x, p.y + d1.y}
-            v2 = Vector2{p.x + d2.x, p.y + d2.y}
+            v1 = Math.Vector2{p.x + d1.x, p.y + d1.y}
+            v2 = Math.Vector2{p.x + d2.x, p.y + d2.y}
         }
 
         let prim1 = pushTriangle(v0, v1, v2, pen.brush.color)
@@ -229,9 +229,9 @@ impl Painter
             addEdgeAA(prim1, v1, v2)
     }
 
-    mtd drawRound(center: Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
+    mtd drawRound(center: Math.Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
     {
-        var startPos, endPos: Vector2 = undefined
+        var startPos, endPos: Math.Vector2 = undefined
         startPos.x = center.x + (Math.cos(angle0) * radius)
         startPos.y = center.y + (Math.sin(angle0) * radius)
         endPos.x = center.x + (Math.cos(angle1) * radius)
@@ -270,7 +270,7 @@ impl Painter
         }
     }
 
-    mtd drawJoinRound(p, d1, d2: Vector2, pen: Pen)
+    mtd drawJoinRound(p, d1, d2: Math.Vector2, pen: Pen)
     {
         var angle0, angle1: f32 = undefined
         if d1.x * d2.y - d1.y * d2.x < 0
@@ -297,9 +297,9 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    mtd drawJoinMiter(p, d1, d2: Vector2, justMiter: bool, pen: Pen)
+    mtd drawJoinMiter(p, d1, d2: Math.Vector2, justMiter: bool, pen: Pen)
     {
-        var a = Vector2{d1.x + d2.x, d1.y + d2.y}
+        var a = Math.Vector2{d1.x + d2.x, d1.y + d2.y}
         let w = d1.length()
         let l = a.length()
         if Math.isZeroEpsilon(l)
@@ -319,22 +319,22 @@ impl Painter
 
         var v0 = p
 
-        var v1, v2, v3: Vector2 = undefined
+        var v1, v2, v3: Math.Vector2 = undefined
         if d1.x * d2.y - d1.y * d2.x < 0
         {
             v0 += d1 * 0.25
             v0 += d2 * 0.25
-            v1 = Vector2{p.x - d1.x, p.y - d1.y}
-            v2 = Vector2{p.x - a.x, p.y - a.y}
-            v3 = Vector2{p.x - d2.x, p.y - d2.y}
+            v1 = Math.Vector2{p.x - d1.x, p.y - d1.y}
+            v2 = Math.Vector2{p.x - a.x, p.y - a.y}
+            v3 = Math.Vector2{p.x - d2.x, p.y - d2.y}
         }
         else
         {
             v0 -= d1 * 0.25
             v0 -= d2 * 0.25
-            v1 = Vector2{p.x + d1.x, p.y + d1.y}
-            v2 = Vector2{p.x + a.x, p.y + a.y}
-            v3 = Vector2{p.x + d2.x, p.y + d2.y}
+            v1 = Math.Vector2{p.x + d1.x, p.y + d1.y}
+            v2 = Math.Vector2{p.x + a.x, p.y + a.y}
+            v3 = Math.Vector2{p.x + d2.x, p.y + d2.y}
         }
 
         let prim1 = pushTriangle(v0, v1, v3, pen.brush.color)
@@ -348,7 +348,7 @@ impl Painter
         }
     }
 
-    mtd drawJoin(using cxt: *Context, p, d1, d2: Vector2)
+    mtd drawJoin(using cxt: *Context, p, d1, d2: Math.Vector2)
     {
         #[Swag.Complete]
         switch pen.joinStyle
@@ -361,7 +361,7 @@ impl Painter
         }
     }
 
-    mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Vector2)
+    mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Math.Vector2)
     {
         if beginLine or lastLineInvalid
             return
@@ -380,7 +380,7 @@ impl Painter
         }
     }
 
-    func drawMoveCursor(using cxt: *Context, pos: Vector2)
+    func drawMoveCursor(using cxt: *Context, pos: Math.Vector2)
     {
         if pos.distance(path.endPoint) < 1
         {
@@ -395,7 +395,7 @@ impl Painter
         }
     }
 
-    mtd drawLineInternal(using cxt: *Context, pos: Vector2)
+    mtd drawLineInternal(using cxt: *Context, pos: Math.Vector2)
     {
         // Compute line (half width on each side)
         var newPos = pos
@@ -508,7 +508,7 @@ impl Painter
             remainingPatternLen *= 0.5
     }
 
-    mtd drawLine(using cxt: *Context, pos: Vector2)
+    mtd drawLine(using cxt: *Context, pos: Math.Vector2)
     {
         // solid
         if pen.dashStyle == .None
@@ -578,10 +578,10 @@ impl Painter
         }
     }
 
-    mtd drawLineBeginCap(using cxt: *Context)->Vector2
+    mtd drawLineBeginCap(using cxt: *Context)->Math.Vector2
     {
         if pen.beginCapStyle == .None or penSize < 3
-            return Vector2.Zero
+            return Math.Vector2.Zero
 
         var v1 = path.polygon.getPoint(0, cxt.offsetPath)
         var v2 = path.polygon.getPoint(1, cxt.offsetPath)
@@ -592,10 +592,10 @@ impl Painter
         return drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen, true)
     }
 
-    mtd drawLineEndCap(using cxt: *Context)->Vector2
+    mtd drawLineEndCap(using cxt: *Context)->Math.Vector2
     {
         if pen.endCapStyle == .None or penSize < 3
-            return Vector2.Zero
+            return Math.Vector2.Zero
 
         var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
         var v2 = path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
@@ -619,7 +619,7 @@ impl Painter
         beginLine   = true
         firstLine   = true
 
-        var offset0, offsetn: Vector2
+        var offset0, offsetn: Math.Vector2
 
         // Line caps. Draw them before the line, so that the line will overwrite them a
         // little if necessary

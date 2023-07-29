@@ -1,5 +1,5 @@
 #global public
-using Core, Core.Math
+using Core
 
 enum StringHorzAlignment
 {
@@ -193,15 +193,15 @@ impl Painter
                 let x2 = x1 + refr.width
                 let y2 = y1 + refr.height
 
-                let p1 = Vector2{x1, y1}
-                let p2 = Vector2{x2, y1}
-                let p3 = Vector2{x1, y2}
-                let p4 = Vector2{x2, y2}
+                let p1 = Math.Vector2{x1, y1}
+                let p2 = Math.Vector2{x2, y1}
+                let p3 = Math.Vector2{x1, y2}
+                let p4 = Math.Vector2{x2, y2}
 
-                let uv1 = Vector2{refr.uv.x, refr.uv.y}
-                let uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
-                let uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
-                let uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+                let uv1 = Math.Vector2{refr.uv.x, refr.uv.y}
+                let uv2 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                let uv3 = Math.Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                let uv4 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
@@ -220,15 +220,15 @@ impl Painter
                 let x2 = Math.round(x + (refr.shiftX*zoom) + (refr.width*zoom))
                 let y2 = Math.round(y - (refr.shiftY*zoom) + (refr.height*zoom))
 
-                let p1 = Vector2{x1, y1}
-                let p2 = Vector2{x2, y1}
-                let p3 = Vector2{x1, y2}
-                let p4 = Vector2{x2, y2}
+                let p1 = Math.Vector2{x1, y1}
+                let p2 = Math.Vector2{x2, y1}
+                let p3 = Math.Vector2{x1, y2}
+                let p4 = Math.Vector2{x2, y2}
 
-                let uv1 = Vector2{refr.uv.x, refr.uv.y}
-                let uv2 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
-                let uv3 = Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
-                let uv4 = Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
+                let uv1 = Math.Vector2{refr.uv.x, refr.uv.y}
+                let uv2 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y}
+                let uv3 = Math.Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
+                let uv4 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
@@ -426,7 +426,7 @@ impl Painter
     // Draw a rich string.
     // A rich string can be multiline, and accepts
     // The layout will be computed at the first call, and each time 'pos' has changed
-    mtd drawRichString(pos: Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
+    mtd drawRichString(pos: Math.Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
     {
         text.compute()
         if text.chunks.count == 0

@@ -1,10 +1,10 @@
 #global public
-using Core, Core.Math
+using Core
 
 impl Painter
 {
     // Draw a line
-    func drawLine(using self, start, end: Vector2, pen: Pen)
+    func drawLine(using self, start, end: Math.Vector2, pen: Pen)
     {
         drawLine(start.x, start.y, end.x, end.y, pen)
     }

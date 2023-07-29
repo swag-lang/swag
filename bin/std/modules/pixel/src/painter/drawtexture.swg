@@ -1,5 +1,5 @@
 #global public
-using Core, Core.Math
+using Core
 
 impl Painter
 {
@@ -32,7 +32,7 @@ impl Painter
     }
 
     // Draw a portion of an image
-    func drawTexture(using self, x, y, width, height: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+    func drawTexture(using self, x, y, width, height: f32, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
         if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0
             return
@@ -44,12 +44,12 @@ impl Painter
         fillRect(x, y, width, height, sharedSolidBrush)
     }
 
-    func drawTexture(using self, dstRect, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+    func drawTexture(using self, dstRect, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
         drawTexture(dstRect.x, dstRect.y, dstRect.width, dstRect.height, srcRect, texture, color)
     }
 
-    func drawTexture(using self, x, y: f32, srcRect: Rectangle, texture: Texture, color: Color = Argb.White)
+    func drawTexture(using self, x, y: f32, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
         if srcRect.isEmpty() or color.a == 0
             return
