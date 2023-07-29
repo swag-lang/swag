@@ -66,6 +66,10 @@ TODO
 ****************************************
 
 -------------------------------------
+rationnaliser public/private/#scopefile/#global export (private ?)
+-------------------------------------
+on peut pas faire un alias de fonction sur une fonction avec des overloads
+-------------------------------------
 @compilererror/warning with an optional hint for the error
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
