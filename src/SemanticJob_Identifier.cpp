@@ -4170,11 +4170,11 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             continue;
 
         // A variable inside a scopefile has priority
-        if (p.asFlags & ALTSCOPE_SCOPEFILE)
+        if (p.asFlags & ALTSCOPE_FILE_PRIV)
         {
             for (auto& p1 : dependentSymbols)
             {
-                if (!(p1.asFlags & ALTSCOPE_SCOPEFILE))
+                if (!(p1.asFlags & ALTSCOPE_FILE_PRIV))
                     p1.remove = true;
             }
         }
@@ -4319,6 +4319,7 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
     return true;
 }
 
+#pragma optimize("", off)
 bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
 {
     auto  job                = context->job;
@@ -4380,7 +4381,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         {
             SWAG_CHECK(findIdentifierInScopes(context, identifierRef, identifier));
             if (context->result != ContextResult::Done)
+            {
+                dependentSymbols.clear();
                 return true;
+            }
         }
 
         // Because of #self
@@ -4428,7 +4432,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
                         notes.push_back(note);
                     }
 
-                    return context->report(diag, notes);
+                    context->report(diag, notes);
+                    return false;
                 }
             }
         }
@@ -4787,9 +4792,14 @@ bool SemanticJob::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Sc
 
 void SemanticJob::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
 {
+    if (!scope)
+        return;
+
     AlternativeScope as;
     as.scope = scope;
     as.flags = flags;
+    if (scope->flags & SCOPE_FILE_PRIV)
+        as.flags |= ALTSCOPE_FILE_PRIV;
     scopes.push_back(as);
 }
 
@@ -4811,7 +4821,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
             if (!hasAlternativeScope(scopes, as.scope))
             {
                 addAlternativeScope(scopes, as.scope, as.flags);
-                addAlternativeScopeOnce(toProcess, as.scope);
+                addAlternativeScopeOnce(toProcess, as.scope, as.flags);
             }
         }
 

@@ -34,6 +34,7 @@ const uint8_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 const uint8_t SCOPE_FILE             = 0x00000002;
 const uint8_t SCOPE_AUTO_GENERATED   = 0x00000004;
 const uint8_t SCOPE_IMPORTED         = 0x00000008;
+const uint8_t SCOPE_FILE_PRIV        = 0x00000010;
 
 struct ScopePublicSet
 {

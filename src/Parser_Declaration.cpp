@@ -225,9 +225,11 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             auto       symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
             if (!symbol)
             {
-                auto typeInfo           = makeType<TypeInfoNamespace>();
-                typeInfo->name          = namespaceNode->token.text;
-                newScope                = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
+                auto typeInfo  = makeType<TypeInfoNamespace>();
+                typeInfo->name = namespaceNode->token.text;
+                newScope       = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
+                if (scopeFilePriv)
+                    newScope->flags |= SCOPE_FILE_PRIV;
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
                 AddSymbolTypeInfo toAdd;
@@ -259,7 +261,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 while (parent->kind != AstNodeKind::File)
                     parent = parent->parent;
                 parent->allocateExtension(ExtensionKind::Misc);
-                parent->addAlternativeScope(newScope, scopeFilePriv ? ALTSCOPE_SCOPEFILE : true);
+                parent->addAlternativeScope(newScope);
             }
 
             break;
