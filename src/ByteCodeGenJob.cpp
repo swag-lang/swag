@@ -450,8 +450,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
             }
 
             ScopedLock lk(node->mutex);
-            node->semFlags |= SEMFLAG_BYTECODE_GENERATED;
-            node->semFlags |= SEMFLAG_BYTECODE_RESOLVED;
+            node->semFlags |= SEMFLAG_BYTECODE_GENERATED | SEMFLAG_BYTECODE_RESOLVED;
             return;
         }
     }
@@ -525,10 +524,8 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
                 job->jobsToAdd.push_back(node->extByteCode()->byteCodeJob);
             else
                 g_ThreadMgr.addJob(node->extByteCode()->byteCodeJob);
-            return;
         }
-
-        if (flags & ASKBC_WAIT_DONE)
+        else if (flags & ASKBC_WAIT_DONE)
         {
             ScopedLock lk1(extension->byteCodeJob->mutexDependent);
             extension->byteCodeJob->dependentJobs.add(job);
@@ -542,9 +539,12 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
         SWAG_ASSERT(job);
         if (!(node->semFlags & SEMFLAG_BYTECODE_RESOLVED))
         {
-            SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->byteCodeJob);
-            node->extByteCode()->byteCodeJob->dependentJobs.add(job);
+            auto extension = node->extByteCode();
+            SWAG_ASSERT(extension && extension->byteCodeJob);
+
+            ScopedLock lk1(extension->byteCodeJob->mutexDependent);
             job->setPending(JobWaitKind::AskBcWaitResolve, nullptr, node, nullptr);
+            extension->byteCodeJob->dependentJobs.add(job);
             return;
         }
     }
@@ -903,38 +903,34 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
                 for (auto const& fmn : node->extByteCode()->bc->hasForeignFunctionCallsModules)
                     context.bc->hasForeignFunctionCallsModules.insert(fmn);
             }
-
-            // Deal with registered dependent nodes, by adding them to the list
-            if (node == originalNode)
-                continue;
         }
 
-        save = dependentNodesTmp;
-        dependentNodesTmp.clear();
-
+        save = std::move(dependentNodesTmp);
         while (save.size())
         {
             auto node = save.get_pop_back();
             if (node == originalNode)
                 continue;
 
-            // If my dependent node has already been computed, then just get the result
+            // If my dependent node has already been computed, then just get the result, everything has already
+            // been flatten
             {
                 SharedLock lk(node->mutex);
                 if (node->semFlags & SEMFLAG_BYTECODE_RESOLVED)
                 {
                     SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
                     SWAG_ASSERT(originalNode->hasExtByteCode());
-                    originalNode->extByteCode()->dependentNodes.append(node->extByteCode()->dependentNodes);
-#ifdef SWAG_DEV_MODE
-                    for (auto n : node->extByteCode()->dependentNodes)
-                        SWAG_ASSERT(n->semFlags & SEMFLAG_BYTECODE_GENERATED);
-#endif
-                    break;
+                    for (auto dep : node->extByteCode()->dependentNodes)
+                    {
+                        SWAG_ASSERT(dep->semFlags & SEMFLAG_BYTECODE_GENERATED);
+                        originalNode->extByteCode()->dependentNodes.push_back_once(dep);
+                    }
+
+                    continue;
                 }
             }
 
-            // Register the full dependency tree
+            // Register one level of dependency
             depNodes.clear();
             getDependantCalls(node, depNodes);
             for (auto dep : depNodes)
