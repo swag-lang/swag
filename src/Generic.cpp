@@ -58,6 +58,10 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
 
         SWAG_ASSERT(param->typeInfo);
 
+        // :GenericConcreteAlias
+        // In case of an alias, instantiate with the concrete type
+        param->typeInfo = TypeManager::concreteType(param->typeInfo, CONCRETE_ALIAS);
+
         // Value
         auto it1 = match.genericReplaceValues.find(param->name);
         if (it1 != match.genericReplaceValues.end())
@@ -454,6 +458,13 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Add the struct type replacement now, in case the struct has a field to replace
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
+    // :GenericConcreteAlias
+    // Make all types concrete in case of simple aliases
+    for (auto& p : cloneContext.replaceTypes)
+    {
+        p.second = TypeManager::concreteType(p.second, CONCRETE_ALIAS);
+    }
+
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_NO_SEMANTIC;
@@ -624,12 +635,22 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     if (noReplaceTypes)
     {
         for (auto p : typeFunc->genericParameters)
+        {
             cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
+        }
+
         for (auto p : typeFunc->parameters)
         {
             if (p->typeInfo->isGeneric())
                 cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
         }
+    }
+
+    // :GenericConcreteAlias
+    // Make all types concrete in case of simple aliases
+    for (auto& p : cloneContext.replaceTypes)
+    {
+        p.second = TypeManager::concreteType(p.second, CONCRETE_ALIAS);
     }
 
     // Clone original node
