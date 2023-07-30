@@ -104,8 +104,9 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
     SWAG_ASSERT(newScope);
     Scoped scoped(this, newScope);
-    auto   attrUse          = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-    *result                 = attrUse;
+    auto   attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    *result        = attrUse;
+    attrUse->flags |= AST_GENERATED;
     attrUse->attributeFlags = attr;
 
     AstNode* topStmt = nullptr;
@@ -162,10 +163,21 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
     auto privName = token;
+
+    auto attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    *result      = attrUse;
+    attrUse->flags |= AST_GENERATED;
+    attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
+
     SWAG_CHECK(eatToken());
     privName.id   = TokenId::Identifier;
     privName.text = Fmt("__privns_%d", g_UniqueID.fetch_add(1));
-    SWAG_CHECK(doNamespaceOnName(parent, result, false, true, &privName));
+    AstNode* namespc;
+    SWAG_CHECK(doNamespaceOnName(attrUse, &namespc, false, true, &privName));
+
+    attrUse->content = namespc;
+    attrUse->content->setOwnerAttrUse(attrUse);
+
     return true;
 }
 

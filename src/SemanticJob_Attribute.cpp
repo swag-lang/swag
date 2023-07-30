@@ -223,8 +223,9 @@ void SemanticJob::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags,
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
+
     if (!(child->flags & AST_INTERNAL))
-        INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL);
+        INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL | ATTRIBUTE_PRIVATE);
 }
 
 void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
@@ -273,7 +274,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         auto safetyOff      = curAttr->safetyOff;
 
         // Inherit all simple flags
-        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_OVERFLOW_MASK | ATTRIBUTE_EXPOSE_MASK);
+        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_OVERFLOW_MASK | ATTRIBUTE_ACCESS_MASK);
 
         // Inherit some attributes and safety
         inheritAttributesFrom(forNode, attributeFlags, safetyOn, safetyOff);
