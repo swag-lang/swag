@@ -38,7 +38,7 @@ struct Monitor
     work:   Math.Rectangle
 }
 
-private var g_CmdLineArgs: const [..] string
+internal var g_CmdLineArgs: const [..] string
 
 #init
 {

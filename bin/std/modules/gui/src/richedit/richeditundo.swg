@@ -27,7 +27,7 @@ struct RichEditUndo
     endSelectionAfter:  RichEditCursor
 }
 
-private impl RichEditCtrl
+internal impl RichEditCtrl
 {
     mtd getLastModificationUndo()->u64
     {

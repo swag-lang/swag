@@ -1,13 +1,13 @@
 using Core, Memory
 
-private func dataPath()->String
+internal func dataPath()->String
 {
     var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "datas")
 }
 
-private func filePath(name: string)->String
+internal func filePath(name: string)->String
 {
     return Path.combine(dataPath(), name)
 }

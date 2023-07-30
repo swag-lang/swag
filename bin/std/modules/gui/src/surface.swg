@@ -65,7 +65,7 @@ impl Surface
         applySurfaceFlags()
     }
 
-    private mtd applySurfaceFlags()
+    internal mtd applySurfaceFlags()
     {
         if flags.has(.BigCaption)
             wnd.padding.y = app.theme.metrics.wnd_BigCaptionCY
@@ -196,7 +196,7 @@ impl Surface
         }
     }
 
-    private mtd createRT()
+    internal mtd createRT()
     {
         if !rt.colorBuffer.valid or rt.colorBuffer.width < rc.width or rt.colorBuffer.height < rc.height
         {
@@ -276,7 +276,7 @@ impl Surface
         cxt.renderer.end()
     }
 
-    private mtd sendResizeEvent(width, height: f32)
+    internal mtd sendResizeEvent(width, height: f32)
     {
         rc.width = cast(s32) width
         rc.height = cast(s32) height
@@ -295,7 +295,7 @@ impl Surface
         wnd.sendResizeEvent()
     }
 
-    private mtd serializeState(ser: *Serializer) throw
+    internal mtd serializeState(ser: *Serializer) throw
     {
         // Save position and surface state
         if wnd.view != null and wnd.view.id != null

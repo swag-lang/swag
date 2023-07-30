@@ -5,7 +5,7 @@ using Core, Win32, Pixel
 
 alias Format = u64
 
-private var g_PngFormat: UINT
+internal var g_PngFormat: UINT
 
 // Register a new format
 func registerFormat(name: string)->Format throw

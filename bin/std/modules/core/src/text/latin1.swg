@@ -22,7 +22,7 @@ using Swag
 }
 
 #[Inline, ConstExpr]
-private func isLowerUtf8(c: u8)->bool
+internal func isLowerUtf8(c: u8)->bool
 {
     if isAscii(c) and isLower(c)
         return true
@@ -30,7 +30,7 @@ private func isLowerUtf8(c: u8)->bool
 }
 
 #[Inline, ConstExpr]
-private func isUpperUtf8(c: u8)->bool
+internal func isUpperUtf8(c: u8)->bool
 {
     if isAscii(c) and isUpper(c)
         return true

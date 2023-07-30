@@ -40,7 +40,7 @@ public impl MessageDlg
         return doModal()
     }
 
-    private mtd adaptSizeToMessage()
+    internal mtd adaptSizeToMessage()
     {
         let metrics = getThemeMetrics()
 

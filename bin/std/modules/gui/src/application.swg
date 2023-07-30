@@ -47,7 +47,7 @@ struct Application
     hotKeys:            Array'KeyShortcut
 }
 
-private impl Application
+internal impl Application
 {
     // Send and process an event
     mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
@@ -588,7 +588,7 @@ impl Application
         appIcon = img
     }
 
-    private mtd serializeState(ser: *Serializer) throw
+    internal mtd serializeState(ser: *Serializer) throw
     {
         ser.beginSection(.Unordered)
         visit s: surfaces
@@ -775,7 +775,7 @@ impl Application
         cursorStack.removeBack()
     }
 
-    private mtd changeCursor(wnd: *Wnd)
+    internal mtd changeCursor(wnd: *Wnd)
     {
         if cursorStack.count
             Cursor.apply(cursorStack.back())

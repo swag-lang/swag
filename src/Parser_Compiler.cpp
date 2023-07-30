@@ -420,9 +420,9 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.id == TokenId::KwdPublic || token.id == TokenId::KwdPrivate)
+    else if (token.id == TokenId::KwdPublic || token.id == TokenId::KwdInternal)
     {
-        SWAG_CHECK(doGlobalAttributeExpose(parent, result, true));
+        SWAG_CHECK(doPublicInternal(parent, result, true));
     }
 
     /////////////////////////////////

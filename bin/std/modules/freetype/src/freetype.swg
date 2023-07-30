@@ -123,7 +123,7 @@ struct FT_FaceRec
     sizes_list:             FT_ListRec
     autohint:               FT_Generic
     extensions:             ^void
-    internal:               FT_Face_Internal
+    finternal:              FT_Face_Internal
 }
 
 struct FT_BBox
@@ -196,7 +196,7 @@ struct FT_GlyphSlotRec
     lsb_delta:          FT_Pos
     rsb_delta:          FT_Pos
     other:              *void
-    internal:           FT_Slot_Internal
+    finternal:          FT_Slot_Internal
 }
 
 #[ConstExpr]
@@ -258,7 +258,7 @@ struct FT_SizeRec
     face:       FT_Face
     generic:    FT_Generic
     metrics:    FT_Size_Metrics
-    internal:   FT_Size_Internal
+    sinternal:  FT_Size_Internal
 }
 
 struct FT_Size_Metrics

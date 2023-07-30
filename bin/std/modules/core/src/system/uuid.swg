@@ -2,8 +2,8 @@
 
 #[Swag.Tls]
 {
-    private var g_Rng:      Random.Mt64
-    private var g_RngInit:  bool
+    internal var g_Rng:      Random.Mt64
+    internal var g_RngInit:  bool
 }
 
 struct UUID
@@ -16,7 +16,7 @@ struct UUID
 }
 
 #[Swag.Inline]
-private func initRng()
+internal func initRng()
 {
     if !g_RngInit
     {

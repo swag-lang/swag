@@ -180,7 +180,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global)\\s+(using|export|generated|if|namespace|public|private|skip|testpass|testerror|testerrors|testwarning|testwarnings)\\b",
+          "match": "(#)(global)\\s+(using|export|generated|if|namespace|public|internal|private|skip|testpass|testerror|testerrors|testwarning|testwarnings)\\b",
           "captures": {
             "3": {
               "name": "constant.character.escape"
@@ -193,7 +193,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global|load|assert|error|warning|print|import|include|mixin|macro|placeholder|foreignlib|if|else|elif|validif|validifx|scope|scopefile)\\b"
+          "match": "(#)(global|load|assert|error|warning|print|import|include|mixin|macro|placeholder|foreignlib|if|else|elif|validif|validifx|scope)\\b"
         }
       ]
     },
@@ -233,7 +233,7 @@
       "patterns": [
         {
           "name": "storage.modifier",
-          "match": "\\b(public|private|protected)\\b"
+          "match": "\\b(public|internal|private)\\b"
         }
       ]
     },

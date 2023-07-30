@@ -2,7 +2,7 @@ using Core, Math
 
 public impl Painter
 {
-    private mtd fillPath(t: *Poly2Tri.Tesselate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
+    internal mtd fillPath(t: *Poly2Tri.Tesselate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
         resetTextureFont()

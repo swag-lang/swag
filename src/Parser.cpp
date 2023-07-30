@@ -406,7 +406,7 @@ bool Parser::generateAst()
     sourceFile->scopeFile->parentScope = parentScope;
     sourceFile->scopeFile->flags |= SCOPE_FILE;
 
-    // By default, everything is private if it comes from the test folder, or from the configuration file
+    // By default, everything is internal if it comes from the test folder, or from the configuration file
     if (sourceFile->fromTests || sourceFile->isCfgFile)
         currentScope = sourceFile->scopeFile;
     else

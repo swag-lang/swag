@@ -152,7 +152,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     }
 
     auto structNode = Ast::newStructDecl(sourceFile, fromNode, nullptr);
-    structNode->flags |= AST_PRIVATE | AST_GENERATED;
+    structNode->flags |= AST_INTERNAL | AST_GENERATED;
     structNode->semFlags |= SEMFLAG_FILE_JOB_PASS;
     Ast::removeFromParent(structNode);
     Ast::addChildBack(newParent, structNode);

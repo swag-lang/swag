@@ -1,34 +1,34 @@
 #global public
 using Core, Pixel
 
-private const DefaultImageName          = "theme/widgets.png"
+internal const DefaultImageName          = "theme/widgets.png"
 
-private const DefaultFontRegularName    = "theme/segoeui.ttf"
-private const DefaultFontBoldName       = "theme/segoeuib.ttf"
-private const DefaultFontBoldItalicName = "theme/segoeuiz.ttf"
-private const DefaultFontItalicName     = "theme/segoeuii.ttf"
+internal const DefaultFontRegularName    = "theme/segoeui.ttf"
+internal const DefaultFontBoldName       = "theme/segoeuib.ttf"
+internal const DefaultFontBoldItalicName = "theme/segoeuiz.ttf"
+internal const DefaultFontItalicName     = "theme/segoeuii.ttf"
 
-private const DefaultFontFsRegularName    = "theme/consola.ttf"
-private const DefaultFontFsBoldName       = "theme/consolab.ttf"
-private const DefaultFontFsBoldItalicName = "theme/consolaz.ttf"
-private const DefaultFontFsItalicName     = "theme/consolai.ttf"
+internal const DefaultFontFsRegularName    = "theme/consola.ttf"
+internal const DefaultFontFsBoldName       = "theme/consolab.ttf"
+internal const DefaultFontFsBoldItalicName = "theme/consolaz.ttf"
+internal const DefaultFontFsItalicName     = "theme/consolai.ttf"
 
-private const DefaultIcons24Name        = "theme/icons24.png"
-private const DefaultIcons64Name        = "theme/icons64.png"
-private const DefaultSpinName           = "theme/spin.png"
+internal const DefaultIcons24Name        = "theme/icons24.png"
+internal const DefaultIcons64Name        = "theme/icons64.png"
+internal const DefaultSpinName           = "theme/spin.png"
 
-private const DefaultImage              = #include(DefaultImageName)
-private const DefaultFontRegular        = #include(DefaultFontRegularName)
-private const DefaultFontBold           = #include(DefaultFontBoldName)
-private const DefaultFontBoldItalic     = #include(DefaultFontBoldItalicName)
-private const DefaultFontItalic         = #include(DefaultFontItalicName)
-private const DefaultFontFsRegular      = #include(DefaultFontFsRegularName)
-private const DefaultFontFsBold         = #include(DefaultFontFsBoldName)
-private const DefaultFontFsBoldItalic   = #include(DefaultFontFsBoldItalicName)
-private const DefaultFontFsItalic       = #include(DefaultFontFsItalicName)
-private const DefaultIcons24            = #include(DefaultIcons24Name)
-private const DefaultIcons64            = #include(DefaultIcons64Name)
-private const DefaultSpin               = #include(DefaultSpinName)
+internal const DefaultImage              = #include(DefaultImageName)
+internal const DefaultFontRegular        = #include(DefaultFontRegularName)
+internal const DefaultFontBold           = #include(DefaultFontBoldName)
+internal const DefaultFontBoldItalic     = #include(DefaultFontBoldItalicName)
+internal const DefaultFontItalic         = #include(DefaultFontItalicName)
+internal const DefaultFontFsRegular      = #include(DefaultFontFsRegularName)
+internal const DefaultFontFsBold         = #include(DefaultFontFsBoldName)
+internal const DefaultFontFsBoldItalic   = #include(DefaultFontFsBoldItalicName)
+internal const DefaultFontFsItalic       = #include(DefaultFontFsItalicName)
+internal const DefaultIcons24            = #include(DefaultIcons24Name)
+internal const DefaultIcons64            = #include(DefaultIcons64Name)
+internal const DefaultSpin               = #include(DefaultSpinName)
 
 
 struct ThemeResources
@@ -60,14 +60,14 @@ struct Theme
 
 impl Theme
 {
-    private mtd freeDefault()
+    internal mtd freeDefault()
     {
         Memory.delete(res.icons24)
         Memory.delete(res.icons64)
         Memory.delete(res.spin)
     }
 
-    private mtd setupDefault(renderer: *RenderOgl)
+    internal mtd setupDefault(renderer: *RenderOgl)
     {
         intialized = true
 

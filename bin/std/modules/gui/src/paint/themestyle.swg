@@ -23,7 +23,7 @@ impl ThemeStyle
         free()
     }
 
-    private mtd free()
+    internal mtd free()
     {
         if !refr
             return
@@ -36,7 +36,7 @@ impl ThemeStyle
         }
     }
 
-    private mtd set(theme: *Theme)
+    internal mtd set(theme: *Theme)
     {
         refr = Memory.new'ThemeStyleRef()
         refr.theme = theme
@@ -53,7 +53,7 @@ impl ThemeStyle
         set(theme)
     }
 
-    private mtd compute(owner: *Wnd, parent: *ThemeStyle)
+    internal mtd compute(owner: *Wnd, parent: *ThemeStyle)
     {
         // First time, initialize to parent
         if !refr

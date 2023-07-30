@@ -730,8 +730,8 @@ void initErrors()
     SWAG_ERROR(Err0127, "the identifier '%s' has call parameters, but is %s and not a function");
     SWAG_ERROR(Err0125, "the identifier '%s' has call parameters, but is a variable of type '%s' and not a function");
     SWAG_ERROR(Err0881, "the identifier '%s' is preceeded with '.' but no corresponding 'enum' or 'with' can be deduced");
-    SWAG_ERROR(Err0660, "the implementation block for '%s' is not private but the corresponding identifier is");
-    SWAG_ERROR(Err0659, "the implementation block for '%s' is private but the corresponding identifier is not");
+    SWAG_ERROR(Err0660, "the implementation block for '%s' is not internal but the corresponding identifier is");
+    SWAG_ERROR(Err0659, "the implementation block for '%s' is internal but the corresponding identifier is not");
     SWAG_ERROR(Err0661, "the implementation block is not defined in the same scope as '%s')");
     SWAG_ERROR(Err0468, "the index is out of range (index is '%I64u' but the maximum value is '%I64u')");
     SWAG_ERROR(Err0670, "the initialization expression cannot be evaluated at compile time");
@@ -770,8 +770,8 @@ void initErrors()
     SWAG_ERROR(Err0474, "the slicing operator cannot be applied on an array with multiple dimensions");
     SWAG_ERROR(Err0475, "the slicing operator cannot be applied on type '%s'");
     SWAG_ERROR(Err0478, "the special function '%s' cannot have generic parameters");
-    SWAG_ERROR(Err0503, "the special function '%s' is private but the corresponding struct is public");
-    SWAG_ERROR(Err0506, "the special function '%s' is public but the corresponding struct is private");
+    SWAG_ERROR(Err0503, "the special function '%s' is internal but the corresponding struct is public");
+    SWAG_ERROR(Err0506, "the special function '%s' is public but the corresponding struct is internal");
     SWAG_ERROR(Err0765, "the struct '%s' has the 'Swag.NoCopy' attribute, so 'opPostCopy' is irrelevant");
     SWAG_ERROR(Err0666, "the struct cannot be marked with 'Swag.Opaque' because it is not public");
     SWAG_ERROR(Err0667, "the struct cannot be marked with 'Swag.Opaque' because the whole file is exported ('#global export')");
@@ -977,7 +977,7 @@ void initErrors()
     SWAG_ERROR(Hlp0008, "a function name starting with '@' is reserved for intrinsics");
     SWAG_ERROR(Hlp0014, "a function name starting with 'op' and followed by a letter in upper case is reserved for struct special functions");
     SWAG_ERROR(Hlp0021, "a generic argument must be either a literal or a type");
-    SWAG_ERROR(Hlp0027, "a private struct should not export its special functions");
+    SWAG_ERROR(Hlp0027, "an internal struct should not export its special functions");
     SWAG_ERROR(Hlp0026, "a public struct should export all its special functions");
     SWAG_ERROR(Hlp0009, "a struct member name starting with 'item' is reserved by the language");
     SWAG_ERROR(Hlp0015, "a struct special function should be defined in a corresponding 'impl' scope");

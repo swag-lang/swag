@@ -562,7 +562,7 @@ impl IWnd for ListView
     }
 }
 
-private impl ListView
+internal impl ListView
 {
     mtd getXPos(column: u32)->f32
     {
@@ -1115,14 +1115,14 @@ impl ListCtrl
         return lines[idx]
     }
 
-    private mtd mapIndexes()
+    internal mtd mapIndexes()
     {
         idxLineToIdxList.clear()
         visit l, idx: lines
             idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
-    private mtd sort(column: u32, descentOrder: bool, toSort: *Array'*ListLine)
+    internal mtd sort(column: u32, descentOrder: bool, toSort: *Array'*ListLine)
     {
         func sortFunc(column: u32, descentOrder: bool, a, b: *ListLine)->s32
         {

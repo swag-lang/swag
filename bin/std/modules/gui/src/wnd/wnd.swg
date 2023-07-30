@@ -282,7 +282,7 @@ impl Wnd
             parent.applyLayout()
     }
 
-    private mtd firstTopMostIndex()->u64
+    internal mtd firstTopMostIndex()->u64
     {
         visit c, i: childs
         {
@@ -750,7 +750,7 @@ impl Wnd
         sendEvent(&evt)
     }
 
-    private mtd clampSize(pos: *Math.Rectangle)
+    internal mtd clampSize(pos: *Math.Rectangle)
     {
         if minSize.x > 0
             pos.width = Math.max(pos.width, minSize.x)
@@ -1256,7 +1256,7 @@ impl Wnd
         actions.add(itfAct)
     }
 
-    private mtd updateAction(evt: *CommandStateEvent)->bool
+    internal mtd updateAction(evt: *CommandStateEvent)->bool
     {
         var cxt: ActionContext
         cxt.wnd = self
@@ -1275,7 +1275,7 @@ impl Wnd
         return false
     }
 
-    private mtd executeAction(evt: *CommandEvent)->bool
+    internal mtd executeAction(evt: *CommandEvent)->bool
     {
         var cxt: ActionContext
         cxt.wnd = self

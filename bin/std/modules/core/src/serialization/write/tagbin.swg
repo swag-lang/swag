@@ -24,7 +24,7 @@ struct TagBin
     sections:       ArrayPtr'TagBinSection
 }
 
-private impl TagBin
+internal impl TagBin
 {
     mtd newSection()->*TagBinSection
     {

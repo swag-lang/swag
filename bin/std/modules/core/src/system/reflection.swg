@@ -513,9 +513,9 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
     return result
 }
 
-private var g_HashCrcToType: HashTable'(u32, typeinfo)
-private var g_HashNameToType: HashTable'(string, typeinfo)
-private var g_HashLock: Sync.RWLock
+internal var g_HashCrcToType: HashTable'(u32, typeinfo)
+internal var g_HashNameToType: HashTable'(string, typeinfo)
+internal var g_HashLock: Sync.RWLock
 
 // #premain can be called more than once if we compile/run more than one
 // module using Core at the same time. So lock !

@@ -66,7 +66,7 @@ struct PropertyListItem
     extendFocus:    f32 = 10
 }
 
-private impl PropertyList
+internal impl PropertyList
 {
     func onEvent(item: *PropertyListItem, wnd: *Wnd, evt: *Event)->bool
     {

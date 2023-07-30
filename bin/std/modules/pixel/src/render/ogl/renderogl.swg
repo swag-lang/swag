@@ -1,7 +1,7 @@
 #global public
 using Swag, Core, Ogl, Math
 
-private
+internal
 {
     const BaseVertexShader   = #include("shaders/base.vert")
     const BasePixelShader    = #include("shaders/base.frag")
@@ -48,7 +48,7 @@ struct RenderOgl
     overlapMode         = false
 }
 
-private impl RenderOgl
+internal impl RenderOgl
 {
     func setShaderCompileError(shaderID: GLuint) throw
     {
@@ -460,22 +460,22 @@ impl RenderOgl
     {
         if !image.isValid() return {}
         var fmt: GLenum = 0
-        var internal = GL_RGB
+        var tinternal = GL_RGB
 
         #[Swag.Complete]
         switch image.pf
         {
         case BGR8:  fmt = GL_BGR
-        case BGRA8: fmt = GL_BGRA; internal = GL_RGBA
+        case BGRA8: fmt = GL_BGRA; tinternal = GL_RGBA
         case RGB8:  fmt = GL_RGB
-        case RGBA8: fmt = GL_RGBA; internal = GL_RGBA
+        case RGBA8: fmt = GL_RGBA; tinternal = GL_RGBA
         }
 
         var textureID: GLuint
         glGenTextures(1, &textureID)
         glBindTexture(GL_TEXTURE_2D, textureID)
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) image.width, cast(s32) image.height, 0, fmt, GL_UNSIGNED_BYTE, image.pixels.buffer)
+        glTexImage2D(GL_TEXTURE_2D, 0, tinternal, cast(s32) image.width, cast(s32) image.height, 0, fmt, GL_UNSIGNED_BYTE, image.pixels.buffer)
 
         var result: retval
         result.handle = cast(TextureHandle) textureID
@@ -581,7 +581,7 @@ impl RenderOgl
         glUniformMatrix4fv(cast(GLint) mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
     }
 
-    private mtd executeCommand(dc: *Painter, cmd: Pixel.Command, cmdIdx: u64, width, height: s32)
+    internal mtd executeCommand(dc: *Painter, cmd: Pixel.Command, cmdIdx: u64, width, height: s32)
     {
         switch cmd.id
         {

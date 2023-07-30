@@ -175,21 +175,21 @@ func loadImg()
     //Console.printf("filter: % %ms\n", g_EffectIdx, te.elapsedMilliseconds())
 
     var fmt: GLenum = 0
-    var internal = GL_RGB
+    var finternal = GL_RGB
 
     #[Swag.Complete]
     switch g_MyImage.pf
     {
     case BGR8:  fmt = GL_BGR
-    case BGRA8: fmt = GL_BGRA; internal = GL_RGBA
+    case BGRA8: fmt = GL_BGRA; finternal = GL_RGBA
     case RGB8:  fmt = GL_RGB
-    case RGBA8: fmt = GL_RGBA; internal = GL_RGBA
+    case RGBA8: fmt = GL_RGBA; finternal = GL_RGBA
     }
 
     glGenTextures(1, &g_TextureID)
     glBindTexture(GL_TEXTURE_2D, g_TextureID)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-    glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) g_MyImage.width, cast(s32) g_MyImage.height, 0, fmt, GL_UNSIGNED_BYTE, g_MyImage.pixels.buffer)
+    glTexImage2D(GL_TEXTURE_2D, 0, finternal, cast(s32) g_MyImage.width, cast(s32) g_MyImage.height, 0, fmt, GL_UNSIGNED_BYTE, g_MyImage.pixels.buffer)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }

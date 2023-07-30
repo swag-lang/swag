@@ -54,7 +54,7 @@ public struct MenuCtrl
 
 public impl IWnd for MenuCtrl
 {
-    private mtd paintBar(painter: *Painter)
+    internal mtd paintBar(painter: *Painter)
     {
         let theme = getTheme()
         let colors = getThemeColors()
@@ -130,7 +130,7 @@ public impl IWnd for MenuCtrl
         }
     }
 
-    private mtd paintPopup(painter: *Painter)
+    internal mtd paintPopup(painter: *Painter)
     {
         let theme = getTheme()
         let colors = getThemeColors()

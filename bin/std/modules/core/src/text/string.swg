@@ -1,7 +1,7 @@
 #global public
 using Swag
 
-private const StringSmallSize = 16'u64
+internal const StringSmallSize = 16'u64
 #assert @sizeof(String) == 56
 
 enum CharacterSet

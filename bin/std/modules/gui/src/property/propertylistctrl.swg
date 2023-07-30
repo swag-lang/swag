@@ -55,7 +55,7 @@ impl PropertyListCtrl
         return ed
     }
 
-	private mtd fillList()
+	internal mtd fillList()
 	{
 		var parentLine: *ListLine
 		visit &it: prop.categs

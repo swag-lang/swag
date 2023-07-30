@@ -332,7 +332,7 @@ impl ConcatBuffer
     }
 
     #[Swag.Inline]
-    private mtd setIsAtEnd()
+    internal mtd setIsAtEnd()
     {
         isAtEnd = currentSP == lastBucket.datas + lastBucket.count
     }

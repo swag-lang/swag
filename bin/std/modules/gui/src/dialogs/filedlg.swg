@@ -60,7 +60,7 @@ impl IWnd for FileDlg
     }
 }
 
-private impl FileDlg
+internal impl FileDlg
 {
     mtd folderUp()
     {
@@ -513,7 +513,7 @@ impl FileDlg
         return result
     }
 
-    private mtd onNewFolder()
+    internal mtd onNewFolder()
     {
         var folderName: String = "New Folder"
 

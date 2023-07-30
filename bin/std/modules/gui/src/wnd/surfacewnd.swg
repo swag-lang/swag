@@ -295,7 +295,7 @@ impl SurfaceWnd
         btn.surface.wnd.view.postEvent(evt)
     }
 
-    private mtd applySurfaceFlags()
+    internal mtd applySurfaceFlags()
     {
         let theme = surface.app.theme
         if !theme.intialized

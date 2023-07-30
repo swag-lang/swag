@@ -323,7 +323,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("discard", TokenId::KwdDiscard);
 
     keywords.add("public", TokenId::KwdPublic);
-    keywords.add("private", TokenId::KwdPrivate);
+    keywords.add("internal", TokenId::KwdInternal);
 
     keywords.add("enum", TokenId::KwdEnum);
     keywords.add("struct", TokenId::KwdStruct);

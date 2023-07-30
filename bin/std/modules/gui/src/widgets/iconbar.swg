@@ -31,7 +31,7 @@ impl IWnd for IconBar
 
 impl IconBar
 {
-    private mtd computeLayout()
+    internal mtd computeLayout()
     {
         visit c: childs
         {

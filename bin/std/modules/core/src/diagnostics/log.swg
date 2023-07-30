@@ -33,7 +33,7 @@ struct Log
 
 impl Log
 {
-    private mtd buildHeader(loc: Swag.SourceCodeLocation)
+    internal mtd buildHeader(loc: Swag.SourceCodeLocation)
     {
         if flags & .Prefix and @countof(prefix)
         {

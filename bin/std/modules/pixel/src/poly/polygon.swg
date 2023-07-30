@@ -119,7 +119,7 @@ impl Polygon
         points =,move copy
     }
 
-    private mtd storeClipperResult(res: Clipper.ClipperPath)
+    internal mtd storeClipperResult(res: Clipper.ClipperPath)
     {
         clear()
         if !res.count
@@ -138,7 +138,7 @@ impl Polygon
         compute()
     }
 
-    private mtd offset(res: *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
+    internal mtd offset(res: *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
     {
         if Math.isZeroEpsilon(value)
             return
@@ -199,7 +199,7 @@ impl Polygon
         return result
     }
 
-    private mtd clean(res: *Clipper.ClipperPaths)
+    internal mtd clean(res: *Clipper.ClipperPaths)
     {
         if !points.count
             return

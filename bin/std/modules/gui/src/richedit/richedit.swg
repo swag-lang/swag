@@ -75,7 +75,7 @@ struct RichEditCtrl
     selBegUndo:             RichEditCursor
 }
 
-private impl RichEditCtrl
+internal impl RichEditCtrl
 {
     mtd getMarginLeft()->f32
     {

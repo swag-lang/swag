@@ -24,7 +24,7 @@ struct NativeSurface
     lastDeadChar:   WPARAM
 }
 
-private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
+internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE
@@ -144,7 +144,7 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     return DefWindowProcW(hWnd, msg, wParam, lParam)
 }
 
-private impl Surface
+internal impl Surface
 {
     mtd setFocus()
     {

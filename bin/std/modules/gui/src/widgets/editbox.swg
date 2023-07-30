@@ -306,7 +306,7 @@ impl IWnd for EditBox
     }
 }
 
-private impl EditBox
+internal impl EditBox
 {
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {

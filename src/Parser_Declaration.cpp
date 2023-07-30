@@ -79,6 +79,92 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
+{
+    uint32_t attr      = 0;
+    Scope*   newScope  = currentScope;
+    auto     tokenAttr = token;
+
+    switch (token.id)
+    {
+    case TokenId::KwdPublic:
+    case TokenId::KwdInternal:
+        if (token.id == TokenId::KwdPublic)
+            attr = ATTRIBUTE_PUBLIC;
+        else
+            attr = ATTRIBUTE_INTERNAL;
+
+        sourceFile->globalAttr |= attr;
+        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0032), token.ctext())));
+        SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Syn0018), token.ctext())));
+        if (newScope->flags & SCOPE_FILE)
+            newScope = newScope->parentScope;
+
+        tokenizer.propagateComment = true;
+        SWAG_CHECK(eatToken());
+        break;
+
+    default:
+        break;
+    }
+
+    SWAG_ASSERT(newScope);
+    Scoped scoped(this, newScope);
+    auto   attrUse          = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    *result                 = attrUse;
+    attrUse->attributeFlags = attr;
+
+    AstNode* topStmt = nullptr;
+
+    if (!forGlobal)
+    {
+        // Check following instruction
+        switch (token.id)
+        {
+        case TokenId::SymLeftCurly:
+        case TokenId::KwdFunc:
+        case TokenId::KwdMethod:
+        case TokenId::KwdAttr:
+        case TokenId::KwdVar:
+        case TokenId::KwdLet:
+        case TokenId::KwdConst:
+        case TokenId::KwdEnum:
+        case TokenId::KwdStruct:
+        case TokenId::KwdUnion:
+        case TokenId::KwdImpl:
+        case TokenId::KwdInterface:
+        case TokenId::KwdAlias:
+        case TokenId::KwdNamespace:
+            break;
+
+        case TokenId::SymAttrStart:
+            return error(token, Fmt(Err(Syn0150), token.ctext(), tokenAttr.ctext()), nullptr, Fmt(Hnt(Hnt0043), tokenAttr.ctext()));
+
+        default:
+            return error(token, Fmt(Err(Syn0174), token.ctext(), tokenAttr.ctext()));
+        }
+
+        SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
+    }
+    else
+    {
+        attrUse->flags |= AST_GLOBAL_NODE;
+        topStmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, attrUse);
+        topStmt->flags |= AST_GLOBAL_NODE;
+        while (token.id != TokenId::EndOfFile)
+            SWAG_CHECK(doTopLevelInstruction(topStmt, &dummyResult));
+    }
+
+    attrUse->content = topStmt;
+    attrUse->content->setOwnerAttrUse(attrUse);
+
+    // Add original scope
+    if (topStmt)
+        topStmt->addAlternativeScope(currentScope);
+
+    return true;
+}
+
 bool Parser::doCompilerScopeFile(AstNode* parent, AstNode** result)
 {
     auto privName = token;
@@ -436,7 +522,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 {
     SWAG_ASSERT(subDecl->ownerFct);
     subDecl->ownerFct->subDecls.push_back(subDecl);
-    subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL | AST_PRIVATE;
+    subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL;
 
     AstAttrUse* newAttrUse = nullptr;
 
@@ -789,7 +875,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::KwdPublic:
-    case TokenId::KwdPrivate:
+    case TokenId::KwdInternal:
         return error(token, Fmt(Err(Syn0121), token.ctext()));
 
     case TokenId::SymDot:
@@ -835,8 +921,8 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doAlias(parent, result));
         break;
     case TokenId::KwdPublic:
-    case TokenId::KwdPrivate:
-        SWAG_CHECK(doGlobalAttributeExpose(parent, result, false));
+    case TokenId::KwdInternal:
+        SWAG_CHECK(doPublicInternal(parent, result, false));
         break;
     case TokenId::KwdNamespace:
         SWAG_CHECK(doNamespace(parent, result));

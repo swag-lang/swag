@@ -5,9 +5,9 @@ A bunch of `#global` can start a source file.
 // Skip the content of the file, like this one (but must be a valid swag file)
 #global skip
 
-// All symbols in the file will be public/private
+// All symbols in the file will be public/internal
 #global public
-#global private
+#global internal
 
 // All symbols in the file will go in the namespace 'Toto'
 #global namespace Toto

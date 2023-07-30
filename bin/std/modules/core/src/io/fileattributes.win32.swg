@@ -5,7 +5,7 @@ using Win32
 
 impl enum FileAttributes
 {
-    private func fromDWORD(attributes: DWORD)->FileAttributes
+    internal func fromDWORD(attributes: DWORD)->FileAttributes
     {
         using FileAttributes
         if attributes == 0xFFFFFFFF

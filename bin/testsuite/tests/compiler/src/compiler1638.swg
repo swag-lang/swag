@@ -1,7 +1,7 @@
 
-#global testerror
+//#global testerror
 
-internal struct A
+struct A
 {
     x: u32
     y: u32

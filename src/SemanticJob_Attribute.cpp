@@ -223,8 +223,8 @@ void SemanticJob::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags,
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
-    if (!(child->flags & AST_PRIVATE))
-        INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_PRIVATE);
+    if (!(child->flags & AST_INTERNAL))
+        INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL);
 }
 
 void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)

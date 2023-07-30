@@ -69,7 +69,7 @@ struct
 union
 namespace
 impl
-private
+internal
 public
 interface
 using

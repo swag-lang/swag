@@ -143,7 +143,7 @@ struct Parser
     bool doDiscard(AstNode* parent, AstNode** result);
     bool doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDiscard = false);
     bool doThrow(AstNode* parent, AstNode** result);
-    bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
+    bool doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result);
     bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
     bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName = nullptr);

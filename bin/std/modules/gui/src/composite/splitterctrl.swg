@@ -184,7 +184,7 @@ impl IWnd for SplitterCtrl
     }
 }
 
-private impl SplitterCtrl
+internal impl SplitterCtrl
 {
     mtd computeLayout()
     {

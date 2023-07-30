@@ -232,13 +232,13 @@ impl IWnd for ColorPicker
         theme.drawSubRect(painter, clientRect, &rects.colorPicker_Border, colors.colorPicker_Border)
     }
 
-    private mtd computeRGB()
+    internal mtd computeRGB()
     {
         var c = Color.fromHsl(hue, sat, lum)
         (r, g, b) = c.toRgbf()
     }
 
-    private mtd computeHsl()
+    internal mtd computeHsl()
     {
         var c = Color.fromRgbf(r, g, b)
         (hue, sat, lum) = c.toHsl()

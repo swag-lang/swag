@@ -131,7 +131,7 @@ impl TimeSpan
     mtd totalSeconds()      => ticks * (1.0'f64 / TicksPerSecond)
     mtd totalMilliSeconds() => ticks * (1.0'f64 / TicksPerMilliSecond)
 
-    private mtd add(value: u32, scale: u64)
+    internal mtd add(value: u32, scale: u64)
     {
         var millis = value * scale
         Debug.assert(millis <= MaxMillis, "overflow")
@@ -140,7 +140,7 @@ impl TimeSpan
         ticks += millis
     }
 
-    private mtd remove(value: u32, scale: u64)
+    internal mtd remove(value: u32, scale: u64)
     {
         var millis = value * scale
         Debug.assert(millis <= MaxMillis, "overflow")

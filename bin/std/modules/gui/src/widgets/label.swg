@@ -80,7 +80,7 @@ impl IWnd for Label
 
 impl Label
 {
-    private mtd getStringFormat(isDisabled: bool)->RichStringFormat
+    internal mtd getStringFormat(isDisabled: bool)->RichStringFormat
     {
         let theme = getTheme()
 
@@ -124,7 +124,7 @@ impl Label
         return lbl
     }
 
-    private mtd autoHeight()
+    internal mtd autoHeight()
     {
         // Recompute height
         if labelFlags.has(.AutoHeight)

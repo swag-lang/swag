@@ -1,7 +1,7 @@
 #global public
 using Core
 
-private impl RichEditCtrl
+internal impl RichEditCtrl
 {
     mtd getSelectionRectRange(lineIndex: u64, rankBeg, rankEnd: *u64)->bool
     {
@@ -258,7 +258,7 @@ impl RichEditCtrl
         popUndo()
     }
 
-    private mtd registerClipboardFormat()
+    internal mtd registerClipboardFormat()
     {
         clipFormat = catch Clipboard.registerFormat("std.richedit.style")
     }

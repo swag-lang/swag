@@ -188,7 +188,7 @@ public impl LinePath
         isClosed = true
     }
 
-    private mtd setRectRaw(l, t, w, h: f32)
+    internal mtd setRectRaw(l, t, w, h: f32)
     {
         let r = l + w
         let b = t + h
@@ -239,7 +239,7 @@ public impl LinePath
         close()
     }
 
-    private mtd setEllipseRaw(cX, cY: f32, rX, rY: f32)
+    internal mtd setEllipseRaw(cX, cY: f32, rX, rY: f32)
     {
         start(cX, cY - rY)
         arcTo(cX, cY, rX, rY, 0'deg, 90'deg)

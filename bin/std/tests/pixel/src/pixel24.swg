@@ -1,26 +1,26 @@
 //#global skip
 using Core, Pixel
 
-/*private func dataPath()->String
+/*internal func dataPath()->String
 {
     var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "datas")
 }
 
-private func tmpPath()->String
+internal func tmpPath()->String
 {
     var dataPath = Path.getDirectoryName(#location.fileName)
     dataPath = Path.getDirectoryName(dataPath)
     return Path.combine(dataPath, "tmp")
 }
 
-private func imagePath(name: string)->String
+internal func imagePath(name: string)->String
 {
     return Path.combine(dataPath(), name)
 }
 
-private func tmpPath(name: string)->String
+internal func tmpPath(name: string)->String
 {
     return Path.combine(tmpPath(), name)
 }*/

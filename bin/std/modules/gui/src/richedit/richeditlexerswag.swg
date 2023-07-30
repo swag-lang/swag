@@ -115,7 +115,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("discard", State.Keyword)
 
         mapWords.add("public", State.StorageModifier)
-        mapWords.add("private", State.StorageModifier)
+        mapWords.add("internal", State.StorageModifier)
 
         mapWords.add("enum", State.Declaration)
         mapWords.add("struct", State.Declaration)

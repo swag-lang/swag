@@ -253,7 +253,7 @@ impl IWnd for Header
     }
 }
 
-private impl Header
+internal impl Header
 {
     mtd hitTest(surfacePos: Math.Point)->{idx: u32, sep: bool}
     {

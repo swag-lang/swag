@@ -136,7 +136,7 @@ public impl TypeFace
         return tf
     }
 
-    private mtd transform(size, embolden: u32 = 0, forceBold, forceItalic = false) throw
+    internal mtd transform(size, embolden: u32 = 0, forceBold, forceItalic = false) throw
     {
         var emb = self.forceBold or #self.forceBold ? Math.max(1, size / forceBoldDiv) : 0
         emb += embolden

@@ -227,7 +227,7 @@ impl Vector2
         return result
     }
 
-    private func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
+    internal func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
     {
         var result: retval
 

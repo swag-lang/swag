@@ -51,7 +51,7 @@ impl RichString
     }
 
     #[Swag.Mixin]
-    private func addChunk(idx: u64, space, eol: bool = false)
+    internal func addChunk(idx: u64, space, eol: bool = false)
     {
         if idx - startChunk == 0
             return

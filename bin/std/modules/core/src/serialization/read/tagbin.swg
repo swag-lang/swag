@@ -60,7 +60,7 @@ impl TagBin
     const ErrorBadType          = "bad field type"
 }
 
-private impl TagBin
+internal impl TagBin
 {
     mtd newSection()->*TagBinSection
     {
