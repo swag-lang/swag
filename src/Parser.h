@@ -95,6 +95,7 @@ struct Parser
     bool        testIsValidUserName(AstNode* node);
     bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
     bool        checkIsValidVarName(AstNode* node);
+    bool        doCheckPublicInternalPrivate(Token& tokenAttr);
     void        registerSubDecl(AstNode* subDecl);
     static void relaxIdentifier(TokenParse& token);
     static void forceTakeAddress(AstNode* node);

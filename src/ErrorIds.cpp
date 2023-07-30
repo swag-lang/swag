@@ -254,7 +254,7 @@ void initErrors()
     SWAG_ERROR(Syn0147, "unexpected 'try' inside '%s' expression");
     SWAG_ERROR(Syn0148, "unexpected affect expression in 'with'");
     SWAG_ERROR(Syn0149, "unexpected affect operator '==', do you mean '=' ?");
-    SWAG_ERROR(Syn0150, "unexpected attribute usage ('%s') after the '%s' expose attribute");
+    SWAG_ERROR(Syn0150, "unexpected attribute usage ('%s') after '%s'");
     SWAG_ERROR(Syn0153, "unexpected closure definition at global scope");
     SWAG_ERROR(Syn0157, "unexpected declaration of multiple variables in 'with'");
     SWAG_ERROR(Syn0158, "unexpected empty 'case' statement");
@@ -273,7 +273,7 @@ void initErrors()
     SWAG_ERROR(Syn0171, "unexpected symbol '%s' after the %s");
     SWAG_ERROR(Syn0172, "unexpected symbol '%s' in a type declaration");
     SWAG_ERROR(Syn0173, "unexpected token '%s' after 'discard'");
-    SWAG_ERROR(Syn0174, "unexpected token '%s' after the '%s' expose attribute");
+    SWAG_ERROR(Syn0174, "unexpected token '%s' after '%s'");
     SWAG_ERROR(Syn0175, "unexpected token '%s' in tuple type, ',' or '}' are expected here");
     SWAG_ERROR(Syn0176, "unexpected token, ',' expected");
     SWAG_ERROR(Syn0177, "unexpected tuple unpacking in %s");

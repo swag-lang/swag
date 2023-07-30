@@ -79,6 +79,34 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)
+{
+    // Check following instruction
+    switch (token.id)
+    {
+    case TokenId::SymLeftCurly:
+    case TokenId::KwdFunc:
+    case TokenId::KwdMethod:
+    case TokenId::KwdAttr:
+    case TokenId::KwdVar:
+    case TokenId::KwdLet:
+    case TokenId::KwdConst:
+    case TokenId::KwdEnum:
+    case TokenId::KwdStruct:
+    case TokenId::KwdUnion:
+    case TokenId::KwdImpl:
+    case TokenId::KwdInterface:
+    case TokenId::KwdAlias:
+    case TokenId::KwdNamespace:
+        break;
+    case TokenId::SymAttrStart:
+        return error(token, Fmt(Err(Syn0150), token.ctext(), tokenAttr.ctext()), nullptr, Fmt(Hnt(Hnt0043), tokenAttr.ctext()));
+    default:
+        return error(token, Fmt(Err(Syn0174), token.ctext(), tokenAttr.ctext()));
+    }
+    return true;
+}
+
 bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 {
     uint32_t attr      = 0;
@@ -113,32 +141,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
     if (!forGlobal)
     {
-        // Check following instruction
-        switch (token.id)
-        {
-        case TokenId::SymLeftCurly:
-        case TokenId::KwdFunc:
-        case TokenId::KwdMethod:
-        case TokenId::KwdAttr:
-        case TokenId::KwdVar:
-        case TokenId::KwdLet:
-        case TokenId::KwdConst:
-        case TokenId::KwdEnum:
-        case TokenId::KwdStruct:
-        case TokenId::KwdUnion:
-        case TokenId::KwdImpl:
-        case TokenId::KwdInterface:
-        case TokenId::KwdAlias:
-        case TokenId::KwdNamespace:
-            break;
-
-        case TokenId::SymAttrStart:
-            return error(token, Fmt(Err(Syn0150), token.ctext(), tokenAttr.ctext()), nullptr, Fmt(Hnt(Hnt0043), tokenAttr.ctext()));
-
-        default:
-            return error(token, Fmt(Err(Syn0174), token.ctext(), tokenAttr.ctext()));
-        }
-
+        SWAG_CHECK(doCheckPublicInternalPrivate(tokenAttr));
         SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
     }
     else
@@ -168,8 +171,9 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     *result      = attrUse;
     attrUse->flags |= AST_GENERATED;
     attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
-
     SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(doCheckPublicInternalPrivate(privName));
     privName.id   = TokenId::Identifier;
     privName.text = Fmt("__privns_%d", g_UniqueID.fetch_add(1));
     AstNode* namespc;
