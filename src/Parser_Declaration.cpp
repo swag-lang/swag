@@ -85,28 +85,22 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     Scope*   newScope  = currentScope;
     auto     tokenAttr = token;
 
-    switch (token.id)
-    {
-    case TokenId::KwdPublic:
-    case TokenId::KwdInternal:
-        if (token.id == TokenId::KwdPublic)
-            attr = ATTRIBUTE_PUBLIC;
-        else
-            attr = ATTRIBUTE_INTERNAL;
+    SWAG_ASSERT(token.id == TokenId::KwdPublic || token.id == TokenId::KwdInternal);
 
+    if (token.id == TokenId::KwdPublic)
+        attr = ATTRIBUTE_PUBLIC;
+    else
+        attr = ATTRIBUTE_INTERNAL;
+
+    if (forGlobal)
         sourceFile->globalAttr |= attr;
-        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0032), token.ctext())));
-        SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Syn0018), token.ctext())));
-        if (newScope->flags & SCOPE_FILE)
-            newScope = newScope->parentScope;
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0032), token.ctext())));
+    SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Syn0018), token.ctext())));
+    if (newScope->flags & SCOPE_FILE)
+        newScope = newScope->parentScope;
 
-        tokenizer.propagateComment = true;
-        SWAG_CHECK(eatToken());
-        break;
-
-    default:
-        break;
-    }
+    tokenizer.propagateComment = true;
+    SWAG_CHECK(eatToken());
 
     SWAG_ASSERT(newScope);
     Scoped scoped(this, newScope);
@@ -876,6 +870,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::KwdPublic:
     case TokenId::KwdInternal:
+    case TokenId::KwdPrivate:
         return error(token, Fmt(Err(Syn0121), token.ctext()));
 
     case TokenId::SymDot:
@@ -924,6 +919,9 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdInternal:
         SWAG_CHECK(doPublicInternal(parent, result, false));
         break;
+    case TokenId::KwdPrivate:
+        SWAG_CHECK(doPrivate(parent, result));
+        break;
     case TokenId::KwdNamespace:
         SWAG_CHECK(doNamespace(parent, result));
         break;
@@ -943,9 +941,6 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdUsing:
         SWAG_CHECK(doUsing(parent, result));
-        break;
-    case TokenId::KwdPrivate:
-        SWAG_CHECK(doPrivate(parent, result));
         break;
     case TokenId::SymAttrStart:
     {

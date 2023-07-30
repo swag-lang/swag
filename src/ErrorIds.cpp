@@ -229,7 +229,7 @@ void initErrors()
     SWAG_ERROR(Syn0118, "the '%s' namespace is reserved by the compiler");
     SWAG_ERROR(Syn0119, "the '@mixin' special variable name should be followed by a number");
     SWAG_ERROR(Syn0120, "the array size should be defined before the type name");
-    SWAG_ERROR(Syn0121, "the expose attribute '%s' should only be used in a global scope");
+    SWAG_ERROR(Syn0121, "the access '%s' should only be used in a global scope");
     SWAG_ERROR(Syn0122, "the identifier '%s' starts with '__', and this is reserved by the language");
     SWAG_ERROR(Syn0123, "the implementation block kind (%s) does not match the type of '%s' (%s)");
     SWAG_ERROR(Syn0124, "the initializer list is empty");

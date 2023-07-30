@@ -55,14 +55,6 @@ struct IntersectNode
     pt:       IntPoint
 }
 
-impl IntersectNode
-{
-    mtd opCmp(other: *IntersectNode)->s32
-    {
-        return pt.y <=> other.pt.y
-    }
-}
-
 struct LocalMinimum
 {
     y:            CInt

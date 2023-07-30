@@ -266,16 +266,6 @@ impl Triangle
         }
     }
 
-    mtd clearNeighbor(triangle: *Triangle)
-    {
-        switch triangle
-        {
-        case neighbors[0]:  neighbors[0] = null
-        case neighbors[1]:  neighbors[1] = null
-        default:            neighbors[2] = null
-        }
-    }
-
     mtd clearNeighbors()
     {
         neighbors[0] = null

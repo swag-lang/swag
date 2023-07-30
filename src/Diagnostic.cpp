@@ -533,6 +533,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
 
                 case TokenId::KwdPublic:
                 case TokenId::KwdInternal:
+                case TokenId::KwdPrivate:
                     result += Log::colorToVTS(LogColor::SyntaxKeyword);
                     result += identifier;
                     result += Log::colorToVTS(codeColor);
