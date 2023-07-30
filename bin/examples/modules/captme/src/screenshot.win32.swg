@@ -13,7 +13,7 @@ enum CaptureMode
     ActiveWindow
 }
 
-#scopefile {
+private {
 
 var g_TryStartGrabX:    s32
 var g_TryStartGrabY:    s32

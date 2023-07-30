@@ -1,4 +1,4 @@
-#scopefile {
+private {
 
 var x = 0
 

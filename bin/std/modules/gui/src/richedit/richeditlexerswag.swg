@@ -116,6 +116,7 @@ impl IRichEditLexer for RichEditLexerSwag
 
         mapWords.add("public", State.StorageModifier)
         mapWords.add("internal", State.StorageModifier)
+        mapWords.add("private", State.StorageModifier)
 
         mapWords.add("enum", State.Declaration)
         mapWords.add("struct", State.Declaration)
@@ -349,7 +350,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#validif", State.CompilerStatement)
         mapWords.add("#validifx", State.CompilerStatement)
         mapWords.add("#scope", State.CompilerStatement)
-        mapWords.add("#scopefile", State.CompilerStatement)
 
         mapWords.add("#cfg", State.Compiler)
         mapWords.add("#os", State.Compiler)

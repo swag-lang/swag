@@ -1,7 +1,7 @@
 #global namespace Jpg
 using Core
 
-#scopefile {
+private {
 
 struct APP0InfoType
 {

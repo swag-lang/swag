@@ -193,7 +193,7 @@ struct Parser
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind = ScopeKind::Statement);
     bool doReturn(AstNode* parent, AstNode** result);
     bool doWith(AstNode* parent, AstNode** result);
-    bool doCompilerScopeFile(AstNode* parent, AstNode** result);
+    bool doPrivate(AstNode* parent, AstNode** result);
     bool doUsing(AstNode* parent, AstNode** result);
     bool doCast(AstNode* parent, AstNode** result);
     bool doAutoCast(AstNode* parent, AstNode** result);

@@ -3,7 +3,7 @@ namespace A
     func toto() {}
 }
 
-#scopefile
+private
 {
     func toto() {}
 }

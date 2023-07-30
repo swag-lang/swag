@@ -34,14 +34,14 @@ const B = Private.FileSymbol
 const C = FileSymbol // No need to specify 'Private' because of the 'using'
 
 /**
-This is equivalent to `#scopefile`, but you don't have to specify a name, the compiler will generate it for you.
+This is equivalent to `private`, but you don't have to specify a name, the compiler will generate it for you.
 */
-#scopefile {
+private {
     const OtherSymbol = 0
 }
 
 const D = OtherSymbol
 
 /**
-All symbols from a Swag source file are exported to other files of the same module. So using `#scopefile` can protect from name conflicts.
+All symbols from a Swag source file are exported to other files of the same module. So using `private` can protect from name conflicts.
 */

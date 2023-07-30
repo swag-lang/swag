@@ -165,7 +165,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     return true;
 }
 
-bool Parser::doCompilerScopeFile(AstNode* parent, AstNode** result)
+bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
     auto privName = token;
     SWAG_CHECK(eatToken());
@@ -944,8 +944,8 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdUsing:
         SWAG_CHECK(doUsing(parent, result));
         break;
-    case TokenId::CompilerScopeFile:
-        SWAG_CHECK(doCompilerScopeFile(parent, result));
+    case TokenId::KwdPrivate:
+        SWAG_CHECK(doPrivate(parent, result));
         break;
     case TokenId::SymAttrStart:
     {

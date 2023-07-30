@@ -69,8 +69,9 @@ struct
 union
 namespace
 impl
-internal
 public
+internal
+private
 interface
 using
 alias
@@ -115,7 +116,6 @@ dref
 #validif
 #warning
 #scope
-#scopefile
 
 #ast
 #drop

@@ -301,7 +301,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#code", TokenId::CompilerCode);
     keywords.add("#type", TokenId::CompilerType);
     keywords.add("#scope", TokenId::CompilerScope);
-    keywords.add("#scopefile", TokenId::CompilerScopeFile);
     keywords.add("#up", TokenId::CompilerUp);
 
     keywords.add("true", TokenId::KwdTrue);
@@ -324,6 +323,7 @@ void LanguageSpec::setupKeywords()
 
     keywords.add("public", TokenId::KwdPublic);
     keywords.add("internal", TokenId::KwdInternal);
+    keywords.add("private", TokenId::KwdPrivate);
 
     keywords.add("enum", TokenId::KwdEnum);
     keywords.add("struct", TokenId::KwdStruct);

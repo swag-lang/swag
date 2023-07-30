@@ -11,7 +11,7 @@ alias getExtensionAddress = wglGetProcAddress
     func wglGetProcAddress(arg1: LPCSTR)->const *void;
 }
 
-#scopefile namespace PrivOgl
+private namespace PrivOgl
 {
     #[Foreign("opengl32")]
     {

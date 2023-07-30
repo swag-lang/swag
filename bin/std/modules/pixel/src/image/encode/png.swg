@@ -8,7 +8,7 @@
 #global namespace Png
 using Core
 
-#scopefile {
+private {
 
 const Adam7StartX: [7] u32 = [ 0, 4, 0, 2, 0, 1, 0 ]
 const Adam7StartY: [7] u32 = [ 0, 0, 4, 0, 2, 0, 1 ]

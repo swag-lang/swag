@@ -1050,7 +1050,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func EnumWindows(lpEnumFunc: const *void, lParam: LPARAM)->BOOL;
 }
 
-#scopefile namespace User32Priv
+private namespace User32Priv
 {
     #[Foreign("user32")]
     {
