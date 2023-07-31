@@ -611,6 +611,9 @@
     <ClCompile Include="..\src\ComputedValue.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SemanticJob_Access.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

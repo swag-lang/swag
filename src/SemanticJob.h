@@ -310,6 +310,7 @@ struct SemanticJob : public Job
     static bool         canInheritAccess(AstNode* node);
     static uint64_t     attributeToAccess(uint64_t attribute);
     static void         inheritAccess(AstNode* node);
+    static void         setIdentifierAccess(AstIdentifier* identifier, SymbolOverload* overload);
     static void         setDefaultAccess(AstNode* node);
     static bool         canHaveGlobalAccess(AstNode* node);
 

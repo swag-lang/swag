@@ -713,16 +713,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     auto dependentVar = oneMatch.dependentVar;
     auto sourceFile   = context->sourceFile;
 
-    if (overload->node &&
-        !(overload->node->flags & AST_GENERATED) &&
-        !identifier->typeInfo->isTuple())
-    {
-        identifier->semFlags &= ~SEMFLAG_ACCESS_MASK;
-        if (overload->node->attributeFlags & ATTRIBUTE_ACCESS_MASK)
-            identifier->semFlags |= attributeToAccess(overload->node->attributeFlags);
-        else
-            identifier->semFlags |= overload->node->semFlags & SEMFLAG_ACCESS_MASK;
-    }
+    setIdentifierAccess(identifier, overload);
 
     // Mark as used
     if (symbol)

@@ -566,6 +566,7 @@
     <ClCompile Include="..\src\Profiler.cpp" />
     <ClCompile Include="..\src\Report.cpp" />
     <ClCompile Include="..\src\SaveGenJob.cpp" />
+    <ClCompile Include="..\src\SemanticJob_Access.cpp" />
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp" />
     <ClCompile Include="..\src\SemanticJob_Attribute.cpp" />
     <ClCompile Include="..\src\SemanticJob_BinaryExpression.cpp" />

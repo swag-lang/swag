@@ -879,7 +879,7 @@ struct AstStruct : public AstNode
     AstNode* genericParameters;
     AstNode* content;
     Scope*   scope;
-    AstNode* ownerGeneric;
+    AstNode* originalGeneric;
     AstNode* originalParent;
     AstNode* validif;
 

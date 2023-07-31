@@ -907,7 +907,8 @@ AstNode* AstImpl::clone(CloneContext& context)
 
         if (newChild->kind == AstNodeKind::FuncDecl)
         {
-            auto newFunc = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
+            auto newFunc             = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
+            newFunc->originalGeneric = c;
 
             // Resolution of 'impl' needs all functions to have their symbol registered in the 'impl' scope,
             // in order to be able to wait for the resolution of all functions before solving the 'impl'

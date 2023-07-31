@@ -470,12 +470,12 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     structNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, structNode);
 
-    newType->scope            = structNode->scope;
-    newType->declNode         = structNode;
-    newType->replaceTypes     = cloneContext.replaceTypes;
-    newType->replaceTypesFrom = cloneContext.replaceTypesFrom;
-    structNode->typeInfo      = newType;
-    structNode->ownerGeneric  = context->node;
+    newType->scope              = structNode->scope;
+    newType->declNode           = structNode;
+    newType->replaceTypes       = cloneContext.replaceTypes;
+    newType->replaceTypesFrom   = cloneContext.replaceTypesFrom;
+    structNode->typeInfo        = newType;
+    structNode->originalGeneric = sourceNode;
 
     // Replace generic values in the struct generic parameters
     SWAG_CHECK(updateGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
@@ -547,6 +547,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     if (newFunc->validif)
         newFunc->content->flags |= AST_NO_SEMANTIC;
 
+    newFunc->originalGeneric = funcNode;
     Ast::addChildBack(funcNode->parent, newFunc);
     *specialFct = newFunc;
 
