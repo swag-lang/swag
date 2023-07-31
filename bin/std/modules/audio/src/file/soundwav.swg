@@ -100,13 +100,16 @@ struct GUID
 struct WaveFormatExtensible
 {
     format: WaveFormatEx
-    samples: union {
+
+    samples: union
+    {
         validBitsPerSample: u16  // Valid bits in each sample container
         samplesPerBlock:    u16  // Samples per block of audio data valid
         reserved:           u16  // If wBitsPerSample=0 (but rarely used). Zero if neither case above applies.
     }
-    channelMask:    u32         // Positions of the audio channels
-    subFormat:      GUID        // Format identifier GUID
+
+    channelMask: u32    // Positions of the audio channels
+    subFormat:   GUID   // Format identifier GUID
 }
 
 public struct SoundWav
@@ -257,25 +260,25 @@ impl SoundWav
                 }
 
             case SND_WAV_FOURCC_fact:
-                break
+                stream.skipPosition(acast header.chunkSize)
 
             case SND_WAV_FOURCC_cue:
-                break
+                stream.skipPosition(acast header.chunkSize)
 
             case SND_WAV_FOURCC_LIST:
-                break
+                stream.skipPosition(acast header.chunkSize)
 
             case SND_WAV_FOURCC_labl:
-                break
+                stream.skipPosition(acast header.chunkSize)
 
             case SND_WAV_FOURCC_note:
-                break
+                stream.skipPosition(acast header.chunkSize)
 
             case SND_WAV_FOURCC_ltxt:
-                break
+                stream.skipPosition(acast header.chunkSize)
 
             case SND_WAV_FOURCC_bext:
-                break
+                stream.skipPosition(acast header.chunkSize)
 
             default:
                 if header.chunkSize
