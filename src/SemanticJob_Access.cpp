@@ -154,6 +154,34 @@ void SemanticJob::setDefaultAccess(AstNode* node)
         node->semFlags |= attributeToAccess(ATTRIBUTE_INTERNAL);
 }
 
+static AstNode* getErrorCulprit(AstNode* n)
+{
+    if (!SemanticJob::canInheritAccess(n))
+        return nullptr;
+
+    if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
+    {
+        if (n->flags & AST_GENERATED && n->typeInfo->isTuple() && n->typeInfo->declNode)
+        {
+            auto res = getErrorCulprit(n->typeInfo->declNode);
+            if (res)
+                return res;
+        }
+
+        if (n->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
+            return n;
+    }
+
+    for (auto c : n->childs)
+    {
+        auto res = getErrorCulprit(c);
+        if (res)
+            return res;
+    }
+
+    return nullptr;
+}
+
 bool SemanticJob::checkAccess(JobContext* context, AstNode* node)
 {
     if (!canHaveGlobalAccess(node))
@@ -171,21 +199,7 @@ bool SemanticJob::checkAccess(JobContext* context, AstNode* node)
 
     if (node->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
     {
-        ErrorContext cxt;
-        AstNode*     culprit = nullptr;
-        Ast::visit(context, node, [&](ErrorContext* cxt, AstNode* n)
-                   {
-                        if (n->kind != AstNodeKind::Identifier && n->kind != AstNodeKind::FuncCall)
-                            return Ast::VisitResult::Continue;
-                        if (!canInheritAccess(n))
-                            return Ast::VisitResult::NoChilds;
-                        if (n->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
-                        {
-                            culprit = n;
-                            return Ast::VisitResult::Stop;
-                        }
-                        return Ast::VisitResult::Continue; });
-
+        auto culprit = getErrorCulprit(node);
         if (!culprit)
             return Report::internalError(node, "bad access, but cannot find the culprit");
 
