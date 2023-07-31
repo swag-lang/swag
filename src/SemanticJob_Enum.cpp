@@ -50,12 +50,9 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_FROM_GENERIC))
     {
-        if (!(node->flags & AST_FROM_GENERIC))
-        {
-            node->ownerScope->addPublicNode(node);
-        }
+        node->ownerScope->addPublicNode(node);
     }
 
     // We are parsing the swag module

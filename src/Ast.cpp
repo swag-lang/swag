@@ -342,17 +342,22 @@ void Ast::visit(AstNode* root, const function<void(AstNode*)>& fctor)
         visit(child, fctor);
 }
 
-bool Ast::visit(ErrorContext* context, AstNode* root, const function<bool(ErrorContext*, AstNode*)>& fctor)
+Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fctor)
 {
-    if (!fctor(context, root))
-        return false;
+    auto result = fctor(context, root);
+    if (result == Ast::VisitResult::Stop)
+        return Ast::VisitResult::Stop;
+    if (result == Ast::VisitResult::NoChilds)
+        return Ast::VisitResult::Continue;
+
     for (auto child : root->childs)
     {
-        if (!visit(context, child, fctor))
-            return false;
+        result = visit(context, child, fctor);
+        if (result == Ast::VisitResult::Stop)
+            return Ast::VisitResult::Stop;
     }
 
-    return true;
+    return Ast::VisitResult::Continue;
 }
 
 AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags, uint64_t removeFlags)

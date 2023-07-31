@@ -307,7 +307,7 @@ void initErrors()
 
     SWAG_ERROR(Err0013, "%s '%s' cannot be referenced in that context because it's not a value");
     SWAG_ERROR(Err0097, "%s '%s' has not been used as the first parameter to call '%s'");
-    SWAG_ERROR(Err0316, "%s '%s' should be public because it is referenced in a public context");
+    SWAG_ERROR(Err0316, nullptr);
     SWAG_ERROR(Err0747, "%s cannot be public");
     SWAG_ERROR(Err0505, "%s overflow, the maximum supported size is '0x%I64x' bytes");
     SWAG_ERROR(Err0606, "%s should return a value");
@@ -510,7 +510,7 @@ void initErrors()
     SWAG_ERROR(Err0715, "cannot instantiate the generic function '%s' because of missing generic arguments");
     SWAG_ERROR(Err0039, "cannot instantiate the generic struct '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0721, "cannot instantiate the generic struct '%s' because of missing generic arguments");
-    SWAG_ERROR(Err0018, "cannot make %s public because %s '%s' is not public");
+    SWAG_ERROR(Err0018, nullptr);
     SWAG_ERROR(Err0576, "cannot move '%d' scopes up");
     SWAG_ERROR(Err0832, "cannot negate number '%I64d' because '%I64u' is not in the range of 's64'");
     SWAG_ERROR(Err0830, "cannot negate number '%d' because '%u' is not in the range of 's16'");
@@ -674,7 +674,7 @@ void initErrors()
     SWAG_ERROR(Err0571, "the affectation is not allowed on %s '%s'");
     SWAG_ERROR(Err0572, "the affectation is not allowed, '%s' is %s");
     SWAG_ERROR(Err0574, "the affectation to the tuple is not possible because the right expression is not compatible");
-    SWAG_ERROR(Err0025, "the alias is public but '%s' is not");
+    SWAG_ERROR(Err0025, nullptr);
     SWAG_ERROR(Err0780, "the alias name '%s' is unused and should be removed");
     SWAG_ERROR(Err0814, "the alignement cannot be computed because the expression is generic");
     SWAG_ERROR(Err0021, "the array dimension cannot be evaluated at compile time");
@@ -928,7 +928,7 @@ void initErrors()
     SWAG_ERROR(Err0289, "unexpected 'impl' outside of an 'impl for' block");
     SWAG_ERROR(Err0436, "an immutable variable declared with 'let' should be explicitly initialized");
     SWAG_ERROR(Err0501, "cannot take the address of a local variable declared with 'let'");
-    SWAG_ERROR(Err0520, nullptr);
+    SWAG_ERROR(Err0520, "%s '%s' cannot be made 'public' because %s '%s' has '%s' access");
     SWAG_ERROR(Err0521, nullptr);
     SWAG_ERROR(Err0528, nullptr);
     SWAG_ERROR(Err0529, nullptr);
@@ -1153,7 +1153,7 @@ void initErrors()
     SWAG_ERROR(Hnt0124, "add 'impl' before if this is intended");
     SWAG_ERROR(Hnt0125, "this slice is null or empty");
     SWAG_ERROR(Hnt0126, "this string is null or empty");
-    SWAG_ERROR(Hnt0127, nullptr);
+    SWAG_ERROR(Hnt0127, "this %s has '%s' access");
     SWAG_ERROR(Hnt0128, nullptr);
     SWAG_ERROR(Hnt0129, nullptr);
     SWAG_ERROR(Hnt0130, nullptr);

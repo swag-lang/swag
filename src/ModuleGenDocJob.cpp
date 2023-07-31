@@ -1336,8 +1336,7 @@ JobResult ModuleGenDocJob::execute()
 {
     // Setup
     concat.init();
-    outputCxt.checkPublic = false;
-    outputCxt.exportType  = [this](TypeInfo* typeInfo)
+    outputCxt.exportType = [this](TypeInfo* typeInfo)
     {
         if (typeInfo->isNative() || typeInfo->isVariadic())
             return typeInfo->name;

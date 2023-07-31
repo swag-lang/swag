@@ -17,11 +17,9 @@ struct AstOutput
         AstNode*                  exportedNode = nullptr;
         int                       indent       = 0;
         bool                      forExport    = false;
-        bool                      checkPublic  = true;
         function<Utf8(TypeInfo*)> exportType;
     };
 
-    static bool checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode);
     static void incIndentStatement(AstNode* node, int& indent);
     static void decIndentStatement(AstNode* node, int& indent);
     static void removeLastBlankLine(Concat& concat);

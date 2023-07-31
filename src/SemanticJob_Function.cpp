@@ -800,7 +800,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
-    SWAG_CHECK(registerFuncSymbol(context, funcNode, (shortLambda || mustDeduceReturnType) ? OVERLOAD_INCOMPLETE : 0));
+    uint32_t overFlags = 0;
+    if (shortLambda || mustDeduceReturnType)
+        overFlags |= OVERLOAD_INCOMPLETE;
+    SWAG_CHECK(registerFuncSymbol(context, funcNode, overFlags));
 
     return true;
 }

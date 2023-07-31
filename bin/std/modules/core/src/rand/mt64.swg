@@ -10,7 +10,8 @@
 
 #global namespace Random
 
-const NN        = 312
+public const NN = 312
+
 const MID       = NN / 2
 const MM        = 156
 const MATRIX_A  = 0xB5026F5AA96619E9'u64

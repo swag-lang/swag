@@ -929,11 +929,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(node->block);
     Ast::visit(context, node->block, [&](ErrorContext* context, AstNode* x)
                {
-            if (!x->ownerBreakable)
-                x->ownerBreakable = loopNode;
-            if (x->kind == AstNodeKind::Visit)
-                return false;
-            return true; });
+                    if (!x->ownerBreakable)
+                        x->ownerBreakable = loopNode;
+                    if (x->kind == AstNodeKind::Visit)
+                        return Ast::VisitResult::Stop;
+                    return Ast::VisitResult::Continue; });
     node->block->flags &= ~AST_NO_SEMANTIC;
     loopNode->block->token.endLocation = node->block->token.endLocation;
 

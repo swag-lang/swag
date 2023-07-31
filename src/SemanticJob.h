@@ -242,6 +242,7 @@ struct SemanticJob : public Job
     static bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static void checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
     static bool checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool checkAccess(JobContext* context, AstNode* node);
     static bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     static bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
 
@@ -306,6 +307,11 @@ struct SemanticJob : public Job
     static bool         collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
     static bool         collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node);
     static void         setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
+    static bool         canInheritAccess(AstNode* node);
+    static uint64_t     attributeToAccess(uint64_t attribute);
+    static void         inheritAccess(AstNode* node);
+    static void         setDefaultAccess(AstNode* node);
+    static bool         canHaveGlobalAccess(AstNode* node);
 
     static Utf8           findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best);
     static void           findClosestMatches(SemanticContext* context, const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);

@@ -302,7 +302,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
     else if (typeNode->typeFlags & TYPEFLAG_IS_SUB_TYPE)
     {
-        SWAG_ASSERT(!typeNode->identifier || typeNode->identifier == typeNode->childs.back());
         typeNode->typeInfo = typeNode->childs.back()->typeInfo;
     }
     else
@@ -517,28 +516,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
-{
-    auto back = node->childs.back();
-
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        if (node->ownerScope->isGlobalOrImpl())
-        {
-            auto overload = back->resolvedSymbolOverload;
-            if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
-            {
-                Diagnostic diag{back, Fmt(Err(Err0025), back->token.ctext())};
-                return context->report(diag, Diagnostic::hereIs(overload));
-            }
-
-            node->ownerScope->addPublicNode(node);
-        }
-    }
-
-    return true;
-}
-
 bool SemanticJob::resolveAlias(SemanticContext* context)
 {
     auto node = context->node;
@@ -615,7 +592,8 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     copy->from(overload);
     overload->flags |= OVERLOAD_HAS_AFFECT;
     SWAG_CHECK(node->ownerScope->symTable.registerUsingAliasOverload(context, node, node->resolvedSymbolName, copy));
-    SWAG_CHECK(checkPublicAlias(context, node));
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        node->ownerScope->addPublicNode(node);
     return true;
 }
 
@@ -645,7 +623,8 @@ bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
 
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
-    SWAG_CHECK(checkPublicAlias(context, node));
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        node->ownerScope->addPublicNode(node);
     return true;
 }
 

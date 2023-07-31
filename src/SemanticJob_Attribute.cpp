@@ -246,6 +246,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 {
     auto attrUse = forNode->hasExtOwner() ? forNode->extOwner()->ownerAttrUse : nullptr;
     SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
+    setDefaultAccess(forNode);
     return true;
 }
 

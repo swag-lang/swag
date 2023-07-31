@@ -9,63 +9,6 @@
 #include "Report.h"
 #include "Naming.h"
 
-bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode)
-{
-    if (!context.forExport || !testNode || !context.checkPublic)
-        return true;
-
-    auto symbol   = testNode->resolvedSymbolName;
-    auto overload = testNode->resolvedSymbolOverload;
-    if (!symbol || !overload)
-        return true;
-
-    if (overload->node->sourceFile->isBootstrapFile ||
-        overload->node->sourceFile->isRuntimeFile ||
-        overload->node->sourceFile->forceExport ||
-        overload->node->sourceFile->imported)
-        return true;
-
-    if (symbol->name.empty() || symbol->name[0] == '@')
-        return true;
-    if (!overload->node->ownerScope->isGlobalOrImpl())
-        return true;
-
-    if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
-        (symbol->kind == SymbolKind::Function) ||
-        (symbol->kind == SymbolKind::Struct) ||
-        (symbol->kind == SymbolKind::Enum) ||
-        (symbol->kind == SymbolKind::Interface) ||
-        (symbol->kind == SymbolKind::Alias) ||
-        (symbol->kind == SymbolKind::TypeAlias))
-    {
-        Utf8 typeWhat = Naming::kindName(overload);
-        if (!overload->node->isPublic())
-        {
-            if (usedNode && overload->node != usedNode)
-            {
-                Utf8 what;
-                if (context.exportedNode && context.exportedNode->resolvedSymbolOverload)
-                {
-                    auto symName = context.exportedNode->resolvedSymbolOverload->symbol;
-                    what         = Fmt("%s '%s'", Naming::kindName(symName->kind).c_str(), symName->name.c_str());
-                }
-                else if (usedNode->kind == AstNodeKind::FuncCall)
-                    what = "function call";
-                else
-                    what = "declaration";
-
-                Diagnostic diag{usedNode, Fmt(Err(Err0018), what.c_str(), typeWhat.c_str(), overload->node->token.ctext())};
-                return context.report(diag, Diagnostic::hereIs(overload));
-            }
-
-            Diagnostic diag{overload->node, Fmt(Err(Err0316), typeWhat.c_str(), overload->node->token.ctext())};
-            return context.report(diag);
-        }
-    }
-
-    return true;
-}
-
 void AstOutput::incIndentStatement(AstNode* node, int& indent)
 {
     if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
@@ -307,7 +250,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA)
     {
         CONCAT_FIXED_STR(concat, " => ");
-        SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
+        SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return || funcDecl->content->kind == AstNodeKind::Try);
         SWAG_CHECK(outputNode(context, concat, funcDecl->content->childs.front()));
         concat.addEol();
         return true;
@@ -1078,14 +1021,6 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
         return true;
     }
 
-    // Check is public
-    auto typeExport = typeInfo;
-    if (typeExport->isArray())
-        typeExport = ((TypeInfoArray*) typeExport)->finalType;
-    while (typeExport->isPointer())
-        typeExport = ((TypeInfoPointer*) typeExport)->pointedType;
-    SWAG_CHECK(checkIsPublic(context, typeExport->declNode, node));
-
     // Export type name
     if (context.exportType)
     {
@@ -1824,8 +1759,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::FuncCall:
     {
-        SWAG_CHECK(checkIsPublic(context, node, node));
-
         auto identifier = static_cast<AstIdentifier*>(node);
         concat.addString(node->token.text);
 

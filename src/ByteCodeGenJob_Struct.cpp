@@ -347,7 +347,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
 
         case EmitOpUserKind::Drop:
             // Export generated function if necessary
-            if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+            if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
                 auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
@@ -364,7 +364,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
 
         case EmitOpUserKind::PostCopy:
             // Export generated function if necessary
-            if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+            if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
                 auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
@@ -381,7 +381,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
 
         case EmitOpUserKind::PostMove:
             // Export generated function if necessary
-            if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+            if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
                 auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;

@@ -208,12 +208,16 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
     auto res = Ast::visit(context, node, [](ErrorContext* cxt, AstNode* n)
                           {
                               if (n->kind != AstNodeKind::Literal)
-                                  return true;
+                                  return Ast::VisitResult::Continue;
                               if (n->semFlags & SEMFLAG_LITERAL_SUFFIX)
-                                  return cxt->report({ n->childs.front(), Fmt(Err(Err0532), n->childs.front()->token.ctext() ) });
-                              return true; });
+                              {
+                                  cxt->report({ n->childs.front(), Fmt(Err(Err0532), n->childs.front()->token.ctext()) });
+                                  return Ast::VisitResult::Stop;
+                              }
 
-    return res;
+                              return Ast::VisitResult::Continue; });
+
+    return res == Ast::VisitResult::Stop ? false : true;
 }
 
 bool ByteCodeGenJob::emitUnreachable(ByteCodeGenContext* context)

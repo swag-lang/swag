@@ -157,7 +157,6 @@ enum class AstNodeKind : uint8_t
     FuncCallParams,
     FuncCallParam,
     FuncCall,
-    FuncContent,
     Return,
     RetVal,
     EnumType,
@@ -302,12 +301,12 @@ struct AstNode
     bool isSameStackFrame(SymbolOverload* overload);
     bool isSpecialFunctionName();
     bool isSpecialFunctionGenerated();
-    bool isPublic();
     bool isFunctionCall();
     bool isGeneratedSelf();
     bool isEmptyFct();
     bool isForeign();
     bool isSilentCall();
+    bool isPublic();
 
     void     setPassThrough();
     AstNode* findChildRef(AstNode* ref, AstNode* fromChild);

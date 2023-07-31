@@ -755,6 +755,15 @@ bool AstNode::isSilentCall()
     return kind == AstNodeKind::Identifier && (specFlags & AstIdentifier::SPECFLAG_SILENT_CALL);
 }
 
+bool AstNode::isPublic()
+{
+    if (attributeFlags & ATTRIBUTE_PUBLIC)
+        return true;
+    if (semFlags & SEMFLAG_ACCESS_PUBLIC)
+        return true;
+    return false;
+}
+
 bool AstNode::isFunctionCall()
 {
     if (kind == AstNodeKind::FuncCall)
@@ -764,19 +773,6 @@ bool AstNode::isFunctionCall()
 
     auto id = CastAst<AstIdentifier>(this, AstNodeKind::Identifier);
     return id->callParameters != nullptr;
-}
-
-bool AstNode::isPublic()
-{
-    auto checkNode = this;
-    while (checkNode)
-    {
-        if (checkNode->attributeFlags & ATTRIBUTE_PUBLIC)
-            return true;
-        checkNode = checkNode->parent;
-    }
-
-    return false;
 }
 
 bool AstNode::forceTakeAddress()
