@@ -307,7 +307,7 @@ func create(initCOM: bool = true) throw
 
     result = X3DAudioInitialize(g_ChannelMask, X3DAUDIO_SPEED_OF_SOUND, g_X3DInstance)
     if result != S_OK
-        throw "cannot initialize x3D audio"
+        throw "cannot initialize X3D audio"
 }
 
 // Destroys the xaudio2 engine
