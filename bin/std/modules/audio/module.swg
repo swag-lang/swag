@@ -2,6 +2,7 @@
 {
     #if #os == Swag.TargetOs.Windows
     {
+        #import "core"
         #import "xaudio2"
     }
 
