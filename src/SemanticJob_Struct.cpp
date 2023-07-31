@@ -808,10 +808,6 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
         typeInfo->forceComputeName();
     }
 
-    // Attributes
-    if (!(node->flags & AST_FROM_GENERIC))
-        SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
-
     // Register symbol with its type
     SymbolKind symbolKind = SymbolKind::Struct;
     switch (node->kind)
