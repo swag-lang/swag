@@ -338,7 +338,8 @@ bool SemanticJob::resolveCompilerValidIfExpression(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        Diagnostic diag{expression, Fmt(Err(Err0233), node->token.ctext(), expression->typeInfo->getDisplayNameC())};
+        Diagnostic diag{expression, Fmt(Err(Err0233), node->token.ctext(), typeInfo->getDisplayNameC())};
+        diag.hint = Diagnostic::isType(expression);
         return context->report(diag);
     }
 
