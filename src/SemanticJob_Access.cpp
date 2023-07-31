@@ -56,6 +56,10 @@ void SemanticJob::inheritAccess(AstNode* node)
     if (!canInheritAccess(node))
         return;
 
+    // Access for a tuple definition is only defined by the content
+    if (node->parent->typeInfo && node->parent->typeInfo->isTuple())
+        node->parent->semFlags &= ~SEMFLAG_ACCESS_MASK;
+
     if (node->semFlags & SEMFLAG_ACCESS_PRIVATE)
     {
         node->parent->semFlags &= ~(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
@@ -89,8 +93,6 @@ void SemanticJob::setIdentifierAccess(AstIdentifier* identifier, SymbolOverload*
     if (!overload->node)
         return;
     if (overload->node->flags & AST_GENERATED)
-        return;
-    if (identifier->typeInfo->isTuple())
         return;
     if (overload->symbol->kind == SymbolKind::Namespace)
         return;
