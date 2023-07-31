@@ -144,6 +144,24 @@ struct XAUDIO2_VOICE_STATE
     samplesPlayed:          UINT64
 }
 
+// Used in XAUDIO2_FILTER_PARAMETERS below
+enum XAUDIO2_FILTER_TYPE
+{
+    LowPassFilter,                      // Attenuates frequencies above the cutoff frequency (state-variable filter).
+    BandPassFilter,                     // Attenuates frequencies outside a given range      (state-variable filter).
+    HighPassFilter,                     // Attenuates frequencies below the cutoff frequency (state-variable filter).
+    NotchFilter,                        // Attenuates frequencies inside a given range       (state-variable filter).
+    LowPassOnePoleFilter,               // Attenuates frequencies above the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect)
+    HighPassOnePoleFilter               // Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect)
+}
+
+struct XAUDIO2_FILTER_PARAMETERS
+{
+    type:       XAUDIO2_FILTER_TYPE
+    frequency:  f32
+    oneOverQ:   f32
+}
+
 struct IXAudio2                 { vtbl: *IXAudio2Itf; }
 struct IXAudio2Voice            { vtbl: *IXAudio2VoiceItf; }
 struct IXAudio2MasteringVoice   { vtbl: *IXAudio2MasteringVoiceItf; }
@@ -183,22 +201,22 @@ struct IXAudio2VoiceItf
 {
     getVoiceDetails:            func(me: *IXAudio2Voice, pVoiceDetails: *XAUDIO2_VOICE_DETAILS)
     setOutputVoices:            func(me: *IXAudio2Voice, pSendList: const *XAUDIO2_VOICE_SENDS)
-    setEffectChain:             func(me: *IXAudio2Voice)
-    enableEffect:               func(me: *IXAudio2Voice)
-    disableEffect:              func(me: *IXAudio2Voice)
-    getEffectState:             func(me: *IXAudio2Voice)
-    setEffectParameters:        func(me: *IXAudio2Voice)
-    getEffectParameters:        func(me: *IXAudio2Voice)
-    setFilterParameters:        func(me: *IXAudio2Voice)
-    getFilterParameters:        func(me: *IXAudio2Voice)
-    setOutputFilterParameters:  func(me: *IXAudio2Voice)
-    getOutputFilterParameters:  func(me: *IXAudio2Voice)
-    setVolume:                  func(me: *IXAudio2Voice)
-    getVolume:                  func(me: *IXAudio2Voice)
-    setChannelVolumes:          func(me: *IXAudio2Voice)
-    getChannelVolumes:          func(me: *IXAudio2Voice)
-    setOutputMatrix:            func(me: *IXAudio2Voice)
-    getOutputMatrix:            func(me: *IXAudio2Voice)
+    setEffectChain:             func(me: *IXAudio2Voice, pEffectChain: const *XAUDIO2_EFFECT_CHAIN)
+    enableEffect:               func(me: *IXAudio2Voice, effectIndex: UINT32, operationSet: UINT32)->HRESULT
+    disableEffect:              func(me: *IXAudio2Voice, effectIndex: UINT32, operationSet: UINT32)->HRESULT
+    getEffectState:             func(me: *IXAudio2Voice, effectIndex: UINT32, pEnabled: *BOOL)
+    setEffectParameters:        func(me: *IXAudio2Voice, effectIndex: UINT32, pParameters: const *void, parametersByteSize: UINT32, operationSet: UINT32)->HRESULT
+    getEffectParameters:        func(me: *IXAudio2Voice, effectIndex: UINT32, pParameters: *void, parametersByteSize: UINT32)->HRESULT
+    setFilterParameters:        func(me: *IXAudio2Voice, pParameters: const *XAUDIO2_FILTER_PARAMETERS, operationSet: UINT32)->HRESULT
+    getFilterParameters:        func(me: *IXAudio2Voice, pParameters: *XAUDIO2_FILTER_PARAMETERS)
+    setOutputFilterParameters:  func(me: *IXAudio2Voice, pDestinationVoice: *IXAudio2Voice, pParameters: const *XAUDIO2_FILTER_PARAMETERS, operationSet: UINT32)->HRESULT
+    getOutputFilterParameters:  func(me: *IXAudio2Voice, pDestinationVoice: *IXAudio2Voice, pParameters: *XAUDIO2_FILTER_PARAMETERS)
+    setVolume:                  func(me: *IXAudio2Voice, volume: f32, operationSet: UINT32)->HRESULT
+    getVolume:                  func(me: *IXAudio2Voice, pVolume: *f32)
+    setChannelVolumes:          func(me: *IXAudio2Voice, channels: UINT32, pVolumes: const *f32, operationSet: UINT32)->HRESULT
+    getChannelVolumes:          func(me: *IXAudio2Voice, channels: UINT32, pVolumes: *f32)
+    setOutputMatrix:            func(me: *IXAudio2Voice, pDestinationVoice: *IXAudio2Voice, sourceChannels: UINT32, destinationChannels: UINT32, pLevelMatrix: const *f32, operationSet: UINT32)->HRESULT
+    getOutputMatrix:            func(me: *IXAudio2Voice, pDestinationVoice: *IXAudio2Voice, sourceChannels: UINT32, destinationChannels: UINT32, pLevelMatrix: *f32)
     destroyVoice:               func(me: *IXAudio2Voice)
 }
 
