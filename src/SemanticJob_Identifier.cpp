@@ -4479,6 +4479,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         identifier->resolvedSymbolOverload = symbol->overloads[0];
         identifier->typeInfo               = identifier->resolvedSymbolOverload->typeInfo;
 
+        setIdentifierAccess(identifier, symbol->overloads[0]);
+
         // In case identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->childs.back())
             SWAG_CHECK(setupIdentifierRef(context, identifier));
