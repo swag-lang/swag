@@ -1,3 +1,4 @@
+#global testerror
 func titi4732()
 {
 }
