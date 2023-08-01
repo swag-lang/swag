@@ -1,4 +1,4 @@
-using Core
+using Core, Win32
 
 private struct ChunkHeader
 {
@@ -88,14 +88,6 @@ public struct WaveFormatEx
 {
     using pcmwf: PcmWaveFormat
     cbSize: u16     // The count in bytes of the size of extra information (after cbSize)
-}
-
-public struct GUID
-{
-    data1: u32
-    data2: u16
-    data3: u16
-    data4: [8] u8
 }
 
 public const GUID_PCM        = GUID{0x00000001, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}

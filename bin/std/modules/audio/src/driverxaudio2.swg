@@ -70,16 +70,16 @@ public impl DriverXAudio2
 
     mtd createVoice(infos: SoundFileInfo) throw
     {
-        var wfx: WaveFormatExtensible
-        wfx.format.channels             = cast(u16) infos.channelCount
-        wfx.format.samplesPerSec        = cast(u16) infos.frequency
-        wfx.format.bitsPerSample        = cast(u16) infos.bitsPerSample
-        wfx.format.blockAlign           = cast(u16) (wfx.format.channels * (wfx.format.bitsPerSample / 8))
-        wfx.format.avgBytesPerSec       = wfx.format.blockAlign * wfx.format.samplesPerSec
-        wfx.format.formatTag            = .Extensible
-        wfx.samples.validBitsPerSample  = wfx.format.bitsPerSample
-        wfx.channelMask                 = infos.channelMask
-        wfx.format.cbSize               = @sizeof(WaveFormatExtensible) - @sizeof(WaveFormatEx)
+        var wfx: WAVEFORMATEXTENSIBLE
+        wfx.format.nChannels            = cast(u16) infos.channelCount
+        wfx.format.nSamplesPerSec       = cast(u16) infos.frequency
+        wfx.format.wBitsPerSample       = cast(u16) infos.bitsPerSample
+        wfx.format.nBlockAlign          = cast(u16) (wfx.format.nChannels * (wfx.format.wBitsPerSample / 8))
+        wfx.format.nAvgBytesPerSec      = wfx.format.nBlockAlign * wfx.format.nSamplesPerSec
+        wfx.format.wFormatTag           = FORMAT_EXTENSIBLE
+        wfx.format.cbSize               = @sizeof(WAVEFORMATEXTENSIBLE) - @sizeof(WAVEFORMATEX)
+        wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
+        wfx.dwChannelMask               = infos.channelMask
 
         switch (infos.format)
         {

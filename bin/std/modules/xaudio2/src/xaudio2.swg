@@ -298,6 +298,22 @@ struct WAVEFORMATEX
     cbSize:             WORD    /* the count in bytes of the size of */
 }
 
+const FORMAT_EXTENSIBLE = 0xFFFE'u16
+
+struct WAVEFORMATEXTENSIBLE
+{
+    format:     WAVEFORMATEX
+    samples:    union
+    {
+        wValidBitsPerSample: WORD
+        wSamplesPerBlock:    WORD
+        wReserved:           WORD
+    }
+
+    dwChannelMask:  DWORD
+    subFormat:      GUID
+}
+
 #[Swag.Foreign("xaudio2_9")]
 {
     func XAudio2Create(ppXAudio2: **IXAudio2, flags: UINT32, processor: XAUDIO2_PROCESSOR = XAUDIO2_ANY_PROCESSOR)->HRESULT;
