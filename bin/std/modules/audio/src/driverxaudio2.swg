@@ -68,7 +68,7 @@ public impl DriverXAudio2
         }
     }
 
-    mtd createVoice(infos: SoundFileInfo)
+    mtd createVoice(infos: SoundFileInfo) throw
     {
         var wfx: WaveFormatExtensible
         wfx.format.channels             = cast(u16) infos.channelCount
@@ -89,5 +89,7 @@ public impl DriverXAudio2
 
         var sourceVoice: *IXAudio2SourceVoice
         let hr = xAudio2.vtbl.createSourceVoice(xAudio2, &sourceVoice, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
+        if hr != S_OK
+            throw "cannot create source voice"
     }
 }

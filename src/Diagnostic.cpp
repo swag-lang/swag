@@ -768,7 +768,7 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
 
-            if (i == ranges.size() - 1)
+            if (i == ranges.size() - 1 || startIndex + r.hint.length() + 5 < ranges[i + 1].startLocation.column)
             {
                 setColorRanges(r.errorLevel);
                 g_Log.print(LogSymbol::DownRight);
@@ -777,6 +777,9 @@ void Diagnostic::printRanges()
                 g_Log.print(" ");
                 g_Log.setColor(hintColor);
                 g_Log.print(r.hint);
+                startIndex += r.hint.length() + 4;
+                ranges.erase(ranges.begin() + i);
+                i--;
             }
             else
             {
@@ -785,9 +788,6 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
         }
-
-        // Remove processed range
-        ranges.pop_back();
 
         // Print all the vertical bars
         if (!ranges.empty())

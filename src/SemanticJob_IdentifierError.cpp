@@ -89,12 +89,15 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 
     // Get parameters of destination symbol
-    AstFuncDecl* destFuncDecl = nullptr;
-    AstAttrDecl* destAttrDecl = nullptr;
+    AstFuncDecl*   destFuncDecl   = nullptr;
+    AstTypeLambda* destLambdaDecl = nullptr;
+    AstAttrDecl*   destAttrDecl   = nullptr;
     if (overload->node->kind == AstNodeKind::FuncDecl)
         destFuncDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     else if (overload->node->kind == AstNodeKind::AttrDecl)
         destAttrDecl = CastAst<AstAttrDecl>(overload->node, AstNodeKind::AttrDecl);
+    else if (overload->node->kind == AstNodeKind::VarDecl)
+        destLambdaDecl = CastAst<AstTypeLambda>(overload->node->typeInfo->declNode, AstNodeKind::TypeLambda);
 
     // In case it's generic, and we have real types
     bi.badSignatureRequestedType = Generic::doTypeSubstitution(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
@@ -256,13 +259,33 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (!callParameters)
             diag->hint = Hnt(Hnt0044);
         else if (!overload->typeInfo->isFuncAttr())
-            diag->addRange(node, Diagnostic::isType(overload->typeInfo));
+            diag->addRange(node->token, Diagnostic::isType(overload->typeInfo));
 
         result0.push_back(diag);
 
         auto note = Diagnostic::hereIs(overload);
         if (note)
             result1.push_back(note);
+
+        for (int si = 0; si < match.solvedParameters.size(); si++)
+        {
+            if (!match.solvedParameters[si])
+            {
+                if (destFuncDecl)
+                {
+                    diag->remarks.push_back(Fmt("missing '%s' of type '%s'", destFuncDecl->parameters->childs[si]->token.ctext(), destFuncDecl->parameters->childs[si]->typeInfo->getDisplayNameC()));
+                    if (note)
+                        note->addRange(destFuncDecl->parameters->childs[si], "missing");
+                }
+                else if (destLambdaDecl)
+                {
+                    diag->remarks.push_back(Fmt("missing '%s' of type '%s'", destLambdaDecl->parameters->childs[si]->token.ctext(), destLambdaDecl->parameters->childs[si]->typeInfo->getDisplayNameC()));
+                    if (note)
+                        note->addRange(destLambdaDecl->parameters->childs[si], "missing");
+                }
+            }
+        }
+
         return;
     }
 
@@ -747,6 +770,27 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             tryMatches = n;
     }
 
+    // Remove duplicates overloads
+    {
+        Vector<OneTryMatch*> n;
+        for (auto oneMatch : tryMatches)
+        {
+            bool add = true;
+            for (auto oneMatch1 : tryMatches)
+            {
+                if (oneMatch != oneMatch1 && oneMatch1->overload == oneMatch->overload && oneMatch1->ufcs && !oneMatch->ufcs)
+                {
+                    add = false;
+                    break;
+                }
+            }
+            if (add)
+                n.push_back(oneMatch);
+        }
+        if (!n.empty())
+            tryMatches = n;
+    }
+
     // MatchResult::MissingSomeParameters is a correct match, but not enough parameters
     // We take it in priority
     {
@@ -837,7 +881,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     }
 
     // Multiple tryMatches
-    Diagnostic diag{node, Fmt(Err(Err0113), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+    Diagnostic diag{node, node->token, Fmt(Err(Err0113), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
     symbolErrorRemarks(context, tryMatches, node, &diag);
 
     Vector<const Diagnostic*> notes;
@@ -918,19 +962,19 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::TooManyParameters:
-                diagRemarks = Diagnostic::note(Fmt("too many parameters"));
+                diagRemarks = Diagnostic::note(Fmt("too many arguments"));
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::TooManyGenericParameters:
-                diagRemarks = Diagnostic::note(Fmt("too many generic parameters"));
+                diagRemarks = Diagnostic::note(Fmt("too many generic arguments"));
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::NotEnoughParameters:
-                diagRemarks = Diagnostic::note(Fmt("not enough parameters"));
+                diagRemarks = Diagnostic::note(Fmt("not enough arguments"));
                 notes.push_back(diagRemarks);
                 break;
             case MatchResult::NotEnoughGenericParameters:
-                diagRemarks = Diagnostic::note(Fmt("not enough generic parameters"));
+                diagRemarks = Diagnostic::note(Fmt("not enough generic arguments"));
                 notes.push_back(diagRemarks);
                 break;
             default:
