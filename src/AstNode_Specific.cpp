@@ -1193,6 +1193,7 @@ AstNode* AstAlias::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstAlias>();
     newNode->copyFrom(context, this);
+    newNode->kwdLoc = kwdLoc;
     if (resolvedSymbolName)
         newNode->resolvedSymbolName = newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, resolvedSymbolName->kind);
     return newNode;

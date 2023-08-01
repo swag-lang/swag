@@ -420,7 +420,7 @@ void initErrors()
     SWAG_ERROR(Err0607, "a switch without an expression cannot be marked as 'Swag.Complete'");
     SWAG_ERROR(Err0678, "a type constraint should return a 'bool' value ('%s' provided)");
     SWAG_ERROR(Err0734, "a variadic parameter should be the last one");
-    SWAG_ERROR(Err0030, "alias should not be used on %s");
+    SWAG_ERROR(Err0030, "a name alias should not be used on %s");
     SWAG_ERROR(Err0034, "ambiguous conversion of struct '%s' to interface '%s'");
     SWAG_ERROR(Err0115, "ambiguous resolution of generic %s '%s'");
     SWAG_ERROR(Err0182, "ambiguous resolution of special function '%s'");
@@ -1004,7 +1004,7 @@ void initErrors()
     SWAG_ERROR(Hlp0003, "you can affect a lambda to a closure type, but not the other way around");
     SWAG_ERROR(Hlp0033, "you can unpack a variable with '?' if you want to ignore it");
     SWAG_ERROR(Hlp0029, "you can use 'mtd' instead of 'func' to declare an implicit 'using self' as a first parameter");
-    SWAG_ERROR(Hlp0025, nullptr);
+    SWAG_ERROR(Hlp0025, "you can use 'typealias' instead if you want to create an alias to %s");
     SWAG_ERROR(Hlp0019, "you cannot mix inferred and specified types in lambda parameters");
     SWAG_ERROR(Hlp0031, "you could also declare the interface member with 'mtd' instead of 'func'");
     SWAG_ERROR(Hlp0036, "you could force the evaluation with a '#run'");
@@ -1090,7 +1090,7 @@ void initErrors()
     SWAG_ERROR(Hnt0045, "this is the second initialization");
     SWAG_ERROR(Hnt0009, "this is the second one");
     SWAG_ERROR(Hnt0066, "this is the tuple unpacking");
-    SWAG_ERROR(Hnt0075, nullptr);
+    SWAG_ERROR(Hnt0075, "this is a type and should be a namespace, a function or a variable");
     SWAG_ERROR(Hnt0088, "this parameter has a default value");
     SWAG_ERROR(Hnt0071, "this parameter is missing");
     SWAG_ERROR(Hnt0089, "this parameter should have one too");

@@ -11,6 +11,60 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
+bool SemanticJob::resolveNameAlias(SemanticContext* context)
+{
+    auto node = CastAst<AstAlias>(context->node, AstNodeKind::NameAlias);
+    auto back = node->childs.back();
+
+    SWAG_ASSERT(node->resolvedSymbolName);
+    SWAG_ASSERT(back->resolvedSymbolName);
+
+    SWAG_CHECK(collectAttributes(context, node, nullptr));
+    node->flags |= AST_NO_BYTECODE;
+
+    // Constraints with alias on a variable
+    if (back->resolvedSymbolName->kind == SymbolKind::Variable)
+    {
+        // alias x = struct.x is not possible
+        if (back->kind == AstNodeKind::IdentifierRef)
+        {
+            int cptVar = 0;
+            for (auto& c : back->childs)
+            {
+                if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
+                {
+                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029), Hnt(Hnt0061)}));
+                    cptVar++;
+                }
+            }
+        }
+    }
+
+    if (back->resolvedSymbolName->kind != SymbolKind::Namespace &&
+        back->resolvedSymbolName->kind != SymbolKind::Function &&
+        back->resolvedSymbolName->kind != SymbolKind::Variable)
+    {
+        Diagnostic diag{back, Fmt(Err(Err0030), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
+        diag.hint = Hnt(Hnt0075);
+
+        Diagnostic* note = nullptr;
+        if (back->resolvedSymbolName->kind == SymbolKind::Enum ||
+            back->resolvedSymbolName->kind == SymbolKind::Interface ||
+            back->resolvedSymbolName->kind == SymbolKind::TypeAlias ||
+            back->resolvedSymbolName->kind == SymbolKind::Struct)
+        {
+            note = Diagnostic::help(node, node->kwdLoc, Fmt(Hlp(Hlp0025), Naming::aKindName(back->resolvedSymbolName->kind).c_str()));
+        }
+
+        return context->report(diag, note);
+    }
+
+    SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName, back->resolvedSymbolName, back->resolvedSymbolOverload));
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        node->ownerScope->addPublicNode(node);
+    return true;
+}
+
 bool SemanticJob::preResolveIdentifierRef(SemanticContext* context)
 {
     auto node = CastAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);

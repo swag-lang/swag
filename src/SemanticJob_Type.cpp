@@ -516,53 +516,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveNameAlias(SemanticContext* context)
-{
-    auto node = context->node;
-    auto back = node->childs.back();
-
-    SWAG_ASSERT(node->resolvedSymbolName);
-    SWAG_ASSERT(back->resolvedSymbolName);
-
-    SWAG_CHECK(collectAttributes(context, node, nullptr));
-    node->flags |= AST_NO_BYTECODE;
-
-    // Constraints with alias on a variable
-    if (back->resolvedSymbolName->kind == SymbolKind::Variable)
-    {
-        // alias x = struct.x is not possible
-        if (back->kind == AstNodeKind::IdentifierRef)
-        {
-            int cptVar = 0;
-            for (auto& c : back->childs)
-            {
-                if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
-                {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029), Hnt(Hnt0061)}));
-                    cptVar++;
-                }
-            }
-        }
-    }
-
-    switch (back->resolvedSymbolName->kind)
-    {
-    case SymbolKind::Namespace:
-    case SymbolKind::Enum:
-    case SymbolKind::Function:
-    case SymbolKind::Variable:
-    case SymbolKind::TypeAlias:
-        break;
-    default:
-        return context->report({back, Fmt(Err(Err0030), Naming::aKindName(back->resolvedSymbolName->kind).c_str())});
-    }
-
-    SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName, back->resolvedSymbolName, back->resolvedSymbolOverload));
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-        node->ownerScope->addPublicNode(node);
-    return true;
-}
-
 bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
 {
     auto node = context->node;

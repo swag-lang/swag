@@ -1021,6 +1021,8 @@ struct AstTryCatchAssume : public AstReturn
 struct AstAlias : public AstNode
 {
     AstNode* clone(CloneContext& context);
+
+    Token kwdLoc;
 };
 
 struct AstCast : public AstNode

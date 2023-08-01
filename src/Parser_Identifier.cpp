@@ -390,3 +390,30 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;
 }
+
+bool Parser::doNameAlias(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
+    node->kwdLoc      = token;
+    node->semanticFct = SemanticJob::resolveUsing;
+
+    *result = node;
+    SWAG_CHECK(eatToken());
+
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0071), token.ctext())));
+    node->inheritTokenName(token);
+    node->inheritTokenLocation(token);
+    SWAG_CHECK(checkIsValidUserName(node));
+
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatToken(TokenId::SymEqual));
+
+    AstNode* expr;
+    SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
+    SWAG_CHECK(eatSemiCol("'namealias' expression"));
+    expr->childs.back()->flags |= AST_NAME_ALIAS;
+
+    node->semanticFct        = SemanticJob::resolveNameAlias;
+    node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
+    return true;
+}
