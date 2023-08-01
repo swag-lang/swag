@@ -1668,7 +1668,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         CONCAT_FIXED_STR(concat, "namealias ");
         concat.addString(node->token.text);
         CONCAT_FIXED_STR(concat, " = ");
-        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        auto back = node->childs.back();
+        if (back->resolvedSymbolName)
+            concat.addString(back->resolvedSymbolName->getFullName());
+        else
+            SWAG_CHECK(outputNode(context, concat, back));
         break;
     }
 
