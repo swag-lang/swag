@@ -123,7 +123,7 @@ You can name parameters, and don't have to respect parameters order in that case
         if false
             return {1, 2}
 
-        // Or use the specifal type 'retval' which is an alias to the
+        // Or use the specifal type 'retval' which is an typealias to the
         // function return type (but not only, we'll see later)
         using var result: retval
         x = 1

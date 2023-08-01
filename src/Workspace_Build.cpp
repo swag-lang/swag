@@ -292,7 +292,8 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         prevNode = prevNodeLocal;
     else if (prevJob->originalNode->kind == AstNodeKind::VarDecl ||
              prevJob->originalNode->kind == AstNodeKind::ConstDecl ||
-             prevJob->originalNode->kind == AstNodeKind::Alias ||
+             prevJob->originalNode->kind == AstNodeKind::TypeAlias ||
+             prevJob->originalNode->kind == AstNodeKind::NameAlias ||
              prevJob->originalNode->kind == AstNodeKind::StructDecl ||
              prevJob->originalNode->kind == AstNodeKind::EnumDecl)
         prevNode = prevJob->originalNode;

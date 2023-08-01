@@ -3,6 +3,6 @@
 #test
 {
     var v: [4] s32
-    alias err = v[0]
+    namealias err = v[0]
     //@print(err)
 }

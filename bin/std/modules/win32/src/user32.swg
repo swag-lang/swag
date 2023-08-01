@@ -4,19 +4,19 @@ using Swag
 
 #[Swag.Strict]
 {
-    alias HWND = 	    const *void
-    alias HMENU = 	    const *void
-    alias HICON =	    const *void
-    alias HBITMAP =	    const *void
-    alias HCURSOR =	    const *void
-    alias HBRUSH =	    const *void
-    alias HDC =		    const *void
-    alias HMONITOR =    const *void
+    typealias HWND = 	    const *void
+    typealias HMENU = 	    const *void
+    typealias HICON =	    const *void
+    typealias HBITMAP =	    const *void
+    typealias HCURSOR =	    const *void
+    typealias HBRUSH =	    const *void
+    typealias HDC =		    const *void
+    typealias HMONITOR =    const *void
 }
 
-alias WPARAM =      u64
-alias LPARAM =      u64
-alias COLORREF =    DWORD
+typealias WPARAM =      u64
+typealias LPARAM =      u64
+typealias COLORREF =    DWORD
 
 const MOD_ALT      = 0x0001
 const MOD_CONTROL  = 0x0002

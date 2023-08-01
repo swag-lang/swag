@@ -36,7 +36,7 @@ impl PointBase
     }
 }
 
-alias Point2141 = PointBase'f32
+typealias Point2141 = PointBase'f32
 
 #test
 {

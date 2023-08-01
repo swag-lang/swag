@@ -1,6 +1,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    alias T = s32
-    alias y = {a: T, b: T}
+    typealias T = s32
+    typealias y = {a: T, b: T}
 }

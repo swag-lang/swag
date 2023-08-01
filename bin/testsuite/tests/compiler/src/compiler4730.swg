@@ -1,5 +1,5 @@
 #global testerror
-alias toto4730 = s32
+typealias toto4730 = s32
 
 #[Swag.Inline]
 public func toto4730()

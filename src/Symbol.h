@@ -69,7 +69,7 @@ enum class SymbolKind : uint8_t
     Invalid,
     Variable,
     TypeAlias,
-    Alias,
+    NameAlias,
     Namespace,
     Enum,
     EnumValue,

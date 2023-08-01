@@ -1,7 +1,7 @@
 struct BB
 {
-    alias x = {a: u32}
-    alias y = {a,b: u32}
+    typealias x = {a: u32}
+    typealias y = {a,b: u32}
 }
 
 #test

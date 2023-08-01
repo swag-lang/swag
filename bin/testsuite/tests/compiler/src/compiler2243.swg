@@ -1,4 +1,4 @@
-// You can use special type 'alias' to create a named alias
+// You can use special type 'typealias' to create a named typealias
 // for an identifier
 #[Swag.Mixin]
 func inc10()

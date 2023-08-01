@@ -1,8 +1,7 @@
-
 #global testerror
 
 #[Swag.Strict]
-alias T = toto
+namealias T = toto
 
 func toto(x: s32)
 {

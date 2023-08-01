@@ -48,7 +48,7 @@ attr Discardable()
 #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
 attr Deprecated(msg: string = null)
 
-// Hardcoded for type alias
+// Hardcoded for type typealias
 attr Strict()
 
 // Hardcoded for local variables

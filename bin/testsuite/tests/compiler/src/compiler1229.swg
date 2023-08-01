@@ -1,6 +1,6 @@
 namespace std.math
 {
-    alias Float = f32
+    typealias Float = f32
     func isZeroEpsilon(x, y: Float) => true
 }
 

@@ -3,7 +3,7 @@ struct A
     x = 1
 }
 
-alias TOTO = A
+typealias TOTO = A
 
 //#[Swag.PrintBc]
 func toto1()->[2] TOTO

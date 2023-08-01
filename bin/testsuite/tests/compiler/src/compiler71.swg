@@ -1,3 +1,3 @@
 ﻿#global testpass syntax
 
-alias myType = u32
+typealias myType = u32

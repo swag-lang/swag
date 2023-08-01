@@ -4,7 +4,7 @@ struct(T) Point
 	y: T = 10
 }
 
-alias Point2f = Point'f32
+typealias Point2f = Point'f32
 
 //#[Swag.PrintBc]
 #test

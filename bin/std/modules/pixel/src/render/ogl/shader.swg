@@ -2,11 +2,11 @@
 using Core, Ogl, Core.Math
 
 #[Swag.Strict]
-alias ShaderHandle = u64
+typealias ShaderHandle = u64
 const InvalidShaderHandle: ShaderHandle = acast 0
 
 #[Swag.Strict]
-alias ShaderParamHandle = s64
+typealias ShaderParamHandle = s64
 const InvalidShaderParamHandle: ShaderParamHandle = acast -1
 
 struct ShaderBase

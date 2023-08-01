@@ -1,6 +1,6 @@
 ﻿
 using Core.Threading
-alias createThread = Threading.Thread.init
+namealias createThread = Threading.Thread.init
 
 var G = 0's64
 const ITER = 50000

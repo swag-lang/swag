@@ -3,7 +3,7 @@ struct TT
     x: s32
 }
 
-alias AA = TT
+typealias AA = TT
 
 #test
 {

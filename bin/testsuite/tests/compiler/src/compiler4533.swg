@@ -1,7 +1,7 @@
 //#global testerror
 
 #[Swag.Strict]
-alias B = func(s32)
+typealias B = func(s32)
 
 var G = 0
 

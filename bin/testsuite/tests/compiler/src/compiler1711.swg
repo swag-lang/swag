@@ -1,7 +1,7 @@
 #test
 {
     {
-        alias point = string
+        typealias point = string
         var x: point = "0"
     }
 }

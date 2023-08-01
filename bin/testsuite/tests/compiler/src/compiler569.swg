@@ -1,1 +1,1 @@
-alias ret = {a,b: s32}
+typealias ret = {a,b: s32}

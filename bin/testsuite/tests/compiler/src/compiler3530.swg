@@ -9,7 +9,7 @@ impl StaticArray
     mtd const opIndex(idx: u64)->T => buffer[idx]
 }
 
-alias Vec2 = StaticArray'(f32, 2)
+typealias Vec2 = StaticArray'(f32, 2)
 
 func(T) dot(x, y: T)->f32
 {

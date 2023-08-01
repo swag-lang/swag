@@ -1,7 +1,7 @@
 #global public
 using Core, Pixel
 
-alias RichEditStyleRef = u8
+typealias RichEditStyleRef = u8
 
 struct RichEditRuneStyle
 {

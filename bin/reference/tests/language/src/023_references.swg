@@ -12,7 +12,7 @@ Swag has also **references**, which are pointers that behave like values.
     let myRef: const ref s32 = &x
 
     // This is a pointer that behaves like a value, so no explicit dereferencing is necessary.
-    // You can see this as a kind of an alias.
+    // You can see this as a kind of an typealias.
     @assert(myRef == 42)
 }
 
@@ -30,7 +30,7 @@ When an affectation is done outside of an initialization, you will change the po
     myRef = 66
     @assert(myRef == 66)
 
-    // Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.
+    // Remember that 'myRef' is an typealias for 'x', so 'x' has also been changed.
     @assert(x == 66)
 }
 

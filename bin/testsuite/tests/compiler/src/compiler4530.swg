@@ -1,7 +1,7 @@
 //#global testerror
 
 #[Swag.Strict]
-alias B = s32
+typealias B = s32
 
 enum A : B
 {

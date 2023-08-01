@@ -1654,9 +1654,17 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         concat.addChar(')');
         break;
 
-    case AstNodeKind::Alias:
+    case AstNodeKind::TypeAlias:
     {
-        CONCAT_FIXED_STR(concat, "alias ");
+        CONCAT_FIXED_STR(concat, "typealias ");
+        concat.addString(node->token.text);
+        CONCAT_FIXED_STR(concat, " = ");
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        break;
+    }
+    case AstNodeKind::NameAlias:
+    {
+        CONCAT_FIXED_STR(concat, "namealias ");
         concat.addString(node->token.text);
         CONCAT_FIXED_STR(concat, " = ");
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));

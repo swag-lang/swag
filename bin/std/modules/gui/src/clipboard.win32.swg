@@ -3,7 +3,7 @@
 #global public
 using Core, Win32, Pixel
 
-alias Format = u64
+typealias Format = u64
 
 internal var g_PngFormat: UINT
 

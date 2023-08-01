@@ -74,7 +74,7 @@
         @assert(a == 12)
     }
 
-    // You can use the special name `@alias` to create a named alias for an identifier.
+    // You can use the special name `@typealias` to create a named typealias for an identifier.
     {
         #[Swag.Mixin]
         func inc10()
@@ -83,8 +83,8 @@
         }
 
         var a, b = 0
-        inc10(|a|)  // Passing alias name 'a'
-        inc10(|b|)  // Passing alias name 'b'
+        inc10(|a|)  // Passing typealias name 'a'
+        inc10(|b|)  // Passing typealias name 'b'
         @assert(a == b and b == 10)
     }
 
@@ -95,11 +95,11 @@
             let @alias0 = value
         }
 
-        setVar(|a| 10)  // Passing alias name 'a'
-        setVar(|b| 20)  // Passing alias name 'b'
+        setVar(|a| 10)  // Passing typealias name 'a'
+        setVar(|b| 20)  // Passing typealias name 'b'
         @assert(a == 10)
         @assert(b == 20)
-        setVar(30)      // No alias, so name is @alias0
+        setVar(30)      // No typealias, so name is @alias0
         @assert(@alias0 == 30)
     }
 

@@ -1,7 +1,7 @@
 #global public
 using Core, Serialization
 
-alias FrameCallback = closure(*Application)
+typealias FrameCallback = closure(*Application)
 
 struct Application
 {

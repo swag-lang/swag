@@ -1,6 +1,6 @@
 #global testerror
 
-alias X = func()->s32
+typealias X = func()->s32
 
 #test
 {

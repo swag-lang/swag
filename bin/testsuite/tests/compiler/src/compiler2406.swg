@@ -15,7 +15,7 @@ impl NumericArray
 
 #test
 {
-    alias arr4 = NumericArray'(s32, 4)
+    typealias arr4 = NumericArray'(s32, 4)
     var x = arr4.from(1, 2, 3, 4)
     @assert(x.buf[0] == 1)
     @assert(x.buf[1] == 2)

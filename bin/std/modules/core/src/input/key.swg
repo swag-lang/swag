@@ -1,7 +1,7 @@
 #global namespace Input
 
 // Represents a virtual system key
-public alias VirtualKey = u32
+public typealias VirtualKey = u32
 
 #[Swag.EnumFlags]
 public enum KeyModifiers

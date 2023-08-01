@@ -8,6 +8,6 @@ func(T, N: u32) toto()
 {
     toto'(s32, 4)()
     toto'(f32, 5)()
-    alias titi = toto'(f32, 6)
+    namealias titi = toto'(f32, 6)
     titi()
 }

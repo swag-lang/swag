@@ -1,4 +1,4 @@
-alias V = f32
+typealias V = f32
 func toto(x: [4,4] f32)
 {
 

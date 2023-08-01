@@ -4,7 +4,7 @@
     var myVar = 0
     #macro
     {
-        alias myVar = #up myVar
+        typealias myVar = #up myVar
         myVar += 1
     }
 

@@ -381,7 +381,8 @@ JobResult SemanticJob::execute()
 
                 case AstNodeKind::VarDecl:
                 case AstNodeKind::ConstDecl:
-                case AstNodeKind::Alias:
+                case AstNodeKind::TypeAlias:
+                case AstNodeKind::NameAlias:
                 case AstNodeKind::EnumDecl:
                 case AstNodeKind::CompilerAssert:
                 case AstNodeKind::CompilerPrint:

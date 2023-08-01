@@ -524,7 +524,8 @@ Utf8 Diagnostic::syntax(const Utf8& line)
                 case TokenId::KwdClosure:
                 case TokenId::KwdMethod:
                 case TokenId::KwdNamespace:
-                case TokenId::KwdAlias:
+                case TokenId::KwdTypeAlias:
+                case TokenId::KwdNameAlias:
                 case TokenId::KwdAttr:
 
                 case TokenId::KwdTrue:

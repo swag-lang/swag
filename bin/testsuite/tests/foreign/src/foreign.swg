@@ -310,7 +310,7 @@ public func tcf_alloc(size: u32)
     all(vv.x)
 }
 
-public alias ThreadProc = func(*void)->u32;
+public typealias ThreadProc = func(*void)->u32;
 
 #[Swag.Foreign("kernel32")]
 {

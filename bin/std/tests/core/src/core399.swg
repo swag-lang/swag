@@ -7,7 +7,7 @@ struct Node
     kids:   Array'Node
 }
 
-alias WalkAction = closure(const ref Node, s32)
+typealias WalkAction = closure(const ref Node, s32)
 
 func walk(tree: const ref Node, action: WalkAction, depth = 0)
 {

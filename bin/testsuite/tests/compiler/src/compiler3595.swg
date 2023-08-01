@@ -17,7 +17,7 @@ impl A
     var x: A's32
     var xx = x[0]
 
-    alias S32 = s32
+    typealias S32 = s32
     var y: A'S32
     var yy = y[0]
 

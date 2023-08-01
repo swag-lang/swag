@@ -2,7 +2,7 @@
 #test
 {
     var s = 0
-    alias v = s
+    namealias v = s
     v = 1
     @assert(s == 1)
 }

@@ -8,7 +8,7 @@ func toto()
 //#[Swag.PrintBc]
 #test
 {
-    alias CB = closure()
+    typealias CB = closure()
     var arr: [2] CB
     arr[0] = &toto
 

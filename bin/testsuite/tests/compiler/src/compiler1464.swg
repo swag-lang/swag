@@ -1,3 +1,3 @@
 
 #global testerror
-var @alias = 0
+var @typealias = 0

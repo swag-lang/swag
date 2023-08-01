@@ -492,7 +492,7 @@ struct SemanticJob : public Job
     static bool resolveReturn(SemanticContext* context);
     static bool resolveRetVal(SemanticContext* context);
     static bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar);
-    static bool resolveAlias(SemanticContext* context);
+    static bool resolveNameAlias(SemanticContext* context);
     static bool resolveWith(SemanticContext* context);
     static bool resolveWithVarDeclAfter(SemanticContext* context);
     static bool resolveWithAfterKnownType(SemanticContext* context);

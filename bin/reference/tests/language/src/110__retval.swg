@@ -1,5 +1,5 @@
 /**
-Inside a function, you can use the `retval` type which is an alias to the function return type.
+Inside a function, you can use the `retval` type which is an typealias to the function return type.
 */
 #test
 {

@@ -90,7 +90,7 @@ impl Sha256
 
 public impl Sha256
 {
-    alias Digest = [8] u32
+    typealias Digest = [8] u32
 
     // Finalize the computation
     mtd final(result: Digest)

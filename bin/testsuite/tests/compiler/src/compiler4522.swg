@@ -10,7 +10,7 @@ impl A
 }
 
 #[Swag.Strict]
-alias AL = A
+typealias AL = A
 
 #test
 {

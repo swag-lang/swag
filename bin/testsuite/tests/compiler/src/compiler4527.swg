@@ -4,7 +4,7 @@ enum A
 }
 
 #[Swag.Strict]
-alias AL = A
+typealias AL = A
 
 //#[Swag.PrintBc]
 #test

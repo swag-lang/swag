@@ -1,4 +1,4 @@
-alias Fct = closure(s32)
+typealias Fct = closure(s32)
 
 var g: [4] Fct
 

@@ -1,5 +1,5 @@
 #global testerror
-alias A4728 = s32
+typealias A4728 = s32
 
 public func toto4728()->{a: A4728}
 {

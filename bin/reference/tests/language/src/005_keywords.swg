@@ -74,7 +74,8 @@ internal
 private
 interface
 using
-alias
+typealias
+namealias
 discard
 dref
 ```

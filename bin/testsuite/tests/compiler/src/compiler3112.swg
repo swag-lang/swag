@@ -1,7 +1,7 @@
 #[Swag.Strict]
 {
-    alias AA = *void
-    alias BB = *void
+    typealias AA = *void
+    typealias BB = *void
 }
 
 func test(x: AA)

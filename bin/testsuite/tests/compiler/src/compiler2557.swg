@@ -3,9 +3,9 @@
 func toto()
 {
     #if false
-        alias AA = s32
+        typealias AA = s32
     #else
-        alias AA = s64
+        typealias AA = s64
     var x: AA
     @assert(@typeof(x) == s64)
 }

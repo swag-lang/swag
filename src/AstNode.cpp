@@ -349,7 +349,8 @@ void AstNode::release()
     case AstNodeKind::Throw:
         Allocator::free<AstTryCatchAssume>(this);
         break;
-    case AstNodeKind::Alias:
+    case AstNodeKind::TypeAlias:
+    case AstNodeKind::NameAlias:
         Allocator::free<AstAlias>(this);
         break;
     case AstNodeKind::Cast:
@@ -486,7 +487,8 @@ AstNode* AstNode::clone(CloneContext& context)
     case AstNodeKind::Assume:
     case AstNodeKind::Throw:
         return clone<AstTryCatchAssume>(this, context);
-    case AstNodeKind::Alias:
+    case AstNodeKind::TypeAlias:
+    case AstNodeKind::NameAlias:
         return clone<AstAlias>(this, context);
     case AstNodeKind::Cast:
     case AstNodeKind::AutoCast:

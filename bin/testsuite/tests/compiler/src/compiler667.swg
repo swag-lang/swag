@@ -1,6 +1,6 @@
 #global testerror
 
-alias toto = s32
+typealias toto = s32
 
 //#[Swag.PrintBc]
 #test

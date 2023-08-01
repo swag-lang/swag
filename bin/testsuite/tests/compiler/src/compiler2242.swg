@@ -1,7 +1,7 @@
 
 #global testerror
 
-func mix(v, val: alias)
+func mix(v, val: typealias)
 {
     v += val
 }

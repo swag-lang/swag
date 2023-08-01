@@ -7,7 +7,7 @@ func write_chunk(chunk_type: TT, buf: const *u8, length: u64)
     @assert(length == 666)
 }
 
-alias TT = const [4] u8
+typealias TT = const [4] u8
 const type_ihdr: TT = [ 73, 72, 68, 82 ]
 
 #test

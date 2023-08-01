@@ -106,7 +106,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         }
         else if (oneAttribute->token.text == g_LangSpec->name_Strict)
         {
-            if (kind == AstNodeKind::Alias)
+            if (kind == AstNodeKind::TypeAlias)
                 return true;
             specificMsg = "a type alias";
         }

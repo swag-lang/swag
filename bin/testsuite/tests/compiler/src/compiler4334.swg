@@ -1,7 +1,7 @@
 //#global skip
 namespace A
 {
-    alias B = s32
+    typealias B = s32
 }
 
 //#global testerror

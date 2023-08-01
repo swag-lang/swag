@@ -1,1 +1,1 @@
-alias X = func()
+typealias X = func()

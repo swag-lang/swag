@@ -1,6 +1,6 @@
 struct Point2
 {
-    alias R = s32
+    typealias R = s32
     x, y: s32
 }
 

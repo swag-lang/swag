@@ -93,7 +93,7 @@ You can mix types and constants.
         // alone is considered to be a generic type.
         func(T, N: s32) myFunc(x: T) => x * N
 
-        alias call = myFunc'(s32, 10)
+        namealias call = myFunc'(s32, 10)
         @assert(call(2) == 20)
         @assert(call(100) == 1000)
     }

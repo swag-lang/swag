@@ -1,4 +1,4 @@
-alias A = u8
+typealias A = u8
 
 func(T) toto()
 {

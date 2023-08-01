@@ -1,7 +1,7 @@
 ﻿#global testerror;
 ;
 
-alias myType = u32;
-alias myType1 = bool;
+typealias myType = u32;
+typealias myType1 = bool;
 
-alias myType = f32;
+typealias myType = f32;

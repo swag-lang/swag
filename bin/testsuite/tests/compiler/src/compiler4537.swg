@@ -1,7 +1,7 @@
 #global testerror
 
 #[Swag.Strict]
-alias C = func(s32)
+typealias C = func(s32)
 
 #test
 {

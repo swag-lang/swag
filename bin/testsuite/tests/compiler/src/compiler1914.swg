@@ -14,8 +14,8 @@ impl C1914
 //public #bake C1914s32 = C1914's32
 //public #bake C1914f32 = C1914'f32
 
-alias TC1914 = C1914's32
-alias TC19142 = C1914'f32
+typealias TC1914 = C1914's32
+typealias TC19142 = C1914'f32
 
 #test
 {

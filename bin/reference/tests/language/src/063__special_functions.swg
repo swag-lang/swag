@@ -7,9 +7,9 @@ struct Struct
     x, y: s32
 }
 
-alias OneType      = bool
-alias AnotherType  = s32
-alias WhateverType = bool
+typealias OneType      = bool
+typealias AnotherType  = s32
+typealias WhateverType = bool
 
 impl Struct
 {

@@ -2,7 +2,7 @@
 #global testerror
 
 #[Swag.Strict]
-alias T = s32
+typealias T = s32
 
 func toto(x: T)
 {

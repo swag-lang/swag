@@ -1,4 +1,4 @@
-alias H = closure()
+typealias H = closure()
 
 //#[Swag.PrintBc]
 func toto(x: H = null)

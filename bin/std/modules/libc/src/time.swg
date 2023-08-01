@@ -21,8 +21,8 @@ using Swag
 const CLOCKS_PER_SEC = 1000
 const TIME_UTC       = 1
 
-alias clock_t = s64
-alias time_t  = s64
+typealias clock_t = s64
+typealias time_t  = s64
 
 struct tm
 {

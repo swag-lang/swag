@@ -134,7 +134,7 @@
         @assert(a == 10)
     }
 
-    // In a macro, you can use special variables named `@alias<num>`. Note that this is also valid for mixins.
+    // In a macro, you can use special variables named `@typealias<num>`. Note that this is also valid for mixins.
     {
         #[Swag.Macro]
         func call(v: s32, stmt: code)

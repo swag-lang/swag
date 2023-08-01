@@ -516,42 +516,22 @@ bool SemanticJob::resolveType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveAlias(SemanticContext* context)
+bool SemanticJob::resolveNameAlias(SemanticContext* context)
 {
     auto node = context->node;
     auto back = node->childs.back();
 
     // Be sure symbol is there...
     if (!node->resolvedSymbolName)
-        node->resolvedSymbolName = node->ownerScope->symTable.registerSymbolName(context, node, SymbolKind::Alias);
+        node->resolvedSymbolName = node->ownerScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
 
-    // alias x = @typeof
     auto overload = back->resolvedSymbolOverload;
-    if (!overload && back->kind == AstNodeKind::IdentifierRef)
-    {
-        back = back->childs.back();
-        if (back->tokenId == TokenId::IntrinsicTypeOf || back->tokenId == TokenId::IntrinsicKindOf)
-        {
-            node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
-            SWAG_CHECK(resolveTypeAlias(context));
-            return true;
-        }
-    }
-
     SWAG_VERIFY(back->kind != AstNodeKind::ArrayPointerIndex, context->report({back, Err(Err0819), Hnt(Hnt0061)}));
     SWAG_VERIFY(overload, context->report({back, Err(Err0027), Hnt(Hnt0075)}));
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
-    if (typeResolved->isStruct() || typeResolved->isInterface() || typeResolved->isEnum())
-    {
-        node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
-        SWAG_CHECK(resolveTypeAliasBefore(context));
-        SWAG_CHECK(resolveTypeAlias(context));
-        return true;
-    }
-
-    // Collect all attributes for the variable
+    // Collect all attributes
     SWAG_CHECK(collectAttributes(context, node, nullptr));
     SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, Err(Err0028)}));
 

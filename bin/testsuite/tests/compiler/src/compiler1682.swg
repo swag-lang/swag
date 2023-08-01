@@ -7,7 +7,7 @@ struct TT
     value4: s64 = 456
 }
 
-alias myStruct = TT
+typealias myStruct = TT
 
 //#[Swag.PrintBc]
 func C(x: any)

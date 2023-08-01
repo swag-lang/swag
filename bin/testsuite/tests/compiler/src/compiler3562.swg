@@ -11,7 +11,7 @@ impl Arr
     }
 }
 
-alias CB = closure()
+typealias CB = closure()
 
 #test
 {

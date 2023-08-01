@@ -1,8 +1,8 @@
 #global public
 using Core, Pixel
 
-alias WndId = string
-alias HookEvent = closure(*Wnd, *Event)->bool
+typealias WndId = string
+typealias HookEvent = closure(*Wnd, *Event)->bool
 
 enum DockStyle
 {

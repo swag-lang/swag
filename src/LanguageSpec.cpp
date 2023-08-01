@@ -334,7 +334,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("closure", TokenId::KwdClosure);
     keywords.add("mtd", TokenId::KwdMethod);
     keywords.add("namespace", TokenId::KwdNamespace);
-    keywords.add("alias", TokenId::KwdAlias);
+    keywords.add("typealias", TokenId::KwdTypeAlias);
+    keywords.add("namealias", TokenId::KwdNameAlias);
     keywords.add("attr", TokenId::KwdAttr);
     keywords.add("var", TokenId::KwdVar);
     keywords.add("let", TokenId::KwdLet);

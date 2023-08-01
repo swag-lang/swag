@@ -6,4 +6,4 @@ struct(T) Point
 	y: T = 10
 }
 
-alias Point2f = Point
+typealias Point2f = Point

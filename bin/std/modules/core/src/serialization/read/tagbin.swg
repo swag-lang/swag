@@ -360,7 +360,7 @@ impl TagBin
                 }
             }
 
-            // No alias, the field is not there, just ignore it
+            // No typealias, the field is not there, just ignore it
             if !ent
                 return false
 

@@ -1,6 +1,6 @@
 #global if #os == Swag.TargetOs.Windows
 
-alias ThreadProc = func(*void)->u32;
+typealias ThreadProc = func(*void)->u32;
 
 #[Swag.Foreign("kernel32")]
 {

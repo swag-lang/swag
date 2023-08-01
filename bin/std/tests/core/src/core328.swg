@@ -1,6 +1,6 @@
 using Core
 
-alias CB = closure()
+typealias CB = closure()
 
 //#[Swag.PrintBc]
 #test

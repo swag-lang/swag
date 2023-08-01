@@ -372,7 +372,7 @@ bool SymTable::registerUsingAliasOverload(ErrorContext* context, AstNode* node, 
 
     if (!symbol->overloads.empty())
     {
-        if (symbol->kind != SymbolKind::Alias)
+        if (symbol->kind != SymbolKind::NameAlias)
         {
             auto       firstOverload = symbol->overloads[0];
             Diagnostic diag{node, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};

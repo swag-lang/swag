@@ -142,7 +142,7 @@ Utf8 Naming::kindName(SymbolKind kind, Utf8& article)
     case SymbolKind::TypeAlias:
         article = "a";
         return "type alias";
-    case SymbolKind::Alias:
+    case SymbolKind::NameAlias:
         article = "a";
         return "name alias";
     case SymbolKind::Variable:
@@ -315,9 +315,13 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
         article = "a";
         return "namespace";
 
-    case AstNodeKind::Alias:
-        article = "an";
-        return "alias";
+    case AstNodeKind::TypeAlias:
+        article = "a";
+        return "type alias";
+
+    case AstNodeKind::NameAlias:
+        article = "a";
+        return "name alias";
 
     case AstNodeKind::FuncDeclParam:
         article = "a";

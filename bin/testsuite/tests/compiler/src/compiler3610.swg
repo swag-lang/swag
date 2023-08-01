@@ -7,7 +7,7 @@ func toto()->{v: s32}
 
 #test
 {
-    alias TT = func()->{a:s32}
+    typealias TT = func()->{a:s32}
     var t: TT
     t = &toto
 }

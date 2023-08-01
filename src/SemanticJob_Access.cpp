@@ -15,7 +15,8 @@ bool SemanticJob::canHaveGlobalAccess(AstNode* node)
     case AstNodeKind::EnumDecl:
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::StructDecl:
-    case AstNodeKind::Alias:
+    case AstNodeKind::TypeAlias:
+    case AstNodeKind::NameAlias:
         return true;
     default:
         return false;

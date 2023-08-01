@@ -28,7 +28,7 @@ You can have multiple `impl` blocks. The difference with a namespace is that `se
 
 impl MyStruct
 {
-    // 'self' is an alias for 'var self: Self'
+    // 'self' is an typealias for 'var self: Self'
     func returnX(using self) => x
     func returnY(self)       => self.y
     // 'Self' is the corresponding type, in that case 'MyStruct'
@@ -62,8 +62,8 @@ All functions in an `impl` block can be retrieved by reflection, as long as the 
 */
 #test
 {
-    // Creates a type alias named 'Lambda'
-    alias Lambda = func(MyStruct)->s32
+    // Creates a type typealias named 'Lambda'
+    typealias Lambda = func(MyStruct)->s32
 
     var fnX: Lambda
     var fnY: Lambda

@@ -42,7 +42,7 @@ func nowMicroseconds()->u32
     return cast,bit(u32) ticks
 }
 
-alias Ticks = u64
+typealias Ticks = u64
 
 // Convert a time to a 64 bits value
 func timeToTicks(hour, minute, second, millisecond: u16)->Ticks

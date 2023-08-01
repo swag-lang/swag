@@ -4,7 +4,7 @@ using Swag
 const EXIT_SUCCESS = 0
 const EXIT_FAILURE = 1
 
-alias wchar_t = u16
+typealias wchar_t = u16
 
 struct div_t   { quot, rem: s32; }
 struct ldiv_t  { quot, rem: s32; }

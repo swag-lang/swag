@@ -10,7 +10,7 @@ func toto(stmt: code)
     toto()
     {
         var x = 0
-        alias G1 = x
+        namealias G1 = x
         G1 = 1
         @assert(x == 1)
     }

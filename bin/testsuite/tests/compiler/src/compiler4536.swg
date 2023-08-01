@@ -1,5 +1,5 @@
 #[Swag.Strict]
-alias B = func(s32)->s32
+typealias B = func(s32)->s32
 
 #test
 {

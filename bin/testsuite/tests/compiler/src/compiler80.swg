@@ -2,7 +2,7 @@
 
 namespace A
 {
-	alias a = u32;
+	typealias a = u32;
 }
 
 namespace B

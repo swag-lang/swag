@@ -14,7 +14,7 @@ func release(node: *Node)
     Memory.delete(node)
 }
 
-alias WalkAction = closure(const *Node, s32)
+typealias WalkAction = closure(const *Node, s32)
 
 func walk(tree: const *Node, action: WalkAction, depth = 0)
 {

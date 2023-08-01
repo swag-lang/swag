@@ -4,7 +4,7 @@ func toto1(x, y: s32)
     @assert(y == 3)
 }
 
-alias T = func(s32, s32)
+typealias T = func(s32, s32)
 struct X
 {
     t: [2] T

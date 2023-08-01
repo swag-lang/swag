@@ -1,7 +1,7 @@
 
 #global testerror
 
-alias A = [] s32
+typealias A = [] s32
 var x: A
 #test
 {

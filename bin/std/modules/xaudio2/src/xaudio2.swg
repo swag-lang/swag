@@ -3,14 +3,14 @@
 #foreignlib "xaudio2"
 using Swag, Win32
 
-alias UINT32  = u32
-alias UINT64  = u64
-alias FLOAT32 = f32
+typealias UINT32  = u32
+typealias UINT64  = u64
+typealias FLOAT32 = f32
 
 const X3DAUDIO_HANDLE_BYTESIZE = 20
-alias X3DAUDIO_HANDLE = [X3DAUDIO_HANDLE_BYTESIZE] BYTE
+typealias X3DAUDIO_HANDLE = [X3DAUDIO_HANDLE_BYTESIZE] BYTE
 
-alias XAUDIO2_PROCESSOR = UINT32
+typealias XAUDIO2_PROCESSOR = UINT32
 const Processor1  = 0x00000001
 const Processor2  = 0x00000002
 const Processor3  = 0x00000004

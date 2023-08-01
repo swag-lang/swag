@@ -1,8 +1,8 @@
 struct A {}
 struct B { using a: A; }
 
-alias Alias0 = *void
-alias Alias1 = *void
+typealias Alias0 = *void
+typealias Alias1 = *void
 
 impl A
 {

@@ -84,7 +84,7 @@ using Swag
         return typeStruct.structName == name
     }
 
-    // In case this is a type alias, need to go deep inside it to find the right type
+    // In case this is a type typealias, need to go deep inside it to find the right type
     func makeConcreteAlias(type: typeinfo)->typeinfo
     {
         var result = type

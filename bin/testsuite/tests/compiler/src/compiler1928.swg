@@ -1,10 +1,10 @@
 
 #global testerror
 
-alias A = [2] s32
+typealias A = [2] s32
 var x: A
 
 #test
 {
-    alias p = &x[0]
+    namealias p = &x[0]
 }

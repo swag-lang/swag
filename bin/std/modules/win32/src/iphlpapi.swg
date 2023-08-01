@@ -17,8 +17,8 @@ struct IP_ADDRESS_STRING
     str: [4 * 4] u8
 }
 
-alias IP_MASK_STRING = IP_ADDRESS_STRING
-alias time_t = u64
+typealias IP_MASK_STRING = IP_ADDRESS_STRING
+typealias time_t = u64
 
 struct IP_ADDR_STRING
 {

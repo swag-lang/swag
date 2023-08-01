@@ -22,7 +22,7 @@ In Swag, types are also values that can be inspected at compile time or at runti
         @assert(ptr4 == s64)
     }
 
-    // The return result of `@typeof` is a const pointer to a `Swag.TypeInfo` kind of structure. This is an alias for the `typeinfo` type.
+    // The return result of `@typeof` is a const pointer to a `Swag.TypeInfo` kind of structure. This is an typealias for the `typeinfo` type.
     {
         let ptr = bool
         @assert(@typeof(ptr) == @typeof(const *Swag.TypeInfoNative))

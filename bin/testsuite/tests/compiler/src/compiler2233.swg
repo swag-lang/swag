@@ -23,7 +23,7 @@ impl A
     }
 }
 
-alias TOTO = [3] A
+typealias TOTO = [3] A
 
 #[Swag.Inline]
 func toto1()->TOTO

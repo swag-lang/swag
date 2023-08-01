@@ -1,5 +1,5 @@
 #global testerror
-alias AL = void
+typealias AL = void
 func toto()->AL
 {
 }

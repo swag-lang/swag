@@ -7,15 +7,15 @@
 ////////////////////////////////////////////////////////////
 namespace __Win32RT
 {
-    alias HANDLE  = *void
-    alias DWORD   = u32
-    alias SRWLOCK = *void
-    alias USHORT  = u16
-    alias ULONG   = u32
-    alias ULONG64 = u64
-    alias CHAR    = u8
-    alias WCHAR   = u16
-    alias BOOL    = u8
+    typealias HANDLE  = *void
+    typealias DWORD   = u32
+    typealias SRWLOCK = *void
+    typealias USHORT  = u16
+    typealias ULONG   = u32
+    typealias ULONG64 = u64
+    typealias CHAR    = u8
+    typealias WCHAR   = u16
+    typealias BOOL    = u8
 
     const STD_OUTPUT_HANDLE     = cast,bit(u32) -11
     const MB_CANCELTRYCONTINUE  = 0x00000006
