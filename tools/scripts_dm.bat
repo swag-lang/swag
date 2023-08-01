@@ -1,4 +1,4 @@
-..\bin\swag_devmode clean --script %1 %2 %3 %4
+..\bin\swag_devmode clean --script --ignore-bad-params %1 %2 %3 %4
 
 ..\bin\swag_devmode ..\bin\examples\scripts\pacman.swgs     --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode ..\bin\examples\scripts\taquin.swgs     --args:"swag.test" %1 %2 %3 %4

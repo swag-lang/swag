@@ -84,6 +84,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",               "--backend",              nullptr,    CommandLineType::EnumInt,       &cmdLine->backendGenType, "llvm|x64", "the type of backend to use");
     addArg("ru",                  "--bytecode",             nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "run in bytecode mode");
     addArg("cl",                  "--script",               nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "clean also script cache");
+    addArg("sc",                  "--script-run",           nullptr,    CommandLineType::Bool,          &cmdLine->scriptRun, nullptr, "run script, or just compile if false");
                                   
 #ifdef SWAG_STATS                 
     addArg("all",                 "--stats",                nullptr,    CommandLineType::Bool,          &cmdLine->stats, nullptr, "[stats] display statistics at the end");

@@ -562,6 +562,8 @@ JobResult ModuleBuildJob::execute()
 
         if (!module->hasBytecodeToRun())
             pass = ModuleBuildPass::Output;
+        else if (module->kind == ModuleKind::Script && !g_CommandLine.scriptRun)
+            pass = ModuleBuildPass::Done;
         else
             pass = ModuleBuildPass::RunByteCode;
     }

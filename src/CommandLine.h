@@ -21,6 +21,7 @@ struct CommandLine
     bool      rebuildAll    = false;
     bool      run           = false;
     bool      scriptMode    = false;
+    bool      scriptRun     = true;
     bool      scriptCommand = false;
     bool      genDoc        = false;
 
