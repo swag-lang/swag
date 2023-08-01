@@ -543,9 +543,11 @@
 <li><a href="#Pixel_Painter_measureString">Painter.measureString</a></li>
 <li><a href="#Pixel_Painter_popClippingRect">Painter.popClippingRect</a></li>
 <li><a href="#Pixel_Painter_popState">Painter.popState</a></li>
+<li><a href="#Pixel_Painter_popTransform">Painter.popTransform</a></li>
 <li><a href="#Pixel_Painter_pushClippingRect">Painter.pushClippingRect</a></li>
 <li><a href="#Pixel_Painter_pushClippingSurfaceRect">Painter.pushClippingSurfaceRect</a></li>
 <li><a href="#Pixel_Painter_pushState">Painter.pushState</a></li>
+<li><a href="#Pixel_Painter_pushTransform">Painter.pushTransform</a></li>
 <li><a href="#Pixel_Painter_releaseRenderTarget">Painter.releaseRenderTarget</a></li>
 <li><a href="#Pixel_Painter_removeParams">Painter.removeParams</a></li>
 <li><a href="#Pixel_Painter_resetClippingRect">Painter.resetClippingRect</a></li>
@@ -553,6 +555,7 @@
 <li><a href="#Pixel_Painter_resetState">Painter.resetState</a></li>
 <li><a href="#Pixel_Painter_resetTransform">Painter.resetTransform</a></li>
 <li><a href="#Pixel_Painter_rotateTransform">Painter.rotateTransform</a></li>
+<li><a href="#Pixel_Painter_rotateTransformInPlace">Painter.rotateTransformInPlace</a></li>
 <li><a href="#Pixel_Painter_scaleTransform">Painter.scaleTransform</a></li>
 <li><a href="#Pixel_Painter_setAntialiased">Painter.setAntialiased</a></li>
 <li><a href="#Pixel_Painter_setBlendingMode">Painter.setBlendingMode</a></li>
@@ -2572,7 +2575,7 @@ f64</td>
 <h3 class="content" id="Pixel_Clipper_Edge"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">Edge</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L81" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2941,7 +2944,7 @@ pt</td>
 <h3 class="content" id="Pixel_Clipper_Join"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">Join</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3030,7 +3033,7 @@ u32</td>
 <h3 class="content" id="Pixel_Clipper_LocalMinimum"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">LocalMinimum</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L58" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3192,7 +3195,7 @@ polyNodes</td>
 <h3 class="content" id="Pixel_Clipper_OutPt"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">OutPt</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L113" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3237,7 +3240,7 @@ prev</td>
 <h3 class="content" id="Pixel_Clipper_OutRec"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">OutRec</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L102" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3343,7 +3346,7 @@ Negative</td>
 <h3 class="content" id="Pixel_Clipper_PolyNode"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">PolyNode</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L113" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3450,7 +3453,7 @@ s32</td>
 <h3 class="content" id="Pixel_Clipper_Transform"><span class="titletype">struct</span> <span class="titlelight">Clipper.</span><span class="titlestrong">Transform</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L150" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9749,6 +9752,14 @@ stackState</td>
 </tr>
 <tr>
 <td class="tdname">
+stackTransform</td>
+<td class="tdtype">
+<a href="core.html#Core_Array">Core.Array</a>(<a href="core.html#Core_Math_Transform2">Core.Math.Transform2</a>)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
 lastTexture0Type</td>
 <td class="tdtype">
 <a href="#Pixel_BrushType">Pixel.BrushType</a></td>
@@ -10316,6 +10327,14 @@ Restore the last paint state.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Pixel_Painter_popTransform">popTransform(self)</a></td>
+<td class="enumeration">
+<p>
+Restore the pushed transformation.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Pixel_Painter_pushClippingRect">pushClippingRect(self, const ref Rectangle, bool)</a></td>
 <td class="enumeration">
 <p>
@@ -10336,6 +10355,14 @@ Interface the given rectangle with the current clipping rectangle.</p>
 <td class="enumeration">
 <p>
 Save the current paint state.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel_Painter_pushTransform">pushTransform(self)</a></td>
+<td class="enumeration">
+<p>
+Push the current transformation.</p>
 </td>
 </tr>
 <tr>
@@ -10389,7 +10416,7 @@ Reset the paint position, rotation, scale.</p>
 <a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle)</a></td>
 <td class="enumeration">
 <p>
-Set the paint rotation, in degrees.</p>
+Set the paint rotation.</p>
 </td>
 </tr>
 <tr>
@@ -10397,7 +10424,15 @@ Set the paint rotation, in degrees.</p>
 <a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
 <td class="enumeration">
 <p>
-Set the paint rotation, in degrees.</p>
+Set the paint rotation.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace(self, const ref Angle)</a></td>
+<td class="enumeration">
+<p>
+Set the paint rotation.</p>
 </td>
 </tr>
 <tr>
@@ -10578,7 +10613,7 @@ Bind a render target.</p>
 <h3 class="content" id="Pixel_Painter_addParams"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">addParams</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L479" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L480" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10593,7 +10628,7 @@ Bind a render target.</p>
 <h3 class="content" id="Pixel_Painter_begin"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">begin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L398" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L399" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10610,7 +10645,7 @@ Call this before drawing.</p>
 <h3 class="content" id="Pixel_Painter_bindRenderTarget"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">bindRenderTarget</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L718" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L742" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10655,7 +10690,7 @@ Returns the extent in both directions of a given LineCapStyle.</p>
 <h3 class="content" id="Pixel_Painter_clear"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">clear</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L422" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L423" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11002,7 +11037,7 @@ Draw a texture image.</p>
 <h3 class="content" id="Pixel_Painter_end"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">end</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L415" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L416" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11019,7 +11054,7 @@ Call this after drawing.</p>
 <h3 class="content" id="Pixel_Painter_endClippingRegion"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">endClippingRegion</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L675" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L699" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11182,7 +11217,7 @@ func fillRoundRect(using self, left: f32, top: f32, width: f32, height: f32, rad
 <h3 class="content" id="Pixel_Painter_getClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getClippingRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L647" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L671" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11222,7 +11257,7 @@ Returns all the glyphs for a given string and font.</p>
 <h3 class="content" id="Pixel_Painter_getParams"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getParams</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L499" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L500" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11237,7 +11272,7 @@ Returns all the glyphs for a given string and font.</p>
 <h3 class="content" id="Pixel_Painter_getQuality"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getQuality</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L501" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L502" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11252,7 +11287,7 @@ Returns all the glyphs for a given string and font.</p>
 <h3 class="content" id="Pixel_Painter_getTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">getTransform</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L565" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L589" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11269,7 +11304,7 @@ Returns the current tranformation.</p>
 <h3 class="content" id="Pixel_Painter_isEmptyClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">isEmptyClippingRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L655" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L679" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11326,7 +11361,7 @@ Returns the metrics of a given text.</p>
 <h3 class="content" id="Pixel_Painter_popClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">popClippingRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L633" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L657" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11343,7 +11378,7 @@ Restore the original clipping rectangle.</p>
 <h3 class="content" id="Pixel_Painter_popState"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">popState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L466" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L467" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11357,10 +11392,27 @@ Restore the last paint state.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Pixel_Painter_popTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">popTransform</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L568" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Restore the pushed transformation.</p>
+<p class="code">
+<code style="white-space: break-spaces">func popTransform(using self)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Pixel_Painter_pushClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">pushClippingRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L612" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L636" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11377,7 +11429,7 @@ Interface the given rectangle with the current clipping rectangle.</p>
 <h3 class="content" id="Pixel_Painter_pushClippingSurfaceRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">pushClippingSurfaceRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L606" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L630" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11394,7 +11446,7 @@ Interface the given rectangle with the current clipping rectangle.</p>
 <h3 class="content" id="Pixel_Painter_pushState"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">pushState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L460" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L461" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11408,10 +11460,27 @@ Save the current paint state.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Pixel_Painter_pushTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">pushTransform</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L562" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Push the current transformation.</p>
+<p class="code">
+<code style="white-space: break-spaces">func pushTransform(using self)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Pixel_Painter_releaseRenderTarget"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">releaseRenderTarget</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L747" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L771" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11428,7 +11497,7 @@ Release the render target.</p>
 <h3 class="content" id="Pixel_Painter_removeParams"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">removeParams</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L484" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L485" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11443,7 +11512,7 @@ Release the render target.</p>
 <h3 class="content" id="Pixel_Painter_resetClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">resetClippingRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L595" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L619" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11460,7 +11529,7 @@ Reset the current clipping rectangle.</p>
 <h3 class="content" id="Pixel_Painter_resetClippingRegion"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">resetClippingRegion</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L681" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L705" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11477,7 +11546,7 @@ Reset clipping buffer to its default value (no more clipping).</p>
 <h3 class="content" id="Pixel_Painter_resetState"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">resetState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L429" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L430" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11494,7 +11563,7 @@ Reset the current painting state.</p>
 <h3 class="content" id="Pixel_Painter_resetTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">resetTransform</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L550" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L574" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11511,18 +11580,18 @@ Reset the paint position, rotation, scale.</p>
 <h3 class="content" id="Pixel_Painter_rotateTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">rotateTransform</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L520" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L521" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Set the paint rotation, in degrees.</p>
+Set the paint rotation.</p>
 <p class="code">
 <code style="white-space: break-spaces">func rotateTransform(using self, angle: <a href="core.html#Core_Math_Angle">Core.Math.Angle</a>)
 </code>
 </p>
 <p>
-Set the paint rotation, in degrees.</p>
+Set the paint rotation.</p>
 <p class="code">
 <code style="white-space: break-spaces">func rotateTransform(using self, angle: <a href="core.html#Core_Math_Angle">Core.Math.Angle</a>, centerX: f32, centerY: f32)
 </code>
@@ -11531,10 +11600,29 @@ Set the paint rotation, in degrees.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Pixel_Painter_rotateTransformInPlace"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">rotateTransformInPlace</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L532" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Set the paint rotation.</p>
+<p class="code">
+<code style="white-space: break-spaces">func rotateTransformInPlace(using self, angle: <a href="core.html#Core_Math_Angle">Core.Math.Angle</a>)
+</code>
+</p>
+<p>
+ Will rotate around the current transformation position.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Pixel_Painter_scaleTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">scaleTransform</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L540" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L552" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11551,7 +11639,7 @@ Set the paint scale.</p>
 <h3 class="content" id="Pixel_Painter_setAntialiased"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setAntialiased</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L490" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L491" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11568,7 +11656,7 @@ Set antialiased mode on/off.</p>
 <h3 class="content" id="Pixel_Painter_setBlendingMode"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setBlendingMode</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L687" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L711" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11585,7 +11673,7 @@ Set the current blending mode.</p>
 <h3 class="content" id="Pixel_Painter_setClippingRect"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setClippingRect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L584" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L608" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11608,7 +11696,7 @@ Set the current clipping rectangle.</p>
 <h3 class="content" id="Pixel_Painter_setClippingRegionMode"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setClippingRegionMode</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L668" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L692" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11625,7 +11713,7 @@ Set the clipping region mode.</p>
 <h3 class="content" id="Pixel_Painter_setColorMask"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setColorMask</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L703" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L727" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11648,7 +11736,7 @@ Set color mask.</p>
 <h3 class="content" id="Pixel_Painter_setColorMaskAlpha"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setColorMaskAlpha</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L715" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L739" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11663,7 +11751,7 @@ Set color mask.</p>
 <h3 class="content" id="Pixel_Painter_setColorMaskColor"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setColorMaskColor</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L713" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L737" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11678,7 +11766,7 @@ Set color mask.</p>
 <h3 class="content" id="Pixel_Painter_setColorMaskFull"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setColorMaskFull</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L714" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L738" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11693,7 +11781,7 @@ Set color mask.</p>
 <h3 class="content" id="Pixel_Painter_setInterpolationMode"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setInterpolationMode</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L572" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L596" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11710,7 +11798,7 @@ Set the texture interpolation mode.</p>
 <h3 class="content" id="Pixel_Painter_setParams"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setParams</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L473" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L474" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11727,7 +11815,7 @@ Set the paint parameters.</p>
 <h3 class="content" id="Pixel_Painter_setQuality"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setQuality</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L504" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L505" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11744,7 +11832,7 @@ Set the paint quality.</p>
 <h3 class="content" id="Pixel_Painter_setShader"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setShader</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L756" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L780" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11761,7 +11849,7 @@ Set the current shader.</p>
 <h3 class="content" id="Pixel_Painter_setShaderParam"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setShaderParam</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L772" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L796" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11784,7 +11872,7 @@ Set a shader parameter.</p>
 <h3 class="content" id="Pixel_Painter_setState"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setState</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L445" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L446" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11801,7 +11889,7 @@ Set the current painting state.</p>
 <h3 class="content" id="Pixel_Painter_setTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">setTransform</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L557" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L581" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11818,7 +11906,7 @@ Set the paint transformation.</p>
 <h3 class="content" id="Pixel_Painter_startClippingRegion"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">startClippingRegion</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L661" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L685" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11835,7 +11923,7 @@ Start painting in the clipping buffer.</p>
 <h3 class="content" id="Pixel_Painter_translateTransform"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">translateTransform</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L510" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L511" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -11852,7 +11940,7 @@ Set the paint position.</p>
 <h3 class="content" id="Pixel_Painter_unbindRenderTarget"><span class="titletype">func</span> <span class="titlelight">Painter.</span><span class="titlestrong">unbindRenderTarget</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L732" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L756" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12442,7 +12530,7 @@ bool</td>
 <h3 class="content" id="Pixel_Poly2Tri_AdvancingFront"><span class="titletype">struct</span> <span class="titlelight">Poly2Tri.</span><span class="titlestrong">AdvancingFront</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L380" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L370" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12479,7 +12567,7 @@ searchNode</td>
 <h3 class="content" id="Pixel_Poly2Tri_Basin"><span class="titletype">struct</span> <span class="titlelight">Poly2Tri.</span><span class="titlestrong">Basin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L362" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L352" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12561,7 +12649,7 @@ q</td>
 <h3 class="content" id="Pixel_Poly2Tri_EdgeEvent"><span class="titletype">struct</span> <span class="titlelight">Poly2Tri.</span><span class="titlestrong">EdgeEvent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L356" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12590,7 +12678,7 @@ bool</td>
 <h3 class="content" id="Pixel_Poly2Tri_Node"><span class="titletype">struct</span> <span class="titlelight">Poly2Tri.</span><span class="titlestrong">Node</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L371" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12711,7 +12799,7 @@ border</td>
 <h3 class="content" id="Pixel_Poly2Tri_Tesselate"><span class="titletype">struct</span> <span class="titlelight">Poly2Tri.</span><span class="titlestrong">Tesselate</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L469" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L459" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12773,7 +12861,7 @@ Triangulate.</p>
 <h3 class="content" id="Pixel_Poly2Tri_Tesselate_addPoint"><span class="titletype">func</span> <span class="titlelight">Tesselate.</span><span class="titlestrong">addPoint</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L532" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L522" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12790,7 +12878,7 @@ Register a new point.</p>
 <h3 class="content" id="Pixel_Poly2Tri_Tesselate_clear"><span class="titletype">func</span> <span class="titlelight">Tesselate.</span><span class="titlestrong">clear</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L495" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L485" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12807,7 +12895,7 @@ Clear content.</p>
 <h3 class="content" id="Pixel_Poly2Tri_Tesselate_endPolyLine"><span class="titletype">func</span> <span class="titlelight">Tesselate.</span><span class="titlestrong">endPolyLine</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L541" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L531" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12824,7 +12912,7 @@ To call to register the polyline.</p>
 <h3 class="content" id="Pixel_Poly2Tri_Tesselate_getTriangles"><span class="titletype">func</span> <span class="titlelight">Tesselate.</span><span class="titlestrong">getTriangles</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L520" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L510" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12841,7 +12929,7 @@ Returns the list of triangles.</p>
 <h3 class="content" id="Pixel_Poly2Tri_Tesselate_startPolyLine"><span class="titletype">func</span> <span class="titlelight">Tesselate.</span><span class="titlestrong">startPolyLine</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L526" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L516" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12858,7 +12946,7 @@ To call before adding a polyline.</p>
 <h3 class="content" id="Pixel_Poly2Tri_Tesselate_triangulate"><span class="titletype">func</span> <span class="titlelight">Tesselate.</span><span class="titlestrong">triangulate</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L559" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\poly2tri.swg#L549" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

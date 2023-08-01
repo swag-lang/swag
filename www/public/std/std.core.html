@@ -190,7 +190,7 @@
 <li><a href="#Core_HashTable">HashTable</a></li>
 <li><a href="#Core_HashTableEntry">HashTableEntry</a></li>
 <li><a href="#Core_List">List</a></li>
-<li><a href="#Core_Node">Node</a></li>
+<li><a href="#Core_ListNode">ListNode</a></li>
 <li><a href="#Core_StaticArray">StaticArray</a></li>
 </ul>
 <h3>compress</h3>
@@ -876,7 +876,9 @@
 <li><a href="#Core_File_FileStream_getSize">FileStream.getSize</a></li>
 <li><a href="#Core_File_FileStream_isOpen">FileStream.isOpen</a></li>
 <li><a href="#Core_File_FileStream_read">FileStream.read</a></li>
+<li><a href="#Core_File_FileStream_readComplete">FileStream.readComplete</a></li>
 <li><a href="#Core_File_FileStream_setPosition">FileStream.setPosition</a></li>
+<li><a href="#Core_File_FileStream_skipPosition">FileStream.skipPosition</a></li>
 <li><a href="#Core_File_FileStream_write">FileStream.write</a></li>
 <li><a href="#Core_Path_combine">Path.combine</a></li>
 <li><a href="#Core_Path_equals">Path.equals</a></li>
@@ -1648,6 +1650,7 @@
 <li><a href="#Core_Time_DateTime_parse">DateTime.parse</a></li>
 <li><a href="#Core_Time_DateTime_setNow">DateTime.setNow</a></li>
 <li><a href="#Core_Time_DateTime_toString">DateTime.toString</a></li>
+<li><a href="#Core_Time_Duration_fromMs">Duration.fromMs</a></li>
 <li><a href="#Core_Time_Duration_opAffect">Duration.opAffect</a></li>
 <li><a href="#Core_Time_Duration_opAffectSuffix">Duration.opAffectSuffix</a></li>
 <li><a href="#Core_Time_Duration_toMs">Duration.toMs</a></li>
@@ -8125,10 +8128,26 @@ Read from the given file stream, and returns the number of bytes.</p>
 </tr>
 <tr>
 <td class="enumeration">
+<a href="#Core_File_FileStream_readComplete">readComplete(self, *void, u64)</a></td>
+<td class="enumeration">
+<p>
+Read from the given file stream, and returns <code class = "incode">true</code> if all bytes have been read.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core_File_FileStream_setPosition">setPosition(self, SeekOrigin, u64)</a></td>
 <td class="enumeration">
 <p>
 Set the current seek position of the given file stream.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Core_File_FileStream_skipPosition">skipPosition(self, u64)</a></td>
+<td class="enumeration">
+<p>
+Skip <code class = "incode">bytes</code> from current position.</p>
 </td>
 </tr>
 <tr>
@@ -8147,7 +8166,7 @@ Write to the given file stream, and returns the number of written bytes.</p>
 <h3 class="content" id="Core_File_FileStream_close"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">close</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8164,7 +8183,7 @@ Close the given file stream.</p>
 <h3 class="content" id="Core_File_FileStream_getPosition"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">getPosition</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8181,7 +8200,7 @@ Returns the current seek position of the given file stream.</p>
 <h3 class="content" id="Core_File_FileStream_getSize"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">getSize</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8229,10 +8248,27 @@ Read from the given file stream, and returns the number of bytes.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Core_File_FileStream_readComplete"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">readComplete</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L26" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Read from the given file stream, and returns <code class = "incode">true</code> if all bytes have been read.</p>
+<p class="code">
+<code style="white-space: break-spaces">func readComplete(using self, buffer: *void, length: u64)-&gt;bool
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Core_File_FileStream_setPosition"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">setPosition</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L77" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8246,10 +8282,27 @@ Set the current seek position of the given file stream.</p>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Core_File_FileStream_skipPosition"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">skipPosition</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L98" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Skip <code class = "incode">bytes</code> from current position.</p>
+<p class="code">
+<code style="white-space: break-spaces">func skipPosition(using self, bytes: u64) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Core_File_FileStream_write"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">write</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14672,7 +14725,7 @@ Make an utf8 buffer upper case, dealing only with latin1 table.</p>
 <td class="tdname">
 head</td>
 <td class="tdtype">
-*<a href="#Core_Node">Core.Node</a>(T)</td>
+*<a href="#Core_ListNode">Core.ListNode</a>(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14680,7 +14733,7 @@ head</td>
 <td class="tdname">
 tail</td>
 <td class="tdtype">
-*<a href="#Core_Node">Core.Node</a>(T)</td>
+*<a href="#Core_ListNode">Core.ListNode</a>(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14737,7 +14790,7 @@ Clear all elements.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_List_insertAfter">insertAfter(self, *Node'(T), T)</a></td>
+<a href="#Core_List_insertAfter">insertAfter(self, *ListNode'(T), T)</a></td>
 <td class="enumeration">
 <p>
 Insert a node before the reference.</p>
@@ -14745,13 +14798,13 @@ Insert a node before the reference.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_List_insertAfter">insertAfter(self, *Node'(T), moveref T)</a></td>
+<a href="#Core_List_insertAfter">insertAfter(self, *ListNode'(T), moveref T)</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_List_insertBefore">insertBefore(self, *Node'(T), T)</a></td>
+<a href="#Core_List_insertBefore">insertBefore(self, *ListNode'(T), T)</a></td>
 <td class="enumeration">
 <p>
 Insert a node before the reference.</p>
@@ -14759,7 +14812,7 @@ Insert a node before the reference.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_List_insertBefore">insertBefore(self, *Node'(T), moveref T)</a></td>
+<a href="#Core_List_insertBefore">insertBefore(self, *ListNode'(T), moveref T)</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -14803,13 +14856,13 @@ Visit every elements of the list from tail to head @alias0 is the value @alias1 
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBack(using self, value: T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func addBack(using self, value: T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBack(using self, value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func addBack(using self, value: moveref T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p>
@@ -14826,13 +14879,13 @@ Add a new element on front.</p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addFront(using self, value: T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func addFront(using self, value: T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p>
 Add a new element on front.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addFront(using self, value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func addFront(using self, value: moveref T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p>
@@ -14866,11 +14919,11 @@ Clear all elements.</p>
 <p>
 Insert a node before the reference.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAfter(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func insertAfter(using self, node: *<a href="#Core_ListNode">Core.ListNode</a>(T), value: T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertAfter(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func insertAfter(using self, node: *<a href="#Core_ListNode">Core.ListNode</a>(T), value: moveref T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p>
@@ -14887,11 +14940,11 @@ Insert a node before the reference.</p>
 <p>
 Insert a node before the reference.</p>
 <p class="code">
-<code style="white-space: break-spaces">func insertBefore(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func insertBefore(using self, node: *<a href="#Core_ListNode">Core.ListNode</a>(T), value: T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func insertBefore(using self, node: *<a href="#Core_Node">Core.Node</a>(T), value: moveref T)->*<a href="#Core_Node">Core.Node</a>(T)
+<code style="white-space: break-spaces">func insertBefore(using self, node: *<a href="#Core_ListNode">Core.ListNode</a>(T), value: moveref T)->*<a href="#Core_ListNode">Core.ListNode</a>(T)
 </code>
 </p>
 <p>
@@ -14945,6 +14998,46 @@ Visit every elements of the list from tail to head @alias0 is the value @alias1 
 func(ptr: bool) opVisitBack(using self, stmt: code)
 </code>
 </p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Core_ListNode"><span class="titletype">struct</span> <span class="titlelight">Core.</span><span class="titlestrong">ListNode</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">struct ListNode(T)</code>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+prev</td>
+<td class="tdtype">
+*<a href="#Core_ListNode">Core.ListNode</a>(T)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+next</td>
+<td class="tdtype">
+*<a href="#Core_ListNode">Core.ListNode</a>(T)</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+value</td>
+<td class="tdtype">
+T</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
 <p>
 <table class="h3">
 <tr>
@@ -22076,46 +22169,6 @@ Allocate a given amount of bytes in the temporary allocator.</p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Core_Node"><span class="titletype">struct</span> <span class="titlelight">Core.</span><span class="titlestrong">Node</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L4" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p class="code">
-<code style="white-space: break-spaces">struct Node(T)</code>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-prev</td>
-<td class="tdtype">
-*<a href="#Core_Node">Core.Node</a>(T)</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-*<a href="#Core_Node">Core.Node</a>(T)</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-value</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Core_Noise"><span class="titletype">namespace</span> <span class="titlelight">Core.</span><span class="titlestrong">Noise</span></h3>
 </td>
 </tr>
@@ -23200,7 +23253,7 @@ special invalid value (&gt; 4095) to force the seed on first get.</p>
 <h3 class="content" id="Core_Random_LM"><span class="titletype">const</span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23326,7 +23379,7 @@ func seedU32(using self, value1: u32, value2: u32)
 <h3 class="content" id="Core_Random_Mt64"><span class="titletype">struct</span> <span class="titlelight">Random.</span><span class="titlestrong">Mt64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23376,7 +23429,7 @@ u64</td>
 <h3 class="content" id="Core_Random_Mt64_nextU64"><span class="titletype">func</span> <span class="titlelight">Mt64.</span><span class="titlestrong">nextU64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23391,7 +23444,7 @@ u64</td>
 <h3 class="content" id="Core_Random_Mt64_seedU64"><span class="titletype">func</span> <span class="titlelight">Mt64.</span><span class="titlestrong">seedU64</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23822,7 +23875,7 @@ Randomly change the order of a slice.</p>
 <h3 class="content" id="Core_Random_UM"><span class="titletype">const</span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24169,7 +24222,7 @@ Returns true if this is a struct of the given name.</p>
 <a href="#Core_Reflection_makeConcreteAlias">makeConcreteAlias(const *TypeInfo)</a></td>
 <td class="enumeration">
 <p>
-In case this is a type alias, need to go deep inside it to find the right type.</p>
+In case this is a type typealias, need to go deep inside it to find the right type.</p>
 </td>
 </tr>
 <tr>
@@ -24874,7 +24927,7 @@ Returns true if this is a struct of the given name.</p>
 </table>
 </p>
 <p>
-In case this is a type alias, need to go deep inside it to find the right type.</p>
+In case this is a type typealias, need to go deep inside it to find the right type.</p>
 <p class="code">
 <code style="white-space: break-spaces">func makeConcreteAlias(type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>)->const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>
 </code>
@@ -34678,6 +34731,8 @@ Represents an instant in time, typically expressed as a date and time of day.</p
 <td class="enumeration">
 <a href="#Core_Time_Duration">Duration</a></td>
 <td class="enumeration">
+<p>
+Represents a delay, expressed in seconds.</p>
 </td>
 </tr>
 <tr>
@@ -35362,10 +35417,12 @@ const [13] u16</td>
 <h3 class="content" id="Core_Time_Duration"><span class="titletype">struct</span> <span class="titlelight">Time.</span><span class="titlestrong">Duration</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Represents a delay, expressed in seconds.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -35373,6 +35430,8 @@ timeInSeconds</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
+<p>
+The duration in seconds.</p>
 </td>
 </tr>
 </table>
@@ -35380,8 +35439,18 @@ f32</td>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
+<a href="#Core_Time_Duration_fromMs">fromMs(u32)</a></td>
+<td class="enumeration">
+<p>
+Returns a duration initialized with milliseconds.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
 <a href="#Core_Time_Duration_toMs">toMs(self)</a></td>
 <td class="enumeration">
+<p>
+Returns the value in milliseconds.</p>
 </td>
 </tr>
 </table>
@@ -35404,10 +35473,27 @@ f32</td>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Core_Time_Duration_fromMs"><span class="titletype">func</span> <span class="titlelight">Duration.</span><span class="titlestrong">fromMs</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L39" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Returns a duration initialized with milliseconds.</p>
+<p class="code">
+<code style="white-space: break-spaces">func fromMs(valueMs: u32)-><a href="#Core_Time_Duration">Core.Time.Duration</a>
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Core_Time_Duration_opAffect"><span class="titletype">func</span> <span class="titlelight">Duration.</span><span class="titlestrong">opAffect</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -35422,7 +35508,7 @@ f32</td>
 <h3 class="content" id="Core_Time_Duration_opAffectSuffix"><span class="titletype">func</span> <span class="titlelight">Duration.</span><span class="titlestrong">opAffectSuffix</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -35437,10 +35523,12 @@ f32</td>
 <h3 class="content" id="Core_Time_Duration_toMs"><span class="titletype">func</span> <span class="titlelight">Duration.</span><span class="titlestrong">toMs</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\duration.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Returns the value in milliseconds.</p>
 <p class="code">
 <code style="white-space: break-spaces">func toMs(using const self)-&gt;u32
 </code>

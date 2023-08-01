@@ -1,0 +1,1014 @@
+<html>
+<body>
+<head>
+<meta charset="UTF-8">
+</head>
+<style>
+.container {
+            display:        flex;
+            flex-wrap:      nowrap;
+            flex-direction: row;
+            height:         100%;
+            line-height:    1.3em;
+            font-family:    Segoe UI;
+        }
+        .left {
+            display:    block;
+            overflow-y: scroll;
+            width:      650;
+            height:     100%;
+        }
+        .right {
+            display:     block;
+            overflow-y:  scroll;
+            width:       100%;
+            line-height: 1.3em;
+            height:      100%;
+        }
+        .page {
+            width:  1000;
+            margin: 0 auto;
+        }
+        blockquote {
+            background-color:   LightYellow;
+            border-left:        6px solid Orange;
+            padding:            10px;
+            width:              90%;
+        }
+        a {
+            text-decoration: none;
+            color:           DoggerBlue;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        a.src {
+            font-size:          90%;
+            color:              LightGrey;
+        }
+        table.enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        td.enumeration {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              30%;
+        }
+        td.tdname {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              20%;
+            background-color:   #f8f8f8;
+        }
+        td.tdtype {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              auto;
+        }
+        td:last-child {
+            width:              auto;
+        }
+        .tocbullet {
+            list-style-type:    none;
+            margin-left:        -20px;
+        }
+        .titletype {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .titlelight {
+            font-weight:        normal;
+        }
+        .titlestrong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        h2.content {
+            margin-top:         50px;
+            margin-bottom:      50px;
+        }
+        table.h3 {
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+        }
+        h3.content {
+            margin-bottom:      2px;
+            margin-right:       0px;
+            width:              100%;
+        }
+        .srcref {
+            text-align:         right;
+        }
+        .incode {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .tdname .incode {
+            background-color:   revert;
+            padding:            2px;
+            border:             revert;
+        }
+        .addinfos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        .code {
+            background-color:   #eeeeee;
+            border:             1px solid LightGrey;
+            padding:            10px;
+            width:              94%;
+            margin-left:        20px;
+        }
+</style>
+<div class="container">
+<div class="left">
+<h1>Module audio</h1>
+<h2>Structs</h2>
+<h3>file</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_GUID">GUID</a></li>
+<li><a href="#Audio_PcmWaveFormat">PcmWaveFormat</a></li>
+<li><a href="#Audio_SoundFile">SoundFile</a></li>
+<li><a href="#Audio_SoundFileInfo">SoundFileInfo</a></li>
+<li><a href="#Audio_SoundWav">SoundWav</a></li>
+<li><a href="#Audio_WaveFormat">WaveFormat</a></li>
+<li><a href="#Audio_WaveFormatEx">WaveFormatEx</a></li>
+<li><a href="#Audio_WaveFormatExtensible">WaveFormatExtensible</a></li>
+</ul>
+<h2>Enums</h2>
+<h3>file</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_ChunkID">ChunkID</a></li>
+<li><a href="#Audio_SoundFileInfoFormat">SoundFileInfoFormat</a></li>
+<li><a href="#Audio_SoundFileInfoValidityMask">SoundFileInfoValidityMask</a></li>
+<li><a href="#Audio_SoundWav_read_read_Stage">Stage</a></li>
+<li><a href="#Audio_WavFormat">WavFormat</a></li>
+</ul>
+<h2>Functions</h2>
+<h3>file</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_SoundWav_read">SoundWav.read</a></li>
+</ul>
+</div>
+<div class="right">
+<div class="page">
+<blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.21.0)</blockquote>
+<h2 class="content">Content</h2>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_ChunkID"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">ChunkID</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L20" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_RIFF</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_RIFX</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_WAVE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_fmt</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_data</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_fact</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_PEAK</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_cue</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_LIST</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_slnt</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_wavl</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_INFO</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_plst</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_adtl</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_labl</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_ltxt</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_note</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_smpl</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_bext</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_levl</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_MEXT</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_DISP</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_acid</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_strc</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_PAD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_afsp</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_clm</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_elmo</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_ISFT</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_ICRD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_ICOP</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_IARL</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_IART</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_INAM</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_IENG</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_IPRD</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_ISRC</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_ISBJ</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SND_WAV_FOURCC_ICMT</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_GUID"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">GUID</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L92" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+data1</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+data2</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+data3</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+data4</td>
+<td class="tdtype">
+[8] u8</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_PcmWaveFormat"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">PcmWaveFormat</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L80" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+wf</td>
+<td class="tdtype">
+<a href="#Audio_WaveFormat">Audio.WaveFormat</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bitsPerSample</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFile"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFile</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+infos</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileInfo">Audio.SoundFileInfo</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+datas</td>
+<td class="tdtype">
+<a href="core.html#Core_Array">Core.Array</a>(u8)</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFileInfo"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileInfo</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfileinfo.swg#L27" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+sampleCount</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+validity</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileInfoValidityMask">Audio.SoundFileInfoValidityMask</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+format</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileInfoFormat">Audio.SoundFileInfoFormat</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+frequency</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+channelCount</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+channelMask</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bitsPerSample</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+duration</td>
+<td class="tdtype">
+f32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+validBitsPerSample</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dataSize</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dataSeek</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFileInfoFormat"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileInfoFormat</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfileinfo.swg#L19" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Unknown</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Pcm</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+FloatIEEE</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Ogg</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFileInfoValidityMask"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileInfoValidityMask</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfileinfo.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Zero</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Format</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Frequency</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ChannelCount</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ChannelMask</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+BitsPerSample</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Duration</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SampleCount</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ValidBitsPerSample</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Data</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+MetaData</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundWav"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundWav</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L115" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+<b>using</b> file</td>
+<td class="tdtype">
+<a href="#Audio_SoundFile">Audio.SoundFile</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+stream</td>
+<td class="tdtype">
+<a href="core.html#Core_File_FileStream">Core.File.FileStream</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Audio_SoundWav_read">read(self, string, bool, bool)</a></td>
+<td class="enumeration">
+<p>
+Read file.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundWav_read"><span class="titletype">func</span> <span class="titlelight">SoundWav.</span><span class="titlestrong">read</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L296" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Read file.</p>
+<p class="code">
+<code style="white-space: break-spaces">func read(using self, fullName: string, loadDatas = true, loadMetaData = false) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundWav_read_read_Stage"><span class="titletype">enum</span> <span class="titlelight">read.</span><span class="titlestrong">Stage</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L208" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+FindRiff</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+FindFmt</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+FindData</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+BreakOnSuccess</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_WavFormat"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">WavFormat</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L63" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Unknown</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Pcm</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Adpcm</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+FloatIEEE</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_WaveFormat"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">WaveFormat</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L71" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+formatTag</td>
+<td class="tdtype">
+<a href="#Audio_WavFormat">Audio.WavFormat</a></td>
+<td class="enumeration">
+<p>
+Format type.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+channels</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+<p>
+Number of channels (i.e. mono, stereo, etc.).</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+samplesPerSec</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Sample rate.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+avgBytesPerSec</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+For buffer estimation.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+blockAlign</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+<p>
+Block size of data.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_WaveFormatEx"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">WaveFormatEx</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L86" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+pcmwf</td>
+<td class="tdtype">
+<a href="#Audio_PcmWaveFormat">Audio.PcmWaveFormat</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+cbSize</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+<p>
+The count in bytes of the size of extra information (after cbSize).</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_WaveFormatExtensible"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">WaveFormatExtensible</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L100" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+format</td>
+<td class="tdtype">
+<a href="#Audio_WaveFormatEx">Audio.WaveFormatEx</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+samples</td>
+<td class="tdtype">
+{validBitsPerSample: u16, samplesPerBlock: u16, reserved: u16}</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+channelMask</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Positions of the audio channels.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+subFormat</td>
+<td class="tdtype">
+<a href="#Audio_GUID">Audio.GUID</a></td>
+<td class="enumeration">
+<p>
+Format identifier GUID.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>

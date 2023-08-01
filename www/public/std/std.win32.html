@@ -1187,6 +1187,8 @@
 <li><a href="#Win32_ClientToScreen">Win32.ClientToScreen</a></li>
 <li><a href="#Win32_CloseClipboard">Win32.CloseClipboard</a></li>
 <li><a href="#Win32_CloseHandle">Win32.CloseHandle</a></li>
+<li><a href="#Win32_CoInitializeEx">Win32.CoInitializeEx</a></li>
+<li><a href="#Win32_CoUninitialize">Win32.CoUninitialize</a></li>
 <li><a href="#Win32_CreateConsoleScreenBuffer">Win32.CreateConsoleScreenBuffer</a></li>
 <li><a href="#Win32_CreateDirectoryA">Win32.CreateDirectoryA</a></li>
 <li><a href="#Win32_CreateDirectoryW">Win32.CreateDirectoryW</a></li>
@@ -1786,7 +1788,7 @@ lpCreateParams</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-<a href="win32.html#Win32_HANDLE">Win32.HANDLE</a></td>
+<a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1895,7 +1897,7 @@ lpCreateParams</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-<a href="win32.html#Win32_HANDLE">Win32.HANDLE</a></td>
+<a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2329,7 +2331,7 @@ CSIDL_FLAG_NO_ALIAS</td>
 u32</td>
 <td class="enumeration">
 <p>
-combine with CSIDL_ value to insure non-alias versions of the pidl.</p>
+combine with CSIDL_ value to insure non-typealias versions of the pidl.</p>
 </td>
 </tr>
 <tr>
@@ -2875,6 +2877,36 @@ s32</td>
 <table class="h3">
 <tr>
 <td class="h3">
+<h3 class="content" id="Win32_CoInitializeEx"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CoInitializeEx</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\ole32.swg#L7" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CoInitializeEx(pvReserved: *void, dwCoInit: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>)-><a href="win32.html#Win32_HRESULT">Win32.HRESULT</a>
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Win32_CoUninitialize"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CoUninitialize</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\ole32.swg#L8" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p class="code">
+<code style="white-space: break-spaces">func CoUninitialize()
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
 <h3 class="content" id="Win32_CreateConsoleScreenBuffer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateConsoleScreenBuffer</span></h3>
 </td>
 <td class="srcref">
@@ -3123,7 +3155,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWindowExA(dwExStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, lpClassName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>, lpWindowName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>, dwStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: <a href="win32.html#Win32_HWND">Win32.HWND</a>, hMenu: <a href="win32.html#Win32_HMENU">Win32.HMENU</a>, hInstance: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>, lpParam: <a href="win32.html#Win32_LPVOID">Win32.LPVOID</a>)-><a href="win32.html#Win32_HWND">Win32.HWND</a>
+<code style="white-space: break-spaces">func CreateWindowExA(dwExStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, lpClassName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>, lpWindowName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>, dwStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: <a href="win32.html#Win32_HWND">Win32.HWND</a>, hMenu: <a href="win32.html#Win32_HMENU">Win32.HMENU</a>, hInstance: <a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a>, lpParam: <a href="win32.html#Win32_LPVOID">Win32.LPVOID</a>)-><a href="win32.html#Win32_HWND">Win32.HWND</a>
 </code>
 </p>
 <p>
@@ -3138,7 +3170,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func CreateWindowExW(dwExStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, lpClassName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>, lpWindowName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>, dwStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: <a href="win32.html#Win32_HWND">Win32.HWND</a>, hMenu: <a href="win32.html#Win32_HMENU">Win32.HMENU</a>, hInstance: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>, lpParam: <a href="win32.html#Win32_LPVOID">Win32.LPVOID</a>)-><a href="win32.html#Win32_HWND">Win32.HWND</a>
+<code style="white-space: break-spaces">func CreateWindowExW(dwExStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, lpClassName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>, lpWindowName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>, dwStyle: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: <a href="win32.html#Win32_HWND">Win32.HWND</a>, hMenu: <a href="win32.html#Win32_HMENU">Win32.HMENU</a>, hInstance: <a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a>, lpParam: <a href="win32.html#Win32_LPVOID">Win32.LPVOID</a>)-><a href="win32.html#Win32_HWND">Win32.HWND</a>
 </code>
 </p>
 <p>
@@ -4996,7 +5028,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetModuleHandleA(lpModuleName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>)-><a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>
+<code style="white-space: break-spaces">func GetModuleHandleA(lpModuleName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>)-><a href="win32.html#Win32_HMODULE">Win32.HMODULE</a>
 </code>
 </p>
 <p>
@@ -5011,7 +5043,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetModuleHandleW(lpModuleName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>)-><a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>
+<code style="white-space: break-spaces">func GetModuleHandleW(lpModuleName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>)-><a href="win32.html#Win32_HMODULE">Win32.HMODULE</a>
 </code>
 </p>
 <p>
@@ -5071,7 +5103,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GetProcAddress(hModule: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>, lpProcName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>)->const *void
+<code style="white-space: break-spaces">func GetProcAddress(hModule: <a href="win32.html#Win32_HMODULE">Win32.HMODULE</a>, lpProcName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>)->const *void
 </code>
 </p>
 <p>
@@ -5281,7 +5313,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GlobalAlloc(uFlags: <a href="win32.html#Win32_UINT">Win32.UINT</a>, dwBytes: <a href="win32.html#Win32_SIZE_T">Win32.SIZE_T</a>)-><a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>
+<code style="white-space: break-spaces">func GlobalAlloc(uFlags: <a href="win32.html#Win32_UINT">Win32.UINT</a>, dwBytes: <a href="win32.html#Win32_SIZE_T">Win32.SIZE_T</a>)-><a href="win32.html#Win32_HGLOBAL">Win32.HGLOBAL</a>
 </code>
 </p>
 <p>
@@ -5296,7 +5328,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GlobalLock(hMem: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>)-><a href="win32.html#Win32_LPVOID">Win32.LPVOID</a>
+<code style="white-space: break-spaces">func GlobalLock(hMem: <a href="win32.html#Win32_HGLOBAL">Win32.HGLOBAL</a>)-><a href="win32.html#Win32_LPVOID">Win32.LPVOID</a>
 </code>
 </p>
 <p>
@@ -5311,7 +5343,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GlobalSize(hMem: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>)-><a href="win32.html#Win32_SIZE_T">Win32.SIZE_T</a>
+<code style="white-space: break-spaces">func GlobalSize(hMem: <a href="win32.html#Win32_HGLOBAL">Win32.HGLOBAL</a>)-><a href="win32.html#Win32_SIZE_T">Win32.SIZE_T</a>
 </code>
 </p>
 <p>
@@ -5326,7 +5358,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func GlobalUnlock(hMem: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>)-><a href="win32.html#Win32_BOOL">Win32.BOOL</a>
+<code style="white-space: break-spaces">func GlobalUnlock(hMem: <a href="win32.html#Win32_HGLOBAL">Win32.HGLOBAL</a>)-><a href="win32.html#Win32_BOOL">Win32.BOOL</a>
 </code>
 </p>
 <p>
@@ -6110,7 +6142,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func LoadCursorA(hInstance: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>, lpCursorName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>)-><a href="win32.html#Win32_HCURSOR">Win32.HCURSOR</a>
+<code style="white-space: break-spaces">func LoadCursorA(hInstance: <a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a>, lpCursorName: <a href="win32.html#Win32_LPCSTR">Win32.LPCSTR</a>)-><a href="win32.html#Win32_HCURSOR">Win32.HCURSOR</a>
 </code>
 </p>
 <p>
@@ -6125,7 +6157,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func LoadCursorW(hInstance: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>, lpCursorName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>)-><a href="win32.html#Win32_HCURSOR">Win32.HCURSOR</a>
+<code style="white-space: break-spaces">func LoadCursorW(hInstance: <a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a>, lpCursorName: <a href="win32.html#Win32_LPCWSTR">Win32.LPCWSTR</a>)-><a href="win32.html#Win32_HCURSOR">Win32.HCURSOR</a>
 </code>
 </p>
 <p>
@@ -6140,7 +6172,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func LocalFree(hLocal: <a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>)-><a href="win32.html#Win32_HANDLE">Win32.HANDLE</a>
+<code style="white-space: break-spaces">func LocalFree(hLocal: <a href="win32.html#Win32_HLOCAL">Win32.HLOCAL</a>)-><a href="win32.html#Win32_HLOCAL">Win32.HLOCAL</a>
 </code>
 </p>
 <p>
@@ -11266,7 +11298,7 @@ S_OK</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func SetLayeredWindowAttributes(hwnd: <a href="win32.html#Win32_HWND">Win32.HWND</a>, crKey: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>, bAlpha: <a href="win32.html#Win32_BYTE">Win32.BYTE</a>, dwFlags: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>) throw
+<code style="white-space: break-spaces">func SetLayeredWindowAttributes(hwnd: <a href="win32.html#Win32_HWND">Win32.HWND</a>, crKey: <a href="win32.html#Win32_COLORREF">Win32.COLORREF</a>, bAlpha: <a href="win32.html#Win32_BYTE">Win32.BYTE</a>, dwFlags: <a href="win32.html#Win32_DWORD">Win32.DWORD</a>) throw
 </code>
 </p>
 <p>
@@ -15677,7 +15709,7 @@ s32</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-<a href="win32.html#Win32_HANDLE">Win32.HANDLE</a></td>
+<a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -15770,7 +15802,7 @@ s32</td>
 <td class="tdname">
 hInstance</td>
 <td class="tdtype">
-<a href="win32.html#Win32_HANDLE">Win32.HANDLE</a></td>
+<a href="win32.html#Win32_HINSTANCE">Win32.HINSTANCE</a></td>
 <td class="enumeration">
 </td>
 </tr>

@@ -298,6 +298,8 @@
 </ul>
 <li><a href="#164_alias">Alias</a></li>
 <ul>
+<li><a href="#Type alias">Type alias</a></li>
+<li><a href="#Name alias">Name alias</a></li>
 </ul>
 <li><a href="#170_error_management">Error management</a></li>
 <ul>
@@ -614,11 +616,13 @@ This is the list of all keywords in the language. </p>
 </span><span style="color:#3186CD">union</span><span style="color:#0">
 </span><span style="color:#3186CD">namespace</span><span style="color:#0">
 </span><span style="color:#3186CD">impl</span><span style="color:#0">
-</span><span style="color:#3186CD">private</span><span style="color:#0">
 </span><span style="color:#3186CD">public</span><span style="color:#0">
+</span><span style="color:#3186CD">internal</span><span style="color:#0">
+</span><span style="color:#3186CD">private</span><span style="color:#0">
 </span><span style="color:#3186CD">interface</span><span style="color:#0">
 </span><span style="color:#3186CD">using</span><span style="color:#0">
-</span><span style="color:#3186CD">alias</span><span style="color:#0">
+</span><span style="color:#3186CD">typealias</span><span style="color:#0">
+</span><span style="color:#3186CD">namealias</span><span style="color:#0">
 </span><span style="color:#3186CD">discard</span><span style="color:#0">
 </span><span style="color:#3186CD">dref</span></code></pre><p>
 <h3 id="Compiler keywords">Compiler keywords </h3></p>
@@ -660,7 +664,6 @@ This is the list of all keywords in the language. </p>
 </span><span style="color:#7F7F7F">#validif</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#warning</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#scope</span><span style="color:#0">
-</span><span style="color:#7F7F7F">#scopefile</span><span style="color:#0">
 
 </span><span style="color:#FF6A00">#ast</span><span style="color:#0">
 </span><span style="color:#FF6A00">#drop</span><span style="color:#0">
@@ -1905,7 +1908,7 @@ Swag has also <b>references</b>, which are pointers that behave like values. </p
 </span><span style="color:#3186CD">let</span><span style="color:#0"> myRef: </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3186CD">ref</span><span style="color:#0"> </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = &x
 
 </span><span style="color:#6A9955">// This is a pointer that behaves like a value, so no explicit dereferencing is necessary.</span><span style="color:#0">
-</span><span style="color:#6A9955">// You can see this as a kind of an alias.</span><span style="color:#0">
+</span><span style="color:#6A9955">// You can see this as a kind of an typealias.</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(myRef == </span><span style="color:#74A35B">42</span><span style="color:#0">)</span></code></pre><p>
 When an affectation is done outside of an initialization, you will change the pointed value, and not the reference itself. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#74A35B">42</span><span style="color:#0">
@@ -1916,7 +1919,7 @@ When an affectation is done outside of an initialization, you will change the po
 myRef = </span><span style="color:#74A35B">66</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(myRef == </span><span style="color:#74A35B">66</span><span style="color:#0">)
 
-</span><span style="color:#6A9955">// Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.</span><span style="color:#0">
+</span><span style="color:#6A9955">// Remember that 'myRef' is an typealias for 'x', so 'x' has also been changed.</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">66</span><span style="color:#0">)</span></code></pre><p>
 If you want to change the reference and not the pointed value, you can use <code>ref</code> in the affectation. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#74A35B">1</span><span style="color:#0">
@@ -2106,18 +2109,35 @@ Note that declaring a tuple type or a struct type is equivalent to a constant re
 <h2 id="030_enum">Enum</h2>
 <p>
 
-  Enums values, unlike C/C++, must end with <code>;</code> or an <code>eol</code> (like a normal Swag declaration). </p>
+  Enums values, unlike C/C++, can end with <code>;</code>, ',' or an <code>eol</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values</span><span style="color:#0">
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values0</span><span style="color:#0">
     {
         </span><span style="color:#3BC3A7">A</span><span style="color:#0">
         </span><span style="color:#3BC3A7">B</span><span style="color:#0">
     }
+
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values1</span><span style="color:#0">
+    {
+        </span><span style="color:#3BC3A7">A</span><span style="color:#0">,
+        </span><span style="color:#3BC3A7">B</span><span style="color:#0">,
+    }
+
+    </span><span style="color:#6A9955">// The last comma is not necessary</span><span style="color:#0">
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values2</span><span style="color:#0">
+    {
+        </span><span style="color:#3BC3A7">A</span><span style="color:#0">,
+        </span><span style="color:#3BC3A7">B</span><span style="color:#0">
+    }
+
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values3</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">, </span><span style="color:#3BC3A7">B</span><span style="color:#0"> }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values4</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values5</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0"> }
 }</span></code></pre><p>
 
   By default, an enum is of type <code>s32</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">, </span><span style="color:#3BC3A7">B</span><span style="color:#0"> }
     </span><span style="color:#3186CD">let</span><span style="color:#0"> type = </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">Values</span><span style="color:#0">)
 
     </span><span style="color:#6A9955">// 'type' here is a 'typeinfo' dedicated to the enum type.</span><span style="color:#0">
@@ -2128,7 +2148,7 @@ Note that declaring a tuple type or a struct type is equivalent to a constant re
 
   <code>@kindof</code> will return the underlying type of the enum. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0"> { </span><span style="color:#3BC3A7">R</span><span style="color:#0">; </span><span style="color:#3BC3A7">G</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0"> { </span><span style="color:#3BC3A7">R</span><span style="color:#0">, </span><span style="color:#3BC3A7">G</span><span style="color:#0">, </span><span style="color:#3BC3A7">B</span><span style="color:#0"> }
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">RGB</span><span style="color:#0">) == </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@kindof</span><span style="color:#0">(</span><span style="color:#3BC3A7">RGB</span><span style="color:#0">) != </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@kindof</span><span style="color:#0">(</span><span style="color:#3BC3A7">RGB</span><span style="color:#0">) == </span><span style="color:#ED9A11">s32</span><span style="color:#0">
@@ -2427,13 +2447,13 @@ You can also put <code>using</code> in front of the namespace to be able to acce
 
 </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">B</span><span style="color:#0"> = </span><span style="color:#3BC3A7">Private</span><span style="color:#0">.</span><span style="color:#3BC3A7">FileSymbol</span><span style="color:#0">
 </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">C</span><span style="color:#0"> = </span><span style="color:#3BC3A7">FileSymbol</span><span style="color:#0"> </span><span style="color:#6A9955">// No need to specify 'Private' because of the 'using'</span></code></pre><p>
-This is equivalent to <code>#scopefile</code>, but you don't have to specify a name, the compiler will generate it for you. </p>
-<pre><code><span style="color:#7F7F7F">#scopefile</span><span style="color:#0"> {
+This is equivalent to <code>private</code>, but you don't have to specify a name, the compiler will generate it for you. </p>
+<pre><code><span style="color:#3186CD">private</span><span style="color:#0"> {
     </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">OtherSymbol</span><span style="color:#0"> = </span><span style="color:#74A35B">0</span><span style="color:#0">
 }
 
 </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">D</span><span style="color:#0"> = </span><span style="color:#3BC3A7">OtherSymbol</span></code></pre><p>
-All symbols from a Swag source file are exported to other files of the same module. So using <code>#scopefile</code> can protect from name conflicts. </p>
+All symbols from a Swag source file are exported to other files of the same module. So using <code>private</code> can protect from name conflicts. </p>
 
 <h2 id="050_if">If</h2>
 <p>
@@ -3208,7 +3228,7 @@ Like for an enum, <code>impl</code> is used to declare some stuff in the scope o
 You can have multiple <code>impl</code> blocks. The difference with a namespace is that <code>self</code> and <code>Self</code> are defined inside an <code>impl</code> block. They refere to the corresponding type. </p>
 <pre><code><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">
 {
-    </span><span style="color:#6A9955">// 'self' is an alias for 'var self: Self'</span><span style="color:#0">
+    </span><span style="color:#6A9955">// 'self' is an typealias for 'var self: Self'</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returnX</span><span style="color:#0">(</span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#ED9A11">self</span><span style="color:#0">) => x
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returnY</span><span style="color:#0">(</span><span style="color:#ED9A11">self</span><span style="color:#0">)       => </span><span style="color:#ED9A11">self</span><span style="color:#0">.y
     </span><span style="color:#6A9955">// 'Self' is the corresponding type, in that case 'MyStruct'</span><span style="color:#0">
@@ -3226,8 +3246,8 @@ If you declare your function with <code>mtd</code> (method) instead of <code>fun
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">returnY</span><span style="color:#0">() == </span><span style="color:#74A35B">10</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">returnZ</span><span style="color:#0">() == </span><span style="color:#74A35B">20</span><span style="color:#0">)</span></code></pre><p>
 All functions in an <code>impl</code> block can be retrieved by reflection, as long as the struct is declared with <code>#[Swag.ExportType("methods")]</code> (by default, methods are not exported). </p>
-<pre><code><span style="color:#6A9955">// Creates a type alias named 'Lambda'</span><span style="color:#0">
-</span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Lambda</span><span style="color:#0"> = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
+<pre><code><span style="color:#6A9955">// Creates a type typealias named 'Lambda'</span><span style="color:#0">
+</span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Lambda</span><span style="color:#0"> = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
 
 </span><span style="color:#3186CD">var</span><span style="color:#0"> fnX: </span><span style="color:#3BC3A7">Lambda</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> fnY: </span><span style="color:#3BC3A7">Lambda</span><span style="color:#0">
@@ -3260,9 +3280,9 @@ A struct can have special operations in the <code>impl</code> block. This operat
     x, y: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
 }
 
-</span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">OneType</span><span style="color:#0">      = </span><span style="color:#ED9A11">bool</span><span style="color:#0">
-</span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">AnotherType</span><span style="color:#0">  = </span><span style="color:#ED9A11">s32</span><span style="color:#0">
-</span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">WhateverType</span><span style="color:#0"> = </span><span style="color:#ED9A11">bool</span><span style="color:#0">
+</span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">OneType</span><span style="color:#0">      = </span><span style="color:#ED9A11">bool</span><span style="color:#0">
+</span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">AnotherType</span><span style="color:#0">  = </span><span style="color:#ED9A11">s32</span><span style="color:#0">
+</span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">WhateverType</span><span style="color:#0"> = </span><span style="color:#ED9A11">bool</span><span style="color:#0">
 
 </span><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">Struct</span><span style="color:#0">
 {
@@ -3606,8 +3626,8 @@ So now that the <code>opVisit</code> has been defined, we can <code>visit</code>
 </span><span style="color:#3186CD">var</span><span style="color:#0"> cpt = </span><span style="color:#74A35B">0</span><span style="color:#0">
 
 </span><span style="color:#6A9955">// Visiting each field in declaration order</span><span style="color:#0">
-</span><span style="color:#6A9955">// 'v' is an alias for @alias0 (value)</span><span style="color:#0">
-</span><span style="color:#6A9955">// 'i' is an alias for @alias1 (index)</span><span style="color:#0">
+</span><span style="color:#6A9955">// 'v' is an typealias for @alias0 (value)</span><span style="color:#0">
+</span><span style="color:#6A9955">// 'i' is an typealias for @alias1 (index)</span><span style="color:#0">
 </span><span style="color:#B040BE">visit</span><span style="color:#0"> v, i: myStruct
 {
     </span><span style="color:#B040BE">switch</span><span style="color:#0"> i
@@ -4021,7 +4041,7 @@ You can name parameters, and don't have to respect parameters order in that case
     </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#3186CD">false</span><span style="color:#0">
         </span><span style="color:#B040BE">return</span><span style="color:#0"> {</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">}
 
-    </span><span style="color:#6A9955">// Or use the specifal type 'retval' which is an alias to the</span><span style="color:#0">
+    </span><span style="color:#6A9955">// Or use the specifal type 'retval' which is an typealias to the</span><span style="color:#0">
     </span><span style="color:#6A9955">// function return type (but not only, we'll see later)</span><span style="color:#0">
     </span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#3186CD">var</span><span style="color:#0"> result: </span><span style="color:#3186CD">retval</span><span style="color:#0">
     x = </span><span style="color:#74A35B">1</span><span style="color:#0">
@@ -4058,7 +4078,7 @@ A lambda can be null. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> lambda: </span><span style="color:#3186CD">func</span><span style="color:#0">()-></span><span style="color:#ED9A11">bool</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(lambda == </span><span style="color:#3186CD">null</span><span style="color:#0">)</span></code></pre><p>
 You can use a lambda as a function parameter type. </p>
-<pre><code><span style="color:#3186CD">alias</span><span style="color:#0"> callback = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
+<pre><code><span style="color:#3186CD">typealias</span><span style="color:#0"> callback = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">toDo</span><span style="color:#0">(value: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, ptr: callback)-></span><span style="color:#ED9A11">s32</span><span style="color:#0"> => </span><span style="color:#FF6A00">ptr</span><span style="color:#0">(value)
 
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">square</span><span style="color:#0">(x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">) => x * x
@@ -4071,14 +4091,14 @@ You can also create <i>anonymous functions</i> (aka functions as literals). </p>
 cb = </span><span style="color:#3186CD">func</span><span style="color:#0">(x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0"> => x * x * x
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">cb</span><span style="color:#0">(</span><span style="color:#74A35B">4</span><span style="color:#0">) == </span><span style="color:#74A35B">64</span><span style="color:#0">)</span></code></pre><p>
 Anonymous functions can be passed as parameters to another function. </p>
-<pre><code><span style="color:#3186CD">alias</span><span style="color:#0"> callback = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
+<pre><code><span style="color:#3186CD">typealias</span><span style="color:#0"> callback = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">toDo</span><span style="color:#0">(value: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, ptr: callback)-></span><span style="color:#ED9A11">s32</span><span style="color:#0"> => </span><span style="color:#FF6A00">ptr</span><span style="color:#0">(value)
 
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">toDo</span><span style="color:#0">(</span><span style="color:#74A35B">4</span><span style="color:#0">, </span><span style="color:#3186CD">func</span><span style="color:#0">(x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">) => x * x) == </span><span style="color:#74A35B">16</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">toDo</span><span style="color:#0">(</span><span style="color:#74A35B">4</span><span style="color:#0">, </span><span style="color:#3186CD">func</span><span style="color:#0">(x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">) => x + x) == </span><span style="color:#74A35B">8</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">toDo</span><span style="color:#0">(</span><span style="color:#74A35B">4</span><span style="color:#0">, </span><span style="color:#3186CD">func</span><span style="color:#0">(x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0"> { </span><span style="color:#B040BE">return</span><span style="color:#0"> x - x; }) == </span><span style="color:#74A35B">0</span><span style="color:#0">)</span></code></pre><p>
 The types of the parameters can be deduced. </p>
-<pre><code><span style="color:#3186CD">alias</span><span style="color:#0"> callback = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
+<pre><code><span style="color:#3186CD">typealias</span><span style="color:#0"> callback = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">toDo</span><span style="color:#0">(value: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, ptr: callback)-></span><span style="color:#ED9A11">s32</span><span style="color:#0"> => </span><span style="color:#FF6A00">ptr</span><span style="color:#0">(value)
 
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">toDo</span><span style="color:#0">(</span><span style="color:#74A35B">4</span><span style="color:#0">, </span><span style="color:#3186CD">func</span><span style="color:#0">(x) => x * x) == </span><span style="color:#74A35B">16</span><span style="color:#0">)
@@ -4286,7 +4306,7 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">12</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  You can use the special name <code>@alias</code> to create a named alias for an identifier. </p>
+  You can use the special name <code>@typealias</code> to create a named typealias for an identifier. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Mixin]</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">inc10</span><span style="color:#0">()
@@ -4295,8 +4315,8 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     }
 
     </span><span style="color:#3186CD">var</span><span style="color:#0"> a, b = </span><span style="color:#74A35B">0</span><span style="color:#0">
-    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|a|)  </span><span style="color:#6A9955">// Passing alias name 'a'</span><span style="color:#0">
-    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|b|)  </span><span style="color:#6A9955">// Passing alias name 'b'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|a|)  </span><span style="color:#6A9955">// Passing typealias name 'a'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|b|)  </span><span style="color:#6A9955">// Passing typealias name 'b'</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == b </span><span style="color:#B040BE">and</span><span style="color:#0"> b == </span><span style="color:#74A35B">10</span><span style="color:#0">)
 }
 
@@ -4307,11 +4327,11 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
         </span><span style="color:#3186CD">let</span><span style="color:#0"> </span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> = value
     }
 
-    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|a| </span><span style="color:#74A35B">10</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing alias name 'a'</span><span style="color:#0">
-    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|b| </span><span style="color:#74A35B">20</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing alias name 'b'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|a| </span><span style="color:#74A35B">10</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing typealias name 'a'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|b| </span><span style="color:#74A35B">20</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing typealias name 'b'</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">10</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(b == </span><span style="color:#74A35B">20</span><span style="color:#0">)
-    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(</span><span style="color:#74A35B">30</span><span style="color:#0">)      </span><span style="color:#6A9955">// No alias, so name is @alias0</span><span style="color:#0">
+    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(</span><span style="color:#74A35B">30</span><span style="color:#0">)      </span><span style="color:#6A9955">// No typealias, so name is @alias0</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> == </span><span style="color:#74A35B">30</span><span style="color:#0">)
 }</span></code></pre><p>
 
@@ -4469,7 +4489,7 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">10</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  In a macro, you can use special variables named <code>@alias<num></code>. Note that this is also valid for mixins. </p>
+  In a macro, you can use special variables named <code>@typealias<num></code>. Note that this is also valid for mixins. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Macro]</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">call</span><span style="color:#0">(v: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">)
@@ -4663,7 +4683,7 @@ If a function authorizes the caller to not use its return value, because it's no
 </span><span style="color:#FF6A00">mul</span><span style="color:#0">(</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">)</span></code></pre>
 <h3 id="110__retval">Retval</h3>
 <p>
-Inside a function, you can use the <code>retval</code> type which is an alias to the function return type. </p>
+Inside a function, you can use the <code>retval</code> type which is an typealias to the function return type. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">toto</span><span style="color:#0">()-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
     {
@@ -5113,7 +5133,7 @@ You can mix types and constants. </p>
     </span><span style="color:#6A9955">// alone is considered to be a generic type.</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#3BC3A7">T</span><span style="color:#0">, </span><span style="color:#3BC3A7">N</span><span style="color:#0">: </span><span style="color:#ED9A11">s32</span><span style="color:#0">) </span><span style="color:#FF6A00">myFunc</span><span style="color:#0">(x: </span><span style="color:#3BC3A7">T</span><span style="color:#0">) => x * </span><span style="color:#3BC3A7">N</span><span style="color:#0">
 
-    </span><span style="color:#3186CD">alias</span><span style="color:#0"> call = myFunc'(</span><span style="color:#ED9A11">s32</span><span style="color:#0">, </span><span style="color:#74A35B">10</span><span style="color:#0">)
+    </span><span style="color:#3186CD">namealias</span><span style="color:#0"> call = myFunc'(</span><span style="color:#ED9A11">s32</span><span style="color:#0">, </span><span style="color:#74A35B">10</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">call</span><span style="color:#0">(</span><span style="color:#74A35B">2</span><span style="color:#0">) == </span><span style="color:#74A35B">20</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">call</span><span style="color:#0">(</span><span style="color:#74A35B">100</span><span style="color:#0">) == </span><span style="color:#74A35B">1000</span><span style="color:#0">)
 }
@@ -5585,45 +5605,54 @@ You can use <code>with</code> to avoid repeating the same variable again and aga
 }</span></code></pre>
 <h2 id="164_alias">Alias</h2>
 <p>
+<h3 id="Type alias">Type alias </h3></p>
+<p>
+</p>
+<p>
 
-  <code>alias</code> is used to make a shortcut to another name or type. </p>
+  <code>typealias</code> is used to make a shortcut to another type. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0"> { </span><span style="color:#3BC3A7">R</span><span style="color:#0">; </span><span style="color:#3BC3A7">G</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0">; }
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">RGB</span><span style="color:#0">.</span><span style="color:#3BC3A7">R</span><span style="color:#0"> == </span><span style="color:#74A35B">0</span><span style="color:#0">)
 
-    </span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Color</span><span style="color:#0"> = </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
+    </span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Color</span><span style="color:#0"> = </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">   </span><span style="color:#6A9955">// 'Color' is now equivalent to 'RGB'</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">Color</span><span style="color:#0">.</span><span style="color:#3BC3A7">G</span><span style="color:#0"> == </span><span style="color:#74A35B">1</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  Types alias </p>
+  You can then use the new name in place of the original type. This does not create a new type. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Float32</span><span style="color:#0"> = </span><span style="color:#ED9A11">f32</span><span style="color:#0">
-    </span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Float64</span><span style="color:#0"> = </span><span style="color:#ED9A11">f64</span><span style="color:#0">
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#3BC3A7">Float32</span><span style="color:#0"> = </span><span style="color:#74A35B">1.0</span><span style="color:#0">
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> y: </span><span style="color:#3BC3A7">Float64</span><span style="color:#0"> = </span><span style="color:#74A35B">1.0</span><span style="color:#0">
+    </span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Float32</span><span style="color:#0"> = </span><span style="color:#ED9A11">f32</span><span style="color:#0">
+    </span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Float64</span><span style="color:#0"> = </span><span style="color:#ED9A11">f64</span><span style="color:#0">
+
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#3BC3A7">Float32</span><span style="color:#0"> = </span><span style="color:#74A35B">1.0</span><span style="color:#0">    </span><span style="color:#6A9955">// Same as 'f32'</span><span style="color:#0">
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> y: </span><span style="color:#3BC3A7">Float64</span><span style="color:#0"> = </span><span style="color:#74A35B">1.0</span><span style="color:#0">    </span><span style="color:#6A9955">// Same as 'f64'</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">Float32</span><span style="color:#0">) == </span><span style="color:#ED9A11">f32</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">Float64</span><span style="color:#0">) == </span><span style="color:#ED9A11">f64</span><span style="color:#0">
 }</span></code></pre><p>
 
-  A type alias can be marked with the <code>Swag.Strict</code> attribute. In that case, implicit cast is not done, but explicit cast is still possible. </p>
+  But to create a new type, a <code>typealias</code> can also be marked with the <code>Swag.Strict</code> attribute. In that case, all implicit casts won't be done. Explicit cast are still possible. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Strict]</span><span style="color:#0">
-    </span><span style="color:#3186CD">alias</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyType</span><span style="color:#0"> = </span><span style="color:#ED9A11">s32</span><span style="color:#0">
+    </span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyType</span><span style="color:#0"> = </span><span style="color:#ED9A11">s32</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyType</span><span style="color:#0">) != </span><span style="color:#ED9A11">s32</span><span style="color:#0">
     </span><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#3BC3A7">MyType</span><span style="color:#0"> = </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyType</span><span style="color:#0">) </span><span style="color:#74A35B">0</span><span style="color:#0">
 }</span></code></pre><p>
+<h3 id="Name alias">Name alias </h3></p>
+<p>
+</p>
+<p>
 
-  You can also alias a function. </p>
+  You can alias a function name with <code>namealias</code> </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">thisIsABigFunctionName</span><span style="color:#0">(x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">) => x * x
-    </span><span style="color:#3186CD">alias</span><span style="color:#0"> myFunc = thisIsABigFunctionName
+    </span><span style="color:#3186CD">namealias</span><span style="color:#0"> myFunc = thisIsABigFunctionName
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#FF6A00">myFunc</span><span style="color:#0">(</span><span style="color:#74A35B">4</span><span style="color:#0">) == </span><span style="color:#74A35B">16</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  You can also alias a variable. </p>
+  You can also alias variables and namespaces </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> myLongVariableName: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">0</span><span style="color:#0">
-    </span><span style="color:#3186CD">alias</span><span style="color:#0"> short = myLongVariableName
+    </span><span style="color:#3186CD">namealias</span><span style="color:#0"> short = myLongVariableName
     short += </span><span style="color:#74A35B">2</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(myLongVariableName == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 }</span></code></pre>
@@ -6035,9 +6064,9 @@ A bunch of <code>#global</code> can start a source file. </p>
 <pre><code><span style="color:#6A9955">// Skip the content of the file, like this one (but must be a valid swag file)</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#global</span><span style="color:#0"> skip
 
-</span><span style="color:#6A9955">// All symbols in the file will be public/private</span><span style="color:#0">
+</span><span style="color:#6A9955">// All symbols in the file will be public/internal</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#global</span><span style="color:#0"> </span><span style="color:#3186CD">public</span><span style="color:#0">
-</span><span style="color:#7F7F7F">#global</span><span style="color:#0"> </span><span style="color:#3186CD">private</span><span style="color:#0">
+</span><span style="color:#7F7F7F">#global</span><span style="color:#0"> </span><span style="color:#3186CD">internal</span><span style="color:#0">
 
 </span><span style="color:#6A9955">// All symbols in the file will go in the namespace 'Toto'</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#global</span><span style="color:#0"> </span><span style="color:#3186CD">namespace</span><span style="color:#0"> </span><span style="color:#3BC3A7">Toto</span><span style="color:#0">
@@ -6169,7 +6198,7 @@ This is the list of predefined attributes. All are located in the reserved <code
 </span><span style="color:#7F7F7F">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]</span><span style="color:#0">
 </span><span style="color:#3186CD">attr</span><span style="color:#0"> </span><span style="color:#3BC3A7">Deprecated</span><span style="color:#0">(msg: </span><span style="color:#ED9A11">string</span><span style="color:#0"> = </span><span style="color:#3186CD">null</span><span style="color:#0">)
 
-</span><span style="color:#6A9955">// Hardcoded for type alias</span><span style="color:#0">
+</span><span style="color:#6A9955">// Hardcoded for type typealias</span><span style="color:#0">
 </span><span style="color:#3186CD">attr</span><span style="color:#0"> </span><span style="color:#3BC3A7">Strict</span><span style="color:#0">()
 
 </span><span style="color:#6A9955">// Hardcoded for local variables</span><span style="color:#0">
@@ -6225,7 +6254,7 @@ In Swag, types are also values that can be inspected at compile time or at runti
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(ptr4 == </span><span style="color:#ED9A11">s64</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  The return result of <code>@typeof</code> is a const pointer to a <code>Swag.TypeInfo</code> kind of structure. This is an alias for the <code>typeinfo</code> type. </p>
+  The return result of <code>@typeof</code> is a const pointer to a <code>Swag.TypeInfo</code> kind of structure. This is an typealias for the <code>typeinfo</code> type. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">let</span><span style="color:#0"> ptr = </span><span style="color:#ED9A11">bool</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(ptr) == </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#3186CD">const</span><span style="color:#0"> *</span><span style="color:#3BC3A7">Swag</span><span style="color:#0">.</span><span style="color:#3BC3A7">TypeInfoNative</span><span style="color:#0">))
