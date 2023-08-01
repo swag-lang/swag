@@ -60,15 +60,16 @@ enum ChunkID: u32
     SND_WAV_FOURCC_ICMT = SND_WAV_FOURCC_MARKER("I"'u32, "C"'u32, "M"'u32, "T"'u32)
 }
 
-enum WavFormat: u16
+public enum WavFormat: u16
 {
-    Unknown   = 0
-    Pcm       = 1
-    Adpcm     = 2
-    FloatIEEE = 3
+    Unknown    = 0
+    Pcm        = 1
+    Adpcm      = 2
+    FloatIEEE  = 3
+    Extensible = 0xFFFE // Microsoft
 }
 
-struct WaveFormat
+public struct WaveFormat
 {
     formatTag:      WavFormat   // Format type
     channels:       u16         // Number of channels (i.e. mono, stereo, etc.)
@@ -77,19 +78,19 @@ struct WaveFormat
     blockAlign:     u16         // Block size of data
 }
 
-struct PcmWaveFormat
+public struct PcmWaveFormat
 {
-    wf:             WaveFormat
+    using wf: WaveFormat
     bitsPerSample:  u16
 }
 
-struct WaveFormatEx
+public struct WaveFormatEx
 {
-    pcmwf:  PcmWaveFormat
+    using pcmwf: PcmWaveFormat
     cbSize: u16     // The count in bytes of the size of extra information (after cbSize)
 }
 
-struct GUID
+public struct GUID
 {
     data1: u32
     data2: u16
@@ -97,9 +98,13 @@ struct GUID
     data4: [8] u8
 }
 
-struct WaveFormatExtensible
+public const GUID_PCM        = GUID{0x00000001, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
+public const GUID_ADPCM      = GUID{0x00000002, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
+public const GUID_FLOAT_IEEE = GUID{0x00000003, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
+
+public struct WaveFormatExtensible
 {
-    format: WaveFormatEx
+    using format: WaveFormatEx
 
     samples: union
     {
@@ -115,7 +120,6 @@ struct WaveFormatExtensible
 public struct SoundWav
 {
     using file: SoundFile
-
     stream: File.FileStream
 }
 

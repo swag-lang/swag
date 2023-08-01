@@ -47,8 +47,41 @@ const XAUDIO2_ANY_PROCESSOR = 0xffffffff
 
 const X3DAUDIO_SPEED_OF_SOUND = 343.5
 
-const XAUDIO2_DEFAULT_CHANNELS = 0
-const XAUDIO2_DEFAULT_SAMPLERATE = 0
+const XAUDIO2_DEBUG_ENGINE            = 0x0001    // Used in XAudio2Create
+const XAUDIO2_VOICE_NOPITCH           = 0x0002    // Used in IXAudio2::CreateSourceVoice
+const XAUDIO2_VOICE_NOSRC             = 0x0004    // Used in IXAudio2::CreateSourceVoice
+const XAUDIO2_VOICE_USEFILTER         = 0x0008    // Used in IXAudio2::CreateSource/SubmixVoice
+const XAUDIO2_PLAY_TAILS              = 0x0020    // Used in IXAudio2SourceVoice::Stop
+const XAUDIO2_END_OF_STREAM           = 0x0040    // Used in XAUDIO2_BUFFER.Flags
+const XAUDIO2_SEND_USEFILTER          = 0x0080    // Used in XAUDIO2_SEND_DESCRIPTOR.Flags
+const XAUDIO2_VOICE_NOSAMPLESPLAYED   = 0x0100    // Used in IXAudio2SourceVoice::GetState
+const XAUDIO2_STOP_ENGINE_WHEN_IDLE   = 0x2000    // Used in XAudio2Create to force the engine to Stop when no source voices are Started, and Start when a voice is Started
+const XAUDIO2_1024_QUANTUM            = 0x8000    // Used in XAudio2Create to specify nondefault processing quantum of 21.33 ms (1024 samples at 48KHz)
+const XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT = 0x10000   // Used in CreateMasteringVoice to create a virtual audio client
+
+const XAUDIO2_MAX_BUFFER_BYTES        = 0x80000000    // Maximum bytes allowed in a source buffer
+const XAUDIO2_MAX_QUEUED_BUFFERS      = 64            // Maximum buffers allowed in a voice queue
+const XAUDIO2_MAX_BUFFERS_SYSTEM      = 2             // Maximum buffers allowed for system threads (Xbox 360 only)
+const XAUDIO2_MAX_AUDIO_CHANNELS      = 64            // Maximum channels in an audio stream
+const XAUDIO2_MIN_SAMPLE_RATE         = 1000          // Minimum audio sample rate supported
+const XAUDIO2_MAX_SAMPLE_RATE         = 200000        // Maximum audio sample rate supported
+const XAUDIO2_MAX_VOLUME_LEVEL        = 16777216.0    // Maximum acceptable volume level (2^24)
+const XAUDIO2_MIN_FREQ_RATIO          = (1/1024.0)    // Minimum SetFrequencyRatio argument
+const XAUDIO2_MAX_FREQ_RATIO          = 1024.0        // Maximum MaxFrequencyRatio argument
+const XAUDIO2_DEFAULT_FREQ_RATIO      = 2.0           // Default MaxFrequencyRatio argument
+const XAUDIO2_MAX_FILTER_ONEOVERQ     = 1.5           // Maximum XAUDIO2_FILTER_PARAMETERS.OneOverQ
+const XAUDIO2_MAX_FILTER_FREQUENCY    = 1.0           // Maximum XAUDIO2_FILTER_PARAMETERS.Frequency
+const XAUDIO2_MAX_LOOP_COUNT          = 254           // Maximum non-infinite XAUDIO2_BUFFER.LoopCount
+const XAUDIO2_MAX_INSTANCES           = 8             // Maximum simultaneous XAudio2 objects on Xbox 360
+
+// Numeric values with special meanings
+const XAUDIO2_COMMIT_NOW              = 0           // Used as an OperationSet argument
+const XAUDIO2_COMMIT_ALL              = 0           // Used in IXAudio2::CommitChanges
+const XAUDIO2_INVALID_OPSET           = 0xFFFFFFFF  // Not allowed for OperationSet arguments
+const XAUDIO2_NO_LOOP_REGION          = 0           // Used in XAUDIO2_BUFFER.LoopCount
+const XAUDIO2_LOOP_INFINITE           = 255         // Used in XAUDIO2_BUFFER.LoopCount
+const XAUDIO2_DEFAULT_CHANNELS        = 0           // Used in CreateMasteringVoice
+const XAUDIO2_DEFAULT_SAMPLERATE      = 0           // Used in CreateMasteringVoice
 
 struct XAUDIO2_EFFECT_CHAIN
 {
@@ -195,7 +228,7 @@ struct IXAudio2Itf
     release:                func(me: *IXAudio2)->ULONG
     registerForCallbacks:   func(me: *IXAudio2, pCallback: *IXAudio2EngineCallback)
     unregisterForCallbacks: func(me: *IXAudio2, pCallback: *IXAudio2EngineCallback)
-    createSourceVoice:      func(me: *IXAudio2, ppSourceVoice: **IXAudio2SourceVoice, pSourceFormat: *const WAVEFORMATEX, flags: UINT32, maxFrequencyRatio: f32, pCallback: *IXAudio2VoiceCallback, pSendList: const *XAUDIO2_VOICE_SENDS, pEffectChain: const *XAUDIO2_EFFECT_CHAIN)->HRESULT
+    createSourceVoice:      func(me: *IXAudio2, ppSourceVoice: **IXAudio2SourceVoice, pSourceFormat: const *WAVEFORMATEX, flags: UINT32, maxFrequencyRatio: f32, pCallback: *IXAudio2VoiceCallback, pSendList: const *XAUDIO2_VOICE_SENDS, pEffectChain: const *XAUDIO2_EFFECT_CHAIN)->HRESULT
     createSubmixVoice:      func(me: *IXAudio2, ppSubmixVoice: **IXAudio2SubmixVoice, inputChannels: UINT32, inputSampleRate: UINT32, flags: UINT32, processingStage: UINT32, pSendList: const *XAUDIO2_VOICE_SENDS, pEffectChain: const *XAUDIO2_EFFECT_CHAIN)->HRESULT
     createMasteringVoice:   func(me: *IXAudio2, voice: **IXAudio2MasteringVoice, inputChannels: UINT32 = XAUDIO2_DEFAULT_CHANNELS, inputSampleRate: UINT32 = XAUDIO2_DEFAULT_SAMPLERATE, flags: UINT32 = 0, szDeviceId: LPCWSTR = null, effectChain: *XAUDIO2_EFFECT_CHAIN = null, streamCategory = AUDIO_STREAM_CATEGORY.AudioCategory_GameEffects)->HRESULT
     startEngine:            func(me: *IXAudio2)->HRESULT

@@ -943,8 +943,22 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
             for (size_t i = 0; i < min(tryMatches.size(), MAX_OVERLOADS); i++)
             {
-                auto funcNode = CastAst<AstFuncDecl>(tryMatches[i]->overload->node, AstNodeKind::FuncDecl);
-                AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+                if (tryMatches[i]->overload->node->kind == AstNodeKind::FuncDecl)
+                {
+                    auto funcNode = CastAst<AstFuncDecl>(tryMatches[i]->overload->node, AstNodeKind::FuncDecl);
+                    AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+                }
+                else if (tryMatches[i]->overload->node->kind == AstNodeKind::VarDecl)
+                {
+                    auto varNode = CastAst<AstVarDecl>(tryMatches[i]->overload->node, AstNodeKind::VarDecl);
+                    auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
+                    AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
+                }
+                else
+                {
+                    SWAG_ASSERT(false);
+                }
+
                 Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
                 if (n.back() == '\n')
                     n.count--;

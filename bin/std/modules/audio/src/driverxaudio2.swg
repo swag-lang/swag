@@ -67,4 +67,27 @@ public impl DriverXAudio2
             hasInitCOM = false
         }
     }
+
+    mtd createVoice(infos: SoundFileInfo)
+    {
+        var wfx: WaveFormatExtensible
+        wfx.format.channels             = cast(u16) infos.channelCount
+        wfx.format.samplesPerSec        = cast(u16) infos.frequency
+        wfx.format.bitsPerSample        = cast(u16) infos.bitsPerSample
+        wfx.format.blockAlign           = cast(u16) (wfx.format.channels * (wfx.format.bitsPerSample / 8))
+        wfx.format.avgBytesPerSec       = wfx.format.blockAlign * wfx.format.samplesPerSec
+        wfx.format.formatTag            = .Extensible
+        wfx.samples.validBitsPerSample  = wfx.format.bitsPerSample
+        wfx.channelMask                 = infos.channelMask
+        wfx.format.cbSize               = @sizeof(WaveFormatExtensible) - @sizeof(WaveFormatEx)
+
+        switch (infos.format)
+        {
+        case FloatIEEE: wfx.subFormat = GUID_FLOAT_IEEE
+        case Pcm:       wfx.subFormat = GUID_PCM
+        }
+
+        var sourceVoice: *IXAudio2SourceVoice
+        let hr = xAudio2.vtbl.createSourceVoice(xAudio2, &sourceVoice, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
+    }
 }
