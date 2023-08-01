@@ -23,8 +23,8 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymEqual));
 
     AstNode* expr;
-    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_ALIAS, &expr));
-    SWAG_CHECK(eatSemiCol("'type' expression"));
+    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &expr));
+    SWAG_CHECK(eatSemiCol("'typealias' expression"));
 
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
@@ -50,8 +50,8 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymEqual));
 
     AstNode* expr;
-    SWAG_CHECK(doPrimaryExpression(node, EXPR_FLAG_ALIAS, &expr));
-    SWAG_CHECK(eatSemiCol("'alias' expression"));
+    SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
+    SWAG_CHECK(eatSemiCol("'namealias' expression"));
 
     node->semanticFct        = SemanticJob::resolveNameAlias;
     node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);

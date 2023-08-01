@@ -380,21 +380,12 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::SymLeftCurly:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
-        if (exprFlags & EXPR_FLAG_ALIAS)
-            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
-        else
-            SWAG_CHECK(doExpressionListTuple(parent, result));
+        SWAG_CHECK(doExpressionListTuple(parent, result));
         break;
 
     case TokenId::SymLeftSquare:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
-
-        // In an alias, this is a type (no alias to array literals)
-        if (exprFlags & EXPR_FLAG_ALIAS)
-        {
-            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
-        }
 
         // We can differentiate between a literal array and a type array by looking at what's next
         else if (exprFlags & (EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
@@ -420,7 +411,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
 
-        if (exprFlags & (EXPR_FLAG_ALIAS | EXPR_FLAG_TYPEOF))
+        if (exprFlags & EXPR_FLAG_TYPEOF)
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         else
             SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));
