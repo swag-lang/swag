@@ -521,20 +521,14 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
     auto node = context->node;
     auto back = node->childs.back();
 
-    // Be sure symbol is there...
-    if (!node->resolvedSymbolName)
-        node->resolvedSymbolName = node->ownerScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
+    SWAG_ASSERT(node->resolvedSymbolName);
+    SWAG_ASSERT(back->resolvedSymbolName);
 
-    auto overload = back->resolvedSymbolOverload;
-    auto symbol   = overload->symbol;
-
-    // Collect all attributes
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-
     node->flags |= AST_NO_BYTECODE;
 
     // Constraints with alias on a variable
-    if (symbol->kind == SymbolKind::Variable)
+    if (back->resolvedSymbolName->kind == SymbolKind::Variable)
     {
         // alias x = struct.x is not possible
         if (back->kind == AstNodeKind::IdentifierRef)
@@ -551,7 +545,7 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
         }
     }
 
-    switch (symbol->kind)
+    switch (back->resolvedSymbolName->kind)
     {
     case SymbolKind::Namespace:
     case SymbolKind::Enum:
@@ -560,14 +554,10 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
     case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report({back, Fmt(Err(Err0030), Naming::aKindName(symbol->kind).c_str())});
+        return context->report({back, Fmt(Err(Err0030), Naming::aKindName(back->resolvedSymbolName->kind).c_str())});
     }
 
-    SWAG_ASSERT(overload);
-    auto copy = Allocator::alloc<SymbolOverload>();
-    copy->from(overload);
-    overload->flags |= OVERLOAD_HAS_AFFECT;
-    SWAG_CHECK(node->ownerScope->symTable.registerUsingAliasOverload(context, node, node->resolvedSymbolName, copy));
+    SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName, back->resolvedSymbolName, back->resolvedSymbolOverload));
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         node->ownerScope->addPublicNode(node);
     return true;

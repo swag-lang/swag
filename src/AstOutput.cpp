@@ -502,6 +502,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     switch (node->kind)
     {
     case AstNodeKind::ConstDecl:
+    case AstNodeKind::NameAlias:
         return true;
     default:
         break;

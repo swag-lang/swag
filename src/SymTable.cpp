@@ -366,9 +366,10 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     return true;
 }
 
-bool SymTable::registerUsingAliasOverload(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
+bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload)
 {
     ScopedLock lkn(symbol->mutex);
+    SharedLock lkn1(otherSymbol->mutex);
 
     if (!symbol->overloads.empty())
     {
@@ -377,18 +378,35 @@ bool SymTable::registerUsingAliasOverload(ErrorContext* context, AstNode* node, 
             auto       firstOverload = symbol->overloads[0];
             Diagnostic diag{node, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};
             auto       note = Diagnostic::note(firstOverload->node, Nte(Nte0036));
-            context->report(diag, note);
-        }
-        else
-        {
-            Diagnostic diag{node, Fmt(Err(Err0890), symbol->name.c_str())};
-            context->report(diag);
+            return context->report(diag, note);
         }
 
-        return false;
+        Diagnostic diag{node, Fmt(Err(Err0890), symbol->name.c_str())};
+        return context->report(diag);
     }
 
-    symbol->overloads.push_back(overload);
+    SWAG_ASSERT(!otherSymbol->cptOverloads);
+
+    if (otherOverload)
+    {
+        symbol->cptOverloadsInit += 1;
+        auto copy = Allocator::alloc<SymbolOverload>();
+        copy->from(otherOverload);
+        otherOverload->flags |= OVERLOAD_HAS_AFFECT;
+        symbol->overloads.push_back(copy);
+    }
+    else
+    {
+        symbol->cptOverloadsInit += otherSymbol->cptOverloadsInit;
+        for (auto o : otherSymbol->overloads)
+        {
+            auto copy = Allocator::alloc<SymbolOverload>();
+            copy->from(o);
+            o->flags |= OVERLOAD_HAS_AFFECT;
+            symbol->overloads.push_back(copy);
+        }
+    }
+
     symbol->decreaseOverloadNoLock();
     return true;
 }

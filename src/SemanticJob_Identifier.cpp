@@ -2156,6 +2156,11 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         return cannotMatchIdentifierError(context, overloads, node);
     }
 
+    // There is more than one possible match, and this is an identifier for a name alias.
+    // We are fine
+    if (matches.size() > 1 && node && (node->flags & AST_NAME_ALIAS))
+        return true;
+
     // There is more than one possible match
     if (matches.size() > 1)
     {
@@ -4314,6 +4319,10 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
     if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
         return false;
 
+    // For a name alias, we wait everything to be done...
+    if (identifier->flags & AST_NAME_ALIAS)
+        return true;
+
     // This is enough to resolve, as we just need parameters, and that case means that some functions
     // do not know their return type yet (short lambdas)
     if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
@@ -4652,6 +4661,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
 
     if (riFlags & (RI_FOR_GHOSTING | RI_FOR_ZERO_GHOSTING))
         return true;
+
+    // Name alias with overloads (more than one match)
+    if (identifier->flags & AST_NAME_ALIAS && job->cacheMatches.size() > 1)
+    {
+        identifier->resolvedSymbolName     = job->cacheMatches[0]->symbolOverload->symbol;
+        identifier->resolvedSymbolOverload = nullptr;
+        return true;
+    }
 
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
