@@ -3,8 +3,9 @@ using Audio
 
 #test
 {
-    assume XAudio2.create()
-    defer XAudio2.destroy()
+    var drv: DriverXAudio2
+    assume drv.create()
+    defer drv.destroy()
 
     var x: SoundWav
     assume x.read(sndPath("snd1.wav"))

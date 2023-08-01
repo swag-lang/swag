@@ -1,6 +1,7 @@
 #global if #os == Swag.TargetOs.Windows
 #test
 {
-    assume XAudio2.create()
-    XAudio2.destroy()
+    var drv: Audio.DriverXAudio2
+    assume drv.create()
+    drv.destroy()
 }

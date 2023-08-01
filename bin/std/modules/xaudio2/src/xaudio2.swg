@@ -265,69 +265,8 @@ struct WAVEFORMATEX
     cbSize:             WORD    /* the count in bytes of the size of */
 }
 
-var g_XAudio2:          *IXAudio2
-var g_MasteringVoice:   *IXAudio2MasteringVoice
-var g_InitCOM:          bool
-var g_ChannelMask:      DWORD
-var g_X3DInstance:      X3DAUDIO_HANDLE
-
 #[Swag.Foreign("xaudio2_9")]
 {
     func XAudio2Create(ppXAudio2: **IXAudio2, flags: UINT32, processor: XAUDIO2_PROCESSOR = XAUDIO2_ANY_PROCESSOR)->HRESULT;
     func X3DAudioInitialize(speakerChannelMask: UINT32, speedOfSound: FLOAT32, instance: X3DAUDIO_HANDLE)->HRESULT;
-}
-
-// Create the xaudio2 engine
-func create(initCOM: bool = true) throw
-{
-    //Debug.assert(!g_XAudio2)
-
-    var result: HRESULT
-    defer(err) destroy()
-
-    if initCOM
-    {
-        result = CoInitializeEx(null, 0)
-        if result != S_OK
-            throw "failed to initialize COM"
-        g_InitCOM = initCOM
-    }
-
-    result = XAudio2Create(&g_XAudio2, 0)
-    if result != S_OK
-        throw "cannot create xaudio2 device"
-
-    result = g_XAudio2.vtbl.createMasteringVoice(g_XAudio2, &g_MasteringVoice)
-    if result != S_OK
-        throw "cannot create xaudio2 mastering voice"
-
-    result = g_MasteringVoice.vtbl.getChannelMask(g_MasteringVoice, &g_ChannelMask)
-    if result != S_OK
-        throw "cannot get xaudio2 channel mask"
-
-    result = X3DAudioInitialize(g_ChannelMask, X3DAUDIO_SPEED_OF_SOUND, g_X3DInstance)
-    if result != S_OK
-        throw "cannot initialize X3D audio"
-}
-
-// Destroys the xaudio2 engine
-func destroy()
-{
-    if g_MasteringVoice
-    {
-        g_MasteringVoice.vtbl.destroyVoice(acast g_MasteringVoice)
-        g_MasteringVoice = null
-    }
-
-    if g_XAudio2
-    {
-        discard g_XAudio2.vtbl.release(g_XAudio2)
-        g_XAudio2 = null
-    }
-
-    if g_InitCOM
-    {
-        CoUninitialize()
-        g_InitCOM = false
-    }
 }
