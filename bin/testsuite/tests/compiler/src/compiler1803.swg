@@ -1,4 +1,4 @@
-typealias toto = Swag
+namealias toto = Swag
 
 //#[toto.PrintBc]
 #test

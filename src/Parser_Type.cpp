@@ -23,7 +23,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymEqual));
 
     AstNode* expr;
-    SWAG_CHECK(doPrimaryExpression(node, EXPR_FLAG_ALIAS, &expr));
+    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_ALIAS, &expr));
     SWAG_CHECK(eatSemiCol("'type' expression"));
 
     node->allocateExtension(ExtensionKind::Semantic);
