@@ -526,14 +526,10 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
         node->resolvedSymbolName = node->ownerScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
 
     auto overload = back->resolvedSymbolOverload;
-    SWAG_VERIFY(back->kind != AstNodeKind::ArrayPointerIndex, context->report({back, Err(Err0819), Hnt(Hnt0061)}));
-    SWAG_VERIFY(overload, context->report({back, Err(Err0027), Hnt(Hnt0075)}));
-    auto symbol       = overload->symbol;
-    auto typeResolved = overload->typeInfo;
+    auto symbol   = overload->symbol;
 
     // Collect all attributes
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, Err(Err0028)}));
 
     node->flags |= AST_NO_BYTECODE;
 

@@ -425,7 +425,7 @@ void initErrors()
     SWAG_ERROR(Err0115, "ambiguous resolution of generic %s '%s'");
     SWAG_ERROR(Err0182, "ambiguous resolution of special function '%s'");
     SWAG_ERROR(Err0116, "ambiguous resolution of symbol '%s'");
-    SWAG_ERROR(Err0027, "an alias should only be used with a type or an identifier");
+    SWAG_ERROR(Err0027, nullptr);
     SWAG_ERROR(Err0485, "an array access value should be of type integer ('%s' provided)");
     SWAG_ERROR(Err0684, "an embedded interface ('%s') cannot be public");
     SWAG_ERROR(Err0675, "an embedded struct ('%s') cannot be public");
@@ -447,7 +447,7 @@ void initErrors()
     SWAG_ERROR(Err0185, "cannot affect a closure to a lambda type");
     SWAG_ERROR(Err0569, "cannot affect an expression of type 'void'");
     SWAG_ERROR(Err0225, "cannot affect by index a type '%s' to '%s' because no corresponding function 'opIndexAffect' has been found in '%s'");
-    SWAG_ERROR(Err0819, "cannot alias a pointer or an array reference");
+    SWAG_ERROR(Err0819, nullptr);
     SWAG_ERROR(Err0029, "cannot alias a struct member");
     SWAG_ERROR(Err0160, "cannot assign a function pointer to a constant");
     SWAG_ERROR(Err0032, "cannot bitcast from type '%s' (should be integer, pointer, rune or float)");
@@ -661,7 +661,7 @@ void initErrors()
     SWAG_ERROR(Err0201, "the '%s' is referencing itself, which makes it recursive");
     SWAG_ERROR(Err0237, "the '%s' message string cannot be evaluated at compile time");
     SWAG_ERROR(Err0442, "the '@cvastart' intrinsic should only be used in a function with a last parameter of type 'cvarargs'");
-    SWAG_ERROR(Err0028, "the 'Swag.Strict' attribute should only be used on a type alias");
+    SWAG_ERROR(Err0028, nullptr);
     SWAG_ERROR(Err0159, "unexpected 'Swag.Tls' attribute as 'Swag.Compiler' has already been defined, and they are exclusive");
     SWAG_ERROR(Err0601, "the 'Swag.Using' is empty");
     SWAG_ERROR(Err0126, "the 'opSlice' special function should return a string or a slice ('%s' provided)");
@@ -1090,7 +1090,7 @@ void initErrors()
     SWAG_ERROR(Hnt0045, "this is the second initialization");
     SWAG_ERROR(Hnt0009, "this is the second one");
     SWAG_ERROR(Hnt0066, "this is the tuple unpacking");
-    SWAG_ERROR(Hnt0075, "this is unexpected in an alias");
+    SWAG_ERROR(Hnt0075, nullptr);
     SWAG_ERROR(Hnt0088, "this parameter has a default value");
     SWAG_ERROR(Hnt0071, "this parameter is missing");
     SWAG_ERROR(Hnt0089, "this parameter should have one too");
