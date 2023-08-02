@@ -1,4 +1,3 @@
-#global if #os == Swag.TargetOs.Windows
 using Audio
 
 #test
@@ -8,7 +7,7 @@ using Audio
 
     assume
     {
-        var x = SoundFile.load(sndPath("snd1.wav"))
+        var x = SoundFile.load(sndPath("pacman_chomp.wav"))
         var voice = Voice.create(&x)
         voice.setVolume(0)
         voice.play()
