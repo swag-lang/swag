@@ -145,13 +145,18 @@ public impl Voice
     // Stop the playing voice
     mtd stop(batchID: u32 = 0) throw
     {
-        if (handle)
-            discard handle.vtbl.stop(handle, 0, batchID)
+        if !handle
+            return
+        let hr = handle.vtbl.stop(handle, 0, batchID)
+        if hr != S_OK
+            throw "error"
     }
 
     // Set the playing voice volume between [0..1]
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {
+        if !handle
+            return
         let hr = handle.vtbl.setVolume(acast handle, Math.clamp(volume, 0, 1), batchID)
         if hr != S_OK
             throw "error"
@@ -160,6 +165,8 @@ public impl Voice
     // Set the playing voice volume
     mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
     {
+        if !handle
+            return
         let hr = handle.vtbl.setVolume(acast handle, convertDBToPercent(volumeDB), batchID)
         if hr != S_OK
             throw "error"
