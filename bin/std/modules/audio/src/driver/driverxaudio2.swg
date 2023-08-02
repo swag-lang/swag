@@ -39,10 +39,10 @@ public impl DriverNative
         if result != S_OK
             throw "cannot create xaudio2 mastering voice"
 
-        var debug: XAUDIO2_DEBUG_CONFIGURATION
-        debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
-        debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
-        xAudio2.vtbl.setDebugConfiguration(xAudio2, &debug, null)
+        //var debug: XAUDIO2_DEBUG_CONFIGURATION
+        //debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
+        //debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
+        //xAudio2.vtbl.setDebugConfiguration(xAudio2, &debug, null)
 
         result = masteringVoice.vtbl.getChannelMask(masteringVoice, &channelMask)
         if result != S_OK
@@ -141,9 +141,17 @@ public impl Voice
                 throw "cannot play"
         }
 
+        resume(batchID)
+    }
+
+    // Resume play
+    mtd resume(batchID: u32 = 0) throw
+    {
+        if !handle
+            return
         let hr = handle.vtbl.start(handle, 0, batchID)
         if hr != S_OK
-            throw "cannot play"
+            throw "error"
     }
 
     // Stop the playing voice
