@@ -1,7 +1,7 @@
 #global namespace Wav
 using Core, Win32
 
-private struct ChunkHeader
+struct ChunkHeader
 {
     chunkID:    ChunkID = undefined
     chunkSize:  u32
@@ -61,7 +61,7 @@ enum ChunkID: u32
     SND_WAV_FOURCC_ICMT = SND_WAV_FOURCC_MARKER("I"'u32, "C"'u32, "M"'u32, "T"'u32)
 }
 
-public enum WavFormat: u16
+enum WavFormat: u16
 {
     Unknown    = 0
     Pcm        = 1
@@ -74,7 +74,7 @@ public const GUID_PCM        = GUID{0x00000001, 0x0000, 0x0010, [0x80, 0x00, 0x0
 public const GUID_ADPCM      = GUID{0x00000002, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 public const GUID_FLOAT_IEEE = GUID{0x00000003, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 
-public struct WaveFormat
+struct WaveFormat
 {
     formatTag:      WavFormat   // Format type
     channels:       u16         // Number of channels (i.e. mono, stereo, etc.)
@@ -83,19 +83,19 @@ public struct WaveFormat
     blockAlign:     u16         // Block size of data
 }
 
-public struct PcmWaveFormat
+struct PcmWaveFormat
 {
     using wf: WaveFormat
     bitsPerSample:  u16
 }
 
-public struct WaveFormatEx
+struct WaveFormatEx
 {
     using pcmwf: PcmWaveFormat
     cbSize: u16     // The count in bytes of the size of extra information (after cbSize)
 }
 
-public struct WaveFormatExtensible
+struct WaveFormatExtensible
 {
     using fmtex: WaveFormatEx
 
@@ -110,7 +110,7 @@ public struct WaveFormatExtensible
     subFormat:   GUID   // Format identifier GUID
 }
 
-private func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
+func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
 {
     if chunkSize < @sizeof(WaveFormat)
         throw "invalid wav format"
@@ -183,7 +183,7 @@ private func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
     }
 }
 
-private func readChunkData(using file: *SoundFile, chunkSize: u32) throw
+func readChunkData(using file: *SoundFile, chunkSize: u32) throw
 {
     validity |= .Data
     dataSeek = stream.getPosition()
@@ -198,7 +198,7 @@ private func readChunkData(using file: *SoundFile, chunkSize: u32) throw
     }
 }
 
-private func isFormatSupported(using file: *SoundFile)->bool
+func isFormatSupported(using file: *SoundFile)->bool
 {
     switch file.format
     {
