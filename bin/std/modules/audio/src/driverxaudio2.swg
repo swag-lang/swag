@@ -11,6 +11,8 @@ public struct DriverXAudio2
     x3DInstance:      X3DAUDIO_HANDLE
 }
 
+public typealias VoiceHandle = *IXAudio2SourceVoice
+
 public impl DriverXAudio2
 {
     // Create the xaudio2 engine
@@ -73,7 +75,7 @@ public impl DriverXAudio2
         }
     }
 
-    mtd createVoice(file: *SoundFile) throw
+    mtd createVoice(file: *SoundFile)->Voice throw
     {
         let infos = &file.infos
 
@@ -94,32 +96,36 @@ public impl DriverXAudio2
         case Pcm:       wfx.subFormat = GUID_PCM
         }
 
-        var sourceVoice: *IXAudio2SourceVoice
-        var hr = xAudio2.vtbl.createSourceVoice(xAudio2, &sourceVoice, acast &wfx.format, 0/*XAUDIO2_VOICE_USEFILTER*/, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
+        var result: retval
+        let hr = xAudio2.vtbl.createSourceVoice(xAudio2, &result.handle, acast &wfx.format, 0/*XAUDIO2_VOICE_USEFILTER*/, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
         if hr != S_OK
             throw "cannot create source voice"
 
+        result.file = file
+        return result
+    }
 
-
-let dataSize = file.infos.dataSize
-let firstSample = 0
-let looping = false
+    mtd playVoice(voice: *Voice) throw
+    {
+        let dataSize = voice.file.infos.dataSize
+        let firstSample = 0
+        let looping = false
 
         var buffer: XAUDIO2_BUFFER
-        buffer.pAudioData     = file.datas.buffer
-        buffer.flags          = dataSize == file.infos.dataSize ? XAUDIO2_END_OF_STREAM : 0
+        buffer.pAudioData     = voice.file.datas.buffer
+        buffer.flags          = dataSize == voice.file.infos.dataSize ? XAUDIO2_END_OF_STREAM : 0
         buffer.audioBytes     = acast dataSize
         buffer.playBegin      = firstSample
         buffer.pContext       = null
-        if looping and dataSize == file.infos.dataSize
+        if looping and dataSize == voice.file.infos.dataSize
             buffer.loopCount = XAUDIO2_LOOP_INFINITE
 
         //m_FirstPlayed = true;
-        hr = sourceVoice.vtbl.submitSourceBuffer(sourceVoice, &buffer, null)
+        var hr = voice.handle.vtbl.submitSourceBuffer(voice.handle, &buffer, null)
         if hr != S_OK
             throw "cannot play"
 
-        hr = sourceVoice.vtbl.start(sourceVoice, 0, 0)
+        hr = voice.handle.vtbl.start(voice.handle, 0, 0)
         if hr != S_OK
             throw "cannot play"
 

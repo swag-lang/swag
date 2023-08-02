@@ -10,5 +10,6 @@ using Audio
     var x: SoundWav
     assume x.read(sndPath("snd1.wav"))
 
-    assume drv.createVoice(&x)
+    var voice = assume drv.createVoice(&x)
+    assume drv.playVoice(&voice)
 }
