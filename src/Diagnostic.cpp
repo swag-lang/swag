@@ -768,7 +768,7 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
 
-            if (i == ranges.size() - 1 || startIndex + r.hint.length() + 5 < ranges[i + 1].startLocation.column)
+            if (i == ranges.size() - 1 || startIndex + r.hint.length() + 5 < (ranges[i + 1].startLocation.column + ranges[i + 1].width / 2))
             {
                 setColorRanges(r.errorLevel);
                 g_Log.print(LogSymbol::DownRight);
