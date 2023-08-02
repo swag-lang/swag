@@ -11,5 +11,5 @@ using Audio
     assume x.read(sndPath("snd1.wav"))
 
     var voice = assume drv.createVoice(&x)
-    assume drv.playVoice(&voice)
+    assume voice.play()
 }

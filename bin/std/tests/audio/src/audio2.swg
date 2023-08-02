@@ -4,6 +4,6 @@ using Audio
 {
     var x: SoundWav
     assume x.read(sndPath("snd1.wav"))
-    @assert(x.infos.channelCount == 2)
-    @assert(x.infos.dataSize == 216320)
+    @assert(x.channelCount == 2)
+    @assert(x.dataSize == 216320)
 }

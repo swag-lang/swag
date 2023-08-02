@@ -128,19 +128,19 @@ impl SoundWav
 
         switch (wf.formatTag)
         {
-        case Pcm:       infos.format = .Pcm
-        case FloatIEEE: infos.format = .FloatIEEE
-        default:        infos.format = .Unknown
+        case Pcm:       format = .Pcm
+        case FloatIEEE: format = .FloatIEEE
+        default:        format = .Unknown
         }
 
-        infos.frequency     = wf.samplesPerSec
-        infos.channelCount  = wf.channels
-        infos.bitsPerSample = (wf.avgBytesPerSec * 8 / wf.channels) / wf.samplesPerSec
+        frequency     = wf.samplesPerSec
+        channelCount  = wf.channels
+        bitsPerSample = (wf.avgBytesPerSec * 8 / wf.channels) / wf.samplesPerSec
 
-        infos.validity = .Format
-        infos.validity |= .Frequency
-        infos.validity |= .ChannelCount
-        infos.validity |= .BitsPerSample
+        validity = .Format
+        validity |= .Frequency
+        validity |= .ChannelCount
+        validity |= .BitsPerSample
 
         if chunkSize < @sizeof(PcmWaveFormat)
             return
@@ -168,25 +168,25 @@ impl SoundWav
 
     mtd readChunkData(chunkSize: u32) throw
     {
-        infos.validity |= .Data
-        infos.dataSeek = stream.getPosition()
-        infos.dataSize = chunkSize
+        validity |= .Data
+        dataSeek = stream.getPosition()
+        dataSize = chunkSize
 
-        infos.validity |= .SampleCount
-        infos.sampleCount = infos.dataSize / (infos.channelCount * (infos.bitsPerSample / 8))
-        if infos.validity & .Frequency
+        validity |= .SampleCount
+        sampleCount = dataSize / (channelCount * (bitsPerSample / 8))
+        if validity & .Frequency
         {
-            infos.duration = cast(f32) (infos.sampleCount / cast(f64) infos.frequency)
-            infos.validity |= .Duration
+            duration = cast(f32) (sampleCount / cast(f64) frequency)
+            validity |= .Duration
         }
     }
 
     mtd isFormatSupported()->bool
     {
-        switch infos.format
+        switch format
         {
         case Pcm:
-            switch infos.bitsPerSample
+            switch bitsPerSample
             {
             case 8, 16, 24, 32: return true
             default:            return false

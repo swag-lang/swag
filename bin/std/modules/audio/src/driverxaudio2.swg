@@ -77,20 +77,18 @@ public impl DriverXAudio2
 
     mtd createVoice(file: *SoundFile)->Voice throw
     {
-        let infos = &file.infos
-
         var wfx: WAVEFORMATEXTENSIBLE
-        wfx.format.nChannels            = cast(u16) infos.channelCount
-        wfx.format.nSamplesPerSec       = cast(u16) infos.frequency
-        wfx.format.wBitsPerSample       = cast(u16) infos.bitsPerSample
+        wfx.format.nChannels            = cast(u16) file.channelCount
+        wfx.format.nSamplesPerSec       = cast(u16) file.frequency
+        wfx.format.wBitsPerSample       = cast(u16) file.bitsPerSample
         wfx.format.nBlockAlign          = cast(u16) (wfx.format.nChannels * (wfx.format.wBitsPerSample / 8))
         wfx.format.nAvgBytesPerSec      = wfx.format.nBlockAlign * wfx.format.nSamplesPerSec
         wfx.format.wFormatTag           = FORMAT_EXTENSIBLE
         wfx.format.cbSize               = @sizeof(WAVEFORMATEXTENSIBLE) - @sizeof(WAVEFORMATEX)
         wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
-        wfx.dwChannelMask               = infos.channelMask
+        wfx.dwChannelMask               = file.channelMask
 
-        switch (infos.format)
+        switch (file.format)
         {
         case FloatIEEE: wfx.subFormat = GUID_FLOAT_IEEE
         case Pcm:       wfx.subFormat = GUID_PCM
@@ -104,28 +102,31 @@ public impl DriverXAudio2
         result.file = file
         return result
     }
+}
 
-    mtd playVoice(voice: *Voice) throw
+impl Voice
+{
+    public mtd play() throw
     {
-        let dataSize = voice.file.infos.dataSize
+        let dataSize = file.dataSize
         let firstSample = 0
         let looping = false
 
         var buffer: XAUDIO2_BUFFER
-        buffer.pAudioData     = voice.file.datas.buffer
-        buffer.flags          = dataSize == voice.file.infos.dataSize ? XAUDIO2_END_OF_STREAM : 0
+        buffer.pAudioData     = file.datas.buffer
+        buffer.flags          = dataSize == file.dataSize ? XAUDIO2_END_OF_STREAM : 0
         buffer.audioBytes     = acast dataSize
         buffer.playBegin      = firstSample
         buffer.pContext       = null
-        if looping and dataSize == voice.file.infos.dataSize
+        if looping and dataSize == file.dataSize
             buffer.loopCount = XAUDIO2_LOOP_INFINITE
 
         //m_FirstPlayed = true;
-        var hr = voice.handle.vtbl.submitSourceBuffer(voice.handle, &buffer, null)
+        var hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
         if hr != S_OK
             throw "cannot play"
 
-        hr = voice.handle.vtbl.start(voice.handle, 0, 0)
+        hr = handle.vtbl.start(handle, 0, 0)
         if hr != S_OK
             throw "cannot play"
 
