@@ -3241,7 +3241,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
 
 bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit)
 {
-    if (!ufcsNode || typeFunc->parameters.size() == 0)
+    if (!ufcsNode || typeFunc->parameters.empty())
         return false;
 
     // Be sure the identifier we want to use in ufcs emits code, otherwise we cannot use it.
@@ -3251,34 +3251,41 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
         return false;
 
     // Compare first function parameter with ufcsNode type.
-    bool cmpFirstParam = TypeManager::makeCompatibles(context,
-                                                      typeFunc->parameters[0]->typeInfo,
-                                                      ufcsNode->typeInfo,
-                                                      nullptr,
-                                                      ufcsNode,
-                                                      CASTFLAG_JUST_CHECK | CASTFLAG_UFCS);
-    if (context->result == ContextResult::Pending)
+    bool cmpTypeUfcs = TypeManager::makeCompatibles(context,
+                                                    typeFunc->parameters[0]->typeInfo,
+                                                    ufcsNode->typeInfo,
+                                                    nullptr,
+                                                    ufcsNode,
+                                                    CASTFLAG_JUST_CHECK | CASTFLAG_UFCS);
+    if (context->result != ContextResult::Done)
         return false;
+
+    // Compare first function parameter with first call parameter
+    bool cmpTypeFirstParam = true;
+    if (parameters && parameters->childs.size())
+        cmpTypeFirstParam = TypeManager::makeCompatibles(context,
+                                                         typeFunc->parameters[0]->typeInfo,
+                                                         parameters->childs.front()->typeInfo,
+                                                         nullptr,
+                                                         parameters->childs.front(),
+                                                         CASTFLAG_JUST_CHECK | CASTFLAG_UFCS);
+    if (context->result != ContextResult::Done)
+        return false;
+
+    auto numCallParams = parameters ? parameters->childs.size() : 0;
+    if (typeFunc->isClosure()) // Take care of closure first dummy parameter (do not count it)
+        numCallParams++;
 
     // In case ufcsNode is not explicit (using var), then be sure that first parameter type matches.
-    if (!nodeIsExplicit && !cmpFirstParam)
+    if (!nodeIsExplicit && !cmpTypeUfcs)
         return false;
 
-    auto numParams = parameters ? parameters->childs.size() : 0;
-
-    // Take care of closure first dummy parameter (do not count it)
-    if (typeFunc->isClosure())
-        numParams++;
-
-    if (numParams < typeFunc->parameters.size())
+    if (numCallParams < typeFunc->parameters.size())
         return true;
 
     // In case of variadic functions, make ufcs if the first parameter is correct
-    if (typeFunc->flags & TYPEINFO_VARIADIC)
-    {
-        if (cmpFirstParam)
-            return true;
-    }
+    if (typeFunc->flags & TYPEINFO_VARIADIC && cmpTypeUfcs)
+        return true;
 
     // As we have a variable on the left (or equivalent), force it, except when calling a lambda with the
     // right number of arguments (not sure all of thoses tests are bullet proof)
@@ -3287,15 +3294,9 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
 
     // If we have the correct number of arguments, but the ufcs node matches the first parameter, and the first real parameter does not,
     // then try ufcs
-    if (numParams == typeFunc->parameters.size() && cmpFirstParam && parameters->childs.size())
+    if (numCallParams == typeFunc->parameters.size() && cmpTypeUfcs && parameters->childs.size())
     {
-        cmpFirstParam = TypeManager::makeCompatibles(context,
-                                                     typeFunc->parameters[0]->typeInfo,
-                                                     parameters->childs.front()->typeInfo,
-                                                     nullptr,
-                                                     parameters->childs.front(),
-                                                     CASTFLAG_JUST_CHECK | CASTFLAG_UFCS);
-        if (!cmpFirstParam)
+        if (!cmpTypeFirstParam)
             return true;
     }
 
