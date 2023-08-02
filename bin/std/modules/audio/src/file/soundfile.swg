@@ -54,10 +54,27 @@ impl SoundFile
     // Will load the sound metadatas if 'loadMetaData' is true.
     func load(fullName: string, loadDatas = true, loadMetaDatas = false)->SoundFile throw
     {
-        if Path.getExtensionLowerCase(fullName) == ".wav"
-            return Wav.loadFile(fullName, loadDatas, loadMetaDatas)
-        else
+        let ext = Path.getExtensionLowerCase(fullName)
+
+        // Check format
+        switch ext
+        {
+        case ".wav":
+            break
+        default:
             throw "unknown file extension"
-        return {}
+        }
+
+        var result: retval
+        result.stream = File.open(fullName, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
+        defer result.stream.close()
+
+        switch ext
+        {
+        case ".wav":
+            Wav.loadFile(&result, loadDatas, loadMetaDatas)
+        }
+
+        return result
     }
 }

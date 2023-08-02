@@ -192,7 +192,8 @@ private func isFormatSupported(using file: *SoundFile)->bool
     return false
 }
 
-public func loadWav(using file: *SoundFile, loadDatas = true, loadMetaDatas = false) throw
+// Load a wav file
+public func loadFile(using file: *SoundFile, loadDatas = true, loadMetaDatas = false) throw
 {
     enum Stage{FindRiff, FindFmt, FindData, BreakOnSuccess}
     var stage:  Stage = FindRiff
@@ -276,14 +277,4 @@ public func loadWav(using file: *SoundFile, loadDatas = true, loadMetaDatas = fa
                 throw "invalid chunk"
         }
     }
-}
-
-// Load the file
-public func loadFile(fullName: string, loadDatas = true, loadMetaDatas = false)->SoundFile throw
-{
-    var result: retval
-    result.stream = File.open(fullName, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
-    defer result.stream.close()
-    result.loadWav(loadDatas, loadMetaDatas)
-    return result
 }
