@@ -3250,6 +3250,10 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
     if (ufcsNode->flags & AST_NO_BYTECODE)
         return false;
 
+    // If we have an explicit node, then we can try. Anyway we will also try without...
+    if(nodeIsExplicit)
+        return true;
+
     // Compare first function parameter with ufcsNode type.
     bool cmpTypeUfcs = TypeManager::makeCompatibles(context,
                                                     typeFunc->parameters[0]->typeInfo,
@@ -3260,47 +3264,11 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
     if (context->result != ContextResult::Done)
         return false;
 
-    // Compare first function parameter with first call parameter
-    bool cmpTypeFirstParam = true;
-    if (parameters && parameters->childs.size())
-        cmpTypeFirstParam = TypeManager::makeCompatibles(context,
-                                                         typeFunc->parameters[0]->typeInfo,
-                                                         parameters->childs.front()->typeInfo,
-                                                         nullptr,
-                                                         parameters->childs.front(),
-                                                         CASTFLAG_JUST_CHECK | CASTFLAG_UFCS);
-    if (context->result != ContextResult::Done)
-        return false;
-
-    auto numCallParams = parameters ? parameters->childs.size() : 0;
-    if (typeFunc->isClosure()) // Take care of closure first dummy parameter (do not count it)
-        numCallParams++;
-
     // In case ufcsNode is not explicit (using var), then be sure that first parameter type matches.
-    if (!nodeIsExplicit && !cmpTypeUfcs)
+    if (!cmpTypeUfcs)
         return false;
 
-    if (numCallParams < typeFunc->parameters.size())
-        return true;
-
-    // In case of variadic functions, make ufcs if the first parameter is correct
-    if (typeFunc->flags & TYPEINFO_VARIADIC && cmpTypeUfcs)
-        return true;
-
-    // As we have a variable on the left (or equivalent), force it, except when calling a lambda with the
-    // right number of arguments (not sure all of thoses tests are bullet proof)
-    if (typeFunc->isLambdaClosure())
-        return false;
-
-    // If we have the correct number of arguments, but the ufcs node matches the first parameter, and the first real parameter does not,
-    // then try ufcs
-    if (numCallParams == typeFunc->parameters.size() && cmpTypeUfcs && parameters->childs.size())
-    {
-        if (!cmpTypeFirstParam)
-            return true;
-    }
-
-    return nodeIsExplicit;
+    return true;
 }
 
 bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)

@@ -633,7 +633,7 @@ void initErrors()
     SWAG_ERROR(Err0205, "not enough arguments in the tuple initialization ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0035, "not enough generic arguments for %s");
     SWAG_ERROR(Err0158, "not enough hexadecimal digit, %s");
-    SWAG_ERROR(Err0157, nullptr);
+    SWAG_ERROR(Err0157, "not enough arguments for %s");
     SWAG_ERROR(Err0111, "pointer arithmetic is not allowed on type 'void'");
     SWAG_ERROR(Err0579, "pointer arithmetic is not allowed with operand type '%s'");
     SWAG_ERROR(Err0192, "pointer arithmetic is not allowed");
@@ -1270,8 +1270,8 @@ void initErrors()
     SWAG_ERROR(Nte0085, "the version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character");
     SWAG_ERROR(Nte0086, "could come from enum '%s'");
     SWAG_ERROR(Nte0087, "you can run swag with '--callstack' to get contextual informations");
-    SWAG_ERROR(Nte0088, nullptr);
-    SWAG_ERROR(Nte0089, nullptr);
+    SWAG_ERROR(Nte0088, "missing '%s' of type '%s'");
+    SWAG_ERROR(Nte0089, "missing %s of type '%s'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

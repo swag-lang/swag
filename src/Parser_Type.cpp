@@ -260,6 +260,8 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             {
                 auto nameVar = namedParam ? namedParam->token.text : Fmt("__%d", g_UniqueID.fetch_add(1));
                 auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
+                if (!namedParam)
+                    param->specFlags |= AstVarDecl::SPECFLAG_UNNAMED;
 
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extMisc()->exportNode = typeExpr;

@@ -202,64 +202,16 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 
     case MatchResult::MissingSomeParameters:
-    {
-        if (!callParameters)
-        {
-            diag       = new Diagnostic{node, Fmt(Err(Err0020), refNiceName.c_str())};
-            diag->hint = Hnt(Hnt0044);
-        }
-        else if (destFuncDecl)
-        {
-            diag       = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
-            auto miss  = destFuncDecl->parameters->childs[match.cptResolved];
-            diag->hint = Fmt(Hnt(Hnt0083), miss->token.ctext(), miss->typeInfo->getDisplayNameC());
-        }
-        else if (destAttrDecl)
-        {
-            diag       = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
-            auto miss  = destAttrDecl->parameters->childs[match.cptResolved];
-            diag->hint = Fmt(Hnt(Hnt0083), miss->token.ctext(), miss->typeInfo->getDisplayNameC());
-        }
-        else
-        {
-            diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
-        }
-
-        result0.push_back(diag);
-
-        if (destFuncDecl && callParameters)
-        {
-            auto note  = Diagnostic::note(destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()));
-            note->hint = Hnt(Hnt0071);
-            result1.push_back(note);
-        }
-        else if (destAttrDecl && callParameters)
-        {
-            auto note  = Diagnostic::note(destAttrDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()));
-            note->hint = Hnt(Hnt0071);
-            result1.push_back(note);
-        }
-        else
-        {
-            auto note = Diagnostic::hereIs(overload);
-            if (node)
-                result1.push_back(note);
-        }
-
-        return;
-    }
-
     case MatchResult::NotEnoughParameters:
     {
         if (!callParameters)
-            diag = new Diagnostic{node, Fmt(Err(Err0020), refNiceName.c_str())};
+            diag = new Diagnostic{node, node->token, Fmt(Err(Err0020), refNiceName.c_str())};
+        else if (destAttrDecl)
+            diag = new Diagnostic{node, node->token, Fmt(Err(Err0157), refNiceName.c_str())};
         else
-            diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
-
+            diag = new Diagnostic{node, node->token, Fmt(Err(Err0016), refNiceName.c_str())};
         if (!callParameters)
             diag->hint = Hnt(Hnt0044);
-        else if (!overload->typeInfo->isFuncAttr())
-            diag->addRange(node->token, Diagnostic::isType(overload->typeInfo));
 
         result0.push_back(diag);
 
@@ -271,17 +223,22 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             if (!match.solvedParameters[si])
             {
+                AstNode* parameters = nullptr;
                 if (destFuncDecl)
-                {
-                    diag->remarks.push_back(Fmt("missing '%s' of type '%s'", destFuncDecl->parameters->childs[si]->token.ctext(), destFuncDecl->parameters->childs[si]->typeInfo->getDisplayNameC()));
-                    if (note)
-                        note->addRange(destFuncDecl->parameters->childs[si], "missing");
-                }
+                    parameters = destFuncDecl->parameters;
                 else if (destLambdaDecl)
+                    parameters = destLambdaDecl->parameters;
+                else if (destAttrDecl)
+                    parameters = destAttrDecl->parameters;
+
+                if (parameters)
                 {
-                    diag->remarks.push_back(Fmt("missing '%s' of type '%s'", destLambdaDecl->parameters->childs[si]->token.ctext(), destLambdaDecl->parameters->childs[si]->typeInfo->getDisplayNameC()));
-                    if (note)
-                        note->addRange(destLambdaDecl->parameters->childs[si], "missing");
+                    if (parameters->childs[si]->specFlags & AstVarDecl::SPECFLAG_UNNAMED)
+                        diag->remarks.push_back(Fmt(Nte(Nte0089), Naming::niceParameterRank(si + 1).c_str(), parameters->childs[si]->typeInfo->getDisplayNameC()));
+                    else
+                        diag->remarks.push_back(Fmt(Nte(Nte0088), parameters->childs[si]->token.ctext(), parameters->childs[si]->typeInfo->getDisplayNameC()));
+                    if (note && !parameters->childs[si]->isGeneratedSelf())
+                        note->addRange(parameters->childs[si], "missing");
                 }
             }
         }
@@ -770,21 +727,29 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             tryMatches = n;
     }
 
-    // Remove duplicates overloads
+    // Remove duplicates overloads, as we can have one with ufcs, and one without, as we
+    // could have tried both
     {
         Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
-            bool add = true;
             for (auto oneMatch1 : tryMatches)
             {
-                if (oneMatch != oneMatch1 && oneMatch1->overload == oneMatch->overload && oneMatch1->ufcs && !oneMatch->ufcs)
-                {
-                    add = false;
-                    break;
-                }
+                if (oneMatch == oneMatch1)
+                    continue;
+                if (oneMatch->overload != oneMatch1->overload)
+                    continue;
+
+                // If the ufcs version has matched the ufcs node, then take that one
+                if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx > 0)
+                    oneMatch1->overload = nullptr;
+                else if (oneMatch->ufcs)
+                    oneMatch->overload = nullptr;
+
+                break;
             }
-            if (add)
+
+            if (oneMatch->overload)
                 n.push_back(oneMatch);
         }
         if (!n.empty())
