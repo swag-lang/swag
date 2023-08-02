@@ -149,6 +149,22 @@ public impl Voice
             discard handle.vtbl.stop(handle, 0, batchID)
     }
 
+    // Set the playing voice volume between [0..1]
+    mtd setVolume(volume: f32, batchID: u32 = 0) throw
+    {
+        let hr = handle.vtbl.setVolume(acast handle, Math.clamp(volume, 0, 1), batchID)
+        if hr != S_OK
+            throw "error"
+    }
+
+    // Set the playing voice volume
+    mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
+    {
+        let hr = handle.vtbl.setVolume(acast handle, convertDBToPercent(volumeDB), batchID)
+        if hr != S_OK
+            throw "error"
+    }
+
     // Returns true if the voice is currently playing
     mtd isPlaying()->bool
     {

@@ -15,6 +15,8 @@ using Audio
 
     var voice = assume Voice.create(&x)
     assume voice.play()
+    assume voice.setVolume(0)
+
     while voice.isPlaying() {}
     voice.destroy()
 }
