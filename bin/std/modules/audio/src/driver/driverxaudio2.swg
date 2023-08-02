@@ -112,32 +112,35 @@ public impl Voice
     {
         if !handle
             return
+
         handle.vtbl.destroyVoice(acast handle)
         handle = null
     }
 
     // Play the sound
-    mtd play(batchID: u32 = 0) throw
+    mtd play(looping = false, firstSample: u32 = 0, batchID: u32 = 0) throw
     {
-        let dataSize = file.dataSize
-        let firstSample = 0
-        let looping = false
+        if !handle
+            return
 
-        var buffer: XAUDIO2_BUFFER
-        buffer.pAudioData     = file.datas.buffer
-        buffer.flags          = dataSize == file.dataSize ? XAUDIO2_END_OF_STREAM : 0
-        buffer.audioBytes     = acast dataSize
-        buffer.playBegin      = firstSample
-        buffer.pContext       = null
-        if looping and dataSize == file.dataSize
-            buffer.loopCount = XAUDIO2_LOOP_INFINITE
+        let dataSize = file.datas.count
+        if dataSize
+        {
+            var buffer: XAUDIO2_BUFFER
+            buffer.pAudioData     = file.datas.buffer
+            buffer.flags          = dataSize == file.dataSize ? XAUDIO2_END_OF_STREAM : 0
+            buffer.audioBytes     = acast dataSize
+            buffer.playBegin      = firstSample
+            buffer.pContext       = null
+            if looping and dataSize == file.dataSize
+                buffer.loopCount = XAUDIO2_LOOP_INFINITE
 
-        //m_FirstPlayed = true;
-        var hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
-        if hr != S_OK
-            throw "cannot play"
+            let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
+            if hr != S_OK
+                throw "cannot play"
+        }
 
-        hr = handle.vtbl.start(handle, 0, batchID)
+        let hr = handle.vtbl.start(handle, 0, batchID)
         if hr != S_OK
             throw "cannot play"
     }

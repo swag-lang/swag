@@ -243,7 +243,7 @@ impl SoundWav
                     readChunkData(header.chunkSize)
                     if loadDatas
                     {
-                        datas.reserve(acast header.chunkSize)
+                        datas.resize(acast header.chunkSize)
                         if !stream.readComplete(datas.buffer, acast header.chunkSize)
                             throw "cannot read datas"
                     }
