@@ -2,7 +2,7 @@
 using Core, Win32, XAudio2
 
 #[Swag.Opaque]
-public struct DriverXAudio2
+public struct DriverNative
 {
     xAudio2:          *IXAudio2
     masteringVoice:   *IXAudio2MasteringVoice
@@ -13,7 +13,7 @@ public struct DriverXAudio2
 
 public typealias VoiceHandle = *IXAudio2SourceVoice
 
-public impl DriverXAudio2
+public impl DriverNative
 {
     // Create the xaudio2 engine
     mtd create(initCOM: bool = true) throw
@@ -74,8 +74,12 @@ public impl DriverXAudio2
             hasInitCOM = false
         }
     }
+}
 
-    mtd createVoice(file: *SoundFile)->Voice throw
+public impl Voice
+{
+    // Creates a new voice based on the given file.
+    func create(file: *SoundFile)->Voice throw
     {
         var wfx: WAVEFORMATEXTENSIBLE
         wfx.format.nChannels            = cast(u16) file.channelCount
@@ -95,18 +99,25 @@ public impl DriverXAudio2
         }
 
         var result: retval
-        let hr = xAudio2.vtbl.createSourceVoice(xAudio2, &result.handle, acast &wfx.format, 0/*XAUDIO2_VOICE_USEFILTER*/, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
+        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &result.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
         if hr != S_OK
             throw "cannot create source voice"
 
         result.file = file
         return result
     }
-}
 
-impl Voice
-{
-    public mtd play() throw
+    // Destroy the voice
+    mtd destroy()
+    {
+        if !handle
+            return
+        handle.vtbl.destroyVoice(acast handle)
+        handle = null
+    }
+
+    // Play the sound
+    mtd play(batchID: u32 = 0) throw
     {
         let dataSize = file.dataSize
         let firstSample = 0
@@ -126,10 +137,16 @@ impl Voice
         if hr != S_OK
             throw "cannot play"
 
-        hr = handle.vtbl.start(handle, 0, 0)
+        hr = handle.vtbl.start(handle, 0, batchID)
         if hr != S_OK
             throw "cannot play"
+    }
 
-        Threading.Thread.sleep(2's)
+    // Returns true if the voice is currently playing
+    mtd isPlaying()->bool
+    {
+        var voiceState: XAUDIO2_VOICE_STATE
+        handle.vtbl.getState(handle, &voiceState, 0)
+        return voiceState.buffersQueued != 0
     }
 }

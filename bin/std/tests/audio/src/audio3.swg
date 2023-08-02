@@ -3,13 +3,18 @@ using Audio
 
 #test
 {
-    var drv: DriverXAudio2
-    assume drv.create()
-    defer drv.destroy()
+    assume Audio.createEngine()
+    defer Audio.destroyEngine()
+
+    //var drv: DriverXAudio2
+    //assume drv.create()
+    //defer drv.destroy()
 
     var x: SoundWav
     assume x.read(sndPath("snd1.wav"))
 
-    var voice = assume drv.createVoice(&x)
+    var voice = assume Voice.create(&x)
     assume voice.play()
+    while voice.isPlaying() {}
+    voice.destroy()
 }
