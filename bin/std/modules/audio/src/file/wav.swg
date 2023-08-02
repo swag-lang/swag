@@ -97,7 +97,7 @@ public struct WaveFormatEx
 
 public struct WaveFormatExtensible
 {
-    using format: WaveFormatEx
+    using fmtex: WaveFormatEx
 
     samples: union
     {
@@ -133,17 +133,19 @@ private func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
     validity = .Format
     validity |= .Frequency
     validity |= .ChannelCount
-    validity |= .BitsPerSample
 
+    ////////
     if chunkSize < @sizeof(PcmWaveFormat)
         return
 
     var pcmwf: PcmWaveFormat
     pcmwf.wf = wf
+    validity |= .BitsPerSample
 
     if !stream.readComplete(&pcmwf.bitsPerSample, @sizeof(pcmwf.bitsPerSample))
         throw "invalid wav format"
 
+    ////////
     if chunkSize < @sizeof(WaveFormatEx)
         return
 
@@ -153,10 +155,32 @@ private func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
     if !stream.readComplete(&wfx.cbSize, @sizeof(wfx.cbSize))
         throw "invalid wav format"
 
+    ////////
     if chunkSize < @sizeof(WaveFormatExtensible)
         return
 
-    throw "unsupported (yet) extensible wav format"
+    var wfex: WaveFormatExtensible
+    wfex.fmtex = wfx
+    file.validBitsPerSample = wfex.samples.validBitsPerSample
+    validity |= .ChannelMask
+    validity |= .ValidBitsPerSample
+
+    if !stream.readComplete(&wfex.samples, @sizeof(wfex.samples))
+        throw "invalid wav format"
+    if !stream.readComplete(&wfex.channelMask, @sizeof(wfex.channelMask))
+        throw "invalid wav format"
+    if !stream.readComplete(&wfex.subFormat, @sizeof(wfex.subFormat))
+        throw "invalid wav format"
+
+    if wf.formatTag == .Extensible
+    {
+        if Memory.equals(&wfex.subFormat, GUID_PCM)
+            file.format = .Pcm
+        elif Memory.equals(&wfex.subFormat, GUID_FLOAT_IEEE)
+            file.format = .FloatIEEE
+        else
+            throw "unsupported wav format"
+    }
 }
 
 private func readChunkData(using file: *SoundFile, chunkSize: u32) throw

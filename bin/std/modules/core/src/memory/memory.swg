@@ -22,7 +22,7 @@ func compare(dest, src: const ^void, size: u64)->s32
 }
 
 // Compare two blocks of memory
-func(T) equals(dest, src: const ^T)->bool
+func(T) equals(dest, src: const *T)->bool
 {
     return @memcmp(dest, src, @sizeof(T)) == 0
 }
