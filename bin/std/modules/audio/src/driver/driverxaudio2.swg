@@ -94,8 +94,8 @@ public impl Voice
 
         switch (file.format)
         {
-        case FloatIEEE: wfx.subFormat = GUID_FLOAT_IEEE
-        case Pcm:       wfx.subFormat = GUID_PCM
+        case FloatIEEE: wfx.subFormat = Wav.GUID_FLOAT_IEEE
+        case Pcm:       wfx.subFormat = Wav.GUID_PCM
         }
 
         var result: retval

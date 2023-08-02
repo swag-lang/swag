@@ -6,11 +6,9 @@ using Audio
     assume Audio.createEngine()
     defer Audio.destroyEngine()
 
-    var x: SoundWav
-
     assume
     {
-        x.read(sndPath("snd1.wav"))
+        var x = SoundFile.load(sndPath("snd1.wav"))
         var voice = Voice.create(&x)
         voice.setVolume(0)
         voice.play()
