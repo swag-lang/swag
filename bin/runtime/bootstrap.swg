@@ -104,8 +104,7 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Struct)]
     attr Opaque()
 
-    // Struct field member relocation
-    //
+    // Struct field member relocation.
     // The field offset in the struct should be the same as the variable 'name'
     #[AttrUsage(AttributeUsage.StructVariable)]
     attr Offset(name: string)

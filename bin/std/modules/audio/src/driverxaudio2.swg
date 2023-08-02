@@ -37,6 +37,11 @@ public impl DriverXAudio2
         if result != S_OK
             throw "cannot create xaudio2 mastering voice"
 
+        var debug: XAUDIO2_DEBUG_CONFIGURATION
+        debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
+        debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
+        xAudio2.vtbl.setDebugConfiguration(xAudio2, &debug, null)
+
         result = masteringVoice.vtbl.getChannelMask(masteringVoice, &channelMask)
         if result != S_OK
             throw "cannot get xaudio2 channel mask"
@@ -68,8 +73,10 @@ public impl DriverXAudio2
         }
     }
 
-    mtd createVoice(infos: SoundFileInfo) throw
+    mtd createVoice(file: *SoundFile) throw
     {
+        let infos = &file.infos
+
         var wfx: WAVEFORMATEXTENSIBLE
         wfx.format.nChannels            = cast(u16) infos.channelCount
         wfx.format.nSamplesPerSec       = cast(u16) infos.frequency
@@ -88,8 +95,34 @@ public impl DriverXAudio2
         }
 
         var sourceVoice: *IXAudio2SourceVoice
-        let hr = xAudio2.vtbl.createSourceVoice(xAudio2, &sourceVoice, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
+        var hr = xAudio2.vtbl.createSourceVoice(xAudio2, &sourceVoice, acast &wfx.format, 0/*XAUDIO2_VOICE_USEFILTER*/, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
         if hr != S_OK
             throw "cannot create source voice"
+
+
+
+let dataSize = file.infos.dataSize
+let firstSample = 0
+let looping = false
+
+        var buffer: XAUDIO2_BUFFER
+        buffer.pAudioData     = file.datas.buffer
+        buffer.flags          = dataSize == file.infos.dataSize ? XAUDIO2_END_OF_STREAM : 0
+        buffer.audioBytes     = acast dataSize
+        buffer.playBegin      = firstSample
+        buffer.pContext       = null
+        if looping and dataSize == file.infos.dataSize
+            buffer.loopCount = XAUDIO2_LOOP_INFINITE
+
+        //m_FirstPlayed = true;
+        hr = sourceVoice.vtbl.submitSourceBuffer(sourceVoice, &buffer, null)
+        if hr != S_OK
+            throw "cannot play"
+
+        hr = sourceVoice.vtbl.start(sourceVoice, 0, 0)
+        if hr != S_OK
+            throw "cannot play"
+
+        Threading.Thread.sleep(2's)
     }
 }
