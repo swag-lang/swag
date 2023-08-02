@@ -1107,24 +1107,18 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
     // Not enough parameters
     size_t firstDefault = firstDefaultValueIdx == UINT32_MAX ? parameters.size() : firstDefaultValueIdx;
-    if (context.cptResolved < (int) firstDefault && parameters.size() && (context.result == MatchResult::Ok || context.result == MatchResult::BadSignature))
+    if (context.cptResolved < (int) firstDefault && parameters.size() && context.result == MatchResult::Ok)
     {
         auto back = parameters.back()->typeInfo;
         if (!back->isVariadic() && !back->isTypedVariadic() && !back->isCVariadic())
         {
-            if (context.result == MatchResult::Ok)
-                context.result = MatchResult::MissingSomeParameters;
-            else
-                context.result = MatchResult::NotEnoughParameters;
+            context.result = MatchResult::NotEnoughParameters;
             return;
         }
 
         if (parameters.size() > 1 && context.cptResolved < (int) min(parameters.size() - 1, firstDefault))
         {
-            if (context.result == MatchResult::Ok)
-                context.result = MatchResult::MissingSomeParameters;
-            else
-                context.result = MatchResult::NotEnoughParameters;
+            context.result = MatchResult::NotEnoughParameters;
             return;
         }
     }

@@ -201,7 +201,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
-    case MatchResult::MissingSomeParameters:
     case MatchResult::NotEnoughParameters:
     {
         if (!callParameters)
@@ -713,7 +712,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             case MatchResult::MissingNamedParameter:
             case MatchResult::MissingParameters:
             case MatchResult::NotEnoughParameters:
-            case MatchResult::MissingSomeParameters:
             case MatchResult::TooManyParameters:
             case MatchResult::ValidIfFailed:
             case MatchResult::NotEnoughGenericParameters:
@@ -756,7 +754,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             tryMatches = n;
     }
 
-    // MatchResult::MissingSomeParameters is a correct match, but not enough parameters
+    // MatchResult::NotEnoughParameters is a correct match, but not enough parameters
     // We take it in priority
     {
         Vector<OneTryMatch*> n;
@@ -765,7 +763,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             auto& one = *oneMatch;
             switch (one.symMatchContext.result)
             {
-            case MatchResult::MissingSomeParameters:
+            case MatchResult::NotEnoughParameters:
                 n.push_back(oneMatch);
                 break;
             default:
@@ -1029,7 +1027,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
         switch (one->symMatchContext.result)
         {
-        case MatchResult::MissingSomeParameters:
+        case MatchResult::NotEnoughParameters:
         case MatchResult::BadSignature:
         case MatchResult::BadGenericSignature:
             // Get location from the note

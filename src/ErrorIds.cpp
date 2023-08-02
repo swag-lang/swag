@@ -1042,7 +1042,7 @@ void initErrors()
     SWAG_ERROR(Hnt0006, "this cannot be visited");
     SWAG_ERROR(Hnt0041, "this comment does not end");
     SWAG_ERROR(Hnt0074, "this copy of an array of struct is disabled");
-    SWAG_ERROR(Hnt0005, "this could be casted to 'u64'");
+    SWAG_ERROR(Hnt0005, nullptr);
     SWAG_ERROR(Hnt0025, "this could be casted with 'cast(%s)'");
     SWAG_ERROR(Hnt0043, "this could be moved before '%s'");
     SWAG_ERROR(Hnt0046, "this could be preceeded by '#run' to force the call at compile time");

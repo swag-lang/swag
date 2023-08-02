@@ -142,9 +142,18 @@ public impl Voice
             throw "cannot play"
     }
 
+    // Stop the playing voice
+    mtd stop(batchID: u32 = 0) throw
+    {
+        if (handle)
+            discard handle.vtbl.stop(handle, 0, batchID)
+    }
+
     // Returns true if the voice is currently playing
     mtd isPlaying()->bool
     {
+        if !handle
+            return false
         var voiceState: XAUDIO2_VOICE_STATE
         handle.vtbl.getState(handle, &voiceState, 0)
         return voiceState.buffersQueued != 0

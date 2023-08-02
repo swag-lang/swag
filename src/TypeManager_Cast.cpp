@@ -409,9 +409,8 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
 
         msg = Fmt(ErrNte(Err0176, forNote), fromTypeCpy->getDisplayNameC(), toType->getDisplayNameC());
     }
-    else if (!toType->isPointerRef() && toType->isPointer() && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isBool()))
+    else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        hint = Hnt(Hnt0005);
         msg  = Fmt(ErrNte(Err0907, forNote), fromType->getDisplayNameC());
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
