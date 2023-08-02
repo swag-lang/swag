@@ -1106,7 +1106,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     context.cptResolved = min(context.cptResolved, cptDone);
 
     // Not enough parameters
-    size_t firstDefault = firstDefaultValueIdx == UINT32_MAX ? parameters.size() : firstDefaultValueIdx;
+    size_t firstDefault  = firstDefaultValueIdx == UINT32_MAX ? parameters.size() : firstDefaultValueIdx;
+    context.firstDefault = (uint32_t) firstDefault;
     if (context.cptResolved < (int) firstDefault && parameters.size() && context.result == MatchResult::Ok)
     {
         auto back = parameters.back()->typeInfo;

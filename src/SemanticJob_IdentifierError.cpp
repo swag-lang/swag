@@ -220,6 +220,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         for (int si = 0; si < match.solvedParameters.size(); si++)
         {
+            if (si >= match.firstDefault)
+                break;
             if (!match.solvedParameters[si])
             {
                 AstNode* parameters = nullptr;
@@ -740,6 +742,8 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
                 // If the ufcs version has matched the ufcs node, then take that one
                 if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx > 0)
+                    oneMatch1->overload = nullptr;
+                else if (oneMatch->ufcs && oneMatch->symMatchContext.result == MatchResult::NotEnoughParameters)
                     oneMatch1->overload = nullptr;
                 else if (oneMatch->ufcs)
                     oneMatch->overload = nullptr;

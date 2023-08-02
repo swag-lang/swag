@@ -188,10 +188,11 @@ struct SymbolMatchContext
         genericReplaceValues.clear();
         badSignatureInfos.clear();
 
-        semContext  = nullptr;
-        flags       = 0;
-        result      = MatchResult::Ok;
-        cptResolved = 0;
+        semContext   = nullptr;
+        flags        = 0;
+        result       = MatchResult::Ok;
+        cptResolved  = 0;
+        firstDefault = UINT32_MAX;
 
         hasNamedParameters = false;
         autoOpCast         = false;
@@ -222,6 +223,7 @@ struct SymbolMatchContext
     uint32_t    flags;
     MatchResult result;
     int         cptResolved;
+    uint32_t    firstDefault;
 
     bool hasNamedParameters;
     bool autoOpCast;
