@@ -512,7 +512,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     // Can have already been allocated by another 'and' or 'or' above in case of multiple tests
     if (left->extMisc()->additionalRegisterRC.size() == 0)
     {
-        // The result register will be stored in additionalRegisterRC of the left expression and retreived
+        // The result register will be stored in additionalRegisterRC of the left expression and retrieved
         // when evaluating the binary expression.
         // :BinOpAndOr
         if (left->resultRegisterRC.cannotFree)

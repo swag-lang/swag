@@ -760,7 +760,7 @@ void initErrors()
     SWAG_ERROR(Err0164, "dereferencing an empty slice");
     SWAG_ERROR(Err0142, "dereferencing an empty string");
     SWAG_ERROR(Err0146, "dereferencing a null pointer");
-    SWAG_ERROR(Err0163, nullptr);
+    SWAG_ERROR(Err0163, "trying to retrieve the value of a function that returns nothing");
     SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is now provided)");
     SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing (and '%s' is now provided)");
     SWAG_ERROR(Err0431, "the runtime variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with 'undefined' if this is intended");

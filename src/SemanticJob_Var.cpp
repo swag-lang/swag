@@ -953,13 +953,17 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (node->assignment->typeInfo->isFuncAttr() && node->assignment->resolvedSymbolOverload)
             {
-                auto       over = node->assignment->resolvedSymbolOverload;
-                Diagnostic diag{node->assignment, node->assignment->token, Err(Err0307)};
+                auto nodeWhere = node->assignment;
+                auto over      = nodeWhere->resolvedSymbolOverload;
+                if (nodeWhere->kind == AstNodeKind::IdentifierRef)
+                    nodeWhere = nodeWhere->childs.back();
+                Diagnostic diag{nodeWhere, nodeWhere->token, Err(Err0163)};
                 diag.hint = Hnt(Hnt0034);
                 return context->report(diag, Diagnostic::hereIs(over));
             }
 
-            return context->report({node->assignment, Err(Err0307)});
+            Diagnostic diag{node->assignment, Err(Err0307)};
+            return context->report(diag);
         }
 
         // We need to decide which integer/float type it is

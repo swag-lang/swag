@@ -65,7 +65,7 @@ int main(int argc, const char* argv[])
         OS::exit(0);
     }
 
-    // Retreive the compiler executable path
+    // Retrieve the compiler executable path
     g_CommandLine.exePath = filesystem::absolute(OS::getExePath());
 
     // Process all arguments

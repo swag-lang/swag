@@ -694,7 +694,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     funcNode->scope              = newScope;
     funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
 
-    // Store specific symbols for fast retreive
+    // Store specific symbols for fast retrieve
     if (funcNode->token.text == g_LangSpec->name_opAffect)
         currentScope->symbolOpAffect = funcNode->resolvedSymbolName;
     else if (funcNode->token.text == g_LangSpec->name_opAffectSuffix)
