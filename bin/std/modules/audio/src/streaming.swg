@@ -1,36 +1,16 @@
 using Core
 
-var g_Streaming:            Threading.Thread
-var g_WakeupStreaming:      Sync.Event
-var g_VoicesToStreamMutex:  Sync.Mutex
-var g_VoicesToStream:       Array'(*Voice)
-
-func streamingInit() throw
+private func streamingThreadProc(th: Threading.Thread)
 {
-    g_WakeupStreaming.init()
-    g_Streaming.init(&streamingThreadProc)
-    g_Streaming.start()
-}
-
-func streamingClose()
-{
-    g_WakeupStreaming.signal()
-    g_Streaming.safeForceEnd()
-    g_Streaming.wait()
-    g_WakeupStreaming.release()
-    g_VoicesToStream.clear()
-}
-
-func streamingThreadProc(th: Threading.Thread)
-{
+    let driver = &g_Driver
     while !th.requestEnd
     {
-        g_WakeupStreaming.wait()
+        driver.wakeupStreaming.wait()
 
-        g_VoicesToStreamMutex.lock()
-        let copyVoices = g_VoicesToStream
-        g_VoicesToStream.clear()
-        g_VoicesToStreamMutex.unlock()
+        driver.mutexVoicesToStream.lock()
+        let copyVoices = driver.voicesToStream
+        driver.voicesToStream.clear()
+        driver.mutexVoicesToStream.unlock()
 
         visit voice: copyVoices
         {
@@ -44,12 +24,31 @@ func streamingThreadProc(th: Threading.Thread)
     }
 }
 
-func addStreamingVoice(voice: *Voice)
+impl Driver
 {
-    Sync.scopedLock(&g_VoicesToStreamMutex)
-    if voice.pendingDestroy
-        return
-    voice.pendingStream = true
-    g_VoicesToStream.add(voice)
-    g_WakeupStreaming.signal()
+    mtd streamingInit() throw
+    {
+        wakeupStreaming.init()
+        streamingTh.init(&streamingThreadProc)
+        streamingTh.start()
+    }
+
+    mtd streamingClose()
+    {
+        wakeupStreaming.signal()
+        streamingTh.safeForceEnd()
+        streamingTh.wait()
+        wakeupStreaming.release()
+        voicesToStream.clear()
+    }
+
+    mtd updateVoice(voice: *Voice)
+    {
+        Sync.scopedLock(&mutexVoicesToStream)
+        if voice.pendingDestroy
+            return
+        voice.pendingStream = true
+        voicesToStream.add(voice)
+        wakeupStreaming.signal()
+    }
 }

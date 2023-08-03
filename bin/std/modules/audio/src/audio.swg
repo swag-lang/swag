@@ -7,14 +7,12 @@ var g_Driver: Driver
 public func createEngine() throw
 {
     g_Driver.create()
-    streamingInit()
 }
 
 // Destroy the audio engine.
 // Call at the end, when no more used.
 public func destroyEngine()
 {
-    streamingClose()
     g_Driver.destroy()
 }
 

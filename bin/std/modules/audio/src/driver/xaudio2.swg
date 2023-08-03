@@ -11,17 +11,15 @@ public struct DriverNative
     x3DInstance:      X3DAUDIO_HANDLE
 }
 
-public typealias VoiceHandle = *IXAudio2SourceVoice
-
-public impl DriverNative
+impl DriverNative
 {
     // Create the xaudio2 engine
-    mtd create(initCOM: bool = true) throw
+    mtd createNative(initCOM: bool = true) throw
     {
         Debug.assert(!xAudio2)
 
         var result: HRESULT
-        defer(err) destroy()
+        defer(err) destroyNative()
 
         if initCOM
         {
@@ -54,7 +52,7 @@ public impl DriverNative
     }
 
     // Destroys the xaudio2 engine
-    mtd destroy()
+    mtd destroyNative()
     {
         if masteringVoice
         {
@@ -88,7 +86,7 @@ private
     func onBufferStart(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
     func onLoopEnd(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
     func onVoiceError(_me: *IXAudio2VoiceCallback, _pBufferContext: *void, _error: HRESULT) {}
-    func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void) { addStreamingVoice(cast(*Voice) pBufferContext); }
+    func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void) { g_Driver.updateVoice(cast(*Voice) pBufferContext); }
 }
 
 #init
@@ -151,10 +149,12 @@ impl Voice
     }
 }
 
+public typealias VoiceHandle = *IXAudio2SourceVoice
+
 public impl Voice
 {
     // Creates a new voice based on the given file.
-    func create(file: *SoundFile)->Voice throw
+    func create(file: *SoundFile)->*Voice throw
     {
         var wfx: WAVEFORMATEXTENSIBLE
         wfx.format.nChannels            = cast(u16) file.channelCount
@@ -167,32 +167,34 @@ public impl Voice
         wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
         wfx.dwChannelMask               = file.channelMask
 
-        var result: retval
+        var voice = Memory.new'Voice()
         switch (file.format)
         {
         case Pcm:
-            result.nativeFormat = true
+            voice.nativeFormat = true
             wfx.subFormat = Wav.GUID_PCM
         case FloatIEEE:
-            result.nativeFormat = true
+            voice.nativeFormat = true
             wfx.subFormat = Wav.GUID_FLOAT_IEEE
         default:
             throw "invalid wav format"
         }
 
         var cb: *IXAudio2VoiceCallback
-        if !result.nativeFormat or file.datas.count != file.dataSize
+        if !voice.nativeFormat or file.datas.count != file.dataSize
         {
-            result.mustStream = true
+            voice.mustStream = true
             cb = &g_Cb
         }
 
-        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &result.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, cb, null, null)
+        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &voice.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, cb, null, null)
         if hr != S_OK
             throw "cannot create source voice"
 
-        result.file = file
-        return result
+        voice.file = file
+        g_Driver.registerVoice(voice)
+
+        return voice
     }
 
     // Destroy the voice
@@ -200,7 +202,6 @@ public impl Voice
     {
         if !handle
             return
-
         handle.vtbl.destroyVoice(acast handle)
         handle = null
     }
@@ -234,7 +235,7 @@ public impl Voice
         resume(batchID)
 
         if mustStream
-            addStreamingVoice(self)
+            g_Driver.updateVoice(self)
     }
 
     // Resume play
