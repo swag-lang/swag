@@ -40,7 +40,8 @@ impl Event
     // Destroy an existing event
     func release(using self)
     {
-        if !handle return
+        if !handle
+            return
         CloseHandle(handle)
         handle = null
     }
