@@ -297,7 +297,7 @@ struct IXAudio2SourceVoiceItf
     discontinuity:       func(me: *IXAudio2SourceVoice)->HRESULT
     exitLoop:            func(me: *IXAudio2SourceVoice, OperationSet: UINT32)->HRESULT
     getState:            func(me: *IXAudio2SourceVoice, pVoiceState: *XAUDIO2_VOICE_STATE, flags: UINT32)
-    setFrequencyRatio:   func(me: *IXAudio2SourceVoice, ratio: f32, operationSet: UINT32)
+    setFrequencyRatio:   func(me: *IXAudio2SourceVoice, ratio: f32, operationSet: UINT32)->HRESULT
     getFrequencyRatio:   func(me: *IXAudio2SourceVoice, pRatio: *f32)
     setSourceSampleRate: func(me: *IXAudio2SourceVoice, newSourceSampleRate: UINT32)->HRESULT
 }

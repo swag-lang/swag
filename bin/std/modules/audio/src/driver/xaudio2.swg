@@ -177,9 +177,31 @@ public impl Voice
     // Set the playing voice volume
     mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
     {
+        setVolume(convertDBToPercent(volumeDB), batchID)
+    }
+
+    // Returns the actual volume
+    mtd getVolume()->f32 throw
+    {
+        if !handle
+            return 0
+        var volume: f32
+        handle.vtbl.getVolume(acast handle, &volume)
+        return volume
+    }
+
+    // Returns the actual volume, in DB
+    mtd getVolumeDB()->f32 throw
+    {
+        return convertPercentToDB(getVolume())
+    }
+
+    // Set the playing pitch
+    mtd setFrequencyRatio(ratio: f32, batchID: u32 = 0) throw
+    {
         if !handle
             return
-        let hr = handle.vtbl.setVolume(acast handle, convertDBToPercent(volumeDB), batchID)
+        let hr = handle.vtbl.setFrequencyRatio(handle, ratio, batchID)
         if hr != S_OK
             throw "error"
     }
