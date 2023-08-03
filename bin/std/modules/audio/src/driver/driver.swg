@@ -44,6 +44,8 @@ private func updateThreadProc(th: Threading.Thread)
     {
         // Wait for an update to be requested
         driver.wakeupUpdate.wait()
+        if th.requestEnd
+            break
 
         // Make a copy of the list of voices to update, to reduce contention
         driver.mutexVoicesToUpdate.lock()
@@ -85,8 +87,8 @@ impl Driver
 
     mtd updateClose()
     {
-        wakeupUpdate.signal()
         updateTh.safeForceEnd()
+        wakeupUpdate.signal()
         updateTh.wait()
         wakeupUpdate.release()
         voicesToUpdate.clear()

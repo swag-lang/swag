@@ -328,8 +328,11 @@ func streamingDecodeData(using voice: *Voice, destBuffer: ^u8, length: u64)->u64
         file.stream.setPosition(.Begin, file.dataSeek + streamingSeek)
     }
 
+    wantedLength = Math.min(wantedLength, file.dataSize - streamingSeek)
+
     let result = file.stream.read(destBuffer, wantedLength)
     streamingSeek += result
+
     return result
 }
 
