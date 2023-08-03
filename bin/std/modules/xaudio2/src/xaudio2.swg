@@ -227,13 +227,13 @@ struct IXAudio2EngineCallbackItf
 
 struct IXAudio2VoiceCallbackItf
 {
-    onVoiceProcessingPassStart:     func(me: *IXAudio2VoiceCallback, bytesRequired: UINT32)
-    onVoiceProcessingPassEnd:       func(me: *IXAudio2VoiceCallback)
-    onStreamEnd:                    func(me: *IXAudio2VoiceCallback)
-    onBufferStart:                  func(me: *IXAudio2VoiceCallback, pBufferContext: *void)
-    onBufferEnd:                    func(me: *IXAudio2VoiceCallback, pBufferContext: *void)
-    onLoopEnd:                      func(me: *IXAudio2VoiceCallback, pBufferContext: *void)
-    onVoiceError:                   func(me: *IXAudio2VoiceCallback, pBufferContext: *void, error: HRESULT)
+    onVoiceProcessingPassStart: func(me: *IXAudio2VoiceCallback, bytesRequired: UINT32)
+    onVoiceProcessingPassEnd:   func(me: *IXAudio2VoiceCallback)
+    onStreamEnd:                func(me: *IXAudio2VoiceCallback)
+    onBufferStart:              func(me: *IXAudio2VoiceCallback, pBufferContext: *void)
+    onBufferEnd:                func(me: *IXAudio2VoiceCallback, pBufferContext: *void)
+    onLoopEnd:                  func(me: *IXAudio2VoiceCallback, pBufferContext: *void)
+    onVoiceError:               func(me: *IXAudio2VoiceCallback, pBufferContext: *void, error: HRESULT)
 }
 
 struct IXAudio2Itf

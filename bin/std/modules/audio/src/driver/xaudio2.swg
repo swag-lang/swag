@@ -76,6 +76,54 @@ public impl DriverNative
     }
 }
 
+// Defines play callbacks
+private {
+
+var cb:  IXAudio2VoiceCallback
+var cbi: IXAudio2VoiceCallbackItf
+
+func onVoiceProcessingPassStart(me: *IXAudio2VoiceCallback, bytesRequired: UINT32)
+{
+}
+
+func onVoiceProcessingPassEnd(me: *IXAudio2VoiceCallback)
+{
+}
+
+func onStreamEnd(me: *IXAudio2VoiceCallback)
+{
+}
+
+func onBufferStart(me: *IXAudio2VoiceCallback, pBufferContext: *void)
+{
+}
+
+func onBufferEnd(me: *IXAudio2VoiceCallback, pBufferContext: *void)
+{
+}
+
+func onLoopEnd(me: *IXAudio2VoiceCallback, pBufferContext: *void)
+{
+}
+
+func onVoiceError(me: *IXAudio2VoiceCallback, pBufferContext: *void, error: HRESULT)
+{
+}
+
+}
+
+#init
+{
+    cb.vtbl = &cbi
+    cbi.onVoiceProcessingPassStart = @mkcallback(&onVoiceProcessingPassStart)
+    cbi.onVoiceProcessingPassEnd   = @mkcallback(&onVoiceProcessingPassEnd)
+    cbi.onStreamEnd                = @mkcallback(&onStreamEnd)
+    cbi.onBufferStart              = @mkcallback(&onBufferStart)
+    cbi.onBufferEnd                = @mkcallback(&onBufferEnd)
+    cbi.onLoopEnd                  = @mkcallback(&onLoopEnd)
+    cbi.onVoiceError               = @mkcallback(&onVoiceError)
+}
+
 public impl Voice
 {
     // Creates a new voice based on the given file.
@@ -92,15 +140,20 @@ public impl Voice
         wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
         wfx.dwChannelMask               = file.channelMask
 
+        var result: retval
         switch (file.format)
         {
-        case Pcm:       wfx.subFormat = Wav.GUID_PCM
-        case FloatIEEE: wfx.subFormat = Wav.GUID_FLOAT_IEEE
-        default:        throw "invalid wav format"
+        case Pcm:
+            result.nativeFormat = true
+            wfx.subFormat = Wav.GUID_PCM
+        case FloatIEEE:
+            result.nativeFormat = true
+            wfx.subFormat = Wav.GUID_FLOAT_IEEE
+        default:
+            throw "invalid wav format"
         }
 
-        var result: retval
-        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &result.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, null, null, null)
+        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &result.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, &cb, null, null)
         if hr != S_OK
             throw "cannot create source voice"
 
@@ -124,15 +177,16 @@ public impl Voice
         if !handle
             return
 
+        // Submit the initial buffer, if available
         let dataSize = file.datas.count
-        if dataSize
+        if dataSize and nativeFormat
         {
             var buffer: XAUDIO2_BUFFER
             buffer.pAudioData     = file.datas.buffer
             buffer.flags          = dataSize == file.dataSize ? XAUDIO2_END_OF_STREAM : 0
             buffer.audioBytes     = acast dataSize
             buffer.playBegin      = firstSample
-            buffer.pContext       = null
+            buffer.pContext       = self
             if looping and dataSize == file.dataSize
                 buffer.loopCount = XAUDIO2_LOOP_INFINITE
 
