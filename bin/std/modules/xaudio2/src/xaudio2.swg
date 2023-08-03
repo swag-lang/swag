@@ -166,6 +166,7 @@ struct XAUDIO2_VOICE_SENDS
     pSends:     *XAUDIO2_SEND_DESCRIPTOR
 }
 
+#[Swag.Pack(1)]
 struct XAUDIO2_BUFFER
 {
     flags:      UINT32          // Either 0 or XAUDIO2_END_OF_STREAM.

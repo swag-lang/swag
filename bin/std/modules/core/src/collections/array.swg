@@ -546,7 +546,7 @@ impl Array
     }
 
     // Remove an element at 'index' by replacing it with the last element.
-    // Order is not preserved
+    // Order is **not preserved**
     mtd removeAt(index: u64)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")

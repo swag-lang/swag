@@ -8,7 +8,7 @@ using Audio
     assume
     {
         var x = SoundFile.load(sndPath("pacman_chomp.wav"), loadDatas = false)
-        var voice = Voice.create(&x)
+        let voice = Voice.create(&x)
         voice.play()
     }
 
