@@ -6,6 +6,7 @@ public struct Driver
 {
     using native: DriverNative
 
+    globalVolume:           f32 = 1
     updateTh:               Threading.Thread
     wakeupUpdate:           Sync.Event
     mutexVoicesToUpdate:    Sync.Mutex
@@ -26,6 +27,11 @@ public impl Driver
     mtd destroy()
     {
         updateClose()
+
+        visit voice: allVoices
+            destroyVoice(voice)
+        allVoices.clear()
+
         destroyNative()
     }
 }
@@ -88,10 +94,6 @@ impl Driver
         updateTh.wait()
         wakeupUpdate.release()
         voicesToUpdate.clear()
-
-        visit voice: allVoices
-            destroyVoice(voice)
-        allVoices.clear()
     }
 
     func destroyVoice(voice: *Voice)

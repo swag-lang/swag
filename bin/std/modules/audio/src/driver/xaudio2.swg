@@ -114,6 +114,10 @@ impl Voice
     // Creates a new voice based on the given file.
     func createNative(voice: *Voice, file: *SoundFile) throw
     {
+        // Context for xaudio2 threads
+        let cxt = @getcontext()
+        g_ThreadCxt = dref cxt
+
         var wfx: WAVEFORMATEXTENSIBLE
         wfx.format.nChannels            = cast(u16) file.channelCount
         wfx.format.nSamplesPerSec       = cast(u16) file.frequency
@@ -237,6 +241,7 @@ public impl Voice
                 throw "cannot play"
         }
 
+        setVolume(1, batchID)
         resume(batchID)
 
         if mustStream
@@ -270,7 +275,9 @@ public impl Voice
     {
         if !handle
             return
-        let hr = handle.vtbl.setVolume(acast handle, Math.clamp(volume, 0, 1), batchID)
+
+        let v = Math.clamp(volume * g_Driver.globalVolume, 0, 1)
+        let hr = handle.vtbl.setVolume(acast handle, v, batchID)
         if hr != S_OK
             throw "error"
     }

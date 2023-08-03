@@ -18,3 +18,9 @@ public func destroyEngine()
 
 // Get the sound driver unique instance
 public func driver()=> &g_Driver
+
+// Set the global volume
+public func setVolume(volume: f32)
+{
+    g_Driver.globalVolume = volume
+}

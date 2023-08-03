@@ -1,4 +1,3 @@
-#global skip
 #test
 {
     assume Audio.createEngine()

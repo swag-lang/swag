@@ -1,4 +1,3 @@
-#global skip
 using Audio
 
 #test

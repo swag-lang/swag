@@ -1,3 +1,4 @@
+#global skip
 using Audio
 
 #test
@@ -9,6 +10,7 @@ using Audio
     {
         var x = SoundFile.load(sndPath("pacman_chomp.wav"), loadDatas = false)
         let voice = Voice.create(&x)
+        voice.setVolume(0)
         voice.play()
     }
 

@@ -35,6 +35,13 @@ public impl Voice
         return voice
     }
 
+    // Play a sound file
+    func play(file: *SoundFile) throw
+    {
+        let voice = create(file)
+        voice.play()
+    }
+
     // Destroy the voice
     mtd destroy()
     {
@@ -42,6 +49,5 @@ public impl Voice
             return
         Atomic.or(&pendingDestroy, 1)
         g_Driver.updateVoice(self)
-        //destroyNative()
     }
 }
