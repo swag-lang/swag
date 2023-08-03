@@ -77,51 +77,78 @@ public impl DriverNative
 }
 
 // Defines play callbacks
-private {
-
-var cb:  IXAudio2VoiceCallback
-var cbi: IXAudio2VoiceCallbackItf
-
-func onVoiceProcessingPassStart(me: *IXAudio2VoiceCallback, bytesRequired: UINT32)
+private
 {
-}
+    var g_Cb:  IXAudio2VoiceCallback
+    var g_Cbi: IXAudio2VoiceCallbackItf
 
-func onVoiceProcessingPassEnd(me: *IXAudio2VoiceCallback)
-{
-}
-
-func onStreamEnd(me: *IXAudio2VoiceCallback)
-{
-}
-
-func onBufferStart(me: *IXAudio2VoiceCallback, pBufferContext: *void)
-{
-}
-
-func onBufferEnd(me: *IXAudio2VoiceCallback, pBufferContext: *void)
-{
-}
-
-func onLoopEnd(me: *IXAudio2VoiceCallback, pBufferContext: *void)
-{
-}
-
-func onVoiceError(me: *IXAudio2VoiceCallback, pBufferContext: *void, error: HRESULT)
-{
-}
-
+    func onVoiceProcessingPassStart(_me: *IXAudio2VoiceCallback, _bytesRequired: UINT32) {}
+    func onVoiceProcessingPassEnd(_me: *IXAudio2VoiceCallback) {}
+    func onStreamEnd(_me: *IXAudio2VoiceCallback) {}
+    func onBufferStart(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
+    func onLoopEnd(_me: *IXAudio2VoiceCallback, _pBufferContext: *void) {}
+    func onVoiceError(_me: *IXAudio2VoiceCallback, _pBufferContext: *void, _error: HRESULT) {}
+    func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void) { addStreamingVoice(cast(*Voice) pBufferContext); }
 }
 
 #init
 {
-    cb.vtbl = &cbi
-    cbi.onVoiceProcessingPassStart = @mkcallback(&onVoiceProcessingPassStart)
-    cbi.onVoiceProcessingPassEnd   = @mkcallback(&onVoiceProcessingPassEnd)
-    cbi.onStreamEnd                = @mkcallback(&onStreamEnd)
-    cbi.onBufferStart              = @mkcallback(&onBufferStart)
-    cbi.onBufferEnd                = @mkcallback(&onBufferEnd)
-    cbi.onLoopEnd                  = @mkcallback(&onLoopEnd)
-    cbi.onVoiceError               = @mkcallback(&onVoiceError)
+    g_Cb.vtbl = &g_Cbi
+    g_Cbi.onVoiceProcessingPassStart = @mkcallback(&onVoiceProcessingPassStart)
+    g_Cbi.onVoiceProcessingPassEnd   = @mkcallback(&onVoiceProcessingPassEnd)
+    g_Cbi.onStreamEnd                = @mkcallback(&onStreamEnd)
+    g_Cbi.onBufferStart              = @mkcallback(&onBufferStart)
+    g_Cbi.onBufferEnd                = @mkcallback(&onBufferEnd)
+    g_Cbi.onLoopEnd                  = @mkcallback(&onLoopEnd)
+    g_Cbi.onVoiceError               = @mkcallback(&onVoiceError)
+}
+
+impl Voice
+{
+    mtd stream() throw
+    {
+        if !handle
+            return
+
+        var voiceState: XAUDIO2_VOICE_STATE
+        handle.vtbl.getState(handle, &voiceState, 0)
+
+        while voiceState.buffersQueued < StreamingBufCount - 1
+        {
+            if pendingDestroy
+                break
+
+            if !streamingBuf[curStreamBuffer].buffer
+                streamingBuf[curStreamBuffer].resize(StreamingBufSize)
+
+            let destBuffer = streamingBuf[curStreamBuffer].buffer
+            let readSize   = file.loadData(destBuffer, StreamingBufSize)
+            let endFile    = readSize == 0
+
+            // Loop
+            if endFile and mustLoop
+            {
+                file.rewindData()
+                if !readSize
+                    continue
+            }
+
+            if endFile
+                break
+
+            var buffer: XAUDIO2_BUFFER
+            buffer.pAudioData = destBuffer
+            buffer.flags      = endFile and !mustLoop ? XAUDIO2_END_OF_STREAM : 0
+            buffer.audioBytes = acast readSize
+            buffer.pContext   = self
+            let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
+            if hr != S_OK
+                throw "error"
+
+            curStreamBuffer = (curStreamBuffer + 1) % StreamingBufCount
+            handle.vtbl.getState(handle, &voiceState, 0)
+        }
+    }
 }
 
 public impl Voice
@@ -153,7 +180,14 @@ public impl Voice
             throw "invalid wav format"
         }
 
-        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &result.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, &cb, null, null)
+        var cb: *IXAudio2VoiceCallback
+        if !result.nativeFormat or file.datas.count != file.dataSize
+        {
+            result.mustStream = true
+            cb = &g_Cb
+        }
+
+        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &result.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, cb, null, null)
         if hr != S_OK
             throw "cannot create source voice"
 
@@ -172,10 +206,12 @@ public impl Voice
     }
 
     // Play the sound
-    mtd play(looping = false, firstSample: u32 = 0, batchID: u32 = 0) throw
+    mtd play(mustLoop = false, firstSample: u32 = 0, batchID: u32 = 0) throw
     {
         if !handle
             return
+
+        self.mustLoop = #self.mustLoop
 
         // Submit the initial buffer, if available
         let dataSize = file.datas.count
@@ -187,7 +223,7 @@ public impl Voice
             buffer.audioBytes     = acast dataSize
             buffer.playBegin      = firstSample
             buffer.pContext       = self
-            if looping and dataSize == file.dataSize
+            if self.mustLoop and dataSize == file.dataSize
                 buffer.loopCount = XAUDIO2_LOOP_INFINITE
 
             let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
@@ -196,6 +232,9 @@ public impl Voice
         }
 
         resume(batchID)
+
+        if mustStream
+            addStreamingVoice(self)
     }
 
     // Resume play
@@ -203,6 +242,9 @@ public impl Voice
     {
         if !handle
             return
+        if playing
+            return
+        playing = true
         let hr = handle.vtbl.start(handle, 0, batchID)
         if hr != S_OK
             throw "error"
@@ -213,6 +255,9 @@ public impl Voice
     {
         if !handle
             return
+        if !playing
+            return
+        playing = false
         let hr = handle.vtbl.stop(handle, 0, batchID)
         if hr != S_OK
             throw "error"
@@ -265,8 +310,23 @@ public impl Voice
     {
         if !handle
             return false
+        if pendingStream
+            return true
+        if !playing
+            return false
         var voiceState: XAUDIO2_VOICE_STATE
         handle.vtbl.getState(handle, &voiceState, 0)
-        return voiceState.buffersQueued != 0
+        playing = voiceState.buffersQueued != 0
+        return playing
+    }
+
+    // Stop the playing loop
+    mtd breakLoop(batchID: u32 = 0) throw
+    {
+        if !handle
+            return
+        let hr = handle.vtbl.exitLoop(handle, batchID)
+        if hr != S_OK
+            throw "error"
     }
 }

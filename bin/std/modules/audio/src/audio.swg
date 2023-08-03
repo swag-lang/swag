@@ -1,37 +1,20 @@
 using Core
 
-var g_Driver:           Driver
-var g_Streaming:        Threading.Thread
-var g_WakeupStreaming:  Sync.Event
-
-private func streamingEntry(th: Threading.Thread)
-{
-    while !th.requestEnd
-    {
-        g_WakeupStreaming.wait()
-    }
-}
+var g_Driver: Driver
 
 // Creates the audio engine.
 // Must be called once, before anything else.
 public func createEngine() throw
 {
     g_Driver.create()
-
-    g_WakeupStreaming.init()
-    g_Streaming.init(&streamingEntry)
-    g_Streaming.start()
+    streamingInit()
 }
 
 // Destroy the audio engine.
 // Call at the end, when no more used.
 public func destroyEngine()
 {
-    g_WakeupStreaming.signal()
-    g_Streaming.safeForceEnd()
-    g_Streaming.wait()
-    g_WakeupStreaming.release()
-
+    streamingClose()
     g_Driver.destroy()
 }
 
