@@ -57,14 +57,10 @@ private func updateThreadProc(th: Threading.Thread)
             if th.requestEnd
                 break
 
-            if voice.pendingDestroy
-            {
+            catch voice.update()
+
+            if Atomic.get(&voice.pendingDestroy)
                 g_Driver.destroyUnregisterVoice(voice)
-            }
-            else
-            {
-                catch voice.update()
-            }
 
             Atomic.and(&voice.pendingUpdate, 0)
         }

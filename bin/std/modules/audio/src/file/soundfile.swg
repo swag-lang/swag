@@ -47,23 +47,6 @@ struct SoundFile
     datas:  Array'u8
 }
 
-internal func loadData(using file: *SoundFile, destBuffer: ^u8, length: u64)->u64 throw
-{
-    if !stream.isOpen()
-    {
-        stream = File.open(stream.name, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
-    }
-
-    return stream.read(destBuffer, length)
-}
-
-internal func rewindData(using file: *SoundFile) throw
-{
-    if !stream.isOpen()
-        return
-    stream.setPosition(.Begin, dataSeek)
-}
-
 impl SoundFile
 {
     // Load a 'SoundFile' from disk.
@@ -88,8 +71,7 @@ impl SoundFile
 
         switch ext
         {
-        case ".wav":
-            Wav.loadFile(&result, loadDatas, loadMetaDatas)
+        case ".wav": Wav.loadFile(&result, loadDatas, loadMetaDatas)
         }
 
         return result

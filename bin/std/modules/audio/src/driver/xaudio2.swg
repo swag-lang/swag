@@ -131,18 +131,10 @@ impl Voice
 
         switch (file.format)
         {
-        case Pcm:
-            voice.nativeFormat = true
-            wfx.subFormat = Wav.GUID_PCM
-        case FloatIEEE:
-            voice.nativeFormat = true
-            wfx.subFormat = Wav.GUID_FLOAT_IEEE
-        default:
-            throw "invalid wav format"
+        case Pcm:       wfx.subFormat = Wav.GUID_PCM
+        case FloatIEEE: wfx.subFormat = Wav.GUID_FLOAT_IEEE
+        default:        throw "invalid wav format"
         }
-
-        if !voice.nativeFormat or file.datas.count != file.dataSize
-            voice.mustStream = true
 
         let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &voice.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, &g_Cb, null, null)
         if hr != S_OK
@@ -169,20 +161,20 @@ impl Voice
 
         while voiceState.buffersQueued < StreamingBufCount - 1
         {
-            if pendingDestroy
+            if Atomic.get(&pendingDestroy)
                 break
 
             if !streamingBuf[curStreamBuffer].buffer
                 streamingBuf[curStreamBuffer].resize(StreamingBufSize)
 
             let destBuffer = streamingBuf[curStreamBuffer].buffer
-            let readSize   = file.loadData(destBuffer, StreamingBufSize)
+            let readSize   = streamingDecodeData(destBuffer, StreamingBufSize)
             let endFile    = readSize == 0
 
             // Loop
             if endFile and mustLoop
             {
-                file.rewindData()
+                streamingRewindData()
                 if !readSize
                     continue
             }
@@ -206,7 +198,9 @@ impl Voice
         // End ?
         if voiceState.buffersQueued == 0
         {
+            streamingCloseData()
             Atomic.and(&playing, 0)
+            Atomic.or(&pendingDestroy, 1)
         }
     }
 }
@@ -216,36 +210,13 @@ public typealias VoiceHandle = *IXAudio2SourceVoice
 public impl Voice
 {
     // Play the sound
-    mtd play(mustLoop = false, firstSample: u32 = 0, batchID: u32 = 0) throw
+    mtd play(batchID: u32 = 0) throw
     {
         if !handle
             return
 
-        self.mustLoop = #self.mustLoop
-
-        // Submit the initial buffer, if available
-        let dataSize = file.datas.count
-        if dataSize and nativeFormat
-        {
-            var buffer: XAUDIO2_BUFFER
-            buffer.pAudioData     = file.datas.buffer
-            buffer.flags          = dataSize == file.dataSize ? XAUDIO2_END_OF_STREAM : 0
-            buffer.audioBytes     = acast dataSize
-            buffer.playBegin      = firstSample
-            buffer.pContext       = self
-            if self.mustLoop and dataSize == file.dataSize
-                buffer.loopCount = XAUDIO2_LOOP_INFINITE
-
-            let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
-            if hr != S_OK
-                throw "cannot play"
-        }
-
-        setVolume(1, batchID)
         resume(batchID)
-
-        if mustStream
-            g_Driver.updateVoice(self)
+        g_Driver.updateVoice(self)
     }
 
     // Resume play
