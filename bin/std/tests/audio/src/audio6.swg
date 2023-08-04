@@ -4,11 +4,8 @@ using Audio
 {
     assume Audio.createEngine()
     defer Audio.destroyEngine()
-    //Audio.setVolume(1)
 
     var x = assume SoundFile.load(sndPath("pacman_eatfruit.wav"), loadDatas = false)
-    assume Voice.play(&x)
-
-    //while Audio.isPlayingSomething() {}
+    assume Voice.play(&x, playFlags = .Loop)
     Core.Threading.Thread.sleep(2's)
 }

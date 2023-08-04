@@ -88,8 +88,7 @@ public impl Voice
     func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero) throw
     {
         let voice = create(file, createFlags)
-        voice.playFlags = playFlags | .DestroyOnStop
-        voice.play()
+        voice.play(playFlags | .DestroyOnStop)
     }
 
     // Destroy the voice
@@ -99,5 +98,13 @@ public impl Voice
             return
         Atomic.or(&pendingDestroy, 1)
         g_Driver.updateVoice(self)
+    }
+
+    // Returns true if the voice is currently playing
+    mtd isPlaying()->bool
+    {
+        if !handle
+            return false
+        return Atomic.get(&playing) != 0
     }
 }

@@ -216,10 +216,11 @@ public typealias VoiceHandle = *IXAudio2SourceVoice
 public impl Voice
 {
     // Play the sound
-    mtd play(batchID: u32 = 0) throw
+    mtd play(playFlags = VoicePlayFlags.Zero, batchID: u32 = 0) throw
     {
         if !handle
             return
+        self.playFlags = #self.playFlags
         resume(batchID)
         g_Driver.updateVoice(self)
     }
@@ -287,14 +288,6 @@ public impl Voice
         let hr = handle.vtbl.setFrequencyRatio(handle, ratio, batchID)
         if hr != S_OK
             throw "error"
-    }
-
-    // Returns true if the voice is currently playing
-    mtd isPlaying()->bool
-    {
-        if !handle
-            return false
-        return Atomic.get(&playing) != 0
     }
 
     // Stop the playing loop

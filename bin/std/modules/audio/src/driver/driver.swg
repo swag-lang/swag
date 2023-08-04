@@ -68,7 +68,7 @@ private func updateThreadProc(th: Threading.Thread)
             catch voice.update()
             Atomic.and(&voice.pendingUpdate, 0)
 
-            if !Atomic.get(&voice.playing) and voice.playFlags.has(.DestroyOnStop)
+            if !voice.isPlaying() and voice.playFlags.has(.DestroyOnStop)
             {
                 voice.destroy()
             }
