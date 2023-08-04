@@ -74,6 +74,7 @@ public const GUID_PCM        = GUID{0x00000001, 0x0000, 0x0010, [0x80, 0x00, 0x0
 public const GUID_ADPCM      = GUID{0x00000002, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 public const GUID_FLOAT_IEEE = GUID{0x00000003, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 
+#[Swag.Pack(1)]
 struct WaveFormat
 {
     formatTag:      WavFormat   // Format type
@@ -83,18 +84,21 @@ struct WaveFormat
     blockAlign:     u16         // Block size of data
 }
 
+#[Swag.Pack(1)]
 struct PcmWaveFormat
 {
     using wf: WaveFormat
     bitsPerSample:  u16
 }
 
+#[Swag.Pack(1)]
 struct WaveFormatEx
 {
     using pcmwf: PcmWaveFormat
     cbSize: u16     // The count in bytes of the size of extra information (after cbSize)
 }
 
+#[Swag.Pack(1)]
 struct WaveFormatExtensible
 {
     using fmtex: WaveFormatEx
@@ -113,17 +117,22 @@ struct WaveFormatExtensible
 func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
 {
     if chunkSize < @sizeof(WaveFormat)
-        throw "invalid wav format"
+        throw "invalid wav"
 
     var wf: WaveFormat
-    if !stream.readComplete(&wf, @sizeof(wf))
-        throw "invalid wav format"
+    if !stream.readValue(&wf)
+        throw "invalid wav"
 
     switch (wf.formatTag)
     {
-    case Pcm:       file.format = .Pcm
-    case FloatIEEE: file.format = .FloatIEEE
-    default:        file.format = .Unknown
+    case Pcm:
+        file.encoding = .Pcm
+    case FloatIEEE:
+        file.encoding = .FloatIEEE
+    case Extensible:
+        break
+    default:
+        throw "unsupported wav format"
     }
 
     frequency     = wf.samplesPerSec
@@ -142,8 +151,8 @@ func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
     pcmwf.wf = wf
     validity |= .BitsPerSample
 
-    if !stream.readComplete(&pcmwf.bitsPerSample, @sizeof(pcmwf.bitsPerSample))
-        throw "invalid wav format"
+    if !stream.readValue(&pcmwf.bitsPerSample)
+        throw "invalid wav"
 
     ////////
     if chunkSize < @sizeof(WaveFormatEx)
@@ -152,8 +161,8 @@ func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
     var wfx: WaveFormatEx
     wfx.pcmwf = pcmwf
 
-    if !stream.readComplete(&wfx.cbSize, @sizeof(wfx.cbSize))
-        throw "invalid wav format"
+    if !stream.readValue(&wfx.cbSize)
+        throw "invalid wav"
 
     ////////
     if chunkSize < @sizeof(WaveFormatExtensible)
@@ -165,19 +174,19 @@ func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
     validity |= .ChannelMask
     validity |= .ValidBitsPerSample
 
-    if !stream.readComplete(&wfex.samples, @sizeof(wfex.samples))
-        throw "invalid wav format"
-    if !stream.readComplete(&wfex.channelMask, @sizeof(wfex.channelMask))
-        throw "invalid wav format"
-    if !stream.readComplete(&wfex.subFormat, @sizeof(wfex.subFormat))
-        throw "invalid wav format"
+    if !stream.readValue(&wfex.samples)
+        throw "invalid wav"
+    if !stream.readValue(&wfex.channelMask)
+        throw "invalid wav"
+    if !stream.readValue(&wfex.subFormat)
+        throw "invalid wav"
 
     if wf.formatTag == .Extensible
     {
         if Memory.equals(&wfex.subFormat, GUID_PCM)
-            file.format = .Pcm
+            file.encoding = .Pcm
         elif Memory.equals(&wfex.subFormat, GUID_FLOAT_IEEE)
-            file.format = .FloatIEEE
+            file.encoding = .FloatIEEE
         else
             throw "unsupported wav format"
     }
@@ -198,9 +207,9 @@ func readChunkData(using file: *SoundFile, chunkSize: u32) throw
     }
 }
 
-func isFormatSupported(using file: *SoundFile)->bool
+func isEncodingSupported(using file: *SoundFile)->bool
 {
-    switch file.format
+    switch file.encoding
     {
     case Pcm:
         switch bitsPerSample
@@ -223,35 +232,33 @@ public func loadFile(using file: *SoundFile, loadDatas = true, loadMetaDatas = f
     var stage:  Stage = FindRiff
     var header: ChunkHeader
 
-    var continueParsing = true
-    while continueParsing
+    loop
     {
         let seek = stream.getPosition()
         if seek & 1
             stream.skipPosition(1)
 
-        if !stream.readComplete(&header, @sizeof(header))
-            throw "corrupted wav file"
+        if !stream.readValue(&header)
+            throw "invalid wav"
 
         switch header.chunkID
         {
         case SND_WAV_FOURCC_RIFF:
             if stage == .FindRiff
             {
-                if !stream.readComplete(&header.chunkID, @sizeof(header.chunkID))
+                if !stream.readValue(&header.chunkID)
                     throw "invalid riff chunk"
-                if header.chunkID == SND_WAV_FOURCC_WAVE
-                    stage = .FindFmt
-                else
+                if header.chunkID != SND_WAV_FOURCC_WAVE
                     throw "not a wav"
+                stage = .FindFmt
             }
 
         case SND_WAV_FOURCC_fmt:
             if stage == .FindFmt
             {
                 file.readChunkFmt(header.chunkSize)
-                if !isFormatSupported()
-                    throw "unsupported format"
+                if !isEncodingSupported()
+                    throw "unsupported encoding"
                 stage = .FindData
             }
 
@@ -262,15 +269,16 @@ public func loadFile(using file: *SoundFile, loadDatas = true, loadMetaDatas = f
                 if loadDatas
                 {
                     datas.resize(acast header.chunkSize)
-                    if !stream.readComplete(datas.buffer, acast header.chunkSize)
+                    if stream.read(datas.buffer, acast header.chunkSize) != header.chunkSize
                         throw "cannot read datas"
                 }
-                else
+                elif loadMetaDatas
                 {
                     stream.skipPosition(acast header.chunkSize)
                 }
 
-                continueParsing = loadMetaDatas
+                if !loadMetaDatas
+                    return
             }
 
         case SND_WAV_FOURCC_fact:
@@ -298,7 +306,7 @@ public func loadFile(using file: *SoundFile, loadDatas = true, loadMetaDatas = f
             if header.chunkSize
                 stream.skipPosition(acast header.chunkSize)
             else
-                throw "invalid chunk"
+                throw "invalid wav"
         }
     }
 }

@@ -19,12 +19,11 @@ enum SoundFileValidityMask
 }
 
 // SoundFile internal format.
-enum SoundFileFormat
+enum SoundFileEncoding
 {
     Unknown
     Pcm
     FloatIEEE
-    Ogg
 }
 
 // Represents a sound file.
@@ -33,7 +32,7 @@ struct SoundFile
 {
     sampleCount:        u64
     validity:           SoundFileValidityMask
-    format              = SoundFileFormat.Unknown
+    encoding            = SoundFileEncoding.Unknown
     frequency:          u32
     channelCount:       u32
     channelMask:        u32

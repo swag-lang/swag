@@ -20,4 +20,10 @@ impl FileStream
     {
         return handle != null
     }
+
+    // Read from the given file stream, and returns 'true' if all bytes have been read
+    mtd(T) readValue(buffer: *T)->bool
+    {
+        return read(buffer, @sizeof(T)) == @sizeof(T)
+    }
 }

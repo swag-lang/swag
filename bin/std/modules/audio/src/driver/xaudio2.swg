@@ -136,7 +136,7 @@ impl Voice
         wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
         wfx.dwChannelMask               = file.channelMask
 
-        switch (file.format)
+        switch (file.encoding)
         {
         case Pcm:       wfx.subFormat = Wav.GUID_PCM
         case FloatIEEE: wfx.subFormat = Wav.GUID_FLOAT_IEEE

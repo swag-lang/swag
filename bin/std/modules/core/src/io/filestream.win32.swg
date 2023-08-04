@@ -22,12 +22,6 @@ impl FileStream
         return cast(u64) dwRead
     }
 
-    // Read from the given file stream, and returns 'true' if all bytes have been read
-    mtd readComplete(buffer: *void, length: u64)->bool
-    {
-        return read(buffer, length) == length
-    }
-
     // Write to the given file stream, and returns the number of written bytes
     mtd write(buffer: const *void, length: u64)->u64 throw
     {

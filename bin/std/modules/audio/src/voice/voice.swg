@@ -58,7 +58,7 @@ internal impl Voice
 
     mtd streamingDecodeData(destBuffer: ^u8, length: u64)->u64 throw
     {
-        switch file.format
+        switch file.encoding
         {
         case Pcm, FloatIEEE:
             return Wav.streamingDecodeData(self, destBuffer, length)
@@ -69,7 +69,7 @@ internal impl Voice
 
     mtd streamingRewindData() throw
     {
-        switch file.format
+        switch file.encoding
         {
         case Pcm, FloatIEEE:
             return Wav.streamingRewindData(self)
@@ -78,7 +78,7 @@ internal impl Voice
 
     mtd streamingCloseData()
     {
-        switch file.format
+        switch file.encoding
         {
         case Pcm, FloatIEEE:
             return Wav.streamingCloseData(self)
