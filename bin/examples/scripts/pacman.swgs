@@ -93,13 +93,15 @@ var g_SoundEatFruit: Audio.SoundFile
 var g_SoundEatGhost: Audio.SoundFile
 var g_SoundChomp:    Audio.SoundFile
 var g_SoundSiren:    Audio.SoundFile
+var g_SoundRetreat:  Audio.SoundFile
 
-var g_VoiceReady:    *Audio.Voice
-var g_VoiceDeath:    *Audio.Voice
-var g_VoiceEatFruit: *Audio.Voice
-var g_VoiceEatGhost: *Audio.Voice
-var g_VoiceChomp:    *Audio.Voice
-var g_VoiceSiren:    *Audio.Voice
+var g_VoiceReady:      *Audio.Voice
+var g_VoiceDeath:      *Audio.Voice
+var g_VoiceEatFruit:   *Audio.Voice
+var g_VoiceEatGhost:   *Audio.Voice
+var g_VoiceChomp:      *Audio.Voice
+var g_VoiceSiren:      *Audio.Voice
+var g_VoiceFrightened: *Audio.Voice
 
 var g_Mode:         GameMode = READY
 var g_TempMode:     GameMode = READY
@@ -1528,6 +1530,26 @@ func checkCollisions()
             }
         }
     }
+
+    enum SoundState{DEATH,FRIGHTENED,SIREN}
+
+    var soundState = SoundState.SIREN
+    visit g: g_Ghosts
+    {
+        if g.ai == .FRIGHTENED
+            soundState = .FRIGHTENED
+    }
+
+    switch soundState
+    {
+    case FRIGHTENED:
+        if g_VoiceSiren { g_VoiceSiren.destroy(); g_VoiceSiren = null; }
+        if !g_VoiceFrightened g_VoiceFrightened = assume Audio.Voice.play(&g_SoundRetreat, playFlags = .Loop)
+
+    case SIREN:
+        if g_VoiceFrightened { g_VoiceFrightened.destroy(); g_VoiceFrightened = null; }
+        if !g_VoiceSiren { g_VoiceSiren = assume Audio.Voice.play(&g_SoundSiren, playFlags = .Loop); assume g_VoiceSiren.setVolume(0.4); }
+    }
 }
 
 /**
@@ -1759,7 +1781,6 @@ func gameLoop()
         //if g_Ticks > 120
         if !g_VoiceReady.isPlaying()
         {
-            //g_VoiceSiren = assume Audio.Voice.play(&g_SoundSiren, playFlags = .Loop)
             g_VoiceReady.destroy()
             g_VoiceReady = null
             g_Mode = PLAY
@@ -2012,6 +2033,7 @@ func loadBindTextures()
     g_SoundEatGhost = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_eatghost.wav"))
     g_SoundChomp    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_chomp.wav"))
     g_SoundSiren    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_siren.wav"))
+    g_SoundRetreat  = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_retreat.wav"))
 }
 
 #run
