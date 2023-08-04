@@ -11,8 +11,10 @@ public struct Driver
     mutexVoicesToUpdate:    Sync.Mutex
     voicesToUpdate:         Array'(*Voice)
 
-    mutexAllVoices:         Sync.Mutex
-    allVoices:              Array'(*Voice)
+    mutexActiveVoices:      Sync.Mutex
+    activeVoices:           Array'(*Voice)
+    pendingRecycleVoices:   Array'(*Voice)
+    toRecycleVoices:        Array'(*Voice)
 }
 
 private func updateThreadProc(th: Threading.Thread)
@@ -24,6 +26,11 @@ private func updateThreadProc(th: Threading.Thread)
         driver.wakeupUpdate.wait()
         if th.requestEnd
             break
+
+        // All pending recycles to actual recycle list
+        visit voice: driver.pendingRecycleVoices
+            driver.toRecycleVoices.add(voice)
+        driver.pendingRecycleVoices.clear()
 
         // Make a copy of the list of voices to update, to reduce contention
         driver.mutexVoicesToUpdate.lock()
@@ -39,18 +46,19 @@ private func updateThreadProc(th: Threading.Thread)
 
             if voice.hasState(.PendingDestroy)
             {
-                g_Driver.unregisterVoice(voice)
-                Driver.destroyVoice(voice)
+                driver.unregisterVoice(voice)
+                catch voice.stopNative()
+                voice.destroyNative()
+                driver.pendingRecycleVoices.add(voice)
                 continue
             }
 
             catch voice.update()
             voice.resetState(.PendingUpdate)
 
+            // If the voice is no more playing, register it for destruction if necessary
             if !voice.isPlaying() and voice.playFlags.has(.DestroyOnStop)
-            {
                 voice.destroy()
-            }
         }
     }
 }
@@ -74,34 +82,39 @@ impl Driver
         wakeupUpdate.release()
         voicesToUpdate.clear()
 
-        visit voice: allVoices
-            destroyVoice(voice)
-        allVoices.clear()
+        visit voice: pendingRecycleVoices
+            Memory.delete(voice)
+        pendingRecycleVoices.clear()
+
+        visit voice: toRecycleVoices
+            Memory.delete(voice)
+        toRecycleVoices.clear()
+
+        visit voice: activeVoices
+        {
+            catch voice.stopNative()
+            voice.destroyNative()
+            Memory.delete(voice)
+        }
+        activeVoices.clear()
 
         destroyNative()
     }
 
     mtd registerVoice(voice: *Voice)
     {
-        Sync.scopedLock(&mutexAllVoices)
-        voice.idxInList = acast allVoices.count
-        allVoices.add(voice)
+        Sync.scopedLock(&mutexActiveVoices)
+        voice.idxInList = acast activeVoices.count
+        activeVoices.add(voice)
     }
 
     mtd unregisterVoice(voice: *Voice)
     {
-        Sync.scopedLock(&mutexAllVoices)
+        Sync.scopedLock(&mutexActiveVoices)
         let idx = voice.idxInList
-        allVoices.removeAt(acast idx)
-        if idx != allVoices.count
-            allVoices[idx].idxInList = idx
-    }
-
-    func destroyVoice(voice: *Voice)
-    {
-        catch voice.stopNative()
-        voice.destroyNative()
-        Memory.delete(voice)
+        activeVoices.removeAt(acast idx)
+        if idx != activeVoices.count
+            activeVoices[idx].idxInList = idx
     }
 
     mtd updateVoice(voice: *Voice)
