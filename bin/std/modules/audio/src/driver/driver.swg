@@ -160,11 +160,7 @@ impl Driver
             back = toRecycleVoices.popBack()
         mutexRecycleVoices.unlock()
         if back
-        {
-            @print("XXXX")
             back.recycle()
-        }
-
         return back orelse Memory.new'Voice()
     }
 }

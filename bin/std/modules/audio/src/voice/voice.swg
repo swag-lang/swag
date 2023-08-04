@@ -104,7 +104,7 @@ internal impl Voice
 
 public impl Voice
 {
-    // Creates a new voice
+    // Creates a new voice with a given sound file
     func create(file: *SoundFile, createFlags = VoiceCreateFlags.Default)->*Voice throw
     {
         let voice = g_Driver.createVoice()
@@ -116,14 +116,16 @@ public impl Voice
         return voice
     }
 
-    // Play a sound file
-    func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero) throw
+    // Simple function to play a sound file
+    #[Swag.Discardable]
+    func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero)->*Voice throw
     {
         let voice = create(file, createFlags)
-        voice.play(playFlags | .DestroyOnStop)
+        voice.play(playFlags)
+        return voice
     }
 
-    // Play a sound file
+    // Play a voice
     mtd play(playFlags = VoicePlayFlags.Zero) throw
     {
         if hasState(.Playing)

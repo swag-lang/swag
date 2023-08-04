@@ -38,6 +38,7 @@
 #dependencies
 {
     #import "gui" location="swag@std"
+    #import "audio" location="swag@std"
 }
 
 using Gui, Core, Pixel
@@ -85,6 +86,20 @@ var g_FruitsTex:    [8] Texture     // Array storing all fruit textures
 var g_FScoreTex:    [8] Texture     // Array storing all fruit score textures
 var g_GScoreTex:    [4] Texture     // Array storing all ghosts score textures
 var g_GameOverTex:  Texture
+
+var g_SoundReady:    Audio.SoundFile
+var g_SoundDeath:    Audio.SoundFile
+var g_SoundEatFruit: Audio.SoundFile
+var g_SoundEatGhost: Audio.SoundFile
+var g_SoundChomp:    Audio.SoundFile
+var g_SoundSiren:    Audio.SoundFile
+
+var g_VoiceReady:    *Audio.Voice
+var g_VoiceDeath:    *Audio.Voice
+var g_VoiceEatFruit: *Audio.Voice
+var g_VoiceEatGhost: *Audio.Voice
+var g_VoiceChomp:    *Audio.Voice
+var g_VoiceSiren:    *Audio.Voice
 
 var g_Mode:         GameMode = READY
 var g_TempMode:     GameMode = READY
@@ -964,6 +979,13 @@ impl Pacman
         switch getTile(getX(), getY())
         {
         case o:
+            if !g_VoiceChomp or !g_VoiceChomp.isPlaying()
+            {
+                if g_VoiceChomp
+                    g_VoiceChomp.destroy()
+                g_VoiceChomp = assume Audio.Voice.play(&g_SoundChomp)
+            }
+
             setTile(getX(),getY(),e)
             g_PillsLeft -= 1
             return 10
@@ -994,6 +1016,13 @@ impl Pacman
             case 5: return 2000
             case 6: return 3000
             case 7: return 5000
+            }
+
+        default:
+            if g_VoiceChomp and !g_VoiceChomp.isPlaying()
+            {
+                g_VoiceChomp.destroy()
+                g_VoiceChomp = null
             }
         }
 
@@ -1725,8 +1754,16 @@ func gameLoop()
     {
     // After 120 ticks, enter PLAY mode
     case READY:
-        if g_Ticks > 120
+        if !g_VoiceReady
+            g_VoiceReady = assume Audio.Voice.play(&g_SoundReady)
+        //if g_Ticks > 120
+        if !g_VoiceReady.isPlaying()
+        {
+            //g_VoiceSiren = assume Audio.Voice.play(&g_SoundSiren, playFlags = .Loop)
+            g_VoiceReady.destroy()
+            g_VoiceReady = null
             g_Mode = PLAY
+        }
 
     // Main play loop
     case PLAY:
@@ -1743,7 +1780,6 @@ func gameLoop()
             // The eaten fruit count doesn't exceed the level and a random quantifier is satisfied, spawn a fruit
             if !g_FruitSpawned and g_Fruits < g_Level and g_PillsLeft <= 240 - 30 and Random.shared().nextU32() % 1500 == 0
                 spawnFruit()
-
         }
 
         // If timestamp is set, incur a short pause
@@ -1768,10 +1804,28 @@ func gameLoop()
         }
 
     // Pause the game briefly on eating a fruit
-    // Also pause on eating a ghost - logical behaviour is identical so overflow switch case
-    case FRUIT, EAT:
-        if g_Ticks == g_TimeStamp + 90
+    case FRUIT:
+        if !g_VoiceEatFruit
+            g_VoiceEatFruit = assume Audio.Voice.play(&g_SoundEatFruit)
+        //if g_Ticks == g_TimeStamp + 90
+        if !g_VoiceEatFruit.isPlaying()
         {
+            g_VoiceEatFruit.destroy()
+            g_VoiceEatFruit = null
+            g_TimeStamp = -1
+            g_PacMan.startChomping()
+            g_Mode = .PLAY
+        }
+
+    // Also pause on eating a ghost - logical behaviour is identical so overflow switch case
+    case EAT:
+        if !g_VoiceEatGhost
+            g_VoiceEatGhost = assume Audio.Voice.play(&g_SoundEatGhost)
+        //if g_Ticks == g_TimeStamp + 90
+        if !g_VoiceEatGhost.isPlaying()
+        {
+            g_VoiceEatGhost.destroy()
+            g_VoiceEatGhost = null
             g_TimeStamp = -1
             g_PacMan.startChomping()
             g_Mode = .PLAY
@@ -1779,8 +1833,14 @@ func gameLoop()
 
     // 180 ticks after death, enter READY (reset level) or GAMEOVER mode depending on remaining lives
     case DEATH:
-        if g_Ticks > g_TimeStamp + 180
+        if !g_VoiceDeath
+            g_VoiceDeath = assume Audio.Voice.play(&g_SoundDeath)
+        //if g_Ticks > g_TimeStamp + 180
+        if !g_VoiceDeath.isPlaying()
         {
+            g_VoiceDeath.destroy()
+            g_VoiceDeath = null
+
             if g_Lives == 0
             {
                 g_Mode = .GAMEOVER
@@ -1944,10 +2004,21 @@ func loadBindTextures()
     g_GScoreTex[1]  = loadAndBindTexture("ui/400.png")
     g_GScoreTex[2]  = loadAndBindTexture("ui/800.png")
     g_GScoreTex[3]  = loadAndBindTexture("ui/1600.png")
+
+    // Sounds
+    g_SoundReady    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_beginning.wav"))
+    g_SoundDeath    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_death.wav"))
+    g_SoundEatFruit = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_eatfruit.wav"))
+    g_SoundEatGhost = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_eatghost.wav"))
+    g_SoundChomp    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_chomp.wav"))
+    g_SoundSiren    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_siren.wav"))
 }
 
 #run
 {
+    assume Audio.createEngine()
+    defer Audio.destroyEngine()
+
     func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
     Application.runSurface(100, 100, cast(s32) (300 * Scale), cast(s32) (345 * Scale), title = "Pacman", hook = &onEvent, init = &test)
 }
