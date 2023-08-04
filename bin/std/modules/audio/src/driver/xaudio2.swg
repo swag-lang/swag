@@ -102,7 +102,7 @@ private
         if !@getcontext()
             @setcontext(&g_ThreadCxt)
 
-        g_Driver.updateVoice(voice)
+        g_Driver.updateVoice(voice, .UpdateBuffers)
     }
 }
 

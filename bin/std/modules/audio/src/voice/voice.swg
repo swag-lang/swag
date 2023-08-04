@@ -24,7 +24,6 @@ public enum VoiceState
     PlayedOnce
     Playing
     PendingDestroy
-    PendingUpdate
 }
 
 // Represents a playing sound
@@ -102,8 +101,8 @@ public impl Voice
         voice.file = file
 
         voice.createNative(createFlags)
+        g_Driver.updateVoice(voice, .Register)
 
-        g_Driver.registerVoice(voice)
         return voice
     }
 
@@ -126,7 +125,7 @@ public impl Voice
         if !hasState(.PlayedOnce)
         {
             setState(.PlayedOnce)
-            g_Driver.updateVoice(self)
+            g_Driver.updateVoice(self, .UpdateBuffers)
         }
     }
 
@@ -156,7 +155,7 @@ public impl Voice
         if hasState(.PendingDestroy)
             return
         setState(.PendingDestroy)
-        g_Driver.updateVoice(self)
+        g_Driver.updateVoice(self, .Destroy)
     }
 
     // Returns true if the voice is currently playing
