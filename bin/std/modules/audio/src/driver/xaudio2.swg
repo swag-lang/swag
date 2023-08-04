@@ -94,10 +94,15 @@ private
 
     func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void)
     {
+        let voice = cast(*Voice) pBufferContext
+        if voice.hasState(.PendingDestroy)
+            return
+
         // Called by xaudio2 thread, so we must have a valid Swag context
         if !@getcontext()
             @setcontext(&g_ThreadCxt)
-        g_Driver.updateVoice(cast(*Voice) pBufferContext);
+
+        g_Driver.updateVoice(voice)
     }
 }
 

@@ -15,27 +15,6 @@ public struct Driver
     allVoices:              Array'(*Voice)
 }
 
-public impl Driver
-{
-    mtd create() throw
-    {
-        createNative()
-        updateInit()
-    }
-
-    mtd destroy()
-    {
-        updateClose()
-
-        visit voice: allVoices
-            destroyVoice(voice)
-        allVoices.clear()
-
-        destroyNative()
-    }
-}
-
-
 private func updateThreadProc(th: Threading.Thread)
 {
     let driver = &g_Driver
@@ -48,7 +27,7 @@ private func updateThreadProc(th: Threading.Thread)
 
         // Make a copy of the list of voices to update, to reduce contention
         driver.mutexVoicesToUpdate.lock()
-        let copyVoices = driver.voicesToUpdate
+        let copyVoices =,move driver.voicesToUpdate
         driver.voicesToUpdate.clear()
         driver.mutexVoicesToUpdate.unlock()
 
@@ -78,20 +57,28 @@ private func updateThreadProc(th: Threading.Thread)
 
 impl Driver
 {
-    mtd updateInit() throw
+    mtd create() throw
     {
+        createNative()
+
         wakeupUpdate.init()
         updateTh.init(&updateThreadProc)
         updateTh.start()
     }
 
-    mtd updateClose()
+    mtd destroy()
     {
         updateTh.safeForceEnd()
         wakeupUpdate.signal()
         updateTh.wait()
         wakeupUpdate.release()
         voicesToUpdate.clear()
+
+        visit voice: allVoices
+            destroyVoice(voice)
+        allVoices.clear()
+
+        destroyNative()
     }
 
     mtd registerVoice(voice: *Voice)
