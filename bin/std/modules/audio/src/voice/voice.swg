@@ -91,6 +91,17 @@ public impl Voice
         voice.play(playFlags | .DestroyOnStop)
     }
 
+    // Play a sound file
+    mtd play(playFlags = VoicePlayFlags.Zero) throw
+    {
+        if Atomic.get(&playing)
+            return
+        self.playFlags = #self.playFlags
+        playNative()
+        Atomic.or(&playing, 1)
+        g_Driver.updateVoice(self)
+    }
+
     // Destroy the voice
     mtd destroy()
     {

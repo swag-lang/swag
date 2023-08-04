@@ -209,33 +209,21 @@ impl Voice
             Atomic.and(&playing, 0)
         }
     }
+
+    mtd playNative(batchID: u32 = 0) throw
+    {
+        if !handle
+            return
+        let hr = handle.vtbl.start(handle, 0, batchID)
+        if hr != S_OK
+            throw "error"
+    }
 }
 
 public typealias VoiceHandle = *IXAudio2SourceVoice
 
 public impl Voice
 {
-    // Play the sound
-    mtd play(playFlags = VoicePlayFlags.Zero, batchID: u32 = 0) throw
-    {
-        if !handle
-            return
-        self.playFlags = #self.playFlags
-        resume(batchID)
-        g_Driver.updateVoice(self)
-    }
-
-    // Resume play
-    mtd resume(batchID: u32 = 0) throw
-    {
-        if !handle or Atomic.get(&playing)
-            return
-        let hr = handle.vtbl.start(handle, 0, batchID)
-        if hr != S_OK
-            throw "error"
-        Atomic.or(&playing, 1)
-    }
-
     // Stop the playing voice
     mtd stop(batchID: u32 = 0) throw
     {
