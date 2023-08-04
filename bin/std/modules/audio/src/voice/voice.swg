@@ -88,7 +88,7 @@ public impl Voice
     func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero) throw
     {
         let voice = create(file, createFlags)
-        voice.playFlags = playFlags
+        voice.playFlags = playFlags | .DestroyOnStop
         voice.play()
     }
 

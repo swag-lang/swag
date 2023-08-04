@@ -58,16 +58,19 @@ private func updateThreadProc(th: Threading.Thread)
             if th.requestEnd
                 break
 
-            catch voice.update()
-
             if Atomic.get(&voice.pendingDestroy)
             {
                 g_Driver.unregisterVoice(voice)
                 Driver.destroyVoice(voice)
+                continue
             }
-            else
+
+            catch voice.update()
+            Atomic.and(&voice.pendingUpdate, 0)
+
+            if !Atomic.get(&voice.playing) and voice.playFlags.has(.DestroyOnStop)
             {
-                Atomic.and(&voice.pendingUpdate, 0)
+                voice.destroy()
             }
         }
     }

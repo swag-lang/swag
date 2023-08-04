@@ -207,7 +207,6 @@ impl Voice
         {
             streamingCloseData()
             Atomic.and(&playing, 0)
-            Atomic.or(&pendingDestroy, 1)
         }
     }
 }
