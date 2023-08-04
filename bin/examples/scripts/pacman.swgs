@@ -94,6 +94,7 @@ var g_SoundEatGhost: Audio.SoundFile
 var g_SoundChomp:    Audio.SoundFile
 var g_SoundSiren:    Audio.SoundFile
 var g_SoundRetreat:  Audio.SoundFile
+var g_SoundScared:   Audio.SoundFile
 
 var g_VoiceReady:      *Audio.Voice
 var g_VoiceDeath:      *Audio.Voice
@@ -101,10 +102,11 @@ var g_VoiceEatFruit:   *Audio.Voice
 var g_VoiceEatGhost:   *Audio.Voice
 var g_VoiceChomp:      *Audio.Voice
 var g_VoiceSiren:      *Audio.Voice
-var g_VoiceFrightened: *Audio.Voice
+var g_VoiceRetreat:    *Audio.Voice
+var g_VoiceScared:     *Audio.Voice
 
-var g_Mode:         GameMode = READY
-var g_TempMode:     GameMode = READY
+var g_Mode:         GameMode = STARTLEVEL
+var g_TempMode:     GameMode = STARTLEVEL
 var g_LastTime:     u64
 var g_Score:        s32
 var g_HighScore:    s32
@@ -187,7 +189,7 @@ enum Movement {CHASE, SCATTER, FRIGHTENED, DEAD, LEAVE, SPAWN}
  * Gamemode is defined as new type for ease of use.
  * Default starting mode is READY
  */
-enum GameMode{NONE, READY, PLAY, FRUIT, EAT, PAUSE, DEATH, GAMEOVER}
+enum GameMode{NONE, STARTLEVEL, READY, PLAY, FRUIT, EAT, PAUSE, DEATH, GAMEOVER}
 
 // Enum defines possible movement directions
 enum Direction {NONE, UP, RIGHT, DOWN, LEFT}
@@ -1405,7 +1407,7 @@ func display()
 
     switch g_Mode
     {
-    case READY:
+    case STARTLEVEL, READY:
         drawPlayScreen()
         drawCharacters()
         drawReady()
@@ -1440,6 +1442,51 @@ func display()
     case GAMEOVER:
         drawPlayScreen()
         drawGameOver()
+    }
+}
+
+func soundState()
+{
+    if g_Mode != .PLAY or g_TimeStamp != -1
+    {
+        if g_VoiceSiren   { g_VoiceSiren.destroy(); g_VoiceSiren = null; }
+        if g_VoiceScared  { g_VoiceScared.destroy(); g_VoiceScared = null; }
+        if g_VoiceRetreat { g_VoiceRetreat.destroy(); g_VoiceRetreat = null; }
+        if g_VoiceChomp   { g_VoiceChomp.destroy(); g_VoiceChomp = null; }
+        return
+    }
+
+    enum SoundState{DEATH,FRIGHTENED,SIREN}
+
+    var soundState = SoundState.SIREN
+    visit g: g_Ghosts
+    {
+        if g.ai == .DEAD
+        {
+            soundState = .DEATH
+            break;
+        }
+
+        if g.ai == .FRIGHTENED
+            soundState = .FRIGHTENED
+    }
+
+    switch soundState
+    {
+    case DEATH:
+        if g_VoiceSiren { g_VoiceSiren.destroy(); g_VoiceSiren = null; }
+        if g_VoiceScared { g_VoiceScared.destroy(); g_VoiceScared = null; }
+        if !g_VoiceRetreat g_VoiceRetreat = assume Audio.Voice.play(&g_SoundRetreat, playFlags = .Loop)
+
+    case FRIGHTENED:
+        if g_VoiceSiren { g_VoiceSiren.destroy(); g_VoiceSiren = null; }
+        if g_VoiceRetreat { g_VoiceRetreat.destroy(); g_VoiceRetreat = null; }
+        if !g_VoiceScared g_VoiceScared = assume Audio.Voice.play(&g_SoundScared, playFlags = .Loop)
+
+    case SIREN:
+        if g_VoiceScared { g_VoiceScared.destroy(); g_VoiceScared = null; }
+        if g_VoiceRetreat { g_VoiceRetreat.destroy(); g_VoiceRetreat = null; }
+        if !g_VoiceSiren { g_VoiceSiren = assume Audio.Voice.play(&g_SoundSiren, playFlags = .Loop); assume g_VoiceSiren.setVolume(0.4); }
     }
 }
 
@@ -1529,26 +1576,6 @@ func checkCollisions()
                 g_Mode = .EAT
             }
         }
-    }
-
-    enum SoundState{DEATH,FRIGHTENED,SIREN}
-
-    var soundState = SoundState.SIREN
-    visit g: g_Ghosts
-    {
-        if g.ai == .FRIGHTENED
-            soundState = .FRIGHTENED
-    }
-
-    switch soundState
-    {
-    case FRIGHTENED:
-        if g_VoiceSiren { g_VoiceSiren.destroy(); g_VoiceSiren = null; }
-        if !g_VoiceFrightened g_VoiceFrightened = assume Audio.Voice.play(&g_SoundRetreat, playFlags = .Loop)
-
-    case SIREN:
-        if g_VoiceFrightened { g_VoiceFrightened.destroy(); g_VoiceFrightened = null; }
-        if !g_VoiceSiren { g_VoiceSiren = assume Audio.Voice.play(&g_SoundSiren, playFlags = .Loop); assume g_VoiceSiren.setVolume(0.4); }
     }
 }
 
@@ -1735,7 +1762,7 @@ func resetLevel()
     g_PacMan.reset()
     visit g: g_Ghosts
         g.reset()
-    g_Mode = .READY
+    g_Mode = .STARTLEVEL
     g_FruitSpawned = false
 }
 
@@ -1771,18 +1798,24 @@ func gameLoop()
     }
 
     g_LastTime = curTime
+    soundState()
 
     switch g_Mode
     {
     // After 120 ticks, enter PLAY mode
-    case READY:
+    case STARTLEVEL:
         if !g_VoiceReady
             g_VoiceReady = assume Audio.Voice.play(&g_SoundReady)
-        //if g_Ticks > 120
         if !g_VoiceReady.isPlaying()
         {
             g_VoiceReady.destroy()
             g_VoiceReady = null
+            g_Mode = READY
+        }
+
+    case READY:
+        if g_Ticks > 120
+        {
             g_Mode = PLAY
         }
 
@@ -1873,6 +1906,7 @@ func gameLoop()
                 g_Lives -= 1
                 resetFruit()
                 resetLevel()
+                g_Mode = .READY
             }
         }
     }
@@ -2034,6 +2068,7 @@ func loadBindTextures()
     g_SoundChomp    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_chomp.wav"))
     g_SoundSiren    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_siren.wav"))
     g_SoundRetreat  = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_retreat.wav"))
+    g_SoundScared   = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_scared.wav"))
 }
 
 #run
