@@ -18,6 +18,7 @@ public struct Driver
     mutexVoicesToUpdate:    Sync.Mutex
     voicesToUpdate:         Array'{voice: *Voice, command: UpdateCommand}
 
+    mutexRecycleVoices:     Sync.Mutex
     activeVoices:           Array'(*Voice)
     pendingRecycleVoices:   Array'(*Voice)
     toRecycleVoices:        Array'(*Voice)
@@ -36,8 +37,10 @@ private func updateThreadProc(th: Threading.Thread)
             break
 
         // All pending recycles to actual recycle list
+        driver.mutexRecycleVoices.lock()
         visit voice: driver.pendingRecycleVoices
             driver.toRecycleVoices.add(voice)
+        driver.mutexRecycleVoices.unlock()
         driver.pendingRecycleVoices.clear()
 
         // Make a copy of the list of voices to update, to reduce contention
@@ -147,5 +150,21 @@ impl Driver
             return
         voicesToUpdate.add({voice, cmd})
         wakeupUpdate.signal()
+    }
+
+    mtd createVoice()->*Voice
+    {
+        var back: *Voice
+        mutexRecycleVoices.lock()
+        if !toRecycleVoices.isEmpty()
+            back = toRecycleVoices.popBack()
+        mutexRecycleVoices.unlock()
+        if back
+        {
+            @print("XXXX")
+            back.recycle()
+        }
+
+        return back orelse Memory.new'Voice()
     }
 }

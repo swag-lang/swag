@@ -1,11 +1,22 @@
 using Audio
 
-#test
+func test() throw
 {
-    assume Audio.createEngine()
+    Audio.createEngine()
     defer Audio.destroyEngine()
 
-    var x = assume SoundFile.load(sndPath("pacman_eatfruit.wav"), loadDatas = false)
-    assume Voice.play(&x)//, playFlags = .Loop)
-    Core.Threading.Thread.sleep(2's)
+    var x = SoundFile.load(sndPath("pacman_eatfruit.wav"), loadDatas = false)
+    let voice = Voice.create(&x)
+    voice.setVolume(0)
+    voice.play(.Loop)
+    Core.Threading.Thread.sleep(20'ms)
+    voice.stop()
+    Core.Threading.Thread.sleep(20'ms)
+    voice.play(.Loop)
+    Core.Threading.Thread.sleep(1's)
+}
+
+#test
+{
+    assume test()
 }

@@ -46,6 +46,16 @@ public struct Voice
 
 internal impl Voice
 {
+    mtd recycle()
+    {
+        file = null
+        playFlags = .Zero
+        state = .Zero
+        idxInList = 0
+        streamingSeek = 0
+        curStreamBuffer = 0
+    }
+
     mtd streamingDecodeData(destBuffer: ^u8, length: u64)->u64 throw
     {
         switch file.format
@@ -97,7 +107,7 @@ public impl Voice
     // Creates a new voice
     func create(file: *SoundFile, createFlags = VoiceCreateFlags.Default)->*Voice throw
     {
-        let voice = Memory.new'Voice()
+        let voice = g_Driver.createVoice()
         voice.file = file
 
         voice.createNative(createFlags)
