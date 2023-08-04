@@ -49,6 +49,10 @@ impl DriverNative
         result = X3DAudioInitialize(channelMask, X3DAUDIO_SPEED_OF_SOUND, x3DInstance)
         if result != S_OK
             throw "cannot initialize X3D audio"
+
+        // Context for xaudio2 threads
+        let cxt = @getcontext()
+        g_ThreadCxt = dref cxt
     }
 
     // Destroys the xaudio2 engine
@@ -112,11 +116,9 @@ private
 impl Voice
 {
     // Creates a new voice based on the given file.
-    func createNative(voice: *Voice, file: *SoundFile) throw
+    func createNative(voice: *Voice, createFlags = VoiceCreateFlags.Default) throw
     {
-        // Context for xaudio2 threads
-        let cxt = @getcontext()
-        g_ThreadCxt = dref cxt
+        let file = voice.file
 
         var wfx: WAVEFORMATEXTENSIBLE
         wfx.format.nChannels            = cast(u16) file.channelCount
@@ -136,7 +138,12 @@ impl Voice
         default:        throw "invalid wav format"
         }
 
-        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &voice.handle, acast &wfx.format, XAUDIO2_VOICE_USEFILTER, XAUDIO2_DEFAULT_FREQ_RATIO, &g_Cb, null, null)
+        var flags: DWORD
+        if createFlags.has(.AcceptFilters)
+            flags |= XAUDIO2_VOICE_USEFILTER
+        if !createFlags.has(.AcceptPitch)
+            flags |= XAUDIO2_VOICE_NOPITCH
+        let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &voice.handle, acast &wfx.format, flags, XAUDIO2_DEFAULT_FREQ_RATIO, &g_Cb, null, null)
         if hr != S_OK
             throw "cannot create source voice"
     }
@@ -172,7 +179,7 @@ impl Voice
             let endFile    = readSize == 0
 
             // Loop
-            if endFile and mustLoop
+            if endFile and playFlags.has(.Loop)
             {
                 streamingRewindData()
                 if !readSize
@@ -184,7 +191,7 @@ impl Voice
 
             var buffer: XAUDIO2_BUFFER
             buffer.pAudioData = destBuffer
-            buffer.flags      = endFile and !mustLoop ? XAUDIO2_END_OF_STREAM : 0
+            buffer.flags      = endFile and !playFlags.has(.Loop) ? XAUDIO2_END_OF_STREAM : 0
             buffer.audioBytes = acast readSize
             buffer.pContext   = self
             let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
@@ -214,7 +221,6 @@ public impl Voice
     {
         if !handle
             return
-
         resume(batchID)
         g_Driver.updateVoice(self)
     }
@@ -247,7 +253,7 @@ public impl Voice
         if !handle
             return
 
-        let v = Math.clamp(volume * g_Driver.globalVolume, 0, 1)
+        let v = Math.clamp(volume, 0, 1)
         let hr = handle.vtbl.setVolume(acast handle, v, batchID)
         if hr != S_OK
             throw "error"
@@ -290,8 +296,6 @@ public impl Voice
     {
         if !handle
             return false
-        if Atomic.get(&pendingUpdate)
-            return true
         return Atomic.get(&playing) != 0
     }
 

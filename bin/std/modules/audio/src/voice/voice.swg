@@ -1,12 +1,30 @@
 using Core, Win32
 
+#[Swag.EnumFlags]
+public enum VoiceCreateFlags
+{
+    Zero = 0
+    AcceptPitch
+    AcceptFilters
+    Default = AcceptFilters | AcceptPitch
+}
+
+#[Swag.EnumFlags]
+public enum VoicePlayFlags
+{
+    Zero = 0
+    Loop                // Play in loops
+    DestroyOnStop       // Destroy the voice once the sound has been played
+}
+
+// Represents a playing sound
 public struct Voice
 {
     handle:         VoiceHandle
     file:           *SoundFile
 
+    playFlags:      VoicePlayFlags
     idxInList:      u32
-    mustLoop:       bool
     pendingUpdate:  u8
     pendingDestroy: u8
     playing:        u8
@@ -55,24 +73,22 @@ internal impl Voice
 public impl Voice
 {
     // Creates a new voice
-    func create(file: *SoundFile)->*Voice throw
+    func create(file: *SoundFile, createFlags = VoiceCreateFlags.Default)->*Voice throw
     {
         let voice = Memory.new'Voice()
-
-        voice.createNative(file)
-        voice.setVolume(g_Driver.globalVolume, 0)
-
         voice.file = file
-        g_Driver.registerVoice(voice)
 
+        voice.createNative(createFlags)
+
+        g_Driver.registerVoice(voice)
         return voice
     }
 
     // Play a sound file
-    func play(file: *SoundFile, mustLoop = false) throw
+    func play(file: *SoundFile, playFlags = VoicePlayFlags.Zero) throw
     {
         let voice = create(file)
-        voice.mustLoop = mustLoop
+        voice.playFlags = playFlags
         voice.play()
     }
 

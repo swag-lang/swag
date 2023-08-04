@@ -6,7 +6,6 @@ public struct Driver
 {
     using native: DriverNative
 
-    globalVolume:           f32 = 1
     updateTh:               Threading.Thread
     wakeupUpdate:           Sync.Event
     mutexVoicesToUpdate:    Sync.Mutex
@@ -71,13 +70,6 @@ private func updateThreadProc(th: Threading.Thread)
 
 impl Driver
 {
-    mtd registerVoice(voice: *Voice)
-    {
-        Sync.scopedLock(&mutexAllVoices)
-        voice.idxInList = acast allVoices.count
-        allVoices.add(voice)
-    }
-
     mtd updateInit() throw
     {
         wakeupUpdate.init()
@@ -92,6 +84,13 @@ impl Driver
         updateTh.wait()
         wakeupUpdate.release()
         voicesToUpdate.clear()
+    }
+
+    mtd registerVoice(voice: *Voice)
+    {
+        Sync.scopedLock(&mutexAllVoices)
+        voice.idxInList = acast allVoices.count
+        allVoices.add(voice)
     }
 
     func destroyVoice(voice: *Voice)
