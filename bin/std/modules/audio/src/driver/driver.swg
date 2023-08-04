@@ -58,7 +58,7 @@ private func updateThreadProc(th: Threading.Thread)
             if th.requestEnd
                 break
 
-            if Atomic.get(&voice.pendingDestroy)
+            if voice.hasState(.PendingDestroy)
             {
                 g_Driver.unregisterVoice(voice)
                 Driver.destroyVoice(voice)
@@ -66,7 +66,7 @@ private func updateThreadProc(th: Threading.Thread)
             }
 
             catch voice.update()
-            Atomic.and(&voice.pendingUpdate, 0)
+            voice.resetState(.PendingUpdate)
 
             if !voice.isPlaying() and voice.playFlags.has(.DestroyOnStop)
             {
@@ -112,7 +112,7 @@ impl Driver
 
     func destroyVoice(voice: *Voice)
     {
-        catch voice.stop()
+        catch voice.stopNative()
         voice.destroyNative()
         Memory.delete(voice)
     }
@@ -121,9 +121,9 @@ impl Driver
     {
         Sync.scopedLock(&mutexVoicesToUpdate)
 
-        if Atomic.get(&voice.pendingUpdate)
+        if voice.hasState(.PendingUpdate)
             return
-        Atomic.or(&voice.pendingUpdate, 1)
+        voice.setState(.PendingUpdate)
 
         voicesToUpdate.add(voice)
         wakeupUpdate.signal()

@@ -168,9 +168,6 @@ impl Voice
 
         while voiceState.buffersQueued < StreamingBufCount - 1
         {
-            if Atomic.get(&pendingDestroy)
-                break
-
             if !streamingBuf[curStreamBuffer].buffer
                 streamingBuf[curStreamBuffer].resize(StreamingBufSize)
 
@@ -206,7 +203,7 @@ impl Voice
         if voiceState.buffersQueued == 0
         {
             streamingCloseData()
-            Atomic.and(&playing, 0)
+            resetState(.Playing)
         }
     }
 
@@ -218,23 +215,21 @@ impl Voice
         if hr != S_OK
             throw "error"
     }
+
+    mtd stopNative(batchID: u32 = 0) throw
+    {
+        if !handle
+            return
+        let hr = handle.vtbl.stop(handle, 0, batchID)
+        if hr != S_OK
+            throw "error"
+    }
 }
 
 public typealias VoiceHandle = *IXAudio2SourceVoice
 
 public impl Voice
 {
-    // Stop the playing voice
-    mtd stop(batchID: u32 = 0) throw
-    {
-        if !handle or !Atomic.get(&playing)
-            return
-        let hr = handle.vtbl.stop(handle, 0, batchID)
-        if hr != S_OK
-            throw "error"
-        Atomic.and(&playing, 0)
-    }
-
     // Set the playing voice volume between [0..1]
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {

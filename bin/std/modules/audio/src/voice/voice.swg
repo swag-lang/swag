@@ -17,17 +17,25 @@ public enum VoicePlayFlags
     DestroyOnStop       // Destroy the voice once the sound has been played
 }
 
+#[Swag.EnumFlags]
+public enum VoiceState
+{
+    Zero = 0
+    PlayedOnce
+    Playing
+    PendingDestroy
+    PendingUpdate
+}
+
 // Represents a playing sound
 public struct Voice
 {
-    handle:         VoiceHandle
-    file:           *SoundFile
+    handle:     VoiceHandle
+    file:       *SoundFile
 
-    playFlags:      VoicePlayFlags
-    idxInList:      u32
-    pendingUpdate:  u8
-    pendingDestroy: u8
-    playing:        u8
+    playFlags:  VoicePlayFlags
+    state:      VoiceState
+    idxInList:  u32
 
     const StreamingBufCount = 3
     const StreamingBufSize  = 65536'u64
@@ -67,6 +75,21 @@ internal impl Voice
             return Wav.streamingCloseData(self)
         }
     }
+
+    mtd hasState(st: VoiceState)->bool
+    {
+        return Atomic.get(cast(*u32) &state) & cast(u32) st ? true : false
+    }
+
+    mtd setState(st: VoiceState)
+    {
+        Atomic.or(cast(*u32) &state, cast(u32) st)
+    }
+
+    mtd resetState(st: VoiceState)
+    {
+        Atomic.and(cast(*u32) &state, ~cast(u32) st)
+    }
 }
 
 
@@ -94,20 +117,45 @@ public impl Voice
     // Play a sound file
     mtd play(playFlags = VoicePlayFlags.Zero) throw
     {
-        if Atomic.get(&playing)
+        if hasState(.Playing)
             return
         self.playFlags = #self.playFlags
         playNative()
-        Atomic.or(&playing, 1)
-        g_Driver.updateVoice(self)
+        setState(.Playing)
+
+        if !hasState(.PlayedOnce)
+        {
+            setState(.PlayedOnce)
+            g_Driver.updateVoice(self)
+        }
+    }
+
+    // Pause the playing voice
+    mtd pause() throw
+    {
+        if !hasState(.Playing)
+            return
+        stopNative()
+        resetState(.Playing)
+    }
+
+    // Stop the playing voice
+    mtd stop() throw
+    {
+        if !hasState(.Playing)
+            return
+        stopNative()
+        resetState(.Playing)
+        if playFlags.has(.DestroyOnStop)
+            destroy()
     }
 
     // Destroy the voice
     mtd destroy()
     {
-        if Atomic.get(&pendingDestroy)
+        if hasState(.PendingDestroy)
             return
-        Atomic.or(&pendingDestroy, 1)
+        setState(.PendingDestroy)
         g_Driver.updateVoice(self)
     }
 
@@ -116,6 +164,6 @@ public impl Voice
     {
         if !handle
             return false
-        return Atomic.get(&playing) != 0
+        return hasState(.Playing)
     }
 }
