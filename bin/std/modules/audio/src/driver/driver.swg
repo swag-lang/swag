@@ -11,7 +11,7 @@ public struct Driver
     mutexVoicesToUpdate:    Sync.Mutex
     voicesToUpdate:         Array'(*Voice)
 
-    mutexAllVoices:         Sync.Mutex
+    mutexAllVoices:         Sync.RWLock
     allVoices:              Array'(*Voice)
 }
 
@@ -61,9 +61,14 @@ private func updateThreadProc(th: Threading.Thread)
             catch voice.update()
 
             if Atomic.get(&voice.pendingDestroy)
-                g_Driver.destroyUnregisterVoice(voice)
-
-            Atomic.and(&voice.pendingUpdate, 0)
+            {
+                g_Driver.unregisterVoice(voice)
+                Driver.destroyVoice(voice)
+            }
+            else
+            {
+                Atomic.and(&voice.pendingUpdate, 0)
+            }
         }
     }
 }
@@ -93,24 +98,20 @@ impl Driver
         allVoices.add(voice)
     }
 
+    mtd unregisterVoice(voice: *Voice)
+    {
+        Sync.scopedLock(&mutexAllVoices)
+        let idx = voice.idxInList
+        allVoices.removeAt(acast idx)
+        if idx != allVoices.count
+            allVoices[idx].idxInList = idx
+    }
+
     func destroyVoice(voice: *Voice)
     {
         catch voice.stop()
         voice.destroyNative()
         Memory.delete(voice)
-    }
-
-    mtd destroyUnregisterVoice(voice: *Voice)
-    {
-        // Stop and destroy voice
-        let idx = voice.idxInList
-        destroyVoice(voice)
-
-        // Remove from voice list
-        Sync.scopedLock(&mutexAllVoices)
-        allVoices.removeAt(acast idx)
-        if idx != allVoices.count
-            allVoices[idx].idxInList = idx
     }
 
     mtd updateVoice(voice: *Voice)
