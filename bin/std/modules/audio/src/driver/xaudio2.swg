@@ -252,7 +252,6 @@ public impl Voice
     {
         if !handle
             return
-
         let v = Math.clamp(volume, 0, 1)
         let hr = handle.vtbl.setVolume(acast handle, v, batchID)
         if hr != S_OK

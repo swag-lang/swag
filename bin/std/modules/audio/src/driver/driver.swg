@@ -11,7 +11,7 @@ public struct Driver
     mutexVoicesToUpdate:    Sync.Mutex
     voicesToUpdate:         Array'(*Voice)
 
-    mutexAllVoices:         Sync.RWLock
+    mutexAllVoices:         Sync.Mutex
     allVoices:              Array'(*Voice)
 }
 

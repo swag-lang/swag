@@ -85,9 +85,9 @@ public impl Voice
     }
 
     // Play a sound file
-    func play(file: *SoundFile, playFlags = VoicePlayFlags.Zero) throw
+    func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero) throw
     {
-        let voice = create(file)
+        let voice = create(file, createFlags)
         voice.playFlags = playFlags
         voice.play()
     }
