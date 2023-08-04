@@ -61,127 +61,124 @@ enum ChunkID: u32
     SND_WAV_FOURCC_ICMT = SND_WAV_FOURCC_MARKER("I"'u32, "C"'u32, "M"'u32, "T"'u32)
 }
 
-enum WavFormat: u16
-{
-    Unknown    = 0
-    Pcm        = 1
-    Adpcm      = 2
-    FloatIEEE  = 3
-    Extensible = 0xFFFE // Microsoft
-}
+const WAVE_FORMAT_UNKNOWN    = 0x0000 /* Microsoft Corporation */
+const WAVE_FORMAT_PCM        = 0x0001 /* Microsoft Corporation */
+const WAVE_FORMAT_ADPCM      = 0x0002 /* Microsoft Corporation */
+const WAVE_FORMAT_IEEE_FLOAT = 0x0003 /* Microsoft Corporation */
+const WAVE_FORMAT_EXTENSIBLE = 0xFFFE /* Microsoft */
 
 public const GUID_PCM        = GUID{0x00000001, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 public const GUID_ADPCM      = GUID{0x00000002, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 public const GUID_FLOAT_IEEE = GUID{0x00000003, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 
 #[Swag.Pack(1)]
-struct WaveFormat
+struct WAVEFORMAT
 {
-    formatTag:      WavFormat   // Format type
-    channels:       u16         // Number of channels (i.e. mono, stereo, etc.)
-    samplesPerSec:  u32         // Sample rate
-    avgBytesPerSec: u32         // For buffer estimation
-    blockAlign:     u16         // Block size of data
+    wFormatTag:      u16     // Format type
+    nChannels:       u16     // Number of nChannels (i.e. mono, stereo, etc.)
+    nSamplesPerSec:  u32     // Sample rate
+    nAvgBytesPerSec: u32     // For buffer estimation
+    nBlockAlign:     u16     // Block size of data
 }
 
 #[Swag.Pack(1)]
-struct PcmWaveFormat
+struct PCMWAVEFORMAT
 {
-    using wf: WaveFormat
-    bitsPerSample:  u16
+    using wf: WAVEFORMAT
+    wBitsPerSample:  u16
 }
 
 #[Swag.Pack(1)]
-struct WaveFormatEx
+struct WAVEFORMATEX
 {
-    using pcmwf: PcmWaveFormat
+    using pcmwf: PCMWAVEFORMAT
     cbSize: u16     // The count in bytes of the size of extra information (after cbSize)
 }
 
 #[Swag.Pack(1)]
-struct WaveFormatExtensible
+struct WAVEFORMATEXTENSIBLE
 {
-    using fmtex: WaveFormatEx
+    using fmtex: WAVEFORMATEX
 
     samples: union
     {
-        validBitsPerSample: u16  // Valid bits in each sample container
-        samplesPerBlock:    u16  // Samples per block of audio data valid
-        reserved:           u16  // If wBitsPerSample=0 (but rarely used). Zero if neither case above applies.
+        wValidBitsPerSample: u16  // Valid bits in each sample container
+        wSamplesPerBlock:    u16  // Samples per block of audio data valid
+        wReserved:           u16  // If wBitsPerSample=0 (but rarely used). Zero if neither case above applies.
     }
 
-    channelMask: u32    // Positions of the audio channels
-    subFormat:   GUID   // Format identifier GUID
+    dwChannelMask: u32    // Positions of the audio nChannels
+    subFormat:     GUID   // Format identifier GUID
 }
 
 func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
 {
-    if chunkSize < @sizeof(WaveFormat)
+    if chunkSize < @sizeof(WAVEFORMAT)
         throw "invalid wav"
 
-    var wf: WaveFormat
+    var wf: WAVEFORMAT
     if !stream.readValue(&wf)
         throw "invalid wav"
 
-    switch (wf.formatTag)
+    switch (wf.wFormatTag)
     {
-    case Pcm:
+    case WAVE_FORMAT_PCM:
         file.encoding = .Pcm
-    case FloatIEEE:
+    case WAVE_FORMAT_IEEE_FLOAT:
         file.encoding = .FloatIEEE
-    case Extensible:
+    case WAVE_FORMAT_EXTENSIBLE:
         break
     default:
         throw "unsupported wav format"
     }
 
-    frequency     = wf.samplesPerSec
-    channelCount  = wf.channels
-    bitsPerSample = (wf.avgBytesPerSec * 8 / wf.channels) / wf.samplesPerSec
+    frequency     = wf.nSamplesPerSec
+    channelCount  = wf.nChannels
+    bitsPerSample = (wf.nAvgBytesPerSec * 8 / wf.nChannels) / wf.nSamplesPerSec
 
     validity = .Format
     validity |= .Frequency
     validity |= .ChannelCount
 
     ////////
-    if chunkSize < @sizeof(PcmWaveFormat)
+    if chunkSize < @sizeof(PCMWAVEFORMAT)
         return
 
-    var pcmwf: PcmWaveFormat
+    var pcmwf: PCMWAVEFORMAT
     pcmwf.wf = wf
     validity |= .BitsPerSample
 
-    if !stream.readValue(&pcmwf.bitsPerSample)
+    if !stream.readValue(&pcmwf.wBitsPerSample)
         throw "invalid wav"
 
     ////////
-    if chunkSize < @sizeof(WaveFormatEx)
+    if chunkSize < @sizeof(WAVEFORMATEX)
         return
 
-    var wfx: WaveFormatEx
+    var wfx: WAVEFORMATEX
     wfx.pcmwf = pcmwf
 
     if !stream.readValue(&wfx.cbSize)
         throw "invalid wav"
 
     ////////
-    if chunkSize < @sizeof(WaveFormatExtensible)
+    if chunkSize < @sizeof(WAVEFORMATEXTENSIBLE)
         return
 
-    var wfex: WaveFormatExtensible
+    var wfex: WAVEFORMATEXTENSIBLE
     wfex.fmtex = wfx
-    file.validBitsPerSample = wfex.samples.validBitsPerSample
+    file.validBitsPerSample = wfex.samples.wValidBitsPerSample
     validity |= .ChannelMask
     validity |= .ValidBitsPerSample
 
     if !stream.readValue(&wfex.samples)
         throw "invalid wav"
-    if !stream.readValue(&wfex.channelMask)
+    if !stream.readValue(&wfex.dwChannelMask)
         throw "invalid wav"
     if !stream.readValue(&wfex.subFormat)
         throw "invalid wav"
 
-    if wf.formatTag == .Extensible
+    if wf.wFormatTag == WAVE_FORMAT_EXTENSIBLE
     {
         if Memory.equals(&wfex.subFormat, GUID_PCM)
             file.encoding = .Pcm
