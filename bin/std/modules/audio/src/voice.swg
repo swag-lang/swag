@@ -56,35 +56,6 @@ internal impl Voice
         curStreamBuffer = 0
     }
 
-    mtd streamingDecodeData(destBuffer: ^u8, length: u64)->u64 throw
-    {
-        switch file.encoding
-        {
-        case Pcm, FloatIEEE:
-            return Wav.streamingDecodeData(self, destBuffer, length)
-        }
-
-        return 0
-    }
-
-    mtd streamingRewindData() throw
-    {
-        switch file.encoding
-        {
-        case Pcm, FloatIEEE:
-            return Wav.streamingRewindData(self)
-        }
-    }
-
-    mtd streamingCloseData()
-    {
-        switch file.encoding
-        {
-        case Pcm, FloatIEEE:
-            return Wav.streamingCloseData(self)
-        }
-    }
-
     mtd hasState(st: VoiceState)->bool
     {
         return Atomic.get(cast(*u32) &state) & cast(u32) st ? true : false

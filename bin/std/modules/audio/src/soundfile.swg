@@ -61,7 +61,7 @@ impl SoundFile
         case ".wav":
             break
         default:
-            throw "unknown file extension"
+            throw "unsupported file extension"
         }
 
         var result: retval
