@@ -177,13 +177,13 @@ impl Voice
                 streamingBuf[curStreamBuffer].resize(StreamingBufSize)
 
             let destBuffer = streamingBuf[curStreamBuffer].buffer
-            let readSize   = streamingDecodeData(destBuffer, StreamingBufSize)
+            let readSize   = Decode.decodeData(self, destBuffer, StreamingBufSize)
             let endFile    = readSize == 0
 
             // Loop
             if endFile and playFlags.has(.Loop)
             {
-                streamingRewindData()
+                Decode.rewindData(self)
                 if !readSize
                     continue
             }
@@ -207,7 +207,7 @@ impl Voice
         // End ?
         if voiceState.buffersQueued == 0
         {
-            streamingCloseData()
+            Decode.closeData(self)
             resetState(.Playing)
         }
     }

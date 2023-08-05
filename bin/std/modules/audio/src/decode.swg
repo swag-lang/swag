@@ -1,6 +1,7 @@
+#global namespace Decode
 using Core
 
-func streamingDecodeData(using voice: *Voice, destBuffer: ^u8, length: u64)->u64 throw
+func decodeData(using voice: *Voice, destBuffer: ^u8, length: u64)->u64 throw
 {
     var wantedLength = length
 
@@ -33,14 +34,14 @@ func streamingDecodeData(using voice: *Voice, destBuffer: ^u8, length: u64)->u64
     return result
 }
 
-func streamingRewindData(using voice: *Voice) throw
+func rewindData(using voice: *Voice) throw
 {
     streamingSeek = 0
     if file.stream.isOpen()
         file.stream.setPosition(.Begin, file.dataSeek)
 }
 
-func streamingCloseData(using voice: *Voice)
+func closeData(using voice: *Voice)
 {
     streamingSeek = 0
     if file.stream.isOpen()

@@ -87,7 +87,8 @@ public impl Voice
         return voice
     }
 
-    // Simple function to play a sound file
+    // Simple function that will create a voice and play it
+    // See [Create] and [Play]
     #[Swag.Discardable]
     func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero)->*Voice throw
     {
