@@ -218,7 +218,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (note)
             result1.push_back(note);
 
-        for (int si = 0; si < match.solvedParameters.size(); si++)
+        for (uint32_t si = 0; si < match.solvedParameters.size(); si++)
         {
             if (si >= match.firstDefault)
                 break;
@@ -684,6 +684,125 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
     }
 }
 
+bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context,
+                                             MatchResult                 result,
+                                             int                         paramIdx,
+                                             VectorNative<OneTryMatch*>& tryMatches,
+                                             AstNode*                    node,
+                                             Vector<const Diagnostic*>&  notes)
+{
+    if (tryMatches.empty())
+        return false;
+
+    bool                       hasCorrectResult = false;
+    VectorNative<OneTryMatch*> tryResult;
+    for (size_t i = 0; i < tryMatches.size(); i++)
+    {
+        auto one = tryMatches[i];
+        if (one->symMatchContext.result == result)
+        {
+            hasCorrectResult = true;
+            bool take        = true;
+            if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
+                take = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx == paramIdx;
+            if (take)
+            {
+                tryResult.push_back(one);
+                tryMatches.erase(i);
+                i--;
+            }
+        }
+    }
+
+    if (tryResult.empty())
+        return hasCorrectResult;
+
+    static const int MAX_OVERLOADS = 5;
+    Diagnostic*      note          = nullptr;
+
+    switch (result)
+    {
+    case MatchResult::ValidIfFailed:
+        note = Diagnostic::note(node, node->token, "all '#validif' have failed");
+        break;
+    case MatchResult::TooManyParameters:
+        note = Diagnostic::note(node, node->token, "too many arguments");
+        break;
+    case MatchResult::TooManyGenericParameters:
+        note = Diagnostic::note(node, node->token, "too many generic arguments");
+        break;
+    case MatchResult::NotEnoughParameters:
+        note = Diagnostic::note(node, node->token, "not enough arguments");
+        break;
+    case MatchResult::NotEnoughGenericParameters:
+        note = Diagnostic::note(node, node->token, "not enough generic arguments");
+        break;
+    case MatchResult::BadSignature:
+        note = Diagnostic::note(node, node->token, Fmt("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+        break;
+    case MatchResult::BadGenericSignature:
+        note = Diagnostic::note(node, node->token, Fmt("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+        break;
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    Concat                   concat;
+    AstOutput::OutputContext outCxt;
+    concat.init(10 * 1024);
+
+    for (size_t i = 0; i < min(tryResult.size(), MAX_OVERLOADS); i++)
+    {
+        if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
+        {
+            auto funcNode = CastAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
+            AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+        }
+        else if (tryResult[i]->overload->node->kind == AstNodeKind::VarDecl)
+        {
+            auto varNode = CastAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
+            auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
+            AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
+        }
+        else
+        {
+            SWAG_ASSERT(false);
+        }
+
+        Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
+        if (n.back() == '\n')
+            n.count--;
+        if (n.back() == ';')
+            n.count--;
+        Utf8 fn = Fmt("%d: %s", i + 1, n.c_str());
+
+        Vector<const Diagnostic*> errs0, errs1;
+        getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
+
+        fn += " => ";
+        fn += errs0[0]->textMsg;
+
+        note->remarks.push_back(fn);
+        concat.clear();
+    }
+
+    if (tryResult.size() >= MAX_OVERLOADS)
+        note->remarks.push_back("...");
+
+    // Locate to the first error
+    Vector<const Diagnostic*> errs0, errs1;
+    getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
+    note->sourceFile      = errs0[0]->sourceFile;
+    note->startLocation   = errs0[0]->startLocation;
+    note->endLocation     = errs0[0]->endLocation;
+    note->forceSourceFile = true;
+
+    notes.push_back(note);
+    return true;
+}
+
 bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
 {
     AstIdentifier* identifier        = nullptr;
@@ -758,26 +877,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             tryMatches = n;
     }
 
-    // MatchResult::NotEnoughParameters is a correct match, but not enough parameters
-    // We take it in priority
-    {
-        Vector<OneTryMatch*> n;
-        for (auto oneMatch : tryMatches)
-        {
-            auto& one = *oneMatch;
-            switch (one.symMatchContext.result)
-            {
-            case MatchResult::NotEnoughParameters:
-                n.push_back(oneMatch);
-                break;
-            default:
-                break;
-            }
-        }
-        if (!n.empty())
-            tryMatches = n;
-    }
-
     // If we do not have generic parameters, then eliminate generic fail
     if (!genericParameters)
     {
@@ -819,19 +918,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             tryMatches = n;
     }
 
-    // Take bad signature in priority
-    {
-        Vector<OneTryMatch*> n;
-        for (auto oneMatch : tryMatches)
-        {
-            auto& one = *oneMatch;
-            if (one.symMatchContext.result == MatchResult::BadGenericSignature || one.symMatchContext.result == MatchResult::BadSignature)
-                n.push_back(oneMatch);
-        }
-        if (!n.empty())
-            tryMatches = n;
-    }
-
     // One single overload
     if (tryMatches.size() == 1)
     {
@@ -852,229 +938,19 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     symbolErrorRemarks(context, tryMatches, node, &diag);
 
     Vector<const Diagnostic*> notes;
-
-    int  badParamIdx, bestBadParamIdx;
-    int  badGenParamIdx, bestBadGenParamIdx;
-    bool sameBadParamIdx, sameBadGenParamIdx;
-    bool sameBadResult = true;
-    auto badResult     = MatchResult::Ok;
-
-    for (int pass = 0; pass < 2; pass++)
-    {
-        badParamIdx        = -1;
-        bestBadParamIdx    = -1;
-        sameBadParamIdx    = true;
-        badGenParamIdx     = -1;
-        bestBadGenParamIdx = -1;
-        sameBadGenParamIdx = true;
-
-        for (auto& one : tryMatches)
-        {
-            if (badResult != MatchResult::Ok && badResult != one->symMatchContext.result)
-                sameBadResult = false;
-            badResult = one->symMatchContext.result;
-
-            // If this is the same parameter that fails for every tryMatches, remember it
-            if (one->symMatchContext.result == MatchResult::BadSignature)
-            {
-                sameBadResult      = false;
-                sameBadGenParamIdx = false;
-                auto ep            = getBadParamIdx(*one, callParameters);
-                if (badParamIdx == -1)
-                {
-                    badParamIdx     = ep;
-                    bestBadParamIdx = ep;
-                }
-
-                if (ep != badParamIdx)
-                    sameBadParamIdx = false;
-                if (ep > bestBadParamIdx)
-                    bestBadParamIdx = ep;
-            }
-            else
-                sameBadParamIdx = false;
-
-            if (one->symMatchContext.result == MatchResult::BadGenericSignature)
-            {
-                sameBadResult   = false;
-                sameBadParamIdx = false;
-                auto ep         = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx;
-                if (badGenParamIdx == -1)
-                {
-                    badGenParamIdx     = ep;
-                    bestBadGenParamIdx = ep;
-                }
-                if (ep != badGenParamIdx)
-                    sameBadGenParamIdx = false;
-                if (ep > bestBadGenParamIdx)
-                    bestBadGenParamIdx = ep;
-            }
-            else
-                sameBadGenParamIdx = false;
-        }
-
-        if (pass == 1)
-            break;
-
-        // If all fail on the same parameter, we do not display the list of tryMatches
-        if (sameBadParamIdx || sameBadGenParamIdx || sameBadResult)
-        {
-            static const int MAX_OVERLOADS = 5;
-            Diagnostic*      diagRemarks   = &diag;
-
-            switch (badResult)
-            {
-            case MatchResult::ValidIfFailed:
-                diagRemarks = Diagnostic::note(Fmt("#validif have all failed"));
-                notes.push_back(diagRemarks);
-                break;
-            case MatchResult::TooManyParameters:
-                diagRemarks = Diagnostic::note(Fmt("too many arguments"));
-                notes.push_back(diagRemarks);
-                break;
-            case MatchResult::TooManyGenericParameters:
-                diagRemarks = Diagnostic::note(Fmt("too many generic arguments"));
-                notes.push_back(diagRemarks);
-                break;
-            case MatchResult::NotEnoughParameters:
-                diagRemarks = Diagnostic::note(Fmt("not enough arguments"));
-                notes.push_back(diagRemarks);
-                break;
-            case MatchResult::NotEnoughGenericParameters:
-                diagRemarks = Diagnostic::note(Fmt("not enough generic arguments"));
-                notes.push_back(diagRemarks);
-                break;
-            default:
-                break;
-            }
-
-            Concat                   concat;
-            AstOutput::OutputContext outCxt;
-            concat.init(10 * 1024);
-
-            for (size_t i = 0; i < min(tryMatches.size(), MAX_OVERLOADS); i++)
-            {
-                if (tryMatches[i]->overload->node->kind == AstNodeKind::FuncDecl)
-                {
-                    auto funcNode = CastAst<AstFuncDecl>(tryMatches[i]->overload->node, AstNodeKind::FuncDecl);
-                    AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
-                }
-                else if (tryMatches[i]->overload->node->kind == AstNodeKind::VarDecl)
-                {
-                    auto varNode = CastAst<AstVarDecl>(tryMatches[i]->overload->node, AstNodeKind::VarDecl);
-                    auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
-                    AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
-                }
-                else
-                {
-                    SWAG_ASSERT(false);
-                }
-
-                Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
-                if (n.back() == '\n')
-                    n.count--;
-                if (n.back() == ';')
-                    n.count--;
-                Utf8 fn = Fmt("%d: %s", i + 1, n.c_str());
-                diagRemarks->remarks.push_back(fn);
-                concat.clear();
-            }
-
-            if (tryMatches.size() >= MAX_OVERLOADS)
-                diagRemarks->remarks.push_back("...");
-
-            tryMatches.clear();
-            break;
-        }
-
-        // Remove tryMatches with a less accurate match
-        for (size_t i = 0; i < tryMatches.size(); i++)
-        {
-            auto one = tryMatches[i];
-
-            if (one->symMatchContext.result == MatchResult::BadSignature)
-            {
-                auto ep = getBadParamIdx(*one, callParameters);
-                if (ep < bestBadParamIdx)
-                {
-                    tryMatches.erase(i);
-                    i--;
-                    continue;
-                }
-            }
-
-            if (one->symMatchContext.result == MatchResult::BadGenericSignature)
-            {
-                auto ep = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx;
-                if (ep < bestBadGenParamIdx)
-                {
-                    tryMatches.erase(i);
-                    i--;
-                    continue;
-                }
-            }
-        }
-    }
-
-    int overIdx = 1;
-    for (auto& one : tryMatches)
-    {
-        Vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, *one, errs0, errs1);
-
-        SWAG_ASSERT(!errs0.empty());
-        auto note = const_cast<Diagnostic*>(errs0[0]);
-        if (tryMatches.size() > 1)
-            note->noteHeader = Fmt("overload %d", overIdx++);
-        note->showFileName          = false;
-        note->showMultipleCodeLines = false;
-
-        switch (one->symMatchContext.result)
-        {
-        case MatchResult::NotEnoughParameters:
-        case MatchResult::BadSignature:
-        case MatchResult::BadGenericSignature:
-            // Get location from the note
-            if (errs1.size())
-            {
-                note->startLocation = errs1[0]->startLocation;
-                note->endLocation   = errs1[0]->endLocation;
-            }
-
-            note->hint = "";
-            break;
-
-        default:
-            note->showRange = false;
-            break;
-        }
-
-        // Get the overload site
-        if (!errs1.empty())
-        {
-            note->sourceFile    = errs1[0]->sourceFile;
-            note->startLocation = errs1[0]->startLocation;
-            note->endLocation   = errs1[0]->startLocation;
-        }
-
-        note->errorLevel = DiagnosticLevel::Note;
-        notes.push_back(errs0[0]);
-    }
-
-    if (sameBadParamIdx && badParamIdx != -1 && callParameters && badParamIdx < (int) callParameters->childs.size())
-    {
-        diag.startLocation = callParameters->childs[badParamIdx]->token.startLocation;
-        diag.endLocation   = callParameters->childs[badParamIdx]->token.endLocation;
-        diag.hint          = Fmt(Hnt(Hnt0048), callParameters->childs[badParamIdx]->typeInfo->getDisplayNameC());
-    }
-    else if (sameBadGenParamIdx && badGenParamIdx != -1 && genericParameters && badGenParamIdx < (int) genericParameters->childs.size())
-    {
-        diag.startLocation = genericParameters->childs[badGenParamIdx]->token.startLocation;
-        diag.endLocation   = genericParameters->childs[badGenParamIdx]->token.endLocation;
-        diag.hint          = Fmt(Hnt(Hnt0048), genericParameters->childs[badGenParamIdx]->typeInfo->getDisplayNameC());
-    }
-
     symbolErrorNotes(context, tryMatches, node, &diag, notes);
+
+    cannotMatchIdentifierError(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes);
+    cannotMatchIdentifierError(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes);
+    cannotMatchIdentifierError(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes);
+    cannotMatchIdentifierError(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes);
+    cannotMatchIdentifierError(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes);
+
+    int paramIdx = 0;
+    while (cannotMatchIdentifierError(context, MatchResult::BadSignature, paramIdx++, tryMatches, node, notes)) {}
+    paramIdx = 0;
+    while (cannotMatchIdentifierError(context, MatchResult::BadGenericSignature, paramIdx++, tryMatches, node, notes)) {}
+
     return context->report(diag, notes);
 }
 

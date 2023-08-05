@@ -1035,7 +1035,7 @@ void initErrors()
     SWAG_ERROR(Hnt0070, "this %s has the 'Swag.Compiler' attribute");
     SWAG_ERROR(Hnt0084, "this %s has type '%s'");
     SWAG_ERROR(Hnt0060, "this 'dref' is not possible");
-    SWAG_ERROR(Hnt0048, "this argument (type is '%s') does not match");
+    SWAG_ERROR(Hnt0048, nullptr);
     SWAG_ERROR(Hnt0031, "this argument has a missing name");
     SWAG_ERROR(Hnt0030, "this argument is named");
     SWAG_ERROR(Hnt0023, "this call should be preceeded by 'discard' if you do not want to use the return value");

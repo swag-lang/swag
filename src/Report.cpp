@@ -121,6 +121,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             // A note/help without a range can be merged to the hint of the main error message (if not already defined)
             if (note->ranges.size() &&
                 note1->ranges.empty() &&
+                !note1->forceSourceFile &&
                 (note1->errorLevel == DiagnosticLevel::Note || note1->errorLevel == DiagnosticLevel::Help))
             {
                 for (auto& r : note->ranges)

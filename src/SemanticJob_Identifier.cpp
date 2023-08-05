@@ -4635,6 +4635,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
 
                 if (!ufcsFirstParam)
                     break;
+                if (identifier->semFlags & SEMFLAG_FORCE_UFCS)
+                    break;
                 ufcsFirstParam = nullptr;
             }
         }
