@@ -149,4 +149,16 @@ public impl Voice
             return false
         return hasState(.Playing)
     }
+
+    // Set the playing voice volume
+    mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
+    {
+        setVolume(convertDBToPercent(volumeDB), batchID)
+    }
+
+    // Returns the actual volume, in DB
+    mtd getVolumeDB()->f32 throw
+    {
+        return convertPercentToDB(getVolume())
+    }
 }

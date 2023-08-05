@@ -178,7 +178,8 @@ impl Voice
 
             let destBuffer = streamingBuf[curStreamBuffer].buffer
             let readSize   = Decode.decodeData(self, destBuffer, StreamingBufSize)
-            let endFile    = readSize == 0
+
+            let endFile = readSize == 0
 
             // Loop
             if endFile and playFlags.has(.Loop)
@@ -231,6 +232,27 @@ impl Voice
     }
 }
 
+impl Driver
+{
+    mtd setOutputVolume(volume: f32) throw
+    {
+        if !masteringVoice
+            return
+        let hr = masteringVoice.vtbl.setVolume(acast masteringVoice, volume, 0)
+        if hr != S_OK
+            throw "error"
+    }
+
+    mtd getOutputVolume()->f32
+    {
+        if !masteringVoice
+            return 0
+        var volume: f32
+        masteringVoice.vtbl.getVolume(acast masteringVoice, &volume)
+        return volume
+    }
+}
+
 public typealias VoiceHandle = *IXAudio2SourceVoice
 
 public impl Voice
@@ -246,12 +268,6 @@ public impl Voice
             throw "error"
     }
 
-    // Set the playing voice volume
-    mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
-    {
-        setVolume(convertDBToPercent(volumeDB), batchID)
-    }
-
     // Returns the actual volume
     mtd getVolume()->f32 throw
     {
@@ -262,28 +278,12 @@ public impl Voice
         return volume
     }
 
-    // Returns the actual volume, in DB
-    mtd getVolumeDB()->f32 throw
-    {
-        return convertPercentToDB(getVolume())
-    }
-
     // Set the playing pitch
     mtd setFrequencyRatio(ratio: f32, batchID: u32 = 0) throw
     {
         if !handle
             return
         let hr = handle.vtbl.setFrequencyRatio(handle, ratio, batchID)
-        if hr != S_OK
-            throw "error"
-    }
-
-    // Stop the playing loop
-    mtd breakLoop(batchID: u32 = 0) throw
-    {
-        if !handle
-            return
-        let hr = handle.vtbl.exitLoop(handle, batchID)
         if hr != S_OK
             throw "error"
     }
