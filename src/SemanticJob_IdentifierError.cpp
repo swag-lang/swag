@@ -778,11 +778,13 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context
             n.count--;
         Utf8 fn = Fmt("%d: %s", i + 1, n.c_str());
 
-        Vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
-
-        fn += " => ";
-        fn += errs0[0]->textMsg;
+        if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
+        {
+            Vector<const Diagnostic*> errs0, errs1;
+            getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
+            fn += "  ----  ";
+            fn += errs0[0]->textMsg;
+        }
 
         note->remarks.push_back(fn);
         concat.clear();
