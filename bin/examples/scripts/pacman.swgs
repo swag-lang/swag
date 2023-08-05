@@ -2061,14 +2061,19 @@ func loadBindTextures()
     g_GScoreTex[3]  = loadAndBindTexture("ui/1600.png")
 
     // Sounds
-    g_SoundReady    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_beginning.wav"))
-    g_SoundDeath    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_death.wav"))
-    g_SoundEatFruit = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_eatfruit.wav"))
-    g_SoundEatGhost = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_eatghost.wav"))
-    g_SoundChomp    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_chomp.wav"))
-    g_SoundSiren    = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_siren.wav"))
-    g_SoundRetreat  = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_retreat.wav"))
-    g_SoundScared   = assume Audio.SoundFile.load(Path.combine(g_DataPath, "audio/pacman_scared.wav"))
+    func loadSound(name: string)->Audio.SoundFile
+    {
+        return assume Audio.SoundFile.load(Path.combine(g_DataPath, name))
+    }
+
+    g_SoundReady    = loadSound("audio/pacman_beginning.wav")
+    g_SoundDeath    = loadSound("audio/pacman_death.wav")
+    g_SoundEatFruit = loadSound("audio/pacman_eatfruit.wav")
+    g_SoundEatGhost = loadSound("audio/pacman_eatghost.wav")
+    g_SoundChomp    = loadSound("audio/pacman_chomp.wav")
+    g_SoundSiren    = loadSound("audio/pacman_siren.wav")
+    g_SoundRetreat  = loadSound("audio/pacman_retreat.wav")
+    g_SoundScared   = loadSound("audio/pacman_scared.wav")
 }
 
 #run
