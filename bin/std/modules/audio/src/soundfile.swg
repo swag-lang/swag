@@ -30,20 +30,22 @@ enum SoundFileEncoding
 // The 'SoundFile' is not necessary fully loaded in memory, in case we want it to be streamed.
 struct SoundFile
 {
-    sampleCount:        u64
-    validity:           SoundFileValidityMask
-    encoding            = SoundFileEncoding.Unknown
-    frequency:          u32
-    channelCount:       u32
-    channelMask:        u32
-    bitsPerSample:      u32
-    duration:           f32
-    validBitsPerSample: u16
-    dataSize:           u64
-    dataSeek:           u64
+    sampleCount:        u64     // Total number of samples
+    dataSize:           u64     // Total size, in bytes, of datas
+    dataSeek:           u64     // The position in the file where the datas are stored
 
-    stream: File.FileStream
-    datas:  Array'u8
+    validity:           SoundFileValidityMask   // What informations in this struct are valid
+
+    encoding            = SoundFileEncoding.Unknown     // Encoding type of the datas
+    frequency:          u32     // Sound frequency
+    channelCount:       u32     // Number of channels (2 for stereo...)
+    channelMask:        u32     // Identifier of the channels
+    bitsPerSample:      u32     // Number of bits per sample
+    duration:           f32     // Duration, in seconds, of the file
+    validBitsPerSample: u16
+
+    stream: File.FileStream     // Associated stream, when loading
+    datas:  Array'u8            // Optional datas
 }
 
 impl SoundFile

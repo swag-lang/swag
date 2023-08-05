@@ -9,8 +9,7 @@ func decodeData(using voice: *Voice, destBuffer: ^u8, length: u64)->u64 throw
     // from the file.
     if file.datas.count and streamingSeek <= file.datas.count
     {
-        var remain = file.datas.count - streamingSeek
-        remain = Math.min(remain, length)
+        let remain = Math.min(file.datas.count - streamingSeek, length)
         Memory.copy(destBuffer, file.datas.buffer + streamingSeek, remain)
         streamingSeek += remain
         if streamingSeek >= file.dataSize
@@ -20,18 +19,18 @@ func decodeData(using voice: *Voice, destBuffer: ^u8, length: u64)->u64 throw
             return remain
     }
 
+    // Open file for streaming
     if !file.stream.isOpen()
     {
         file.stream = File.open(file.stream.name, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
         file.stream.setPosition(.Begin, file.dataSeek + streamingSeek)
     }
 
+    // Read from file
     wantedLength = Math.min(wantedLength, file.dataSize - streamingSeek)
-
-    let result = file.stream.read(destBuffer, wantedLength)
-    streamingSeek += result
-
-    return result
+    let bytesRead = file.stream.read(destBuffer, wantedLength)
+    streamingSeek += bytesRead
+    return bytesRead
 }
 
 func rewindData(using voice: *Voice) throw
