@@ -777,6 +777,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     if (dependentVar && dependentVar->resolvedSymbolOverload)
         dependentVar->resolvedSymbolOverload->symbol->flags |= SYMBOL_USED;
 
+    auto prevNode = identifierRef->previousResolvedNode;
+
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&
@@ -784,12 +786,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         !overload->typeInfo->isLambdaClosure() &&
         !identifierRef->startScope &&
         !identifier->isSilentCall() &&
-        identifierRef->previousResolvedNode &&
-        !identifierRef->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
-        !identifierRef->previousResolvedNode->typeInfo->isStruct())
+        prevNode &&
+        !prevNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
+        !prevNode->typeInfo->isStruct())
     {
-        Diagnostic diag{identifierRef->previousResolvedNode, Fmt(Err(Err0085), identifierRef->previousResolvedNode->token.ctext(), identifierRef->previousResolvedNode->typeInfo->getDisplayNameC())};
-        diag.hint = Diagnostic::isType(identifierRef->previousResolvedNode->typeInfo);
+        Diagnostic diag{prevNode, Fmt(Err(Err0085), prevNode->token.ctext(), prevNode->typeInfo->getDisplayNameC())};
+        diag.hint = Diagnostic::isType(prevNode->typeInfo);
         return context->report(diag);
     }
 
@@ -799,22 +801,30 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     if (symbol &&
         symbol->kind == SymbolKind::Function &&
         identifierRef->startScope &&
-        identifierRef->previousResolvedNode &&
-        identifierRef->previousResolvedNode->resolvedSymbolName &&
-        identifierRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable &&
-        !(identifierRef->previousResolvedNode->flags & AST_FROM_UFCS))
+        prevNode &&
+        prevNode->resolvedSymbolName &&
+        (prevNode->resolvedSymbolName->kind == SymbolKind::Variable || prevNode->resolvedSymbolName->kind == SymbolKind::Function) &&
+        !(prevNode->flags & AST_FROM_UFCS))
     {
-        if (identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier && identifierRef->previousResolvedNode->specFlags & AstIdentifier::SPECFLAG_FROM_WITH)
+        if (prevNode->kind == AstNodeKind::Identifier && prevNode->specFlags & AstIdentifier::SPECFLAG_FROM_WITH)
         {
-            Diagnostic diag{identifierRef->previousResolvedNode, Fmt(Err(Err0310), identifierRef->previousResolvedNode->token.ctext(), symbol->name.c_str(), identifierRef->startScope->name.c_str())};
+            Diagnostic diag{prevNode, Fmt(Err(Err0310), prevNode->token.ctext(), symbol->name.c_str(), identifierRef->startScope->name.c_str())};
             diag.hint = Hnt(Hnt0073);
             return context->report(diag);
         }
 
-        Diagnostic diag{identifierRef->previousResolvedNode, Fmt(Err(Err0086), identifierRef->previousResolvedNode->token.ctext(), symbol->name.c_str())};
-        diag.addRange(identifier->token, Hnt(Hnt0073));
-        diag.hint = Fmt(Hnt(Hnt0080), identifierRef->startScope->name.c_str());
-        return context->report(diag);
+        if (oneMatch.oneOverload->scope == identifierRef->startScope)
+        {
+            Diagnostic diag{prevNode, Fmt(Err(Err0086), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+            diag.addRange(identifier->token, Fmt(Hnt(Hnt0073), prevNode->typeInfo->getDisplayNameC()));
+            diag.hint = Fmt(Hnt(Hnt0080), identifierRef->startScope->name.c_str());
+            return context->report(diag, Diagnostic::hereIs(oneMatch.oneOverload->overload));
+        }
+
+        Diagnostic diag{prevNode, Fmt(Err(Err0521), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+        diag.addRange(identifier->token, Fmt(Hnt(Hnt0073), prevNode->typeInfo->getDisplayNameC()));
+        diag.hint = Diagnostic::isType(prevNode->typeInfo);
+        return context->report(diag, Diagnostic::hereIs(oneMatch.oneOverload->overload));
     }
 
     // A.X and A is an array : missing index
@@ -846,9 +856,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         pp.param->resolvedParameter = pp.resolvedParameter;
     }
 
-    if (identifierRef->previousResolvedNode && symbol->kind == SymbolKind::Variable)
+    if (prevNode && symbol->kind == SymbolKind::Variable)
     {
-        auto prevNode = identifierRef->previousResolvedNode;
         identifier->flags |= AST_L_VALUE;
 
         // Direct reference to a constexpr typeinfo
@@ -3251,7 +3260,7 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
         return false;
 
     // If we have an explicit node, then we can try. Anyway we will also try without...
-    if(nodeIsExplicit)
+    if (nodeIsExplicit)
         return true;
 
     // Compare first function parameter with ufcsNode type.

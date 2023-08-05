@@ -797,7 +797,7 @@ void initErrors()
     SWAG_ERROR(Err0128, "the type constraint cannot be evaluated at compile time");
     SWAG_ERROR(Err0118, "the type constraint has failed on type '%s'");
     SWAG_ERROR(Err0477, "the upper bound '%I64u' of the slicing arguments is out of range (maximum value is '%I64u')");
-    SWAG_ERROR(Err0086, "the variable '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Err0086, "the %s '%s' has only been used as a scope to find function '%s'");
     SWAG_ERROR(Err0645, "the variable is initialized twice, first with type arguments, and then with an assignment");
     SWAG_ERROR(Err0880, "the while expression is always true");
     SWAG_ERROR(Err0062, "too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)");
@@ -929,7 +929,7 @@ void initErrors()
     SWAG_ERROR(Err0436, "an immutable variable declared with 'let' should be explicitly initialized");
     SWAG_ERROR(Err0501, "cannot take the address of a local variable declared with 'let'");
     SWAG_ERROR(Err0520, "%s '%s' cannot be made 'public' because %s '%s' has '%s' access");
-    SWAG_ERROR(Err0521, nullptr);
+    SWAG_ERROR(Err0521, "the %s '%s' has not been used as a first argument to call function '%s'");
     SWAG_ERROR(Err0528, nullptr);
     SWAG_ERROR(Err0529, nullptr);
     SWAG_ERROR(Err0544, nullptr);
@@ -1055,7 +1055,7 @@ void initErrors()
     SWAG_ERROR(Hnt0057, "this function cannot be instantiated");
     SWAG_ERROR(Hnt0078, "this function does not accept aliased names");
     SWAG_ERROR(Hnt0093, "this function does not accept the type '%s' as a first argument");
-    SWAG_ERROR(Hnt0073, "this function does not accept ufcs");
+    SWAG_ERROR(Hnt0073, "this function does not accept ufcs of type '%s'");
     SWAG_ERROR(Hnt0064, "this function has the 'Swag.Compiler' attribute");
     SWAG_ERROR(Hnt0065, "this function has the 'Swag.Test' attribute");
     SWAG_ERROR(Hnt0017, "this function is marked with the 'Swag.Inline' attribute");
