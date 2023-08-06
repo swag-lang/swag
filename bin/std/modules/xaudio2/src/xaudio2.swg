@@ -257,7 +257,7 @@ struct IXAudio2Itf
 struct IXAudio2VoiceItf
 {
     getVoiceDetails:            func(me: *IXAudio2Voice, pVoiceDetails: *XAUDIO2_VOICE_DETAILS)
-    setOutputVoices:            func(me: *IXAudio2Voice, pSendList: const *XAUDIO2_VOICE_SENDS)
+    setOutputVoices:            func(me: *IXAudio2Voice, pSendList: const *XAUDIO2_VOICE_SENDS)->HRESULT
     setEffectChain:             func(me: *IXAudio2Voice, pEffectChain: const *XAUDIO2_EFFECT_CHAIN)
     enableEffect:               func(me: *IXAudio2Voice, effectIndex: UINT32, operationSet: UINT32)->HRESULT
     disableEffect:              func(me: *IXAudio2Voice, effectIndex: UINT32, operationSet: UINT32)->HRESULT

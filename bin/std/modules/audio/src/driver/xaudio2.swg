@@ -37,10 +37,10 @@ impl DriverNative
         if result != S_OK
             throw "cannot create xaudio2 mastering voice"
 
-        //var debug: XAUDIO2_DEBUG_CONFIGURATION
-        //debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
+        var debug: XAUDIO2_DEBUG_CONFIGURATION
+        debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
         //debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
-        //xAudio2.vtbl.setDebugConfiguration(xAudio2, &debug, null)
+        xAudio2.vtbl.setDebugConfiguration(xAudio2, &debug, null)
 
         result = masteringVoice.vtbl.getChannelMask(masteringVoice, &channelMask)
         if result != S_OK
@@ -117,6 +117,33 @@ private
     g_Cbi.onLoopEnd                  = @mkcallback(&onLoopEnd)
     g_Cbi.onVoiceError               = @mkcallback(&onVoiceError)
 }
+
+impl Driver
+{
+    mtd setOutputVolume(volume: f32) throw
+    {
+        if !masteringVoice
+            return
+        let hr = masteringVoice.vtbl.setVolume(acast masteringVoice, volume, 0)
+        if hr != S_OK
+            throw "error"
+    }
+
+    mtd getOutputVolume()->f32
+    {
+        if !masteringVoice
+            return 0
+        var volume: f32
+        masteringVoice.vtbl.getVolume(acast masteringVoice, &volume)
+        return volume
+    }
+}
+
+///////////////////////////////////////////////////////////////
+// VOICE
+///////////////////////////////////////////////////////////////
+
+public typealias VoiceHandle = *IXAudio2SourceVoice
 
 impl Voice
 {
@@ -232,29 +259,6 @@ impl Voice
     }
 }
 
-impl Driver
-{
-    mtd setOutputVolume(volume: f32) throw
-    {
-        if !masteringVoice
-            return
-        let hr = masteringVoice.vtbl.setVolume(acast masteringVoice, volume, 0)
-        if hr != S_OK
-            throw "error"
-    }
-
-    mtd getOutputVolume()->f32
-    {
-        if !masteringVoice
-            return 0
-        var volume: f32
-        masteringVoice.vtbl.getVolume(acast masteringVoice, &volume)
-        return volume
-    }
-}
-
-public typealias VoiceHandle = *IXAudio2SourceVoice
-
 public impl Voice
 {
     // Set the playing voice volume between [0..1]
@@ -284,6 +288,86 @@ public impl Voice
         if !handle
             return
         let hr = handle.vtbl.setFrequencyRatio(handle, ratio, batchID)
+        if hr != S_OK
+            throw "error"
+    }
+}
+
+///////////////////////////////////////////////////////////////
+// BUS
+///////////////////////////////////////////////////////////////
+
+public typealias BusHandle = *IXAudio2SubmixVoice
+
+public impl Bus
+{
+    // Creates an audio bus
+    func create(numChannels: u32, parent: *Bus = null)->*Bus throw
+    {
+        var sfxSend:        XAUDIO2_SEND_DESCRIPTOR
+        var sfxSendList:    XAUDIO2_VOICE_SENDS
+        var pSFXSEndList:   *XAUDIO2_VOICE_SENDS
+
+        if parent
+        {
+            if parent.handle == null
+                throw "parent bus invalid"
+
+            sfxSend.pOutputVoice  = acast parent.handle
+            sfxSendList.sendCount = 1
+            sfxSendList.pSends    = &sfxSend
+            pSFXSEndList          = &sfxSendList
+        }
+
+        var voice: *IXAudio2SubmixVoice
+        let hr = g_Driver.xAudio2.vtbl.createSubmixVoice(g_Driver.xAudio2, &voice, numChannels, 44100, XAUDIO2_VOICE_USEFILTER, 0, pSFXSEndList, null)
+        if hr != S_OK
+            throw "failed to create mix voice"
+
+        let bus = Memory.new'Bus()
+        bus.handle = voice
+        return bus
+    }
+
+    // Destroy bus
+    mtd destroy()
+    {
+        if !handle
+            return
+        handle.vtbl.destroyVoice(acast handle)
+        handle = null
+        Memory.delete(self)
+    }
+}
+
+public impl Voice
+{
+    // Root a voice to a given bus
+    mtd setRooting(buses: const [..] *Bus) throw
+    {
+        const MaxBus = 16
+        var sfxSend:        [MaxBus] XAUDIO2_SEND_DESCRIPTOR
+        var sfxSendList:    XAUDIO2_VOICE_SENDS
+        var pSFXSEndList:   *XAUDIO2_VOICE_SENDS
+
+        let count = @countof(buses)
+        if count >= MaxBus
+            throw "too many buses"
+
+        if count
+        {
+            visit bus, i: buses
+            {
+                Debug.assert(bus != null)
+                sfxSend[i].pOutputVoice = acast bus.handle
+            }
+
+            sfxSendList.sendCount = acast count
+            sfxSendList.pSends    = &sfxSend
+            pSFXSEndList          = &sfxSendList
+        }
+
+        let hr = handle.vtbl.setOutputVoices(acast handle, pSFXSEndList)
         if hr != S_OK
             throw "error"
     }
