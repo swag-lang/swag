@@ -120,19 +120,6 @@ private
 
 impl Driver
 {
-    func supportsEncoding(encoding: SoundFileEncoding)->bool
-    {
-        switch encoding
-        {
-        case Pcm8, Pcm16, Pcm20, Pcm24, Pcm32:
-            return true
-        case Float32:
-            return true
-        default:
-            return false
-        }
-    }
-
     mtd setOutputVolume(volume: f32) throw
     {
         if !masteringVoice
@@ -168,22 +155,55 @@ impl Voice
         wfx.format.nChannels            = cast(u16) file.channelCount
         wfx.format.nSamplesPerSec       = cast(u16) file.frequency
         wfx.format.wBitsPerSample       = cast(u16) file.bitsPerSample
-        wfx.format.nBlockAlign          = cast(u16) (wfx.format.nChannels * (wfx.format.wBitsPerSample / 8))
-        wfx.format.nAvgBytesPerSec      = wfx.format.nBlockAlign * wfx.format.nSamplesPerSec
         wfx.format.wFormatTag           = FORMAT_EXTENSIBLE
         wfx.format.cbSize               = @sizeof(WAVEFORMATEXTENSIBLE) - @sizeof(WAVEFORMATEX)
-        wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
         wfx.dwChannelMask               = file.channelMask
 
         switch (file.encoding)
         {
-        case Pcm8, Pcm16, Pcm20, Pcm24, Pcm32:
+        case Pcm8:
             wfx.subFormat = Wav.GUID_PCM
+            wfx.format.wBitsPerSample = 16
+            voice.requestedEncoding = .Pcm16
+
+        // Native format
+        case Pcm16, Pcm24, Pcm32:
+            wfx.subFormat = Wav.GUID_PCM
+            voice.requestedEncoding = file.encoding
+
+        // Native format
         case Float32:
             wfx.subFormat = Wav.GUID_IEEE_FLOAT
+            voice.requestedEncoding = file.encoding
+
+        // Will need a codec
         default:
-            throw "invalid wav format"
+            if file.bitsPerSample == 8
+            {
+                wfx.subFormat = Wav.GUID_PCM
+                voice.requestedEncoding = .Pcm8
+            }
+            elif file.bitsPerSample == 16
+            {
+                wfx.subFormat = Wav.GUID_PCM
+                voice.requestedEncoding = .Pcm16
+            }
+            elif file.bitsPerSample == 24
+            {
+                wfx.subFormat = Wav.GUID_PCM
+                voice.requestedEncoding = .Pcm24
+            }
+            else
+            {
+                wfx.subFormat = Wav.GUID_IEEE_FLOAT
+                wfx.format.wBitsPerSample = 32
+                voice.requestedEncoding = .Float32
+            }
         }
+
+        wfx.format.nBlockAlign          = cast(u16) (wfx.format.nChannels * (wfx.format.wBitsPerSample / 8))
+        wfx.format.nAvgBytesPerSec      = wfx.format.nBlockAlign * wfx.format.nSamplesPerSec
+        wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
 
         var flags: DWORD
         if createFlags.has(.AcceptFilters)

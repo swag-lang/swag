@@ -24,7 +24,6 @@ enum SoundFileEncoding
     Unknown
     Pcm8
     Pcm16
-    Pcm20
     Pcm24
     Pcm32
     Float32

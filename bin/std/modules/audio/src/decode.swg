@@ -13,9 +13,9 @@ impl Voice
             rewindData()
         }
 
-        // If the file is prefetched and in a driver supported format, just submit the
+        // If the file is prefetched and in a driver requested format, just submit the
         // prefetched datas
-        if streamCurSeek < file.datas.count and Driver.supportsEncoding(file.encoding)
+        if streamCurSeek < file.datas.count and file.encoding == requestedEncoding
         {
             let orgSeek = streamCurSeek
             let readSize = (file.datas.count - streamCurSeek)
@@ -41,10 +41,31 @@ impl Voice
 
     mtd decodeData(destBuffer: ^void, length: u64)->u64 throw
     {
-        // If the file contains datas that are directly supported by the driver, no need
-        // to decode, we can directly read in the output buffer
-        if Driver.supportsEncoding(file.encoding)
+        // If the file contains datas that are directly requested by the driver, no need
+        // to decode, we can directly read in the destination buffer
+        if file.encoding == requestedEncoding
             return readData(destBuffer, length)
+
+        // Otherwise we need a codec
+        /*if !codecStruct
+        {
+            let codec = getCodec(requestedEncoding)
+            if !codec
+                throw "cannot decode sound"
+
+            codecStruct = Memory.new(codec.type)
+            codecItf = @mkinterface(codecStruct, codec.type, ISoundCodec)
+
+            streamBuffer.resize(StreamBufferSize)
+            streamBuffer.count = readData(destBuffer, StreamBufferSize)
+            seekInStreamBuffer = codecItf.init(streamBuffer.buffer, streamBuffer.count)
+        }
+
+        var totalOut: u64
+        while totalOut < length
+        {
+            let used = codecItf.decode(destBuffer, length, streamBuffer.buffer, streamBuffer.count)
+        }*/
 
         return readData(destBuffer, length)
     }
@@ -98,4 +119,80 @@ impl Voice
         if stream.isOpen()
             stream.close()
     }
+}
+
+public interface ISoundCodec
+{
+    mtd canDecode(encoding: SoundFileEncoding)->bool
+    mtd init(srcBuffer: ^void, srcLength: u64)->u64 throw
+    mtd decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{read, write: u64} throw
+}
+
+struct SoundCodec
+{
+    type:   const *Swag.TypeInfoStruct
+    itf:    ISoundCodec
+}
+
+var g_Codecs: Array'SoundCodec
+
+// Register a codec
+public func(T) addCodec()
+{
+    #assert Reflection.hasInterface(@typeof(T), ISoundCodec)
+
+    var codec: SoundCodec = undefined
+    codec.type = @typeof(T)
+    codec.itf = @mkinterface(null, @typeof(T), ISoundCodec)
+    g_Codecs.add(codec)
+}
+
+// Find the codec that can treat the given encoding
+func getCodec(encoding: SoundFileEncoding)->*SoundCodec
+{
+    var found: *SoundCodec
+    visit &codec : g_Codecs
+    {
+        if codec.itf.canDecode(encoding)
+        {
+            found = codec
+            break
+        }
+    }
+
+    return found
+}
+
+struct CodecRaw
+{
+}
+
+impl ISoundCodec for CodecRaw
+{
+    mtd impl canDecode(encoding: SoundFileEncoding)->bool
+    {
+        switch encoding
+        {
+        case Pcm8, Pcm16, Pcm24, Pcm32, Float32:
+            return true
+        }
+
+        return false
+    }
+
+    mtd impl init(srcBuffer: ^void, srcLength: u64)->u64 throw
+    {
+        return 0
+    }
+
+    mtd impl decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{read, write: u64}  throw
+    {
+        return {0,0}
+    }
+}
+
+// Initialize predefined codecs
+#init
+{
+    addCodec'(CodecRaw)()
 }

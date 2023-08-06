@@ -120,8 +120,6 @@ func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw
             file.encoding = .Pcm8
         elif file.bitsPerSample == 16
             file.encoding = .Pcm16
-        elif file.bitsPerSample == 20
-            file.encoding = .Pcm20
         elif file.bitsPerSample == 24
             file.encoding = .Pcm24
         elif file.bitsPerSample == 32
