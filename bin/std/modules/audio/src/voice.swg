@@ -165,27 +165,38 @@ public impl Voice
 
 impl Voice
 {
-    mtd readPcmBuffer()->{buffer: *void, size: u64} throw
+    mtd readBuffer()->{buffer: *void, size: u64} throw
     {
+        // If we are at the end of the file, then nothing to do, except if we need
+        // to loop. In that case, we rewind datas to the start
+        if streamingSeek >= file.dataSize
+        {
+             if !playFlags.has(.Loop)
+                return {null, 0}
+            Decode.rewindData(self)
+        }
+
+        // If the file is prefetched and in a driver supported format, just submit the
+        // prefetched datas
+        if streamingSeek < file.datas.count and Driver.supportsEncoding(file.encoding)
+        {
+            let readSize = (file.datas.count - streamingSeek)
+            streamingSeek = file.datas.count
+            return {file.datas.buffer, readSize}
+        }
+
+        // Otherwise we need to decode datas in a temporary buffer
         if !streamingBuf[curStreamBuffer].buffer
             streamingBuf[curStreamBuffer].resize(StreamingBufSize)
 
         let destBuffer = streamingBuf[curStreamBuffer].buffer
-        var readSize   = Decode.decodeData(self, destBuffer, StreamingBufSize)
-        let endFile    = readSize == 0
-
-        if endFile and playFlags.has(.Loop)
-        {
-            Decode.rewindData(self)
-            if !readSize
-                readSize = Decode.decodeData(self, destBuffer, StreamingBufSize)
-        }
+        let readSize   = Decode.decodeData(self, destBuffer, StreamingBufSize)
 
         curStreamBuffer = (curStreamBuffer + 1) % StreamingBufCount
         return {destBuffer, readSize}
     }
 
-    mtd closePcmBuffer()
+    mtd closeBuffer()
     {
         Decode.closeData(self)
     }

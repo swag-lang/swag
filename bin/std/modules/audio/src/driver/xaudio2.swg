@@ -120,6 +120,11 @@ private
 
 impl Driver
 {
+    func supportsEncoding(encoding: SoundFileEncoding)->bool
+    {
+        return encoding == .Pcm or encoding == .FloatIEEE
+    }
+
     mtd setOutputVolume(volume: f32) throw
     {
         if !masteringVoice
@@ -196,7 +201,7 @@ impl Voice
         handle.vtbl.getState(handle, &voiceState, 0)
         while voiceState.buffersQueued < StreamingBufCount - 1
         {
-            let (ptrBuffer, sizeBuffer) = readPcmBuffer()
+            let (ptrBuffer, sizeBuffer) = readBuffer()
             if !sizeBuffer
                 break
 

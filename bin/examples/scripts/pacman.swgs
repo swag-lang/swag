@@ -1804,14 +1804,15 @@ func gameLoop()
     {
     // After 120 ticks, enter PLAY mode
     case STARTLEVEL:
-        if !g_VoiceReady
+    g_Mode = READY
+        /*if !g_VoiceReady
             g_VoiceReady = assume Audio.Voice.play(&g_SoundReady)
         if !g_VoiceReady.isPlaying()
         {
             g_VoiceReady.destroy()
             g_VoiceReady = null
             g_Mode = READY
-        }
+        }*/
 
     case READY:
         if g_Ticks > 120

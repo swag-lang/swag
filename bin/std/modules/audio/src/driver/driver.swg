@@ -80,7 +80,7 @@ private func updateThreadProc(th: Threading.Thread)
                 // Update buffer of voice, and stop it if nothing has been updated (end reached)
                 if catch voice.updateNative() == false
                 {
-                    voice.closePcmBuffer()
+                    voice.closeBuffer()
                     voice.resetState(.Playing)
                 }
 
