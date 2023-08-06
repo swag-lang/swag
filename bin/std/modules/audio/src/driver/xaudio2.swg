@@ -147,7 +147,6 @@ public typealias VoiceHandle = *IXAudio2SourceVoice
 
 impl Voice
 {
-    // Creates a new voice based on the given file.
     func createNative(voice: *Voice, createFlags = VoiceCreateFlags.Default) throw
     {
         let file = voice.file
@@ -180,7 +179,6 @@ impl Voice
             throw "cannot create source voice"
     }
 
-    // Destroy the voice
     mtd destroyNative()
     {
         if !handle
@@ -189,8 +187,7 @@ impl Voice
         handle = null
     }
 
-    // Update the voice
-    mtd update() throw
+    mtd updateNative() throw
     {
         if !handle
             return
@@ -353,7 +350,6 @@ impl Bus
             throw "failed to create mix voice"
     }
 
-    // Destroy bus
     mtd destroyNative()
     {
         if !handle

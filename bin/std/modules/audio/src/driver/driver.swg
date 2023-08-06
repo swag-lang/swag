@@ -77,7 +77,7 @@ private func updateThreadProc(th: Threading.Thread)
                 driver.pendingRecycleVoices.add(voice)
 
             case UpdateBuffers:
-                catch voice.update()
+                catch voice.updateNative()
 
                 // If the voice is no more playing, register it for destruction if necessary
                 if !voice.isPlaying() and voice.playFlags.has(.DestroyOnStop)
