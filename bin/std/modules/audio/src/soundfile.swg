@@ -22,8 +22,12 @@ enum SoundFileValidityMask
 enum SoundFileEncoding
 {
     Unknown
-    Pcm
-    FloatIEEE
+    Pcm8
+    Pcm16
+    Pcm20
+    Pcm24
+    Pcm32
+    Float32
 }
 
 // Represents a sound file.

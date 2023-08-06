@@ -122,7 +122,15 @@ impl Driver
 {
     func supportsEncoding(encoding: SoundFileEncoding)->bool
     {
-        return encoding == .Pcm or encoding == .FloatIEEE
+        switch encoding
+        {
+        case Pcm8, Pcm16, Pcm20, Pcm24, Pcm32:
+            return true
+        case Float32:
+            return true
+        default:
+            return false
+        }
     }
 
     mtd setOutputVolume(volume: f32) throw
@@ -169,9 +177,12 @@ impl Voice
 
         switch (file.encoding)
         {
-        case Pcm:       wfx.subFormat = Wav.GUID_PCM
-        case FloatIEEE: wfx.subFormat = Wav.GUID_FLOAT_IEEE
-        default:        throw "invalid wav format"
+        case Pcm8, Pcm16, Pcm20, Pcm24, Pcm32:
+            wfx.subFormat = Wav.GUID_PCM
+        case Float32:
+            wfx.subFormat = Wav.GUID_IEEE_FLOAT
+        default:
+            throw "invalid wav format"
         }
 
         var flags: DWORD

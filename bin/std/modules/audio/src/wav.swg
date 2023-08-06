@@ -69,7 +69,7 @@ const WAVE_FORMAT_EXTENSIBLE = 0xFFFE /* Microsoft */
 
 public const GUID_PCM        = GUID{0x00000001, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 public const GUID_ADPCM      = GUID{0x00000002, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
-public const GUID_FLOAT_IEEE = GUID{0x00000003, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
+public const GUID_IEEE_FLOAT = GUID{0x00000003, 0x0000, 0x0010, [0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71]}
 
 #[Swag.Pack(1)]
 struct WAVEFORMAT
@@ -111,6 +111,38 @@ struct WAVEFORMATEXTENSIBLE
     subFormat:     GUID   // Format identifier GUID
 }
 
+func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw
+{
+    switch (formatTag)
+    {
+    case WAVE_FORMAT_PCM:
+        if file.bitsPerSample == 8
+            file.encoding = .Pcm8
+        elif file.bitsPerSample == 16
+            file.encoding = .Pcm16
+        elif file.bitsPerSample == 20
+            file.encoding = .Pcm20
+        elif file.bitsPerSample == 24
+            file.encoding = .Pcm24
+        elif file.bitsPerSample == 32
+            file.encoding = .Pcm32
+        else
+            throw "unsupported pcm bitPerSample"
+
+    case WAVE_FORMAT_IEEE_FLOAT:
+        if file.bitsPerSample == 32
+            file.encoding = .Float32
+        else
+            throw "unsupported float bitPerSample"
+
+    case WAVE_FORMAT_EXTENSIBLE:
+        break
+
+    default:
+        throw "unsupported wav format"
+    }
+}
+
 func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
     if chunkSize < @sizeof(WAVEFORMAT)
@@ -120,21 +152,10 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
     if !stream.readValue(&wf)
         throw "invalid wav"
 
-    switch (wf.wFormatTag)
-    {
-    case WAVE_FORMAT_PCM:
-        file.encoding = .Pcm
-    case WAVE_FORMAT_IEEE_FLOAT:
-        file.encoding = .FloatIEEE
-    case WAVE_FORMAT_EXTENSIBLE:
-        break
-    default:
-        throw "unsupported wav format"
-    }
-
     frequency     = wf.nSamplesPerSec
     channelCount  = wf.nChannels
     bitsPerSample = (wf.nAvgBytesPerSec * 8 / wf.nChannels) / wf.nSamplesPerSec
+    setEncodingFormat(wf.wFormatTag)
 
     validity = .Format
     validity |= .Frequency
@@ -150,6 +171,7 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
 
     if !stream.readValue(&pcmwf.wBitsPerSample)
         throw "invalid wav"
+    setEncodingFormat(wf.wFormatTag)
 
     ////////
     if chunkSize < @sizeof(WAVEFORMATEX)
@@ -180,12 +202,15 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
 
     if wf.wFormatTag == WAVE_FORMAT_EXTENSIBLE
     {
-        if Memory.equals(&wfex.subFormat, GUID_PCM)
-            file.encoding = .Pcm
-        elif Memory.equals(&wfex.subFormat, GUID_FLOAT_IEEE)
-            file.encoding = .FloatIEEE
-        else
+        switch
+        {
+        case Memory.equals(&wfex.subFormat, GUID_PCM):
+            setEncodingFormat(WAVE_FORMAT_PCM)
+        case Memory.equals(&wfex.subFormat, GUID_IEEE_FLOAT):
+            setEncodingFormat(WAVE_FORMAT_IEEE_FLOAT)
+        default:
             throw "unsupported wav format"
+        }
     }
 }
 
@@ -202,24 +227,6 @@ func readChunkData(using file: *SoundFile, stream: *File.FileStream, chunkSize: 
         duration = cast(f32) (sampleCount / cast(f64) frequency)
         validity |= .Duration
     }
-}
-
-func isEncodingSupported(using file: *SoundFile)->bool
-{
-    switch file.encoding
-    {
-    case Pcm:
-        switch bitsPerSample
-        {
-        case 8, 16, 24, 32: return true
-        default:            return false
-        }
-
-    case FloatIEEE:
-        return true
-    }
-
-    return false
 }
 
 // Load a wav file
@@ -254,8 +261,6 @@ public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas
             if stage == .FindFmt
             {
                 file.readChunkFmt(stream, header.chunkSize)
-                if !isEncodingSupported()
-                    throw "unsupported encoding"
                 stage = .FindData
             }
 
