@@ -39,7 +39,7 @@ impl DriverNative
 
         var debug: XAUDIO2_DEBUG_CONFIGURATION
         debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
-        //debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
+        debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
         xAudio2.vtbl.setDebugConfiguration(xAudio2, &debug, null)
 
         result = masteringVoice.vtbl.getChannelMask(masteringVoice, &channelMask)
@@ -291,57 +291,7 @@ public impl Voice
         if hr != S_OK
             throw "error"
     }
-}
 
-///////////////////////////////////////////////////////////////
-// BUS
-///////////////////////////////////////////////////////////////
-
-public typealias BusHandle = *IXAudio2SubmixVoice
-
-public impl Bus
-{
-    // Creates an audio bus
-    func create(numChannels: u32, parent: *Bus = null)->*Bus throw
-    {
-        var sfxSend:        XAUDIO2_SEND_DESCRIPTOR
-        var sfxSendList:    XAUDIO2_VOICE_SENDS
-        var pSFXSEndList:   *XAUDIO2_VOICE_SENDS
-
-        if parent
-        {
-            if parent.handle == null
-                throw "parent bus invalid"
-
-            sfxSend.pOutputVoice  = acast parent.handle
-            sfxSendList.sendCount = 1
-            sfxSendList.pSends    = &sfxSend
-            pSFXSEndList          = &sfxSendList
-        }
-
-        var voice: *IXAudio2SubmixVoice
-        let hr = g_Driver.xAudio2.vtbl.createSubmixVoice(g_Driver.xAudio2, &voice, numChannels, 44100, XAUDIO2_VOICE_USEFILTER, 0, pSFXSEndList, null)
-        if hr != S_OK
-            throw "failed to create mix voice"
-
-        let bus = Memory.new'Bus()
-        bus.handle = voice
-        return bus
-    }
-
-    // Destroy bus
-    mtd destroy()
-    {
-        if !handle
-            return
-        handle.vtbl.destroyVoice(acast handle)
-        handle = null
-        Memory.delete(self)
-    }
-}
-
-public impl Voice
-{
     // Root a voice to a given bus
     mtd setRooting(buses: const [..] *Bus) throw
     {
@@ -370,5 +320,45 @@ public impl Voice
         let hr = handle.vtbl.setOutputVoices(acast handle, pSFXSEndList)
         if hr != S_OK
             throw "error"
+    }
+}
+
+///////////////////////////////////////////////////////////////
+// BUS
+///////////////////////////////////////////////////////////////
+
+public typealias BusHandle = *IXAudio2SubmixVoice
+
+impl Bus
+{
+    func createNative(bus: *Bus, numChannels: u32, parent: *Bus = null) throw
+    {
+        var sfxSend:        XAUDIO2_SEND_DESCRIPTOR
+        var sfxSendList:    XAUDIO2_VOICE_SENDS
+        var pSFXSEndList:   *XAUDIO2_VOICE_SENDS
+
+        if parent
+        {
+            if parent.handle == null
+                throw "parent bus invalid"
+
+            sfxSend.pOutputVoice  = acast parent.handle
+            sfxSendList.sendCount = 1
+            sfxSendList.pSends    = &sfxSend
+            pSFXSEndList          = &sfxSendList
+        }
+
+        let hr = g_Driver.xAudio2.vtbl.createSubmixVoice(g_Driver.xAudio2, &bus.handle, numChannels, 44100, XAUDIO2_VOICE_USEFILTER, 0, pSFXSEndList, null)
+        if hr != S_OK
+            throw "failed to create mix voice"
+    }
+
+    // Destroy bus
+    mtd destroyNative()
+    {
+        if !handle
+            return
+        handle.vtbl.destroyVoice(acast handle)
+        handle = null
     }
 }

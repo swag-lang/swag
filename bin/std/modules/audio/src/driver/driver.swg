@@ -23,6 +23,9 @@ public struct Driver
     pendingRecycleVoices:   Array'(*Voice)
     toRecycleVoices:        Array'(*Voice)
 
+    mutexBuses:             Sync.Mutex
+    buses:                  Array'(*Bus)
+
     driverIsClosing:        bool
 }
 
@@ -120,7 +123,7 @@ impl Driver
         voicesToUpdate.clear()
         mutexVoicesToUpdate.unlock()
 
-        // Destroy lists
+        // Destroy voices lists
         ////////////////
         toRecycleVoices.add(pendingRecycleVoices.toSlice())
         pendingRecycleVoices.clear()
@@ -136,6 +139,12 @@ impl Driver
             Memory.delete(voice)
         }
         activeVoices.clear()
+
+        // Destroy buses
+        ////////////////
+        visit bus: buses
+            catch bus.destroy()
+        buses.clear()
 
         // Then destroy native driver
         ////////////////

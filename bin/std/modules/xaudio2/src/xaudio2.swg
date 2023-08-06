@@ -154,12 +154,14 @@ struct XAUDIO2_VOICE_DETAILS
     inputSampleRate:    UINT32
 }
 
+#[Swag.Pack(1)]
 struct XAUDIO2_SEND_DESCRIPTOR
 {
     flags:          UINT32
     pOutputVoice:   *IXAudio2Voice;
 }
 
+#[Swag.Pack(1)]
 struct XAUDIO2_VOICE_SENDS
 {
     sendCount:  UINT32
