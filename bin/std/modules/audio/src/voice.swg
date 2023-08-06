@@ -27,13 +27,14 @@ public enum VoiceState
 }
 
 // Represents a playing sound
+#[Swag.Opaque]
 public struct Voice
 {
     handle:     VoiceHandle
     file:       *SoundFile
 
     requestedEncoding = SoundFileEncoding.Unknown
-    codecStruct:    *void
+    codecStruct:    *SoundCodec
     codecItf:       ISoundCodec
 
     playFlags:  VoicePlayFlags
@@ -44,7 +45,6 @@ public struct Voice
     stream:             File.FileStream
     streamCurSeek:      u64
     streamBuffer:       Array'u8
-    seekInStreamBuffer: u64
 
     const NumDecodedBuffers = 3
     const DecodedBufferSize = 65536'u64
