@@ -30,6 +30,8 @@ enum SoundFileEncoding
 // The 'SoundFile' is not necessary fully loaded in memory, in case we want it to be streamed.
 struct SoundFile
 {
+    fullname:           String
+
     sampleCount:        u64     // Total number of samples
     dataSize:           u64     // Total size, in bytes, of datas
     dataSeek:           u64     // The position in the file where the datas are stored
@@ -44,8 +46,7 @@ struct SoundFile
     duration:           f32     // Duration, in seconds, of the file
     validBitsPerSample: u16
 
-    stream: File.FileStream     // Associated stream, when loading
-    datas:  Array'u8            // Optional datas
+    datas:  Array'u8            // Prefetched datas (in encoding format)
 }
 
 impl SoundFile
@@ -67,14 +68,15 @@ impl SoundFile
         }
 
         var result: retval
-        result.stream = File.open(fullname, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
-        defer result.stream.close()
+        var stream = File.open(fullname, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
+        defer stream.close()
 
         switch ext
         {
-        case ".wav": Wav.loadFile(&result, loadDatas, loadMetaDatas)
+        case ".wav": Wav.loadFile(&result, &stream, loadDatas, loadMetaDatas)
         }
 
+        result.fullname = fullname
         return result
     }
 }

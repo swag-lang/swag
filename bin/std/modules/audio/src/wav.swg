@@ -111,7 +111,7 @@ struct WAVEFORMATEXTENSIBLE
     subFormat:     GUID   // Format identifier GUID
 }
 
-func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
+func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
     if chunkSize < @sizeof(WAVEFORMAT)
         throw "invalid wav"
@@ -189,7 +189,7 @@ func readChunkFmt(using file: *SoundFile, chunkSize: u32) throw
     }
 }
 
-func readChunkData(using file: *SoundFile, chunkSize: u32) throw
+func readChunkData(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
     validity |= .Data
     dataSeek = stream.getPosition()
@@ -223,7 +223,7 @@ func isEncodingSupported(using file: *SoundFile)->bool
 }
 
 // Load a wav file
-public func loadFile(using file: *SoundFile, loadDatas = true, loadMetaDatas = false) throw
+public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas = true, loadMetaDatas = false) throw
 {
     enum Stage{FindRiff, FindFmt, FindData, BreakOnSuccess}
     var stage:  Stage = FindRiff
@@ -253,7 +253,7 @@ public func loadFile(using file: *SoundFile, loadDatas = true, loadMetaDatas = f
         case SND_WAV_FOURCC_fmt:
             if stage == .FindFmt
             {
-                file.readChunkFmt(header.chunkSize)
+                file.readChunkFmt(stream, header.chunkSize)
                 if !isEncodingSupported()
                     throw "unsupported encoding"
                 stage = .FindData
@@ -262,7 +262,7 @@ public func loadFile(using file: *SoundFile, loadDatas = true, loadMetaDatas = f
         case SND_WAV_FOURCC_data:
             if stage == .FindData
             {
-                readChunkData(header.chunkSize)
+                readChunkData(file, stream, header.chunkSize)
                 if loadDatas
                 {
                     datas.resize(acast header.chunkSize)

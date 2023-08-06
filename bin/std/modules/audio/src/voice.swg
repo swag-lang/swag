@@ -39,6 +39,7 @@ public struct Voice
     const StreamingBufCount = 3
     const StreamingBufSize  = 65536'u64
 
+    stream:             File.FileStream
     streamingSeek:      u64
     streamingBuf:       [3] Array'u8
     curStreamBuffer:    u32
@@ -165,7 +166,7 @@ public impl Voice
 
 impl Voice
 {
-    mtd readBuffer()->{buffer: *void, size: u64} throw
+    mtd readBuffer()->{buffer: ^void, size: u64} throw
     {
         // If we are at the end of the file, then nothing to do, except if we need
         // to loop. In that case, we rewind datas to the start
