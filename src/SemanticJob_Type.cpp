@@ -57,48 +57,54 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     if (node->flags & AST_FROM_GENERIC_REPLACE)
         return context->report({node, Err(Err0012)});
 
-    if (node->resolvedSymbolName)
+    if (!node->resolvedSymbolName)
+        return true;
+
+    // If this is an identifierref, then we need to be check concrete from left to right,
+    // to raise an error on the first problem, and not only the result
+    if (node->kind == AstNodeKind::IdentifierRef)
     {
-        Utf8 name = Naming::kindName(node->resolvedSymbolName->kind);
-        Utf8 hint;
-
-        // Reference to a static struct member
-        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
+        for (auto c : node->childs)
         {
-            name = "the struct member";
-            hint = Fmt(Hnt(Hnt0003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
+            if (c == node)
+                break;
+            SWAG_CHECK(checkIsConcrete(context, c));
         }
-
-        Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str()), hint};
-        Diagnostic* note  = nullptr;
-        Diagnostic* note1 = nullptr;
-
-        // Missing self ?
-        if (node->childs.size() <= 1 &&
-            node->ownerStructScope &&
-            node->ownerStructScope == context->node->ownerStructScope &&
-            node->ownerFct)
-        {
-            if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
-            {
-                auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
-                auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->isSelf()))
-                {
-                    note  = Diagnostic::help(node->ownerFct, node->ownerFct->token, Hlp(Hlp0002));
-                    note1 = Diagnostic::help(Hlp(Hlp0029));
-                }
-                else if (typeFct->parameters.size() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
-                    note = Diagnostic::help(nodeFct->parameters->childs.front(), Hlp(Hlp0028));
-                else
-                    note = Diagnostic::help(Hlp(Hlp0002));
-            }
-        }
-
-        return context->report(diag, note, note1);
     }
 
-    return true;
+    Utf8 name = Naming::kindName(node->resolvedSymbolName->kind);
+    Utf8 hint;
+
+    // Reference to a static struct member
+    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
+    {
+        name = "the struct member";
+        hint = Fmt(Hnt(Hnt0003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
+    }
+
+    Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str()), hint};
+    Diagnostic* note = nullptr;
+
+    // Missing self ?
+    if (node->childs.size() <= 1 &&
+        node->ownerStructScope &&
+        node->ownerStructScope == context->node->ownerStructScope &&
+        node->ownerFct)
+    {
+        if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
+        {
+            auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
+            auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->isSelf()))
+                note = Diagnostic::help(node->ownerFct, node->ownerFct->token, Hlp(Hlp0029));
+            else if (typeFct->parameters.size() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
+                note = Diagnostic::help(nodeFct->parameters->childs.front(), Hlp(Hlp0028));
+            else
+                note = Diagnostic::help(Hlp(Hlp0002));
+        }
+    }
+
+    return context->report(diag, note);
 }
 
 bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly)

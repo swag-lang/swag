@@ -7,7 +7,7 @@ func test() throw
     defer Audio.destroyEngine()
     //Audio.setOutputVolume(0.0)
 
-    var bus = Bus.create(2)
+    let bus = Bus.create(2)
     defer bus.destroy()
 
     var x = SoundFile.load(sndPath("sngl08m.wav"), loadDatas = false)
