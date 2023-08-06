@@ -36,13 +36,15 @@ public struct Voice
     state:      VoiceState
     idxInList:  u32
 
-    const StreamingBufCount = 3
-    const StreamingBufSize  = 65536'u64
+    const StreamBufferSize = 16*1024'u64
+    stream:         File.FileStream
+    streamCurSeek:  u64
+    streamBuffer:   Array'u8
 
-    stream:             File.FileStream
-    streamingSeek:      u64
-    streamingBuf:       [3] Array'u8
-    curStreamBuffer:    u32
+    const NumDecodedBuffers = 3
+    const DecodedBufferSize = 65536'u64
+    decodedBuffers:     [NumDecodedBuffers] Array'u8
+    decodedBufferIdx:   u32
 }
 
 internal impl Voice
@@ -53,8 +55,8 @@ internal impl Voice
         playFlags = .Zero
         state = .Zero
         idxInList = 0
-        streamingSeek = 0
-        curStreamBuffer = 0
+        streamCurSeek = 0
+        decodedBufferIdx = 0
     }
 
     mtd hasState(st: VoiceState)->bool

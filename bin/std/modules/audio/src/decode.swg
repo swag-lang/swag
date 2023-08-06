@@ -6,7 +6,7 @@ impl Voice
     {
         // If we are at the end of the file, then nothing to do, except if we need
         // to loop. In that case, we rewind datas to the start
-        if streamingSeek >= file.dataSize
+        if streamCurSeek >= file.dataSize
         {
              if !playFlags.has(.Loop)
                 return {null, 0}
@@ -15,22 +15,22 @@ impl Voice
 
         // If the file is prefetched and in a driver supported format, just submit the
         // prefetched datas
-        if streamingSeek < file.datas.count and Driver.supportsEncoding(file.encoding)
+        if streamCurSeek < file.datas.count and Driver.supportsEncoding(file.encoding)
         {
-            let orgSeek = streamingSeek
-            let readSize = (file.datas.count - streamingSeek)
-            streamingSeek = file.datas.count
+            let orgSeek = streamCurSeek
+            let readSize = (file.datas.count - streamCurSeek)
+            streamCurSeek = file.datas.count
             return {file.datas.buffer + orgSeek, readSize}
         }
 
         // Otherwise we need to decode datas in a temporary buffer
-        if !streamingBuf[curStreamBuffer].buffer
-            streamingBuf[curStreamBuffer].resize(StreamingBufSize)
+        if !decodedBuffers[decodedBufferIdx].buffer
+            decodedBuffers[decodedBufferIdx].resize(DecodedBufferSize)
 
-        let destBuffer = streamingBuf[curStreamBuffer].buffer
-        let readSize   = decodeData(destBuffer, StreamingBufSize)
+        let destBuffer = decodedBuffers[decodedBufferIdx].buffer
+        let readSize   = decodeData(destBuffer, DecodedBufferSize)
 
-        curStreamBuffer = (curStreamBuffer + 1) % StreamingBufCount
+        decodedBufferIdx = (decodedBufferIdx + 1) % NumDecodedBuffers
         return {destBuffer, readSize}
     }
 
@@ -52,19 +52,19 @@ impl Voice
     mtd readData(destBuffer: ^void, length: u64)->u64 throw
     {
         // Out of datas
-        if streamingSeek >= file.dataSize
+        if streamCurSeek >= file.dataSize
             return 0
 
         var wantedLength = length
 
         // First take from the prefetched buffer if there's something there, instead of reading
         // from the file.
-        if streamingSeek < file.datas.count
+        if streamCurSeek < file.datas.count
         {
-            let remain = Math.min(file.datas.count - streamingSeek, length)
-            Memory.copy(destBuffer, file.datas.buffer + streamingSeek, remain)
-            streamingSeek += remain
-            if streamingSeek >= file.dataSize
+            let remain = Math.min(file.datas.count - streamCurSeek, length)
+            Memory.copy(destBuffer, file.datas.buffer + streamCurSeek, remain)
+            streamCurSeek += remain
+            if streamCurSeek >= file.dataSize
                 return remain
             wantedLength -= remain
             if !wantedLength
@@ -75,26 +75,26 @@ impl Voice
         if !stream.isOpen()
         {
             stream = File.open(file.fullname, File.FileMode.Open, File.FileAccess.Read, File.FileShare.Read)
-            stream.setPosition(.Begin, file.dataSeek + streamingSeek)
+            stream.setPosition(.Begin, file.dataSeek + streamCurSeek)
         }
 
         // Read from file
-        wantedLength = Math.min(wantedLength, file.dataSize - streamingSeek)
+        wantedLength = Math.min(wantedLength, file.dataSize - streamCurSeek)
         let bytesRead = stream.read(destBuffer, wantedLength)
-        streamingSeek += bytesRead
+        streamCurSeek += bytesRead
         return bytesRead
     }
 
     mtd rewindData() throw
     {
-        streamingSeek = 0
+        streamCurSeek = 0
         if stream.isOpen()
             stream.setPosition(.Begin, file.dataSeek)
     }
 
     mtd closeData()
     {
-        streamingSeek = 0
+        streamCurSeek = 0
         if stream.isOpen()
             stream.close()
     }

@@ -199,7 +199,7 @@ impl Voice
 
         var voiceState: XAUDIO2_VOICE_STATE
         handle.vtbl.getState(handle, &voiceState, 0)
-        while voiceState.buffersQueued < StreamingBufCount - 1
+        while voiceState.buffersQueued < NumDecodedBuffers - 1
         {
             let (ptrBuffer, sizeBuffer) = readBuffer()
             if !sizeBuffer
