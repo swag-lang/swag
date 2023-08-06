@@ -29,4 +29,16 @@ public impl Bus
         g_Driver.buses.remove(self)
         Memory.delete(self)
     }
+
+    // Set the playing bus volume
+    mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
+    {
+        setVolume(convertDBToPercent(volumeDB), batchID)
+    }
+
+    // Returns the actual volume, in DB
+    mtd getVolumeDB()->f32 throw
+    {
+        return convertPercentToDB(getVolume())
+    }
 }

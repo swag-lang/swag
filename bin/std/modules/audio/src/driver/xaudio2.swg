@@ -39,7 +39,7 @@ impl DriverNative
 
         var debug: XAUDIO2_DEBUG_CONFIGURATION
         debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
-        debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
+        //debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
         xAudio2.vtbl.setDebugConfiguration(xAudio2, &debug, null)
 
         result = masteringVoice.vtbl.getChannelMask(masteringVoice, &channelMask)
@@ -360,5 +360,29 @@ impl Bus
             return
         handle.vtbl.destroyVoice(acast handle)
         handle = null
+    }
+}
+
+public impl Bus
+{
+    // Set the playing voice volume between [0..1]
+    mtd setVolume(volume: f32, batchID: u32 = 0) throw
+    {
+        if !handle
+            return
+        let v = Math.clamp(volume, 0, 1)
+        let hr = handle.vtbl.setVolume(acast handle, v, batchID)
+        if hr != S_OK
+            throw "error"
+    }
+
+    // Returns the actual volume
+    mtd getVolume()->f32 throw
+    {
+        if !handle
+            return 0
+        var volume: f32
+        handle.vtbl.getVolume(acast handle, &volume)
+        return volume
     }
 }
