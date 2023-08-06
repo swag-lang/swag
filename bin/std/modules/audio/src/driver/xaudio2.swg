@@ -187,54 +187,31 @@ impl Voice
         handle = null
     }
 
-    mtd updateNative() throw
+    mtd updateNative()->bool throw
     {
         if !handle
-            return
+            return false
 
         var voiceState: XAUDIO2_VOICE_STATE
         handle.vtbl.getState(handle, &voiceState, 0)
-
         while voiceState.buffersQueued < StreamingBufCount - 1
         {
-            if !streamingBuf[curStreamBuffer].buffer
-                streamingBuf[curStreamBuffer].resize(StreamingBufSize)
-
-            let destBuffer = streamingBuf[curStreamBuffer].buffer
-            let readSize   = Decode.decodeData(self, destBuffer, StreamingBufSize)
-
-            let endFile = readSize == 0
-
-            // Loop
-            if endFile and playFlags.has(.Loop)
-            {
-                Decode.rewindData(self)
-                if !readSize
-                    continue
-            }
-
-            if endFile
+            let (ptrBuffer, sizeBuffer) = readPcmBuffer()
+            if !sizeBuffer
                 break
 
             var buffer: XAUDIO2_BUFFER
-            buffer.pAudioData = destBuffer
-            buffer.flags      = endFile and !playFlags.has(.Loop) ? XAUDIO2_END_OF_STREAM : 0
-            buffer.audioBytes = acast readSize
+            buffer.pAudioData = ptrBuffer
+            buffer.audioBytes = acast sizeBuffer
             buffer.pContext   = self
             let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
             if hr != S_OK
                 throw "error"
 
-            curStreamBuffer = (curStreamBuffer + 1) % StreamingBufCount
             handle.vtbl.getState(handle, &voiceState, 0)
         }
 
-        // End ?
-        if voiceState.buffersQueued == 0
-        {
-            Decode.closeData(self)
-            resetState(.Playing)
-        }
+        return voiceState.buffersQueued != 0
     }
 
     mtd playNative(batchID: u32 = 0) throw

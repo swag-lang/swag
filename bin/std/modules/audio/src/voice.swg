@@ -162,3 +162,31 @@ public impl Voice
         return convertPercentToDB(getVolume())
     }
 }
+
+impl Voice
+{
+    mtd readPcmBuffer()->{buffer: *void, size: u64} throw
+    {
+        if !streamingBuf[curStreamBuffer].buffer
+            streamingBuf[curStreamBuffer].resize(StreamingBufSize)
+
+        let destBuffer = streamingBuf[curStreamBuffer].buffer
+        var readSize   = Decode.decodeData(self, destBuffer, StreamingBufSize)
+        let endFile    = readSize == 0
+
+        if endFile and playFlags.has(.Loop)
+        {
+            Decode.rewindData(self)
+            if !readSize
+                readSize = Decode.decodeData(self, destBuffer, StreamingBufSize)
+        }
+
+        curStreamBuffer = (curStreamBuffer + 1) % StreamingBufCount
+        return {destBuffer, readSize}
+    }
+
+    mtd closePcmBuffer()
+    {
+        Decode.closeData(self)
+    }
+}
