@@ -2061,12 +2061,12 @@ func loadBindTextures()
     g_GScoreTex[3]  = loadAndBindTexture("ui/1600.png")
 
     // Sounds
-    func loadSound(name: string)->Audio.SoundFile
+    func loadSound(name: string, loadDatas = true)->Audio.SoundFile
     {
-        return assume Audio.SoundFile.load(Path.combine(g_DataPath, name))
+        return assume Audio.SoundFile.load(Path.combine(g_DataPath, name), loadDatas)
     }
 
-    g_SoundReady    = loadSound("audio/pacman_beginning.wav")
+    g_SoundReady    = loadSound("audio/pacman_beginning.wav", false)
     g_SoundDeath    = loadSound("audio/pacman_death.wav")
     g_SoundEatFruit = loadSound("audio/pacman_eatfruit.wav")
     g_SoundEatGhost = loadSound("audio/pacman_eatghost.wav")

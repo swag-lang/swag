@@ -17,9 +17,10 @@ impl Voice
         // prefetched datas
         if streamingSeek < file.datas.count and Driver.supportsEncoding(file.encoding)
         {
+            let orgSeek = streamingSeek
             let readSize = (file.datas.count - streamingSeek)
             streamingSeek = file.datas.count
-            return {file.datas.buffer, readSize}
+            return {file.datas.buffer + orgSeek, readSize}
         }
 
         // Otherwise we need to decode datas in a temporary buffer
@@ -40,11 +41,15 @@ impl Voice
 
     mtd decodeData(destBuffer: ^void, length: u64)->u64 throw
     {
+        // Out of datas
+        if streamingSeek >= file.dataSize
+            return 0
+
         var wantedLength = length
 
-        // First take from the file buffer if there's something there, instead of reading
+        // First take from the prefetched buffer if there's something there, instead of reading
         // from the file.
-        if file.datas.count and streamingSeek <= file.datas.count
+        if streamingSeek < file.datas.count
         {
             let remain = Math.min(file.datas.count - streamingSeek, length)
             Memory.copy(destBuffer, file.datas.buffer + streamingSeek, remain)
