@@ -160,6 +160,11 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
+    // When exporting func inside interfaces, we need to "func" form to be typed, in order
+    // to export correctly
+    if (node->hasExtMisc() && node->extMisc()->exportNode)
+        node->extMisc()->exportNode->typeInfo = node->type->typeInfo;
+
     // Ghosting check
     // We simulate a reference to the local variable, in the same context, to raise an error
     // if ambiguous. That way we have a direct error at the declaration, even if the variable

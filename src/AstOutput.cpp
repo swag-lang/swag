@@ -230,7 +230,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     if (returnNode && !returnNode->childs.empty())
         returnNode = returnNode->childs.front();
 
-    auto typeFunc = funcDecl->typeInfo ? CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr) : nullptr;
+    auto typeFunc = funcDecl->typeInfo ? CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure) : nullptr;
     if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
     {
         CONCAT_FIXED_STR(concat, "->");
@@ -264,7 +264,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         SWAG_CHECK(outputNode(context, concat, funcDecl->validif));
         context.indent--;
     }
-    else
+    else if (funcDecl->content)
     {
         concat.addEolIndent(context.indent);
     }
@@ -839,43 +839,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
     SWAG_ASSERT(typeInfo->isTuple());
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-
-    if (nodeStruct->specFlags & AstStruct::SPECFLAG_ANONYMOUS)
-    {
-        SWAG_CHECK(outputStruct(context, concat, nodeStruct));
-        return true;
-    }
-
-    concat.addString("{");
-    int idx = 0;
-    for (auto field : typeStruct->fields)
-    {
-        if (idx)
-            CONCAT_FIXED_STR(concat, ", ");
-
-        if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
-        {
-            auto varDecl    = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
-            auto saveIndent = context.indent;
-            context.indent  = 0;
-            SWAG_CHECK(outputVar(context, concat, varDecl));
-            context.indent = saveIndent;
-        }
-        else
-        {
-            if (!field->name.empty() && field->name.find("item") != 0)
-            {
-                concat.addString(field->name);
-                concat.addString(":");
-            }
-
-            SWAG_CHECK(outputType(context, concat, nullptr, field->typeInfo));
-        }
-
-        idx++;
-    }
-
-    concat.addString("}");
+    SWAG_CHECK(outputStruct(context, concat, nodeStruct));
     return true;
 }
 

@@ -514,10 +514,13 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
             auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
             retNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
+            funcNode->returnType = retNode;
+            funcNode->returnType->allocateExtension(ExtensionKind::Misc);
+            funcNode->returnType->extMisc()->exportNode = typeNode->returnType;
+
             CloneContext cloneContext;
             cloneContext.parent = retNode;
             typeNode->returnType->clone(cloneContext);
-            funcNode->returnType = retNode;
         }
 
         if (token.id == TokenId::KwdThrow)
