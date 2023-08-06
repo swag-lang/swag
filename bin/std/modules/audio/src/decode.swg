@@ -41,6 +41,16 @@ impl Voice
 
     mtd decodeData(destBuffer: ^void, length: u64)->u64 throw
     {
+        // If the file contains datas that are directly supported by the driver, no need
+        // to decode, we can directly read in the output buffer
+        if Driver.supportsEncoding(file.encoding)
+            return readData(destBuffer, length)
+
+        return readData(destBuffer, length)
+    }
+
+    mtd readData(destBuffer: ^void, length: u64)->u64 throw
+    {
         // Out of datas
         if streamingSeek >= file.dataSize
             return 0
