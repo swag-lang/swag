@@ -2,6 +2,7 @@ using Core
 
 var g_Codecs: Array'CodecDesc
 
+// Interface to describe a codec
 public interface ICodec
 {
     mtd canDecode(encoding: SoundFileEncoding)->bool
@@ -9,7 +10,7 @@ public interface ICodec
     mtd decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw
 }
 
-public struct CodecDesc
+struct CodecDesc
 {
     type: const *Swag.TypeInfoStruct
     itf:  ICodec
@@ -42,16 +43,16 @@ func getCodec(encoding: SoundFileEncoding)->*CodecDesc
     return found
 }
 
-// Base struct for codecs
+// Base struct for all codec instances
 public struct Codec
 {
-    srcEncoding: SoundFileEncoding
-    dstEncoding: SoundFileEncoding
-    type:        const *Swag.TypeInfoStruct
+    srcEncoding: SoundFileEncoding              // The original encoding
+    dstEncoding: SoundFileEncoding              // The requested encoding
+    type:        const *Swag.TypeInfoStruct     // The real type of the codec
 }
 
 // Initialize predefined codecs
 #init
 {
-    addCodec'(CodecPcm)()
+    addCodec'CodecPcm()
 }

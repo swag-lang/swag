@@ -81,7 +81,6 @@ internal impl Voice
     }
 }
 
-
 public impl Voice
 {
     mtd opDrop()

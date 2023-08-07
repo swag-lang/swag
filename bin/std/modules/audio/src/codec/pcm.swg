@@ -23,22 +23,27 @@ impl ICodec for CodecPcm
         return 0
     }
 
-    mtd impl decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}  throw
+    mtd impl decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw
     {
-        var dst = cast(^s16) destBuffer
-        var src = cast(^s8)  srcBuffer
-
-        var write = 0
-        loop i: srcLength
+        func(TD, TS) do(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
         {
-            if write + 2 > destLength
-                break
-            dst[0] = ((cast(s16) src[0]) - 128) << 8
-            dst += 1
-            src += 1
-            write += 2
+            var dst = cast(^TD) destBuffer
+            var src = cast(^TS) srcBuffer
+
+            var write = 0
+            loop i: srcLength
+            {
+                if write + @sizeof(TD) > destLength
+                    break
+                dst[0] = ((cast(TD) src[0]) - 128) << 8
+                dst += 1
+                src += 1
+                write += @sizeof(TD)
+            }
+
+            return {write, write/2}
         }
 
-        return {write, write/2}
+        return do'(s16, s8)(destBuffer, destLength, srcBuffer, srcLength)
     }
 }
