@@ -372,7 +372,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     return true;
 }
 
-void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, CastErrorType castError, bool forNote)
+void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, CastErrorType castError, bool forNote)
 {
     msg.clear();
     hint.clear();
@@ -411,7 +411,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg  = Fmt(ErrNte(Err0907, forNote), fromType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0907, forNote), fromType->getDisplayNameC());
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
@@ -435,6 +435,17 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeI
     {
         hint = Fmt(Hnt(Hnt0108), fromType->getDisplayNameC());
     }
+    else if (toType->isTuple() && fromType->isTuple())
+    {
+        Utf8 toName;
+        toType->computeWhateverName(toName, COMPUTE_DISPLAY_NAME);
+        Utf8 fromName;
+        fromType->computeWhateverName(fromName, COMPUTE_DISPLAY_NAME);
+        remarks.push_back(Fmt("source type is %s", fromName.c_str()));
+        remarks.push_back(Fmt("requested type is %s", toName.c_str()));
+
+        msg = ErrNte(Err0028, forNote);
+    }
 }
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType)
@@ -457,8 +468,9 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (!(castFlags & CASTFLAG_JUST_CHECK))
     {
         // More specific message
-        Utf8 hint, msg;
-        getCastErrorMsg(msg, hint, toType, fromType, castFlags, castErrorType);
+        Utf8         hint, msg;
+        Vector<Utf8> remarks;
+        getCastErrorMsg(msg, hint, remarks, toType, fromType, castFlags, castErrorType);
 
         SWAG_ASSERT(fromNode);
 
@@ -470,6 +482,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 Diagnostic diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
                 diag.hint    = Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC());
                 diag.lowPrio = true;
+                diag.remarks = remarks;
                 return context->report(diag);
             }
         }
@@ -480,6 +493,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             if (hint.empty())
                 hint = Diagnostic::isType(fromType);
             Diagnostic diag{fromNode, msg, hint};
+            diag.remarks = remarks;
             return context->report(diag);
         }
 
@@ -487,6 +501,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         Diagnostic diag{fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())};
         diag.hint    = hint.empty() ? Diagnostic::isType(fromType) : hint;
         diag.lowPrio = true;
+        diag.remarks = remarks;
         return context->report(diag);
     }
 

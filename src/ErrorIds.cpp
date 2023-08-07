@@ -661,7 +661,7 @@ void initErrors()
     SWAG_ERROR(Err0201, "the '%s' is referencing itself, which makes it recursive");
     SWAG_ERROR(Err0237, "the '%s' message string cannot be evaluated at compile time");
     SWAG_ERROR(Err0442, "the '@cvastart' intrinsic should only be used in a function with a last parameter of type 'cvarargs'");
-    SWAG_ERROR(Err0028, nullptr);
+    SWAG_ERROR(Err0028, "mismatched tuple types");
     SWAG_ERROR(Err0159, "unexpected 'Swag.Tls' attribute as 'Swag.Compiler' has already been defined, and they are exclusive");
     SWAG_ERROR(Err0601, "the 'Swag.Using' is empty");
     SWAG_ERROR(Err0126, "the 'opSlice' special function should return a string or a slice ('%s' provided)");
@@ -1154,7 +1154,7 @@ void initErrors()
     SWAG_ERROR(Hnt0125, "this slice is null or empty");
     SWAG_ERROR(Hnt0126, "this string is null or empty");
     SWAG_ERROR(Hnt0127, "this %s has '%s' access");
-    SWAG_ERROR(Hnt0128, nullptr);
+    SWAG_ERROR(Hnt0128, "this tuple is %s");
     SWAG_ERROR(Hnt0129, nullptr);
     SWAG_ERROR(Hnt0130, nullptr);
 

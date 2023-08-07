@@ -430,8 +430,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         // A more specific cast message ?
-        Utf8 castMsg, castHint;
-        TypeManager::getCastErrorMsg(castMsg, castHint, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags, bi.castErrorType, true);
+        Utf8         castMsg, castHint;
+        Vector<Utf8> castRemarks;
+        TypeManager::getCastErrorMsg(castMsg, castHint, castRemarks, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags, bi.castErrorType, true);
         if (!castMsg.empty())
         {
             if (oneTry.dependentVar)
