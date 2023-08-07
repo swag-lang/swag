@@ -1007,29 +1007,32 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
     // Compare generic parameters
     if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
     {
-        auto numGenParams = genericParameters.size();
-        if (numGenParams != other->genericParameters.size())
-            return false;
-        for (size_t i = 0; i < numGenParams; i++)
+        if ((flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)) && (other->flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)))
         {
-            auto myGenParam    = genericParameters[i];
-            auto otherGenParam = other->genericParameters[i];
-            if (castFlags & CASTFLAG_CAST)
-            {
-                if (otherGenParam->typeInfo->isKindGeneric())
-                    continue;
-            }
-
-            if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
-            {
-                SemanticContext cxt;
-                if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
-                    if (!TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
-                        return false;
-            }
-            else if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, castFlags))
-            {
+            auto numGenParams = genericParameters.size();
+            if (numGenParams != other->genericParameters.size())
                 return false;
+            for (size_t i = 0; i < numGenParams; i++)
+            {
+                auto myGenParam    = genericParameters[i];
+                auto otherGenParam = other->genericParameters[i];
+                if (castFlags & CASTFLAG_CAST)
+                {
+                    if (otherGenParam->typeInfo->isKindGeneric())
+                        continue;
+                }
+
+                if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
+                {
+                    SemanticContext cxt;
+                    if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
+                        if (!TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
+                            return false;
+                }
+                else if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, castFlags))
+                {
+                    return false;
+                }
             }
         }
     }

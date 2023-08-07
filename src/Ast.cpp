@@ -455,6 +455,8 @@ Vector<Utf8> Ast::computeGenericParametersReplacement(VectorMap<Utf8, TypeInfo*>
         // Can occur in case of constants (like string for example)
         if (p.first == p.second->getDisplayName())
             continue;
+        if (p.first.length() > 2 && p.first[0] == '_' && p.first[1] == '_') // Generated name
+            continue;
 
         remark = "with ";
         remark += Fmt("%s = %s", p.first.c_str(), p.second->getDisplayNameC());

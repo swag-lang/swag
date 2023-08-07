@@ -1434,7 +1434,10 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         }
         else
         {
-            PushErrCxtStep ec{context, funcNode->returnType, ErrCxtStepKind::Note, [returnType]()
+            auto nodeErr = funcNode->returnType;
+            if (nodeErr->kind == AstNodeKind::FuncDeclType && !funcNode->returnType->childs.empty())
+                nodeErr = funcNode->returnType->childs.front();
+            PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType]()
                               { return Fmt(Nte(Nte0067), returnType->getDisplayNameC()); }};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
         }
