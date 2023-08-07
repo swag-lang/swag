@@ -161,13 +161,8 @@ impl Voice
 
         switch (file.encoding)
         {
-        case Pcm8:
-            wfx.subFormat = Wav.GUID_PCM
-            wfx.format.wBitsPerSample = 16
-            voice.requestedEncoding = .Pcm16
-
         // Native xaudio2 supported format
-        case Pcm16, Pcm24, Pcm32:
+        case Pcm8, Pcm16, Pcm24, Pcm32:
             wfx.subFormat = Wav.GUID_PCM
             voice.requestedEncoding = file.encoding
 

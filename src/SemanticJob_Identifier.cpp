@@ -930,6 +930,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
 
     if (identifier->typeInfo->isGeneric())
         identifier->flags |= AST_IS_GENERIC;
+    else if (overload->flags & OVERLOAD_GENERIC && !(identifier->flags & AST_FROM_GENERIC))
+        identifier->flags |= AST_IS_GENERIC;
 
     // Symbol is linked to a using var : insert the variable name before the symbol
     // Except if symbol is a constant !
