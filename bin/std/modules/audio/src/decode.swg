@@ -57,10 +57,10 @@ impl Voice
             if !codec
                 throw "cannot decode sound"
 
-            codecStruct = cast(*SoundCodec) Memory.new(codec.type)
+            codecStruct = cast(*Codec) Memory.new(codec.type)
             codecStruct.srcEncoding = file.encoding
             codecStruct.dstEncoding = requestedEncoding
-            codecItf = @mkinterface(codecStruct, codec.type, ISoundCodec)
+            codecItf = @mkinterface(codecStruct, codec.type, ICodec)
 
             streamBuffer.reserve(StreamBufferSize)
             streamBuffer.count = readData(streamBuffer.buffer, StreamBufferSize)
@@ -118,101 +118,4 @@ impl Voice
         if stream.isOpen()
             stream.close()
     }
-}
-
-public interface ISoundCodec
-{
-    mtd canDecode(encoding: SoundFileEncoding)->bool
-    mtd init(srcBuffer: ^void, srcLength: u64)->u64 throw
-    mtd decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw
-}
-
-struct SoundCodecDesc
-{
-    type:   const *Swag.TypeInfoStruct
-    itf:    ISoundCodec
-}
-
-var g_Codecs: Array'SoundCodecDesc
-
-// Register a codec
-public func(T) addCodec()
-{
-    #assert Reflection.hasInterface(@typeof(T), ISoundCodec)
-
-    var codec: SoundCodecDesc = undefined
-    codec.type = @typeof(T)
-    codec.itf = @mkinterface(null, @typeof(T), ISoundCodec)
-    g_Codecs.add(codec)
-}
-
-// Find the codec that can treat the given encoding
-func getCodec(encoding: SoundFileEncoding)->*SoundCodecDesc
-{
-    var found: *SoundCodecDesc
-    visit &codec : g_Codecs
-    {
-        if codec.itf.canDecode(encoding)
-        {
-            found = codec
-            break
-        }
-    }
-
-    return found
-}
-
-struct SoundCodec
-{
-    srcEncoding: SoundFileEncoding
-    dstEncoding: SoundFileEncoding
-}
-
-struct SoundCodecRaw
-{
-    using base: SoundCodec
-}
-
-impl ISoundCodec for SoundCodecRaw
-{
-    mtd impl canDecode(encoding: SoundFileEncoding)->bool
-    {
-        switch encoding
-        {
-        case Pcm8, Pcm16, Pcm24, Pcm32, Float32:
-            return true
-        }
-
-        return false
-    }
-
-    mtd impl init(srcBuffer: ^void, srcLength: u64)->u64 throw
-    {
-        return 0
-    }
-
-    mtd impl decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}  throw
-    {
-        var dst = cast(^s16) destBuffer
-        var src = cast(^s8)  srcBuffer
-
-        var write = 0
-        loop i: srcLength
-        {
-            if write + 2 > destLength
-                break
-            dst[0] = ((cast(s16) src[0]) - 128) << 8
-            dst += 1
-            src += 1
-            write += 2
-        }
-
-        return {write, write/2}
-    }
-}
-
-// Initialize predefined codecs
-#init
-{
-    addCodec'(SoundCodecRaw)()
 }

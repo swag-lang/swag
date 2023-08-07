@@ -34,8 +34,8 @@ public struct Voice
     file:       *SoundFile
 
     requestedEncoding = SoundFileEncoding.Unknown
-    codecStruct:    *SoundCodec
-    codecItf:       ISoundCodec
+    codecStruct:    *Codec
+    codecItf:       ICodec
 
     playFlags:  VoicePlayFlags
     state:      VoiceState
