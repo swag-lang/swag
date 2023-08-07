@@ -41,7 +41,7 @@ impl Voice
 
     mtd createCodec() throw
     {
-        let desc = getCodec(requestedEncoding)
+        let desc = getCodec(requestedEncoding, file.encoding)
         if !desc
             throw "cannot decode sound"
         let decoder = cast(*Codec) Memory.new(desc.type)
@@ -76,7 +76,7 @@ impl Voice
         // Otherwise we need a codec
         if !codec
         {
-            createCodec()
+            assume createCodec()
             streamBuffer.reserve(StreamBufferSize)
             streamBuffer.count = readData(streamBuffer.buffer, StreamBufferSize)
             streamCurSeek = codec.init(streamBuffer.buffer, streamBuffer.count)

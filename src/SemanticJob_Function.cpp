@@ -79,6 +79,10 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         funcParam->index      = index++;
         funcParam->declNode   = nodeParam;
         funcParam->attributes = nodeParam->attributes;
+        if (nodeParam->specFlags & AstVarDecl::SPECFLAG_GENERIC_TYPE)
+            funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
+        else if (nodeParam->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT)
+            funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
 
         auto paramType     = nodeParam->typeInfo;
         auto paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;

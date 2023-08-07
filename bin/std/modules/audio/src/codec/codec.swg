@@ -5,6 +5,7 @@ var g_Codecs: Array'CodecDesc
 // Interface to describe a codec
 public interface ICodec
 {
+    mtd canEncode(encoding: SoundFileEncoding)->bool
     mtd canDecode(encoding: SoundFileEncoding)->bool
     mtd init(srcBuffer: ^void, srcLength: u64)->u64 throw
     mtd decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw
@@ -28,12 +29,12 @@ public func(T) addCodec()
 }
 
 // Find the codec that can treat the given encoding
-func getCodec(encoding: SoundFileEncoding)->*CodecDesc
+func getCodec(dstEncoding, srcEncoding: SoundFileEncoding)->*CodecDesc
 {
     var found: *CodecDesc
     visit &codec : g_Codecs
     {
-        if codec.itf.canDecode(encoding)
+        if codec.itf.canEncode(dstEncoding) and codec.itf.canDecode(srcEncoding)
         {
             found = codec
             break
@@ -54,5 +55,5 @@ public struct Codec
 // Initialize predefined codecs
 #init
 {
-    addCodec'CodecPcm()
+    addCodec'CodecPcmToPcm16()
 }

@@ -741,6 +741,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     auto genType         = symbolParameter->typeInfo;
                     SWAG_ASSERT(genType);
 
+                    if (symbolParameter->flags & TYPEINFOPARAM_GENERIC_CONSTANT)
+                        continue;
+
                     // If we try to match a generic type, and there's a contextual generic type replacement,
                     // then match with the replacement
                     if (genType->isKindGeneric())
@@ -767,13 +770,10 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     else
                     {
                         auto it = context.genericReplaceTypes.find(symbolParameter->name);
-                        if (it != context.genericReplaceTypes.end())
+                        if (it != context.genericReplaceTypes.end() && genType != it->second)
                         {
-                            if (genType != it->second)
-                            {
-                                context.result = MatchResult::NotEnoughGenericParameters;
-                                return;
-                            }
+                            context.result = MatchResult::NotEnoughGenericParameters;
+                            return;
                         }
                     }
 
@@ -1009,26 +1009,38 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
 
     for (int i = 0; i < numGenericParams; i++)
     {
-        auto genType = context.genericParameters[i];
+        const auto& genName = genericParameters[i]->typeInfo->name;
+        auto        genType = context.genericParameters[i];
         if (!context.genericParametersCallTypes[i])
         {
-            context.genericReplaceTypes[genericParameters[i]->typeInfo->name]     = genType->typeInfo;
-            context.genericReplaceTypesFrom[genericParameters[i]->typeInfo->name] = genType;
-            context.genericParametersCallTypes[i]                                 = genType->typeInfo;
+            context.genericReplaceTypes[genName]     = genType->typeInfo;
+            context.genericReplaceTypesFrom[genName] = genType;
+            context.genericParametersCallTypes[i]    = genType->typeInfo;
         }
         else
         {
-            context.genericReplaceTypes[genericParameters[i]->typeInfo->name]     = context.genericParametersCallTypes[i];
-            context.genericReplaceTypesFrom[genericParameters[i]->typeInfo->name] = context.genericParametersCallTypesFrom[i];
+            context.genericReplaceTypes[genName]     = context.genericParametersCallTypes[i];
+            context.genericReplaceTypesFrom[genName] = context.genericParametersCallTypesFrom[i];
         }
     }
 
     for (auto i = numGenericParams; i < wantedNumGenericParams; i++)
     {
-        if (context.genericParametersCallTypes[numGenericParams])
+        const auto& genName = genericParameters[i]->typeInfo->name;
+        if (context.genericParametersCallTypes[i])
         {
-            context.genericReplaceTypes[genericParameters[i]->typeInfo->name]     = context.genericParametersCallTypes[i];
-            context.genericReplaceTypesFrom[genericParameters[i]->typeInfo->name] = context.genericParametersCallTypesFrom[i];
+            context.genericReplaceTypes[genName]     = context.genericParametersCallTypes[i];
+            context.genericReplaceTypesFrom[genName] = context.genericParametersCallTypesFrom[i];
+        }
+        else
+        {
+            auto it = context.genericReplaceTypes.find(genName);
+            if (it != context.genericReplaceTypes.end())
+                context.genericParametersCallTypes[i] = it->second;
+
+            auto it1 = context.genericReplaceTypesFrom.find(genName);
+            if (it1 != context.genericReplaceTypesFrom.end())
+                context.genericParametersCallTypesFrom[i] = it1->second;
         }
     }
 }

@@ -796,6 +796,10 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
                 auto funcParam      = g_TypeMgr->makeParam();
                 funcParam->name     = param->token.text;
                 funcParam->typeInfo = param->typeInfo;
+                if (param->specFlags & AstVarDecl::SPECFLAG_GENERIC_TYPE)
+                    funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
+                else if (param->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT)
+                    funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }

@@ -166,39 +166,21 @@ impl Voice
             wfx.format.wBitsPerSample = 16
             voice.requestedEncoding = .Pcm16
 
-        // Native format
+        // Native xaudio2 supported format
         case Pcm16, Pcm24, Pcm32:
             wfx.subFormat = Wav.GUID_PCM
             voice.requestedEncoding = file.encoding
 
-        // Native format
+        // Native xaudio2 supported format
         case Float32:
             wfx.subFormat = Wav.GUID_IEEE_FLOAT
             voice.requestedEncoding = file.encoding
 
-        // Will need a codec
+        // Will need a codec. Convert to 16 bits pcm
         default:
-            if file.bitsPerSample == 8
-            {
-                wfx.subFormat = Wav.GUID_PCM
-                voice.requestedEncoding = .Pcm8
-            }
-            elif file.bitsPerSample == 16
-            {
-                wfx.subFormat = Wav.GUID_PCM
-                voice.requestedEncoding = .Pcm16
-            }
-            elif file.bitsPerSample == 24
-            {
-                wfx.subFormat = Wav.GUID_PCM
-                voice.requestedEncoding = .Pcm24
-            }
-            else
-            {
-                wfx.subFormat = Wav.GUID_IEEE_FLOAT
-                wfx.format.wBitsPerSample = 32
-                voice.requestedEncoding = .Float32
-            }
+            wfx.subFormat = Wav.GUID_PCM
+            wfx.format.wBitsPerSample = 16
+            voice.requestedEncoding = .Pcm16
         }
 
         wfx.format.nBlockAlign          = cast(u16) (wfx.format.nChannels * (wfx.format.wBitsPerSample / 8))
