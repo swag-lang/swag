@@ -1,7 +1,8 @@
-#global skip
+//#global skip
 struct(X: s32) TOTO
 {
-    v: s32
+    v1: s32
+    v: [X] s32
 }
 
 func(X: s32) toto()->TOTO'X
@@ -11,5 +12,6 @@ func(X: s32) toto()->TOTO'X
 
 #test
 {
-    discard toto'(0)()
+    let s = toto'(4)()
+    @assert(@typeof(s.v) == [4] s32)
 }

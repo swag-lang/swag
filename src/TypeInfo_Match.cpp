@@ -896,6 +896,14 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     }
                 }
 
+                if (firstChild->hasComputedValue() && !firstChild->isConstantGenTypeInfo())
+                    isValue = true;
+                if (firstChild->resolvedSymbolOverload &&
+                    firstChild->resolvedSymbolOverload->node &&
+                    firstChild->resolvedSymbolOverload->node->kind == AstNodeKind::FuncDeclParam &&
+                    firstChild->resolvedSymbolOverload->node->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT)
+                    isValue = true;
+
                 if ((symbolParameter->typeInfo->isKindGeneric()) && isValue)
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = i;
@@ -905,9 +913,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     context.flags |= SymbolMatchContext::MATCH_ERROR_VALUE_TYPE;
                     continue;
                 }
-
-                if (firstChild->hasComputedValue() && !firstChild->isConstantGenTypeInfo())
-                    isValue = true;
 
                 if (!symbolParameter->typeInfo->isKindGeneric() && !isValue)
                 {
