@@ -516,7 +516,10 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
                 oneParam->typeConstraint->flags |= AST_NO_SEMANTIC;
             }
             else
+            {
+                isConstant = true;
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->type));
+            }
         }
 
         if (token.id == TokenId::SymEqual)

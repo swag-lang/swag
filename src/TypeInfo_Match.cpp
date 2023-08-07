@@ -741,9 +741,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     auto genType         = symbolParameter->typeInfo;
                     SWAG_ASSERT(genType);
 
-                    if (symbolParameter->flags & TYPEINFOPARAM_GENERIC_CONSTANT)
-                        continue;
-
                     // If we try to match a generic type, and there's a contextual generic type replacement,
                     // then match with the replacement
                     if (genType->isKindGeneric())
@@ -775,6 +772,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                             context.result = MatchResult::NotEnoughGenericParameters;
                             return;
                         }
+
+                        if (symbolParameter->flags & TYPEINFOPARAM_GENERIC_CONSTANT && context.genericReplaceTypes.size())
+                            continue;
                     }
 
                     // Otherwise take the type, this is a match (genType can be either a generic type or a contextual match)
