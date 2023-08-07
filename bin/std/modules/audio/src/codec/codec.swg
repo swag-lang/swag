@@ -1,5 +1,7 @@
 using Core
 
+var g_Codecs: Array'CodecDesc
+
 public interface ICodec
 {
     mtd canDecode(encoding: SoundFileEncoding)->bool
@@ -7,23 +9,21 @@ public interface ICodec
     mtd decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw
 }
 
-struct CodecDesc
+public struct CodecDesc
 {
-    type:   const *Swag.TypeInfoStruct
-    itf:    ICodec
+    type: const *Swag.TypeInfoStruct
+    itf:  ICodec
 }
-
-var g_Codecs: Array'CodecDesc
 
 // Register a codec
 public func(T) addCodec()
 {
     #assert Reflection.hasInterface(@typeof(T), ICodec)
 
-    var codec: CodecDesc = undefined
-    codec.type = @typeof(T)
-    codec.itf = @mkinterface(null, @typeof(T), ICodec)
-    g_Codecs.add(codec)
+    var desc: CodecDesc = undefined
+    desc.type = @typeof(T)
+    desc.itf = @mkinterface(null, @typeof(T), ICodec)
+    g_Codecs.add(desc)
 }
 
 // Find the codec that can treat the given encoding
@@ -42,12 +42,13 @@ func getCodec(encoding: SoundFileEncoding)->*CodecDesc
     return found
 }
 
-struct Codec
+// Base struct for codecs
+public struct Codec
 {
     srcEncoding: SoundFileEncoding
     dstEncoding: SoundFileEncoding
+    type:        const *Swag.TypeInfoStruct
 }
-
 
 // Initialize predefined codecs
 #init

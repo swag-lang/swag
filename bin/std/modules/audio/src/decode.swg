@@ -39,6 +39,29 @@ impl Voice
         closeData(self)
     }
 
+    mtd createCodec() throw
+    {
+        let desc = getCodec(requestedEncoding)
+        if !desc
+            throw "cannot decode sound"
+        let decoder = cast(*Codec) Memory.new(desc.type)
+        decoder.srcEncoding = file.encoding
+        decoder.dstEncoding = requestedEncoding
+        decoder.type        = desc.type
+        codec = @mkinterface(decoder, desc.type, ICodec)
+    }
+
+    mtd destroyCodec()
+    {
+        if codec == null
+            return
+        let decoder = cast(*Codec) @dataof(codec)
+        if decoder.type.opDrop
+            decoder.type.opDrop(decoder)
+        Memory.free(decoder, cast(u64) decoder.type.sizeof)
+        codec = null
+    }
+
     mtd decodeData(destBuffer: ^void, length: u64)->u64 throw
     {
         // If the file contains datas that are directly requested by the driver, no need
@@ -51,24 +74,16 @@ impl Voice
         }
 
         // Otherwise we need a codec
-        if !codecStruct
+        if !codec
         {
-            let codec = getCodec(requestedEncoding)
-            if !codec
-                throw "cannot decode sound"
-
-            codecStruct = cast(*Codec) Memory.new(codec.type)
-            codecStruct.srcEncoding = file.encoding
-            codecStruct.dstEncoding = requestedEncoding
-            codecItf = @mkinterface(codecStruct, codec.type, ICodec)
-
+            createCodec()
             streamBuffer.reserve(StreamBufferSize)
             streamBuffer.count = readData(streamBuffer.buffer, StreamBufferSize)
-            streamCurSeek = codecItf.init(streamBuffer.buffer, streamBuffer.count)
+            streamCurSeek = codec.init(streamBuffer.buffer, streamBuffer.count)
         }
 
         streamBuffer.count = readData(streamBuffer.buffer, StreamBufferSize)
-        let used = codecItf.decode(destBuffer, length, streamBuffer.buffer, streamBuffer.count)
+        let used = codec.decode(destBuffer, length, streamBuffer.buffer, streamBuffer.count)
         streamCurSeek += used.read
         return used.write
     }

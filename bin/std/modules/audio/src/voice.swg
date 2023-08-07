@@ -34,8 +34,7 @@ public struct Voice
     file:       *SoundFile
 
     requestedEncoding = SoundFileEncoding.Unknown
-    codecStruct:    *Codec
-    codecItf:       ICodec
+    codec: ICodec
 
     playFlags:  VoicePlayFlags
     state:      VoiceState
@@ -56,12 +55,14 @@ internal impl Voice
 {
     mtd recycle()
     {
-        file = null
-        playFlags = .Zero
-        state = .Zero
-        idxInList = 0
-        streamCurSeek = 0
-        decodedBufferIdx = 0
+        file              = null
+        playFlags         = .Zero
+        state             = .Zero
+        idxInList         = 0
+        streamCurSeek     = 0
+        decodedBufferIdx  = 0
+        requestedEncoding = .Unknown
+        destroyCodec()
     }
 
     mtd hasState(st: VoiceState)->bool
@@ -83,6 +84,11 @@ internal impl Voice
 
 public impl Voice
 {
+    mtd opDrop()
+    {
+        destroyCodec()
+    }
+
     // Creates a new voice with a given sound file
     func create(file: *SoundFile, createFlags = VoiceCreateFlags.Default)->*Voice throw
     {
