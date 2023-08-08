@@ -45,9 +45,7 @@ static bool canCollectNode(AstNode* node)
         return true;
     if (node->sourceFile && node->sourceFile->isBootstrapFile)
         return true;
-    if (node->kind == AstNodeKind::FuncDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
-        return false;
-    if (node->kind == AstNodeKind::AttrDecl && node->sourceFile && !node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+    if (!node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return false;
 
     return true;

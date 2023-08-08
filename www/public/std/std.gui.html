@@ -134,12 +134,6 @@
 <div class="container">
 <div class="left">
 <h1>Module gui</h1>
-<h2>Namespaces</h2>
-<h3></h3>
-<ul class="tocbullet">
-<li><a href="#Gui_Clipboard">Clipboard</a></li>
-<li><a href="#Gui_ToolTip">ToolTip</a></li>
-</ul>
 <h2>Structs</h2>
 <h3></h3>
 <ul class="tocbullet">
@@ -291,10 +285,7 @@
 <ul class="tocbullet">
 <li><a href="#Gui_EventKind">EventKind</a></li>
 <li><a href="#Gui_MovieSource">MovieSource</a></li>
-<li><a href="#Gui_NotifyEvent_Kind">NotifyEvent.Kind</a></li>
-<li><a href="#Gui_CommandStateEvent_SetFlags">SetFlags</a></li>
 <li><a href="#Gui_SurfaceFlags">SurfaceFlags</a></li>
-<li><a href="#Gui_SysCommandEvent_Kind">SysCommandEvent.Kind</a></li>
 </ul>
 <h3>composite</h3>
 <ul class="tocbullet">
@@ -324,8 +315,6 @@
 <li><a href="#Gui_RichEditFlags">RichEditFlags</a></li>
 <li><a href="#Gui_RichEditForm">RichEditForm</a></li>
 <li><a href="#Gui_RichEditUndoType">RichEditUndoType</a></li>
-<li><a href="#Gui_RichEditLexerSwag_State">State</a></li>
-<li><a href="#Gui_RichEditLexerSwag_Style">Style</a></li>
 </ul>
 <h3>widgets</h3>
 <ul class="tocbullet">
@@ -368,34 +357,6 @@
 <li><a href="#Gui_ScrollWndFlags">ScrollWndFlags</a></li>
 <li><a href="#Gui_SizingBorder">SizingBorder</a></li>
 <li><a href="#Gui_WndFlags">WndFlags</a></li>
-</ul>
-<h2>Constants</h2>
-<h3>paint</h3>
-<ul class="tocbullet">
-<li><a href="#Gui_DefaultFontBold">DefaultFontBold</a></li>
-<li><a href="#Gui_DefaultFontBoldItalic">DefaultFontBoldItalic</a></li>
-<li><a href="#Gui_DefaultFontBoldItalicName">DefaultFontBoldItalicName</a></li>
-<li><a href="#Gui_DefaultFontBoldName">DefaultFontBoldName</a></li>
-<li><a href="#Gui_DefaultFontFsBold">DefaultFontFsBold</a></li>
-<li><a href="#Gui_DefaultFontFsBoldItalic">DefaultFontFsBoldItalic</a></li>
-<li><a href="#Gui_DefaultFontFsBoldItalicName">DefaultFontFsBoldItalicName</a></li>
-<li><a href="#Gui_DefaultFontFsBoldName">DefaultFontFsBoldName</a></li>
-<li><a href="#Gui_DefaultFontFsItalic">DefaultFontFsItalic</a></li>
-<li><a href="#Gui_DefaultFontFsItalicName">DefaultFontFsItalicName</a></li>
-<li><a href="#Gui_DefaultFontFsRegular">DefaultFontFsRegular</a></li>
-<li><a href="#Gui_DefaultFontFsRegularName">DefaultFontFsRegularName</a></li>
-<li><a href="#Gui_DefaultFontItalic">DefaultFontItalic</a></li>
-<li><a href="#Gui_DefaultFontItalicName">DefaultFontItalicName</a></li>
-<li><a href="#Gui_DefaultFontRegular">DefaultFontRegular</a></li>
-<li><a href="#Gui_DefaultFontRegularName">DefaultFontRegularName</a></li>
-<li><a href="#Gui_DefaultIcons24">DefaultIcons24</a></li>
-<li><a href="#Gui_DefaultIcons24Name">DefaultIcons24Name</a></li>
-<li><a href="#Gui_DefaultIcons64">DefaultIcons64</a></li>
-<li><a href="#Gui_DefaultIcons64Name">DefaultIcons64Name</a></li>
-<li><a href="#Gui_DefaultImage">DefaultImage</a></li>
-<li><a href="#Gui_DefaultImageName">DefaultImageName</a></li>
-<li><a href="#Gui_DefaultSpin">DefaultSpin</a></li>
-<li><a href="#Gui_DefaultSpinName">DefaultSpinName</a></li>
 </ul>
 <h2>Attributes</h2>
 <h3>property</h3>
@@ -2660,98 +2621,6 @@ RightAlign</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Gui_Clipboard"><span class="titletype">namespace</span> <span class="titlelight">Gui.</span><span class="titlestrong">Clipboard</span></h3>
-</td>
-</tr>
-</table>
-</p>
-<h3>Functions</h3>
-<table class="enumeration">
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_addData">addData(Format, const [..] u8)</a></td>
-<td class="enumeration">
-<p>
-Add data of a given format to the clipboard.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_addImage">addImage(const ref Image)</a></td>
-<td class="enumeration">
-<p>
-Add an image.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_addString">addString(string)</a></td>
-<td class="enumeration">
-<p>
-Add string to clipboard.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_getData">getData(Format)</a></td>
-<td class="enumeration">
-<p>
-Get data of the given format.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_getImage">getImage()</a></td>
-<td class="enumeration">
-<p>
-Get image from clipboard.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_getString">getString()</a></td>
-<td class="enumeration">
-<p>
-Get utf8 string from clipboard.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_hasFormat">hasFormat(Format)</a></td>
-<td class="enumeration">
-<p>
-Returns true if the clipboard contains the given format.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_hasImage">hasImage()</a></td>
-<td class="enumeration">
-<p>
-Returns true if the clipbboard contains an image.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_hasString">hasString()</a></td>
-<td class="enumeration">
-<p>
-Returns true if the clipboard contains a string.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_Clipboard_registerFormat">registerFormat(string)</a></td>
-<td class="enumeration">
-<p>
-Register a new format.</p>
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Gui_Clipboard_addData"><span class="titletype">func</span> <span class="titlelight">Clipboard.</span><span class="titlestrong">addData</span></h3>
 </td>
 <td class="srcref">
@@ -4300,7 +4169,7 @@ toolTip</td>
 <td class="tdname">
 setFlags</td>
 <td class="tdtype">
-<a href="#Gui_CommandStateEvent_SetFlags">Gui.CommandStateEvent.SetFlags</a></td>
+<a href="gui.html#Gui_CommandStateEvent_SetFlags">Gui.CommandStateEvent.SetFlags</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4325,73 +4194,6 @@ bool</td>
 hidden</td>
 <td class="tdtype">
 bool</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Gui_CommandStateEvent_SetFlags"><span class="titletype">enum</span> <span class="titlelight">CommandStateEvent.</span><span class="titlestrong">SetFlags</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L79" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Disabled</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Icon</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Shortcut</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Checked</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Name</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-LongName</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-ToolTip</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Hidden</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4610,211 +4412,6 @@ No</td>
 <tr>
 <td class="tdname">
 Wait</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Gui_DefaultFontBold"><span class="titletype">const</span> <span class="titlelight">Gui.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\theme.swg#L22" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Gui_DefaultFontBold" class="tdname">
-DefaultFontBold</td>
-<td class="tdtype">
-const [951724] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontBoldItalic" class="tdname">
-DefaultFontBoldItalic</td>
-<td class="tdtype">
-const [541468] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontBoldItalicName" class="tdname">
-DefaultFontBoldItalicName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontBoldName" class="tdname">
-DefaultFontBoldName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsBold" class="tdname">
-DefaultFontFsBold</td>
-<td class="tdtype">
-const [368720] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsBoldItalic" class="tdname">
-DefaultFontFsBoldItalic</td>
-<td class="tdtype">
-const [110268] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsBoldItalicName" class="tdname">
-DefaultFontFsBoldItalicName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsBoldName" class="tdname">
-DefaultFontFsBoldName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsItalic" class="tdname">
-DefaultFontFsItalic</td>
-<td class="tdtype">
-const [365176] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsItalicName" class="tdname">
-DefaultFontFsItalicName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsRegular" class="tdname">
-DefaultFontFsRegular</td>
-<td class="tdtype">
-const [358460] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontFsRegularName" class="tdname">
-DefaultFontFsRegularName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontItalic" class="tdname">
-DefaultFontItalic</td>
-<td class="tdtype">
-const [529712] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontItalicName" class="tdname">
-DefaultFontItalicName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontRegular" class="tdname">
-DefaultFontRegular</td>
-<td class="tdtype">
-const [955804] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultFontRegularName" class="tdname">
-DefaultFontRegularName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultIcons24" class="tdname">
-DefaultIcons24</td>
-<td class="tdtype">
-const [6856] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultIcons24Name" class="tdname">
-DefaultIcons24Name</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultIcons64" class="tdname">
-DefaultIcons64</td>
-<td class="tdtype">
-const [7994] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultIcons64Name" class="tdname">
-DefaultIcons64Name</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultImage" class="tdname">
-DefaultImage</td>
-<td class="tdtype">
-const [25049] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultImageName" class="tdname">
-DefaultImageName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultSpin" class="tdname">
-DefaultSpin</td>
-<td class="tdtype">
-const [11951] u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gui_DefaultSpinName" class="tdname">
-DefaultSpinName</td>
-<td class="tdtype">
-string</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12639,7 +12236,7 @@ lastDeadChar</td>
 <td class="tdname">
 ntfyKind</td>
 <td class="tdtype">
-<a href="#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a></td>
+<a href="gui.html#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12648,25 +12245,6 @@ ntfyKind</td>
 from</td>
 <td class="tdtype">
 *<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Gui_NotifyEvent_Kind"><span class="titletype">enum</span> <span class="titlelight">NotifyEvent.</span><span class="titlestrong">Kind</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L222" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-ChildFocusChanged</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -17035,254 +16613,6 @@ mapWords</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Gui_RichEditLexerSwag_State"><span class="titletype">enum</span> <span class="titlelight">RichEditLexerSwag.</span><span class="titlestrong">State</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L25" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-LineComment</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Comment</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Keyword</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Declaration</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Control</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Intrinsic</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Buildin</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Compiler</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-CompilerFunction</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-CompilerGlobal</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-CompilerStatement</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-FunctionCall</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-FunctionSpecOp</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Type</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-StorageModifier</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-UserType</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Constant</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-String</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Numeric</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-NumericHex</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-NumericBin</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-NumericFrac</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Attribute</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Gui_RichEditLexerSwag_Style"><span class="titletype">enum</span> <span class="titlelight">RichEditLexerSwag.</span><span class="titlestrong">Style</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L7" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Comment</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Keyword</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Control</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Intrinsic</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Buildin</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Function</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Preprocessor</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-CharEscape</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Type</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Class</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-String</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Numeric</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Gui_RichEditLine"><span class="titletype">struct</span> <span class="titlelight">Gui.</span><span class="titlestrong">RichEditLine</span></h3>
 </td>
 <td class="srcref">
@@ -20578,50 +19908,7 @@ bool</td>
 <td class="tdname">
 sysKind</td>
 <td class="tdtype">
-<a href="#Gui_SysCommandEvent_Kind">Gui.SysCommandEvent.Kind</a></td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Gui_SysCommandEvent_Kind"><span class="titletype">enum</span> <span class="titlelight">SysCommandEvent.</span><span class="titlestrong">Kind</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\events.swg#L193" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-Minimize</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Maximize</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Restore</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Close</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-User</td>
+<a href="gui.html#Gui_SysCommandEvent_Kind">Gui.SysCommandEvent.Kind</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26128,34 +25415,6 @@ aniMark</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Gui_ToolTip"><span class="titletype">namespace</span> <span class="titlelight">Gui.</span><span class="titlestrong">ToolTip</span></h3>
-</td>
-</tr>
-</table>
-</p>
-<h3>Functions</h3>
-<table class="enumeration">
-<tr>
-<td class="enumeration">
-<a href="#Gui_ToolTip_hide">hide()</a></td>
-<td class="enumeration">
-<p>
-Hide the current tooltip, if visible.</p>
-</td>
-</tr>
-<tr>
-<td class="enumeration">
-<a href="#Gui_ToolTip_show">show(*Wnd, const ref Point, string, const ref Duration)</a></td>
-<td class="enumeration">
-<p>
-Show a tooltip.</p>
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Gui_ToolTip_hide"><span class="titletype">func</span> <span class="titlelight">ToolTip.</span><span class="titlestrong">hide</span></h3>
 </td>
 <td class="srcref">
@@ -28056,7 +27315,7 @@ Move the wnd.</p>
 <p>
 Send a notification event.</p>
 <p class="code">
-<code style="white-space: break-spaces">func notifyEvent(using self, kind: <a href="#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a>)
+<code style="white-space: break-spaces">func notifyEvent(using self, kind: <a href="gui.html#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a>)
 </code>
 </p>
 <p>
@@ -28073,7 +27332,7 @@ Send a notification event.</p>
 <p>
 Send a notification event.</p>
 <p class="code">
-<code style="white-space: break-spaces">func ownerNotifyEvent(using self, kind: <a href="#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a>)
+<code style="white-space: break-spaces">func ownerNotifyEvent(using self, kind: <a href="gui.html#Gui_NotifyEvent_Kind">Gui.NotifyEvent.Kind</a>)
 </code>
 </p>
 <p>
