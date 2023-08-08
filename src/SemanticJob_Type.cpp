@@ -243,21 +243,11 @@ bool SemanticJob::resolveType(SemanticContext* context)
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
         {
             auto child = typeNode->childs[i];
-
-            // If generic, do not evaluate. No type for now
-            if (child->kind == AstNodeKind::IdentifierRef &&
-                !(child->flags & AST_CONST_EXPR) &&
-                typeNode->ownerStructScope &&
-                typeNode->ownerStructScope->owner->typeInfo->isGeneric())
-            {
-                typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
-                return true;
-            }
-
             SWAG_CHECK(evaluateConstExpression(context, child));
             if (context->result == ContextResult::Pending)
                 return true;
-            child->flags |= AST_NO_BYTECODE;
+            if (child->hasComputedValue())
+                child->flags |= AST_NO_BYTECODE;
         }
     }
 
@@ -468,7 +458,16 @@ bool SemanticJob::resolveType(SemanticContext* context)
             uint32_t count        = 0;
             bool     genericCount = false;
 
-            if (!child->hasComputedValue() && child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+            if (child->kind == AstNodeKind::IdentifierRef &&
+                !(child->flags & AST_CONST_EXPR) &&
+                typeNode->ownerStructScope &&
+                typeNode->ownerStructScope->owner->typeInfo->isGeneric())
+            {
+                genericCount = true;
+            }
+            else if (!child->hasComputedValue() &&
+                     child->resolvedSymbolOverload &&
+                     (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
             {
                 genericCount = true;
             }
