@@ -2234,12 +2234,6 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     if (!context->bc->node || context->bc->isCompilerGenerated)
         return true;
 
-#if 0
-    if (context->bc->name != "__compiler4186.transform")
-        return true;
-    context->bc->print();
-#endif
-
     Context cxt;
     State   state;
 

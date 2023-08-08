@@ -416,24 +416,6 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->ownerScope = rootScope;
     rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
 
-#if 0
-    auto declType = idRef->findParent(AstNodeKind::FuncDeclType);
-    if (declType)
-    {
-        auto parentFct = CastAst<AstFuncDecl>(declType->findParent(AstNodeKind::FuncDecl), AstNodeKind::FuncDecl);
-        if (parentFct->genericParameters)
-        {
-            auto identifier               = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
-            identifier->genericParameters = Ast::newFuncCallGenParams(sourceFile, identifier);
-            for (auto c : parentFct->genericParameters->childs)
-            {
-                auto param = Ast::newFuncCallParam(sourceFile, identifier->genericParameters);
-                auto param1 = Ast::newIdentifierRef(sourceFile, c->token.text, param);
-            }
-        }
-    }
-#endif
-
     Ast::visit(structNode->content, [&](AstNode* n)
                {
                    n->inheritOwners(structNode);
