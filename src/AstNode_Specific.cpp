@@ -299,7 +299,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         {
             pz++;
         }
-        else if (*pz == ',' || *pz == '\'' || *pz == '-' || *pz == '>')
+        else if (*pz == ',' || *pz == '\'' || *pz == '-' || *pz == '>' || *pz == '\"')
         {
             *pzd++ = '@';
             pz++;

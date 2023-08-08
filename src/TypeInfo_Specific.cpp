@@ -548,7 +548,11 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
             SWAG_ASSERT(genParam->typeInfo);
             SWAG_ASSERT(genParam->value);
             auto str = Ast::literalToString(genParam->typeInfo, *genParam->value);
+            if (genParam->typeInfo->isString())
+                resName += "\"";
             resName += str;
+            if (genParam->typeInfo->isString())
+                resName += "\"";
         }
         else if (genParam->flags & TYPEINFOPARAM_GENERIC_CONSTANT)
             resName += genParam->name;
