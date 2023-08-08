@@ -134,46 +134,1335 @@
 <div class="container">
 <div class="left">
 <h1>Module audio</h1>
+<h2>Namespaces</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Audio_Wav">Wav</a></li>
+</ul>
 <h2>Structs</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Audio_Bus">Bus</a></li>
+<li><a href="#Audio_Voice">Voice</a></li>
+</ul>
+<h3>codec</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_Codec">Codec</a></li>
+<li><a href="#Audio_CodecDesc">CodecDesc</a></li>
+<li><a href="#Audio_CodecPcmToPcm16">CodecPcmToPcm16</a></li>
+</ul>
+<h3>driver</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_Driver">Driver</a></li>
+<li><a href="#Audio_DriverNative">DriverNative</a></li>
+</ul>
 <h3>file</h3>
 <ul class="tocbullet">
-<li><a href="#Audio_GUID">GUID</a></li>
-<li><a href="#Audio_PcmWaveFormat">PcmWaveFormat</a></li>
+<li><a href="#Audio_Wav_ChunkHeader">ChunkHeader</a></li>
+<li><a href="#Audio_Wav_PCMWAVEFORMAT">PCMWAVEFORMAT</a></li>
 <li><a href="#Audio_SoundFile">SoundFile</a></li>
-<li><a href="#Audio_SoundFileInfo">SoundFileInfo</a></li>
-<li><a href="#Audio_SoundWav">SoundWav</a></li>
-<li><a href="#Audio_WaveFormat">WaveFormat</a></li>
-<li><a href="#Audio_WaveFormatEx">WaveFormatEx</a></li>
-<li><a href="#Audio_WaveFormatExtensible">WaveFormatExtensible</a></li>
+<li><a href="#Audio_Wav_WAVEFORMAT">WAVEFORMAT</a></li>
+<li><a href="#Audio_Wav_WAVEFORMATEX">WAVEFORMATEX</a></li>
+<li><a href="#Audio_Wav_WAVEFORMATEXTENSIBLE">WAVEFORMATEXTENSIBLE</a></li>
+</ul>
+<h2>Interfaces</h2>
+<h3>codec</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_ICodec">ICodec</a></li>
 </ul>
 <h2>Enums</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></li>
+<li><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></li>
+<li><a href="#Audio_VoiceState">VoiceState</a></li>
+</ul>
+<h3>driver</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_UpdateCommand">UpdateCommand</a></li>
+</ul>
 <h3>file</h3>
 <ul class="tocbullet">
-<li><a href="#Audio_ChunkID">ChunkID</a></li>
-<li><a href="#Audio_SoundFileInfoFormat">SoundFileInfoFormat</a></li>
-<li><a href="#Audio_SoundFileInfoValidityMask">SoundFileInfoValidityMask</a></li>
-<li><a href="#Audio_SoundWav_read_read_Stage">Stage</a></li>
-<li><a href="#Audio_WavFormat">WavFormat</a></li>
+<li><a href="#Audio_Wav_ChunkID">ChunkID</a></li>
+<li><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></li>
+<li><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></li>
+<li><a href="#Audio_Wav_loadFile_loadFile_Stage">Stage</a></li>
+</ul>
+<h2>Constants</h2>
+<h3>file</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_Wav_GUID_ADPCM">GUID_ADPCM</a></li>
+<li><a href="#Audio_Wav_GUID_IEEE_FLOAT">GUID_IEEE_FLOAT</a></li>
+<li><a href="#Audio_Wav_GUID_PCM">GUID_PCM</a></li>
+<li><a href="#Audio_Wav_WAVE_FORMAT_ADPCM">WAVE_FORMAT_ADPCM</a></li>
+<li><a href="#Audio_Wav_WAVE_FORMAT_EXTENSIBLE">WAVE_FORMAT_EXTENSIBLE</a></li>
+<li><a href="#Audio_Wav_WAVE_FORMAT_IEEE_FLOAT">WAVE_FORMAT_IEEE_FLOAT</a></li>
+<li><a href="#Audio_Wav_WAVE_FORMAT_PCM">WAVE_FORMAT_PCM</a></li>
+<li><a href="#Audio_Wav_WAVE_FORMAT_UNKNOWN">WAVE_FORMAT_UNKNOWN</a></li>
 </ul>
 <h2>Functions</h2>
+<h3></h3>
+<ul class="tocbullet">
+<li><a href="#Audio_convertDBToPercent">Audio.convertDBToPercent</a></li>
+<li><a href="#Audio_convertPercentToDB">Audio.convertPercentToDB</a></li>
+<li><a href="#Audio_createEngine">Audio.createEngine</a></li>
+<li><a href="#Audio_destroyEngine">Audio.destroyEngine</a></li>
+<li><a href="#Audio_driver">Audio.driver</a></li>
+<li><a href="#Audio_getOutputVolume">Audio.getOutputVolume</a></li>
+<li><a href="#Audio_setOutputVolume">Audio.setOutputVolume</a></li>
+<li><a href="#Audio_Bus_create">Bus.create</a></li>
+<li><a href="#Audio_Bus_destroy">Bus.destroy</a></li>
+<li><a href="#Audio_Bus_getVolumeDB">Bus.getVolumeDB</a></li>
+<li><a href="#Audio_Bus_setVolumeDB">Bus.setVolumeDB</a></li>
+<li><a href="#Audio_Voice_create">Voice.create</a></li>
+<li><a href="#Audio_Voice_destroy">Voice.destroy</a></li>
+<li><a href="#Audio_Voice_getVolumeDB">Voice.getVolumeDB</a></li>
+<li><a href="#Audio_Voice_isPlaying">Voice.isPlaying</a></li>
+<li><a href="#Audio_Voice_pause">Voice.pause</a></li>
+<li><a href="#Audio_Voice_play">Voice.play</a></li>
+<li><a href="#Audio_Voice_setVolumeDB">Voice.setVolumeDB</a></li>
+<li><a href="#Audio_Voice_stop">Voice.stop</a></li>
+</ul>
+<h3>codec</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_addCodec">Audio.addCodec</a></li>
+</ul>
+<h3>driver</h3>
+<ul class="tocbullet">
+<li><a href="#Audio_Bus_getVolume">Bus.getVolume</a></li>
+<li><a href="#Audio_Bus_setVolume">Bus.setVolume</a></li>
+<li><a href="#Audio_Voice_getVolume">Voice.getVolume</a></li>
+<li><a href="#Audio_Voice_setFrequencyRatio">Voice.setFrequencyRatio</a></li>
+<li><a href="#Audio_Voice_setRooting">Voice.setRooting</a></li>
+<li><a href="#Audio_Voice_setVolume">Voice.setVolume</a></li>
+</ul>
 <h3>file</h3>
 <ul class="tocbullet">
-<li><a href="#Audio_SoundWav_read">SoundWav.read</a></li>
+<li><a href="#Audio_SoundFile_load">SoundFile.load</a></li>
+<li><a href="#Audio_Wav_loadFile">Wav.loadFile</a></li>
 </ul>
 </div>
 <div class="right">
 <div class="page">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.21.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h2 class="content">Content</h2>
 <p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_ChunkID"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">ChunkID</span></h3>
+<h3 class="content" id="Audio_Bus"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Bus</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Represents a playing sound.</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+handle</td>
+<td class="tdtype">
+<a href="audio.html#Audio_BusHandle">Audio.BusHandle</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Audio_Bus_create">create(u32, *Bus)</a></td>
+<td class="enumeration">
+<p>
+Creates an audio bus.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Bus_destroy">destroy(self)</a></td>
+<td class="enumeration">
+<p>
+Creates an audio bus.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Bus_getVolume">getVolume(self)</a></td>
+<td class="enumeration">
+<p>
+Returns the actual volume.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Bus_getVolumeDB">getVolumeDB(self)</a></td>
+<td class="enumeration">
+<p>
+Returns the actual volume, in DB.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Bus_setVolume">setVolume(self, f32, u32)</a></td>
+<td class="enumeration">
+<p>
+Set the playing voice volume between [0..1].</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Bus_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
+<td class="enumeration">
+<p>
+Set the playing bus volume.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Bus_create"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">create</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L12" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Creates an audio bus.</p>
+<p class="code">
+<code style="white-space: break-spaces">func create(numChannels: u32, parent: *<a href="#Audio_Bus">Audio.Bus</a> = null)->*<a href="#Audio_Bus">Audio.Bus</a> throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Bus_destroy"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">destroy</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L24" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Creates an audio bus.</p>
+<p class="code">
+<code style="white-space: break-spaces">func destroy(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Bus_getVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolume</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L366" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Returns the actual volume.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getVolume(using self)-&gt;f32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Bus_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolumeDB</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L40" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Returns the actual volume, in DB.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getVolumeDB(using self)-&gt;f32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Bus_setVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolume</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L355" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Set the playing voice volume between [0..1].</p>
+<p class="code">
+<code style="white-space: break-spaces">func setVolume(using self, volume: f32, batchID: u32 = 0) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Bus_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolumeDB</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L34" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Set the playing bus volume.</p>
+<p class="code">
+<code style="white-space: break-spaces">func setVolumeDB(using self, volumeDB: f32, batchID: u32 = 0) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Codec"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Codec</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L48" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Base struct for all codec instances.</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+srcEncoding</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td class="enumeration">
+<p>
+The original encoding.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dstEncoding</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td class="enumeration">
+<p>
+The requested encoding.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+type</td>
+<td class="tdtype">
+const *<a href="swag.html#Swag_TypeInfoStruct">Swag.TypeInfoStruct</a></td>
+<td class="enumeration">
+<p>
+The real type of the codec.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_CodecDesc"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">CodecDesc</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L14" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+type</td>
+<td class="tdtype">
+const *<a href="swag.html#Swag_TypeInfoStruct">Swag.TypeInfoStruct</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+itf</td>
+<td class="tdtype">
+<a href="#Audio_ICodec">Audio.ICodec</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_CodecPcmToPcm16"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">CodecPcmToPcm16</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\pcm.swg#L3" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+<b>using</b> base</td>
+<td class="tdtype">
+<a href="#Audio_Codec">Audio.Codec</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Driver"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Driver</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\driver.swg#L12" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+The sound driver.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_DriverNative"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">DriverNative</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_ICodec"><span class="titletype">interface</span> <span class="titlelight">Audio.</span><span class="titlestrong">ICodec</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L6" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Interface to describe a codec.</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+canEncode</td>
+<td class="tdtype">
+func(*<a href="#Audio_ICodec">Audio.ICodec</a>, <a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a>)-&gt;bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+canDecode</td>
+<td class="tdtype">
+func(*<a href="#Audio_ICodec">Audio.ICodec</a>, <a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a>)-&gt;bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+init</td>
+<td class="tdtype">
+func(*<a href="#Audio_ICodec">Audio.ICodec</a>, ^void, u64)-&gt;u64 throw</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+decode</td>
+<td class="tdtype">
+func(*<a href="#Audio_ICodec">Audio.ICodec</a>, ^void, u64, ^void, u64)-&gt;{write: u64, read: u64} throw</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFile"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFile</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L34" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Represents a sound file.</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+fullname</td>
+<td class="tdtype">
+<a href="core.html#Core_String">Core.String</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+sampleCount</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+<p>
+Total number of samples.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dataSize</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+<p>
+Total size, in bytes, of datas.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dataSeek</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+<p>
+The position in the file where the datas are stored.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+validity</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileValidityMask">Audio.SoundFileValidityMask</a></td>
+<td class="enumeration">
+<p>
+What informations in this struct are valid.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+encoding</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td class="enumeration">
+<p>
+Encoding type of the datas.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+frequency</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Sound frequency.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+channelCount</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Number of channels (2 for stereo...).</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+channelMask</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Identifier of the channels.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+bitsPerSample</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Number of bits per sample.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+duration</td>
+<td class="tdtype">
+f32</td>
+<td class="enumeration">
+<p>
+Duration, in seconds, of the file.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+validBitsPerSample</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+datas</td>
+<td class="tdtype">
+<a href="core.html#Core_Array">Core.Array</a>(u8)</td>
+<td class="enumeration">
+<p>
+Prefetched datas (in encoding format).</p>
+</td>
+</tr>
+</table>
+<p>
+ The <code class = "incode">SoundFile</code> is not necessary fully loaded in memory, in case we want it to be streamed.</p>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Audio_SoundFile_load">load(string, bool, bool)</a></td>
+<td class="enumeration">
+<p>
+Load a <code class = "incode">SoundFile</code> from disk.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFile_load"><span class="titletype">func</span> <span class="titlelight">SoundFile.</span><span class="titlestrong">load</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L60" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Load a <code class = "incode">SoundFile</code> from disk.</p>
+<p class="code">
+<code style="white-space: break-spaces">func load(fullname: string, loadDatas = true, loadMetaDatas = false)-><a href="#Audio_SoundFile">Audio.SoundFile</a> throw
+</code>
+</p>
+<p>
+ Will load the sound datas if <code class = "incode">loadDatas</code> is true. Will load the sound metadatas if <code class = "incode">loadMetaData</code> is true.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFileEncoding"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileEncoding</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L22" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+SoundFile internal format.</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Unknown</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Pcm8</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Pcm16</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Pcm24</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Pcm32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Float32</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_SoundFileValidityMask"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileValidityMask</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L6" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Determins which informations in the <code class = "incode">SoundFile</code> struct are valid.</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Zero</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Format</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Frequency</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ChannelCount</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ChannelMask</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+BitsPerSample</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Duration</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+SampleCount</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+ValidBitsPerSample</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Data</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+MetaData</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_UpdateCommand"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">UpdateCommand</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\driver.swg#L3" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Register</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Destroy</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+UpdateBuffers</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Voice</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L31" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Represents a playing sound.</p>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_create">create(*SoundFile, VoiceCreateFlags)</a></td>
+<td class="enumeration">
+<p>
+Creates a new voice with a given sound file.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_destroy">destroy(self)</a></td>
+<td class="enumeration">
+<p>
+Destroy the voice.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_getVolume">getVolume(self)</a></td>
+<td class="enumeration">
+<p>
+Returns the actual volume.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_getVolumeDB">getVolumeDB(self)</a></td>
+<td class="enumeration">
+<p>
+Returns the actual volume, in DB.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_isPlaying">isPlaying(self)</a></td>
+<td class="enumeration">
+<p>
+Returns true if the voice is currently playing.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_pause">pause(self)</a></td>
+<td class="enumeration">
+<p>
+Pause the playing voice.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_play">play(*SoundFile, VoiceCreateFlags, VoicePlayFlags)</a></td>
+<td class="enumeration">
+<p>
+Simple function that will create a voice and play it See [Create] and [Play].</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_play">play(self, VoicePlayFlags)</a></td>
+<td class="enumeration">
+<p>
+Play a voice.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_setFrequencyRatio">setFrequencyRatio(self, f32, u32)</a></td>
+<td class="enumeration">
+<p>
+Set the playing pitch.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_setRooting">setRooting(self, const [..] const *Bus)</a></td>
+<td class="enumeration">
+<p>
+Root a voice to a given bus.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_setVolume">setVolume(self, f32, u32)</a></td>
+<td class="enumeration">
+<p>
+Set the playing voice volume between [0..1].</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
+<td class="enumeration">
+<p>
+Set the playing voice volume.</p>
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Voice_stop">stop(self)</a></td>
+<td class="enumeration">
+<p>
+Stop the playing voice.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_create"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">create</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L92" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Creates a new voice with a given sound file.</p>
+<p class="code">
+<code style="white-space: break-spaces">func create(file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, createFlags = VoiceCreateFlags.Default)->*<a href="#Audio_Voice">Audio.Voice</a> throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_destroy"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">destroy</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L150" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Destroy the voice.</p>
+<p class="code">
+<code style="white-space: break-spaces">func destroy(using self)
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_getVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolume</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L263" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Returns the actual volume.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getVolume(using self)-&gt;f32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolumeDB</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L173" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Returns the actual volume, in DB.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getVolumeDB(using self)-&gt;f32 throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_isPlaying"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">isPlaying</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L159" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Returns true if the voice is currently playing.</p>
+<p class="code">
+<code style="white-space: break-spaces">func isPlaying(using self)-&gt;bool
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_pause"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">pause</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L130" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Pause the playing voice.</p>
+<p class="code">
+<code style="white-space: break-spaces">func pause(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_play"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">play</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L106" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Simple function that will create a voice and play it See [Create] and [Play].</p>
+<p class="code">
+<code style="white-space: break-spaces">func play(file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero)->*<a href="#Audio_Voice">Audio.Voice</a> throw
+</code>
+</p>
+<p>
+Play a voice.</p>
+<p class="code">
+<code style="white-space: break-spaces">func play(using self, playFlags = VoicePlayFlags.Zero) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_setFrequencyRatio"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setFrequencyRatio</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L273" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Set the playing pitch.</p>
+<p class="code">
+<code style="white-space: break-spaces">func setFrequencyRatio(using self, ratio: f32, batchID: u32 = 0) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_setRooting"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setRooting</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L283" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Root a voice to a given bus.</p>
+<p class="code">
+<code style="white-space: break-spaces">func setRooting(using self, buses: const [..] const *<a href="#Audio_Bus">Audio.Bus</a>) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_setVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolume</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L252" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Set the playing voice volume between [0..1].</p>
+<p class="code">
+<code style="white-space: break-spaces">func setVolume(using self, volume: f32, batchID: u32 = 0) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolumeDB</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L167" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Set the playing voice volume.</p>
+<p class="code">
+<code style="white-space: break-spaces">func setVolumeDB(using self, volumeDB: f32, batchID: u32 = 0) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Voice_stop"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">stop</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L139" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Stop the playing voice.</p>
+<p class="code">
+<code style="white-space: break-spaces">func stop(using self) throw
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_VoiceCreateFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceCreateFlags</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Zero</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+AcceptPitch</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+AcceptFilters</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Default</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_VoicePlayFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoicePlayFlags</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L13" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Zero</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Loop</td>
+<td class="enumeration">
+<p>
+Play in loops.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+DestroyOnStop</td>
+<td class="enumeration">
+<p>
+Destroy the voice once the sound has been played.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_VoiceState"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceState</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L21" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+Zero</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+PlayedOnce</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+Playing</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+PendingDestroy</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Wav"><span class="titletype">namespace</span> <span class="titlelight">Audio.</span><span class="titlestrong">Wav</span></h3>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Audio_Wav_ChunkHeader">ChunkHeader</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Wav_PCMWAVEFORMAT">PCMWAVEFORMAT</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Wav_WAVEFORMAT">WAVEFORMAT</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Wav_WAVEFORMATEX">WAVEFORMATEX</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="enumeration">
+<a href="#Audio_Wav_WAVEFORMATEXTENSIBLE">WAVEFORMATEXTENSIBLE</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Audio_Wav_ChunkID">ChunkID</a></td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="enumeration">
+<tr>
+<td class="enumeration">
+<a href="#Audio_Wav_loadFile">loadFile(*SoundFile, *FileStream, bool, bool)</a></td>
+<td class="enumeration">
+<p>
+Load a wav file.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Wav_ChunkHeader"><span class="titletype">struct</span> <span class="titlelight">Wav.</span><span class="titlestrong">ChunkHeader</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+chunkID</td>
+<td class="tdtype">
+<a href="#Audio_Wav_ChunkID">Audio.Wav.ChunkID</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+chunkSize</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Wav_ChunkID"><span class="titletype">enum</span> <span class="titlelight">Wav.</span><span class="titlestrong">ChunkID</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -417,43 +1706,35 @@ SND_WAV_FOURCC_ICMT</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_GUID"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">GUID</span></h3>
+<h3 class="content" id="Audio_Wav_GUID_ADPCM"><span class="titletype">const</span> <span class="titlelight">Wav.</span><span class="titlestrong">Constants</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L92" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-data1</td>
+<td id="Audio_Wav_GUID_ADPCM" class="tdname">
+GUID_ADPCM</td>
 <td class="tdtype">
-u32</td>
+<a href="win32.html#Win32_GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td class="tdname">
-data2</td>
+<td id="Audio_Wav_GUID_IEEE_FLOAT" class="tdname">
+GUID_IEEE_FLOAT</td>
 <td class="tdtype">
-u16</td>
+<a href="win32.html#Win32_GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
-<td class="tdname">
-data3</td>
+<td id="Audio_Wav_GUID_PCM" class="tdname">
+GUID_PCM</td>
 <td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-data4</td>
-<td class="tdtype">
-[8] u8</td>
+<a href="win32.html#Win32_GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -462,25 +1743,25 @@ data4</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_PcmWaveFormat"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">PcmWaveFormat</span></h3>
+<h3 class="content" id="Audio_Wav_PCMWAVEFORMAT"><span class="titletype">struct</span> <span class="titlelight">Wav.</span><span class="titlestrong">PCMWAVEFORMAT</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
-wf</td>
+<b>using</b> wf</td>
 <td class="tdtype">
-<a href="#Audio_WaveFormat">Audio.WaveFormat</a></td>
+<a href="#Audio_Wav_WAVEFORMAT">Audio.Wav.WAVEFORMAT</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
-bitsPerSample</td>
+wBitsPerSample</td>
 <td class="tdtype">
 u16</td>
 <td class="enumeration">
@@ -491,128 +1772,194 @@ u16</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_SoundFile"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFile</span></h3>
+<h3 class="content" id="Audio_Wav_WAVEFORMAT"><span class="titletype">struct</span> <span class="titlelight">Wav.</span><span class="titlestrong">WAVEFORMAT</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L75" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
-infos</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileInfo">Audio.SoundFileInfo</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-datas</td>
-<td class="tdtype">
-<a href="core.html#Core_Array">Core.Array</a>(u8)</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundFileInfo"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileInfo</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfileinfo.swg#L27" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-sampleCount</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-validity</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileInfoValidityMask">Audio.SoundFileInfoValidityMask</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-format</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileInfoFormat">Audio.SoundFileInfoFormat</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-frequency</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-channelCount</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-channelMask</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-bitsPerSample</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-duration</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-validBitsPerSample</td>
+wFormatTag</td>
 <td class="tdtype">
 u16</td>
 <td class="enumeration">
+<p>
+Format type.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
-dataSize</td>
+nChannels</td>
 <td class="tdtype">
-u64</td>
+u16</td>
+<td class="enumeration">
+<p>
+Number of nChannels (i.e. mono, stereo, etc.).</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+nSamplesPerSec</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Sample rate.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+nAvgBytesPerSec</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+For buffer estimation.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+nBlockAlign</td>
+<td class="tdtype">
+u16</td>
+<td class="enumeration">
+<p>
+Block size of data.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Wav_WAVEFORMATEX"><span class="titletype">struct</span> <span class="titlelight">Wav.</span><span class="titlestrong">WAVEFORMATEX</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L92" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+<b>using</b> pcmwf</td>
+<td class="tdtype">
+<a href="#Audio_Wav_PCMWAVEFORMAT">Audio.Wav.PCMWAVEFORMAT</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="tdname">
-dataSeek</td>
+cbSize</td>
 <td class="tdtype">
-u64</td>
+u16</td>
+<td class="enumeration">
+<p>
+The count in bytes of the size of extra information (after cbSize).</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Wav_WAVEFORMATEXTENSIBLE"><span class="titletype">struct</span> <span class="titlelight">Wav.</span><span class="titlestrong">WAVEFORMATEXTENSIBLE</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L99" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td class="tdname">
+<b>using</b> fmtex</td>
+<td class="tdtype">
+<a href="#Audio_Wav_WAVEFORMATEX">Audio.Wav.WAVEFORMATEX</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+samples</td>
+<td class="tdtype">
+{wValidBitsPerSample: u16, wSamplesPerBlock: u16, wReserved: u16}</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td class="tdname">
+dwChannelMask</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+<p>
+Positions of the audio nChannels.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+subFormat</td>
+<td class="tdtype">
+<a href="win32.html#Win32_GUID">Win32.GUID</a></td>
+<td class="enumeration">
+<p>
+Format identifier GUID.</p>
+</td>
+</tr>
+</table>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_Wav_WAVE_FORMAT_ADPCM"><span class="titletype">const</span> <span class="titlelight">Wav.</span><span class="titlestrong">Constants</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L66" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Audio_Wav_WAVE_FORMAT_ADPCM" class="tdname">
+WAVE_FORMAT_ADPCM</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Audio_Wav_WAVE_FORMAT_EXTENSIBLE" class="tdname">
+WAVE_FORMAT_EXTENSIBLE</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Audio_Wav_WAVE_FORMAT_IEEE_FLOAT" class="tdname">
+WAVE_FORMAT_IEEE_FLOAT</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Audio_Wav_WAVE_FORMAT_PCM" class="tdname">
+WAVE_FORMAT_PCM</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Audio_Wav_WAVE_FORMAT_UNKNOWN" class="tdname">
+WAVE_FORMAT_UNKNOWN</td>
+<td class="tdtype">
+u32</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -621,183 +1968,27 @@ u64</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_SoundFileInfoFormat"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileInfoFormat</span></h3>
+<h3 class="content" id="Audio_Wav_loadFile"><span class="titletype">func</span> <span class="titlelight">Wav.</span><span class="titlestrong">loadFile</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfileinfo.swg#L19" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-Unknown</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Pcm</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-FloatIEEE</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Ogg</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundFileInfoValidityMask"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileInfoValidityMask</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfileinfo.swg#L4" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Format</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Frequency</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-ChannelCount</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-ChannelMask</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-BitsPerSample</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Duration</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-SampleCount</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-ValidBitsPerSample</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Data</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-MetaData</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundWav"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundWav</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L115" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-<b>using</b> file</td>
-<td class="tdtype">
-<a href="#Audio_SoundFile">Audio.SoundFile</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-stream</td>
-<td class="tdtype">
-<a href="core.html#Core_File_FileStream">Core.File.FileStream</a></td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<h3>Functions</h3>
-<table class="enumeration">
-<tr>
-<td class="enumeration">
-<a href="#Audio_SoundWav_read">read(self, string, bool, bool)</a></td>
-<td class="enumeration">
-<p>
-Read file.</p>
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundWav_read"><span class="titletype">func</span> <span class="titlelight">SoundWav.</span><span class="titlestrong">read</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L296" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Read file.</p>
+Load a wav file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func read(using self, fullName: string, loadDatas = true, loadMetaData = false) throw
+<code style="white-space: break-spaces">func loadFile(using file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, stream: *<a href="core.html#Core_File_FileStream">Core.File.FileStream</a>, loadDatas = true, loadMetaDatas = false) throw
 </code>
 </p>
 <p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_SoundWav_read_read_Stage"><span class="titletype">enum</span> <span class="titlelight">read.</span><span class="titlestrong">Stage</span></h3>
+<h3 class="content" id="Audio_Wav_loadFile_loadFile_Stage"><span class="titletype">enum</span> <span class="titlelight">loadFile.</span><span class="titlestrong">Stage</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L208" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L233" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -831,182 +2022,142 @@ BreakOnSuccess</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_WavFormat"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">WavFormat</span></h3>
+<h3 class="content" id="Audio_addCodec"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">addCodec</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-Unknown</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Pcm</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Adpcm</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-FloatIEEE</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
+<p>
+Register a codec.</p>
+<p class="code">
+<code style="white-space: break-spaces">func(T) addCodec()
+</code>
+</p>
 <p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_WaveFormat"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">WaveFormat</span></h3>
+<h3 class="content" id="Audio_convertDBToPercent"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertDBToPercent</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\helpers.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-formatTag</td>
-<td class="tdtype">
-<a href="#Audio_WavFormat">Audio.WavFormat</a></td>
-<td class="enumeration">
 <p>
-Format type.</p>
-</td>
-</tr>
-<tr>
-<td class="tdname">
-channels</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-<p>
-Number of channels (i.e. mono, stereo, etc.).</p>
-</td>
-</tr>
-<tr>
-<td class="tdname">
-samplesPerSec</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>
-Sample rate.</p>
-</td>
-</tr>
-<tr>
-<td class="tdname">
-avgBytesPerSec</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>
-For buffer estimation.</p>
-</td>
-</tr>
-<tr>
-<td class="tdname">
-blockAlign</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-<p>
-Block size of data.</p>
-</td>
-</tr>
-</table>
+Convert a DB value to a percent.</p>
+<p class="code">
+<code style="white-space: break-spaces">func convertDBToPercent(dbVolume: f32)-&gt;f32
+</code>
+</p>
 <p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_WaveFormatEx"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">WaveFormatEx</span></h3>
+<h3 class="content" id="Audio_convertPercentToDB"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertPercentToDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L86" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\helpers.swg#L12" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-pcmwf</td>
-<td class="tdtype">
-<a href="#Audio_PcmWaveFormat">Audio.PcmWaveFormat</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-cbSize</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
 <p>
-The count in bytes of the size of extra information (after cbSize).</p>
-</td>
-</tr>
-</table>
+Convert a percent value to DB.</p>
+<p class="code">
+<code style="white-space: break-spaces">func convertPercentToDB(percentVolume: f32)-&gt;f32
+</code>
+</p>
 <p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Audio_WaveFormatExtensible"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">WaveFormatExtensible</span></h3>
+<h3 class="content" id="Audio_createEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">createEngine</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundwav.swg#L100" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<table class="enumeration">
-<tr>
-<td class="tdname">
-format</td>
-<td class="tdtype">
-<a href="#Audio_WaveFormatEx">Audio.WaveFormatEx</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-samples</td>
-<td class="tdtype">
-{validBitsPerSample: u16, samplesPerBlock: u16, reserved: u16}</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-channelMask</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
 <p>
-Positions of the audio channels.</p>
-</td>
-</tr>
-<tr>
-<td class="tdname">
-subFormat</td>
-<td class="tdtype">
-<a href="#Audio_GUID">Audio.GUID</a></td>
-<td class="enumeration">
+Creates the audio engine.</p>
+<p class="code">
+<code style="white-space: break-spaces">func createEngine() throw
+</code>
+</p>
 <p>
-Format identifier GUID.</p>
+ Must be called once, before anything else.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_destroyEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">destroyEngine</span></h3>
 </td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
+</p>
+<p>
+Destroy the audio engine.</p>
+<p class="code">
+<code style="white-space: break-spaces">func destroyEngine()
+</code>
+</p>
+<p>
+ Call at the end, when no more used.</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_driver"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">driver</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L20" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Get the sound driver unique instance.</p>
+<p class="code">
+<code style="white-space: break-spaces">func driver()
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_getOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">getOutputVolume</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L25" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Get the general output volume.</p>
+<p class="code">
+<code style="white-space: break-spaces">func getOutputVolume()
+</code>
+</p>
+<p>
+<table class="h3">
+<tr>
+<td class="h3">
+<h3 class="content" id="Audio_setOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">setOutputVolume</span></h3>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L23" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>
+Set the general output volume.</p>
+<p class="code">
+<code style="white-space: break-spaces">func setOutputVolume(volume: f32) throw
+</code>
+</p>
 </div>
 </div>
 </div>

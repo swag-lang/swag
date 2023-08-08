@@ -876,7 +876,7 @@
 <li><a href="#Core_File_FileStream_getSize">FileStream.getSize</a></li>
 <li><a href="#Core_File_FileStream_isOpen">FileStream.isOpen</a></li>
 <li><a href="#Core_File_FileStream_read">FileStream.read</a></li>
-<li><a href="#Core_File_FileStream_readComplete">FileStream.readComplete</a></li>
+<li><a href="#Core_File_FileStream_readValue">FileStream.readValue</a></li>
 <li><a href="#Core_File_FileStream_setPosition">FileStream.setPosition</a></li>
 <li><a href="#Core_File_FileStream_skipPosition">FileStream.skipPosition</a></li>
 <li><a href="#Core_File_FileStream_write">FileStream.write</a></li>
@@ -1702,7 +1702,7 @@
 <div class="right">
 <div class="page">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.21.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h2 class="content">Overview</h2>
 <p>
 The <code class = "incode">Std.core</code> module contains basic types and algorithms.</p>
@@ -2750,7 +2750,7 @@ Remove an element at <code class = "incode">index</code> by replacing it with th
 </code>
 </p>
 <p>
- Order is not preserved</p>
+ Order is <b>not preserved</b></p>
 <p>
 <table class="h3">
 <tr>
@@ -8128,7 +8128,7 @@ Read from the given file stream, and returns the number of bytes.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_File_FileStream_readComplete">readComplete(self, *void, u64)</a></td>
+<a href="#Core_File_FileStream_readValue">readValue(self, *T)</a></td>
 <td class="enumeration">
 <p>
 Read from the given file stream, and returns <code class = "incode">true</code> if all bytes have been read.</p>
@@ -8166,7 +8166,7 @@ Write to the given file stream, and returns the number of written bytes.</p>
 <h3 class="content" id="Core_File_FileStream_close"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">close</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L43" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8183,7 +8183,7 @@ Close the given file stream.</p>
 <h3 class="content" id="Core_File_FileStream_getPosition"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">getPosition</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L59" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8200,7 +8200,7 @@ Returns the current seek position of the given file stream.</p>
 <h3 class="content" id="Core_File_FileStream_getSize"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">getSize</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L53" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8248,17 +8248,17 @@ Read from the given file stream, and returns the number of bytes.</p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Core_File_FileStream_readComplete"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">readComplete</span></h3>
+<h3 class="content" id="Core_File_FileStream_readValue"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">readValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
 Read from the given file stream, and returns <code class = "incode">true</code> if all bytes have been read.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readComplete(using self, buffer: *void, length: u64)-&gt;bool
+<code style="white-space: break-spaces">func(T) readValue(using self, buffer: *T)-&gt;bool
 </code>
 </p>
 <p>
@@ -8268,7 +8268,7 @@ Read from the given file stream, and returns <code class = "incode">true</code> 
 <h3 class="content" id="Core_File_FileStream_setPosition"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">setPosition</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8285,7 +8285,7 @@ Set the current seek position of the given file stream.</p>
 <h3 class="content" id="Core_File_FileStream_skipPosition"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">skipPosition</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8302,7 +8302,7 @@ Skip <code class = "incode">bytes</code> from current position.</p>
 <h3 class="content" id="Core_File_FileStream_write"><span class="titletype">func</span> <span class="titlelight">FileStream.</span><span class="titlestrong">write</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16794,7 +16794,7 @@ m</td>
 <td class="tdname">
 buf</td>
 <td class="tdtype">
-?</td>
+[?] T</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16809,7 +16809,7 @@ buf</td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, NumericArray'(T, u32), NumericArray'(T, u32))</a></td>
+<a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, NumericArray'(T, N), NumericArray'(T, N))</a></td>
 <td class="enumeration">
 <p>
 Multiply & Add.</p>
@@ -16848,7 +16848,7 @@ Set all values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_Math_NumericArray_opAssign">opAssign(self, NumericArray'(T, u32))</a></td>
+<a href="#Core_Math_NumericArray_opAssign">opAssign(self, NumericArray'(T, N))</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16860,13 +16860,13 @@ Set all values.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_Math_NumericArray_opBinary">opBinary(self, NumericArray'(T, u32))</a></td>
+<a href="#Core_Math_NumericArray_opBinary">opBinary(self, NumericArray'(T, N))</a></td>
 <td class="enumeration">
 </td>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_Math_NumericArray_opEquals">opEquals(self, NumericArray'(T, u32))</a></td>
+<a href="#Core_Math_NumericArray_opEquals">opEquals(self, NumericArray'(T, N))</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16889,7 +16889,7 @@ Set all values.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func from(values: T...)-><a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32)
+<code style="white-space: break-spaces">func from(values: T...)-><a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, N)
 </code>
 </p>
 <p>
@@ -16906,7 +16906,7 @@ Set all values.</p>
 <p>
 Multiply & Add.</p>
 <p class="code">
-<code style="white-space: break-spaces">func mulAdd(using self, value1: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32), value2: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))
+<code style="white-space: break-spaces">func mulAdd(using self, value1: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, N), value2: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, N))
 </code>
 </p>
 <p>
@@ -16943,7 +16943,7 @@ func opAffect(using self, what: const [..] T)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))
+<code style="white-space: break-spaces">func(op: string) opAssign(using self, value: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, N))
 func(op: string) opAssign(using self, value: T)
 </code>
 </p>
@@ -16959,7 +16959,7 @@ func(op: string) opAssign(using self, value: T)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))-><a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32)
+<code style="white-space: break-spaces">func(op: string) opBinary(using const self, other: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, N))-><a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, N)
 </code>
 </p>
 <p>
@@ -16974,7 +16974,7 @@ func(op: string) opAssign(using self, value: T)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opEquals(using const self, other: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, u32))->bool
+<code style="white-space: break-spaces">func opEquals(using const self, other: <a href="#Core_Math_NumericArray">Core.Math.NumericArray</a>(T, N))->bool
 </code>
 </p>
 <p>
@@ -18597,7 +18597,7 @@ const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a></td>
 <td class="tdname">
 buffer</td>
 <td class="tdtype">
-?</td>
+[?] u8</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -21732,7 +21732,7 @@ Drop and release memory of the given type.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Core_Memory_equals">equals(const ^T, const ^T)</a></td>
+<a href="#Core_Memory_equals">equals(const *T, const *T)</a></td>
 <td class="enumeration">
 <p>
 Compare two blocks of memory.</p>
@@ -21995,7 +21995,7 @@ Drop and release memory of the given type.</p>
 <p>
 Compare two blocks of memory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) equals(dest: const ^T, src: const ^T)-&gt;bool
+<code style="white-space: break-spaces">func(T) equals(dest: const *T, src: const *T)-&gt;bool
 </code>
 </p>
 <p>
@@ -26276,7 +26276,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginField(self, val: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>)->bool throw
+<code style="white-space: break-spaces">func beginField(self, val: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>)bool throw
 </code>
 </p>
 <p>
@@ -26351,7 +26351,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getVersion(self)-&gt;u32
+<code style="white-space: break-spaces">func getVersion(self)u32
 </code>
 </p>
 <p>
@@ -26381,7 +26381,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readBool(self)-&gt;bool throw
+<code style="white-space: break-spaces">func readBool(self)bool throw
 </code>
 </p>
 <p>
@@ -26396,7 +26396,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readBufferU8(self, count: u64)-&gt;*u8 throw
+<code style="white-space: break-spaces">func readBufferU8(self, count: u64)*u8 throw
 </code>
 </p>
 <p>
@@ -26411,7 +26411,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readF32(self)-&gt;f32 throw
+<code style="white-space: break-spaces">func readF32(self)f32 throw
 </code>
 </p>
 <p>
@@ -26426,7 +26426,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readF64(self)-&gt;f64 throw
+<code style="white-space: break-spaces">func readF64(self)f64 throw
 </code>
 </p>
 <p>
@@ -26441,7 +26441,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readS16(self)-&gt;s16 throw
+<code style="white-space: break-spaces">func readS16(self)s16 throw
 </code>
 </p>
 <p>
@@ -26456,7 +26456,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readS32(self)-&gt;s32 throw
+<code style="white-space: break-spaces">func readS32(self)s32 throw
 </code>
 </p>
 <p>
@@ -26471,7 +26471,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readS64(self)-&gt;s64 throw
+<code style="white-space: break-spaces">func readS64(self)s64 throw
 </code>
 </p>
 <p>
@@ -26486,7 +26486,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readS8(self)-&gt;s8 throw
+<code style="white-space: break-spaces">func readS8(self)s8 throw
 </code>
 </p>
 <p>
@@ -26501,7 +26501,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readU16(self)-&gt;u16 throw
+<code style="white-space: break-spaces">func readU16(self)u16 throw
 </code>
 </p>
 <p>
@@ -26516,7 +26516,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readU32(self)-&gt;u32 throw
+<code style="white-space: break-spaces">func readU32(self)u32 throw
 </code>
 </p>
 <p>
@@ -26531,7 +26531,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readU64(self)-&gt;u64 throw
+<code style="white-space: break-spaces">func readU64(self)u64 throw
 </code>
 </p>
 <p>
@@ -26546,7 +26546,7 @@ func(*<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)-&g
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readU8(self)-&gt;u8 throw
+<code style="white-space: break-spaces">func readU8(self)u8 throw
 </code>
 </p>
 <p>
@@ -27094,7 +27094,7 @@ func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func read(self, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)->bool throw
+<code style="white-space: break-spaces">func read(self, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)bool throw
 </code>
 </p>
 <p>
@@ -27109,7 +27109,7 @@ func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func readElement(self, type: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: *void, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)->bool throw
+<code style="white-space: break-spaces">func readElement(self, type: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: *void, decoder: <a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a>)bool throw
 </code>
 </p>
 <p>
@@ -27124,7 +27124,7 @@ func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func write(self, decoder: <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)->bool throw
+<code style="white-space: break-spaces">func write(self, decoder: <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)bool throw
 </code>
 </p>
 <p>
@@ -27139,7 +27139,7 @@ func(*<a href="#Core_Serialization_ISerialize">Core.Serialization.ISerialize</a>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func writeElement(self, type: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: const *void, decoder: <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)->bool throw
+<code style="white-space: break-spaces">func writeElement(self, type: <a href="swag.html#Swag_TypeValue">Swag.TypeValue</a>, data: const *void, decoder: <a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a>)bool throw
 </code>
 </p>
 <p>
@@ -29608,7 +29608,7 @@ Sort the slice, by picking the right algorithm depending on the type and the num
 <td class="tdname">
 buffer</td>
 <td class="tdtype">
-?</td>
+[?] T</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33884,7 +33884,7 @@ Destroy an existing event.</p>
 <h3 class="content" id="Core_Sync_Event_reset"><span class="titletype">func</span> <span class="titlelight">Event.</span><span class="titlestrong">reset</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\event.win32.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\event.win32.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -33901,7 +33901,7 @@ Reset the event state.</p>
 <h3 class="content" id="Core_Sync_Event_signal"><span class="titletype">func</span> <span class="titlelight">Event.</span><span class="titlestrong">signal</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\event.win32.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\event.win32.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -33918,7 +33918,7 @@ Signal the event.</p>
 <h3 class="content" id="Core_Sync_Event_wait"><span class="titletype">func</span> <span class="titlelight">Event.</span><span class="titlestrong">wait</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\event.win32.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\event.win32.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
