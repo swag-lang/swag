@@ -97,7 +97,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     else if (overload->node->kind == AstNodeKind::AttrDecl)
         destAttrDecl = CastAst<AstAttrDecl>(overload->node, AstNodeKind::AttrDecl);
     else if (overload->node->kind == AstNodeKind::VarDecl)
-        destLambdaDecl = CastAst<AstTypeLambda>(overload->node->typeInfo->declNode, AstNodeKind::TypeLambda);
+        destLambdaDecl = CastAst<AstTypeLambda>(overload->node->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
 
     // In case it's generic, and we have real types
     bi.badSignatureRequestedType = Generic::doTypeSubstitution(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
