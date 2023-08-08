@@ -57,12 +57,13 @@ struct CloneUpdateRef
 
 struct CloneContext
 {
-    VectorMap<Utf8, TypeInfo*>   replaceTypes;
-    VectorMap<Utf8, AstNode*>    replaceTypesFrom;
-    VectorMap<Utf8, Utf8>        replaceNames;
-    Map<TokenId, AstNode*>       replaceTokens;
-    SetUtf8                      usedReplaceNames;
-    VectorNative<CloneUpdateRef> nodeRefsToUpdate;
+    VectorMap<Utf8, TypeInfo*>      replaceTypes;
+    VectorMap<Utf8, ComputedValue*> replaceValues;
+    VectorMap<Utf8, AstNode*>       replaceFrom;
+    VectorMap<Utf8, Utf8>           replaceNames;
+    Map<TokenId, AstNode*>          replaceTokens;
+    SetUtf8                         usedReplaceNames;
+    VectorNative<CloneUpdateRef>    nodeRefsToUpdate;
 
     AstInline*          ownerInline            = nullptr;
     AstBreakable*       replaceTokensBreakable = nullptr;

@@ -453,8 +453,10 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     CloneContext cloneContext;
-    cloneContext.replaceTypes     = match.genericReplaceTypes;
-    cloneContext.replaceTypesFrom = match.genericReplaceFrom;
+    cloneContext.replaceTypes  = match.genericReplaceTypes;
+    cloneContext.replaceValues = match.genericReplaceValues;
+    cloneContext.replaceFrom   = match.genericReplaceFrom;
+
     // Add the struct type replacement now, in case the struct has a field to replace
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
@@ -473,7 +475,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     newType->scope              = structNode->scope;
     newType->declNode           = structNode;
     newType->replaceTypes       = cloneContext.replaceTypes;
-    newType->replaceTypesFrom   = cloneContext.replaceTypesFrom;
+    newType->replaceValues      = cloneContext.replaceValues;
+    newType->replaceFrom        = cloneContext.replaceFrom;
     structNode->typeInfo        = newType;
     structNode->originalGeneric = sourceNode;
 
@@ -629,8 +632,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // Types replacements
     CloneContext cloneContext;
-    cloneContext.replaceTypes     = match.genericReplaceTypes;
-    cloneContext.replaceTypesFrom = match.genericReplaceFrom;
+    cloneContext.replaceTypes  = match.genericReplaceTypes;
+    cloneContext.replaceValues = match.genericReplaceValues;
+    cloneContext.replaceFrom   = match.genericReplaceFrom;
 
     // We replace all types and generic types with undefined for now
     if (noReplaceTypes)
@@ -725,10 +729,11 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
         newTypeFunc->removeGenericFlag();
-        newTypeFunc->declNode         = newFunc;
-        newTypeFunc->replaceTypes     = cloneContext.replaceTypes;
-        newTypeFunc->replaceTypesFrom = cloneContext.replaceTypesFrom;
-        newFunc->typeInfo             = newTypeFunc;
+        newTypeFunc->declNode      = newFunc;
+        newTypeFunc->replaceTypes  = cloneContext.replaceTypes;
+        newTypeFunc->replaceValues = cloneContext.replaceValues;
+        newTypeFunc->replaceFrom   = cloneContext.replaceFrom;
+        newFunc->typeInfo          = newTypeFunc;
         if (noReplaceTypes)
             newTypeFunc->flags |= TYPEINFO_UNDEFINED;
     }

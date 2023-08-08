@@ -1629,8 +1629,12 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             for (auto oneReplace : typeFunc->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
 
-            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeFunc->replaceTypesFrom.size());
-            for (auto oneReplace : typeFunc->replaceTypesFrom)
+            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeFunc->replaceValues.size());
+            for (auto oneReplace : typeFunc->replaceValues)
+                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
+
+            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeFunc->replaceFrom.size());
+            for (auto oneReplace : typeFunc->replaceFrom)
                 oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
         }
         else if (one->kind == AstNodeKind::StructDecl)
@@ -1642,8 +1646,12 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             for (auto oneReplace : typeStruct->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
 
-            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeStruct->replaceTypesFrom.size());
-            for (auto oneReplace : typeStruct->replaceTypesFrom)
+            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeStruct->replaceValues.size());
+            for (auto oneReplace : typeStruct->replaceValues)
+                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
+
+            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeStruct->replaceFrom.size());
+            for (auto oneReplace : typeStruct->replaceFrom)
                 oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
         }
     }
@@ -2356,10 +2364,17 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
             auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
             identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
             genericParameters             = identifier->genericParameters;
-            for (auto param : firstMatch.genericParametersCallTypes)
+            for (int i = 0; i < firstMatch.genericParametersCallTypes.size(); i++)
             {
+                auto param          = firstMatch.genericParametersCallTypes[i];
                 auto callParam      = Ast::newFuncCallParam(node->sourceFile, genericParameters);
                 callParam->typeInfo = param;
+
+                if (firstMatch.genericParametersCallValues[i])
+                {
+                    callParam->allocateComputedValue();
+                    *callParam->computedValue = *firstMatch.genericParametersCallValues[i];
+                }
             }
         }
 

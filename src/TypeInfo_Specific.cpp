@@ -509,7 +509,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->attributeUsage       = attributeUsage;
     newType->callConv             = callConv;
     newType->replaceTypes         = replaceTypes;
-    newType->replaceTypesFrom     = replaceTypesFrom;
+    newType->replaceFrom          = replaceFrom;
 
     for (size_t i = 0; i < genericParameters.size(); i++)
     {
@@ -550,6 +550,8 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
             auto str = Ast::literalToString(genParam->typeInfo, *genParam->value);
             resName += str;
         }
+        else if (genParam->flags & TYPEINFOPARAM_GENERIC_CONSTANT)
+            resName += genParam->name;
         else if (genParam->typeInfo)
             resName += genParam->typeInfo->computeWhateverName(nameType);
         else
@@ -927,7 +929,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->alignOf           = alignOf;
     newType->structName        = structName;
     newType->replaceTypes      = replaceTypes;
-    newType->replaceTypesFrom  = replaceTypesFrom;
+    newType->replaceFrom       = replaceFrom;
 
     int size = (int) genericParameters.size();
     newType->genericParameters.reserve(size);

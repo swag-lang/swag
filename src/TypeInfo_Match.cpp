@@ -764,15 +764,40 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         }
                     }
 
-                    // We try to match an instance. If there is a contextual type replacement, this
-                    // must match, otherwise it's an irrelevant instance
+                    // We try to match an instance
                     else
                     {
-                        auto it = context.genericReplaceTypes.find(symbolParameter->name);
-                        if (it != context.genericReplaceTypes.end() && genType != it->second)
+                        // If there is a contextual value replacement, this must match, otherwise it's an irrelevant instance
+                        auto it = context.genericReplaceValues.find(symbolParameter->name);
+                        if (it != context.genericReplaceValues.end() && it->second)
                         {
-                            context.result = MatchResult::NotEnoughGenericParameters;
-                            return;
+                            if (symbolParameter->value && !SemanticJob::valueEqualsTo(it->second, symbolParameter->value, symbolParameter->typeInfo, 0))
+                            {
+                                context.result = MatchResult::NotEnoughGenericParameters;
+                                return;
+                            }
+
+                            context.genericParametersCallValues[i] = it->second;
+
+                            auto it1 = context.genericReplaceFrom.find(genType->name);
+                            if (it1 != context.genericReplaceFrom.end())
+                            {
+                                context.genericReplaceFrom[genType->name] = it1->second;
+                                context.genericParametersCallFrom[i]      = it1->second;
+                            }
+
+                            continue;
+                        }
+
+                        // If there is a contextual type replacement, this must match, otherwise it's an irrelevant instance
+                        auto it1 = context.genericReplaceTypes.find(symbolParameter->name);
+                        if (it1 != context.genericReplaceTypes.end())
+                        {
+                            if (genType != it1->second)
+                            {
+                                context.result = MatchResult::NotEnoughGenericParameters;
+                                return;
+                            }
                         }
 
 #if 1

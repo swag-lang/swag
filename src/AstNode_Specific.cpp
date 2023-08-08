@@ -120,8 +120,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     if (it != context.replaceTypes.end())
     {
         // :ForLocationInValidIf
-        auto it1 = context.replaceTypesFrom.find(newNode->token.text);
-        if (it1 != context.replaceTypesFrom.end())
+        auto it1 = context.replaceFrom.find(newNode->token.text);
+        if (it1 != context.replaceFrom.end())
         {
             newNode->allocateIdentifierExtension();
             newNode->identifierExtension->fromAlternateVar = it1->second;
