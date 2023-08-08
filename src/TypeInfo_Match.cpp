@@ -296,12 +296,14 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                     {
                         Allocator::free<ComputedValue>(cv);
                         context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = symbolArray->sizeNode->typeInfo;
+                        context.genericReplaceFrom[symbolArray->sizeNode->typeInfo->name]  = symbolArray->sizeNode;
                     }
                 }
                 else
                 {
                     context.genericReplaceValues[cstName]                              = cv;
                     context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = symbolArray->sizeNode->typeInfo;
+                    context.genericReplaceFrom[symbolArray->sizeNode->typeInfo->name]  = symbolArray->sizeNode;
                 }
             }
 
