@@ -1027,12 +1027,10 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
                 if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
                 {
                     SemanticContext cxt;
-                    if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
-                        if (!TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
-                            return false;
+                    if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE) &&
+                        !TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
+                        return false;
 
-                    SWAG_ASSERT(myGenParam->value);
-                    SWAG_ASSERT(otherGenParam->value);
                     if (!SemanticJob::valueEqualsTo(myGenParam->value, otherGenParam->value, myGenParam->typeInfo, 0))
                         return false;
                 }
