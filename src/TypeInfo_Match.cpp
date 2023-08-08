@@ -799,11 +799,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                                 return;
                             }
                         }
-
-#if 1
-                        if (symbolParameter->flags & TYPEINFOPARAM_GENERIC_CONSTANT && context.genericReplaceTypes.size())
-                            continue;
-#endif
                     }
 
                     // Otherwise take the type, this is a match (genType can be either a generic type or a contextual match)
