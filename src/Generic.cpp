@@ -43,8 +43,8 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
             else if (match.genericParametersCallTypes[i])
             {
                 param->typeInfo = match.genericParametersCallTypes[i];
-                if (match.genericParametersCallTypesFrom.size() > i)
-                    varDecl->genTypeComesFrom = match.genericParametersCallTypesFrom[i];
+                if (match.genericParametersCallFrom.size() > i)
+                    varDecl->genTypeComesFrom = match.genericParametersCallFrom[i];
             }
 
             // Take the type as it is in the instantiated struct/func
@@ -64,11 +64,11 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
 
         // Value
         auto it1 = match.genericReplaceValues.find(param->name);
-        if (it1 != match.genericReplaceValues.end())
+        if (it1 != match.genericReplaceValues.end() && it1->second)
         {
             param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
             param->allocateComputedValue();
-            *param->value = *it1->second.first;
+            *param->value = *it1->second;
         }
 
         // We should not instantiate with unresolved types
@@ -81,7 +81,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
                 auto errNode = context->node;
 
                 TypeInfo* errType = nullptr;
-                for (auto& v : match.genericReplaceTypesFrom)
+                for (auto& v : match.genericReplaceFrom)
                 {
                     if (v.second->typeInfo->isUntypedInteger() || v.second->typeInfo->isUntypedFloat())
                     {
@@ -454,7 +454,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     CloneContext cloneContext;
     cloneContext.replaceTypes     = match.genericReplaceTypes;
-    cloneContext.replaceTypesFrom = match.genericReplaceTypesFrom;
+    cloneContext.replaceTypesFrom = match.genericReplaceFrom;
     // Add the struct type replacement now, in case the struct has a field to replace
     cloneContext.replaceTypes[overload->typeInfo->name] = newType;
 
@@ -630,7 +630,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // Types replacements
     CloneContext cloneContext;
     cloneContext.replaceTypes     = match.genericReplaceTypes;
-    cloneContext.replaceTypesFrom = match.genericReplaceTypesFrom;
+    cloneContext.replaceTypesFrom = match.genericReplaceFrom;
 
     // We replace all types and generic types with undefined for now
     if (noReplaceTypes)

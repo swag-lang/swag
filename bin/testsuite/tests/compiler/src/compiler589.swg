@@ -1,6 +1,3 @@
-
-
-
 //#[Swag.PrintBc]
 func(op: string) toto()
 {

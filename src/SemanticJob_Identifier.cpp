@@ -1629,9 +1629,9 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             for (auto oneReplace : typeFunc->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
 
-            oneTryMatch.symMatchContext.genericReplaceTypesFrom.reserve(typeFunc->replaceTypesFrom.size());
+            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeFunc->replaceTypesFrom.size());
             for (auto oneReplace : typeFunc->replaceTypesFrom)
-                oneTryMatch.symMatchContext.genericReplaceTypesFrom[oneReplace.first] = oneReplace.second;
+                oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
         }
         else if (one->kind == AstNodeKind::StructDecl)
         {
@@ -1642,9 +1642,9 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             for (auto oneReplace : typeStruct->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
 
-            oneTryMatch.symMatchContext.genericReplaceTypesFrom.reserve(typeStruct->replaceTypesFrom.size());
+            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeStruct->replaceTypesFrom.size());
             for (auto oneReplace : typeStruct->replaceTypesFrom)
-                oneTryMatch.symMatchContext.genericReplaceTypesFrom[oneReplace.first] = oneReplace.second;
+                oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
         }
     }
 }
@@ -1966,22 +1966,23 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 }
                 else
                 {
-                    auto* match                           = job->getOneGenericMatch();
-                    match->flags                          = oneOverload.symMatchContext.flags;
-                    match->symbolName                     = symbol;
-                    match->symbolOverload                 = overload;
-                    match->genericParametersCallTypes     = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
-                    match->genericParametersCallTypesFrom = std::move(oneOverload.symMatchContext.genericParametersCallTypesFrom);
-                    match->genericParametersGenTypes      = std::move(oneOverload.symMatchContext.genericParametersGenTypes);
-                    match->genericReplaceTypes            = std::move(oneOverload.symMatchContext.genericReplaceTypes);
-                    match->genericReplaceTypesFrom        = std::move(oneOverload.symMatchContext.genericReplaceTypesFrom);
-                    match->genericReplaceValues           = std::move(oneOverload.symMatchContext.genericReplaceValues);
-                    match->genericParameters              = genericParameters;
-                    match->parameters                     = std::move(oneOverload.symMatchContext.parameters);
-                    match->solvedParameters               = std::move(oneOverload.symMatchContext.solvedParameters);
-                    match->numOverloadsWhenChecked        = oneOverload.cptOverloads;
-                    match->numOverloadsInitWhenChecked    = oneOverload.cptOverloadsInit;
-                    match->secondTry                      = oneOverload.secondTry;
+                    auto* match                        = job->getOneGenericMatch();
+                    match->flags                       = oneOverload.symMatchContext.flags;
+                    match->symbolName                  = symbol;
+                    match->symbolOverload              = overload;
+                    match->genericParametersCallTypes  = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
+                    match->genericParametersCallValues = std::move(oneOverload.symMatchContext.genericParametersCallValues);
+                    match->genericParametersCallFrom   = std::move(oneOverload.symMatchContext.genericParametersCallFrom);
+                    match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
+                    match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
+                    match->genericReplaceFrom          = std::move(oneOverload.symMatchContext.genericReplaceFrom);
+                    match->genericParametersGenTypes   = std::move(oneOverload.symMatchContext.genericParametersGenTypes);
+                    match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
+                    match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
+                    match->genericParameters           = genericParameters;
+                    match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
+                    match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
+                    match->secondTry                   = oneOverload.secondTry;
                     if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
                         genericMatchesSI.push_back(match);
                     else
@@ -3562,7 +3563,8 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
             auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.genericParameters.push_back(oneParam);
             symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
-            symMatchContext.genericParametersCallTypesFrom.push_back(oneParam);
+            symMatchContext.genericParametersCallValues.push_back(oneParam->computedValue);
+            symMatchContext.genericParametersCallFrom.push_back(oneParam);
         }
     }
 

@@ -1,6 +1,3 @@
-
-
-
 func(op: s32) count()->s32
 {
 	return op

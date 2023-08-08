@@ -169,6 +169,31 @@ struct SymbolMatchContext
     static const uint32_t MATCH_CLOSURE_PARAM            = 0x00000080;
     static const uint32_t MATCH_DO_NOT_ACCEPT_NO_GENERIC = 0x00000100;
 
+    VectorNative<AstNode*>          genericParameters;
+    VectorNative<AstNode*>          parameters;
+    VectorNative<TypeInfoParam*>    solvedParameters;
+    VectorNative<TypeInfoParam*>    solvedCallParameters;
+    VectorNative<bool>              doneParameters;
+    VectorNative<TypeInfo*>         genericParametersCallTypes;
+    VectorNative<ComputedValue*>    genericParametersCallValues;
+    VectorNative<AstNode*>          genericParametersCallFrom;
+    VectorMap<Utf8, TypeInfo*>      genericReplaceTypes;
+    VectorMap<Utf8, ComputedValue*> genericReplaceValues;
+    VectorMap<Utf8, AstNode*>       genericReplaceFrom;
+    VectorNative<TypeInfo*>         genericParametersGenTypes;
+    VectorMap<Utf8, uint32_t>       mapGenericTypesIndex;
+    BadSignatureInfos               badSignatureInfos;
+
+    SemanticContext* semContext = nullptr;
+
+    uint32_t    flags;
+    MatchResult result;
+    int         cptResolved;
+    uint32_t    firstDefault;
+
+    bool hasNamedParameters;
+    bool autoOpCast;
+
     SymbolMatchContext()
     {
         reset();
@@ -182,15 +207,17 @@ struct SymbolMatchContext
         solvedCallParameters.clear();
         doneParameters.clear();
         genericParametersCallTypes.clear();
-        genericParametersCallTypesFrom.clear();
-        genericParametersGenTypes.clear();
+        genericParametersCallValues.clear();
+        genericParametersCallFrom.clear();
         genericReplaceTypes.clear();
-        genericReplaceTypesFrom.clear();
-        mapGenericTypesIndex.clear();
         genericReplaceValues.clear();
+        genericReplaceFrom.clear();
+        genericParametersGenTypes.clear();
+        mapGenericTypesIndex.clear();
         badSignatureInfos.clear();
 
-        semContext   = nullptr;
+        semContext = nullptr;
+
         flags        = 0;
         result       = MatchResult::Ok;
         cptResolved  = 0;
@@ -205,30 +232,6 @@ struct SymbolMatchContext
         cptResolved        = 0;
         hasNamedParameters = false;
     }
-
-    VectorNative<AstNode*>                           genericParameters;
-    VectorNative<AstNode*>                           parameters;
-    VectorNative<TypeInfoParam*>                     solvedParameters;
-    VectorNative<TypeInfoParam*>                     solvedCallParameters;
-    VectorNative<bool>                               doneParameters;
-    VectorNative<TypeInfo*>                          genericParametersCallTypes;
-    VectorNative<AstNode*>                           genericParametersCallTypesFrom;
-    VectorNative<TypeInfo*>                          genericParametersGenTypes;
-    VectorMap<Utf8, TypeInfo*>                       genericReplaceTypes;
-    VectorMap<Utf8, AstNode*>                        genericReplaceTypesFrom;
-    VectorMap<Utf8, uint32_t>                        mapGenericTypesIndex;
-    VectorMap<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
-    BadSignatureInfos                                badSignatureInfos;
-
-    SemanticContext* semContext = nullptr;
-
-    uint32_t    flags;
-    MatchResult result;
-    int         cptResolved;
-    uint32_t    firstDefault;
-
-    bool hasNamedParameters;
-    bool autoOpCast;
 };
 
 struct TypeInfo
