@@ -613,6 +613,16 @@ fullname</td>
 </tr>
 <tr>
 <td class="tdname">
+datas</td>
+<td class="tdtype">
+<a href="core.html#Core_Array">Core.Array</a>(u8)</td>
+<td class="enumeration">
+<p>
+Prefetched datas (in encoding format).</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
 sampleCount</td>
 <td class="tdtype">
 u64</td>
@@ -643,22 +653,22 @@ The position in the file where the datas are stored.</p>
 </tr>
 <tr>
 <td class="tdname">
-validity</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileValidityMask">Audio.SoundFileValidityMask</a></td>
-<td class="enumeration">
-<p>
-What informations in this struct are valid.</p>
-</td>
-</tr>
-<tr>
-<td class="tdname">
 encoding</td>
 <td class="tdtype">
 <a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
 <td class="enumeration">
 <p>
 Encoding type of the datas.</p>
+</td>
+</tr>
+<tr>
+<td class="tdname">
+validity</td>
+<td class="tdtype">
+<a href="#Audio_SoundFileValidityMask">Audio.SoundFileValidityMask</a></td>
+<td class="enumeration">
+<p>
+What informations in this struct are valid.</p>
 </td>
 </tr>
 <tr>
@@ -698,7 +708,7 @@ bitsPerSample</td>
 u32</td>
 <td class="enumeration">
 <p>
-Number of bits per sample.</p>
+Number of bits per sample in the datas.</p>
 </td>
 </tr>
 <tr>
@@ -708,7 +718,7 @@ duration</td>
 f32</td>
 <td class="enumeration">
 <p>
-Duration, in seconds, of the file.</p>
+Duration, in seconds, of the sound.</p>
 </td>
 </tr>
 <tr>
@@ -717,16 +727,8 @@ validBitsPerSample</td>
 <td class="tdtype">
 u16</td>
 <td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-datas</td>
-<td class="tdtype">
-<a href="core.html#Core_Array">Core.Array</a>(u8)</td>
-<td class="enumeration">
 <p>
-Prefetched datas (in encoding format).</p>
+Number of valid bits per sample (&lt;= bitsPerSample).</p>
 </td>
 </tr>
 </table>
@@ -750,7 +752,7 @@ Load a <code class = "incode">SoundFile</code> from disk.</p>
 <h3 class="content" id="Audio_SoundFile_load"><span class="titletype">func</span> <span class="titlelight">SoundFile.</span><span class="titlestrong">load</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L60" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L59" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
