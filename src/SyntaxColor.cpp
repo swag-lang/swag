@@ -128,7 +128,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             result += c;
             while (*pz && !SWAG_IS_EOL(*pz))
                 result += *pz++;
-            c = *pz;
+            pz = Utf8::decodeUtf8(pz, c, offset);
             result += getColor(mode, SyntaxColor::SyntaxCode);
             continue;
         }

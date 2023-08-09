@@ -408,6 +408,7 @@ void Diagnostic::printSourceCode(bool verboseMode)
         }
         else
         {
+            g_Log.setColor(LogColor::White);
             colored = syntax(lines[i].c_str() + minBlanks);
         }
 
