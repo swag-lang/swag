@@ -7,6 +7,7 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "SyntaxColor.h"
+#pragma optimize("", off)
 
 const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
 const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
@@ -98,6 +99,10 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
                 {
                     blk.kind = UserBlockKind::Table;
                 }
+                else if (line[0] == '#' && line.length() > 1 && SWAG_IS_BLANK(line[1]))
+                {
+                    blk.kind = UserBlockKind::Title1;
+                }
                 else
                 {
                     blk.lines.push_back(lines[start++]);
@@ -131,6 +136,8 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
                 break;
             if (blk.kind != UserBlockKind::Table && line[0] == '|')
                 break;
+            if (blk.kind != UserBlockKind::Title1 && line[0] == '#' && line.length() > 1 && SWAG_IS_BLANK(line[1]))
+                break;
 
             if (line[0] == '>')
             {
@@ -152,6 +159,14 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
             {
                 if (blk.kind == UserBlockKind::Code)
                     start++;
+                break;
+            }
+
+            if (blk.kind == UserBlockKind::Title1)
+            {
+                line.remove(0, 2);
+                blk.lines.push_back(line);
+                start++;
                 break;
             }
 
@@ -548,6 +563,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     case UserBlockKind::Table:
         helpContent += "<table class=\"enumeration\">\n";
         break;
+    case UserBlockKind::Title1:
+        helpContent += "<h2>\n";
+        break;
     }
 
     bool startList = false;
@@ -627,6 +645,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         break;
     case UserBlockKind::Table:
         helpContent += "</table>\n";
+        break;
+    case UserBlockKind::Title1:
+        helpContent += "</h2>\n";
         break;
     }
 }
@@ -962,7 +983,7 @@ void ModuleGenDocJob::outputStyles()
             font-weight:        bold;\n\
             font-size:          100%;\n\
         }\n\
-        h2.content {\n\
+        h1.content {\n\
             margin-top:         50px;\n\
             margin-bottom:      50px;\n\
         }\n\
@@ -1054,7 +1075,7 @@ void ModuleGenDocJob::generateContent()
         computeUserComments(userComment, module->docComment);
         if (!userComment.shortDesc.lines.empty())
         {
-            helpContent += "<h2 class=\"content\">Overview</h2>\n";
+            helpContent += "<h1 class=\"content\">Overview</h1>\n";
             outputUserBlock(userComment.shortDesc);
             outputUserComment(userComment);
         }
@@ -1068,7 +1089,7 @@ void ModuleGenDocJob::generateContent()
                 return false;
             return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
-    helpContent += "<h2 class=\"content\">Content</h2>\n";
+    helpContent += "<h1 class=\"content\">Content</h1>\n";
 
     for (int i = 0; i < allNodes.size(); i++)
     {

@@ -89,7 +89,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        h2.content {
+        h1.content {
             margin-top:         50px;
             margin-bottom:      50px;
         }
@@ -234,18 +234,40 @@
 <div class="page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
-<h2 class="content">Overview</h2>
+<h1 class="content">Overview</h1>
 <p>
 <code class="incode">Std.Audio</code> is a module to decode and play sound files.</p>
 <p>
-Under windows, it is based on the <code class="incode">xaudio2</code> library.### How to play a soundFirst, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>.</p>
+Under windows, it is based on the <code class="incode">xaudio2</code> library.</p>
+<h2>
+How to play a sound</h2>
+<p>
+First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxComment">// Comment</span><span class="SyntaxCode">
-</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">createEngine</span><span class="SyntaxCode">()
+<code style="white-space: break-spaces"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">createEngine</span><span class="SyntaxCode">()
+</span><span class="SyntaxComment">// Don't forget to destroy the engine when you are done</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">()
 </code>
 </p>
-<h2 class="content">Content</h2>
+<p>
+You then have to load a sound file.</p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"<a href="mysound.html#mySound_wav">mySound.wav</a>"</span><span class="SyntaxCode">)
+</code>
+</p>
+<p>
+Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="incode">loadDatas</code> to false.</p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"<a href="mysound.html#mySound_wav">mySound.wav</a>"</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
+</code>
+</p>
+<p>
+Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will by destroyed.</p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode">.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(soundFile)
+</code>
+</p>
+<h1 class="content">Content</h1>
 <p>
 <table class="h3">
 <tr>

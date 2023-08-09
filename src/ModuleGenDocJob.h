@@ -16,6 +16,7 @@ struct ModuleGenDocJob : public Job
         Code,
         Blockquote,
         Table,
+        Title1,
     };
 
     struct UserBlock
