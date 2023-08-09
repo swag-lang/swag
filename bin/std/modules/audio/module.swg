@@ -1,3 +1,7 @@
+/*
+Toto la foule
+*/
+
 #dependencies
 {
     #if #os == Swag.TargetOs.Windows

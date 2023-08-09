@@ -318,7 +318,7 @@
     <ClInclude Include="..\src\LangHashTable.h" />
     <ClInclude Include="..\src\LLVMInc.h" />
     <ClInclude Include="..\src\Math.h" />
-    <ClInclude Include="..\src\ModuleCfgManager.h" />
+    <ClInclude Include="..\src\ModuleDepManager.h" />
     <ClInclude Include="..\src\FetchModuleFileSystemJob.h" />
     <ClInclude Include="..\src\PrepCompilerMsgJob.h" />
     <ClInclude Include="..\src\Profiler.h" />
@@ -624,7 +624,7 @@
     <ClCompile Include="../src/Utf8.cpp" />
     <ClCompile Include="../src/Workspace.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger.cpp" />
-    <ClCompile Include="..\src\ModuleCfgManager.cpp" />
+    <ClCompile Include="..\src\ModuleDepManager.cpp" />
     <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp" />
     <ClCompile Include="..\src\RaceCondition.cpp" />
     <ClCompile Include="..\src\Workspace_Build.cpp" />

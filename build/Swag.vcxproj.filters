@@ -203,11 +203,11 @@
     <ClCompile Include="../src/BackendLinker.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ModuleCfgManager.cpp">
-      <Filter>CfgManager</Filter>
+    <ClCompile Include="..\src\ModuleDepManager.cpp">
+      <Filter>DepManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp">
-      <Filter>CfgManager</Filter>
+      <Filter>DepManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Threading</Filter>
@@ -719,11 +719,11 @@
     <ClInclude Include="../src/BackendLinker.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ModuleCfgManager.h">
-      <Filter>CfgManager</Filter>
+    <ClInclude Include="..\src\ModuleDepManager.h">
+      <Filter>DepManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FetchModuleFileSystemJob.h">
-      <Filter>CfgManager</Filter>
+      <Filter>DepManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\RaceCondition.h">
       <Filter>Threading</Filter>
@@ -1003,9 +1003,6 @@
     <Filter Include="Backend\ByteCode\Debugger">
       <UniqueIdentifier>{5d64ad0d-846a-4092-a35f-d23655afc3d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CfgManager">
-      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{b65399cb-c115-4690-a5a5-21fe88ba8747}</UniqueIdentifier>
     </Filter>
@@ -1050,6 +1047,9 @@
     </Filter>
     <Filter Include="Syntax\Parser">
       <UniqueIdentifier>{5bad38d1-b614-4137-9547-ef563589813e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DepManager">
+      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

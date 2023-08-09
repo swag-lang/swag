@@ -1,21 +1,18 @@
 #include "pch.h"
 #include "Allocator.h"
-#include "ModuleCfgManager.h"
+#include "ModuleDepManager.h"
 #include "Workspace.h"
-#include "Module.h"
 #include "ThreadManager.h"
 #include "ModuleBuildJob.h"
 #include "FetchModuleFileSystemJob.h"
 #include "Diagnostic.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Report.h"
 #include "SyntaxJob.h"
-#include "Map.h"
 
-ModuleCfgManager* g_ModuleCfgMgr = nullptr;
+ModuleDepManager* g_ModuleCfgMgr = nullptr;
 
-Module* ModuleCfgManager::getCfgModule(const Utf8& name)
+Module* ModuleDepManager::getCfgModule(const Utf8& name)
 {
     auto it = allModules.find(name);
     if (it != allModules.end())
@@ -23,7 +20,7 @@ Module* ModuleCfgManager::getCfgModule(const Utf8& name)
     return nullptr;
 }
 
-void ModuleCfgManager::parseCfgFile(Module* cfgModule)
+void ModuleDepManager::parseCfgFile(Module* cfgModule)
 {
     auto buildJob    = Allocator::alloc<ModuleBuildJob>();
     buildJob->module = cfgModule;
@@ -35,7 +32,7 @@ void ModuleCfgManager::parseCfgFile(Module* cfgModule)
     g_ThreadMgr.addJob(syntaxJob);
 }
 
-void ModuleCfgManager::registerCfgFile(SourceFile* file)
+void ModuleDepManager::registerCfgFile(SourceFile* file)
 {
     Utf8       moduleName;
     Path       moduleFolder;
@@ -75,7 +72,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     parseCfgFile(cfgModule);
 }
 
-void ModuleCfgManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName)
+void ModuleDepManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName)
 {
     auto file       = Allocator::alloc<SourceFile>();
     file->name      = fileName;
@@ -95,7 +92,7 @@ void ModuleCfgManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dir
 // If there is an 'alias' file in the source folder, then we redirect the souce path with the content.
 // That way, we can have a normal "dependencies" hierarchy, but with the source code comming from elsewhere.
 // For example the 'std' workspace
-Path ModuleCfgManager::getAliasPath(const Path& srcPath)
+Path ModuleDepManager::getAliasPath(const Path& srcPath)
 {
     auto p = srcPath;
     p.append(SWAG_ALIAS_FILENAME);
@@ -115,7 +112,7 @@ Path ModuleCfgManager::getAliasPath(const Path& srcPath)
     return srcPath;
 }
 
-void ModuleCfgManager::enumerateCfgFiles(const Path& path)
+void ModuleDepManager::enumerateCfgFiles(const Path& path)
 {
     Vector<SourceFile*> allFiles;
 
@@ -145,7 +142,7 @@ void ModuleCfgManager::enumerateCfgFiles(const Path& path)
     }
 }
 
-bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
+bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
 {
     auto remotePath = dep->resolvedLocation;
     remotePath.append(SWAG_CFG_FILE);
@@ -196,7 +193,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     return true;
 }
 
-bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
+bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     Path remotePath = g_CommandLine.exePath.parent_path();
     remotePath.append(dep->locationParam.c_str());
@@ -216,7 +213,7 @@ bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
 }
 
-bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
+bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     Path remotePath = dep->locationParam;
     remotePath.append(SWAG_MODULES_FOLDER);
@@ -236,7 +233,7 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
 }
 
-bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
+bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
         return Report::report({dep->node, Fmt(Err(Err0513), dep->name.c_str())});
@@ -276,7 +273,7 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     return false;
 }
 
-bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependency* dep)
+bool ModuleDepManager::resolveModuleDependency(Module* srcModule, ModuleDependency* dep)
 {
     // If location dependency is not defined, then we take the remote location of the module
     // with that dependency
@@ -395,7 +392,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     return true;
 }
 
-CompareVersionResult ModuleCfgManager::compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum)
+CompareVersionResult ModuleDepManager::compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum)
 {
     if (depVer != UINT32_MAX && modVer != UINT32_MAX && depVer > modVer)
         return CompareVersionResult::VERSION_GREATER;
@@ -415,7 +412,7 @@ CompareVersionResult ModuleCfgManager::compareVersions(uint32_t depVer, uint32_t
     return CompareVersionResult::EQUAL;
 }
 
-bool ModuleCfgManager::execute()
+bool ModuleDepManager::execute()
 {
 #ifdef SWAG_STATS
     Timer timer(&g_Stats.cfgTime);

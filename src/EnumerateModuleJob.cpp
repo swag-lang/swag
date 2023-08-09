@@ -3,7 +3,7 @@
 #include "Workspace.h"
 #include "Os.h"
 #include "Module.h"
-#include "ModuleCfgManager.h"
+#include "ModuleDepManager.h"
 #include "LoadSourceFileJob.h"
 #include "ThreadManager.h"
 #include "SyntaxJob.h"

@@ -8,7 +8,7 @@
 #include "LanguageSpec.h"
 #include "Backend.h"
 #include "ByteCodeOptimizer.h"
-#include "ModuleCfgManager.h"
+#include "ModuleDepManager.h"
 #include "Report.h"
 #include "ModuleManager.h"
 #include "TypeGenStructJob.h"
@@ -682,7 +682,7 @@ bool Workspace::buildTarget()
 
     // Config pass (compute/fetch dependencies...
     //////////////////////////////////////////////////
-    g_ModuleCfgMgr = Allocator::alloc<ModuleCfgManager>();
+    g_ModuleCfgMgr = Allocator::alloc<ModuleDepManager>();
     SWAG_CHECK(g_ModuleCfgMgr->execute());
 
     // Exit now (do not really build) in case of "get", "list" commands

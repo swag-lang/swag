@@ -19,7 +19,7 @@ enum class CompareVersionResult
     EQUAL,
 };
 
-struct ModuleCfgManager
+struct ModuleDepManager
 {
     Path                 getAliasPath(const Path& srcPath);
     void                 registerCfgFile(SourceFile* file);
@@ -39,4 +39,4 @@ struct ModuleCfgManager
     Set<Module*>     pendingCfgModules;
 };
 
-extern ModuleCfgManager* g_ModuleCfgMgr;
+extern ModuleDepManager* g_ModuleCfgMgr;
