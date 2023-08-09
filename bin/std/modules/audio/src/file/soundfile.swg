@@ -22,11 +22,11 @@ enum SoundFileValidityMask
 enum SoundFileEncoding
 {
     Unknown
-    Pcm8
-    Pcm16
-    Pcm24
-    Pcm32
-    Float32
+    Pcm8        // Pcm, uncompressed, 8 bits per sample
+    Pcm16       // Pcm, uncompressed, 16 bits per sample
+    Pcm24       // Pcm, uncompressed, 24 bits per sample
+    Pcm32       // Pcm, uncompressed, 32 bits per sample
+    Float32     // Pcm, uncompressed, float 32 bits per sample
 }
 
 // Represents a sound file.
