@@ -15,6 +15,7 @@
 <li><a href="std/std.win32.html">std.win32</a> </li>
 <li><a href="std/std.gdi32.html">std.gdi32</a> </li>
 <li><a href="std/std.xinput.html">std.xinput</a> </li>
+<li><a href="std/std.audio.html">std.audio</a> </li>
 </ul>
 </p>
 </div>

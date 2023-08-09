@@ -113,8 +113,9 @@ func addLine(line: string)
     // Process character by character, in order to detect some 'markdown' stuff
     for var i = 0; i < @countof(line); i += 1
     {
-        // Bold with '**'
-        if line[i] == "*"'u8 and line[i+1] == "*"'u8
+        let lastChar = i == @countof(line) - 1
+
+        if !lastChar and line[i] == "*"'u8 and line[i+1] == "*"'u8
         {
             g_Buf += stateBold ? "</b>" : "<b>"
             stateBold = !stateBold
@@ -125,7 +126,7 @@ func addLine(line: string)
         // Italic with '*'
         if line[i] == "*"'u8
         {
-            if !stateItalic and Latin1.isLetterOrDigit(line[i+1])
+            if !lastChar and !stateItalic and Latin1.isLetterOrDigit(line[i+1])
             {
                 stateItalic = true
                 g_Buf += "<i>"
@@ -159,7 +160,7 @@ func addLine(line: string)
         }
 
         // Reference
-        if line[i] == "["'u8
+        if !lastChar and line[i] == "["'u8
         {
             var linkName: String
             i += 1
@@ -513,7 +514,7 @@ func generateOverview(in, out: string, old: bool)
     assume File.writeAllBytes(out, g_Buf)
 }
 
-func convertMd(in, out: string)
+func convertMd(in, out: string, old: bool)
 {
     var files = assume Directory.enumerateFiles(in, ".md", recurse = true)
     visit v: files
@@ -526,11 +527,14 @@ func convertMd(in, out: string)
         g_SubTitle = false
         g_BaseTitle = 1
 
-        //g_Buf += "<?php include('html_start.php'); ?>\n"
-        //g_Buf += "<?php include('header.php'); ?>\n"
-        //g_Buf += "<style><?php include('css/style.php'); ?></style>\n"
-        //g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5\">\n"
-        //g_Buf += "<div class=\"container\">\n"
+        if old
+        {
+            g_Buf += "<?php include('html_start.php'); ?>\n"
+            g_Buf += "<?php include('header.php'); ?>\n"
+            g_Buf += "<style><?php include('css/style.php'); ?></style>\n"
+            g_Buf += "<div class=\"lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5\">\n"
+            g_Buf += "<div class=\"container\">\n"
+        }
 
         Console.println("reading ", v.fullname)
         stateEnter(.Paragraph)
@@ -539,11 +543,17 @@ func convertMd(in, out: string)
 
         let title = Path.getFileNameWithoutExtension(v.fullname)
         var outName = Path.combine(out, title)
-        outName += ".blade.php"
+        if old
+            outName += ".php"
+        else
+            outName += ".blade.php"
 
-        //g_Buf += "</div>\n"
-        //g_Buf += "</div>\n"
-        //g_Buf += "<?php include('html_end.php'); ?>\n"
+        if old
+        {
+            g_Buf += "</div>\n"
+            g_Buf += "</div>\n"
+            g_Buf += "<?php include('html_end.php'); ?>\n"
+        }
 
         Console.println("writing ", outName)
         assume File.writeAllBytes(outName, g_Buf)
@@ -553,6 +563,7 @@ func convertMd(in, out: string)
 #run
 {
     generateOverview("../bin/reference/tests/language/src", "../web/language.php", true)
+    //convertMd("../www/resources/md", "../web", true)
 
     //generateOverview("../bin/reference/tests/language/src", "../www/resources/views/pages/g/overview.blade.php", false)
     //convertMd("../www/resources/md", "../www/resources/views/pages/g")
