@@ -7,3 +7,4 @@
 * [std.win32](std/std.win32.html)
 * [std.gdi32](std/std.gdi32.html)
 * [std.xinput](std/std.xinput.html)
+* [std.audio](std/std.audio.html)
