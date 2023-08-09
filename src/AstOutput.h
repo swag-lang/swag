@@ -17,6 +17,7 @@ struct AstOutput
         AstNode*                  exportedNode = nullptr;
         int                       indent       = 0;
         bool                      forExport    = false;
+        bool                      forDoc       = false;
         function<Utf8(TypeInfo*)> exportType;
     };
 

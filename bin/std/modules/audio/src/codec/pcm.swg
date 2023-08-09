@@ -42,7 +42,7 @@ impl ICodec for CodecPcmToPcm16
             return {srcLength, srcLength}
         }
 
-        func(const TS: s32, const EN: SoundFileEncoding) do(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
+        func(TS: s32, EN: SoundFileEncoding) do(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
         {
             var dst = cast(^s16) destBuffer
             var src = cast(^s8) srcBuffer

@@ -1614,7 +1614,7 @@ Register a new timer for the given <code class = "incode">target</code>.</p>
 <p>
 Creates a new surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSurface(using self, x: s32, y: s32, width: s32, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *<a href="#Gui_Wnd">Gui.Wnd</a> = null, hook: <a href="gui.html#Gui_HookEvent">Gui.HookEvent</a> = null)->*<a href="#Gui_Surface">Gui.Surface</a> throw
+<code style="white-space: break-spaces">func createSurface(using self, x: s32, y: s32, width: s32, height: s32, flags: <a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a> = SurfaceFlags.OverlappedWindow, view: *<a href="#Gui_Wnd">Gui.Wnd</a> = null, hook: <a href="gui.html#Gui_HookEvent">Gui.HookEvent</a> = null)->*<a href="#Gui_Surface">Gui.Surface</a> throw
 </code>
 </p>
 <p>
@@ -1695,7 +1695,7 @@ End current modal loop.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getDirectoryIcon(using self, name: string, small = true)
+<code style="white-space: break-spaces">func getDirectoryIcon(using self, name: string, small: bool = true)
 </code>
 </p>
 <p>
@@ -1725,7 +1725,7 @@ End current modal loop.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getFileIcon(using self, name: string, small = true)
+<code style="white-space: break-spaces">func getFileIcon(using self, name: string, small: bool = true)
 </code>
 </p>
 <p>
@@ -2045,7 +2045,7 @@ Run until exit.</p>
 <p>
 Create a main surface, and run.</p>
 <p class="code">
-<code style="white-space: break-spaces">func runSurface(x: s32, y: s32, width: s32, height: s32, title: string = null, view: *<a href="#Gui_Wnd">Gui.Wnd</a> = null, borders = true, canSize = true, hook: <a href="gui.html#Gui_HookEvent">Gui.HookEvent</a> = null, init: func(*<a href="#Gui_Application">Gui.Application</a>) = null)
+<code style="white-space: break-spaces">func runSurface(x: s32, y: s32, width: s32, height: s32, title: string = null, view: *<a href="#Gui_Wnd">Gui.Wnd</a> = null, borders: bool = true, canSize: bool = true, hook: <a href="gui.html#Gui_HookEvent">Gui.HookEvent</a> = null, init: func(*<a href="#Gui_Application">Gui.Application</a>) = null)
 </code>
 </p>
 <p>
@@ -3863,7 +3863,7 @@ Remove all items.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a> = {}, id: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null, kind = ComboBoxKind.Select)->*<a href="#Gui_ComboBox">Gui.ComboBox</a>
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a> = {}, id: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null, kind: <a href="#Gui_ComboBoxKind">Gui.ComboBoxKind</a> = ComboBoxKind.Select)->*<a href="#Gui_ComboBox">Gui.ComboBox</a>
 </code>
 </p>
 <p>
@@ -4584,7 +4584,7 @@ Add a button.</p>
 <p>
 Creates a simple dialog box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createDialog(from: *<a href="#Gui_Surface">Gui.Surface</a>, width = 512, height = 300, title: string = null)->*<a href="#Gui_Dialog">Gui.Dialog</a>
+<code style="white-space: break-spaces">func createDialog(from: *<a href="#Gui_Surface">Gui.Surface</a>, width: s32 = 512, height: s32 = 300, title: string = null)->*<a href="#Gui_Dialog">Gui.Dialog</a>
 </code>
 </p>
 <p>
@@ -4601,7 +4601,7 @@ Creates a simple dialog box.</p>
 <p>
 Creates an associated surface.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createSurface(using self, from: *<a href="#Gui_Surface">Gui.Surface</a>, x: s32, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*<a href="#Gui_Surface">Gui.Surface</a>
+<code style="white-space: break-spaces">func createSurface(using self, from: *<a href="#Gui_Surface">Gui.Surface</a>, x: s32, y: s32, width: s32 = 512, height: s32 = 300, flags: <a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a> = SurfaceFlags.Zero)->*<a href="#Gui_Surface">Gui.Surface</a>
 </code>
 </p>
 <p>
@@ -5198,7 +5198,7 @@ Set the editbox form.</p>
 <p>
 Editbox will edit floating points.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setInputF64(using self, min = -Swag.F64.Max, max = Swag.F64.Max)
+<code style="white-space: break-spaces">func setInputF64(using self, min: f64 = -Swag.F64.Max, max: f64 = Swag.F64.Max)
 </code>
 </p>
 <p>
@@ -5215,7 +5215,7 @@ Editbox will edit floating points.</p>
 <p>
 Editbox will edit signed integers.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setInputS64(using self, min = Swag.S64.Min, max = Swag.S64.Max)
+<code style="white-space: break-spaces">func setInputS64(using self, min: s64 = Swag.S64.Min, max: s64 = Swag.S64.Max)
 </code>
 </p>
 <p>
@@ -5232,7 +5232,7 @@ Editbox will edit signed integers.</p>
 <p>
 Editbox will edit unsigned integers.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setInputU64(using self, min = 0'u64, max = Swag.U64.Max)
+<code style="white-space: break-spaces">func setInputU64(using self, min: u64 = 0'u64, max: u64 = Swag.U64.Max)
 </code>
 </p>
 <p>
@@ -5649,7 +5649,7 @@ Set the text.</p>
 <p>
 Creates the message box.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createMultiLine(from: *<a href="#Gui_Surface">Gui.Surface</a>, heightEdit = 150)->*<a href="#Gui_EditDlg">Gui.EditDlg</a>
+<code style="white-space: break-spaces">func createMultiLine(from: *<a href="#Gui_Surface">Gui.Surface</a>, heightEdit: s32 = 150)->*<a href="#Gui_EditDlg">Gui.EditDlg</a>
 </code>
 </p>
 <p>
@@ -5774,7 +5774,7 @@ Create the popup list, but do not display it.</p>
 <p>
 Create the popup list, but do not display it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, kind: <a href="#Gui_EmbInfoCtrlKind">Gui.EmbInfoCtrlKind</a>, height = 40, top = true)->*<a href="#Gui_EmbInfoCtrl">Gui.EmbInfoCtrl</a>
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, name: string, kind: <a href="#Gui_EmbInfoCtrlKind">Gui.EmbInfoCtrlKind</a>, height: s32 = 40, top: bool = true)->*<a href="#Gui_EmbInfoCtrl">Gui.EmbInfoCtrl</a>
 </code>
 </p>
 <p>
@@ -6718,7 +6718,7 @@ Set the frame wnd form.</p>
 <p>
 Set the frame wnd flags.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setFrameFlags(using self, add = FrameWndFlags.Zero, remove = FrameWndFlags.Zero)
+<code style="white-space: break-spaces">func setFrameFlags(using self, add: <a href="#Gui_FrameWndFlags">Gui.FrameWndFlags</a> = FrameWndFlags.Zero, remove: <a href="#Gui_FrameWndFlags">Gui.FrameWndFlags</a> = FrameWndFlags.Zero)
 </code>
 </p>
 <p>
@@ -7396,7 +7396,7 @@ Set an item width by column.</p>
 <p>
 Add a new view.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, tabName: string, width = 100'f32, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->*<a href="#Gui_HeaderItem">Gui.HeaderItem</a>
+<code style="white-space: break-spaces">func addItem(using self, tabName: string, width: f32 = 100'f32, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})->*<a href="#Gui_HeaderItem">Gui.HeaderItem</a>
 </code>
 </p>
 <p>
@@ -8329,7 +8329,7 @@ Add a new checkable button.</p>
 <p>
 Add a new button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, icon: <a href="#Gui_Icon">Gui.Icon</a>, btnId: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null, iconBtnFlags = IconButtonFlags.Zero)->*<a href="#Gui_IconButton">Gui.IconButton</a>
+<code style="white-space: break-spaces">func addItem(using self, icon: <a href="#Gui_Icon">Gui.Icon</a>, btnId: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null, iconBtnFlags: <a href="#Gui_IconButtonFlags">Gui.IconButtonFlags</a> = IconButtonFlags.Zero)->*<a href="#Gui_IconButton">Gui.IconButton</a>
 </code>
 </p>
 <p>
@@ -8361,7 +8361,7 @@ Add a new button.</p>
 <p>
 Change bar flags.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setIconBarFlags(using self, add = IconBarFlags.Zero, remove = IconBarFlags.Zero)
+<code style="white-space: break-spaces">func setIconBarFlags(using self, add: <a href="#Gui_IconBarFlags">Gui.IconBarFlags</a> = IconBarFlags.Zero, remove: <a href="#Gui_IconBarFlags">Gui.IconBarFlags</a> = IconBarFlags.Zero)
 </code>
 </p>
 <p>
@@ -10526,7 +10526,7 @@ Sort list as before.</p>
 <p>
 Sort the list by a given column If <code class = "incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
 <p class="code">
-<code style="white-space: break-spaces">func sort(using self, column: u32, descentOrder = false, persistent = false)
+<code style="white-space: break-spaces">func sort(using self, column: u32, descentOrder: bool = false, persistent: bool = false)
 </code>
 </p>
 <p>
@@ -11318,7 +11318,7 @@ Add a new item.</p>
 <p>
 Add a new item.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addItem(using self, name: string, id: <a href="gui.html#Gui_WndId">Gui.WndId</a>, icon: <a href="#Gui_Icon">Gui.Icon</a> = {}, rightName: string = null, disabled = false, checked = false)
+<code style="white-space: break-spaces">func addItem(using self, name: string, id: <a href="gui.html#Gui_WndId">Gui.WndId</a>, icon: <a href="#Gui_Icon">Gui.Icon</a> = {}, rightName: string = null, disabled: bool = false, checked: bool = false)
 </code>
 </p>
 <p>
@@ -11420,7 +11420,7 @@ Add a separator.</p>
 <p>
 Make the popup menu modal Will return the selected id.</p>
 <p class="code">
-<code style="white-space: break-spaces">func doModal(using self, surfacePos: <a href="core.html#Core_Math_Point">Core.Math.Point</a>, pos = PopupPos.TopLeft, autoDestroy: bool = false)-><a href="gui.html#Gui_WndId">Gui.WndId</a>
+<code style="white-space: break-spaces">func doModal(using self, surfacePos: <a href="core.html#Core_Math_Point">Core.Math.Point</a>, pos: <a href="#Gui_PopupPos">Gui.PopupPos</a> = PopupPos.TopLeft, autoDestroy: bool = false)-><a href="gui.html#Gui_WndId">Gui.WndId</a>
 </code>
 </p>
 <p>
@@ -11682,7 +11682,7 @@ Message box with a <code class = "incode">ok</code>.</p>
 <p>
 Message box with a <code class = "incode">ok</code> and <code class = "incode">cancel</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func okCancel(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, defaultId = Dialog.BtnCancel, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})-><a href="gui.html#Gui_WndId">Gui.WndId</a>
+<code style="white-space: break-spaces">func okCancel(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, defaultId: string = Dialog.BtnCancel, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})-><a href="gui.html#Gui_WndId">Gui.WndId</a>
 </code>
 </p>
 <p>
@@ -11733,7 +11733,7 @@ Set big icon color (icon must has been set before).</p>
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func yesNo(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})-><a href="gui.html#Gui_WndId">Gui.WndId</a>
+<code style="white-space: break-spaces">func yesNo(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, title: string = null, defaultId: string = Dialog.BtnNo, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})-><a href="gui.html#Gui_WndId">Gui.WndId</a>
 </code>
 </p>
 <p>
@@ -11750,7 +11750,7 @@ Message box with a <code class = "incode">yes</code> and <code class = "incode">
 <p>
 Message box with a <code class = "incode">yes</code> and <code class = "incode">no</code> button.</p>
 <p class="code">
-<code style="white-space: break-spaces">func yesNoCancel(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, defaultId = Dialog.BtnCancel, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})-><a href="gui.html#Gui_WndId">Gui.WndId</a>
+<code style="white-space: break-spaces">func yesNoCancel(from: *<a href="#Gui_Surface">Gui.Surface</a>, message: string, defaultId: string = Dialog.BtnCancel, icon: <a href="#Gui_Icon">Gui.Icon</a> = {})-><a href="gui.html#Gui_WndId">Gui.WndId</a>
 </code>
 </p>
 <p>
@@ -15569,7 +15569,7 @@ Delete a given text at the start of each selected line.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ensureCaretIsVisible(using self, center = false)
+<code style="white-space: break-spaces">func ensureCaretIsVisible(using self, center: bool = false)
 </code>
 </p>
 <p>
@@ -18084,7 +18084,7 @@ Set the right value (in case of a range).</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a> = {}, id: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null, range = false, vertical = false)->*<a href="#Gui_Slider">Gui.Slider</a>
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a> = {}, id: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null, range: bool = false, vertical: bool = false)->*<a href="#Gui_Slider">Gui.Slider</a>
 </code>
 </p>
 <p>
@@ -18623,7 +18623,7 @@ Set the pane size (size of the first view).</p>
 <p>
 Add a new pane.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addPane(using self, pane: *<a href="#Gui_Wnd">Gui.Wnd</a>, paneSize: f32 = 100, title = false)->*<a href="#Gui_SplitterItem">Gui.SplitterItem</a>
+<code style="white-space: break-spaces">func addPane(using self, pane: *<a href="#Gui_Wnd">Gui.Wnd</a>, paneSize: f32 = 100, title: bool = false)->*<a href="#Gui_SplitterItem">Gui.SplitterItem</a>
 </code>
 </p>
 <p>
@@ -18640,7 +18640,7 @@ Add a new pane.</p>
 <p>
 Creates a new SplitterCtrl instance.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a> = {}, vertical = false, id: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null)->*<a href="#Gui_SplitterCtrl">Gui.SplitterCtrl</a>
+<code style="white-space: break-spaces">func create(parent: *<a href="#Gui_Wnd">Gui.Wnd</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a> = {}, vertical: bool = false, id: <a href="gui.html#Gui_WndId">Gui.WndId</a> = null)->*<a href="#Gui_SplitterCtrl">Gui.SplitterCtrl</a>
 </code>
 </p>
 <p>
@@ -19571,7 +19571,7 @@ Set the surface position.</p>
 <p>
 Change flag surfaces.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setSurfaceFlags(using self, add = SurfaceFlags.Zero, remove = SurfaceFlags.Zero)
+<code style="white-space: break-spaces">func setSurfaceFlags(using self, add: <a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a> = SurfaceFlags.Zero, remove: <a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a> = SurfaceFlags.Zero)
 </code>
 </p>
 <p>
@@ -20576,7 +20576,7 @@ Create a default font (fixed size) with the given size.</p>
 <p>
 Create a default font with the given size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createDefaultFont(using self, size: u32, style = FontFamilyStyle.Regular)->*<a href="pixel.html#Pixel_Font">Pixel.Font</a>
+<code style="white-space: break-spaces">func createDefaultFont(using self, size: u32, style: <a href="pixel.html#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a> = FontFamilyStyle.Regular)->*<a href="pixel.html#Pixel_Font">Pixel.Font</a>
 </code>
 </p>
 <p>
@@ -20593,7 +20593,7 @@ Create a default font with the given size.</p>
 <p>
 Create a default font (fixed size) with the given size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func createDefaultFontFS(using self, size: u32, style = FontFamilyStyle.Regular)->*<a href="pixel.html#Pixel_Font">Pixel.Font</a>
+<code style="white-space: break-spaces">func createDefaultFontFS(using self, size: u32, style: <a href="pixel.html#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a> = FontFamilyStyle.Regular)->*<a href="pixel.html#Pixel_Font">Pixel.Font</a>
 </code>
 </p>
 <p>
@@ -20608,7 +20608,7 @@ Create a default font (fixed size) with the given size.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawIconText(painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, icon: <a href="#Gui_Icon">Gui.Icon</a>, name: *<a href="pixel.html#Pixel_RichString">Pixel.RichString</a>, stringFormat: <a href="pixel.html#Pixel_RichStringFormat">Pixel.RichStringFormat</a>, iconMargin = 4'f32)
+<code style="white-space: break-spaces">func drawIconText(painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>, position: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, icon: <a href="#Gui_Icon">Gui.Icon</a>, name: *<a href="pixel.html#Pixel_RichString">Pixel.RichString</a>, stringFormat: <a href="pixel.html#Pixel_RichStringFormat">Pixel.RichStringFormat</a>, iconMargin: f32 = 4'f32)
 </code>
 </p>
 <p>
@@ -20623,8 +20623,8 @@ Create a default font (fixed size) with the given size.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func drawSubRect(using self, painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>, dstRect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, subRect: *<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a>, color: <a href="pixel.html#Pixel_Color">Pixel.Color</a>, center = true, interpol = InterpolationMode.Linear)
-func drawSubRect(painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>, texture: <a href="pixel.html#Pixel_Texture">Pixel.Texture</a>, dstRect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, subRect: *<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a>, color: <a href="pixel.html#Pixel_Color">Pixel.Color</a>, center = true, interpol = InterpolationMode.Linear)
+<code style="white-space: break-spaces">func drawSubRect(using self, painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>, dstRect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, subRect: *<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a>, color: <a href="pixel.html#Pixel_Color">Pixel.Color</a>, center: bool = true, interpol: <a href="pixel.html#Pixel_InterpolationMode">Pixel.InterpolationMode</a> = InterpolationMode.Linear)
+func drawSubRect(painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>, texture: <a href="pixel.html#Pixel_Texture">Pixel.Texture</a>, dstRect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, subRect: *<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a>, color: <a href="pixel.html#Pixel_Color">Pixel.Color</a>, center: bool = true, interpol: <a href="pixel.html#Pixel_InterpolationMode">Pixel.InterpolationMode</a> = InterpolationMode.Linear)
 </code>
 </p>
 <p>
@@ -20639,7 +20639,7 @@ func drawSubRect(painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>,
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getIcon24(using self, idx: <a href="#Gui_ThemeIcons24">Gui.ThemeIcons24</a>, size = 24'f32)-><a href="#Gui_Icon">Gui.Icon</a>
+<code style="white-space: break-spaces">func getIcon24(using self, idx: <a href="#Gui_ThemeIcons24">Gui.ThemeIcons24</a>, size: f32 = 24'f32)-><a href="#Gui_Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -20654,7 +20654,7 @@ func drawSubRect(painter: *<a href="pixel.html#Pixel_Painter">Pixel.Painter</a>,
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getIcon64(using self, idx: <a href="#Gui_ThemeIcons64">Gui.ThemeIcons64</a>, size = 64'f32)-><a href="#Gui_Icon">Gui.Icon</a>
+<code style="white-space: break-spaces">func getIcon64(using self, idx: <a href="#Gui_ThemeIcons64">Gui.ThemeIcons64</a>, size: f32 = 64'f32)-><a href="#Gui_Icon">Gui.Icon</a>
 </code>
 </p>
 <p>
@@ -26770,7 +26770,7 @@ Disable the window.</p>
 <p>
 Enable/Disable the window.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enable(using self, state = true)
+<code style="white-space: break-spaces">func enable(using self, state: bool = true)
 </code>
 </p>
 <p>
@@ -26787,7 +26787,7 @@ Enable/Disable the window.</p>
 <p>
 Be sure rect is fully inside the parent rectangle (if possible).</p>
 <p class="code">
-<code style="white-space: break-spaces">func fitPosInParent(using self, marginW: f32 = 0, marginH: f32 = 0, simX = false, simY = false)
+<code style="white-space: break-spaces">func fitPosInParent(using self, marginW: f32 = 0, marginH: f32 = 0, simX: bool = false, simY: bool = false)
 </code>
 </p>
 <p>
@@ -27124,7 +27124,7 @@ Get the wnd position in the surface.</p>
 <p>
 Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getWndAt(using self, x: f32, y: f32, getDisabled = false, getHidden = false)->*<a href="#Gui_Wnd">Gui.Wnd</a>
+<code style="white-space: break-spaces">func getWndAt(using self, x: f32, y: f32, getDisabled: bool = false, getHidden: bool = false)->*<a href="#Gui_Wnd">Gui.Wnd</a>
 </code>
 </p>
 <p>
@@ -27243,7 +27243,7 @@ Returns true if <code class = "incode">child</code> is in the child hieararchy o
 <p>
 Returns true if window, and all its parents, are visible.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isVisible(using self, onlyMe = false)-&gt;bool
+<code style="white-space: break-spaces">func isVisible(using self, onlyMe: bool = false)-&gt;bool
 </code>
 </p>
 <p>
@@ -27503,7 +27503,7 @@ Register a keyboard shortcut.</p>
 <p>
 Resize the wnd.</p>
 <p class="code">
-<code style="white-space: break-spaces">func resize(using self, width: f32, height: f32, computeLayout = true)
+<code style="white-space: break-spaces">func resize(using self, width: f32, height: f32, computeLayout: bool = true)
 </code>
 </p>
 <p>
@@ -27750,13 +27750,13 @@ Set window parent.</p>
 <p>
 Move and size the wnd.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setPosition(using self, rect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, computeLayout = true)
+<code style="white-space: break-spaces">func setPosition(using self, rect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, computeLayout: bool = true)
 </code>
 </p>
 <p>
 Move and size the wnd.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setPosition(using self, x: f32, y: f32, w: f32, h: f32, computeLayout = true)
+<code style="white-space: break-spaces">func setPosition(using self, x: f32, y: f32, w: f32, h: f32, computeLayout: bool = true)
 </code>
 </p>
 <p>
@@ -27773,7 +27773,7 @@ Move and size the wnd.</p>
 <p>
 Show the window.</p>
 <p class="code">
-<code style="white-space: break-spaces">func show(using self, b = true)
+<code style="white-space: break-spaces">func show(using self, b: bool = true)
 </code>
 </p>
 <p>

@@ -262,7 +262,7 @@ Creates an audio bus.</p>
 <a href="#Audio_Bus_destroy">destroy(self)</a></td>
 <td class="enumeration">
 <p>
-Creates an audio bus.</p>
+Destroy the bus (immediatly).</p>
 </td>
 </tr>
 <tr>
@@ -286,7 +286,7 @@ Returns the actual volume, in DB.</p>
 <a href="#Audio_Bus_setVolume">setVolume(self, f32, u32)</a></td>
 <td class="enumeration">
 <p>
-Set the playing voice volume between [0..1].</p>
+Set the playing bus volume between [0..1].</p>
 </td>
 </tr>
 <tr>
@@ -294,7 +294,7 @@ Set the playing voice volume between [0..1].</p>
 <a href="#Audio_Bus_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
 <td class="enumeration">
 <p>
-Set the playing bus volume.</p>
+Set the playing bus volume in DB.</p>
 </td>
 </tr>
 </table>
@@ -305,7 +305,7 @@ Set the playing bus volume.</p>
 <h3 class="content" id="Audio_Bus_create"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -316,18 +316,20 @@ Creates an audio bus.</p>
 </code>
 </p>
 <p>
+ You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a></p>
+<p>
 <table class="h3">
 <tr>
 <td class="h3">
 <h3 class="content" id="Audio_Bus_destroy"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">destroy</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Creates an audio bus.</p>
+Destroy the bus (immediatly).</p>
 <p class="code">
 <code style="white-space: break-spaces">func destroy(using self) throw
 </code>
@@ -339,7 +341,7 @@ Creates an audio bus.</p>
 <h3 class="content" id="Audio_Bus_getVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L366" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L373" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -356,7 +358,7 @@ Returns the actual volume.</p>
 <h3 class="content" id="Audio_Bus_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -373,12 +375,12 @@ Returns the actual volume, in DB.</p>
 <h3 class="content" id="Audio_Bus_setVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L355" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L362" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Set the playing voice volume between [0..1].</p>
+Set the playing bus volume between [0..1].</p>
 <p class="code">
 <code style="white-space: break-spaces">func setVolume(using self, volume: f32, batchID: u32 = 0) throw
 </code>
@@ -390,12 +392,12 @@ Set the playing voice volume between [0..1].</p>
 <h3 class="content" id="Audio_Bus_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Set the playing bus volume.</p>
+Set the playing bus volume in DB.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setVolumeDB(using self, volumeDB: f32, batchID: u32 = 0) throw
 </code>
@@ -686,7 +688,7 @@ Load a <code class = "incode">SoundFile</code> from disk.</p>
 <p>
 Load a <code class = "incode">SoundFile</code> from disk.</p>
 <p class="code">
-<code style="white-space: break-spaces">func load(fullname: string, loadDatas = true, loadMetaDatas = false)-><a href="#Audio_SoundFile">Audio.SoundFile</a> throw
+<code style="white-space: break-spaces">func load(fullname: string, loadDatas: bool = true, loadMetaDatas: bool = false)-><a href="#Audio_SoundFile">Audio.SoundFile</a> throw
 </code>
 </p>
 <p>
@@ -754,7 +756,7 @@ Float32</td>
 </table>
 </p>
 <p>
-Determins which informations in the <code class = "incode">SoundFile</code> struct are valid.</p>
+Determins which informations in the <a href="#Audio_SoundFile">SoundFile</a> struct are valid.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -843,7 +845,7 @@ Represents a playing sound.</p>
 <a href="#Audio_Voice_create">create(*SoundFile, VoiceCreateFlags)</a></td>
 <td class="enumeration">
 <p>
-Creates a new voice with a given sound file.</p>
+Creates a new voice for a given sound file.</p>
 </td>
 </tr>
 <tr>
@@ -891,7 +893,7 @@ Pause the playing voice.</p>
 <a href="#Audio_Voice_play">play(*SoundFile, VoiceCreateFlags, VoicePlayFlags)</a></td>
 <td class="enumeration">
 <p>
-Simple function that will create a voice and play it See [Create] and [Play].</p>
+Plays a voice.</p>
 </td>
 </tr>
 <tr>
@@ -899,7 +901,7 @@ Simple function that will create a voice and play it See [Create] and [Play].</p
 <a href="#Audio_Voice_play">play(self, VoicePlayFlags)</a></td>
 <td class="enumeration">
 <p>
-Play a voice.</p>
+Simple function that will create a voice and play it.</p>
 </td>
 </tr>
 <tr>
@@ -915,7 +917,7 @@ Set the playing pitch.</p>
 <a href="#Audio_Voice_setRooting">setRooting(self, const [..] const *Bus)</a></td>
 <td class="enumeration">
 <p>
-Root a voice to a given bus.</p>
+Root a voice to a given list of buses.</p>
 </td>
 </tr>
 <tr>
@@ -955,9 +957,9 @@ Stop the playing voice.</p>
 </table>
 </p>
 <p>
-Creates a new voice with a given sound file.</p>
+Creates a new voice for a given sound file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, createFlags = VoiceCreateFlags.Default)->*<a href="#Audio_Voice">Audio.Voice</a> throw
+<code style="white-space: break-spaces">func create(file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, createFlags: <a href="#Audio_VoiceCreateFlags">Audio.VoiceCreateFlags</a> = VoiceCreateFlags.Default)->*<a href="#Audio_Voice">Audio.Voice</a> throw
 </code>
 </p>
 <p>
@@ -984,7 +986,7 @@ Destroy the voice.</p>
 <h3 class="content" id="Audio_Voice_getVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L263" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L266" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1057,17 +1059,19 @@ Pause the playing voice.</p>
 </table>
 </p>
 <p>
-Simple function that will create a voice and play it See [Create] and [Play].</p>
+Plays a voice.</p>
 <p class="code">
-<code style="white-space: break-spaces">func play(file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero)->*<a href="#Audio_Voice">Audio.Voice</a> throw
+<code style="white-space: break-spaces">func play(file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, createFlags: <a href="#Audio_VoiceCreateFlags">Audio.VoiceCreateFlags</a> = VoiceCreateFlags.Default, playFlags: <a href="#Audio_VoicePlayFlags">Audio.VoicePlayFlags</a> = VoicePlayFlags.Zero)->*<a href="#Audio_Voice">Audio.Voice</a> throw
 </code>
 </p>
 <p>
-Play a voice.</p>
+Simple function that will create a voice and play it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func play(using self, playFlags = VoicePlayFlags.Zero) throw
+<code style="white-space: break-spaces">func play(using self, playFlags: <a href="#Audio_VoicePlayFlags">Audio.VoicePlayFlags</a> = VoicePlayFlags.Zero) throw
 </code>
 </p>
+<p>
+ See <a href="#Audio_Voice_create">Voice.create</a></p>
 <p>
 <table class="h3">
 <tr>
@@ -1075,7 +1079,7 @@ Play a voice.</p>
 <h3 class="content" id="Audio_Voice_setFrequencyRatio"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setFrequencyRatio</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L278" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1086,22 +1090,26 @@ Set the playing pitch.</p>
 </code>
 </p>
 <p>
+ The voice should have been created with <code class = "incode">VoiceCreateFlags.AcceptPitch</code>. See <a href="#Audio_Voice_create">Voice.create</a></p>
+<p>
 <table class="h3">
 <tr>
 <td class="h3">
 <h3 class="content" id="Audio_Voice_setRooting"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setRooting</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L283" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L290" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Root a voice to a given bus.</p>
+Root a voice to a given list of buses.</p>
 <p class="code">
 <code style="white-space: break-spaces">func setRooting(using self, buses: const [..] const *<a href="#Audio_Bus">Audio.Bus</a>) throw
 </code>
 </p>
+<p>
+ You can also set <code class = "incode">buses</code> to null if you want to root the voice only to the main bus (which is the default).</p>
 <p>
 <table class="h3">
 <tr>
@@ -1109,7 +1117,7 @@ Root a voice to a given bus.</p>
 <h3 class="content" id="Audio_Voice_setVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L252" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L255" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1313,7 +1321,7 @@ GUID_PCM</td>
 <p>
 Load a wav file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func loadFile(using file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, stream: *<a href="core.html#Core_File_FileStream">Core.File.FileStream</a>, loadDatas = true, loadMetaDatas = false) throw
+<code style="white-space: break-spaces">func loadFile(using file: *<a href="#Audio_SoundFile">Audio.SoundFile</a>, stream: *<a href="core.html#Core_File_FileStream">Core.File.FileStream</a>, loadDatas: bool = true, loadMetaDatas: bool = false) throw
 </code>
 </p>
 <p>

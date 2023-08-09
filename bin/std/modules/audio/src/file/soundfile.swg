@@ -1,7 +1,7 @@
 #global public
 using Core
 
-// Determins which informations in the 'SoundFile' struct are valid.
+// Determins which informations in the [SoundFile] struct are valid.
 #[Swag.EnumFlags]
 enum SoundFileValidityMask
 {

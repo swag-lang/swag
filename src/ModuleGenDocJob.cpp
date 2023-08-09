@@ -26,6 +26,8 @@ static bool canCollectNode(AstNode* node)
         return false;
     if (node->attributeFlags & ATTRIBUTE_NO_DOC)
         return false;
+    if (!node->sourceFile)
+        return false;
 
     switch (node->kind)
     {
@@ -41,9 +43,9 @@ static bool canCollectNode(AstNode* node)
         return false;
     }
 
-    if (node->sourceFile && node->sourceFile->isRuntimeFile)
+    if (node->sourceFile->isRuntimeFile)
         return true;
-    if (node->sourceFile && node->sourceFile->isBootstrapFile)
+    if (node->sourceFile->isBootstrapFile)
         return true;
     if (!node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return false;
@@ -367,6 +369,23 @@ void ModuleGenDocJob::outputTitle(OneRef& c)
     helpContent += "</p>\n";
 }
 
+Utf8 ModuleGenDocJob::findReference(const Utf8& name)
+{
+    auto it = collectInvert.find(name);
+    if (it != collectInvert.end())
+        return Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+
+    Vector<Utf8> tkns;
+    Utf8::tokenize(name, '.', tkns);
+    if (tkns.size() > 1)
+    {
+        tkns[0].makeLower();
+        return Fmt("<a href=\"%s.html#%s\">%s</a>", tkns[0].c_str(), toRef(name).c_str(), name.c_str());
+    }
+
+    return "";
+}
+
 Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
 {
     if (user.empty())
@@ -420,28 +439,18 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
                     if (*pz == ']')
                         pz++;
 
-                    auto it = collectInvert.find(name);
-                    if (it != collectInvert.end())
+                    auto ref = findReference(name);
+                    if (!ref.empty())
                     {
-                        result += Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+                        result += ref;
                     }
                     else
                     {
-                        Vector<Utf8> tkns;
-                        Utf8::tokenize(name, '.', tkns);
-                        if (tkns.size() > 1)
-                        {
-                            tkns[0].makeLower();
-                            result += Fmt("<a href=\"%s.html#%s\">%s</a>", tkns[0].c_str(), toRef(name).c_str(), name.c_str());
-                        }
-                        else
-                        {
-                            if (startBracket)
-                                result += "[";
-                            result += name;
-                            if (startBracket)
-                                result += "]";
-                        }
+                        if (startBracket)
+                            result += "[";
+                        result += name;
+                        if (startBracket)
+                            result += "]";
                     }
                 }
                 continue;
@@ -1334,6 +1343,7 @@ JobResult ModuleGenDocJob::execute()
 {
     // Setup
     concat.init();
+    outputCxt.forDoc     = true;
     outputCxt.exportType = [this](TypeInfo* typeInfo)
     {
         if (typeInfo->isNative() || typeInfo->isVariadic())

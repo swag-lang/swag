@@ -3967,7 +3967,7 @@ Setup the allocator.</p>
 <p>
 This function will assert if the given user address is not conform to an allocated block.</p>
 <p class="code">
-<code style="white-space: break-spaces">func assertIsAllocated(using self, addr: *void, callerLoc = #callerlocation)
+<code style="white-space: break-spaces">func assertIsAllocated(using self, addr: *void, callerLoc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -3999,7 +3999,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>, callerLoc = #callerlocation)
+<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>, callerLoc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>

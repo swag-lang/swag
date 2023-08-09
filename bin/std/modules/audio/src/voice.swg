@@ -88,7 +88,7 @@ public impl Voice
         destroyCodec()
     }
 
-    // Creates a new voice with a given sound file
+    // Creates a new voice for a given sound file.
     func create(file: *SoundFile, createFlags = VoiceCreateFlags.Default)->*Voice throw
     {
         let voice = g_Driver.createVoice()
@@ -100,8 +100,8 @@ public impl Voice
         return voice
     }
 
-    // Simple function that will create a voice and play it
-    // See [Create] and [Play]
+    // Plays a voice.
+    // See [Voice.create]
     #[Swag.Discardable]
     func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero)->*Voice throw
     {
@@ -110,7 +110,7 @@ public impl Voice
         return voice
     }
 
-    // Play a voice
+    // Simple function that will create a voice and play it.
     mtd play(playFlags = VoicePlayFlags.Zero) throw
     {
         if hasState(.Playing)

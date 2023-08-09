@@ -48,6 +48,7 @@ struct ModuleGenDocJob : public Job
     Utf8 getDocComment(AstNode* node);
     int  sortOrder(AstNodeKind kind);
 
+    Utf8 findReference(const Utf8& name);
     Utf8 getFormattedText(const Utf8& user, bool autoRef = false);
     Utf8 getOutputNode(AstNode* node);
     Utf8 getOutputType(TypeInfo* typeInfo);

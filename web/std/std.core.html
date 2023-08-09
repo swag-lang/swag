@@ -4213,7 +4213,7 @@ Returns true if <code class = "incode">oneArg</code> is a valid option (starting
 <p>
 Parse all the arguments and fill the result.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOptions{})-><a href="#Core_CommandLine_Result">Core.CommandLine.Result</a>(T) throw
+<code style="white-space: break-spaces">func(T) parse(st: *T, args: const [..] string, options: <a href="#Core_CommandLine_ParseOptions">Core.CommandLine.ParseOptions</a> = CommandLine.ParseOptions{})-><a href="#Core_CommandLine_Result">Core.CommandLine.Result</a>(T) throw
 </code>
 </p>
 <p>
@@ -4571,7 +4571,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func refill(using self, width = 24'u8)
+<code style="white-space: break-spaces">func refill(using self, width: u8 = 24'u8)
 </code>
 </p>
 <p>
@@ -4797,7 +4797,7 @@ Compress the source buffer.</p>
 <p>
 Initialize the compressor Can be called multiple times.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, level = CompressionLevel.Default, strategy = CompressionStrategy.Default, flags = CompressionFlags.Default)
+<code style="white-space: break-spaces">func init(using self, level: <a href="#Core_Compress_Deflate_CompressionLevel">Core.Compress.Deflate.CompressionLevel</a> = CompressionLevel.Default, strategy: <a href="#Core_Compress_Deflate_CompressionStrategy">Core.Compress.Deflate.CompressionStrategy</a> = CompressionStrategy.Default, flags: <a href="#Core_Compress_Deflate_CompressionFlags">Core.Compress.Deflate.CompressionFlags</a> = CompressionFlags.Default)
 </code>
 </p>
 <p>
@@ -4883,7 +4883,7 @@ Decompress stream.</p>
 <p>
 Decompress stream.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compress(using self, buffer: const [..] u8, level = Deflate.CompressionLevel.Default)-><a href="#Core_Array">Core.Array</a>(u8) throw
+<code style="white-space: break-spaces">func compress(using self, buffer: const [..] u8, level: <a href="#Core_Compress_Deflate_CompressionLevel">Core.Compress.Deflate.CompressionLevel</a> = Deflate.CompressionLevel.Default)-><a href="#Core_Array">Core.Array</a>(u8) throw
 </code>
 </p>
 <p>
@@ -5174,7 +5174,7 @@ Visit all valid buckets.</p>
 <p>
 Append a slice of bytes to the buffer If <code class = "incode">contiguous</code> is false, the slice will be divided in chunks if necessary.</p>
 <p class="code">
-<code style="white-space: break-spaces">func addBytes(using self, bytes: const [..] u8, contiguous = true)
+<code style="white-space: break-spaces">func addBytes(using self, bytes: const [..] u8, contiguous: bool = true)
 </code>
 </p>
 <p>
@@ -5923,7 +5923,7 @@ Disable console output. This is a counter, so can be called multiple times with 
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func assert(expr: bool, message: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func assert(expr: bool, message: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -5938,7 +5938,7 @@ Disable console output. This is a counter, so can be called multiple times with 
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func breakPanic(message: string, loc = #callerlocation)
+<code style="white-space: break-spaces">func breakPanic(message: string, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -5953,7 +5953,7 @@ Disable console output. This is a counter, so can be called multiple times with 
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func(what: string) safety(expr: bool, message: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func(what: string) safety(expr: bool, message: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -5968,7 +5968,7 @@ Disable console output. This is a counter, so can be called multiple times with 
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func safetyBoundCheck(expr: bool, message: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func safetyBoundCheck(expr: bool, message: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -6154,7 +6154,7 @@ Enumerate a directory.</p>
 <p>
 Get all the directories in the given directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateDirectories(dirName: string, matchExtension: string = null, recurse = false)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw
+<code style="white-space: break-spaces">func enumerateDirectories(dirName: string, matchExtension: string = null, recurse: bool = false)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw
 </code>
 </p>
 <p>
@@ -6171,7 +6171,7 @@ Get all the directories in the given directory.</p>
 <p>
 Get all the files of the given directory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func enumerateFiles(dirName: string, matchExtension: string = null, recurse = false)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw
+<code style="white-space: break-spaces">func enumerateFiles(dirName: string, matchExtension: string = null, recurse: bool = false)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_File_FileInfo">Core.File.FileInfo</a>) throw
 </code>
 </p>
 <p>
@@ -7401,7 +7401,7 @@ Close the reader.</p>
 <p>
 Open the reader.</p>
 <p class="code">
-<code style="white-space: break-spaces">func open(using self, fullname: string, encoding = TextEncoding.Utf8) throw
+<code style="white-space: break-spaces">func open(using self, fullname: string, encoding: <a href="#Core_File_TextEncoding">Core.File.TextEncoding</a> = TextEncoding.Utf8) throw
 </code>
 </p>
 <p>
@@ -7754,7 +7754,7 @@ Read a file, and store the result in an array of bytes.</p>
 <p>
 Read all the lines of a file.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readAllLines(fullname: string, encoding = TextEncoding.Utf8)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_String">Core.String</a>) throw
+<code style="white-space: break-spaces">func readAllLines(fullname: string, encoding: <a href="#Core_File_TextEncoding">Core.File.TextEncoding</a> = TextEncoding.Utf8)-><a href="#Core_Array">Core.Array</a>(<a href="#Core_String">Core.String</a>) throw
 </code>
 </p>
 <p>
@@ -7771,7 +7771,7 @@ Read all the lines of a file.</p>
 <p>
 Read a file, and store the result in an utf8 string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func readAllText(fullname: string, encoding = TextEncoding.Utf8)-><a href="#Core_String">Core.String</a> throw
+<code style="white-space: break-spaces">func readAllText(fullname: string, encoding: <a href="#Core_File_TextEncoding">Core.File.TextEncoding</a> = TextEncoding.Utf8)-><a href="#Core_String">Core.String</a> throw
 </code>
 </p>
 <p>
@@ -7789,7 +7789,7 @@ Read a file, and store the result in an utf8 string.</p>
 Call user code for each line.</p>
 <p class="code">
 <code style="white-space: break-spaces">#[Swag.Macro]
-func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: code) throw
+func readEachLines(fullname: string, encoding: <a href="#Core_File_TextEncoding">Core.File.TextEncoding</a> = TextEncoding.Utf8, stmt: code) throw
 </code>
 </p>
 <p>
@@ -12698,7 +12698,7 @@ const [256] <a href="#Core_Latin1_CharAttribute">Core.Latin1.CharAttribute</a></
 <p>
 Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compare(src: const [..] u8, dst: const [..] u8, ignoreCase = false)-&gt;s32
+<code style="white-space: break-spaces">func compare(src: const [..] u8, dst: const [..] u8, ignoreCase: bool = false)-&gt;s32
 </code>
 </p>
 <p>
@@ -12715,7 +12715,7 @@ Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1.</p>
 <p>
 Compare two utf8 strings in a natural way, dealing only with latin1 table Returns -1, 0 or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compareNatural(src: const [..] u8, dst: const [..] u8, ignoreCase = false)-&gt;s32
+<code style="white-space: break-spaces">func compareNatural(src: const [..] u8, dst: const [..] u8, ignoreCase: bool = false)-&gt;s32
 </code>
 </p>
 <p>
@@ -13538,7 +13538,7 @@ Get the logger prefix.</p>
 <p>
 Main print function.</p>
 <p class="code">
-<code style="white-space: break-spaces">func print(using self, text: string, loc = #callerlocation)
+<code style="white-space: break-spaces">func print(using self, text: string, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -14538,7 +14538,7 @@ Set Point to (0, 0).</p>
 <p>
 Check if two points are equal with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Point">Core.Math.Point</a>, eps = ConstF32.Epsilon)->bool
+<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Point">Core.Math.Point</a>, eps: f32 = ConstF32.Epsilon)->bool
 </code>
 </p>
 <p>
@@ -14572,7 +14572,7 @@ Returns <code class = "incode">true</code> if the Point is null.</p>
 <p>
 Check for zero with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps = ConstF32.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps: f32 = ConstF32.Epsilon)-&gt;bool
 </code>
 </p>
 <p>
@@ -15341,7 +15341,7 @@ Returns true if this instance has a surface of zero (width or height are null).<
 <p>
 Returns true if this instance has a surface of zero (width and height are null).</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEmptyEpsilon(using const self, eps = ConstF32.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isEmptyEpsilon(using const self, eps: f32 = ConstF32.Epsilon)-&gt;bool
 </code>
 </p>
 <p>
@@ -15392,7 +15392,7 @@ Returns true if this instance is null.</p>
 <p>
 Returns true if this instance is null with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps = ConstF32.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps: f32 = ConstF32.Epsilon)-&gt;bool
 </code>
 </p>
 <p>
@@ -16721,7 +16721,7 @@ Math.floor.</p>
 <p>
 Returns true if this vector is equals to another with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, eps = cast(f32) ConstF64.Epsilon)->bool
+<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Vector2">Core.Math.Vector2</a>, eps: f32 = cast(f32) ConstF64.Epsilon)->bool
 </code>
 </p>
 <p>
@@ -16789,7 +16789,7 @@ Returns true if this vector is null.</p>
 <p>
 Returns true if this vector is null with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps = cast(f32) ConstF64.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps: f32 = cast(f32) ConstF64.Epsilon)-&gt;bool
 </code>
 </p>
 <p>
@@ -17541,7 +17541,7 @@ Returns the dot product between two vectors.</p>
 <p>
 Returns true if this vector is equals to another with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>, eps = cast(f32) ConstF64.Epsilon)->bool
+<code style="white-space: break-spaces">func isEqualEpsilon(using const self, other: <a href="#Core_Math_Vector3">Core.Math.Vector3</a>, eps: f32 = cast(f32) ConstF64.Epsilon)->bool
 </code>
 </p>
 <p>
@@ -17575,7 +17575,7 @@ Returns true if this vector is null.</p>
 <p>
 Returns true if this vector is null with an epsilon.</p>
 <p class="code">
-<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps = cast(f32) ConstF64.Epsilon)-&gt;bool
+<code style="white-space: break-spaces">func isZeroEpsilon(using const self, eps: f32 = cast(f32) ConstF64.Epsilon)-&gt;bool
 </code>
 </p>
 <p>
@@ -18328,8 +18328,8 @@ func hasZeroByte(v: u64)-&gt;bool
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isEqualEpsilon(x: f32, y: f32, eps = ConstF32.Epsilon)
-func isEqualEpsilon(x: f64, y: f64, eps = ConstF64.Epsilon)
+<code style="white-space: break-spaces">func isEqualEpsilon(x: f32, y: f32, eps: f32 = ConstF32.Epsilon)
+func isEqualEpsilon(x: f64, y: f64, eps: f64 = ConstF64.Epsilon)
 </code>
 </p>
 <p>
@@ -18375,8 +18375,8 @@ func isNan(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isZeroEpsilon(x: f32, eps = ConstF32.Epsilon)
-func isZeroEpsilon(x: f64, eps = ConstF64.Epsilon)
+<code style="white-space: break-spaces">func isZeroEpsilon(x: f32, eps: f32 = ConstF32.Epsilon)
+func isZeroEpsilon(x: f64, eps: f64 = ConstF64.Epsilon)
 </code>
 </p>
 <p>
@@ -18977,7 +18977,7 @@ Align a value to the given amount.</p>
 <p>
 Allocate a given amount of bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(size: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
+<code style="white-space: break-spaces">func alloc(size: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)->^void
 </code>
 </p>
 <p>
@@ -18994,7 +18994,7 @@ Allocate a given amount of bytes.</p>
 <p>
 Check if a given pointer is allocated.</p>
 <p class="code">
-<code style="white-space: break-spaces">func assertIsAllocated(buffer: ^void, size: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func assertIsAllocated(buffer: ^void, size: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -19079,19 +19079,19 @@ Move one block of memory to a given address.</p>
 <p>
 Drop and release memory of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) delete(ptr: *T, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func(T) delete(ptr: *T, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
 Drop and release memory of an array of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) delete(ptr: ^T, num: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func(T) delete(ptr: ^T, num: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
 Drop and release memory of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func delete(ptr: *void, type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func delete(ptr: *void, type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -19125,7 +19125,7 @@ Compare two blocks of memory.</p>
 <p>
 Free the specified memory block.</p>
 <p class="code">
-<code style="white-space: break-spaces">func free(buffer: ^void, size: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func free(buffer: ^void, size: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -19142,7 +19142,7 @@ Free the specified memory block.</p>
 <p>
 Free all allocated memory of the given allocator if possible.</p>
 <p class="code">
-<code style="white-space: break-spaces">func freeAll(allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a>, hint: string = null, loc = #callerlocation)
+<code style="white-space: break-spaces">func freeAll(allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a>, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
 </code>
 </p>
 <p>
@@ -19176,19 +19176,19 @@ Clear the temporary allocator.</p>
 <p>
 Allocate and initialize the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) new(allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
+<code style="white-space: break-spaces">func(T) new(allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)->*T
 </code>
 </p>
 <p>
 Allocate and initialize an array of the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func(T) new(num: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^T
+<code style="white-space: break-spaces">func(T) new(num: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)->^T
 </code>
 </p>
 <p>
 Allocate and initialize the given type.</p>
 <p class="code">
-<code style="white-space: break-spaces">func new(type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
+<code style="white-space: break-spaces">func new(type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u32 = 0, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)->*u8
 </code>
 </p>
 <p>
@@ -19241,7 +19241,7 @@ func pushTempAllocator(stmt: code)
 <p>
 Reallocate/allocate a given amount of bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->^void
+<code style="white-space: break-spaces">func realloc(buffer: ^void, newSize: u64, oldSize: u64, allocator: <a href="swag.html#Swag_IAllocator">Swag.IAllocator</a> = null, alignement: u16 = 0, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)->^void
 </code>
 </p>
 <p>
@@ -19275,7 +19275,7 @@ Set the content of one block of memory to a specific byte value.</p>
 <p>
 Allocate a given amount of bytes in the temporary allocator.</p>
 <p class="code">
-<code style="white-space: break-spaces">func tempAlloc(size: u64, alignement: u32 = 0, hint: string = null, loc = #callerlocation)-&gt;^void
+<code style="white-space: break-spaces">func tempAlloc(size: u64, alignement: u32 = 0, hint: string = null, loc: <a href="swag.html#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)->^void
 </code>
 </p>
 <p>
@@ -20040,7 +20040,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">struct Rng(T = <a href="#Core_Random_MWC">Core.Random.MWC</a>)</code>
+<code style="white-space: break-spaces">struct Rng(T: <a href="#Core_Random_MWC">Core.Random.MWC</a> = <a href="#Core_Random_MWC">Core.Random.MWC</a>)</code>
 </p>
 <table class="enumeration">
 <tr>
@@ -20575,7 +20575,7 @@ Returns the given associated attributes to <code class = "incode">value</code>.<
 <p>
 Returns the enum value name corresponding to the value pointed by <code class = "incode">valueAddr</code> Can have multiple names if the enum is tagged with #<a href="swag.html#Swag_EnumFlags">Swag.EnumFlags</a>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getEnumName(type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, valueAddr: const *void, fullname = true)-><a href="#Core_String">Core.String</a>
+<code style="white-space: break-spaces">func getEnumName(type: const *<a href="swag.html#Swag_TypeInfo">Swag.TypeInfo</a>, valueAddr: const *void, fullname: bool = true)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -23861,7 +23861,7 @@ bool</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>, skipFat = false) throw
+<code style="white-space: break-spaces">func beginSection(using self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a>, skipFat: bool = false) throw
 </code>
 </p>
 <p>
@@ -24288,7 +24288,7 @@ Start encoding.</p>
 <p>
 Start a new section.</p>
 <p class="code">
-<code style="white-space: break-spaces">func beginSection(using self, kind = SectionKind.Unordered) throw
+<code style="white-space: break-spaces">func beginSection(using self, kind: <a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a> = SectionKind.Unordered) throw
 </code>
 </p>
 <p>
@@ -28564,7 +28564,7 @@ Join an list of strings to make a unique one, by using a given <code class = "in
 <p>
 Convert the string inplace to lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeLower(using self, set = CharacterSet.Latin1)
+<code style="white-space: break-spaces">func makeLower(using self, set: <a href="#Core_CharacterSet">Core.CharacterSet</a> = CharacterSet.Latin1)
 </code>
 </p>
 <p>
@@ -28581,7 +28581,7 @@ Convert the string inplace to lower case.</p>
 <p>
 Convert the string inplace to upper case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func makeUpper(using self, set = CharacterSet.Latin1)
+<code style="white-space: break-spaces">func makeUpper(using self, set: <a href="#Core_CharacterSet">Core.CharacterSet</a> = CharacterSet.Latin1)
 </code>
 </p>
 <p>
@@ -28839,7 +28839,7 @@ Remove some bytes at the end.</p>
 <p>
 Replace all occurences of <code class = "incode">what</code> with <code class = "incode">by</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func replace(using self, what: string, by: string, comparisonType = Utf8.ComparisonType.Latin1)
+<code style="white-space: break-spaces">func replace(using self, what: string, by: string, comparisonType: <a href="#Core_Utf8_ComparisonType">Core.Utf8.ComparisonType</a> = Utf8.ComparisonType.Latin1)
 </code>
 </p>
 <p>
@@ -28890,13 +28890,13 @@ Convert string to a 32 bits character array.</p>
 <p>
 Returns a new String in lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toLower(using self, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
+<code style="white-space: break-spaces">func toLower(using self, set: <a href="#Core_CharacterSet">Core.CharacterSet</a> = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
 Returns a new String in lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toLower(str: string, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
+<code style="white-space: break-spaces">func toLower(str: string, set: <a href="#Core_CharacterSet">Core.CharacterSet</a> = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -28947,13 +28947,13 @@ Returns a string type.</p>
 <p>
 Returns a new String in upper case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toUpper(using self, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
+<code style="white-space: break-spaces">func toUpper(using self, set: <a href="#Core_CharacterSet">Core.CharacterSet</a> = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
 Returns a new String in lower case.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toUpper(str: string, set = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
+<code style="white-space: break-spaces">func toUpper(str: string, set: <a href="#Core_CharacterSet">Core.CharacterSet</a> = CharacterSet.Latin1)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -29139,7 +29139,7 @@ Creates a new event.</p>
 <p>
 Initialize event.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, manual = false, initState = false)
+<code style="white-space: break-spaces">func init(using self, manual: bool = false, initState: bool = false)
 </code>
 </p>
 <p>
@@ -29750,7 +29750,7 @@ Sleep the current thread for a given amount of milliseconds.</p>
 <p>
 Initialize a thread in pause state.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, lambda: closure(<a href="#Core_Threading_Thread">Core.Threading.Thread</a>), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
+<code style="white-space: break-spaces">func init(using self, lambda: closure(<a href="#Core_Threading_Thread">Core.Threading.Thread</a>), userParam: *void = null, priority: <a href="#Core_Threading_ThreadPriority">Core.Threading.ThreadPriority</a> = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
 </code>
 </p>
 <p>
@@ -30246,7 +30246,7 @@ Returns a DateTime containing the current date and time.</p>
 <p>
 Convert a string to a DateTime with the given format.</p>
 <p class="code">
-<code style="white-space: break-spaces">func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->struct
+<code style="white-space: break-spaces">func parse(str: string, fmt: <a href="#Core_Time_DateTimeFormat">Core.Time.DateTimeFormat</a> = DateTimeFormat.DateTime, checkDate: bool = true)->struct
 { 
 	value: <a href="#Core_Time_DateTime">Core.Time.DateTime</a>
 	eat: u32
@@ -30285,7 +30285,7 @@ Initialize the structure with the current local date and time.</p>
 <p>
 Convert to string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toString(using self, fmt = DateTimeFormat.DateTime)-><a href="#Core_String">Core.String</a>
+<code style="white-space: break-spaces">func toString(using self, fmt: <a href="#Core_Time_DateTimeFormat">Core.Time.DateTimeFormat</a> = DateTimeFormat.DateTime)-><a href="#Core_String">Core.String</a>
 </code>
 </p>
 <p>
@@ -31472,7 +31472,7 @@ Release the timer.</p>
 <p>
 Creates a new timer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(elapsedTimeMs: u32, lambda: func(<a href="#Core_Time_Timer">Core.Time.Timer</a>), periodic = false)-><a href="#Core_Time_Timer">Core.Time.Timer</a> throw
+<code style="white-space: break-spaces">func create(elapsedTimeMs: u32, lambda: func(<a href="#Core_Time_Timer">Core.Time.Timer</a>), periodic: bool = false)-><a href="#Core_Time_Timer">Core.Time.Timer</a> throw
 </code>
 </p>
 <p>
@@ -31489,7 +31489,7 @@ Creates a new timer.</p>
 <p>
 Initialize timer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func init(using self, elapsedTimeMs: u32, lambda: func(<a href="#Core_Time_Timer">Core.Time.Timer</a>), periodic = false) throw
+<code style="white-space: break-spaces">func init(using self, elapsedTimeMs: u32, lambda: func(<a href="#Core_Time_Timer">Core.Time.Timer</a>), periodic: bool = false) throw
 </code>
 </p>
 <p>
@@ -31757,7 +31757,7 @@ Eat all spaces, and returns the remaining string (trim left).</p>
 <p>
 Returns a sub string starting at <code class = "incode">startByteIndex</code> and ending with <code class = "incode">delimiter</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getTo(src: string, delimiter: u8, startByteIndex = 0'u64, includeDelimiter = true)-&gt;string
+<code style="white-space: break-spaces">func getTo(src: string, delimiter: u8, startByteIndex: u64 = 0'u64, includeDelimiter: bool = true)-&gt;string
 </code>
 </p>
 <p>
@@ -31808,13 +31808,13 @@ Returns the first substring of <code class = "incode">str</code> containing only
 <p>
 Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> String is destroyed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)-><a href="#Core_Array">Core.Array</a>(string)
+<code style="white-space: break-spaces">func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty: bool = true)-><a href="#Core_Array">Core.Array</a>(string)
 </code>
 </p>
 <p>
 Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <code class = "incode">src</code> is destroyed.</p>
 <p class="code">
-<code style="white-space: break-spaces">func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true)-><a href="#Core_Array">Core.Array</a>(string)
+<code style="white-space: break-spaces">func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty: bool = true)-><a href="#Core_Array">Core.Array</a>(string)
 </code>
 </p>
 <p>
@@ -32588,7 +32588,7 @@ Returns the byte index of the given rune index.</p>
 <p>
 Compare two utf8 buffers with the given algorithm.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compare(src: const [..] u8, dst: const [..] u8, comparisonType = ComparisonType.Latin1)-&gt;s32
+<code style="white-space: break-spaces">func compare(src: const [..] u8, dst: const [..] u8, comparisonType: <a href="#Core_Utf8_ComparisonType">Core.Utf8.ComparisonType</a> = ComparisonType.Latin1)->s32
 </code>
 </p>
 <p>
@@ -32723,7 +32723,7 @@ Convert rune <code class = "incode">src</code> to an utf8 sequence, and returns 
 <p>
 Return true if the string ends with <code class = "incode">str</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)-&gt;bool
+<code style="white-space: break-spaces">func endsWith(src: const [..] u8, str: string, comparisonType: <a href="#Core_Utf8_ComparisonType">Core.Utf8.ComparisonType</a> = ComparisonType.Latin1)->bool
 </code>
 </p>
 <p>
@@ -32807,19 +32807,19 @@ Convert an utf16 buffer to a String.</p>
 <p>
 Find one of the runes in <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)-&gt;u64
+<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex: u64 = 0'u64)-&gt;u64
 </code>
 </p>
 <p>
 Find the first occurence of rune <code class = "incode">what</code>, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)-&gt;u64
+<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: rune, startByteIndex: u64 = 0'u64)-&gt;u64
 </code>
 </p>
 <p>
 Find the given string, and returns the byte index of it.</p>
 <p class="code">
-<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, comparisonType = ComparisonType.Latin1)-&gt;u64
+<code style="white-space: break-spaces">func indexOf(src: const [..] u8, what: string, startByteIndex: u64 = 0'u64, comparisonType: <a href="#Core_Utf8_ComparisonType">Core.Utf8.ComparisonType</a> = ComparisonType.Latin1)->u64
 </code>
 </p>
 <p>
@@ -32888,7 +32888,7 @@ Find the last rune occurence of <code class = "incode">what</code>, and returns 
 <p>
 Returns the last index (in bytes) of a string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)-&gt;u64
+<code style="white-space: break-spaces">func lastIndexOf(src: const [..] u8, what: string, comparisonType: <a href="#Core_Utf8_ComparisonType">Core.Utf8.ComparisonType</a> = ComparisonType.Latin1)->u64
 </code>
 </p>
 <p>
@@ -32928,7 +32928,7 @@ Returns the last rune of the slice.</p>
 <p>
 Return true if the string starts with <code class = "incode">str</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)-&gt;bool
+<code style="white-space: break-spaces">func startsWith(src: const [..] u8, str: string, comparisonType: <a href="#Core_Utf8_ComparisonType">Core.Utf8.ComparisonType</a> = ComparisonType.Latin1)->bool
 </code>
 </p>
 <p>

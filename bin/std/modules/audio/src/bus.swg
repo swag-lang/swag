@@ -8,7 +8,8 @@ public struct Bus
 
 public impl Bus
 {
-    // Creates an audio bus
+    // Creates an audio bus.
+    // You can then associate a [Voice] to that bus with [Voice.setRooting]
     func create(numChannels: u32, parent: *Bus = null)->*Bus throw
     {
         let bus = Memory.new'Bus()
@@ -20,7 +21,7 @@ public impl Bus
         return bus
     }
 
-    // Creates an audio bus
+    // Destroy the bus (immediatly)
     mtd destroy() throw
     {
         destroyNative()
@@ -30,7 +31,7 @@ public impl Bus
         Memory.delete(self)
     }
 
-    // Set the playing bus volume
+    // Set the playing bus volume in DB
     mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
     {
         setVolume(convertDBToPercent(volumeDB), batchID)

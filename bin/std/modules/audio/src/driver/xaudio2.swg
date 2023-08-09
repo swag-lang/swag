@@ -78,7 +78,31 @@ impl DriverNative
     }
 }
 
-// Defines play callbacks
+impl Driver
+{
+    mtd setOutputVolume(volume: f32) throw
+    {
+        if !masteringVoice
+            return
+        let hr = masteringVoice.vtbl.setVolume(acast masteringVoice, volume, 0)
+        if hr != S_OK
+            throw "error"
+    }
+
+    mtd getOutputVolume()->f32
+    {
+        if !masteringVoice
+            return 0
+        var volume: f32
+        masteringVoice.vtbl.getVolume(acast masteringVoice, &volume)
+        return volume
+    }
+}
+
+///////////////////////////////////////////////////////////////
+// XAUDIO2 CALLBACKS
+///////////////////////////////////////////////////////////////
+
 private
 {
     var g_ThreadCxt:    Swag.Context
@@ -116,27 +140,6 @@ private
     g_Cbi.onBufferEnd                = @mkcallback(&onBufferEnd)
     g_Cbi.onLoopEnd                  = @mkcallback(&onLoopEnd)
     g_Cbi.onVoiceError               = @mkcallback(&onVoiceError)
-}
-
-impl Driver
-{
-    mtd setOutputVolume(volume: f32) throw
-    {
-        if !masteringVoice
-            return
-        let hr = masteringVoice.vtbl.setVolume(acast masteringVoice, volume, 0)
-        if hr != S_OK
-            throw "error"
-    }
-
-    mtd getOutputVolume()->f32
-    {
-        if !masteringVoice
-            return 0
-        var volume: f32
-        masteringVoice.vtbl.getVolume(acast masteringVoice, &volume)
-        return volume
-    }
 }
 
 ///////////////////////////////////////////////////////////////
@@ -248,7 +251,7 @@ impl Voice
 
 public impl Voice
 {
-    // Set the playing voice volume between [0..1]
+    // Set the playing voice volume between [0..1].
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {
         if !handle
@@ -259,7 +262,7 @@ public impl Voice
             throw "error"
     }
 
-    // Returns the actual volume
+    // Returns the actual volume.
     mtd getVolume()->f32 throw
     {
         if !handle
@@ -269,7 +272,9 @@ public impl Voice
         return volume
     }
 
-    // Set the playing pitch
+    // Set the playing pitch.
+    // The voice should have been created with 'VoiceCreateFlags.AcceptPitch'.
+    // See [Voice.create]
     mtd setFrequencyRatio(ratio: f32, batchID: u32 = 0) throw
     {
         if !handle
@@ -279,7 +284,9 @@ public impl Voice
             throw "error"
     }
 
-    // Root a voice to a given bus
+    // Root a voice to a given list of buses.
+    // You can also set 'buses' to null if you want to root the voice only to the
+    // main bus (which is the default).
     mtd setRooting(buses: const [..] *Bus) throw
     {
         const MaxBus = 16
@@ -351,7 +358,7 @@ impl Bus
 
 public impl Bus
 {
-    // Set the playing voice volume between [0..1]
+    // Set the playing bus volume between [0..1]
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {
         if !handle

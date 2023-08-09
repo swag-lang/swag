@@ -3681,13 +3681,13 @@ Release the given font.</p>
 <p>
 Creates a new Font of the given typeface and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(typeFace: *<a href="#Pixel_TypeFace">Pixel.TypeFace</a>, size: u32, forceBold = false, forceItalic = false)->*<a href="#Pixel_Font">Pixel.Font</a>
+<code style="white-space: break-spaces">func create(typeFace: *<a href="#Pixel_TypeFace">Pixel.TypeFace</a>, size: u32, forceBold: bool = false, forceItalic: bool = false)->*<a href="#Pixel_Font">Pixel.Font</a>
 </code>
 </p>
 <p>
 Creates a new Font with the given filename and size.</p>
 <p class="code">
-<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold = false, forceItalic = false)->*<a href="#Pixel_Font">Pixel.Font</a> throw
+<code style="white-space: break-spaces">func create(fullname: string, size: u32, forceBold: bool = false, forceItalic: bool = false)->*<a href="#Pixel_Font">Pixel.Font</a> throw
 </code>
 </p>
 <p>
@@ -4092,7 +4092,7 @@ Restart at frame 0.</p>
 <p>
 Create an image for the current frame.</p>
 <p class="code">
-<code style="white-space: break-spaces">func getFrame(using self, image: *<a href="#Pixel_Image">Pixel.Image</a>, decodePixels = true)
+<code style="white-space: break-spaces">func getFrame(using self, image: *<a href="#Pixel_Image">Pixel.Image</a>, decodePixels: bool = true)
 </code>
 </p>
 <p>
@@ -5811,7 +5811,7 @@ Clear the content of the image.</p>
 <p>
 Colorize the image by setting the hue and saturation.</p>
 <p class="code">
-<code style="white-space: break-spaces">func colorize(using self, hue: f32, saturation: f32, strength = 1.0)
+<code style="white-space: break-spaces">func colorize(using self, hue: f32, saturation: f32, strength: f32 = 1.0)
 </code>
 </p>
 <p>
@@ -6224,7 +6224,7 @@ Flip image horizontally.</p>
 <p>
 Mix with another image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func mix(using self, srcImage: <a href="#Pixel_Image">Pixel.Image</a>, x: s32, y: s32, mode = MixMode.Copy)
+<code style="white-space: break-spaces">func mix(using self, srcImage: <a href="#Pixel_Image">Pixel.Image</a>, x: s32, y: s32, mode: <a href="#Pixel_Image_MixMode">Pixel.Image.MixMode</a> = MixMode.Copy)
 </code>
 </p>
 <p>
@@ -6274,7 +6274,7 @@ Release the content of the image.</p>
 <p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p class="code">
-<code style="white-space: break-spaces">func resize(using self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)
+<code style="white-space: break-spaces">func resize(using self, newWidth: s32, newHeight: s32, mode: <a href="#Pixel_Image_ResizeMode">Pixel.Image.ResizeMode</a> = ResizeMode.Raw)
 </code>
 </p>
 <p>
@@ -6479,7 +6479,7 @@ Flip image horizontally.</p>
 <p>
 Mix with another image.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toMix(using const self, srcImage: <a href="#Pixel_Image">Pixel.Image</a>, x: s32, y: s32, mode = MixMode.Copy)-><a href="#Pixel_Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toMix(using const self, srcImage: <a href="#Pixel_Image">Pixel.Image</a>, x: s32, y: s32, mode: <a href="#Pixel_Image_MixMode">Pixel.Image.MixMode</a> = MixMode.Copy)-><a href="#Pixel_Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -6496,7 +6496,7 @@ Mix with another image.</p>
 <p>
 Resize image Put <code class = "incode">newWidth</code> or <code class = "incode">newHeight</code> to 0 to keep aspect ratio.</p>
 <p class="code">
-<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode = ResizeMode.Raw)-><a href="#Pixel_Image">Pixel.Image</a>
+<code style="white-space: break-spaces">func toResize(using const self, newWidth: s32, newHeight: s32, mode: <a href="#Pixel_Image_ResizeMode">Pixel.Image.ResizeMode</a> = ResizeMode.Raw)-><a href="#Pixel_Image">Pixel.Image</a>
 </code>
 </p>
 <p>
@@ -7217,7 +7217,7 @@ Add a curve from the previous point to <code class = "incode">pt</code>.</p>
 <p>
 Convert the path to a list of points.</p>
 <p class="code">
-<code style="white-space: break-spaces">func flatten(using self, quality = PaintQuality.Normal)
+<code style="white-space: break-spaces">func flatten(using self, quality: <a href="#Pixel_PaintQuality">Pixel.PaintQuality</a> = PaintQuality.Normal)
 </code>
 </p>
 <p>
@@ -8808,7 +8808,7 @@ Call this before drawing.</p>
 <p>
 Bind a render target.</p>
 <p class="code">
-<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *<a href="#Pixel_RenderTarget">Pixel.RenderTarget</a>, paintAlpha = false)
+<code style="white-space: break-spaces">func bindRenderTarget(using self, tgt: *<a href="#Pixel_RenderTarget">Pixel.RenderTarget</a>, paintAlpha: bool = false)
 </code>
 </p>
 <p>
@@ -9030,7 +9030,7 @@ func drawRect(using self, left: f32, top: f32, width: f32, height: f32, color: <
 <p>
 Draw a rich string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawRichString(using self, pos: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, text: *<a href="#Pixel_RichString">Pixel.RichString</a>, format: <a href="#Pixel_RichStringFormat">Pixel.RichStringFormat</a>, forceCompute = false)
+<code style="white-space: break-spaces">func drawRichString(using self, pos: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, text: *<a href="#Pixel_RichString">Pixel.RichString</a>, format: <a href="#Pixel_RichStringFormat">Pixel.RichStringFormat</a>, forceCompute: bool = false)
 </code>
 </p>
 <p>
@@ -9072,13 +9072,13 @@ func drawRoundRect(using self, left: f32, top: f32, width: f32, height: f32, rad
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="#Pixel_Font">Pixel.Font</a>, brush: <a href="#Pixel_Brush">Pixel.Brush</a>, under = UnderlineStyle.None, zoom = 1.0)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="#Pixel_Font">Pixel.Font</a>, brush: <a href="#Pixel_Brush">Pixel.Brush</a>, under: <a href="#Pixel_UnderlineStyle">Pixel.UnderlineStyle</a> = UnderlineStyle.None, zoom: f32 = 1.0)
 </code>
 </p>
 <p>
 Draw a simple string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="#Pixel_Font">Pixel.Font</a>, color: <a href="#Pixel_Color">Pixel.Color</a>, under = UnderlineStyle.None, zoom = 1.0)
+<code style="white-space: break-spaces">func drawString(using self, left: f32, top: f32, text: string, font: *<a href="#Pixel_Font">Pixel.Font</a>, color: <a href="#Pixel_Color">Pixel.Color</a>, under: <a href="#Pixel_UnderlineStyle">Pixel.UnderlineStyle</a> = UnderlineStyle.None, zoom: f32 = 1.0)
 </code>
 </p>
 <p>
@@ -9095,7 +9095,7 @@ Draw a simple string.</p>
 <p>
 Draw a simple string (centered).</p>
 <p class="code">
-<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *<a href="#Pixel_Font">Pixel.Font</a>, color: <a href="#Pixel_Color">Pixel.Color</a>, under = UnderlineStyle.None, zoom = 1.0)
+<code style="white-space: break-spaces">func drawStringCenter(using self, x: f32, y: f32, text: string, font: *<a href="#Pixel_Font">Pixel.Font</a>, color: <a href="#Pixel_Color">Pixel.Color</a>, under: <a href="#Pixel_UnderlineStyle">Pixel.UnderlineStyle</a> = UnderlineStyle.None, zoom: f32 = 1.0)
 </code>
 </p>
 <p>
@@ -9514,7 +9514,7 @@ Restore the pushed transformation.</p>
 <p>
 Interface the given rectangle with the current clipping rectangle.</p>
 <p class="code">
-<code style="white-space: break-spaces">func pushClippingRect(using self, rect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, isSurfacePos = false)
+<code style="white-space: break-spaces">func pushClippingRect(using self, rect: <a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a>, isSurfacePos: bool = false)
 </code>
 </p>
 <p>
@@ -9741,7 +9741,7 @@ Set the paint scale.</p>
 <p>
 Set antialiased mode on/off.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setAntialiased(using self, aa = true)
+<code style="white-space: break-spaces">func setAntialiased(using self, aa: bool = true)
 </code>
 </p>
 <p>
@@ -10008,7 +10008,7 @@ Set the paint transformation.</p>
 <p>
 Start painting in the clipping buffer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func startClippingRegion(using self, mode = ClippingMode.Set)
+<code style="white-space: break-spaces">func startClippingRegion(using self, mode: <a href="#Pixel_ClippingMode">Pixel.ClippingMode</a> = ClippingMode.Set)
 </code>
 </p>
 <p>
@@ -12307,7 +12307,7 @@ Associate a string.</p>
 <p>
 Compute layout.</p>
 <p class="code">
-<code style="white-space: break-spaces">func compute(using self, force = false)
+<code style="white-space: break-spaces">func compute(using self, force: bool = false)
 </code>
 </p>
 <p>
@@ -13511,7 +13511,7 @@ Release the given typeface.</p>
 <p>
 Render one glyph.</p>
 <p class="code">
-<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold = false, forceItalic = false)->const *<a href="freetype.html#FreeType_FT_Bitmap">FreeType.FT_Bitmap</a> throw
+<code style="white-space: break-spaces">func renderGlyph(using self, c: rune, size: u32, forceBold: bool = false, forceItalic: bool = false)->const *<a href="freetype.html#FreeType_FT_Bitmap">FreeType.FT_Bitmap</a> throw
 </code>
 </p>
 <p>
