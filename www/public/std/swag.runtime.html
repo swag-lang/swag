@@ -1236,7 +1236,7 @@ Reverses the order of bytes in an integer.</p>
 <p>
 Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ICompiler</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1253,7 +1253,7 @@ Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with
 <p>
 Raise a compiler error at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilererror</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilererror</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1270,7 +1270,7 @@ Raise a compiler error at the given source location.</p>
 <p>
 Raise a compiler warning at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilerwarning</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilerwarning</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1334,7 +1334,7 @@ Raise a compiler warning at the given source location.</p>
 <p>
 Returns the current raised <a href="#Swag_Error">Error</a> or null if none.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@err</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Error</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@err</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1416,7 +1416,7 @@ Free a system memory block allocated with <a href="#@alloc">@alloc</a>.</p>
 <p>
 Get the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getcontext</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getcontext</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Context">Context</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1433,7 +1433,7 @@ Get the current thread context.</p>
 <p>
 Get informations about the current process.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getpinfos</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ProcessInfos</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getpinfos</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ProcessInfos">ProcessInfos</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1450,7 +1450,7 @@ Get informations about the current process.</p>
 <p>
 Returns the list of all global variables.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@gvtd</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Gvtd</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@gvtd</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Gvtd">Gvtd</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1482,7 +1482,7 @@ Returns <code class="incode">true</code> is the current execution is bytecode.</
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@itftableof</span><span class="SyntaxCode">(structType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoStruct</span><span class="SyntaxCode">, itfType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoStruct</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@itftableof</span><span class="SyntaxCode">(structType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span><span class="SyntaxCode">, itfType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1663,7 +1663,7 @@ Set all bytes of a given memory block to <code class="incode">value</code>.</p>
 <p>
 Returns the list of all loaded modules.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@modules</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Module</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@modules</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Module">Module</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1701,7 +1701,7 @@ Returns (val1 * val2) + val3.</p>
 <p>
 Stop the execution and panic.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@panic</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@panic</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1799,7 +1799,7 @@ Realloc a system memory block allocated with <a href="#@alloc">@alloc</a>.</p>
 <p>
 Replace the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@setcontext</span><span class="SyntaxCode">(context: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@setcontext</span><span class="SyntaxCode">(context: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Context">Context</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1976,7 +1976,7 @@ Returns the length of the given 0 terminated string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@typecmp</span><span class="SyntaxCode">(typeA: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, typeB: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, cmpFlags: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeCmpFlags</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@typecmp</span><span class="SyntaxCode">(typeA: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode">, typeB: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode">, cmpFlags: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2643,7 +2643,7 @@ Change the behavior of a given warning or list of warnings.</p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Align</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Align">Align</a></span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2824,7 +2824,7 @@ Alignement constraint.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttrMulti</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_AttrMulti">AttrMulti</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2841,7 +2841,7 @@ Alignement constraint.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttrUsage</span><span class="SyntaxCode">(usage: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AttributeUsage</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_AttrUsage">AttrUsage</a></span><span class="SyntaxCode">(usage: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AttributeUsage">AttributeUsage</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3657,7 +3657,7 @@ A <code class="incode">return</code> in the following inlined function must be d
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CalleeReturn</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_CalleeReturn">CalleeReturn</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3676,7 +3676,7 @@ The following function or variable is only defined at compile time.</p>
 <div class="addinfos"><b>Usage</b>: function global-var const 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Compiler</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Compiler">Compiler</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3900,7 +3900,7 @@ The following switch must be complete.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Complete</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Complete">Complete</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3919,7 +3919,7 @@ Can be executed at compile time.</p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ConstExpr</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_ConstExpr">ConstExpr</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4307,7 +4307,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4322,7 +4322,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4352,7 +4352,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4369,7 +4369,7 @@ Setup the allocator.</p>
 <p>
 This function will assert if the given user address is not conform to an allocated block.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, callerLoc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode"> = #callerlocation)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, callerLoc = #callerlocation)
 </code>
 </p>
 <p>
@@ -4401,7 +4401,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DebugAllocatorHeader</span><span class="SyntaxCode">, callerLoc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode"> = #callerlocation)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">, callerLoc = #callerlocation)
 </code>
 </p>
 <p>
@@ -4416,7 +4416,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DebugAllocatorHeader</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4495,7 +4495,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 <p>
 Setup the allocator.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4640,7 +4640,7 @@ The following definition is deprecated and should not be used.</p>
 <div class="addinfos"><b>Usage</b>: function enum enum-value struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Deprecated</span><span class="SyntaxCode">(msg: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Deprecated">Deprecated</a></span><span class="SyntaxCode">(msg: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4659,7 +4659,7 @@ The following function accepts that the called does not use its return value.</p
 <div class="addinfos"><b>Usage</b>: function var 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Discardable</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Discardable">Discardable</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4678,7 +4678,7 @@ The following enum is a set of flags.</p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFlags</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_EnumFlags">EnumFlags</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4697,7 +4697,7 @@ The following enum can be used to index arrays without casting.</p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumIndex</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_EnumIndex">EnumIndex</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4796,7 +4796,7 @@ Warning</td>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExportType</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_ExportType">ExportType</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4833,7 +4833,7 @@ The following function is foreign (imported).</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Foreign</span><span class="SyntaxCode">(module: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, function: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">""</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Foreign">Foreign</a></span><span class="SyntaxCode">(module: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, function: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">""</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4850,7 +4850,7 @@ The following function is foreign (imported).</p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Global</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Global">Global</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4921,7 +4921,7 @@ func(*Swag.IAllocator, *Swag.AllocatorRequest)</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4998,7 +4998,7 @@ Compile a global string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBuildCfg</span><span class="SyntaxCode">(self)*</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BuildCfg</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBuildCfg</span><span class="SyntaxCode">(self)*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5013,7 +5013,7 @@ Compile a global string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">(self)</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMessage</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">(self)</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5032,7 +5032,7 @@ Can force an <code class="incode">opCast</code> special function to work as impl
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Implicit</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Implicit">Implicit</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5051,7 +5051,7 @@ The following switch is incomplete.</p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Incomplete</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Incomplete">Incomplete</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5070,7 +5070,7 @@ Force a function to be inlined.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Inline</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Inline">Inline</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5122,7 +5122,7 @@ The following function is a <code class="incode">macro</code>.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Macro">Macro</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5139,7 +5139,7 @@ The following function is a <code class="incode">macro</code>.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Match</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Match">Match</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5158,7 +5158,7 @@ The following function is a <code class="incode">mixin</code>.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Mixin</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Mixin">Mixin</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5212,7 +5212,7 @@ The following struct should never be copied.</p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NoCopy</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NoCopy">NoCopy</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5231,7 +5231,7 @@ Do not generate documentation.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NoDoc</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NoDoc">NoDoc</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5250,7 +5250,7 @@ Never inline the following function.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NoInline</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NoInline">NoInline</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5271,7 +5271,7 @@ The following function is forced to not be generic, even if defined inside a gen
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NotGeneric</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NotGeneric">NotGeneric</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5290,7 +5290,7 @@ Struct field member relocation.</p>
 <div class="addinfos"><b>Usage</b>: struct-var 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Offset</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Offset">Offset</a></span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5311,7 +5311,7 @@ When exporting the following struct, do not export its content.</p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Opaque</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Opaque">Opaque</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5330,7 +5330,7 @@ Enable/Disable a given function optimization.</p>
 <div class="addinfos"><b>Usage</b>: function multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Optim</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Optim">Optim</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5355,7 +5355,7 @@ Enable/Disable a given function optimization.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Overflow</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Overflow">Overflow</a></span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5374,7 +5374,7 @@ Enable/Disable a given function optimization.</p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pack</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Pack">Pack</a></span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5393,7 +5393,7 @@ On a function or a struct, this will print the associated generated bytecode (af
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PrintBc</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_PrintBc">PrintBc</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5412,7 +5412,7 @@ On a function or a struct, this will print the associated generated bytecode (ri
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PrintGenBc</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_PrintGenBc">PrintGenBc</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5527,15 +5527,15 @@ Enable/Disable one or more safety checks.</p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Safety">Safety</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
  For example:</p>
 <p class="code">
-<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode">(</span><span class="SyntaxString">""</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]                    </span><span class="SyntaxComment">// Disable all</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Safety">Safety</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">""</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]                    </span><span class="SyntaxComment">// Disable all</span><span class="SyntaxCode">
 
- #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode">(</span><span class="SyntaxString">"boundcheck|nan"</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]      </span><span class="SyntaxComment">// Disable 'boundcheck' and 'nan' checks</span><span class="SyntaxCode">
+ #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Safety">Safety</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"boundcheck|nan"</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]      </span><span class="SyntaxComment">// Disable 'boundcheck' and 'nan' checks</span><span class="SyntaxCode">
 
 </code>
 </p>
@@ -5689,7 +5689,7 @@ This will call <code class="incode">release</code> prior to changing the capacit
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5704,7 +5704,7 @@ This will call <code class="incode">release</code> prior to changing the capacit
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5719,7 +5719,7 @@ This will call <code class="incode">release</code> prior to changing the capacit
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5852,7 +5852,7 @@ Release the allocated block.</p>
 <p>
 This will call <code class="incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5936,7 +5936,7 @@ End column.</p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Strict">Strict</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5962,7 +5962,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5977,7 +5977,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -6056,7 +6056,7 @@ Put the following global variable in the <code class="incode">tls</code> segment
 <div class="addinfos"><b>Usage</b>: global-var 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Tls</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Tls">Tls</a></span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -7234,7 +7234,7 @@ Unique crc32.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Using</span><span class="SyntaxCode">(what: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">...)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Using">Using</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode">...)
 </code>
 </p>
 <p>
@@ -7253,15 +7253,15 @@ Change the behavior of a given warning or list of warnings.</p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, level: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, level: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
  For example:</p>
 <p class="code">
-<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Error</span><span class="SyntaxCode">)
- #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0003|wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Disable</span><span class="SyntaxCode">)
- #global #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0001"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Enable</span><span class="SyntaxCode">)]
+<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span><span class="SyntaxCode">)
+ #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0003|wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Disable</span><span class="SyntaxCode">)
+ #global #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0001"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Enable</span><span class="SyntaxCode">)]
 </code>
 </p>
 <p>

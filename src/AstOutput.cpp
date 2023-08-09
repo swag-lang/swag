@@ -711,13 +711,6 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, AstVarDecl
         }
     }
 
-    // Special case when exporting for doc generation. We output the type too, not just the assignment.
-    if (context.forDoc && !varNode->type && varNode->assignment && varNode->assignment->typeInfo)
-    {
-        CONCAT_FIXED_STR(concat, ": ");
-        outputType(context, concat, varNode->assignment, varNode->assignment->typeInfo);
-    }
-
     if (varNode->assignment)
     {
         CONCAT_FIXED_STR(concat, " = ");

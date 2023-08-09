@@ -644,7 +644,32 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
         repl.replace(">", "&gt;");
     }
 
-    helpContent += syntaxColor(repl, SyntaxColorMode::ForDoc);
+    // Syntax coloration
+    auto codeText = syntaxColor(repl, SyntaxColorMode::ForDoc);
+
+    // References
+    repl.clear();
+    const char* pz = codeText.c_str();
+    while (*pz)
+    {
+        if (SWAG_IS_ALPHA(*pz) || *pz == '_')
+        {
+            Utf8 nameToRef;
+            while (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.')
+                nameToRef += *pz++;
+            auto toRef = findReference(nameToRef);
+            if (toRef.empty())
+                repl += nameToRef;
+            else
+                repl += toRef;
+        }
+        else
+        {
+            repl += *pz++;
+        }
+    }
+
+    helpContent += repl;
     helpContent += "</code>\n";
     helpContent += "</p>\n";
 }
@@ -1361,7 +1386,8 @@ JobResult ModuleGenDocJob::execute()
 {
     // Setup
     concat.init();
-    outputCxt.forDoc     = true;
+    outputCxt.forDoc = true;
+
     outputCxt.exportType = [this](TypeInfo* typeInfo)
     {
         if (typeInfo->isNative() || typeInfo->isVariadic())
