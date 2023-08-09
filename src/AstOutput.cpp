@@ -987,16 +987,9 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
     }
 
     // Export type name
-    if (context.exportType)
-    {
-        concat.addString(context.exportType(typeInfo));
-    }
-    else
-    {
-        typeInfo->computeScopedNameExport();
-        SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
-        concat.addString(typeInfo->scopedNameExport);
-    }
+    typeInfo->computeScopedNameExport();
+    SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
+    concat.addString(typeInfo->scopedNameExport);
 
     return true;
 }

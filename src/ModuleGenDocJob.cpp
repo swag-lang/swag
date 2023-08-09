@@ -387,6 +387,14 @@ Utf8 ModuleGenDocJob::findReference(const Utf8& name)
     return "";
 }
 
+Utf8 ModuleGenDocJob::getReference(const Utf8& name)
+{
+    auto ref = findReference(name);
+    if (ref.empty())
+        return name;
+    return ref;
+}
+
 Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user)
 {
     if (user.empty())
@@ -657,11 +665,7 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
             Utf8 nameToRef;
             while (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.')
                 nameToRef += *pz++;
-            auto toRef = findReference(nameToRef);
-            if (toRef.empty())
-                repl += nameToRef;
-            else
-                repl += toRef;
+            repl += getReference(nameToRef);
         }
         else
         {
@@ -683,22 +687,17 @@ Utf8 ModuleGenDocJob::getOutputNode(AstNode* node)
     return Utf8{(const char*) concat.firstBucket->datas, (uint32_t) concat.bucketCount(concat.firstBucket)};
 }
 
-Utf8 ModuleGenDocJob::getOutputType(TypeInfo* typeInfo)
-{
-    typeInfo->computeScopedNameExport();
-    return typeInfo->scopedNameExport;
-}
-
 void ModuleGenDocJob::outputType(AstNode* node)
 {
     if (node->typeInfo)
     {
-        helpContent += getOutputType(node->typeInfo);
+        node->typeInfo->computeScopedNameExport();
+        helpContent += getReference(node->typeInfo->scopedNameExport);
     }
     else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
     {
         auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-        helpContent += getOutputNode(varDecl->type);
+        helpContent += getReference(getOutputNode(varDecl->type));
     }
 }
 
@@ -1384,16 +1383,7 @@ void ModuleGenDocJob::generateContent()
 
 JobResult ModuleGenDocJob::execute()
 {
-    // Setup
     concat.init();
-    outputCxt.forDoc = true;
-
-    outputCxt.exportType = [this](TypeInfo* typeInfo)
-    {
-        if (typeInfo->isNative() || typeInfo->isVariadic())
-            return typeInfo->name;
-        return getOutputType(typeInfo);
-    };
 
     auto filePath = g_Workspace->targetPath;
     if (!module)

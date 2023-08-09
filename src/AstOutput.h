@@ -14,11 +14,9 @@ struct AstOutput
 {
     struct OutputContext : public JobContext
     {
-        AstNode*                  exportedNode = nullptr;
-        int                       indent       = 0;
-        bool                      forExport    = false;
-        bool                      forDoc       = false;
-        function<Utf8(TypeInfo*)> exportType;
+        AstNode* exportedNode = nullptr;
+        int      indent       = 0;
+        bool     forExport    = false;
     };
 
     static void incIndentStatement(AstNode* node, int& indent);

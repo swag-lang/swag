@@ -263,7 +263,7 @@ Under windows, it is based on the <code class="incode">xaudio2</code> library.##
 <td id="Audio_Wav_GUID_ADPCM" class="tdname">
 GUID_ADPCM</td>
 <td class="tdtype">
-Win32.GUID</td>
+<a href="win32.html#Win32_GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -271,7 +271,7 @@ Win32.GUID</td>
 <td id="Audio_Wav_GUID_IEEE_FLOAT" class="tdname">
 GUID_IEEE_FLOAT</td>
 <td class="tdtype">
-Win32.GUID</td>
+<a href="win32.html#Win32_GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -279,7 +279,7 @@ Win32.GUID</td>
 <td id="Audio_Wav_GUID_PCM" class="tdname">
 GUID_PCM</td>
 <td class="tdtype">
-Win32.GUID</td>
+<a href="win32.html#Win32_GUID">Win32.GUID</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -302,7 +302,7 @@ Represents a playing sound.</p>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-Audio.BusHandle</td>
+<a href="audio.html#Audio_BusHandle">Audio.BusHandle</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -480,7 +480,7 @@ Base struct for all codec instances.</p>
 <td class="tdname">
 srcEncoding</td>
 <td class="tdtype">
-Audio.SoundFileEncoding</td>
+<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
 <td class="enumeration">
 <p>
 The original encoding.</p>
@@ -490,7 +490,7 @@ The original encoding.</p>
 <td class="tdname">
 dstEncoding</td>
 <td class="tdtype">
-Audio.SoundFileEncoding</td>
+<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
 <td class="enumeration">
 <p>
 The requested encoding.</p>
@@ -500,7 +500,7 @@ The requested encoding.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-const *Swag.TypeInfoStruct</td>
+<a href="const *swag.html#const *Swag_TypeInfoStruct">const *Swag.TypeInfoStruct</a></td>
 <td class="enumeration">
 <p>
 The real type of the codec.</p>
@@ -549,7 +549,7 @@ Interface to describe a codec.</p>
 <td class="tdname">
 canEncode</td>
 <td class="tdtype">
-func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
+<a href="func(*audio.html#func(*Audio_ICodec, Audio_SoundFileEncoding)->bool">func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -557,7 +557,7 @@ func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
 <td class="tdname">
 canDecode</td>
 <td class="tdtype">
-func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
+<a href="func(*audio.html#func(*Audio_ICodec, Audio_SoundFileEncoding)->bool">func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -565,7 +565,7 @@ func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
 <td class="tdname">
 init</td>
 <td class="tdtype">
-func(*Audio.ICodec, ^void, u64)->u64 throw</td>
+<a href="func(*audio.html#func(*Audio_ICodec, ^void, u64)->u64 throw">func(*Audio.ICodec, ^void, u64)->u64 throw</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -573,7 +573,7 @@ func(*Audio.ICodec, ^void, u64)->u64 throw</td>
 <td class="tdname">
 decode</td>
 <td class="tdtype">
-func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</td>
+<a href="func(*audio.html#func(*Audio_ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw">func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -596,7 +596,7 @@ Represents a sound file.</p>
 <td class="tdname">
 fullname</td>
 <td class="tdtype">
-Core.String</td>
+<a href="core.html#Core_String">Core.String</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -604,7 +604,7 @@ Core.String</td>
 <td class="tdname">
 datas</td>
 <td class="tdtype">
-Core.Array'(u8)</td>
+<a href="core.html#Core_Array'(u8)">Core.Array'(u8)</a></td>
 <td class="enumeration">
 <p>
 Prefetched datas (in encoding format).</p>
@@ -644,7 +644,7 @@ The position in the file where the datas are stored.</p>
 <td class="tdname">
 encoding</td>
 <td class="tdtype">
-Audio.SoundFileEncoding</td>
+<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
 <td class="enumeration">
 <p>
 Encoding type of the datas.</p>
@@ -654,7 +654,7 @@ Encoding type of the datas.</p>
 <td class="tdname">
 validity</td>
 <td class="tdtype">
-Audio.SoundFileValidityMask</td>
+<a href="#Audio_SoundFileValidityMask">Audio.SoundFileValidityMask</a></td>
 <td class="enumeration">
 <p>
 What informations in this struct are valid.</p>
