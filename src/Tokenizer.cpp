@@ -276,6 +276,23 @@ bool Tokenizer::nextToken(TokenParse& token)
                 {
                     appendTokenName(token);
                     comment += token.text;
+                    comment.removeBack();
+                    comment.removeBack();
+
+                    // In case of end of line comments, skip all blanks after
+                    if (!(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
+                    {
+                        while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
+                        {
+                            if (SWAG_IS_EOL(curBuffer[0]))
+                            {
+                                token.flags |= TOKENPARSE_LAST_EOL;
+                                hasEol = true;
+                            }
+
+                            readChar();
+                        }
+                    }
                 }
 
                 continue;

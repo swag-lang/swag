@@ -3,27 +3,37 @@
 using Swag
 
 /*
-    Binary serializer with forward/backward compatibility
+    Binary serializer with forward/backward compatibility.
     Changes that are supported from V to V+1 are :
 
-    - Add a new field. The new field will stay at the default value
-    - Remove a field. It will just be ignored
-    - Reorder of fields, as long as their name/type are the same
-    - Rename a field with 'Serialization.Alias'
+    * Add a new field. The new field will stay at the default value.
+    * Remove a field. It will just be ignored.
+    * Reorder of fields, as long as their name/type are the same.
+    * Rename a field with 'Serialization.Alias'.
 
     Supported type changes are :
-    - Change the size of a static array
-    - Convert a static array to a dynamic array, and vice versa
-    - Conversion from integer/float/rune/bool to integer/float/rune/bool
-    - Conversion from single value to array/Core.Array, and vice versa
+    * Change the size of a static array.
+    * Convert a static array to a dynamic array, and vice versa.
+    * Conversion from integer/float/rune/bool to integer/float/rune/bool.
+    * Conversion from single value to array/Core.Array, and vice versa.
 
     Supported attributes are :
 
-    - Serialisation.Version     If version is specified, then loading will not have versioning if versions are the same
-    - Serialization.Alias       To rename a field. Multiple aliases are supported.
-    - Serialization.Final       The struct will be loaded/saved without versioning (faster and lower serialization size)
-    - Serialization.PodFinal    The struct will be loaded/saved in place without versioning
+    * 'Serialisation.Version'. If version is specified, then loading will not have versioning if versions are the same
+    * 'Serialization.Alias'. To rename a field. Multiple aliases are supported.
+    * 'Serialization.Final'. The struct will be loaded/saved without versioning (faster and lower serialization size)
+    * 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning
 */
+struct TagBin
+{
+    stream:             ByteStream
+    options:            TagBinOptions
+    freeSections:       ArrayPtr'TagBinSection
+    sections:           ArrayPtr'TagBinSection
+    convertNextNative:  const *Swag.TypeInfoNative
+    convertValToArray:  bool
+    convertArrayToVal:  bool
+}
 
 struct TagBinSection
 {
@@ -37,17 +47,6 @@ struct TagBinSection
 struct TagBinOptions
 {
     tryForward: bool    // Accept to try to read a newest version, otherwise error
-}
-
-struct TagBin
-{
-    stream:             ByteStream
-    options:            TagBinOptions
-    freeSections:       ArrayPtr'TagBinSection
-    sections:           ArrayPtr'TagBinSection
-    convertNextNative:  const *Swag.TypeInfoNative
-    convertValToArray:  bool
-    convertArrayToVal:  bool
 }
 
 impl TagBin

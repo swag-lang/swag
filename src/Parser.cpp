@@ -445,6 +445,16 @@ bool Parser::generateAst()
 
     tokenizer.setup(context, sourceFile);
     SWAG_CHECK(eatToken());
+
+    if (!tokenizer.comment.empty())
+    {
+        // Module global comment must be put in module.swg
+        if (sourceFile->module->kind == ModuleKind::Config)
+        {
+            module->docComment = std::move(tokenizer.comment);
+        }
+    }
+
     while (token.id != TokenId::EndOfFile)
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 

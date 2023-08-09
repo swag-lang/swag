@@ -1,14 +1,11 @@
-/*
-Toto la foule
-*/
+// 'Std.Audio' is a module to decode and play sound files.
+// Under windows, it is based on the 'xaudio2' library.
 
 #dependencies
 {
+    #import "core"
     #if #os == Swag.TargetOs.Windows
-    {
-        #import "core"
         #import "xaudio2"
-    }
 
     #run
     {

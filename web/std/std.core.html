@@ -23658,10 +23658,12 @@ propName</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">TagBin</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>
+Binary serializer with forward/backward compatibility.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -23720,6 +23722,34 @@ bool</td>
 </td>
 </tr>
 </table>
+<p>
+    Changes that are supported from V to V+1 are :</p>
+<p>
+<ul>
+<li> Add a new field. The new field will stay at the default value.</li>
+<li> Remove a field. It will just be ignored.</li>
+<li> Reorder of fields, as long as their name/type are the same.</li>
+<li> Rename a field with <code class = "incode">Serialization.Alias</code>.</li>
+</ul>
+</p>
+<p>
+    Supported type changes are :<ul>
+<li> Change the size of a static array.</li>
+<li> Convert a static array to a dynamic array, and vice versa.</li>
+<li> Conversion from integer/float/rune/bool to integer/float/rune/bool.</li>
+<li> Conversion from single value to array/Core.Array, and vice versa.</li>
+</ul>
+</p>
+<p>
+    Supported attributes are :</p>
+<p>
+<ul>
+<li> <code class = "incode">Serialisation.Version</code>. If version is specified, then loading will not have versioning if versions are the same</li>
+<li> <code class = "incode">Serialization.Alias</code>. To rename a field. Multiple aliases are supported.</li>
+<li> <code class = "incode">Serialization.Final</code>. The struct will be loaded/saved without versioning (faster and lower serialization size)</li>
+<li> <code class = "incode">Serialization.PodFinal</code>. The struct will be loaded/saved in place without versioning</li>
+</ul>
+</p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
@@ -23826,7 +23856,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_beginElement"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginElement</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L329" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L328" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23841,7 +23871,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_beginRoot"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginRoot</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L218" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23856,7 +23886,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_beginSection"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginSection</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L230" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L229" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23871,7 +23901,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_beginSequence"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginSequence</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L419" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L418" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23886,7 +23916,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_beginStruct"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginStruct</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L286" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L285" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23901,7 +23931,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_beginValue"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">beginValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L410" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L409" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23916,7 +23946,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_endElement"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endElement</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L404" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L403" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23931,7 +23961,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_endRoot"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endRoot</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L226" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23946,7 +23976,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_endSection"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endSection</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L272" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23961,7 +23991,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_endSequence"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endSequence</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L483" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L482" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23976,7 +24006,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_endStruct"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endStruct</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L324" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L323" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23991,7 +24021,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_endValue"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">endValue</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L415" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L414" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24006,7 +24036,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_getVersion"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">getVersion</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L496" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L495" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24021,7 +24051,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_readNative"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">readNative</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L507" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L506" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24036,7 +24066,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_startRead"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">startRead</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L213" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24051,7 +24081,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBin_toNextSequenceElement"><span class="titletype">func</span> <span class="titlelight">TagBin.</span><span class="titlestrong">toNextSequenceElement</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L488" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L487" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24066,7 +24096,7 @@ bool</td>
 <h3 class="content" id="Core_Serialization_Read_TagBinOptions"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">TagBinOptions</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24089,7 +24119,7 @@ Accept to try to read a newest version, otherwise error.</p>
 <h3 class="content" id="Core_Serialization_Read_TagBinSection"><span class="titletype">struct</span> <span class="titlelight">Read.</span><span class="titlestrong">TagBinSection</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
