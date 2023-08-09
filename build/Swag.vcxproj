@@ -308,6 +308,7 @@
     <ClInclude Include="..\src\Set.h" />
     <ClInclude Include="..\src\Symbol.h" />
     <ClInclude Include="..\src\SymTableHash.h" />
+    <ClInclude Include="..\src\SyntaxColor.h" />
     <ClInclude Include="..\src\TypeGen.h" />
     <ClInclude Include="..\src\TypeGenStructJob.h" />
     <ClInclude Include="../src/Utf8.h" />
@@ -595,6 +596,7 @@
     <ClCompile Include="..\src\SemanticJob_Warn.cpp" />
     <ClCompile Include="..\src\Symbol.cpp" />
     <ClCompile Include="..\src\SymTableHash.cpp" />
+    <ClCompile Include="..\src\SyntaxColor.cpp" />
     <ClCompile Include="..\src\Tokenizer_Comment.cpp" />
     <ClCompile Include="..\src\Tokenizer_Identifier.cpp" />
     <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp" />

@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "Tokenizer.h"
 #include "AstNode.h"
 #include "ErrorIds.h"
@@ -180,7 +179,6 @@ struct Diagnostic
     uint32_t          minBlanks = UINT32_MAX;
     LogColor          verboseColor;
     LogColor          errorColor;
-    LogColor          codeColor;
     LogColor          hintColor;
     LogColor          marginBorderColor;
     LogColor          rangeNoteColor;

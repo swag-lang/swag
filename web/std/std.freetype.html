@@ -130,7 +130,18 @@
             width:              94%;
             margin-left:        20px;
         }
-</style>
+        .SyntaxCode      { color: #000000; }
+        .SyntaxComment   { color: #6A9955; }
+        .SyntaxCompiler  { color: #AAAAAA; }
+        .SyntaxFunction  { color: #FF7411; }
+        .SyntaxConstant  { color: #569cd6; }
+        .SyntaxIntrinsic { color: #DCDCAA; }
+        .SyntaxType      { color: #4EC9B0; }
+        .SyntaxKeyword   { color: #569cd6; }
+        .SyntaxLogic     { color: #D8A0DF; }
+        .SyntaxNumber    { color: #B5CEA8; }
+        .SyntaxString    { color: #CE9178; }
+    </style>
 <div class="container">
 <div class="left">
 <h1>Module freetype</h1>
@@ -479,7 +490,7 @@ s32</td>
 <td class="tdname">
 xMin</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -487,7 +498,7 @@ xMin</td>
 <td class="tdname">
 yMin</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -495,7 +506,7 @@ yMin</td>
 <td class="tdname">
 xMax</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -503,7 +514,7 @@ xMax</td>
 <td class="tdname">
 yMax</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -601,7 +612,7 @@ palette</td>
 <td class="tdname">
 height</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -609,7 +620,7 @@ height</td>
 <td class="tdname">
 width</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -617,7 +628,7 @@ width</td>
 <td class="tdname">
 size</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -625,7 +636,7 @@ size</td>
 <td class="tdname">
 x_ppem</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -633,7 +644,7 @@ x_ppem</td>
 <td class="tdname">
 y_ppem</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -654,7 +665,7 @@ y_ppem</td>
 <td class="tdname">
 face</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a></td>
+FreeType.FT_Face</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -672,7 +683,7 @@ FT_Encoding.</p>
 <td class="tdname">
 platform_id</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UShort">FreeType.FT_UShort</a></td>
+FreeType.FT_UShort</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -680,7 +691,7 @@ platform_id</td>
 <td class="tdname">
 encoding_id</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UShort">FreeType.FT_UShort</a></td>
+FreeType.FT_UShort</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -697,7 +708,7 @@ encoding_id</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Done_Face(face: <a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Done_Face</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -712,7 +723,7 @@ encoding_id</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Done_FreeType(alibrary: <a href="freetype.html#FreeType_FT_Library">FreeType.FT_Library</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Done_FreeType</span><span class="SyntaxCode">(alibrary: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -731,7 +742,7 @@ encoding_id</td>
 <td class="tdname">
 num_faces</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Long">FreeType.FT_Long</a></td>
+FreeType.FT_Long</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -739,7 +750,7 @@ num_faces</td>
 <td class="tdname">
 face_index</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Long">FreeType.FT_Long</a></td>
+FreeType.FT_Long</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -747,7 +758,7 @@ face_index</td>
 <td class="tdname">
 face_flags</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Long">FreeType.FT_Long</a></td>
+FreeType.FT_Long</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -755,7 +766,7 @@ face_flags</td>
 <td class="tdname">
 style_flags</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Long">FreeType.FT_Long</a></td>
+FreeType.FT_Long</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -763,7 +774,7 @@ style_flags</td>
 <td class="tdname">
 num_glyphs</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Long">FreeType.FT_Long</a></td>
+FreeType.FT_Long</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -771,7 +782,7 @@ num_glyphs</td>
 <td class="tdname">
 family_name</td>
 <td class="tdtype">
-^<a href="freetype.html#FreeType_FT_String">FreeType.FT_String</a></td>
+^FreeType.FT_String</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -779,7 +790,7 @@ family_name</td>
 <td class="tdname">
 style_name</td>
 <td class="tdtype">
-^<a href="freetype.html#FreeType_FT_String">FreeType.FT_String</a></td>
+^FreeType.FT_String</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -787,7 +798,7 @@ style_name</td>
 <td class="tdname">
 num_fixed_sizes</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -795,7 +806,7 @@ num_fixed_sizes</td>
 <td class="tdname">
 available_sizes</td>
 <td class="tdtype">
-^<a href="#FreeType_FT_Bitmap_Size">FreeType.FT_Bitmap_Size</a></td>
+^FreeType.FT_Bitmap_Size</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -803,7 +814,7 @@ available_sizes</td>
 <td class="tdname">
 num_charmaps</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -811,7 +822,7 @@ num_charmaps</td>
 <td class="tdname">
 charmaps</td>
 <td class="tdtype">
-^<a href="freetype.html#FreeType_FT_CharMap">FreeType.FT_CharMap</a></td>
+^FreeType.FT_CharMap</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -819,7 +830,7 @@ charmaps</td>
 <td class="tdname">
 generic</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+FreeType.FT_Generic</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -827,7 +838,7 @@ generic</td>
 <td class="tdname">
 bbox</td>
 <td class="tdtype">
-<a href="#FreeType_FT_BBox">FreeType.FT_BBox</a></td>
+FreeType.FT_BBox</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -835,7 +846,7 @@ bbox</td>
 <td class="tdname">
 units_per_EM</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UShort">FreeType.FT_UShort</a></td>
+FreeType.FT_UShort</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -843,7 +854,7 @@ units_per_EM</td>
 <td class="tdname">
 ascender</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -851,7 +862,7 @@ ascender</td>
 <td class="tdname">
 descender</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -859,7 +870,7 @@ descender</td>
 <td class="tdname">
 height</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -867,7 +878,7 @@ height</td>
 <td class="tdname">
 max_advance_width</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -875,7 +886,7 @@ max_advance_width</td>
 <td class="tdname">
 max_advance_height</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -883,7 +894,7 @@ max_advance_height</td>
 <td class="tdname">
 underline_position</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -891,7 +902,7 @@ underline_position</td>
 <td class="tdname">
 underline_thickness</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Short">FreeType.FT_Short</a></td>
+FreeType.FT_Short</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -899,7 +910,7 @@ underline_thickness</td>
 <td class="tdname">
 glyph</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_GlyphSlot">FreeType.FT_GlyphSlot</a></td>
+FreeType.FT_GlyphSlot</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -907,7 +918,7 @@ glyph</td>
 <td class="tdname">
 size</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Size">FreeType.FT_Size</a></td>
+FreeType.FT_Size</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -915,7 +926,7 @@ size</td>
 <td class="tdname">
 charmap</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_CharMap">FreeType.FT_CharMap</a></td>
+FreeType.FT_CharMap</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -923,7 +934,7 @@ charmap</td>
 <td class="tdname">
 driver</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Driver">FreeType.FT_Driver</a></td>
+FreeType.FT_Driver</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -931,7 +942,7 @@ driver</td>
 <td class="tdname">
 memory</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Memory">FreeType.FT_Memory</a></td>
+FreeType.FT_Memory</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -939,7 +950,7 @@ memory</td>
 <td class="tdname">
 stream</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Stream">FreeType.FT_Stream</a></td>
+FreeType.FT_Stream</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -947,7 +958,7 @@ stream</td>
 <td class="tdname">
 sizes_list</td>
 <td class="tdtype">
-<a href="#FreeType_FT_ListRec">FreeType.FT_ListRec</a></td>
+FreeType.FT_ListRec</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -955,7 +966,7 @@ sizes_list</td>
 <td class="tdname">
 autohint</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+FreeType.FT_Generic</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -971,7 +982,7 @@ extensions</td>
 <td class="tdname">
 finternal</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Face_Internal">FreeType.FT_Face_Internal</a></td>
+FreeType.FT_Face_Internal</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1019,7 +1030,7 @@ FT_Generic_Finalizer.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Get_Char_Index(face: <a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a>, charcode: <a href="freetype.html#FreeType_FT_ULong">FreeType.FT_ULong</a>)-><a href="freetype.html#FreeType_FT_UInt">FreeType.FT_UInt</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Get_Char_Index</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, charcode: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_ULong</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1038,7 +1049,7 @@ FT_Generic_Finalizer.</p>
 <td class="tdname">
 library</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Library">FreeType.FT_Library</a></td>
+FreeType.FT_Library</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1046,7 +1057,7 @@ library</td>
 <td class="tdname">
 face</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a></td>
+FreeType.FT_Face</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1054,7 +1065,7 @@ face</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_GlyphSlot">FreeType.FT_GlyphSlot</a></td>
+FreeType.FT_GlyphSlot</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1062,7 +1073,7 @@ next</td>
 <td class="tdname">
 glyph_index</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UInt">FreeType.FT_UInt</a></td>
+FreeType.FT_UInt</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1070,7 +1081,7 @@ glyph_index</td>
 <td class="tdname">
 generic</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+FreeType.FT_Generic</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1078,7 +1089,7 @@ generic</td>
 <td class="tdname">
 metrics</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Glyph_Metrics">FreeType.FT_Glyph_Metrics</a></td>
+FreeType.FT_Glyph_Metrics</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1086,7 +1097,7 @@ metrics</td>
 <td class="tdname">
 linearHoriAdvance</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1094,7 +1105,7 @@ linearHoriAdvance</td>
 <td class="tdname">
 linearVertAdvance</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1102,7 +1113,7 @@ linearVertAdvance</td>
 <td class="tdname">
 advance</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Vector">FreeType.FT_Vector</a></td>
+FreeType.FT_Vector</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1110,7 +1121,7 @@ advance</td>
 <td class="tdname">
 format</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Glyph_Format">FreeType.FT_Glyph_Format</a></td>
+FreeType.FT_Glyph_Format</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1118,7 +1129,7 @@ format</td>
 <td class="tdname">
 bitmap</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Bitmap">FreeType.FT_Bitmap</a></td>
+FreeType.FT_Bitmap</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1126,7 +1137,7 @@ bitmap</td>
 <td class="tdname">
 bitmap_left</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1134,7 +1145,7 @@ bitmap_left</td>
 <td class="tdname">
 bitmap_top</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1142,7 +1153,7 @@ bitmap_top</td>
 <td class="tdname">
 outline</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Outline">FreeType.FT_Outline</a></td>
+FreeType.FT_Outline</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1150,7 +1161,7 @@ outline</td>
 <td class="tdname">
 num_subglyphs</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UInt">FreeType.FT_UInt</a></td>
+FreeType.FT_UInt</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1158,7 +1169,7 @@ num_subglyphs</td>
 <td class="tdname">
 subglyphs</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_SubGlyph">FreeType.FT_SubGlyph</a></td>
+FreeType.FT_SubGlyph</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1182,7 +1193,7 @@ s32</td>
 <td class="tdname">
 lsb_delta</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1190,7 +1201,7 @@ lsb_delta</td>
 <td class="tdname">
 rsb_delta</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1206,7 +1217,7 @@ other</td>
 <td class="tdname">
 finternal</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Slot_Internal">FreeType.FT_Slot_Internal</a></td>
+FreeType.FT_Slot_Internal</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1223,7 +1234,7 @@ finternal</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_GlyphSlot_Oblique(slot: <a href="freetype.html#FreeType_FT_GlyphSlot">FreeType.FT_GlyphSlot</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_GlyphSlot_Oblique</span><span class="SyntaxCode">(slot: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_GlyphSlot</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1285,7 +1296,7 @@ FT_GLYPH_FORMAT_POLTTER</td>
 <td class="tdname">
 width</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1293,7 +1304,7 @@ width</td>
 <td class="tdname">
 height</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1301,7 +1312,7 @@ height</td>
 <td class="tdname">
 horiBearingX</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1309,7 +1320,7 @@ horiBearingX</td>
 <td class="tdname">
 horiBearingY</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1317,7 +1328,7 @@ horiBearingY</td>
 <td class="tdname">
 horiAdvance</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1325,7 +1336,7 @@ horiAdvance</td>
 <td class="tdname">
 vertBearingX</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1333,7 +1344,7 @@ vertBearingX</td>
 <td class="tdname">
 vertBearingY</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1341,7 +1352,7 @@ vertBearingY</td>
 <td class="tdname">
 vertAdvance</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1358,7 +1369,7 @@ vertAdvance</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_IMAGE_TAG(x1: u32, x2: u32, x3: u32, x4: u32)-&gt;u32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_IMAGE_TAG</span><span class="SyntaxCode">(x1: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x2: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x3: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x4: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1373,7 +1384,7 @@ vertAdvance</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Init_FreeType(alibrary: *<a href="freetype.html#FreeType_FT_Library">FreeType.FT_Library</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Init_FreeType</span><span class="SyntaxCode">(alibrary: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1388,7 +1399,7 @@ vertAdvance</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_LOAD_TARGET(x: <a href="freetype.html#FreeType_FT_Int32">FreeType.FT_Int32</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_LOAD_TARGET</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Int32</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1456,7 +1467,7 @@ FT_LCD_FILTER_MAX</td>
 <td class="tdname">
 memory</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Memory">FreeType.FT_Memory</a></td>
+FreeType.FT_Memory</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1464,7 +1475,7 @@ memory</td>
 <td class="tdname">
 version_major</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1472,7 +1483,7 @@ version_major</td>
 <td class="tdname">
 version_minor</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1480,7 +1491,7 @@ version_minor</td>
 <td class="tdname">
 version_patch</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1488,7 +1499,7 @@ version_patch</td>
 <td class="tdname">
 num_modules</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UInt">FreeType.FT_UInt</a></td>
+FreeType.FT_UInt</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1496,7 +1507,7 @@ num_modules</td>
 <td class="tdname">
 modules</td>
 <td class="tdtype">
-[32] <a href="freetype.html#FreeType_FT_Module">FreeType.FT_Module</a></td>
+[32] FreeType.FT_Module</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1504,7 +1515,7 @@ modules</td>
 <td class="tdname">
 renderers</td>
 <td class="tdtype">
-<a href="#FreeType_FT_ListRec">FreeType.FT_ListRec</a></td>
+FreeType.FT_ListRec</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1512,7 +1523,7 @@ renderers</td>
 <td class="tdname">
 cur_renderer</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Renderer">FreeType.FT_Renderer</a></td>
+FreeType.FT_Renderer</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1520,7 +1531,7 @@ cur_renderer</td>
 <td class="tdname">
 auto_hinter</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Module">FreeType.FT_Module</a></td>
+FreeType.FT_Module</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1528,7 +1539,7 @@ auto_hinter</td>
 <td class="tdname">
 debug_hooks</td>
 <td class="tdtype">
-[4] <a href="freetype.html#FreeType_FT_DebugHook_Func">FreeType.FT_DebugHook_Func</a></td>
+[4] FreeType.FT_DebugHook_Func</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1536,7 +1547,7 @@ debug_hooks</td>
 <td class="tdname">
 lcd_geometry</td>
 <td class="tdtype">
-[3] <a href="#FreeType_FT_Vector">FreeType.FT_Vector</a></td>
+[3] FreeType.FT_Vector</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1544,7 +1555,7 @@ lcd_geometry</td>
 <td class="tdname">
 refcount</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1561,7 +1572,7 @@ refcount</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Library_SetLcdFilter(library: <a href="freetype.html#FreeType_FT_Library">FreeType.FT_Library</a>, filter: <a href="#FreeType_FT_LcdFilter">FreeType.FT_LcdFilter</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Library_SetLcdFilter</span><span class="SyntaxCode">(library: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">, filter: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_LcdFilter</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1576,7 +1587,7 @@ refcount</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Library_SetLcdFilterWeights(library: <a href="freetype.html#FreeType_FT_Library">FreeType.FT_Library</a>, weights: const *u8) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Library_SetLcdFilterWeights</span><span class="SyntaxCode">(library: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">, weights: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1595,7 +1606,7 @@ refcount</td>
 <td class="tdname">
 head</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_ListNode">FreeType.FT_ListNode</a></td>
+FreeType.FT_ListNode</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1603,7 +1614,7 @@ head</td>
 <td class="tdname">
 tail</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_ListNode">FreeType.FT_ListNode</a></td>
+FreeType.FT_ListNode</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1620,7 +1631,7 @@ tail</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Load_Char(face: <a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a>, char_code: <a href="freetype.html#FreeType_FT_ULong">FreeType.FT_ULong</a>, load_flags: <a href="freetype.html#FreeType_FT_Int32">FreeType.FT_Int32</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Load_Char</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, char_code: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_ULong</span><span class="SyntaxCode">, load_flags: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Int32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1635,7 +1646,7 @@ tail</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Load_Glyph(face: <a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a>, glyph_index: <a href="freetype.html#FreeType_FT_UInt">FreeType.FT_UInt</a>, load_flags: <a href="freetype.html#FreeType_FT_Int32">FreeType.FT_Int32</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Load_Glyph</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, glyph_index: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode">, load_flags: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Int32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1654,7 +1665,7 @@ tail</td>
 <td class="tdname">
 xx</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1662,7 +1673,7 @@ xx</td>
 <td class="tdname">
 xy</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1670,7 +1681,7 @@ xy</td>
 <td class="tdname">
 yx</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1678,7 +1689,7 @@ yx</td>
 <td class="tdname">
 yy</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1695,7 +1706,7 @@ yy</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_New_Memory_Face(library: <a href="freetype.html#FreeType_FT_Library">FreeType.FT_Library</a>, file_base: const *<a href="freetype.html#FreeType_FT_Byte">FreeType.FT_Byte</a>, file_size: <a href="freetype.html#FreeType_FT_Long">FreeType.FT_Long</a>, face_index: <a href="freetype.html#FreeType_FT_Long">FreeType.FT_Long</a>, aface: *<a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_New_Memory_Face</span><span class="SyntaxCode">(library: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">, file_base: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Byte</span><span class="SyntaxCode">, file_size: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Long</span><span class="SyntaxCode">, face_index: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Long</span><span class="SyntaxCode">, aface: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1730,7 +1741,7 @@ s16</td>
 <td class="tdname">
 points</td>
 <td class="tdtype">
-^<a href="#FreeType_FT_Vector">FreeType.FT_Vector</a></td>
+^FreeType.FT_Vector</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1771,7 +1782,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Decompose(outline: *<a href="#FreeType_FT_Outline">FreeType.FT_Outline</a>, func_interface: const *<a href="#FreeType_FT_Outline_Funcs">FreeType.FT_Outline_Funcs</a>, user: *void) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Decompose</span><span class="SyntaxCode">(outline: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Outline</span><span class="SyntaxCode">, func_interface: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Outline_Funcs</span><span class="SyntaxCode">, user: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1786,7 +1797,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Embolden(outline: *<a href="#FreeType_FT_Outline">FreeType.FT_Outline</a>, strength: <a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Embolden</span><span class="SyntaxCode">(outline: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Outline</span><span class="SyntaxCode">, strength: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Pos</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1853,7 +1864,7 @@ s32</td>
 <td class="tdname">
 delta</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1870,7 +1881,7 @@ delta</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Transform(outline: const *<a href="#FreeType_FT_Outline">FreeType.FT_Outline</a>, matrix: const *<a href="#FreeType_FT_Matrix">FreeType.FT_Matrix</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Transform</span><span class="SyntaxCode">(outline: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Outline</span><span class="SyntaxCode">, matrix: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Matrix</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1885,7 +1896,7 @@ delta</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Outline_Translate(outline: const *<a href="#FreeType_FT_Outline">FreeType.FT_Outline</a>, xOffset: <a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a>, yOffset: <a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Translate</span><span class="SyntaxCode">(outline: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Outline</span><span class="SyntaxCode">, xOffset: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Pos</span><span class="SyntaxCode">, yOffset: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Pos</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1967,7 +1978,7 @@ FT_PIXEL_MODE_MAX</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Render_Glyph(slot: <a href="freetype.html#FreeType_FT_GlyphSlot">FreeType.FT_GlyphSlot</a>, render_mode: <a href="#FreeType_FT_Render_Mode">FreeType.FT_Render_Mode</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Render_Glyph</span><span class="SyntaxCode">(slot: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_GlyphSlot</span><span class="SyntaxCode">, render_mode: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Render_Mode</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2031,7 +2042,7 @@ FT_RENDER_MODE_MAX</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func FT_Set_Pixel_Sizes(face: <a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a>, pixel_width: <a href="freetype.html#FreeType_FT_UInt">FreeType.FT_UInt</a>, pixel_height: <a href="freetype.html#FreeType_FT_UInt">FreeType.FT_UInt</a>) throw
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Set_Pixel_Sizes</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, pixel_width: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode">, pixel_height: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2050,7 +2061,7 @@ FT_RENDER_MODE_MAX</td>
 <td class="tdname">
 face</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a></td>
+FreeType.FT_Face</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2058,7 +2069,7 @@ face</td>
 <td class="tdname">
 generic</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+FreeType.FT_Generic</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2066,7 +2077,7 @@ generic</td>
 <td class="tdname">
 metrics</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Size_Metrics">FreeType.FT_Size_Metrics</a></td>
+FreeType.FT_Size_Metrics</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2074,7 +2085,7 @@ metrics</td>
 <td class="tdname">
 sinternal</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Size_Internal">FreeType.FT_Size_Internal</a></td>
+FreeType.FT_Size_Internal</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2095,7 +2106,7 @@ sinternal</td>
 <td class="tdname">
 x_ppem</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UShort">FreeType.FT_UShort</a></td>
+FreeType.FT_UShort</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2103,7 +2114,7 @@ x_ppem</td>
 <td class="tdname">
 y_ppem</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UShort">FreeType.FT_UShort</a></td>
+FreeType.FT_UShort</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2111,7 +2122,7 @@ y_ppem</td>
 <td class="tdname">
 x_scale</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2119,7 +2130,7 @@ x_scale</td>
 <td class="tdname">
 y_scale</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Fixed">FreeType.FT_Fixed</a></td>
+FreeType.FT_Fixed</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2127,7 +2138,7 @@ y_scale</td>
 <td class="tdname">
 ascender</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2135,7 +2146,7 @@ ascender</td>
 <td class="tdname">
 descender</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2143,7 +2154,7 @@ descender</td>
 <td class="tdname">
 height</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2151,7 +2162,7 @@ height</td>
 <td class="tdname">
 max_advance</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2172,7 +2183,7 @@ max_advance</td>
 <td class="tdname">
 index</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2180,7 +2191,7 @@ index</td>
 <td class="tdname">
 flags</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_UShort">FreeType.FT_UShort</a></td>
+FreeType.FT_UShort</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2188,7 +2199,7 @@ flags</td>
 <td class="tdname">
 arg1</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2196,7 +2207,7 @@ arg1</td>
 <td class="tdname">
 arg2</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Int">FreeType.FT_Int</a></td>
+FreeType.FT_Int</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2204,7 +2215,7 @@ arg2</td>
 <td class="tdname">
 transform</td>
 <td class="tdtype">
-<a href="#FreeType_FT_Matrix">FreeType.FT_Matrix</a></td>
+FreeType.FT_Matrix</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2225,7 +2236,7 @@ transform</td>
 <td class="tdname">
 x</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2233,7 +2244,7 @@ x</td>
 <td class="tdname">
 y</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Pos">FreeType.FT_Pos</a></td>
+FreeType.FT_Pos</td>
 <td class="enumeration">
 </td>
 </tr>

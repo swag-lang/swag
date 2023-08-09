@@ -1,5 +1,14 @@
-// 'Std.Audio' is a module to decode and play sound files.
-// Under windows, it is based on the 'xaudio2' library.
+/*
+'Std.Audio' is a module to decode and play sound files.
+Under windows, it is based on the 'xaudio2' library.
+### How to play a sound
+First, you have to initialize the audio engine by calling [Audio.createEngine].
+```
+// Comment
+Audio.createEngine()
+defer Audio.destroyEngine()
+```
+*/
 
 #dependencies
 {

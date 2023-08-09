@@ -6,6 +6,7 @@
 #include "Report.h"
 #include "Workspace.h"
 #include "Version.h"
+#include "SyntaxColor.h"
 
 const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
 const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
@@ -386,7 +387,7 @@ Utf8 ModuleGenDocJob::findReference(const Utf8& name)
     return "";
 }
 
-Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
+Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user)
 {
     if (user.empty())
         return "";
@@ -413,7 +414,7 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
         }
 
         // [reference] to create an html link to the current document
-        if (autoRef || *pz == '[')
+        if (*pz == '[')
         {
             bool startBracket = false;
             if (*pz == '[')
@@ -479,7 +480,7 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
                 pz1++;
             if (*pz1 == '\'')
             {
-                result += "<code class = \"incode\">";
+                result += "<code class=\"incode\">";
                 pz++;
                 while (pz != pz1)
                     result += *pz++;
@@ -494,7 +495,7 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user, bool autoRef)
         {
             inCodeMode = !inCodeMode;
             if (inCodeMode)
-                result += "<code class = \"incode\">";
+                result += "<code class=\"incode\">";
             else
                 result += "</code>";
             pz++;
@@ -643,7 +644,7 @@ void ModuleGenDocJob::outputCode(const Utf8& code)
         repl.replace(">", "&gt;");
     }
 
-    helpContent += repl;
+    helpContent += syntaxColor(repl, SyntaxColorMode::ForDoc);
     helpContent += "</code>\n";
     helpContent += "</p>\n";
 }
@@ -660,7 +661,7 @@ Utf8 ModuleGenDocJob::getOutputNode(AstNode* node)
 Utf8 ModuleGenDocJob::getOutputType(TypeInfo* typeInfo)
 {
     typeInfo->computeScopedNameExport();
-    return getFormattedText(typeInfo->scopedNameExport, true);
+    return typeInfo->scopedNameExport;
 }
 
 void ModuleGenDocJob::outputType(AstNode* node)
@@ -977,7 +978,19 @@ void ModuleGenDocJob::outputStyles()
             padding:            10px;\n\
             width:              94%;\n\
             margin-left:        20px;\n\
-        }\n";
+        }\n\
+        .SyntaxCode      { color: #000000; }\n\
+        .SyntaxComment   { color: #6A9955; }\n\
+        .SyntaxCompiler  { color: #AAAAAA; }\n\
+        .SyntaxFunction  { color: #FF7411; }\n\
+        .SyntaxConstant  { color: #569cd6; }\n\
+        .SyntaxIntrinsic { color: #DCDCAA; }\n\
+        .SyntaxType      { color: #4EC9B0; }\n\
+        .SyntaxKeyword   { color: #569cd6; }\n\
+        .SyntaxLogic     { color: #D8A0DF; }\n\
+        .SyntaxNumber    { color: #B5CEA8; }\n\
+        .SyntaxString    { color: #CE9178; }\n\
+    ";
     helpContent += "</style>\n";
 }
 

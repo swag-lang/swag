@@ -130,7 +130,18 @@
             width:              94%;
             margin-left:        20px;
         }
-</style>
+        .SyntaxCode      { color: #000000; }
+        .SyntaxComment   { color: #6A9955; }
+        .SyntaxCompiler  { color: #AAAAAA; }
+        .SyntaxFunction  { color: #FF7411; }
+        .SyntaxConstant  { color: #569cd6; }
+        .SyntaxIntrinsic { color: #DCDCAA; }
+        .SyntaxType      { color: #4EC9B0; }
+        .SyntaxKeyword   { color: #569cd6; }
+        .SyntaxLogic     { color: #D8A0DF; }
+        .SyntaxNumber    { color: #B5CEA8; }
+        .SyntaxString    { color: #CE9178; }
+    </style>
 <div class="container">
 <div class="left">
 <h1>Swag Runtime</h1>
@@ -785,7 +796,7 @@ Max</td>
 u8</td>
 <td class="enumeration">
 <p>
-Max <code class = "incode">u8</code> value.</p>
+Max <code class="incode">u8</code> value.</p>
 </td>
 </tr>
 <tr>
@@ -795,7 +806,7 @@ Min</td>
 u8</td>
 <td class="enumeration">
 <p>
-Min <code class = "incode">u8</code> value.</p>
+Min <code class="incode">u8</code> value.</p>
 </td>
 </tr>
 </table>
@@ -811,12 +822,12 @@ Min <code class = "incode">u8</code> value.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @abs(value: f32)-&gt;f32
-func @abs(value: f64)-&gt;f64
-func @abs(value: s16)-&gt;s16
-func @abs(value: s32)-&gt;s32
-func @abs(value: s64)-&gt;s64
-func @abs(value: s8)-&gt;s8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -831,8 +842,8 @@ func @abs(value: s8)-&gt;s8
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @acos(value: f32)-&gt;f32
-func @acos(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@acos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@acos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -847,9 +858,9 @@ func @acos(value: f64)-&gt;f64
 </table>
 </p>
 <p>
-Returns a system allocated memory block of <code class = "incode">size</code> bytes.</p>
+Returns a system allocated memory block of <code class="incode">size</code> bytes.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @alloc(size: u64)-&gt;^void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@alloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -866,7 +877,7 @@ Returns a system allocated memory block of <code class = "incode">size</code> by
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @args()-&gt;const [..] string
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@args</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">string</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -881,8 +892,8 @@ Returns a system allocated memory block of <code class = "incode">size</code> by
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @asin(value: f32)-&gt;f32
-func @asin(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@asin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@asin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -899,7 +910,7 @@ func @asin(value: f64)-&gt;f64
 <p>
 Panic if the expression is false. Typically used in tests.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @assert(value: bool)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -914,8 +925,8 @@ Panic if the expression is false. Typically used in tests.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atan(value: f32)-&gt;f32
-func @atan(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -930,8 +941,8 @@ func @atan(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atan2(value1: f32, value2: f32)-&gt;f32
-func @atan2(value1: f64, value2: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan2</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan2</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -946,19 +957,19 @@ func @atan2(value1: f64, value2: f64)-&gt;f64
 </table>
 </p>
 <p>
-Atomic <code class = "incode">add</code>.</p>
+Atomic <code class="incode">add</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomadd(addr: *s16, value: s16)-&gt;s16
-func @atomadd(addr: *s32, value: s32)-&gt;s32
-func @atomadd(addr: *s64, value: s64)-&gt;s64
-func @atomadd(addr: *s8, value: s8)-&gt;s8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomadd(addr: *u16, value: u16)-&gt;u16
-func @atomadd(addr: *u32, value: u32)-&gt;u32
-func @atomadd(addr: *u64, value: u64)-&gt;u64
-func @atomadd(addr: *u8, value: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -973,19 +984,19 @@ func @atomadd(addr: *u8, value: u8)-&gt;u8
 </table>
 </p>
 <p>
-Atomic <code class = "incode">and</code>.</p>
+Atomic <code class="incode">and</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomand(addr: *s16, value: s16)-&gt;s16
-func @atomand(addr: *s32, value: s32)-&gt;s32
-func @atomand(addr: *s64, value: s64)-&gt;s64
-func @atomand(addr: *s8, value: s8)-&gt;s8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomand(addr: *u16, value: u16)-&gt;u16
-func @atomand(addr: *u32, value: u32)-&gt;u32
-func @atomand(addr: *u64, value: u64)-&gt;u64
-func @atomand(addr: *u8, value: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1002,17 +1013,17 @@ func @atomand(addr: *u8, value: u8)-&gt;u8
 <p>
 Atomic compare and exchange.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomcmpxchg(addr: *s16, compareTo: s16, exchangeWith: s16)-&gt;s16
-func @atomcmpxchg(addr: *s32, compareTo: s32, exchangeWith: s32)-&gt;s32
-func @atomcmpxchg(addr: *s64, compareTo: s64, exchangeWith: s64)-&gt;s64
-func @atomcmpxchg(addr: *s8, compareTo: s8, exchangeWith: s8)-&gt;s8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomcmpxchg(addr: *u16, compareTo: u16, exchangeWith: u16)-&gt;u16
-func @atomcmpxchg(addr: *u32, compareTo: u32, exchangeWith: u32)-&gt;u32
-func @atomcmpxchg(addr: *u64, compareTo: u64, exchangeWith: u64)-&gt;u64
-func @atomcmpxchg(addr: *u8, compareTo: u8, exchangeWith: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1027,19 +1038,19 @@ func @atomcmpxchg(addr: *u8, compareTo: u8, exchangeWith: u8)-&gt;u8
 </table>
 </p>
 <p>
-Atomic <code class = "incode">or</code>.</p>
+Atomic <code class="incode">or</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomor(addr: *s16, value: s16)-&gt;s16
-func @atomor(addr: *s32, value: s32)-&gt;s32
-func @atomor(addr: *s64, value: s64)-&gt;s64
-func @atomor(addr: *s8, value: s8)-&gt;s8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomor(addr: *u16, value: u16)-&gt;u16
-func @atomor(addr: *u32, value: u32)-&gt;u32
-func @atomor(addr: *u64, value: u64)-&gt;u64
-func @atomor(addr: *u8, value: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1054,19 +1065,19 @@ func @atomor(addr: *u8, value: u8)-&gt;u8
 </table>
 </p>
 <p>
-Atomic <code class = "incode">exchange</code>.</p>
+Atomic <code class="incode">exchange</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxchg(addr: *s16, exchangeWith: s16)-&gt;s16
-func @atomxchg(addr: *s32, exchangeWith: s32)-&gt;s32
-func @atomxchg(addr: *s64, exchangeWith: s64)-&gt;s64
-func @atomxchg(addr: *s8, exchangeWith: s8)-&gt;s8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxchg(addr: *u16, exchangeWith: u16)-&gt;u16
-func @atomxchg(addr: *u32, exchangeWith: u32)-&gt;u32
-func @atomxchg(addr: *u64, exchangeWith: u64)-&gt;u64
-func @atomxchg(addr: *u8, exchangeWith: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1081,19 +1092,19 @@ func @atomxchg(addr: *u8, exchangeWith: u8)-&gt;u8
 </table>
 </p>
 <p>
-Atomic <code class = "incode">xor</code>.</p>
+Atomic <code class="incode">xor</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxor(addr: *s16, value: s16)-&gt;s16
-func @atomxor(addr: *s32, value: s32)-&gt;s32
-func @atomxor(addr: *s64, value: s64)-&gt;s64
-func @atomxor(addr: *s8, value: s8)-&gt;s8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @atomxor(addr: *u16, value: u16)-&gt;u16
-func @atomxor(addr: *u32, value: u32)-&gt;u32
-func @atomxor(addr: *u64, value: u64)-&gt;u64
-func @atomxor(addr: *u8, value: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1110,10 +1121,10 @@ func @atomxor(addr: *u8, value: u8)-&gt;u8
 <p>
 Returns the index+1 of the first set bit, starting from the left (msb). 0 if all zero.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @bitcountlz(value: u16)-&gt;u16
-func @bitcountlz(value: u32)-&gt;u32
-func @bitcountlz(value: u64)-&gt;u64
-func @bitcountlz(value: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1130,10 +1141,10 @@ func @bitcountlz(value: u8)-&gt;u8
 <p>
 Count the number of bits set to 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @bitcountnz(value: u16)-&gt;u16
-func @bitcountnz(value: u32)-&gt;u32
-func @bitcountnz(value: u64)-&gt;u64
-func @bitcountnz(value: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1150,10 +1161,10 @@ func @bitcountnz(value: u8)-&gt;u8
 <p>
 Returns the index+1 of the first set bit, starting from right (lsb). 0 if all zero.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @bitcounttz(value: u16)-&gt;u16
-func @bitcounttz(value: u32)-&gt;u32
-func @bitcounttz(value: u64)-&gt;u64
-func @bitcounttz(value: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1170,7 +1181,7 @@ func @bitcounttz(value: u8)-&gt;u8
 <p>
 Stop a bytecode execution, and launch the bytecode debugger.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @breakpoint()
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@breakpoint</span><span class="SyntaxCode">()
 </code>
 </p>
 <p>
@@ -1187,12 +1198,12 @@ Stop a bytecode execution, and launch the bytecode debugger.</p>
 <p>
 Reverses the order of bytes in an integer.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @byteswap(value: u16)-&gt;u16
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@byteswap</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @byteswap(value: u32)-&gt;u32
-func @byteswap(value: u64)-&gt;u64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@byteswap</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@byteswap</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1207,8 +1218,8 @@ func @byteswap(value: u64)-&gt;u64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @ceil(value: f32)-&gt;f32
-func @ceil(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@ceil</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@ceil</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1225,7 +1236,7 @@ func @ceil(value: f64)-&gt;f64
 <p>
 Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with the compiler.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compiler()-><a href="#Swag_ICompiler">Swag.ICompiler</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ICompiler</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1242,7 +1253,7 @@ Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with
 <p>
 Raise a compiler error at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilererror(message: string, loc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilererror</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1259,7 +1270,7 @@ Raise a compiler error at the given source location.</p>
 <p>
 Raise a compiler warning at the given source location.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @compilerwarning(message: string, loc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilerwarning</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1274,8 +1285,8 @@ Raise a compiler warning at the given source location.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @cos(value: f32)-&gt;f32
-func @cos(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1290,8 +1301,8 @@ func @cos(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @cosh(value: f32)-&gt;f32
-func @cosh(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cosh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cosh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1306,7 +1317,7 @@ func @cosh(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @dbgalloc()
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@dbgalloc</span><span class="SyntaxCode">()
 </code>
 </p>
 <p>
@@ -1323,7 +1334,7 @@ func @cosh(value: f64)-&gt;f64
 <p>
 Returns the current raised <a href="#Swag_Error">Error</a> or null if none.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @err()->const *<a href="#Swag_Error">Swag.Error</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@err</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Error</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1338,8 +1349,8 @@ Returns the current raised <a href="#Swag_Error">Error</a> or null if none.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @exp(value: f32)-&gt;f32
-func @exp(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1354,8 +1365,8 @@ func @exp(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @exp2(value: f32)-&gt;f32
-func @exp2(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1370,8 +1381,8 @@ func @exp2(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @floor(value: f32)-&gt;f32
-func @floor(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@floor</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@floor</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1388,7 +1399,7 @@ func @floor(value: f64)-&gt;f64
 <p>
 Free a system memory block allocated with <a href="#@alloc">@alloc</a>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @free(ptr: ^void)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@free</span><span class="SyntaxCode">(ptr: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1405,7 +1416,7 @@ Free a system memory block allocated with <a href="#@alloc">@alloc</a>.</p>
 <p>
 Get the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getcontext()->*<a href="#Swag_Context">Swag.Context</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getcontext</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1422,7 +1433,7 @@ Get the current thread context.</p>
 <p>
 Get informations about the current process.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @getpinfos()->*<a href="#Swag_ProcessInfos">Swag.ProcessInfos</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getpinfos</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ProcessInfos</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1439,7 +1450,7 @@ Get informations about the current process.</p>
 <p>
 Returns the list of all global variables.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @gvtd()->const [..] <a href="#Swag_Gvtd">Swag.Gvtd</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@gvtd</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Gvtd</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1454,9 +1465,9 @@ Returns the list of all global variables.</p>
 </table>
 </p>
 <p>
-Returns <code class = "incode">true</code> is the current execution is bytecode.</p>
+Returns <code class="incode">true</code> is the current execution is bytecode.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @isbytecode()-&gt;bool
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@isbytecode</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1471,7 +1482,7 @@ Returns <code class = "incode">true</code> is the current execution is bytecode.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @itftableof(structType: const *<a href="#Swag_TypeInfoStruct">Swag.TypeInfoStruct</a>, itfType: const *<a href="#Swag_TypeInfoStruct">Swag.TypeInfoStruct</a>)->const *void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@itftableof</span><span class="SyntaxCode">(structType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoStruct</span><span class="SyntaxCode">, itfType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoStruct</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1486,8 +1497,8 @@ Returns <code class = "incode">true</code> is the current execution is bytecode.
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @log(value: f32)-&gt;f32
-func @log(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1502,8 +1513,8 @@ func @log(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @log10(value: f32)-&gt;f32
-func @log10(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log10</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log10</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1518,8 +1529,8 @@ func @log10(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @log2(value: f32)-&gt;f32
-func @log2(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1534,16 +1545,16 @@ func @log2(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @max(value1: f32, value2: f32)-&gt;f32
-func @max(value1: f64, value2: f64)-&gt;f64
-func @max(value1: s16, value2: s16)-&gt;s16
-func @max(value1: s32, value2: s32)-&gt;s32
-func @max(value1: s64, value2: s64)-&gt;s64
-func @max(value1: s8, value2: s8)-&gt;s8
-func @max(value1: u16, value2: u16)-&gt;u16
-func @max(value1: u32, value2: u32)-&gt;u32
-func @max(value1: u64, value2: u64)-&gt;u64
-func @max(value1: u8, value2: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1560,7 +1571,7 @@ func @max(value1: u8, value2: u8)-&gt;u8
 <p>
 Compare two memory blocks, and returns -1, 0 if equal, or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @memcmp(dst: const ^void, src: const ^void, size: u64)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memcmp</span><span class="SyntaxCode">(dst: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1577,7 +1588,7 @@ Compare two memory blocks, and returns -1, 0 if equal, or 1.</p>
 <p>
 Copy one memory block to another address.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @memcpy(dst: ^void, src: const ^void, size: u64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memcpy</span><span class="SyntaxCode">(dst: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1594,7 +1605,7 @@ Copy one memory block to another address.</p>
 <p>
 Move one memory block to another address.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @memmove(dst: ^void, src: const ^void, size: u64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memmove</span><span class="SyntaxCode">(dst: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1609,9 +1620,9 @@ Move one memory block to another address.</p>
 </table>
 </p>
 <p>
-Set all bytes of a given memory block to <code class = "incode">value</code>.</p>
+Set all bytes of a given memory block to <code class="incode">value</code>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @memset(dst: ^void, value: u8, size: u64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memset</span><span class="SyntaxCode">(dst: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1626,16 +1637,16 @@ Set all bytes of a given memory block to <code class = "incode">value</code>.</p
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @min(value1: f32, value2: f32)-&gt;f32
-func @min(value1: f64, value2: f64)-&gt;f64
-func @min(value1: s16, value2: s16)-&gt;s16
-func @min(value1: s32, value2: s32)-&gt;s32
-func @min(value1: s64, value2: s64)-&gt;s64
-func @min(value1: s8, value2: s8)-&gt;s8
-func @min(value1: u16, value2: u16)-&gt;u16
-func @min(value1: u32, value2: u32)-&gt;u32
-func @min(value1: u64, value2: u64)-&gt;u64
-func @min(value1: u8, value2: u8)-&gt;u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1652,7 +1663,7 @@ func @min(value1: u8, value2: u8)-&gt;u8
 <p>
 Returns the list of all loaded modules.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @modules()->const [..] <a href="#Swag_Module">Swag.Module</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@modules</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Module</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1669,11 +1680,11 @@ Returns the list of all loaded modules.</p>
 <p>
 Returns (val1 * val2) + val3.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @muladd(val1: f32, val2: f32, val3: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, val2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, val3: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @muladd(val1: f64, val2: f64, val3: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, val2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, val3: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1690,7 +1701,7 @@ Returns (val1 * val2) + val3.</p>
 <p>
 Stop the execution and panic.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @panic(message: string, loc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@panic</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1705,8 +1716,8 @@ Stop the execution and panic.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @pow(value1: f32, value2: f32)-&gt;f32
-func @pow(value1: f64, value2: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@pow</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@pow</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1723,7 +1734,7 @@ func @pow(value1: f64, value2: f64)-&gt;f64
 <p>
 Basic print to console function.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @print(params: ...)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(params: ...)
 </code>
 </p>
 <p>
@@ -1740,7 +1751,7 @@ Basic print to console function.</p>
 <p>
 Realloc a system memory block allocated with <a href="#@alloc">@alloc</a>.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @realloc(ptr: ^void, size: u64)-&gt;^void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@realloc</span><span class="SyntaxCode">(ptr: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1755,8 +1766,8 @@ Realloc a system memory block allocated with <a href="#@alloc">@alloc</a>.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @round(value: f32)-&gt;f32
-func @round(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@round</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@round</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1771,7 +1782,7 @@ func @round(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @rtflags()
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@rtflags</span><span class="SyntaxCode">()
 </code>
 </p>
 <p>
@@ -1788,7 +1799,7 @@ func @round(value: f64)-&gt;f64
 <p>
 Replace the current thread context.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @setcontext(context: const *<a href="#Swag_Context">Swag.Context</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@setcontext</span><span class="SyntaxCode">(context: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1803,8 +1814,8 @@ Replace the current thread context.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @sin(value: f32)-&gt;f32
-func @sin(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1819,8 +1830,8 @@ func @sin(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @sinh(value: f32)-&gt;f32
-func @sinh(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sinh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sinh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1835,8 +1846,8 @@ func @sinh(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @sqrt(value: f32)-&gt;f32
-func @sqrt(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1853,7 +1864,7 @@ func @sqrt(value: f64)-&gt;f64
 <p>
 Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @strcmp(str1: cstring, str2: cstring)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@strcmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1868,9 +1879,9 @@ Compare two zero terminated strings, and returns -1, 0 if equal, or 1.</p>
 </table>
 </p>
 <p>
-Compares two strings, and returns <code class = "incode">true</code> if they are equal.</p>
+Compares two strings, and returns <code class="incode">true</code> if they are equal.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @stringcmp(str1: string, str2: string)-&gt;bool
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@stringcmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1887,7 +1898,7 @@ Compares two strings, and returns <code class = "incode">true</code> if they are
 <p>
 Returns the length of the given 0 terminated string.</p>
 <p class="code">
-<code style="white-space: break-spaces">func @strlen(str: cstring)-&gt;u64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@strlen</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1902,7 +1913,7 @@ Returns the length of the given 0 terminated string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @sysalloc()
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sysalloc</span><span class="SyntaxCode">()
 </code>
 </p>
 <p>
@@ -1917,8 +1928,8 @@ Returns the length of the given 0 terminated string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @tan(value: f32)-&gt;f32
-func @tan(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1933,8 +1944,8 @@ func @tan(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @tanh(value: f32)-&gt;f32
-func @tanh(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tanh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tanh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1949,8 +1960,8 @@ func @tanh(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @trunc(value: f32)-&gt;f32
-func @trunc(value: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@trunc</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@trunc</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1965,7 +1976,7 @@ func @trunc(value: f64)-&gt;f64
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func @typecmp(typeA: const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a>, typeB: const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a>, cmpFlags: <a href="#Swag_TypeCmpFlags">Swag.TypeCmpFlags</a>)->bool
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@typecmp</span><span class="SyntaxCode">(typeA: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, typeB: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, cmpFlags: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeCmpFlags</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2012,7 +2023,7 @@ The current module build configuration.</p>
 <a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
 <td class="enumeration">
 <p>
-<code class = "incode">LLVM</code> backend specific options.</p>
+<code class="incode">LLVM</code> backend specific options.</p>
 </td>
 </tr>
 <tr>
@@ -2020,7 +2031,7 @@ The current module build configuration.</p>
 <a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></td>
 <td class="enumeration">
 <p>
-<code class = "incode">x86_64</code> backend specific options.</p>
+<code class="incode">x86_64</code> backend specific options.</p>
 </td>
 </tr>
 <tr>
@@ -2034,7 +2045,7 @@ The current module build configuration.</p>
 <a href="#Swag_CompilerMessage">CompilerMessage</a></td>
 <td class="enumeration">
 <p>
-A message received in a <code class = "incode">#message</code> function.</p>
+A message received in a <code class="incode">#message</code> function.</p>
 </td>
 </tr>
 <tr>
@@ -2072,7 +2083,7 @@ Will be put just before the returned address.</p>
 <a href="#Swag_Error">Error</a></td>
 <td class="enumeration">
 <p>
-Store a <code class = "incode">throw</code> error informations.</p>
+Store a <code class="incode">throw</code> error informations.</p>
 </td>
 </tr>
 <tr>
@@ -2215,7 +2226,7 @@ Represents a value, like a function parameter or an enum value.</p>
 <a href="#Swag_AllocatorMode">AllocatorMode</a></td>
 <td class="enumeration">
 <p>
-The <code class = "incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>.</p>
+The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>.</p>
 </td>
 </tr>
 <tr>
@@ -2269,7 +2280,7 @@ The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>.</p>
 <a href="#Swag_CompilerMsgMask">CompilerMsgMask</a></td>
 <td class="enumeration">
 <p>
-The type of message you want to retreive in a <code class = "incode">#message</code> function.</p>
+The type of message you want to retreive in a <code class="incode">#message</code> function.</p>
 </td>
 </tr>
 <tr>
@@ -2303,7 +2314,7 @@ Target processor.</p>
 <a href="#Swag_TargetOs">TargetOs</a></td>
 <td class="enumeration">
 <p>
-The <code class = "incode">OS</code> to target when generating native code.</p>
+The <code class="incode">OS</code> to target when generating native code.</p>
 </td>
 </tr>
 <tr>
@@ -2370,7 +2381,7 @@ Warning behavior for <a href="#Swag_Warn">Warn</a> attribute.</p>
 <a href="#Swag_CalleeReturn">CalleeReturn</a></td>
 <td class="enumeration">
 <p>
-A <code class = "incode">return</code> in the following inlined function must be done in the callee context.</p>
+A <code class="incode">return</code> in the following inlined function must be done in the callee context.</p>
 </td>
 </tr>
 <tr>
@@ -2454,7 +2465,7 @@ The following function is foreign (imported).</p>
 <a href="#Swag_Implicit">Implicit</a></td>
 <td class="enumeration">
 <p>
-Can force an <code class = "incode">opCast</code> special function to work as implicit.</p>
+Can force an <code class="incode">opCast</code> special function to work as implicit.</p>
 </td>
 </tr>
 <tr>
@@ -2478,7 +2489,7 @@ Force a function to be inlined.</p>
 <a href="#Swag_Macro">Macro</a></td>
 <td class="enumeration">
 <p>
-The following function is a <code class = "incode">macro</code>.</p>
+The following function is a <code class="incode">macro</code>.</p>
 </td>
 </tr>
 <tr>
@@ -2492,7 +2503,7 @@ The following function is a <code class = "incode">macro</code>.</p>
 <a href="#Swag_Mixin">Mixin</a></td>
 <td class="enumeration">
 <p>
-The following function is a <code class = "incode">mixin</code>.</p>
+The following function is a <code class="incode">mixin</code>.</p>
 </td>
 </tr>
 <tr>
@@ -2524,7 +2535,7 @@ Never inline the following function.</p>
 <a href="#Swag_NotGeneric">NotGeneric</a></td>
 <td class="enumeration">
 <p>
-The following function is forced to not be generic, even if defined inside a generic <code class = "incode">struct</code>.</p>
+The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>.</p>
 </td>
 </tr>
 <tr>
@@ -2562,7 +2573,7 @@ Enable/Disable a given function optimization.</p>
 <a href="#Swag_Pack">Pack</a></td>
 <td class="enumeration">
 <p>
-<code class = "incode">struct</code> packing information.</p>
+<code class="incode">struct</code> packing information.</p>
 </td>
 </tr>
 <tr>
@@ -2600,7 +2611,7 @@ Enable/Disable one or more safety checks.</p>
 <a href="#Swag_Tls">Tls</a></td>
 <td class="enumeration">
 <p>
-Put the following global variable in the <code class = "incode">tls</code> segment.</p>
+Put the following global variable in the <code class="incode">tls</code> segment.</p>
 </td>
 </tr>
 <tr>
@@ -2632,7 +2643,7 @@ Change the behavior of a given warning or list of warnings.</p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Align(value: u8)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Align</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2647,7 +2658,7 @@ Change the behavior of a given warning or list of warnings.</p>
 </table>
 </p>
 <p>
-The <code class = "incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>.</p>
+The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -2708,7 +2719,7 @@ Represents the request for a given allocator.</p>
 <td class="tdname">
 callerLoc</td>
 <td class="tdtype">
-<a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+Swag.SourceCodeLocation</td>
 <td class="enumeration">
 <p>
 The caller code, to help tracking leaks. Optional.</p>
@@ -2758,7 +2769,7 @@ When reallocating.</p>
 <td class="tdname">
 mode</td>
 <td class="tdtype">
-<a href="#Swag_AllocatorMode">Swag.AllocatorMode</a></td>
+Swag.AllocatorMode</td>
 <td class="enumeration">
 <p>
 Alloc, free, reallocate...</p>
@@ -2777,24 +2788,24 @@ Alignement constraint.</p>
 </table>
 <p>
  To allocate:<ul>
-<li> <code class = "incode">mode</code> must be <b>AllocatorMode.Alloc</b></li>
-<li> <code class = "incode">size</code> must be the size in bytes to allocate</li>
-<li> <code class = "incode">alignement</code> must be the alignement constraint in bytes (or 0)</li>
-<li> <code class = "incode">address</code> will be the returned allocated memory address</li>
+<li> <code class="incode">mode</code> must be <b>AllocatorMode.Alloc</b></li>
+<li> <code class="incode">size</code> must be the size in bytes to allocate</li>
+<li> <code class="incode">alignement</code> must be the alignement constraint in bytes (or 0)</li>
+<li> <code class="incode">address</code> will be the returned allocated memory address</li>
 </ul>
 </p>
 <p>
  To free:<ul>
-<li> <code class = "incode">mode</code> must be <b>AllocatorMode.Free</b></li>
-<li> <code class = "incode">size</code> must be the original allocated size in bytes of <code class = "incode">address</code></li>
-<li> <code class = "incode">address</code> must be the memory address to release</li>
+<li> <code class="incode">mode</code> must be <b>AllocatorMode.Free</b></li>
+<li> <code class="incode">size</code> must be the original allocated size in bytes of <code class="incode">address</code></li>
+<li> <code class="incode">address</code> must be the memory address to release</li>
 </ul>
 </p>
 <p>
  To reallocate:<ul>
-<li> <code class = "incode">mode</code> must be <b>AllocatorMode.Realloc</b></li>
-<li> <code class = "incode">size</code> must be the original allocated size in bytes of <code class = "incode">address</code></li>
-<li> <code class = "incode">address</code> must be the memory address to reallocate</li>
+<li> <code class="incode">mode</code> must be <b>AllocatorMode.Realloc</b></li>
+<li> <code class="incode">size</code> must be the original allocated size in bytes of <code class="incode">address</code></li>
+<li> <code class="incode">address</code> must be the memory address to reallocate</li>
 </ul>
 </p>
 <p>
@@ -2813,7 +2824,7 @@ Alignement constraint.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr AttrMulti
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttrMulti</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2830,7 +2841,7 @@ Alignement constraint.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr AttrUsage(usage: <a href="#Swag_AttributeUsage">Swag.AttributeUsage</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttrUsage</span><span class="SyntaxCode">(usage: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AttributeUsage</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2849,7 +2860,7 @@ Alignement constraint.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2857,7 +2868,7 @@ const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-const [..] <a href="#Swag_AttributeParam">Swag.AttributeParam</a></td>
+const [..] Swag.AttributeParam</td>
 <td class="enumeration">
 <p>
 Attribute parameters.</p>
@@ -2978,7 +2989,7 @@ Attribute can be used on a struct parameter.</p>
 File</td>
 <td class="enumeration">
 <p>
-Attribute can be used with <code class = "incode">#global</code>.</p>
+Attribute can be used with <code class="incode">#global</code>.</p>
 </td>
 </tr>
 <tr>
@@ -3120,7 +3131,7 @@ scratchAllocatorCapacity</td>
 s32</td>
 <td class="enumeration">
 <p>
-Default capacity of the <code class = "incode">temp</code> allocator (in bytes).</p>
+Default capacity of the <code class="incode">temp</code> allocator (in bytes).</p>
 </td>
 </tr>
 <tr>
@@ -3170,7 +3181,7 @@ errorStackTrace</td>
 bool</td>
 <td class="enumeration">
 <p>
-Add stack trace in case a <code class = "incode">throw</code> is raised.</p>
+Add stack trace in case a <code class="incode">throw</code> is raised.</p>
 </td>
 </tr>
 <tr>
@@ -3190,7 +3201,7 @@ warnAsWarning</td>
 string</td>
 <td class="enumeration">
 <p>
-Override <code class = "incode">warnAsErrors</code>, restoring warnings as warnings.</p>
+Override <code class="incode">warnAsErrors</code>, restoring warnings as warnings.</p>
 </td>
 </tr>
 <tr>
@@ -3250,7 +3261,7 @@ byteCodeEmitAssume</td>
 bool</td>
 <td class="enumeration">
 <p>
-<code class = "incode">assume</code> will panic if an error is raised.</p>
+<code class="incode">assume</code> will panic if an error is raised.</p>
 </td>
 </tr>
 <tr>
@@ -3277,7 +3288,7 @@ Automatic inlining of some other functions.</p>
 <td class="tdname">
 backendKind</td>
 <td class="tdtype">
-<a href="#Swag_BuildCfgBackendKind">Swag.BuildCfgBackendKind</a></td>
+Swag.BuildCfgBackendKind</td>
 <td class="enumeration">
 <p>
 Backend type (executable, dynamic lib...).</p>
@@ -3287,7 +3298,7 @@ Backend type (executable, dynamic lib...).</p>
 <td class="tdname">
 backendSubKind</td>
 <td class="tdtype">
-<a href="#Swag_BuildCfgBackendSubKind">Swag.BuildCfgBackendSubKind</a></td>
+Swag.BuildCfgBackendSubKind</td>
 <td class="enumeration">
 <p>
 Backend sub kind.</p>
@@ -3300,14 +3311,14 @@ backendDebugInformations</td>
 bool</td>
 <td class="enumeration">
 <p>
-Output debug informations if <code class = "incode">true</code>.</p>
+Output debug informations if <code class="incode">true</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 backendOptimize</td>
 <td class="tdtype">
-<a href="#Swag_BuildCfgBackendOptim">Swag.BuildCfgBackendOptim</a></td>
+Swag.BuildCfgBackendOptim</td>
 <td class="enumeration">
 <p>
 Backend optimization level.</p>
@@ -3335,7 +3346,7 @@ Additional linker arguments.</p>
 <td class="tdname">
 backendLLVM</td>
 <td class="tdtype">
-<a href="#Swag_BuildCfgBackendLLVM">Swag.BuildCfgBackendLLVM</a></td>
+Swag.BuildCfgBackendLLVM</td>
 <td class="enumeration">
 <p>
 Specific LLVM options.</p>
@@ -3345,7 +3356,7 @@ Specific LLVM options.</p>
 <td class="tdname">
 backendX64</td>
 <td class="tdtype">
-<a href="#Swag_BuildCfgBackendX64">Swag.BuildCfgBackendX64</a></td>
+Swag.BuildCfgBackendX64</td>
 <td class="enumeration">
 <p>
 Specific X86_64 options.</p>
@@ -3368,7 +3379,7 @@ docCss</td>
 string</td>
 <td class="enumeration">
 <p>
-The <code class = "incode">css</code> file to include in generated documentations.</p>
+The <code class="incode">css</code> file to include in generated documentations.</p>
 </td>
 </tr>
 </table>
@@ -3401,7 +3412,7 @@ Nothing.</p>
 Export</td>
 <td class="enumeration">
 <p>
-The module is an <code class = "incode">export</code> module which does not have its own code.</p>
+The module is an <code class="incode">export</code> module which does not have its own code.</p>
 </td>
 </tr>
 <tr>
@@ -3433,7 +3444,7 @@ The module needs to be compiled to an dynamic library.</p>
 </table>
 </p>
 <p>
-<code class = "incode">LLVM</code> backend specific options.</p>
+<code class="incode">LLVM</code> backend specific options.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -3452,7 +3463,7 @@ fpMathFma</td>
 bool</td>
 <td class="enumeration">
 <p>
-true in <code class = "incode">release</code>.</p>
+true in <code class="incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -3462,7 +3473,7 @@ fpMathNoNaN</td>
 bool</td>
 <td class="enumeration">
 <p>
-true in <code class = "incode">release</code>.</p>
+true in <code class="incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -3472,7 +3483,7 @@ fpMathNoInf</td>
 bool</td>
 <td class="enumeration">
 <p>
-true in <code class = "incode">release</code>.</p>
+true in <code class="incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -3482,7 +3493,7 @@ fpMathNoSignedZero</td>
 bool</td>
 <td class="enumeration">
 <p>
-true in <code class = "incode">release</code>.</p>
+true in <code class="incode">release</code>.</p>
 </td>
 </tr>
 <tr>
@@ -3566,7 +3577,7 @@ Optim for size level 2.</p>
 </tr>
 </table>
 <p>
- Only <code class = "incode">LLVM</code> backend uses this, as the <code class = "incode">X86_64</code> backend does not have an optimization pass.</p>
+ Only <code class="incode">LLVM</code> backend uses this, as the <code class="incode">X86_64</code> backend does not have an optimization pass.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3595,7 +3606,7 @@ Console</td>
 </tr>
 </table>
 <p>
- Under windows, by default, the application will be compiled to make a <code class = "incode">windowed</code> application. But you can change it and force the application to behave like a <code class = "incode">console</code> one.</p>
+ Under windows, by default, the application will be compiled to make a <code class="incode">windowed</code> application. But you can change it and force the application to behave like a <code class="incode">console</code> one.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3608,7 +3619,7 @@ Console</td>
 </table>
 </p>
 <p>
-<code class = "incode">x86_64</code> backend specific options.</p>
+<code class="incode">x86_64</code> backend specific options.</p>
 <p>
 <table class="h3">
 <tr>
@@ -3642,11 +3653,11 @@ buf</td>
 </table>
 </p>
 <p>
-A <code class = "incode">return</code> in the following inlined function must be done in the callee context.</p>
+A <code class="incode">return</code> in the following inlined function must be done in the callee context.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr CalleeReturn
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CalleeReturn</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3665,7 +3676,7 @@ The following function or variable is only defined at compile time.</p>
 <div class="addinfos"><b>Usage</b>: function global-var const 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Compiler
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Compiler</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3680,7 +3691,7 @@ The following function or variable is only defined at compile time.</p>
 </table>
 </p>
 <p>
-A message received in a <code class = "incode">#message</code> function.</p>
+A message received in a <code class="incode">#message</code> function.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -3699,24 +3710,24 @@ name</td>
 string</td>
 <td class="enumeration">
 <p>
-Depends on <code class = "incode">kind</code>.</p>
+Depends on <code class="incode">kind</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
-Depends on <code class = "incode">kind</code>.</p>
+Depends on <code class="incode">kind</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 kind</td>
 <td class="tdtype">
-<a href="#Swag_CompilerMsgKind">Swag.CompilerMsgKind</a></td>
+Swag.CompilerMsgKind</td>
 <td class="enumeration">
 <p>
 Kind of the message.</p>
@@ -3724,7 +3735,7 @@ Kind of the message.</p>
 </tr>
 </table>
 <p>
- In a <code class = "incode">#message</code> function, you can retreive the associated message by calling <code class = "incode">getMessage</code> of the interface returned by <a href="#@compiler">@compiler</a></p>
+ In a <code class="incode">#message</code> function, you can retreive the associated message by calling <code class="incode">getMessage</code> of the interface returned by <a href="#@compiler">@compiler</a></p>
 <p>
 <table class="h3">
 <tr>
@@ -3814,7 +3825,7 @@ AttributeGen</td>
 </table>
 </p>
 <p>
-The type of message you want to retreive in a <code class = "incode">#message</code> function.</p>
+The type of message you want to retreive in a <code class="incode">#message</code> function.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -3889,7 +3900,7 @@ The following switch must be complete.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Complete
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Complete</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3908,7 +3919,7 @@ Can be executed at compile time.</p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr ConstExpr
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ConstExpr</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3929,7 +3940,7 @@ Thread context as returned by [@context].</p>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+Swag.IAllocator</td>
 <td class="enumeration">
 <p>
 The current allocator interface.</p>
@@ -3939,7 +3950,7 @@ The current allocator interface.</p>
 <td class="tdname">
 flags</td>
 <td class="tdtype">
-<a href="#Swag_ContextFlags">Swag.ContextFlags</a></td>
+Swag.ContextFlags</td>
 <td class="enumeration">
 <p>
 Context flags.</p>
@@ -3949,7 +3960,7 @@ Context flags.</p>
 <td class="tdname">
 tempAllocator</td>
 <td class="tdtype">
-<a href="#Swag_ScratchAllocator">Swag.ScratchAllocator</a></td>
+Swag.ScratchAllocator</td>
 <td class="enumeration">
 <p>
 Other fields, can be in any order A temporary allocator.</p>
@@ -3959,7 +3970,7 @@ Other fields, can be in any order A temporary allocator.</p>
 <td class="tdname">
 traces</td>
 <td class="tdtype">
-[32] const *<a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+[32] const *Swag.SourceCodeLocation</td>
 <td class="enumeration">
 <p>
 Stack trace, in case of errors.</p>
@@ -3969,7 +3980,7 @@ Stack trace, in case of errors.</p>
 <td class="tdname">
 errors</td>
 <td class="tdtype">
-[32] <a href="#Swag_Error">Swag.Error</a></td>
+[32] Swag.Error</td>
 <td class="enumeration">
 <p>
 All errors.</p>
@@ -3979,7 +3990,7 @@ All errors.</p>
 <td class="tdname">
 exceptionLoc</td>
 <td class="tdtype">
-<a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+Swag.SourceCodeLocation</td>
 <td class="enumeration">
 <p>
 When an exception is raised, this is the code location.</p>
@@ -3999,7 +4010,7 @@ When an exception is raised, this are the parameters.</p>
 <td class="tdname">
 panic</td>
 <td class="tdtype">
-func(string, <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a>)</td>
+func(string, Swag.SourceCodeLocation)</td>
 <td class="enumeration">
 <p>
 A function to call if theres a panic.</p>
@@ -4083,7 +4094,7 @@ ByteCode</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+Swag.IAllocator</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4099,7 +4110,7 @@ MutexRW</td>
 <td class="tdname">
 firstAlloc</td>
 <td class="tdtype">
-*<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 <p>
 First allocated block.</p>
@@ -4109,7 +4120,7 @@ First allocated block.</p>
 <td class="tdname">
 firstFree</td>
 <td class="tdtype">
-*<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 <p>
 First freed block.</p>
@@ -4119,7 +4130,7 @@ First freed block.</p>
 <td class="tdname">
 lastFree</td>
 <td class="tdtype">
-*<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 <p>
 Last freed block.</p>
@@ -4296,7 +4307,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4311,7 +4322,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4326,7 +4337,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func releaseLast(using self)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseLast</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
 </code>
 </p>
 <p>
@@ -4341,7 +4352,7 @@ Setup the allocator.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4358,7 +4369,7 @@ Setup the allocator.</p>
 <p>
 This function will assert if the given user address is not conform to an allocated block.</p>
 <p class="code">
-<code style="white-space: break-spaces">func assertIsAllocated(using self, addr: *void, callerLoc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, callerLoc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode"> = #callerlocation)
 </code>
 </p>
 <p>
@@ -4375,7 +4386,7 @@ This function will assert if the given user address is not conform to an allocat
 <p>
 Check all allocated blocks.</p>
 <p class="code">
-<code style="white-space: break-spaces">func checkAllMemory(using self)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkAllMemory</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
 </code>
 </p>
 <p>
@@ -4390,7 +4401,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsAllocated(using self, ptrHeader: ^<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>, callerLoc: <a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a> = #callerlocation)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DebugAllocatorHeader</span><span class="SyntaxCode">, callerLoc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode"> = #callerlocation)
 </code>
 </p>
 <p>
@@ -4405,7 +4416,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func checkIsFreed(using self, ptrHeader: ^<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DebugAllocatorHeader</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4420,7 +4431,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memAlign(value: u64, alignement: u32)-&gt;u64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memAlign</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4435,7 +4446,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func opDrop(using self)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opDrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
 </code>
 </p>
 <p>
@@ -4450,7 +4461,7 @@ Check all allocated blocks.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func printDisplaySize(value: u64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printDisplaySize</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4467,7 +4478,7 @@ Check all allocated blocks.</p>
 <p>
 Output to the console the list of all allocated blocks (leaks).</p>
 <p class="code">
-<code style="white-space: break-spaces">func printLeaks(using self)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printLeaks</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
 </code>
 </p>
 <p>
@@ -4484,7 +4495,7 @@ Output to the console the list of all allocated blocks (leaks).</p>
 <p>
 Setup the allocator.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setup(using self, allocator: <a href="#Swag_IAllocator">Swag.IAllocator</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4528,7 +4539,7 @@ Will be put just before the returned address.</p>
 <td class="tdname">
 loc</td>
 <td class="tdtype">
-<a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+Swag.SourceCodeLocation</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4568,7 +4579,7 @@ string</td>
 <td class="tdname">
 prev</td>
 <td class="tdtype">
-*<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4576,7 +4587,7 @@ prev</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-*<a href="#Swag_DebugAllocatorHeader">Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4629,7 +4640,7 @@ The following definition is deprecated and should not be used.</p>
 <div class="addinfos"><b>Usage</b>: function enum enum-value struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Deprecated(msg: string = null)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Deprecated</span><span class="SyntaxCode">(msg: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4648,7 +4659,7 @@ The following function accepts that the called does not use its return value.</p
 <div class="addinfos"><b>Usage</b>: function var 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Discardable
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Discardable</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4667,7 +4678,7 @@ The following enum is a set of flags.</p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr EnumFlags
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFlags</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4686,7 +4697,7 @@ The following enum can be used to index arrays without casting.</p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr EnumIndex
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumIndex</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4701,7 +4712,7 @@ The following enum can be used to index arrays without casting.</p>
 </table>
 </p>
 <p>
-Store a <code class = "incode">throw</code> error informations.</p>
+Store a <code class="incode">throw</code> error informations.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -4785,7 +4796,7 @@ Warning</td>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr ExportType(what: string)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExportType</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4822,7 +4833,7 @@ The following function is foreign (imported).</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Foreign(module: string, function: string = "")
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Foreign</span><span class="SyntaxCode">(module: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, function: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">""</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4839,7 +4850,7 @@ The following function is foreign (imported).</p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Global
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Global</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4873,7 +4884,7 @@ opDrop</td>
 func(*void)</td>
 <td class="enumeration">
 <p>
-The <code class = "incode">opDrop</code> function to call when the process must exit.</p>
+The <code class="incode">opDrop</code> function to call when the process must exit.</p>
 </td>
 </tr>
 </table>
@@ -4893,7 +4904,7 @@ The <code class = "incode">opDrop</code> function to call when the process must 
 <td class="tdname">
 req</td>
 <td class="tdtype">
-func(*<a href="#Swag_IAllocator">Swag.IAllocator</a>, *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)</td>
+func(*Swag.IAllocator, *Swag.AllocatorRequest)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4910,7 +4921,7 @@ func(*<a href="#Swag_IAllocator">Swag.IAllocator</a>, *<a href="#Swag_AllocatorR
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4931,17 +4942,17 @@ This is the interface to communicate with the compiler.</p>
 <td class="tdname">
 getMessage</td>
 <td class="tdtype">
-func(*<a href="#Swag_ICompiler">Swag.ICompiler</a>)-&gt;const *<a href="#Swag_CompilerMessage">Swag.CompilerMessage</a></td>
+func(*Swag.ICompiler)->const *Swag.CompilerMessage</td>
 <td class="enumeration">
 <p>
-Returns the compiler message in a <code class = "incode">#message</code> function.</p>
+Returns the compiler message in a <code class="incode">#message</code> function.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 getBuildCfg</td>
 <td class="tdtype">
-func(*<a href="#Swag_ICompiler">Swag.ICompiler</a>)-&gt;*<a href="#Swag_BuildCfg">Swag.BuildCfg</a></td>
+func(*Swag.ICompiler)->*Swag.BuildCfg</td>
 <td class="enumeration">
 <p>
 Returns the build configuration of the current module.</p>
@@ -4951,7 +4962,7 @@ Returns the build configuration of the current module.</p>
 <td class="tdname">
 compileString</td>
 <td class="tdtype">
-func(*<a href="#Swag_ICompiler">Swag.ICompiler</a>, string)</td>
+func(*Swag.ICompiler, string)</td>
 <td class="enumeration">
 <p>
 Compile a global string.</p>
@@ -4959,7 +4970,7 @@ Compile a global string.</p>
 </tr>
 </table>
 <p>
- The intrinsic <code class = "incode">@compiler</code> will return that interface at compile-time, and <code class = "incode">null</code> at runtime.</p>
+ The intrinsic <code class="incode">@compiler</code> will return that interface at compile-time, and <code class="incode">null</code> at runtime.</p>
 <p>
 <table class="h3">
 <tr>
@@ -4972,7 +4983,7 @@ Compile a global string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func compileString(self, str: string)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compileString</span><span class="SyntaxCode">(self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4987,7 +4998,7 @@ Compile a global string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getBuildCfg(self)*<a href="#Swag_BuildCfg">Swag.BuildCfg</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBuildCfg</span><span class="SyntaxCode">(self)*</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BuildCfg</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5002,7 +5013,7 @@ Compile a global string.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getMessage(self)const *<a href="#Swag_CompilerMessage">Swag.CompilerMessage</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">(self)</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMessage</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5017,11 +5028,11 @@ Compile a global string.</p>
 </table>
 </p>
 <p>
-Can force an <code class = "incode">opCast</code> special function to work as implicit.</p>
+Can force an <code class="incode">opCast</code> special function to work as implicit.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Implicit
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Implicit</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5040,7 +5051,7 @@ The following switch is incomplete.</p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Incomplete
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Incomplete</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5059,7 +5070,7 @@ Force a function to be inlined.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Inline
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Inline</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5107,11 +5118,11 @@ Pointer to the virtual table.</p>
 </table>
 </p>
 <p>
-The following function is a <code class = "incode">macro</code>.</p>
+The following function is a <code class="incode">macro</code>.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Macro
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5128,7 +5139,7 @@ The following function is a <code class = "incode">macro</code>.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Match(what: string, value: bool)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Match</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5143,11 +5154,11 @@ The following function is a <code class = "incode">macro</code>.</p>
 </table>
 </p>
 <p>
-The following function is a <code class = "incode">mixin</code>.</p>
+The following function is a <code class="incode">mixin</code>.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Mixin
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Mixin</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5178,7 +5189,7 @@ Name of the module.</p>
 <td class="tdname">
 types</td>
 <td class="tdtype">
-const [..] const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const [..] const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 All exported types.</p>
@@ -5201,7 +5212,7 @@ The following struct should never be copied.</p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr NoCopy
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NoCopy</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5220,7 +5231,7 @@ Do not generate documentation.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr NoDoc
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NoDoc</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5239,11 +5250,11 @@ Never inline the following function.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr NoInline
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NoInline</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
- This is a hint for the <code class = "incode">llvm</code> backend.</p>
+ This is a hint for the <code class="incode">llvm</code> backend.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5256,11 +5267,11 @@ Never inline the following function.</p>
 </table>
 </p>
 <p>
-The following function is forced to not be generic, even if defined inside a generic <code class = "incode">struct</code>.</p>
+The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>.</p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr NotGeneric
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NotGeneric</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5279,11 +5290,11 @@ Struct field member relocation.</p>
 <div class="addinfos"><b>Usage</b>: struct-var 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Offset(name: string)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Offset</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
- The field offset in the struct should be the same as the variable <code class = "incode">name</code></p>
+ The field offset in the struct should be the same as the variable <code class="incode">name</code></p>
 <p>
 <table class="h3">
 <tr>
@@ -5300,7 +5311,7 @@ When exporting the following struct, do not export its content.</p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Opaque
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Opaque</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5319,17 +5330,17 @@ Enable/Disable a given function optimization.</p>
 <div class="addinfos"><b>Usage</b>: function multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Optim(what: string, value: bool)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Optim</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
  Options are:</p>
 <table class="enumeration">
-<tr><td class="tdname"> <code class = "incode">bytecode</code>   </td><td class="tdtype"> Enable/Disable bytecode optimization for the function</td></tr>
-<tr><td class="tdname"> <code class = "incode">backend</code>    </td><td class="tdtype"> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
+<tr><td class="tdname"> <code class="incode">bytecode</code>   </td><td class="tdtype"> Enable/Disable bytecode optimization for the function</td></tr>
+<tr><td class="tdname"> <code class="incode">backend</code>    </td><td class="tdtype"> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
 <p>
- If <code class = "incode">what</code> is null or empty, every options will be affected.</p>
+ If <code class="incode">what</code> is null or empty, every options will be affected.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5344,7 +5355,7 @@ Enable/Disable a given function optimization.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Overflow(value: bool)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Overflow</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5359,11 +5370,11 @@ Enable/Disable a given function optimization.</p>
 </table>
 </p>
 <p>
-<code class = "incode">struct</code> packing information.</p>
+<code class="incode">struct</code> packing information.</p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Pack(value: u8)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pack</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5382,7 +5393,7 @@ On a function or a struct, this will print the associated generated bytecode (af
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr PrintBc
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PrintBc</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5401,7 +5412,7 @@ On a function or a struct, this will print the associated generated bytecode (ri
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr PrintGenBc
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PrintGenBc</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5422,7 +5433,7 @@ Defined some informations about the current process.</p>
 <td class="tdname">
 modules</td>
 <td class="tdtype">
-const [..] <a href="#Swag_Module">Swag.Module</a></td>
+const [..] Swag.Module</td>
 <td class="enumeration">
 <p>
 The list of all modules.</p>
@@ -5516,32 +5527,34 @@ Enable/Disable one or more safety checks.</p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Safety(what: string, value: bool)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
  For example:</p>
 <p class="code">
-<code style="white-space: break-spaces"> #[Swag.Safety("", false)]                    // Disable all
- #[Swag.Safety("boundcheck|nan", false)]      // Disable 'boundcheck' and 'nan' checks
+<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode">(</span><span class="SyntaxString">""</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]                    </span><span class="SyntaxComment">// Disable all</span><span class="SyntaxCode">
+
+ #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode">(</span><span class="SyntaxString">"boundcheck|nan"</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]      </span><span class="SyntaxComment">// Disable 'boundcheck' and 'nan' checks</span><span class="SyntaxCode">
+
 </code>
 </p>
 <p>
  Safety checks are:</p>
 <table class="enumeration">
-<tr><td class="tdname"> <code class = "incode">boundcheck</code>   </td><td class="tdtype"> Check out of bound access</td></tr>
-<tr><td class="tdname"> <code class = "incode">overflow</code>     </td><td class="tdtype"> Check type conversion lost of bits or precision</td></tr>
-<tr><td class="tdname"> <code class = "incode">math</code>         </td><td class="tdtype"> Various math checks (like a negative <code class = "incode">@sqrt</code>)</td></tr>
-<tr><td class="tdname"> <code class = "incode">switch</code>       </td><td class="tdtype"> Check an invalid case in a <code class = "incode">#[Swag.Complete]</code> switch</td></tr>
-<tr><td class="tdname"> <code class = "incode">unreachable</code>  </td><td class="tdtype"> Panic if an <code class = "incode">@unreachable</code> instruction is executed</td></tr>
-<tr><td class="tdname"> <code class = "incode">any</code>          </td><td class="tdtype"> Panic if a cast from a <code class = "incode">any</code> variable does not match the real underlying type</td></tr>
-<tr><td class="tdname"> <code class = "incode">bool</code>         </td><td class="tdtype"> Panic if a <code class = "incode">bool</code> does not have a valid value (<code class = "incode">true</code> or <code class = "incode">false</code>)</td></tr>
-<tr><td class="tdname"> <code class = "incode">nan</code>          </td><td class="tdtype"> Panic if a <code class = "incode">nan</code> is used in a float arithmetic operation</td></tr>
-<tr><td class="tdname"> <code class = "incode">sanity</code>       </td><td class="tdtype"> Do a <code class = "incode">sanity</code> check (per function)</td></tr>
-<tr><td class="tdname"> <code class = "incode">null</code>         </td><td class="tdtype"> Panic on derefencing some null pointers</td></tr>
+<tr><td class="tdname"> <code class="incode">boundcheck</code>   </td><td class="tdtype"> Check out of bound access</td></tr>
+<tr><td class="tdname"> <code class="incode">overflow</code>     </td><td class="tdtype"> Check type conversion lost of bits or precision</td></tr>
+<tr><td class="tdname"> <code class="incode">math</code>         </td><td class="tdtype"> Various math checks (like a negative <code class="incode">@sqrt</code>)</td></tr>
+<tr><td class="tdname"> <code class="incode">switch</code>       </td><td class="tdtype"> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
+<tr><td class="tdname"> <code class="incode">unreachable</code>  </td><td class="tdtype"> Panic if an <code class="incode">@unreachable</code> instruction is executed</td></tr>
+<tr><td class="tdname"> <code class="incode">any</code>          </td><td class="tdtype"> Panic if a cast from a <code class="incode">any</code> variable does not match the real underlying type</td></tr>
+<tr><td class="tdname"> <code class="incode">bool</code>         </td><td class="tdtype"> Panic if a <code class="incode">bool</code> does not have a valid value (<code class="incode">true</code> or <code class="incode">false</code>)</td></tr>
+<tr><td class="tdname"> <code class="incode">nan</code>          </td><td class="tdtype"> Panic if a <code class="incode">nan</code> is used in a float arithmetic operation</td></tr>
+<tr><td class="tdname"> <code class="incode">sanity</code>       </td><td class="tdtype"> Do a <code class="incode">sanity</code> check (per function)</td></tr>
+<tr><td class="tdname"> <code class="incode">null</code>         </td><td class="tdtype"> Panic on derefencing some null pointers</td></tr>
 </table>
 <p>
- If <code class = "incode">what</code> is null or empty, every options are will be affected.</p>
+ If <code class="incode">what</code> is null or empty, every options are will be affected.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5558,7 +5571,7 @@ Enable/Disable one or more safety checks.</p>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+Swag.IAllocator</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5660,7 +5673,7 @@ Release the allocated block.</p>
 <a href="#Swag_ScratchAllocator_setCapacity">setCapacity(self, u64, IAllocator)</a></td>
 <td class="enumeration">
 <p>
-This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
+This will call <code class="incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 </td>
 </tr>
 </table>
@@ -5676,7 +5689,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5691,7 +5704,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5706,7 +5719,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5725,7 +5738,7 @@ This will call <code class = "incode">release</code> prior to changing the capac
 <td class="tdname">
 prev</td>
 <td class="tdtype">
-*<a href="#Swag_ScratchAllocator_LeakHeader">Swag.ScratchAllocator.LeakHeader</a></td>
+*Swag.ScratchAllocator.LeakHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5733,7 +5746,7 @@ prev</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-*<a href="#Swag_ScratchAllocator_LeakHeader">Swag.ScratchAllocator.LeakHeader</a></td>
+*Swag.ScratchAllocator.LeakHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5758,7 +5771,7 @@ u64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func align(value: u64, alignement: u32)-&gt;u64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">align</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5773,7 +5786,7 @@ u64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func alloc(using self, size: u64, alignement: u32 = 0)-&gt;*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5788,7 +5801,7 @@ u64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(using self, addr: *void, size: u64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5805,7 +5818,7 @@ u64</td>
 <p>
 Release all memory.</p>
 <p class="code">
-<code style="white-space: break-spaces">func freeAll(using self)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
 </code>
 </p>
 <p>
@@ -5822,7 +5835,7 @@ Release all memory.</p>
 <p>
 Release the allocated block.</p>
 <p class="code">
-<code style="white-space: break-spaces">func release(using self)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
 </code>
 </p>
 <p>
@@ -5837,9 +5850,9 @@ Release the allocated block.</p>
 </table>
 </p>
 <p>
-This will call <code class = "incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
+This will call <code class="incode">release</code> prior to changing the capacity, so this must be called at an early stage.</p>
 <p class="code">
-<code style="white-space: break-spaces">func setCapacity(using self, newCapacity: u64, allocator: <a href="#Swag_IAllocator">Swag.IAllocator</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5908,7 +5921,7 @@ End column.</p>
 </tr>
 </table>
 <p>
- This is typically what will be returned by <code class = "incode">#location</code> or <code class = "incode">#callerlocation</code>.</p>
+ This is typically what will be returned by <code class="incode">#location</code> or <code class="incode">#callerlocation</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -5923,7 +5936,7 @@ End column.</p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Strict
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5949,7 +5962,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -5964,7 +5977,7 @@ End column.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func req(using self, request: *<a href="#Swag_AllocatorRequest">Swag.AllocatorRequest</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -6000,7 +6013,7 @@ X86_64</td>
 </table>
 </p>
 <p>
-The <code class = "incode">OS</code> to target when generating native code.</p>
+The <code class="incode">OS</code> to target when generating native code.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -6039,11 +6052,11 @@ MacOS (<b>unsupported</b>).</p>
 </table>
 </p>
 <p>
-Put the following global variable in the <code class = "incode">tls</code> segment.</p>
+Put the following global variable in the <code class="incode">tls</code> segment.</p>
 <div class="addinfos"><b>Usage</b>: global-var 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Tls
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Tls</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -6131,7 +6144,7 @@ A unique CRC to identify the type.</p>
 <td class="tdname">
 flags</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfoFlags">Swag.TypeInfoFlags</a></td>
+Swag.TypeInfoFlags</td>
 <td class="enumeration">
 <p>
 Some additional flags.</p>
@@ -6141,7 +6154,7 @@ Some additional flags.</p>
 <td class="tdname">
 kind</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfoKind">Swag.TypeInfoKind</a></td>
+Swag.TypeInfoKind</td>
 <td class="enumeration">
 <p>
 The kind of the type.</p>
@@ -6172,7 +6185,7 @@ padding</td>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6180,7 +6193,7 @@ padding</td>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -6203,7 +6216,7 @@ The underlying type.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6211,7 +6224,7 @@ The underlying type.</p>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -6221,7 +6234,7 @@ The underlying type.</p>
 <td class="tdname">
 finalType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 If this is an array with multiple dimensions, this will be the final type.</p>
@@ -6264,7 +6277,7 @@ The total number of elements in case this has multiple dimensions.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6272,7 +6285,7 @@ The total number of elements in case this has multiple dimensions.</p>
 <td class="tdname">
 values</td>
 <td class="tdtype">
-const [..] <a href="#Swag_TypeValue">Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the values.</p>
@@ -6282,7 +6295,7 @@ All the values.</p>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying enum type.</p>
@@ -6292,7 +6305,7 @@ The underlying enum type.</p>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-const [..] <a href="#Swag_Attribute">Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 All the attributes.</p>
@@ -6356,7 +6369,7 @@ This is a native unsigned integer.</p>
 HasPostCopy</td>
 <td class="enumeration">
 <p>
-This is a struct with a <code class = "incode">opPostCopy</code>.</p>
+This is a struct with a <code class="incode">opPostCopy</code>.</p>
 </td>
 </tr>
 <tr>
@@ -6364,7 +6377,7 @@ This is a struct with a <code class = "incode">opPostCopy</code>.</p>
 HasPostMove</td>
 <td class="enumeration">
 <p>
-This is a struct with a <code class = "incode">opPostMove</code>.</p>
+This is a struct with a <code class="incode">opPostMove</code>.</p>
 </td>
 </tr>
 <tr>
@@ -6372,7 +6385,7 @@ This is a struct with a <code class = "incode">opPostMove</code>.</p>
 HasDrop</td>
 <td class="enumeration">
 <p>
-This is a struct with a <code class = "incode">opDrop</code>.</p>
+This is a struct with a <code class="incode">opDrop</code>.</p>
 </td>
 </tr>
 <tr>
@@ -6404,7 +6417,7 @@ This is a tuple.</p>
 CString</td>
 <td class="enumeration">
 <p>
-This is a <code class = "incode">cstring</code>.</p>
+This is a <code class="incode">cstring</code>.</p>
 </td>
 </tr>
 <tr>
@@ -6456,7 +6469,7 @@ This is a pointer to multiple values.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6464,7 +6477,7 @@ This is a pointer to multiple values.</p>
 <td class="tdname">
 generics</td>
 <td class="tdtype">
-const [..] <a href="#Swag_TypeValue">Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 Generic parameters.</p>
@@ -6474,7 +6487,7 @@ Generic parameters.</p>
 <td class="tdname">
 parameters</td>
 <td class="tdtype">
-const [..] <a href="#Swag_TypeValue">Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 Parameters.</p>
@@ -6484,17 +6497,17 @@ Parameters.</p>
 <td class="tdname">
 returnType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
-The return type, or <code class = "incode">null</code>.</p>
+The return type, or <code class="incode">null</code>.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-const [..] <a href="#Swag_Attribute">Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 All the attributes.</p>
@@ -6517,7 +6530,7 @@ All the attributes.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6525,7 +6538,7 @@ All the attributes.</p>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6719,7 +6732,7 @@ The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an 
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6740,7 +6753,7 @@ The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an 
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6748,7 +6761,7 @@ The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an 
 <td class="tdname">
 nativeKind</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfoNativeKind">Swag.TypeInfoNativeKind</a></td>
+Swag.TypeInfoNativeKind</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6871,7 +6884,7 @@ Undefined</td>
 </tr>
 </table>
 <p>
- If the <code class = "incode">kind</code> of the type is <code class = "incode">TypeInfoKind.Native</code>, then this is the real native type.</p>
+ If the <code class="incode">kind</code> of the type is <code class="incode">TypeInfoKind.Native</code>, then this is the real native type.</p>
 <p>
 <table class="h3">
 <tr>
@@ -6888,7 +6901,7 @@ Undefined</td>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6896,7 +6909,7 @@ Undefined</td>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The pointed type.</p>
@@ -6919,7 +6932,7 @@ The pointed type.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6927,7 +6940,7 @@ The pointed type.</p>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -6950,7 +6963,7 @@ The underlying type.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7008,7 +7021,7 @@ User name of the struct.</p>
 <td class="tdname">
 fromGeneric</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 If it comes from a generic instantiation, this is the original generic struct.</p>
@@ -7018,7 +7031,7 @@ If it comes from a generic instantiation, this is the original generic struct.</
 <td class="tdname">
 generics</td>
 <td class="tdtype">
-const [..] <a href="#Swag_TypeValue">Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 Generic parameters.</p>
@@ -7028,7 +7041,7 @@ Generic parameters.</p>
 <td class="tdname">
 fields</td>
 <td class="tdtype">
-const [..] <a href="#Swag_TypeValue">Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the fields.</p>
@@ -7038,7 +7051,7 @@ All the fields.</p>
 <td class="tdname">
 methods</td>
 <td class="tdtype">
-const [..] <a href="#Swag_TypeValue">Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the methods, if exported.</p>
@@ -7048,7 +7061,7 @@ All the methods, if exported.</p>
 <td class="tdname">
 interfaces</td>
 <td class="tdtype">
-const [..] <a href="#Swag_TypeValue">Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the interfaces.</p>
@@ -7058,7 +7071,7 @@ All the interfaces.</p>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-const [..] <a href="#Swag_Attribute">Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 All the attributes.</p>
@@ -7081,7 +7094,7 @@ All the attributes.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7089,7 +7102,7 @@ All the attributes.</p>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -7124,7 +7137,7 @@ Name of the value.</p>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-const *<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 Type of the value.</p>
@@ -7144,7 +7157,7 @@ Pointer to the constant value.</p>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-const [..] <a href="#Swag_Attribute">Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 Associated attributes.</p>
@@ -7221,7 +7234,7 @@ Unique crc32.</p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Using(what: const *<a href="swag.html#Swag_TypeInfo___">Swag.TypeInfo...</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Using</span><span class="SyntaxCode">(what: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">...)
 </code>
 </p>
 <p>
@@ -7240,15 +7253,15 @@ Change the behavior of a given warning or list of warnings.</p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
 <p class="code">
-<code style="white-space: break-spaces">attr Warn(what: string, level: <a href="#Swag_WarnLevel">Swag.WarnLevel</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, level: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
  For example:</p>
 <p class="code">
-<code style="white-space: break-spaces"> #[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
- #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
- #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]
+<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Error</span><span class="SyntaxCode">)
+ #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0003|wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Disable</span><span class="SyntaxCode">)
+ #global #[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0001"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Enable</span><span class="SyntaxCode">)]
 </code>
 </p>
 <p>

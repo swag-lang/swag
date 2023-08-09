@@ -130,7 +130,18 @@
             width:              94%;
             margin-left:        20px;
         }
-</style>
+        .SyntaxCode      { color: #000000; }
+        .SyntaxComment   { color: #6A9955; }
+        .SyntaxCompiler  { color: #AAAAAA; }
+        .SyntaxFunction  { color: #FF7411; }
+        .SyntaxConstant  { color: #569cd6; }
+        .SyntaxIntrinsic { color: #DCDCAA; }
+        .SyntaxType      { color: #4EC9B0; }
+        .SyntaxKeyword   { color: #569cd6; }
+        .SyntaxLogic     { color: #D8A0DF; }
+        .SyntaxNumber    { color: #B5CEA8; }
+        .SyntaxString    { color: #CE9178; }
+    </style>
 <div class="container">
 <div class="left">
 <h1>Module libc</h1>
@@ -858,7 +869,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func _Exit(status: s32)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> _Exit(status: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -873,7 +884,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func abort()
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">abort</span><span class="SyntaxCode">()
 </code>
 </p>
 <p>
@@ -888,7 +899,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func abs(j: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">abs</span><span class="SyntaxCode">(j: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -903,7 +914,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func acos(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acos</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -918,7 +929,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func acosf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acosf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -933,7 +944,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func acosh(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acosh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -948,7 +959,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func acoshf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acoshf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -963,7 +974,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func acrt_iob_func(index: u32)->*<a href="#Libc_FILE">Libc.FILE</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acrt_iob_func</span><span class="SyntaxCode">(index: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -978,7 +989,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func aligned_alloc(aligment: <a href="libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">aligned_alloc</span><span class="SyntaxCode">(aligment: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -993,7 +1004,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func asctime(timeptr: *<a href="#Libc_tm">Libc.tm</a>)->*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asctime</span><span class="SyntaxCode">(timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.tm)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1008,7 +1019,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func asin(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1023,7 +1034,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func asinf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1038,7 +1049,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func asinh(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asinh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1053,7 +1064,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func asinhf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asinhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1068,7 +1079,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atan(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1083,7 +1094,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atan2(y: f64, x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atan2</span><span class="SyntaxCode">(y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1098,7 +1109,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atan2f(y: f32, x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atan2f</span><span class="SyntaxCode">(y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1113,7 +1124,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atanf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atanf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1128,7 +1139,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atanh(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atanh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1143,7 +1154,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atanhf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atanhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1158,7 +1169,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atof(nptr: cstring)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atof</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1173,7 +1184,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atoi(nptr: cstring)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atoi</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1188,7 +1199,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atol(nptr: cstring)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atol</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1203,7 +1214,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func atoll(nptr: cstring)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atoll</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1218,7 +1229,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func bsearch(key: *void, base: *void, nmemb: <a href="libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>, compar: *void)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bsearch</span><span class="SyntaxCode">(key: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1233,7 +1244,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func calloc(nmemb: <a href="libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">calloc</span><span class="SyntaxCode">(nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1248,7 +1259,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func cbrt(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cbrt</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1263,7 +1274,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func cbrtf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cbrtf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1278,7 +1289,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ceil(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ceil</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1293,7 +1304,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ceilf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ceilf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1308,7 +1319,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func clearerr(stream: *<a href="#Libc_FILE">Libc.FILE</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearerr</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1323,7 +1334,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func clock()-><a href="libc.html#Libc_clock_t">Libc.clock_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clock</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.clock_t
 </code>
 </p>
 <p>
@@ -1338,7 +1349,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func copysign(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copysign</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1353,7 +1364,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func copysignf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copysignf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1368,7 +1379,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func cos(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cos</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1383,7 +1394,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func cosf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cosf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1398,7 +1409,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func cosh(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cosh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1413,7 +1424,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func coshf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">coshf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1428,7 +1439,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ctime(timer: const *<a href="libc.html#Libc_time_t">Libc.time_t</a>)->*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ctime</span><span class="SyntaxCode">(timer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1443,7 +1454,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func difftime(time1: <a href="libc.html#Libc_time_t">Libc.time_t</a>, time2: <a href="libc.html#Libc_time_t">Libc.time_t</a>)->f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">difftime</span><span class="SyntaxCode">(time1: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t, time2: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1458,7 +1469,7 @@ u32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func div(numer: s32, denom: s32)-><a href="#Libc_div_t">Libc.div_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">div</span><span class="SyntaxCode">(numer: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, denom: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.div_t
 </code>
 </p>
 <p>
@@ -1502,7 +1513,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func erf(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1517,7 +1528,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func erfc(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erfc</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1532,7 +1543,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func erfcf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erfcf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1547,7 +1558,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func erff(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erff</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1564,7 +1575,7 @@ s32</td>
 <p>
 func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 <p class="code">
-<code style="white-space: break-spaces">func exit(status: s32)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exit</span><span class="SyntaxCode">(status: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -1579,7 +1590,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func exp(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exp</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1594,7 +1605,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func exp2(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exp2</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1609,7 +1620,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func exp2f(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exp2f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1624,7 +1635,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func expf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1639,7 +1650,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func expm1(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expm1</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1654,7 +1665,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func expm1f(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expm1f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1669,7 +1680,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fabs(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fabs</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1684,7 +1695,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fabsf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fabsf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1699,7 +1710,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fclose(stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fclose</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1714,7 +1725,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fdim(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fdim</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1729,7 +1740,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fdimf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fdimf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1744,7 +1755,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func feof(stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">feof</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1759,7 +1770,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ferror(stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ferror</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1774,7 +1785,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fflush(stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fflush</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1789,7 +1800,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fgetc(stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgetc</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1804,7 +1815,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fgetpos(stream: *<a href="#Libc_FILE">Libc.FILE</a>, pos: *<a href="libc.html#Libc_fpos_t">Libc.fpos_t</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.fpos_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1819,7 +1830,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fgets(s: *u8, n: s64, stream: *<a href="#Libc_FILE">Libc.FILE</a>)->*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgets</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1834,7 +1845,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func floor(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">floor</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1849,7 +1860,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func floorf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">floorf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1864,7 +1875,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fma(x: f64, y: f64, z: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fma</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1879,7 +1890,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fmaf(x: f32, y: f32, z: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmaf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1894,7 +1905,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fmax(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmax</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1909,7 +1920,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fmaxf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmaxf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1924,7 +1935,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fmin(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1939,7 +1950,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fminf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fminf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1954,7 +1965,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fmod(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmod</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1969,7 +1980,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fmodf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmodf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1984,7 +1995,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fopen(filename: cstring, mode: cstring)->*<a href="#Libc_FILE">Libc.FILE</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fopen</span><span class="SyntaxCode">(filename: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -1999,7 +2010,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fpclassify(x: f64)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fpclassify</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2014,7 +2025,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fpclassifyf(x: f32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fpclassifyf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2029,7 +2040,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fprintf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: cvarargs)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fprintf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2044,7 +2055,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fputc(s: cstring, stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fputc</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2059,7 +2070,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fread(ptr: *void, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>, stream: *<a href="#Libc_FILE">Libc.FILE</a>)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fread</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -2074,7 +2085,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func free(ptr: *void)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2089,7 +2100,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func freopen(filename: cstring, mode: cstring, stream: *<a href="#Libc_FILE">Libc.FILE</a>)->*<a href="#Libc_FILE">Libc.FILE</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freopen</span><span class="SyntaxCode">(filename: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2104,7 +2115,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func frexp(value: f64, exp: *s64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">frexp</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, exp: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2119,7 +2130,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func frexpf(value: f32, exp: *s64)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">frexpf</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, exp: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2134,7 +2145,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fscanf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: cvarargs)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fscanf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2149,7 +2160,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fseek(stream: *<a href="#Libc_FILE">Libc.FILE</a>, offset: s32, whence: s64)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fseek</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, offset: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, whence: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2164,7 +2175,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fsetpos(stream: *<a href="#Libc_FILE">Libc.FILE</a>, pos: *<a href="libc.html#Libc_fpos_t">Libc.fpos_t</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fsetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.fpos_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2179,7 +2190,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ftell(stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ftell</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2194,7 +2205,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func fwrite(ptr: *void, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>, nmemb: <a href="libc.html#Libc_size_t">Libc.size_t</a>, stream: *<a href="#Libc_FILE">Libc.FILE</a>)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fwrite</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -2209,7 +2220,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getc(stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getc</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2224,7 +2235,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getchar()-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getchar</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2239,7 +2250,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func getenv(name: cstring)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getenv</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2254,7 +2265,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func gmtime(timer: *<a href="libc.html#Libc_time_t">Libc.time_t</a>)->*<a href="#Libc_tm">Libc.tm</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">gmtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.tm
 </code>
 </p>
 <p>
@@ -2269,7 +2280,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hypot(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hypot</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2284,7 +2295,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func hypotf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hypotf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2299,7 +2310,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ilogb(x: f64)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ilogb</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2314,7 +2325,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ilogbf(x: f32)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ilogbf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2329,7 +2340,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isalnum(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isalnum</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2344,7 +2355,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isalpha(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isalpha</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2359,7 +2370,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isblank(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isblank</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2374,7 +2385,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func iscntrl(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">iscntrl</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2389,7 +2400,7 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isdigit(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isdigit</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2404,8 +2415,8 @@ func atexit(fn: *void)-&gt;s32;func at_quick_exit(fn: *void)-&gt;s32;.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isfinite(x: f32)
-func isfinite(x: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isfinite</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isfinite</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2420,7 +2431,7 @@ func isfinite(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isgraph(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgraph</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2435,8 +2446,8 @@ func isfinite(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isgreater(x: f32, y: f32)
-func isgreater(x: f64, y: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2451,8 +2462,8 @@ func isgreater(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isgreaterequal(x: f32, y: f32)
-func isgreaterequal(x: f64, y: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreaterequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreaterequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2467,8 +2478,8 @@ func isgreaterequal(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isinf(x: f32)
-func isinf(x: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2483,8 +2494,8 @@ func isinf(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isless(x: f32, y: f32)
-func isless(x: f64, y: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isless</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isless</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2499,8 +2510,8 @@ func isless(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func islessequal(x: f32, y: f32)
-func islessequal(x: f64, y: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2515,8 +2526,8 @@ func islessequal(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func islessgreater(x: f32, y: f32)
-func islessgreater(x: f64, y: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2531,7 +2542,7 @@ func islessgreater(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func islower(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islower</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2546,8 +2557,8 @@ func islessgreater(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isnan(x: f32)
-func isnan(x: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2562,8 +2573,8 @@ func isnan(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isnormal(x: f32)
-func isnormal(x: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnormal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnormal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2578,7 +2589,7 @@ func isnormal(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isprint(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isprint</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2593,7 +2604,7 @@ func isnormal(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ispunct(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ispunct</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2608,7 +2619,7 @@ func isnormal(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isspace(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isspace</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2623,8 +2634,8 @@ func isnormal(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isunordered(x: f32, y: f32)
-func isunordered(x: f64, y: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isunordered</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isunordered</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -2639,7 +2650,7 @@ func isunordered(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isupper(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isupper</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2654,7 +2665,7 @@ func isunordered(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func isxdigi(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isxdigi</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2669,7 +2680,7 @@ func isunordered(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func labs(j: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">labs</span><span class="SyntaxCode">(j: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2684,7 +2695,7 @@ func isunordered(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ldexp(x: f64, exp: s64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ldexp</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, exp: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2699,7 +2710,7 @@ func isunordered(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ldexpf(x: f32, exp: s64)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ldexpf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, exp: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2714,7 +2725,7 @@ func isunordered(x: f64, y: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ldiv(numer: s32, denom: s32)-><a href="#Libc_ldiv_t">Libc.ldiv_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ldiv</span><span class="SyntaxCode">(numer: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, denom: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.ldiv_t
 </code>
 </p>
 <p>
@@ -2758,7 +2769,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func lgamma(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lgamma</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2773,7 +2784,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func lgammaf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lgammaf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2788,7 +2799,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func llabs(j: s64)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llabs</span><span class="SyntaxCode">(j: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2803,7 +2814,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func lldiv(numer: s64, denom: s64)-><a href="#Libc_lldiv_t">Libc.lldiv_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lldiv</span><span class="SyntaxCode">(numer: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, denom: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.lldiv_t
 </code>
 </p>
 <p>
@@ -2847,7 +2858,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func llrint(x: f64)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llrint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2862,7 +2873,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func llrintf(x: f32)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llrintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2877,7 +2888,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func llround(x: f64)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llround</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2892,7 +2903,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func llroundf(x: f32)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llroundf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2907,7 +2918,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func localtime(timer: *<a href="libc.html#Libc_time_t">Libc.time_t</a>)->*<a href="#Libc_tm">Libc.tm</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.tm
 </code>
 </p>
 <p>
@@ -2922,7 +2933,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func log(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2937,7 +2948,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func log10(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log10</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2952,7 +2963,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func log10f(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log10f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2967,7 +2978,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func log1p(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log1p</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2982,7 +2993,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func log1pf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log1pf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -2997,7 +3008,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func log2(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log2</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3012,7 +3023,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func log2f(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log2f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3027,7 +3038,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func logb(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">logb</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3042,7 +3053,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func logbf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">logbf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3057,7 +3068,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func logf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">logf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3072,7 +3083,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func lrint(x: f64)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lrint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3087,7 +3098,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func lrintf(x: f32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lrintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3102,7 +3113,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func lround(x: f64)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lround</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3117,7 +3128,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func lroundf(x: f32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lroundf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3132,7 +3143,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func malloc(size: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">malloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3147,7 +3158,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mblen(s: cstring, n: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mblen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3162,7 +3173,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mbstowcs(pwcs: *<a href="libc.html#Libc_wchar_t">Libc.wchar_t</a>, s: cstring, n: <a href="libc.html#Libc_size_t">Libc.size_t</a>)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbstowcs</span><span class="SyntaxCode">(pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -3177,7 +3188,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mbtowc(pwc: *<a href="libc.html#Libc_wchar_t">Libc.wchar_t</a>, s: cstring, n: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbtowc</span><span class="SyntaxCode">(pwc: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3192,7 +3203,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memchr(ptr: const *void, value: s32, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memchr</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3207,7 +3218,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memcmp(ptr1: const *void, ptr2: const *void, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcmp</span><span class="SyntaxCode">(ptr1: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, ptr2: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3222,7 +3233,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memcpy(dst: *void, src: const *void, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3237,7 +3248,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memmove(dst: *void, src: const *void, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memmove</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3252,7 +3263,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func memset(ptr: *void, value: s32, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memset</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3267,7 +3278,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func mktime(timeptr: *<a href="#Libc_tm">Libc.tm</a>)-><a href="libc.html#Libc_time_t">Libc.time_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mktime</span><span class="SyntaxCode">(timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.tm)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t
 </code>
 </p>
 <p>
@@ -3282,7 +3293,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func modf(value: f64, iptr: *f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">modf</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, iptr: *</span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3297,7 +3308,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func modff(value: f32, iptr: *f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">modff</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, iptr: *</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3312,7 +3323,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func nan(tagp: cstring)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nan</span><span class="SyntaxCode">(tagp: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3327,7 +3338,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func nanf(tagp: cstring)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nanf</span><span class="SyntaxCode">(tagp: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3342,7 +3353,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func nearbyint(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nearbyint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3357,7 +3368,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func nearbyintf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nearbyintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3372,7 +3383,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func nextafter(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextafter</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3387,7 +3398,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func nextafterf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextafterf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3402,7 +3413,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func perror(s: cstring)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">perror</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3417,7 +3428,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func pow(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pow</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3432,7 +3443,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func powf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">powf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3447,7 +3458,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func printf(format: cstring, args: cvarargs)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3462,7 +3473,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func putc(c: s64, stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">putc</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3477,7 +3488,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func putchar()-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">putchar</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3492,7 +3503,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func puts(s: cstring)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">puts</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3507,7 +3518,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func qsort(base: *void, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>, compar: *void)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">qsort</span><span class="SyntaxCode">(base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3522,7 +3533,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func quick_exit(status: s32)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">quick_exit</span><span class="SyntaxCode">(status: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3537,7 +3548,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func rand()-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rand</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3552,7 +3563,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func realloc(ptr: *void, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*void
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">realloc</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3567,7 +3578,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func remainder(x: f64, y: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remainder</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3582,7 +3593,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func remainderf(x: f32, y: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remainderf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3597,7 +3608,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func remove(filename: cstring)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(filename: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3612,7 +3623,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func remquo(x: f64, y: f64, quo: *s64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remquo</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, quo: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3627,7 +3638,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func remquof(x: f32, y: f32, quo: *s64)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remquof</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, quo: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3642,7 +3653,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func rename(old: cstring, new: cstring)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rename</span><span class="SyntaxCode">(old: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, new: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3657,7 +3668,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func rewind(stream: *<a href="#Libc_FILE">Libc.FILE</a>)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rewind</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3672,7 +3683,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func rint(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3687,7 +3698,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func rintf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3702,7 +3713,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func round(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">round</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3717,7 +3728,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func roundf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">roundf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3732,7 +3743,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func scalbln(x: f64, n: s32)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalbln</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3747,7 +3758,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func scalblnf(x: f32, n: s32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalblnf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3762,7 +3773,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func scalbn(x: f64, n: s64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalbn</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3777,7 +3788,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func scalbnf(x: f32, n: s64)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalbnf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3792,7 +3803,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func scanf(format: cstring, args: cvarargs)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scanf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3807,7 +3818,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setbuf(stream: *<a href="#Libc_FILE">Libc.FILE</a>, buf: *u8)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setbuf</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, buf: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3822,7 +3833,7 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func setvbuf(stream: *<a href="#Libc_FILE">Libc.FILE</a>, buf: *u8, mode: s64, size: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setvbuf</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, buf: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3837,8 +3848,8 @@ s64</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func signbit(x: f32)
-func signbit(x: f64)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">signbit</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">signbit</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3853,7 +3864,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sin(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3868,7 +3879,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sinf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3883,7 +3894,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sinh(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sinh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3898,7 +3909,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sinhf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sinhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3913,7 +3924,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func snprintf(s: *u8, count: <a href="libc.html#Libc_size_t">Libc.size_t</a>, format: cstring, args: cvarargs)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">snprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3928,7 +3939,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sprintf(s: *u8, format: cstring, args: cvarargs)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3943,7 +3954,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sqrt(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sqrt</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3958,7 +3969,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sqrtf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sqrtf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -3973,7 +3984,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func srand(seed: u32)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">srand</span><span class="SyntaxCode">(seed: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -3988,7 +3999,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func sscanf(s: cstring, format: cstring, args: cvarargs)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sscanf</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4003,7 +4014,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vfprintf(_Options: u64, _Stream: *<a href="#Libc_FILE">Libc.FILE</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vfprintf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4018,7 +4029,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vfscanf(_Options: u64, _Stream: *<a href="#Libc_FILE">Libc.FILE</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vfscanf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4033,7 +4044,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: <a href="libc.html#Libc_size_t">Libc.size_t</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsprintf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4048,7 +4059,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func stdio_common_vsscanf(_Options: u64, _Buffer: cstring, _BufferCount: <a href="libc.html#Libc_size_t">Libc.size_t</a>, _Format: cstring, _Locale: *void, _ArgList: *void)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsscanf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4063,7 +4074,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strcat(dst: *u8, src: cstring)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcat</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4078,7 +4089,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strchr(str: cstring, character: s32)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strchr</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, character: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4093,7 +4104,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strcmp(str1: cstring, str2: cstring)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4108,7 +4119,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strcoll(str1: cstring, str2: cstring)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcoll</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4123,7 +4134,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strcpy(dst: *u8, src: cstring)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4138,7 +4149,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strcspn(str1: cstring, str2: cstring)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -4153,7 +4164,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strerror(errnum: s32)-&gt;cstring
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strerror</span><span class="SyntaxCode">(errnum: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">cstring</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4168,7 +4179,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strftime(s: *u8, maxsize: <a href="libc.html#Libc_size_t">Libc.size_t</a>, format: const *u8, timeptr: *<a href="#Libc_tm">Libc.tm</a>)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strftime</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, maxsize: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.tm)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -4183,7 +4194,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strlen(s: cstring)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strlen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -4198,7 +4209,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strncat(dst: *u8, src: cstring, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncat</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4213,7 +4224,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strncmp(str1: cstring, str2: cstring, num: u64)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4228,7 +4239,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strncpy(dst: *u8, src: cstring, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)->*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4243,7 +4254,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strpbrk(str1: *u8, str2: cstring)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strpbrk</span><span class="SyntaxCode">(str1: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4258,7 +4269,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strrchr(str: *u8, character: s32)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strrchr</span><span class="SyntaxCode">(str: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, character: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4273,7 +4284,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strspn(str1: cstring, str2: cstring)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -4288,7 +4299,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strstr(str1: *u8, str2: cstring)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strstr</span><span class="SyntaxCode">(str1: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4303,7 +4314,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strtod(nptr: cstring, endptr: &lt;b&gt;u8)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtod</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4318,7 +4329,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strtof(nptr: cstring, endptr: &lt;b&gt;u8)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtof</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4333,7 +4344,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strtok(str: *u8, delimiters: cstring)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtok</span><span class="SyntaxCode">(str: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, delimiters: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4348,7 +4359,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strtol(nptr: cstring, endptr: &lt;b&gt;u8, base: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtol</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4363,7 +4374,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strtoll(nptr: cstring, endptr: &lt;b&gt;u8, base: s32)-&gt;s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtoll</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4378,7 +4389,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strtoul(nptr: cstring, endptr: &lt;b&gt;u8, base: s32)-&gt;u32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtoul</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4393,7 +4404,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strtoull(nptr: cstring, endptr: &lt;b&gt;u8, base: s32)-&gt;u64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtoull</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4408,7 +4419,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func strxfrm(dst: *u8, src: cstring, num: <a href="libc.html#Libc_size_t">Libc.size_t</a>)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strxfrm</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -4423,7 +4434,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func system(cmd: cstring)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">system</span><span class="SyntaxCode">(cmd: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4438,7 +4449,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tan(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4453,7 +4464,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tanf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tanf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4468,7 +4479,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tanh(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tanh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4483,7 +4494,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tanhf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tanhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4498,7 +4509,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tgamma(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tgamma</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4513,7 +4524,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tgammaf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tgammaf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4528,7 +4539,7 @@ func signbit(x: f64)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func time(timer: *<a href="libc.html#Libc_time_t">Libc.time_t</a>)-><a href="libc.html#Libc_time_t">Libc.time_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">time</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t
 </code>
 </p>
 <p>
@@ -4628,7 +4639,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tmpfile()->*<a href="#Libc_FILE">Libc.FILE</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tmpfile</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4643,7 +4654,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tmpnam(s: *u8)-&gt;*u8
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tmpnam</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4658,7 +4669,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func tolower(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tolower</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4673,7 +4684,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func toupper(c: s32)-&gt;s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toupper</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4688,7 +4699,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func trunc(x: f64)-&gt;f64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trunc</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4703,7 +4714,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func truncf(x: f32)-&gt;f32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">truncf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4718,7 +4729,7 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func ungetc(c: s64, stream: *<a href="#Libc_FILE">Libc.FILE</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ungetc</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4733,8 +4744,8 @@ s32</td>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">#[Swag.Macro]
-func va_end(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)
+<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">va_end</span><span class="SyntaxCode">(vl: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4749,8 +4760,8 @@ func va_end(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">#[Swag.Macro]
-func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any)
+<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">va_start</span><span class="SyntaxCode">(vl: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">, dummy: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -4765,7 +4776,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vfprintf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vfprintf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4780,7 +4791,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vfscanf(file: *<a href="#Libc_FILE">Libc.FILE</a>, format: cstring, args: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vfscanf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FILE</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4795,7 +4806,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vprintf(format: cstring, args: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vprintf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4810,7 +4821,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vscanf(format: cstring, args: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vscanf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4825,7 +4836,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsnprintf(s: *u8, count: <a href="libc.html#Libc_size_t">Libc.size_t</a>, format: cstring, args: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsnprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4840,7 +4851,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsprintf(s: *u8, format: cstring, args: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4855,7 +4866,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func vsscanf(s: cstring, format: cstring, args: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>)->s64
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsscanf</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -4870,7 +4881,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wcstombs(s: *u8, pwcs: *<a href="libc.html#Libc_wchar_t">Libc.wchar_t</a>, n: <a href="libc.html#Libc_size_t">Libc.size_t</a>)-><a href="libc.html#Libc_size_t">Libc.size_t</a>
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wcstombs</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t
 </code>
 </p>
 <p>
@@ -4885,7 +4896,7 @@ func va_start(vl: *<a href="swag.html#Swag_CVaList">Swag.CVaList</a>, dummy: any
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">func wctomb(s: *u8, wc: <a href="libc.html#Libc_wchar_t">Libc.wchar_t</a>)->s32
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wctomb</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, wc: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </code>
 </p>
 </div>

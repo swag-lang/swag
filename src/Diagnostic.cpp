@@ -6,12 +6,12 @@
 #include "Naming.h"
 #include "Log.h"
 #include "LanguageSpec.h"
+#include "SyntaxColor.h"
 
 void Diagnostic::setupColors(bool verboseMode)
 {
     verboseColor      = LogColor::DarkCyan;
     errorColor        = verboseMode ? verboseColor : LogColor::Red;
-    codeColor         = verboseMode ? verboseColor : LogColor::White;
     marginBorderColor = verboseMode ? verboseColor : LogColor::Cyan;
     codeLineNoColor   = verboseMode ? verboseColor : LogColor::Gray;
     hintColor         = verboseMode ? verboseColor : LogColor::White;
@@ -381,250 +381,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
         return line;
     if (!g_CommandLine.errorCodeColors)
         return line;
-
-    const char* pz = line.c_str();
-    uint32_t    c, offset;
-    Utf8        result;
-
-    pz = Utf8::decodeUtf8(pz, c, offset);
-    while (c)
-    {
-        Utf8 identifier;
-
-        // String
-        if (c == '"')
-        {
-            result += Log::colorToVTS(LogColor::SyntaxString);
-            result += c;
-            while (*pz && *pz != '"')
-            {
-                if (*pz == '\\')
-                    result += *pz++;
-                if (*pz)
-                    result += *pz++;
-            }
-
-            if (*pz == '"')
-                result += *pz++;
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            result += Log::colorToVTS(codeColor);
-            continue;
-        }
-
-        // Line comment
-        if (c == '/' && pz[0] == '/')
-        {
-            result += Log::colorToVTS(LogColor::SyntaxComment);
-            result += c;
-            while (*pz && !SWAG_IS_EOL(*pz))
-                result += *pz++;
-            c = *pz;
-            result += Log::colorToVTS(codeColor);
-            continue;
-        }
-
-        // Binary literal
-        if (c == '0' && (*pz == 'b' || *pz == 'B'))
-        {
-            result += Log::colorToVTS(LogColor::SyntaxNumber);
-            result += c;
-            result += *pz++;
-            while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
-                result += *pz++;
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            result += Log::colorToVTS(codeColor);
-            continue;
-        }
-
-        // Hexadecimal literal
-        if (c == '0' && (*pz == 'x' || *pz == 'X'))
-        {
-            result += Log::colorToVTS(LogColor::SyntaxNumber);
-            result += c;
-            result += *pz++;
-            while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
-                result += *pz++;
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            result += Log::colorToVTS(codeColor);
-            continue;
-        }
-
-        // Number
-        if (SWAG_IS_DIGIT(c))
-        {
-            result += Log::colorToVTS(LogColor::SyntaxNumber);
-            result += c;
-
-            while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
-                result += *pz++;
-
-            if (*pz == '.')
-            {
-                result += *pz++;
-                while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
-                    result += *pz++;
-            }
-
-            if (*pz == 'e' || *pz == 'E')
-            {
-                result += *pz++;
-                if (*pz == '-' || *pz == '+')
-                    result += *pz++;
-                while (*pz && (SWAG_IS_DIGIT(*pz) || *pz == '_'))
-                    result += *pz++;
-            }
-
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            result += Log::colorToVTS(codeColor);
-            continue;
-        }
-
-        // Word
-        if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
-        {
-            identifier += c;
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            while (SWAG_IS_ALPHA(c) || c == '_' || SWAG_IS_DIGIT(c))
-            {
-                identifier += c;
-                pz = Utf8::decodeUtf8(pz, c, offset);
-            }
-
-            auto it = g_LangSpec->keywords.find(identifier);
-            if (it)
-            {
-                switch (*it)
-                {
-                case TokenId::KwdUsing:
-                case TokenId::KwdWith:
-                case TokenId::KwdCast:
-                case TokenId::KwdAutoCast:
-                case TokenId::KwdDeRef:
-                case TokenId::KwdRef:
-                case TokenId::KwdMoveRef:
-                case TokenId::KwdRetVal:
-                case TokenId::KwdTry:
-                case TokenId::KwdCatch:
-                case TokenId::KwdTryCatch:
-                case TokenId::KwdAssume:
-                case TokenId::KwdThrow:
-                case TokenId::KwdDiscard:
-
-                case TokenId::KwdVar:
-                case TokenId::KwdLet:
-                case TokenId::KwdConst:
-                case TokenId::KwdUndefined:
-
-                case TokenId::KwdEnum:
-                case TokenId::KwdStruct:
-                case TokenId::KwdUnion:
-                case TokenId::KwdImpl:
-                case TokenId::KwdInterface:
-                case TokenId::KwdFunc:
-                case TokenId::KwdClosure:
-                case TokenId::KwdMethod:
-                case TokenId::KwdNamespace:
-                case TokenId::KwdTypeAlias:
-                case TokenId::KwdNameAlias:
-                case TokenId::KwdAttr:
-
-                case TokenId::KwdTrue:
-                case TokenId::KwdFalse:
-                case TokenId::KwdNull:
-
-                case TokenId::KwdPublic:
-                case TokenId::KwdInternal:
-                case TokenId::KwdPrivate:
-                    result += Log::colorToVTS(LogColor::SyntaxKeyword);
-                    result += identifier;
-                    result += Log::colorToVTS(codeColor);
-                    break;
-
-                case TokenId::NativeType:
-                case TokenId::CompilerType:
-                    result += Log::colorToVTS(LogColor::SyntaxType);
-                    result += identifier;
-                    result += Log::colorToVTS(codeColor);
-                    break;
-
-                case TokenId::KwdIf:
-                case TokenId::KwdElse:
-                case TokenId::KwdElif:
-                case TokenId::KwdFor:
-                case TokenId::KwdWhile:
-                case TokenId::KwdSwitch:
-                case TokenId::KwdDefer:
-                case TokenId::KwdLoop:
-                case TokenId::KwdVisit:
-                case TokenId::KwdBreak:
-                case TokenId::KwdFallThrough:
-                case TokenId::KwdUnreachable:
-                case TokenId::KwdReturn:
-                case TokenId::KwdCase:
-                case TokenId::KwdContinue:
-                case TokenId::KwdDefault:
-                case TokenId::KwdAnd:
-                case TokenId::KwdOr:
-                case TokenId::KwdOrElse:
-                    result += Log::colorToVTS(LogColor::SyntaxLogic);
-                    result += identifier;
-                    result += Log::colorToVTS(codeColor);
-                    break;
-
-                case TokenId::CompilerFuncCompiler:
-                case TokenId::CompilerFuncDrop:
-                case TokenId::CompilerFuncInit:
-                case TokenId::CompilerFuncMain:
-                case TokenId::CompilerFuncPreMain:
-                case TokenId::CompilerFuncTest:
-                    result += Log::colorToVTS(LogColor::SyntaxCompiler);
-                    result += identifier;
-                    result += Log::colorToVTS(codeColor);
-                    break;
-
-                default:
-                    if (identifier[0] == '@')
-                    {
-                        result += Log::colorToVTS(LogColor::SyntaxIntrinsic);
-                        result += identifier;
-                        result += Log::colorToVTS(codeColor);
-                    }
-                    else
-                    {
-                        result += identifier;
-                    }
-
-                    break;
-                }
-            }
-            else
-            {
-                if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
-                {
-                    result += Log::colorToVTS(LogColor::SyntaxFunction);
-                    result += identifier;
-                    result += Log::colorToVTS(codeColor);
-                }
-                else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
-                {
-                    result += Log::colorToVTS(LogColor::SyntaxConstant);
-                    result += identifier;
-                    result += Log::colorToVTS(codeColor);
-                }
-                else
-                {
-                    result += identifier;
-                }
-            }
-
-            continue;
-        }
-
-        result += c;
-        pz = Utf8::decodeUtf8(pz, c, offset);
-    }
-
-    return result;
+    return syntaxColor(line, SyntaxColorMode::ForLog);
 }
 
 void Diagnostic::printSourceCode(bool verboseMode)
@@ -642,12 +399,18 @@ void Diagnostic::printSourceCode(bool verboseMode)
         if (*pz == 0 || *pz == '\n' || *pz == '\r')
             continue;
         printMargin(false, true, linesNo[i]);
-        g_Log.setColor(codeColor);
+
         Utf8 colored;
         if (verboseMode)
+        {
+            g_Log.setColor(verboseColor);
             colored = lines[i].c_str() + minBlanks;
+        }
         else
+        {
             colored = syntax(lines[i].c_str() + minBlanks);
+        }
+
         g_Log.print(colored);
         g_Log.eol();
     }

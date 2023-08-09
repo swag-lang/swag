@@ -614,6 +614,9 @@
     <ClCompile Include="..\src\SemanticJob_Access.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SyntaxColor.cpp">
+      <Filter>Report</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -970,6 +973,9 @@
     </ClInclude>
     <ClInclude Include="..\src\ModuleGenDocJob.h">
       <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SyntaxColor.h">
+      <Filter>Report</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
