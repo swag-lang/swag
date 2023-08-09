@@ -1024,7 +1024,12 @@ void ModuleGenDocJob::generateContent()
     }
 
     sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
-         { return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
+         { 
+            if (a.nodes[0]->kind == AstNodeKind::ConstDecl && b.nodes[0]->kind != AstNodeKind::ConstDecl)
+                return true;
+            if (a.nodes[0]->kind != AstNodeKind::ConstDecl && b.nodes[0]->kind == AstNodeKind::ConstDecl)
+                return false;
+            return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
     helpContent += "<h2 class=\"content\">Content</h2>\n";
 

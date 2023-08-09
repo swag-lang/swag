@@ -1604,6 +1604,190 @@ bool</td>
 <td class="enumeration">
 </td>
 </tr>
+<tr>
+<td id="Core_BIG_ENDIAN" class="tdname">
+BIG_ENDIAN</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Env_EndLine" class="tdname">
+EndLine</td>
+<td class="tdtype">
+string</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Latin1_CharProperties" class="tdname">
+CharProperties</td>
+<td class="tdtype">
+const [256] <a href="#Core_Latin1_CharAttribute">Core.Latin1.CharAttribute</a></td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Path_AltDirectorySeparatorChar" class="tdname">
+AltDirectorySeparatorChar</td>
+<td class="tdtype">
+u8</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Path_DirectorySeparatorChar" class="tdname">
+DirectorySeparatorChar</td>
+<td class="tdtype">
+u8</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Path_VolumeSeparatorChar" class="tdname">
+VolumeSeparatorChar</td>
+<td class="tdtype">
+u8</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Random_NN" class="tdname">
+NN</td>
+<td class="tdtype">
+s32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_StrConv_ParseErrorIncomplete" class="tdname">
+ParseErrorIncomplete</td>
+<td class="tdtype">
+string</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_StrConv_ParseErrorInvalid" class="tdname">
+ParseErrorInvalid</td>
+<td class="tdtype">
+string</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_StrConv_ParseErrorOverflow" class="tdname">
+ParseErrorOverflow</td>
+<td class="tdtype">
+string</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_StringSmallSize" class="tdname">
+StringSmallSize</td>
+<td class="tdtype">
+u64</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Time_DayOfWeekNames" class="tdname">
+DayOfWeekNames</td>
+<td class="tdtype">
+const [7] string</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Time_MonthNames" class="tdname">
+MonthNames</td>
+<td class="tdtype">
+const [12] string</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf16_RuneError" class="tdname">
+RuneError</td>
+<td class="tdtype">
+rune</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf16_Surr1" class="tdname">
+Surr1</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf16_Surr2" class="tdname">
+Surr2</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf16_Surr3" class="tdname">
+Surr3</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf16_SurrSelf" class="tdname">
+SurrSelf</td>
+<td class="tdtype">
+u32</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf8_MaxRunes" class="tdname">
+MaxRunes</td>
+<td class="tdtype">
+rune</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf8_RuneError" class="tdname">
+RuneError</td>
+<td class="tdtype">
+rune</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf8_SurrogateMax" class="tdname">
+SurrogateMax</td>
+<td class="tdtype">
+rune</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_Utf8_SurrogateMin" class="tdname">
+SurrogateMin</td>
+<td class="tdtype">
+rune</td>
+<td class="enumeration">
+</td>
+</tr>
+<tr>
+<td id="Core_WINDOWS" class="tdname">
+WINDOWS</td>
+<td class="tdtype">
+bool</td>
+<td class="enumeration">
+</td>
+</tr>
 </table>
 <p>
 <table class="h3">
@@ -3090,27 +3274,6 @@ func xor(addr: *u64, value: u64)-&gt;u64
 func xor(addr: *u8, value: u8)-&gt;u8
 </code>
 </p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Core_BIG_ENDIAN"><span class="titletype">const</span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\config.swg#L1" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_BIG_ENDIAN" class="tdname">
-BIG_ENDIAN</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
 <p>
 <table class="h3">
 <tr>
@@ -6242,27 +6405,6 @@ Set the current directory.</p>
 <code style="white-space: break-spaces">func setCurrent(dirname: string) throw
 </code>
 </p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Core_Env_EndLine"><span class="titletype">const</span> <span class="titlelight">Env.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L5" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Env_EndLine" class="tdname">
-EndLine</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
 <p>
 <table class="h3">
 <tr>
@@ -12659,27 +12801,6 @@ Graphical</td>
 <tr>
 <td class="tdname">
 Letter</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Core_Latin1_CharProperties"><span class="titletype">const</span> <span class="titlelight">Latin1.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\latin1tables.swg#L31" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Latin1_CharProperties" class="tdname">
-CharProperties</td>
-<td class="tdtype">
-const [256] <a href="#Core_Latin1_CharAttribute">Core.Latin1.CharAttribute</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -19439,43 +19560,6 @@ Returns true if <code class = "incode">str</code> matches the regexp.</p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Core_Path_AltDirectorySeparatorChar"><span class="titletype">const</span> <span class="titlelight">Path.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L6" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Path_AltDirectorySeparatorChar" class="tdname">
-AltDirectorySeparatorChar</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Path_DirectorySeparatorChar" class="tdname">
-DirectorySeparatorChar</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Path_VolumeSeparatorChar" class="tdname">
-VolumeSeparatorChar</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Core_Path_combine"><span class="titletype">func</span> <span class="titlelight">Path.</span><span class="titlestrong">combine</span></h3>
 </td>
 <td class="srcref">
@@ -20007,27 +20091,6 @@ u64</td>
 func seedU64(using self, seed: u64)
 </code>
 </p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Core_Random_NN"><span class="titletype">const</span> <span class="titlelight">Random.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\mt64.swg#L13" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Random_NN" class="tdname">
-NN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
 <p>
 <table class="h3">
 <tr>
@@ -26884,43 +26947,6 @@ func(*<a href="#Core_StrConv_IPokeValue">Core.StrConv.IPokeValue</a>, string)-&g
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Core_StrConv_ParseErrorIncomplete"><span class="titletype">const</span> <span class="titlelight">StrConv.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L9" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_StrConv_ParseErrorIncomplete" class="tdname">
-ParseErrorIncomplete</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_StrConv_ParseErrorInvalid" class="tdname">
-ParseErrorInvalid</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_StrConv_ParseErrorOverflow" class="tdname">
-ParseErrorOverflow</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Core_StrConv_StringBuilder"><span class="titletype">struct</span> <span class="titlelight">StrConv.</span><span class="titlestrong">StringBuilder</span></h3>
 </td>
 <td class="srcref">
@@ -29041,27 +29067,6 @@ Remove whitespaces at the start of the String.</p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Core_StringSmallSize"><span class="titletype">const</span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L4" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_StringSmallSize" class="tdname">
-StringSmallSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Core_Sync_Event"><span class="titletype">struct</span> <span class="titlelight">Sync.</span><span class="titlestrong">Event</span></h3>
 </td>
 <td class="srcref">
@@ -30422,27 +30427,6 @@ Saturday</td>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Core_Time_DayOfWeekNames"><span class="titletype">const</span> <span class="titlelight">Time.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L5" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Time_DayOfWeekNames" class="tdname">
-DayOfWeekNames</td>
-<td class="tdtype">
-const [7] string</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Core_Time_Duration"><span class="titletype">struct</span> <span class="titlelight">Time.</span><span class="titlestrong">Duration</span></h3>
 </td>
 <td class="srcref">
@@ -30705,27 +30689,6 @@ Update frame timers.</p>
 <code style="white-space: break-spaces">func update(using self)
 </code>
 </p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Core_Time_MonthNames"><span class="titletype">const</span> <span class="titlelight">Time.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L4" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Time_MonthNames" class="tdname">
-MonthNames</td>
-<td class="tdtype">
-const [12] string</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
 <p>
 <table class="h3">
 <tr>
@@ -32332,59 +32295,6 @@ Make a rune buffer upper case.</p>
 <table class="h3">
 <tr>
 <td class="h3">
-<h3 class="content" id="Core_Utf16_RuneError"><span class="titletype">const</span> <span class="titlelight">Utf16.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf16.swg#L4" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Utf16_RuneError" class="tdname">
-RuneError</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Utf16_Surr1" class="tdname">
-Surr1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Utf16_Surr2" class="tdname">
-Surr2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Utf16_Surr3" class="tdname">
-Surr3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Utf16_SurrSelf" class="tdname">
-SurrSelf</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
 <h3 class="content" id="Core_Utf16_decodeRune"><span class="titletype">func</span> <span class="titlelight">Utf16.</span><span class="titlestrong">decodeRune</span></h3>
 </td>
 <td class="srcref">
@@ -32533,51 +32443,6 @@ Unicode</td>
 <tr>
 <td class="tdname">
 UnicodeNoCase</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Core_Utf8_MaxRunes"><span class="titletype">const</span> <span class="titlelight">Utf8.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L12" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_Utf8_MaxRunes" class="tdname">
-MaxRunes</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Utf8_RuneError" class="tdname">
-RuneError</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Utf8_SurrogateMax" class="tdname">
-SurrogateMax</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Core_Utf8_SurrogateMin" class="tdname">
-SurrogateMin</td>
-<td class="tdtype">
-rune</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -32982,27 +32847,6 @@ func visitRunes(buffer: const [..] u8, stmt: code)
 <p style="white-space: break-spaces"> <code class = "incode">@alias0</code> will contain the character
  <code class = "incode">@alias1</code> will contain the character index
  <code class = "incode">@alias2</code> will contain the byte index of that character within the utf8 sequence</p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Core_WINDOWS"><span class="titletype">const</span> <span class="titlelight">Core.</span><span class="titlestrong">Constants</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\config.swg#L2" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="enumeration">
-<tr>
-<td id="Core_WINDOWS" class="tdname">
-WINDOWS</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
-</tr>
-</table>
 <p>
 <table class="h3">
 <tr>
