@@ -7,7 +7,6 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "SyntaxColor.h"
-#pragma optimize("", off)
 
 const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
 const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
@@ -832,11 +831,11 @@ void ModuleGenDocJob::generateTocCateg(bool& first, AstNodeKind kind, const char
 
     if (first)
     {
-        helpContent += Fmt("<h2>%s</h2>\n", sectionName);
+        helpContent += Fmt("<h2 class=\"section\">%s</h2>\n", sectionName);
         first = false;
     }
 
-    helpContent += Fmt("<h3>%s</h3>\n", categName);
+    helpContent += Fmt("<h3 class=\"categ\">%s</h3>\n", categName);
     helpContent += "<ul class=\"tocbullet\">\n";
     for (auto& t : pendingNodes)
         helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
@@ -986,6 +985,11 @@ void ModuleGenDocJob::outputStyles()
         h1.content {\n\
             margin-top:         50px;\n\
             margin-bottom:      50px;\n\
+        }\n\
+        h2.section {\n\
+            background-color:   Black;\n\
+            color:              White;\n\
+            padding:            6px;\n\
         }\n\
         table.h3 {\n\
             background-color:   Black;\n\

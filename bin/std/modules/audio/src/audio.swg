@@ -10,7 +10,7 @@ public func createEngine() throw
 }
 
 // Destroy the audio engine.
-// Call at the end, when no more used.
+// Must be called at the end, when engine is no more used.
 public func destroyEngine()
 {
     g_Driver.destroy()
@@ -18,5 +18,6 @@ public func destroyEngine()
 
 // Set the general output volume
 public func setOutputVolume(volume: f32) throw = g_Driver.setOutputVolume(volume)
+
 // Get the general output volume
 public func getOutputVolume() => g_Driver.getOutputVolume()

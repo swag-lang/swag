@@ -89,6 +89,7 @@ public impl Voice
     }
 
     // Creates a new voice for a given sound file.
+    // A voice is what will be actually played. You can have as many voices as you want for one unique [SoundFile].
     func create(file: *SoundFile, createFlags = VoiceCreateFlags.Default)->*Voice throw
     {
         let voice = g_Driver.createVoice()
@@ -101,6 +102,8 @@ public impl Voice
     }
 
     // Plays a voice.
+    // By default, you will have to destroy the voice yourself when no more needed, for example if [Voice.isPlaying] returns false. But if you want the voice to be destroyed automatically when done, set the 'DestroyOnStop' flag in 'createFlags'.
+    //
     // See [Voice.create]
     #[Swag.Discardable]
     func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero)->*Voice throw

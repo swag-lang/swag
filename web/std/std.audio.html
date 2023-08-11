@@ -93,6 +93,11 @@
             margin-top:         50px;
             margin-bottom:      50px;
         }
+        h2.section {
+            background-color:   Black;
+            color:              White;
+            padding:            6px;
+        }
         table.h3 {
             background-color:   Black;
             color:              White;
@@ -145,50 +150,44 @@
 <div class="container">
 <div class="left">
 <h1>Module audio</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2 class="section">Structs</h2>
+<h3 class="categ"></h3>
 <ul class="tocbullet">
 <li><a href="#Audio_Bus">Bus</a></li>
 <li><a href="#Audio_Voice">Voice</a></li>
 </ul>
-<h3>codec</h3>
+<h3 class="categ">codec</h3>
 <ul class="tocbullet">
 <li><a href="#Audio_Codec">Codec</a></li>
 </ul>
-<h3>driver</h3>
-<ul class="tocbullet">
-<li><a href="#Audio_Driver">Driver</a></li>
-<li><a href="#Audio_DriverNative">DriverNative</a></li>
-</ul>
-<h3>file</h3>
+<h3 class="categ">file</h3>
 <ul class="tocbullet">
 <li><a href="#Audio_SoundFile">SoundFile</a></li>
 </ul>
-<h2>Interfaces</h2>
-<h3>codec</h3>
+<h2 class="section">Interfaces</h2>
+<h3 class="categ">codec</h3>
 <ul class="tocbullet">
 <li><a href="#Audio_ICodec">ICodec</a></li>
 </ul>
-<h2>Enums</h2>
-<h3></h3>
+<h2 class="section">Enums</h2>
+<h3 class="categ"></h3>
 <ul class="tocbullet">
 <li><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></li>
 <li><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></li>
 <li><a href="#Audio_VoiceState">VoiceState</a></li>
 </ul>
-<h3>file</h3>
+<h3 class="categ">file</h3>
 <ul class="tocbullet">
 <li><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></li>
 <li><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h2 class="section">Functions</h2>
+<h3 class="categ"></h3>
 <ul class="tocbullet">
 <li><a href="#Audio_convertDBToPercent">Audio.convertDBToPercent</a></li>
 <li><a href="#Audio_convertPercentToDB">Audio.convertPercentToDB</a></li>
 <li><a href="#Audio_createEngine">Audio.createEngine</a></li>
 <li><a href="#Audio_destroyEngine">Audio.destroyEngine</a></li>
-<li><a href="#Audio_driver">Audio.driver</a></li>
 <li><a href="#Audio_getOutputVolume">Audio.getOutputVolume</a></li>
 <li><a href="#Audio_setOutputVolume">Audio.setOutputVolume</a></li>
 <li><a href="#Audio_Bus_create">Bus.create</a></li>
@@ -204,11 +203,11 @@
 <li><a href="#Audio_Voice_setVolumeDB">Voice.setVolumeDB</a></li>
 <li><a href="#Audio_Voice_stop">Voice.stop</a></li>
 </ul>
-<h3>codec</h3>
+<h3 class="categ">codec</h3>
 <ul class="tocbullet">
 <li><a href="#Audio_addCodec">Audio.addCodec</a></li>
 </ul>
-<h3>driver</h3>
+<h3 class="categ">driver</h3>
 <ul class="tocbullet">
 <li><a href="#Audio_Bus_getVolume">Bus.getVolume</a></li>
 <li><a href="#Audio_Bus_setVolume">Bus.setVolume</a></li>
@@ -217,7 +216,7 @@
 <li><a href="#Audio_Voice_setRooting">Voice.setRooting</a></li>
 <li><a href="#Audio_Voice_setVolume">Voice.setVolume</a></li>
 </ul>
-<h3>file</h3>
+<h3 class="categ">file</h3>
 <ul class="tocbullet">
 <li><a href="#Audio_SoundFile_load">SoundFile.load</a></li>
 <li><a href="#Audio_Wav_loadFile">Wav.loadFile</a></li>
@@ -387,7 +386,7 @@ Destroy the bus (immediatly).</p>
 <h3 class="content" id="Audio_Bus_getVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L373" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L372" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -421,7 +420,7 @@ Returns the actual volume, in DB.</p>
 <h3 class="content" id="Audio_Bus_setVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L362" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -493,30 +492,6 @@ The real type of the codec.</p>
 </td>
 </tr>
 </table>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Audio_Driver"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Driver</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\driver.swg#L12" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>
-The sound driver.</p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Audio_DriverNative"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">DriverNative</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L5" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
 <p>
 <table class="h3">
 <tr>
@@ -1008,7 +983,7 @@ Stop the playing voice.</p>
 <h3 class="content" id="Audio_Voice_create"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L92" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L93" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1019,13 +994,15 @@ Creates a new voice for a given sound file.</p>
 </code>
 </p>
 <p>
+ A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>.</p>
+<p>
 <table class="h3">
 <tr>
 <td class="h3">
 <h3 class="content" id="Audio_Voice_destroy"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">destroy</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L150" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L153" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1042,7 +1019,7 @@ Destroy the voice.</p>
 <h3 class="content" id="Audio_Voice_getVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L266" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L265" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1059,7 +1036,7 @@ Returns the actual volume.</p>
 <h3 class="content" id="Audio_Voice_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L176" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1076,7 +1053,7 @@ Returns the actual volume, in DB.</p>
 <h3 class="content" id="Audio_Voice_isPlaying"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">isPlaying</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L162" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1093,7 +1070,7 @@ Returns true if the voice is currently playing.</p>
 <h3 class="content" id="Audio_Voice_pause"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">pause</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L133" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1110,7 +1087,7 @@ Pause the playing voice.</p>
 <h3 class="content" id="Audio_Voice_play"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">play</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1127,6 +1104,8 @@ Simple function that will create a voice and play it.</p>
 </code>
 </p>
 <p>
+ By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="incode">DestroyOnStop</code> flag in <code class="incode">createFlags</code>.</p>
+<p>
  See <a href="#Audio_Voice_create">Voice.create</a></p>
 <p>
 <table class="h3">
@@ -1135,7 +1114,7 @@ Simple function that will create a voice and play it.</p>
 <h3 class="content" id="Audio_Voice_setFrequencyRatio"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setFrequencyRatio</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L278" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L277" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1154,7 +1133,7 @@ Set the playing pitch.</p>
 <h3 class="content" id="Audio_Voice_setRooting"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setRooting</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L290" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L289" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1173,7 +1152,7 @@ Root a voice to a given list of buses.</p>
 <h3 class="content" id="Audio_Voice_setVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L255" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L254" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1190,7 +1169,7 @@ Set the playing voice volume between [0..1].</p>
 <h3 class="content" id="Audio_Voice_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L167" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L170" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1207,7 +1186,7 @@ Set the playing voice volume.</p>
 <h3 class="content" id="Audio_Voice_stop"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">stop</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1431,24 +1410,7 @@ Destroy the audio engine.</p>
 </code>
 </p>
 <p>
- Call at the end, when no more used.</p>
-<p>
-<table class="h3">
-<tr>
-<td class="h3">
-<h3 class="content" id="Audio_driver"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">driver</span></h3>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L20" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>
-Get the sound driver unique instance.</p>
-<p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">driver</span><span class="SyntaxCode">()
-</code>
-</p>
+ Must be called at the end, when engine is no more used.</p>
 <p>
 <table class="h3">
 <tr>
@@ -1456,7 +1418,7 @@ Get the sound driver unique instance.</p>
 <h3 class="content" id="Audio_getOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">getOutputVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1473,7 +1435,7 @@ Get the general output volume.</p>
 <h3 class="content" id="Audio_setOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">setOutputVolume</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
