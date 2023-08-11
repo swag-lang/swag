@@ -35,11 +35,8 @@ bool SemanticJob::canInheritAccess(AstNode* node)
     // Content of the function will propagate only if the function is inlined or generic
     if (node->ownerScope && node->ownerScope->kind == ScopeKind::FunctionBody)
     {
-        if (!(node->ownerFct->flags & AST_IS_GENERIC) &&
-            !(node->ownerFct->attributeFlags & (ATTRIBUTE_INLINE | ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
-        {
+        if (!(node->ownerFct->flags & AST_IS_GENERIC) && !node->ownerFct->mustUserInline())
             return false;
-        }
     }
 
     // Content of a struct will propagate if struct is not opaque
@@ -52,29 +49,33 @@ bool SemanticJob::canInheritAccess(AstNode* node)
     return true;
 }
 
+void SemanticJob::doInheritAccess(AstNode* forNode, AstNode* node)
+{
+    // Access for a tuple definition is only defined by the content
+    if (forNode->typeInfo && forNode->typeInfo->isTuple())
+        forNode->semFlags &= ~SEMFLAG_ACCESS_MASK;
+
+    if (node->semFlags & SEMFLAG_ACCESS_PRIVATE)
+    {
+        forNode->semFlags &= ~(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
+        forNode->semFlags |= SEMFLAG_ACCESS_PRIVATE;
+    }
+    else if (node->semFlags & SEMFLAG_ACCESS_INTERNAL && !(forNode->semFlags & SEMFLAG_ACCESS_PRIVATE))
+    {
+        forNode->semFlags &= ~SEMFLAG_ACCESS_PUBLIC;
+        forNode->semFlags |= SEMFLAG_ACCESS_INTERNAL;
+    }
+    else if (node->semFlags & SEMFLAG_ACCESS_PUBLIC && !(forNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
+    {
+        forNode->semFlags |= SEMFLAG_ACCESS_PUBLIC;
+    }
+}
+
 void SemanticJob::inheritAccess(AstNode* node)
 {
     if (!canInheritAccess(node))
         return;
-
-    // Access for a tuple definition is only defined by the content
-    if (node->parent->typeInfo && node->parent->typeInfo->isTuple())
-        node->parent->semFlags &= ~SEMFLAG_ACCESS_MASK;
-
-    if (node->semFlags & SEMFLAG_ACCESS_PRIVATE)
-    {
-        node->parent->semFlags &= ~(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
-        node->parent->semFlags |= SEMFLAG_ACCESS_PRIVATE;
-    }
-    else if (node->semFlags & SEMFLAG_ACCESS_INTERNAL && !(node->parent->semFlags & SEMFLAG_ACCESS_PRIVATE))
-    {
-        node->parent->semFlags &= ~SEMFLAG_ACCESS_PUBLIC;
-        node->parent->semFlags |= SEMFLAG_ACCESS_INTERNAL;
-    }
-    else if (node->semFlags & SEMFLAG_ACCESS_PUBLIC && !(node->parent->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
-    {
-        node->parent->semFlags |= SEMFLAG_ACCESS_PUBLIC;
-    }
+    doInheritAccess(node->parent, node);
 }
 
 uint64_t SemanticJob::attributeToAccess(uint64_t attribute)
@@ -155,27 +156,50 @@ void SemanticJob::setDefaultAccess(AstNode* node)
         node->semFlags |= attributeToAccess(ATTRIBUTE_INTERNAL);
 }
 
-static AstNode* getErrorCulprit(AstNode* n)
+static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
 {
+    if (!n)
+        return nullptr;
     if (!SemanticJob::canInheritAccess(n))
         return nullptr;
+
+    if (n->kind == AstNodeKind::FuncDeclType)
+    {
+        auto retType = n->typeInfo;
+        while (retType->isPointer())
+            retType = CastTypeInfo<TypeInfoPointer>(retType, TypeInfoKind::Pointer)->pointedType;
+        auto res = getErrorCulprit(retType->declNode, onNode);
+        if (res)
+        {
+            *onNode = n;
+            return res;
+        }
+
+        if (retType->declNode && retType->declNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
+        {
+            *onNode = n;
+            return retType->declNode;
+        }
+    }
 
     if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
     {
         if (n->flags & AST_GENERATED && n->typeInfo->isTuple() && n->typeInfo->declNode)
         {
-            auto res = getErrorCulprit(n->typeInfo->declNode);
+            auto res = getErrorCulprit(n->typeInfo->declNode, onNode);
             if (res)
                 return res;
         }
 
         if (n->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
+        {
             return n;
+        }
     }
 
     for (auto c : n->childs)
     {
-        auto res = getErrorCulprit(c);
+        auto res = getErrorCulprit(c, onNode);
         if (res)
             return res;
     }
@@ -200,7 +224,8 @@ bool SemanticJob::checkAccess(JobContext* context, AstNode* node)
 
     if (node->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
     {
-        auto culprit = getErrorCulprit(node);
+        AstNode* onNode  = nullptr;
+        auto     culprit = getErrorCulprit(node, &onNode);
         if (!culprit)
             return Report::internalError(node, "bad access, but cannot find the culprit");
 
@@ -213,8 +238,14 @@ bool SemanticJob::checkAccess(JobContext* context, AstNode* node)
                             Naming::kindName(culprit->resolvedSymbolOverload).c_str(),
                             culprit->token.ctext(),
                             accessCulprit)};
-        auto       note  = Diagnostic::note(culprit, culprit->token, Fmt(Hnt(Hnt0127), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
-        auto       note1 = Diagnostic::hereIs(culprit);
+
+        if (onNode && onNode->kind == AstNodeKind::FuncDeclType)
+            diag.addRange(onNode, Diagnostic::isType(onNode->typeInfo));
+
+        Diagnostic* note  = Diagnostic::note(culprit, culprit->token, Fmt(Hnt(Hnt0127), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
+        Diagnostic* note1 = nullptr;
+        if (culprit->resolvedSymbolOverload->node != culprit)
+            note1 = Diagnostic::hereIs(culprit);
         return context->report(diag, note, note1);
     }
 

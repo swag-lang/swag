@@ -1,8 +1,7 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32, XAudio2
 
-#[Swag.Opaque]
-public struct DriverNative
+struct DriverNative
 {
     xAudio2:          *IXAudio2
     masteringVoice:   *IXAudio2MasteringVoice

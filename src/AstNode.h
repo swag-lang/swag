@@ -536,6 +536,8 @@ struct AstFuncDecl : public AstNode
     Utf8        getDisplayName();
     const char* getDisplayNameC();
     Utf8        getNameForUserCompiler();
+    bool        mustAutoInline();
+    bool        mustUserInline();
     bool        mustInline();
     Utf8        getCallName();
 

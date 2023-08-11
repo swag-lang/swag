@@ -818,6 +818,13 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     {
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
+        // Function inherits access from it's return type too (in case of type deduction)
+        auto retType = funcNode->returnType->typeInfo;
+        while (retType->isPointer())
+            retType = CastTypeInfo<TypeInfoPointer>(retType, TypeInfoKind::Pointer)->pointedType;
+        if (retType->declNode)
+            doInheritAccess(funcNode, retType->declNode);
+
         // The function wants to return something, but has the 'Swag.NoReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
         {

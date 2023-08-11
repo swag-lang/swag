@@ -1,32 +1,29 @@
 #global public
 #global namespace Time
 
-internal
-{
-    const TicksPerMilliSecond: u64 = 10000
-    const TicksPerSecond: u64 = TicksPerMilliSecond * 1000
-    const TicksPerMinute: u64 = TicksPerSecond * 60
-    const TicksPerHour: u64   = TicksPerMinute * 60
-    const TicksPerDay: u64    = TicksPerHour * 24
-    const MillisPerSecond = 1000'u64
-    const MillisPerMinute = MillisPerSecond * 60
-    const MillisPerHour   = MillisPerMinute * 60
-    const MillisPerDay    = MillisPerHour * 24
-    const DaysPerYear     = 365
-    const DaysPer4Years   = (DaysPerYear * 4) + 1
-    const DaysPer100Years = (DaysPer4Years * 25) - 1
-    const DaysPer400Years = (DaysPer100Years * 4) + 1
-    const DaysToMonth365  = [0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
-    const DaysToMonth366  = [0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
-    const MaxMilliSeconds = Swag.U64.Max / TicksPerMilliSecond
+const TicksPerMilliSecond: u64 = 10000
+const TicksPerSecond: u64 = TicksPerMilliSecond * 1000
+const TicksPerMinute: u64 = TicksPerSecond * 60
+const TicksPerHour: u64   = TicksPerMinute * 60
+const TicksPerDay: u64    = TicksPerHour * 24
+const MillisPerSecond = 1000'u64
+const MillisPerMinute = MillisPerSecond * 60
+const MillisPerHour   = MillisPerMinute * 60
+const MillisPerDay    = MillisPerHour * 24
+const DaysPerYear     = 365
+const DaysPer4Years   = (DaysPerYear * 4) + 1
+const DaysPer100Years = (DaysPer4Years * 25) - 1
+const DaysPer400Years = (DaysPer100Years * 4) + 1
+const DaysToMonth365  = [0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
+const DaysToMonth366  = [0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
+const MaxMilliSeconds = Swag.U64.Max / TicksPerMilliSecond
 
-    const DaysTo1601: u64  = (DaysPer400Years * 4) // Number of days from 1/1/0001 to 12/31/1600
-    const DaysTo1899: u64  = ((DaysPer400Years * 4) + (DaysPer100Years * 3)) - 367 // Number of days from 1/1/0001 to 12/30/1899
-    const DaysTo1970: u64  = (DaysPer400Years * 4) + (DaysPer100Years * 3) + (DaysPer4Years * 17) + DaysPerYear // Number of days from 1/1/0001 to 12/31/1969
-    const DaysTo10000: u64 = (DaysPer400Years * 25) - 366  // Number of days from 1/1/0001 to 12/31/9999
-    const MaxTicks: u64    = (DaysTo10000 * TicksPerDay) - 1
-    const MaxMillis: u64   = (DaysTo10000 * MillisPerDay)
-}
+const DaysTo1601: u64  = (DaysPer400Years * 4) // Number of days from 1/1/0001 to 12/31/1600
+const DaysTo1899: u64  = ((DaysPer400Years * 4) + (DaysPer100Years * 3)) - 367 // Number of days from 1/1/0001 to 12/30/1899
+const DaysTo1970: u64  = (DaysPer400Years * 4) + (DaysPer100Years * 3) + (DaysPer4Years * 17) + DaysPerYear // Number of days from 1/1/0001 to 12/31/1969
+const DaysTo10000: u64 = (DaysPer400Years * 25) - 366  // Number of days from 1/1/0001 to 12/31/9999
+const MaxTicks: u64    = (DaysTo10000 * TicksPerDay) - 1
+const MaxMillis: u64   = (DaysTo10000 * MillisPerDay)
 
 // Returns the current time expressed in milliseconds
 func nowMilliseconds()->u32

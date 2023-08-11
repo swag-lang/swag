@@ -8,8 +8,7 @@ enum UpdateCommand
 }
 
 // The sound driver
-#[Swag.Opaque]
-public struct Driver
+struct Driver
 {
     using native: DriverNative
 
