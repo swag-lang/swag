@@ -15,6 +15,7 @@ public enum VoicePlayFlags
     Zero = 0
     Loop                // Play in loops
     DestroyOnStop       // Destroy the voice once the sound has been played
+    Default = DestroyOnStop
 }
 
 #[Swag.EnumFlags]
@@ -101,19 +102,19 @@ public impl Voice
         return voice
     }
 
-    // Plays a voice.
-    // By default, you will have to destroy the voice yourself when no more needed, for example if [Voice.isPlaying] returns false. But if you want the voice to be destroyed automatically when done, set the 'DestroyOnStop' flag in 'createFlags'.
-    //
-    // See [Voice.create]
+    // Creates a voice and plays it.
+    // By default, the voice will be destroyed when stopped or finished.
     #[Swag.Discardable]
-    func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Zero)->*Voice throw
+    func play(file: *SoundFile, createFlags = VoiceCreateFlags.Default, playFlags = VoicePlayFlags.Default)->*Voice throw
     {
         let voice = create(file, createFlags)
         voice.play(playFlags)
         return voice
     }
 
-    // Simple function that will create a voice and play it.
+    // Plays a voice.
+    // By default, you will have to destroy the voice yourself when no more needed, for example if [Voice.isPlaying] returns false. But if you want the voice to be destroyed automatically when done, set the 'DestroyOnStop' flag in 'playFlags'.
+    // See [Voice.create]
     mtd play(playFlags = VoicePlayFlags.Zero) throw
     {
         if hasState(.Playing)
