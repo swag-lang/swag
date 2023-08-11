@@ -1,6 +1,7 @@
 using Core, Win32
 
-// Represents a playing sound
+// Represents a bus.
+// A [Voice] can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted.
 public struct Bus
 {
     handle: BusHandle
@@ -10,6 +11,7 @@ public impl Bus
 {
     // Creates an audio bus.
     // You can then associate a [Voice] to that bus with [Voice.setRooting]
+    // Note that you can have a graph of buses, because a bus can have another bus as 'parent'.
     func create(numChannels: u32, parent: *Bus = null)->*Bus throw
     {
         let bus = Memory.new'Bus()
@@ -21,7 +23,7 @@ public impl Bus
         return bus
     }
 
-    // Destroy the bus (immediatly)
+    // Destroy the bus (immediatly).
     mtd destroy() throw
     {
         destroyNative()
@@ -31,13 +33,13 @@ public impl Bus
         Memory.delete(self)
     }
 
-    // Set the playing bus volume in DB
+    // Set the playing bus volume in DB.
     mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
     {
         setVolume(convertDBToPercent(volumeDB), batchID)
     }
 
-    // Returns the actual volume, in DB
+    // Returns the actual volume, in DB.
     mtd getVolumeDB()->f32 throw
     {
         return convertPercentToDB(getVolume())

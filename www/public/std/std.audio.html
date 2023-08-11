@@ -245,8 +245,7 @@ How to play a sound</h2>
 First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">createEngine</span><span class="SyntaxCode">()
-</span><span class="SyntaxComment">// Don't forget to destroy the engine when you are done</span><span class="SyntaxCode">
-</span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">()
+</span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">() </span><span class="SyntaxComment">// Don't forget to destroy the engine when you are done</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -262,9 +261,17 @@ Note that by default, the sound file will load all of its datas in memory. If yo
 </code>
 </p>
 <p>
-Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will by destroyed.</p>
+Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode">.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(soundFile)
+</code>
+</p>
+<p>
+To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then <a href="voice.html#Voice_Play">Voice.Play</a> on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with.</p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> voice = </span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode">.</span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(&soundFile)
+voice.</span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)
+voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Loop</span><span class="SyntaxCode">)
 </code>
 </p>
 <h1 class="content">Content</h1>
@@ -312,12 +319,12 @@ GUID_PCM</td>
 <h3 class="content" id="Audio_Bus"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Bus</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Represents a playing sound.</p>
+Represents a bus.</p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -328,6 +335,8 @@ handle</td>
 </td>
 </tr>
 </table>
+<p>
+ A <a href="#Audio_Voice">Voice</a> can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted.</p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
@@ -386,7 +395,7 @@ Set the playing bus volume in DB.</p>
 <h3 class="content" id="Audio_Bus_create"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">create</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -397,7 +406,7 @@ Creates an audio bus.</p>
 </code>
 </p>
 <p>
- You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a></p>
+ You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a> Note that you can have a graph of buses, because a bus can have another bus as <code class="incode">parent</code>.</p>
 <p>
 <table class="h3">
 <tr>
@@ -405,7 +414,7 @@ Creates an audio bus.</p>
 <h3 class="content" id="Audio_Bus_destroy"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">destroy</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -439,7 +448,7 @@ Returns the actual volume.</p>
 <h3 class="content" id="Audio_Bus_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -473,7 +482,7 @@ Set the playing bus volume between [0..1].</p>
 <h3 class="content" id="Audio_Bus_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

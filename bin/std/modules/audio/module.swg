@@ -5,8 +5,7 @@ Under windows, it is based on the 'xaudio2' library.
 First, you have to initialize the audio engine by calling [Audio.createEngine].
 ```
 Audio.createEngine()
-// Don't forget to destroy the engine when you are done
-defer Audio.destroyEngine()
+defer Audio.destroyEngine() // Don't forget to destroy the engine when you are done
 ```
 You then have to load a sound file.
 ```
@@ -16,10 +15,15 @@ Note that by default, the sound file will load all of its datas in memory. If yo
 ```
 let soundFile = Audio.SoundFile.Load("mySound.wav", loadDatas = false)
 ```
-Once you have a sound file, the simplest way to play it is by calling [Voice.play]. The sound will be played once, until the end, and will by destroyed.
+Once you have a sound file, the simplest way to play it is by calling [Voice.play]. The sound will be played once, until the end, and will be destroyed.
 ```
 Voice.play(soundFile)
 ```
+To have more control, you could also use [Voice.create] then [Voice.Play] on the created sound. That way you will recieve a [Voice] object you can play with.
+```
+let voice = Voice.create(&soundFile)
+voice.setVolume(0.5)
+voice.play(Loop)
 */
 
 #dependencies
