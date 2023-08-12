@@ -6576,7 +6576,7 @@ This is called once all functions of the module have been typed, and this is the
 <p>
 The Swag compiler can generate documentation for all the modules of a given workspace. </p>
 <pre><code><span style="color:#0">swag doc -w:myWorkspaceFolder</span></code></pre><p>
-</p>
+The main module documentation should be placed at the top of the corresponding <code>module.swg</code> file. The rest is placed in various source files. </p>
 <p>
 The documentation comment needs to be placed just before a function, struct or enum. </p>
 <pre><code><span style="color:#6A9955">// Everything between empty lines is considered to be a simple paragraph. Which</span><span style="color:#0">
@@ -6655,6 +6655,8 @@ Some other markdown markers are also supported inside paragraphs. </p>
 <pre><code><span style="color:#6A9955">// `this is code` (backtick) for 'inline' code.</span><span style="color:#0">
 </span><span style="color:#6A9955">// 'single_word'  (tick) for 'inline' code.</span><span style="color:#0">
 </span><span style="color:#6A9955">// **bold**</span><span style="color:#0">
+</span><span style="color:#6A9955">// # Title</span><span style="color:#0">
+</span><span style="color:#6A9955">// ## Title</span><span style="color:#0">
 </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
 {
     r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">

@@ -3,6 +3,7 @@ The Swag compiler can generate documentation for all the modules of a given work
 ```
 swag doc -w:myWorkspaceFolder
 ```
+The main module documentation should be placed at the top of the corresponding `module.swg` file. The rest is placed in various source files.
 */
 
 /**
@@ -133,6 +134,8 @@ Some other markdown markers are also supported inside paragraphs.
     // `this is code` (backtick) for 'inline' code.
     // 'single_word'  (tick) for 'inline' code.
     // **bold**
+    // # Title
+    // ## Title
     struct RGB
     {
         r, g, b: s32

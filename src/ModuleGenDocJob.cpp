@@ -98,9 +98,13 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
                 {
                     blk.kind = UserBlockKind::Table;
                 }
-                else if (line[0] == '#' && line.length() > 1 && SWAG_IS_BLANK(line[1]))
+                else if (line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
                 {
                     blk.kind = UserBlockKind::Title1;
+                }
+                else if (line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
+                {
+                    blk.kind = UserBlockKind::Title2;
                 }
                 else
                 {
@@ -135,7 +139,9 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
                 break;
             if (blk.kind != UserBlockKind::Table && line[0] == '|')
                 break;
-            if (blk.kind != UserBlockKind::Title1 && line[0] == '#' && line.length() > 1 && SWAG_IS_BLANK(line[1]))
+            if (blk.kind != UserBlockKind::Title1 && line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
+                break;
+            if (blk.kind != UserBlockKind::Title2 && line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
                 break;
 
             if (line[0] == '>')
@@ -164,6 +170,14 @@ void ModuleGenDocJob::computeUserComments(UserComment& result, const Utf8& txt)
             if (blk.kind == UserBlockKind::Title1)
             {
                 line.remove(0, 2);
+                blk.lines.push_back(line);
+                start++;
+                break;
+            }
+
+            if (blk.kind == UserBlockKind::Title2)
+            {
+                line.remove(0, 3);
                 blk.lines.push_back(line);
                 start++;
                 break;
@@ -565,6 +579,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
     case UserBlockKind::Title1:
         helpContent += "<h2>\n";
         break;
+    case UserBlockKind::Title2:
+        helpContent += "<h3>\n";
+        break;
     }
 
     bool startList = false;
@@ -647,6 +664,9 @@ void ModuleGenDocJob::outputUserBlock(const UserBlock& user)
         break;
     case UserBlockKind::Title1:
         helpContent += "</h2>\n";
+        break;
+    case UserBlockKind::Title2:
+        helpContent += "</h3>\n";
         break;
     }
 }

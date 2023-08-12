@@ -884,7 +884,7 @@ Creates a new voice for a given sound file.</p>
 <a href="#Audio_Voice_destroy">destroy(self)</a></td>
 <td class="enumeration">
 <p>
-Destroys the voice.</p>
+Destroy the voice.</p>
 </td>
 </tr>
 <tr>
@@ -921,10 +921,10 @@ Pause the playing voice.</p>
 </tr>
 <tr>
 <td class="enumeration">
-<a href="#Audio_Voice_play">play(*SoundFile, VoiceCreateFlags, bool)</a></td>
+<a href="#Audio_Voice_play">play(*SoundFile, VoiceCreateFlags, VoicePlayFlags)</a></td>
 <td class="enumeration">
 <p>
-Plays a voice.</p>
+Creates a voice and plays it.</p>
 </td>
 </tr>
 <tr>
@@ -932,7 +932,7 @@ Plays a voice.</p>
 <a href="#Audio_Voice_play">play(self, VoicePlayFlags)</a></td>
 <td class="enumeration">
 <p>
-Simple function that will create a voice and play it.</p>
+Plays a voice.</p>
 </td>
 </tr>
 <tr>
@@ -1002,12 +1002,12 @@ Creates a new voice for a given sound file.</p>
 <h3 class="content" id="Audio_Voice_destroy"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">destroy</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L154" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-Destroys the voice.</p>
+Destroy the voice.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
 </code>
@@ -1036,7 +1036,7 @@ Returns the actual volume.</p>
 <h3 class="content" id="Audio_Voice_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L182" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L177" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1053,7 +1053,7 @@ Returns the actual volume, in DB.</p>
 <h3 class="content" id="Audio_Voice_isPlaying"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">isPlaying</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L168" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1070,7 +1070,7 @@ Returns true if the voice is currently playing.</p>
 <h3 class="content" id="Audio_Voice_pause"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">pause</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1092,19 +1092,19 @@ Pause the playing voice.</p>
 </table>
 </p>
 <p>
-Plays a voice.</p>
+Creates a voice and plays it.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, createFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">, mustLoop = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, createFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
-Simple function that will create a voice and play it.</p>
+Plays a voice.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
- The voice will be destroyed when stopped (if not looping).</p>
+ By default, the voice will be destroyed when stopped or finished.</p>
 <p>
  By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="incode">DestroyOnStop</code> flag in <code class="incode">playFlags</code>. See <a href="#Audio_Voice_create">Voice.create</a></p>
 <p>
@@ -1169,7 +1169,7 @@ Set the playing voice volume between [0..1].</p>
 <h3 class="content" id="Audio_Voice_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolumeDB</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L176" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L171" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1186,7 +1186,7 @@ Set the playing voice volume.</p>
 <h3 class="content" id="Audio_Voice_stop"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">stop</span></h3>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L143" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1218,16 +1218,12 @@ Zero</td>
 <td class="tdname">
 AcceptPitch</td>
 <td class="enumeration">
-<p>
-You can change the playing pitch on that voice.</p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 AcceptFilters</td>
 <td class="enumeration">
-<p>
-That voice accept special filters.</p>
 </td>
 </tr>
 <tr>
@@ -1268,7 +1264,7 @@ Play in loops.</p>
 DestroyOnStop</td>
 <td class="enumeration">
 <p>
-Destroy the voice once the sound has been played, or if it is manually stopped.</p>
+Destroy the voice once the sound has been played.</p>
 </td>
 </tr>
 <tr>
