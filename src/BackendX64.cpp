@@ -856,9 +856,6 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     pp.globalStrings.release();
     pp.dbgTypeRecords.release();
     pp.dbgMapTypes.release();
-    pp.dbgMapPtrTypes.release();
-    pp.dbgMapRefTypes.release();
-    pp.dbgMapPtrPtrTypes.release();
     pp.dbgMapTypesNames.release();
 
     return true;

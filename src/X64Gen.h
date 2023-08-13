@@ -398,9 +398,6 @@ struct X64Gen
     uint32_t                     dbgTypeRecordsCount = 0;
     Concat                       dbgTypeRecords;
     Map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
-    MapUtf8<DbgTypeIndex>        dbgMapPtrTypes;
-    MapUtf8<DbgTypeIndex>        dbgMapRefTypes;
-    MapUtf8<DbgTypeIndex>        dbgMapPtrPtrTypes;
     MapUtf8<DbgTypeIndex>        dbgMapTypesNames;
 
     uint32_t    storageRegCount = UINT32_MAX;

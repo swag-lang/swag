@@ -566,51 +566,20 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     if (simpleType != SimpleTypeKind::None)
         return (DbgTypeIndex) (simpleType | (NearPointer64 << 8));
 
-    typeInfo->computeScopedNameExport();
-
-    // In the cache of pointers
-    using P = MapUtf8<DbgTypeIndex>;
-    pair<P::iterator, bool> iter;
-    if (asRef)
-    {
-        iter = pp.dbgMapRefTypes.insert(P::value_type(typeInfo->scopedNameExport, 0));
-        if (!iter.second)
-            return iter.first->second;
-    }
-    else
-    {
-        iter = pp.dbgMapPtrTypes.insert(P::value_type(typeInfo->scopedNameExport, 0));
-        if (!iter.second)
-            return iter.first->second;
-    }
-
     // Pointer to something complex
     auto tr                    = dbgAddTypeRecord(pp);
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo, !asRef);
     tr->LF_Pointer.asRef       = asRef;
-
-    iter.first->second = tr->index;
     return tr->index;
 }
 
 DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo* typeInfo)
 {
-    typeInfo->computeScopedNameExport();
-
-    // In the cache of pointers
-    using P                      = MapUtf8<DbgTypeIndex>;
-    pair<P::iterator, bool> iter = pp.dbgMapPtrPtrTypes.insert(P::value_type(typeInfo->scopedNameExport, 0));
-    if (!iter.second)
-        return iter.first->second;
-
-    auto typeIdx = dbgGetOrCreatePointerToType(pp, typeInfo, false);
-
     // Pointer to something complex
     auto tr                    = dbgAddTypeRecord(pp);
     tr->kind                   = LF_POINTER;
-    tr->LF_Pointer.pointeeType = typeIdx;
-    iter.first->second         = tr->index;
+    tr->LF_Pointer.pointeeType = dbgGetOrCreatePointerToType(pp, typeInfo, false);
     return tr->index;
 }
 
