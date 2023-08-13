@@ -442,24 +442,31 @@ bool ByteCodeOptimizer::optimizePassRetCopyStructVal(ByteCodeOptContext* context
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip[0].op == ByteCodeOp::CopyRTtoRC &&
-            ip[1].op == ByteCodeOp::SetAtStackPointer64 &&
-            ip[2].op == ByteCodeOp::IncSPPostCall &&
-            ip[3].op == ByteCodeOp::CopyStack64 &&
-            ip[0].a.u32 == ip[1].b.u32 &&
-            ip[1].a.u32 == ip[3].b.u32)
+        if (ip[0].op != ByteCodeOp::LocalCall &&
+            ip[0].op != ByteCodeOp::ForeignCall &&
+            ip[0].op != ByteCodeOp::LambdaCall)
         {
-            ip[1].a.u32 = ip[3].a.u32;
-            setNop(context, ip + 3);
+            continue;
         }
-        else if (ip[0].op == ByteCodeOp::CopyRTtoRC &&
-                 ip[1].op == ByteCodeOp::SetAtStackPointer64 &&
-                 ip[2].op == ByteCodeOp::CopyStack64 &&
-                 ip[0].a.u32 == ip[1].b.u32 &&
-                 ip[1].a.u32 == ip[2].b.u32)
+
+        if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+            ip[2].op == ByteCodeOp::SetAtStackPointer64 &&
+            ip[3].op == ByteCodeOp::IncSPPostCall &&
+            ip[4].op == ByteCodeOp::CopyStack64 &&
+            ip[1].a.u32 == ip[2].b.u32 &&
+            ip[2].a.u32 == ip[4].b.u32)
         {
-            ip[1].a.u32 = ip[2].a.u32;
-            setNop(context, ip + 2);
+            ip[2].a.u32 = ip[4].a.u32;
+            setNop(context, ip + 4);
+        }
+        else if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+                 ip[2].op == ByteCodeOp::SetAtStackPointer64 &&
+                 ip[3].op == ByteCodeOp::CopyStack64 &&
+                 ip[1].a.u32 == ip[2].b.u32 &&
+                 ip[2].a.u32 == ip[3].b.u32)
+        {
+            ip[2].a.u32 = ip[3].a.u32;
+            setNop(context, ip + 3);
         }
     }
 
