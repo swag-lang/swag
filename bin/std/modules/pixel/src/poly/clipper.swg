@@ -1,6 +1,6 @@
 /*
     :LICENCE
-    This code is based on the Clipper library (http://www.angusj.com/delphi/clipper.php)
+    This code is based on the Clipper1 library (http://www.angusj.com/delphi/clipper.php)
     The original code has been modified for Swag
     See LICENCE.md for the corresponding licence.
 */
@@ -216,8 +216,10 @@ impl Transform
         {
             if e.curr == e.next.curr
             {
-                if e == e.next break
-                if e == eStart eStart = e.next
+                if e == e.next
+                    break
+                if e == eStart
+                    eStart = e.next
                 e = removeEdge(e)
                 eLoopStop = e
                 continue
@@ -349,11 +351,10 @@ impl Transform
 
     func removeEdge(e: *Edge)->*Edge
     {
-        e.prev.next = e.next;
-        e.next.prev = e.prev;
-        let result = e.next
-        e.prev = null
-        return result
+        e.prev.next = e.next
+        e.next.prev = e.prev
+        e.prev = null   // flagged as removed
+        return e.next
     }
 
     mtd addJoin(op1, op2: *OutPt, offPt: IntPoint)
