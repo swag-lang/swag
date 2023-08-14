@@ -11,7 +11,7 @@ In Swag, there's no need to end a statement with `;` like in C/C++. Most of the 
     x += 1
     y += 1
 
-    // When running the tests, @assert will verify that those values are correct.
+    // When running the tests, the '@assert' intrinsic will verify that those values are correct.
     @assert(x == 2)     // Verify that x is equal to 2, and raise an error if not.
     @assert(y == x)     // Verify that y is equal to x.
 }

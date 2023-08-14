@@ -6,7 +6,7 @@ A slice is a pointer on a buffer of datas, and a `u64` to count the number of el
 {
     // It is declared with `[..]`.
     {
-        var a: [..] bool
+        var a: [..] bool    // Slice of bools
         #assert @sizeof(a) == @sizeof(*void) + @sizeof(u64)
     }
 

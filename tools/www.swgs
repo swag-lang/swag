@@ -451,6 +451,7 @@ func generateOverview(in, out: string, old: bool)
             .right {
                 overflow-y: scroll;
                 padding-left: 10px;
+                width: 1024px;
             }
 
             .left h1 {

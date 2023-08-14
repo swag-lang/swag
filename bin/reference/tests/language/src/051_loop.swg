@@ -4,7 +4,7 @@
 
 #test
 {
-    // The loop expression value is evaluated **once**, and must be a positive value.
+    // The loop expression value is evaluated **once**, and must be a **positive value**.
     {
         var cpt = 0
         loop 10 // Loops 10 times
@@ -54,8 +54,8 @@
 }
 
 /**
-**Warning !**
-On a string, it will loop for each byte, **not** runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the `Std.Core` module.
+> **Warning !**
+> On a string, it will loop for each byte, **not** runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the `Std.Core` module.
 */
 #test
 {
@@ -63,7 +63,7 @@ On a string, it will loop for each byte, **not** runes (if a rune is encoded in 
     loop "⻘"
         cpt += 1
 
-    // cpt is equal to 3 because '⻘' is endoded with 3 bytes
+    // cpt is equal to 3 because '⻘' is encoded with 3 bytes
     @assert(cpt == 3)
 }
 
@@ -102,7 +102,7 @@ On a string, it will loop for each byte, **not** runes (if a rune is encoded in 
 
 /**
 # Ranges
-Loop can also be used to iterate on a range of signed values.
+Loop can also be used to iterate on a **range** of signed values.
 */
 #test
 {

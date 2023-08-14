@@ -1,13 +1,16 @@
 /**
-Sometimes it's necessary to change the type of a value.
+# Explicit cast
+Sometimes it can be necessary to change the type of a value.
 Use `cast(type)` to cast from one type to another.
 */
 
 #test
 {
+    // 'x' is a float
     let x = 1.0
     #assert @typeof(x) == f32
 
+    // 'y' is a 32 bits integer
     let y = cast(s32) x
     #assert @typeof(y) == s32
     @assert(y == 1)
@@ -15,7 +18,7 @@ Use `cast(type)` to cast from one type to another.
 
 /**
 # acast
-Use `acast` to automatically cast to the expression on the left.
+`acast` stands for `automatic` cast. Use it to let the compiler automatically cast to the expression on the left.
 */
 #test
 {

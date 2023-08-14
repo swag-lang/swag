@@ -1,6 +1,6 @@
 #test
 {
-    // Enums values, unlike C/C++, can end with `;`, ',' or an `eol`.
+    // Enums values, unlike C/C++, can end with `;` or `,` or an `eol`.
     {
         enum Values0
         {
@@ -270,7 +270,7 @@ You can have an enum of const slices.
 
     // In an expression, and if the enum name can be deduced, you can omit it and use the `.Value` syntax.
     {
-        enum Values { A; B; }
+        enum Values { A, B }
 
         // The normal form
         let x = Values.A
@@ -283,7 +283,7 @@ You can have an enum of const slices.
     // Works also for flags.
     {
         #[Swag.EnumFlags]
-        enum Values { A; B; }
+        enum Values { A, B }
 
         let x = Values.A | Values.B
         @assert((x & .A) and (x & .B))
@@ -303,7 +303,7 @@ By type reflection, you can loop/visit all values of an enum.
 #test
 {
     {
-        enum RGB { R; G; B; }
+        enum RGB { R, G, B }
 
         var cpt = 0
         loop idx: RGB

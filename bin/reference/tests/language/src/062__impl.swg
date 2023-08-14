@@ -12,14 +12,20 @@ struct MyStruct
 
 impl MyStruct
 {
+    // Declare a constant in the scope of the struct
     const MyConst = true
+
+    // Declare a function in the scope of the struct
     func returnTrue() => true
 }
 
+/**
+So to access the constant and the function, you have to use the `MyStruct` namespace.
+*/
 #test
 {
-    @assert(MyStruct.returnTrue())
     @assert(MyStruct.MyConst)
+    @assert(MyStruct.returnTrue())
 }
 
 /**
@@ -28,9 +34,10 @@ You can have multiple `impl` blocks. The difference with a namespace is that `se
 
 impl MyStruct
 {
-    // 'self' is an typealias for 'var self: Self'
+    // 'self' is an alias for 'var self: Self'
     func returnX(using self) => x
     func returnY(self)       => self.y
+
     // 'Self' is the corresponding type, in that case 'MyStruct'
     func returnZ(me: Self)   => me.z
 }
@@ -62,7 +69,7 @@ All functions in an `impl` block can be retrieved by reflection, as long as the 
 */
 #test
 {
-    // Creates a type typealias named 'Lambda'
+    // Creates a type alias named 'Lambda'
     typealias Lambda = func(MyStruct)->s32
 
     var fnX: Lambda

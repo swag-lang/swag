@@ -12,7 +12,7 @@ Swag has also **references**, which are pointers that behave like values.
     let myRef: const ref s32 = &x
 
     // This is a pointer that behaves like a value, so no explicit dereferencing is necessary.
-    // You can see this as a kind of an typealias.
+    // You can see this as a kind of an alias.
     @assert(myRef == 42)
 }
 
@@ -30,12 +30,13 @@ When an affectation is done outside of an initialization, you will change the po
     myRef = 66
     @assert(myRef == 66)
 
-    // Remember that 'myRef' is an typealias for 'x', so 'x' has also been changed.
+    // Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.
     @assert(x == 66)
 }
 
 /**
-If you want to change the reference and not the pointed value, you can use `ref` in the affectation.
+But unlike C++, you can change the reference (reassign it) and not the pointed value if you want.
+You must then use `ref` in the affectation.
 */
 
 #test
@@ -75,7 +76,7 @@ func toto(x: const ref s32)
 This is usefull for structs for examples, as you can directly pass a literal to a function.
 */
 
-struct MyStruct {x: s32; y: s32; }  // Our first little struct !
+struct MyStruct {x: s32, y: s32 }  // Our first little struct !
 
 #test
 {

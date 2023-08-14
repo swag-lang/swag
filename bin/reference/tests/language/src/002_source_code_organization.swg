@@ -7,5 +7,7 @@ In Swag you cannot compile a single file (with the exception of `.swgs` script f
 For example, `Std` is a workspace that contains all the Swag standard modules.
 
 A module is a `dll` (under windows) or an executable, and a workspace can include many of them.
-So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).Typically, the entire workspace is compiled.
+So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).
+
+Typically, the entire workspace is compiled.
 */

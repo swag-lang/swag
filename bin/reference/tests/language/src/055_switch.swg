@@ -91,7 +91,7 @@
 
     // `switch` can be marked with `Swag.Complete` to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler.
     {
-        enum Color { Red; Green; Blue; }
+        enum Color { Red, Green, Blue }
         let color = Color.Red
 
         #[Swag.Complete]
@@ -157,11 +157,12 @@
         @assert(success)
     }
 
-    // A `case` expression doesn't need to be constant, except if the switch is marked with `Swag.Complete`.
+    // A `case` expression doesn't need to be constant.
     {
         let test = 2
         let a = 0
         let b = 1
+
         switch test
         {
         case a:     // Test with a variable

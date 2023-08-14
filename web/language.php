@@ -10,6 +10,7 @@
     .right {
         overflow-y: scroll;
         padding-left: 10px;
+        width: 1024px;
     }
 
     .left h1 {
@@ -80,7 +81,7 @@
 <li><a href="#006_semicolon">Semicolon</a></li>
 <ul>
 </ul>
-<li><a href="#007_declaration_order">Declaration order</a></li>
+<li><a href="#007_global_declaration_order">Global declaration order</a></li>
 <ul>
 </ul>
 <li><a href="#010_basic_types">Basic types</a></li>
@@ -120,6 +121,7 @@
 </ul>
 <li><a href="#016_cast">Cast</a></li>
 <ul>
+<li><a href="#Explicit cast">Explicit cast</a></li>
 <li><a href="#acast">acast</a></li>
 <li><a href="#bitcast">bitcast</a></li>
 <li><a href="#Implicit casts">Implicit casts</a></li>
@@ -411,7 +413,7 @@ Note that if you want to compile and run a single module in the workspace, you c
 
 <h2 id="001_hello_mad_world">Hello mad world</h2>
 <p>
-Let's start with the most simple version of the "hello word" example. This is a version that does not require external dependencies like the <a href="libraries.php">Swag standard modules</a>. </p>
+Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the <a href="libraries.php">Swag standard modules</a>. </p>
 <p>
 <code>#main</code> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <code>#</code>). It must be defined only once for a native executable. <code>@print</code> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <code>@</code>). It is part of the <a href="std/swag.runtime.html">compiler runtime</a> which comes with the compiler. </p>
 <pre><code><span style="color:#FF6A00">#main</span><span style="color:#0">
@@ -517,7 +519,9 @@ In Swag you cannot compile a single file (with the exception of <code>.swgs</cod
 <p>
 For example, <code>Std</code> is a workspace that contains all the Swag standard modules. </p>
 <p>
-A module is a <code>dll</code> (under windows) or an executable, and a workspace can include many of them. So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use).Typically, the entire workspace is compiled. </p>
+A module is a <code>dll</code> (under windows) or an executable, and a workspace can include many of them. So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use). </p>
+<p>
+Typically, the entire workspace is compiled. </p>
 
 <h2 id="003_comments">Comments</h2>
 <p>
@@ -549,7 +553,7 @@ Note that some identifiers may start with <code>#</code>. This indicates a <b>co
 </span><span style="color:#FF6A00">#main</span></code></pre><p>
 </p>
 <p>
-Some identifiers can also start with <code>@</code>. This indicates an <b>intrinsic</b> function. </p>
+Some identifiers can also start with <code>@</code>. This indicates an <b>intrinsic</b> function which can be compile time only or also available at runtime (this depends on the intrinsic). </p>
 <pre><code><span style="color:#F2470C">@min</span><span style="color:#0">()
 </span><span style="color:#F2470C">@max</span><span style="color:#0">()
 </span><span style="color:#F2470C">@sqrt</span><span style="color:#0">()
@@ -813,7 +817,7 @@ In Swag, there's no need to end a statement with <code>;</code> like in C/C++. M
 x += </span><span style="color:#74A35B">1</span><span style="color:#0">
 y += </span><span style="color:#74A35B">1</span><span style="color:#0">
 
-</span><span style="color:#6A9955">// When running the tests, @assert will verify that those values are correct.</span><span style="color:#0">
+</span><span style="color:#6A9955">// When running the tests, the '@assert' intrinsic will verify that those values are correct.</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">2</span><span style="color:#0">)     </span><span style="color:#6A9955">// Verify that x is equal to 2, and raise an error if not.</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(y == x)     </span><span style="color:#6A9955">// Verify that y is equal to x.</span></code></pre><p>
 The semicolons are not mandatory, but it's possible to use them if you want. </p>
@@ -831,10 +835,10 @@ x += </span><span style="color:#74A35B">1</span><span style="color:#0">; y += </
 
 </span><span style="color:#6A9955">// Two instructions on the same line separated with ';'</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">1</span><span style="color:#0">); </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(y == </span><span style="color:#74A35B">1</span><span style="color:#0">)</span></code></pre>
-<h2 id="007_declaration_order">Declaration order</h2>
+<h2 id="007_global_declaration_order">Global declaration order</h2>
 <p>
 The order of all <b>top level</b> declarations does not matter. </p>
-<pre><code><span style="color:#6A9955">// Here we declare a constant 'A' and initialize it with 'B', which is not </span><span style="color:#0">
+<pre><code><span style="color:#6A9955">// Here we declare a constant 'A' and initialize it with 'B', which is not</span><span style="color:#0">
 </span><span style="color:#6A9955">// yet known (neither its value or its type).</span><span style="color:#0">
 </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">A</span><span style="color:#0"> = </span><span style="color:#3BC3A7">B</span><span style="color:#0">
 </span><span style="color:#6A9955">// Declare a constant 'B' equals to 'C', still unknown at this point.</span><span style="color:#0">
@@ -843,7 +847,14 @@ The order of all <b>top level</b> declarations does not matter. </p>
 </span><span style="color:#6A9955">// At this point A and B are then also defined.</span><span style="color:#0">
 </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">C</span><span style="color:#0">: </span><span style="color:#ED9A11">u64</span><span style="color:#0"> = </span><span style="color:#74A35B">1</span></code></pre><p>
 In this test, we call the function <code>functionDeclaredLater</code> before it is known. This is fine. </p>
-<pre><code><span style="color:#FF6A00">functionDeclaredLater</span><span style="color:#0">()</span></code></pre><pre><code><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">functionDeclaredLater</span><span style="color:#0">()
+<pre><code><span style="color:#6A9955">// First, call a unknown function named 'functionDeclaredLater'</span><span style="color:#0">
+</span><span style="color:#FF6A00">#run</span><span style="color:#0">
+{
+    </span><span style="color:#FF6A00">functionDeclaredLater</span><span style="color:#0">()
+}
+
+</span><span style="color:#6A9955">// Then declare it after</span><span style="color:#0">
+</span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">functionDeclaredLater</span><span style="color:#0">()
 {
 }</span></code></pre><p>
 Note that the order is not relevant in the same file, but it is also irrelevant across multiple files. You can for example call a function in one file and declare it in another one. Global ordrer does not matter ! </p>
@@ -1342,7 +1353,9 @@ Constants can have more than just simple types. In that case, there's a memory f
         [</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">],
         [</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">1</span><span style="color:#0">]
     ]
-}</span></code></pre>
+}</span></code></pre><p>
+So the difference between <code>let</code> and <code>const</code> is that the value of a constant should be known at compile time, where the value of a <code>let</code> can be dynamic. Other than that, both must be assigned once and only once. </p>
+
 <h2 id="015_operators">Operators</h2>
 <p>
 These are all the Swag operators that can be used to manipulate variables and values. </p>
@@ -1352,10 +1365,19 @@ These are all the Swag operators that can be used to manipulate variables and va
 </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">10</span><span style="color:#0">
 
+</span><span style="color:#6A9955">// Addition</span><span style="color:#0">
 x = x + </span><span style="color:#74A35B">1</span><span style="color:#0">
+
+</span><span style="color:#6A9955">// Substraction</span><span style="color:#0">
 x = x - </span><span style="color:#74A35B">1</span><span style="color:#0">
+
+</span><span style="color:#6A9955">// Multiplication</span><span style="color:#0">
 x = x * </span><span style="color:#74A35B">2</span><span style="color:#0">
+
+</span><span style="color:#6A9955">// Division</span><span style="color:#0">
 x = x / </span><span style="color:#74A35B">2</span><span style="color:#0">
+
+</span><span style="color:#6A9955">// Modulus</span><span style="color:#0">
 x = x % </span><span style="color:#74A35B">2</span></code></pre><p>
 <h3 id="Bitwise operators">Bitwise operators </h3></p>
 <p>
@@ -1378,15 +1400,17 @@ x = x << </span><span style="color:#74A35B">1</span><span style="color:#0">
 x = x >> </span><span style="color:#74A35B">1</span></code></pre><p>
 <h3 id="Assignment operators">Assignment operators </h3></p>
 <p>
-</p>
-<pre><code><span style="color:#0">x += </span><span style="color:#74A35B">1</span><span style="color:#0">
+All the arithmetic and bitwise operators have an <code>affect</code> version. </p>
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">10</span><span style="color:#0">
+
+x += </span><span style="color:#74A35B">1</span><span style="color:#0">
 x -= </span><span style="color:#74A35B">1</span><span style="color:#0">
 x *= </span><span style="color:#74A35B">2</span><span style="color:#0">
 x /= </span><span style="color:#74A35B">2</span><span style="color:#0">
 x %= </span><span style="color:#74A35B">2</span><span style="color:#0">
 x ^= </span><span style="color:#74A35B">2</span><span style="color:#0">
-x |= </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">'</span><span style="color:#ED9A11">s32</span><span style="color:#0">
-x &= </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">
+x |= </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">
+x &= </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">
 x <<= </span><span style="color:#74A35B">1</span><span style="color:#0">
 x >>= </span><span style="color:#74A35B">1</span></code></pre><p>
 <h3 id="Unary operators">Unary operators </h3></p>
@@ -1414,11 +1438,22 @@ z = -z
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> a = </span><span style="color:#3186CD">false</span><span style="color:#0">
 
+    </span><span style="color:#6A9955">// Equal</span><span style="color:#0">
     a = </span><span style="color:#74A35B">1</span><span style="color:#0"> == </span><span style="color:#74A35B">1</span><span style="color:#0"> ? </span><span style="color:#3186CD">true</span><span style="color:#0"> : </span><span style="color:#3186CD">false</span><span style="color:#0">
+
+    </span><span style="color:#6A9955">// Not equal</span><span style="color:#0">
     a = </span><span style="color:#74A35B">1</span><span style="color:#0"> != </span><span style="color:#74A35B">1</span><span style="color:#0"> ? </span><span style="color:#3186CD">true</span><span style="color:#0"> : </span><span style="color:#3186CD">false</span><span style="color:#0">
+
+    </span><span style="color:#6A9955">// Lower equal</span><span style="color:#0">
     a = </span><span style="color:#74A35B">1</span><span style="color:#0"> <= </span><span style="color:#74A35B">1</span><span style="color:#0"> ? </span><span style="color:#3186CD">true</span><span style="color:#0"> : </span><span style="color:#3186CD">false</span><span style="color:#0">
+
+    </span><span style="color:#6A9955">// Greater equal</span><span style="color:#0">
     a = </span><span style="color:#74A35B">1</span><span style="color:#0"> >= </span><span style="color:#74A35B">1</span><span style="color:#0"> ? </span><span style="color:#3186CD">true</span><span style="color:#0"> : </span><span style="color:#3186CD">false</span><span style="color:#0">
+
+    </span><span style="color:#6A9955">// Lower</span><span style="color:#0">
     a = </span><span style="color:#74A35B">1</span><span style="color:#0"> < </span><span style="color:#74A35B">1</span><span style="color:#0"> ? </span><span style="color:#3186CD">true</span><span style="color:#0"> : </span><span style="color:#3186CD">false</span><span style="color:#0">
+
+    </span><span style="color:#6A9955">// Greater</span><span style="color:#0">
     a = </span><span style="color:#74A35B">1</span><span style="color:#0"> > </span><span style="color:#74A35B">1</span><span style="color:#0"> ? </span><span style="color:#3186CD">true</span><span style="color:#0"> : </span><span style="color:#3186CD">false</span><span style="color:#0">
 }
 
@@ -1450,7 +1485,7 @@ The ternary operator will test an expression, and will return a value depending 
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(y == </span><span style="color:#74A35B">666</span><span style="color:#0">)</span></code></pre><p>
 <h3 id="Spaceshift operator">Spaceshift operator </h3></p>
 <p>
-Operator <code><=></code> will return -1, 0 or 1 if the expression on the left is lower, equal or greater than the expression on the right. The returned type is <code>s32</code>. </p>
+Operator <code><=></code> will return -1, 0 or 1 if the expression on the left is <b>lower</b>, <b>equal</b> or <b>greater</b> than the expression on the right. The returned type is <code>s32</code>. </p>
 <pre><code><span style="color:#3BC3A7">A</span><span style="color:#0"> <=> </span><span style="color:#3BC3A7">B</span><span style="color:#0"> == -</span><span style="color:#74A35B">1</span><span style="color:#0"> </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#3BC3A7">A</span><span style="color:#0"> < </span><span style="color:#3BC3A7">B</span><span style="color:#0">
 </span><span style="color:#3BC3A7">A</span><span style="color:#0"> <=> </span><span style="color:#3BC3A7">B</span><span style="color:#0"> == </span><span style="color:#74A35B">0</span><span style="color:#0">  </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#3BC3A7">A</span><span style="color:#0"> == </span><span style="color:#3BC3A7">B</span><span style="color:#0">
 </span><span style="color:#3BC3A7">A</span><span style="color:#0"> <=> </span><span style="color:#3BC3A7">B</span><span style="color:#0"> == </span><span style="color:#74A35B">1</span><span style="color:#0">  </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#3BC3A7">A</span><span style="color:#0"> > </span><span style="color:#3BC3A7">B</span></code></pre><p>
@@ -1513,27 +1548,28 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#74A35B">0</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> + </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">f32</span><span style="color:#0">) == </span><span style="color:#ED9A11">f32</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#74A35B">0</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> + </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">f64</span><span style="color:#0">) == </span><span style="color:#ED9A11">f64</span><span style="color:#0">
 
-</span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#74A35B">0</span><span style="color:#0">'</span><span style="color:#ED9A11">s8</span><span style="color:#0"> + </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u16</span><span style="color:#0">) == </span><span style="color:#ED9A11">u16</span><span style="color:#0">   </span><span style="color:#6A9955">// Priority to bigger type also</span><span style="color:#0">
+</span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#74A35B">0</span><span style="color:#0">'</span><span style="color:#ED9A11">s8</span><span style="color:#0"> + </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u16</span><span style="color:#0">) == </span><span style="color:#ED9A11">u16</span><span style="color:#0">   </span><span style="color:#6A9955">// Priority to bigger type also</span></code></pre><p>
+This means that a 8/16 bits operation (like an addition) can more easily <b>overflow</b> if you do not take care. In that case, you can use the <code>,up</code> <b>modifier</b> on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly. </p>
+<pre><code><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> +,up </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">) == </span><span style="color:#ED9A11">u32</span><span style="color:#0">
+</span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> +,up </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> == </span><span style="color:#74A35B">256</span><span style="color:#0"> </span><span style="color:#6A9955">// No overflow, because the operation is done in 32 bits.</span></code></pre><p>
+We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
 
-</span><span style="color:#6A9955">// This means that a 8/16 bits operation (like an addition) can more easily overflow</span><span style="color:#0">
-</span><span style="color:#6A9955">// if you do not take care.</span><span style="color:#0">
-</span><span style="color:#6A9955">// In that case, you can use the ',up' modifier on the operation, which will promote</span><span style="color:#0">
-</span><span style="color:#6A9955">// the type to at least 32 bits. The operation will be done accordingly.</span><span style="color:#0">
-
-</span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> +,up </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">) == </span><span style="color:#ED9A11">u32</span><span style="color:#0">
-</span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> +,up </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> == </span><span style="color:#74A35B">256</span><span style="color:#0"> </span><span style="color:#6A9955">// No overflow, because the operation is done in 32 bits.</span></code></pre>
 <h2 id="016_cast">Cast</h2>
 <p>
-Sometimes it's necessary to change the type of a value. Use <code>cast(type)</code> to cast from one type to another. </p>
-<pre><code><span style="color:#3186CD">let</span><span style="color:#0"> x = </span><span style="color:#74A35B">1.0</span><span style="color:#0">
+<h3 id="Explicit cast">Explicit cast </h3></p>
+<p>
+Sometimes it can be necessary to change the type of a value. Use <code>cast(type)</code> to cast from one type to another. </p>
+<pre><code><span style="color:#6A9955">// 'x' is a float</span><span style="color:#0">
+</span><span style="color:#3186CD">let</span><span style="color:#0"> x = </span><span style="color:#74A35B">1.0</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(x) == </span><span style="color:#ED9A11">f32</span><span style="color:#0">
 
+</span><span style="color:#6A9955">// 'y' is a 32 bits integer</span><span style="color:#0">
 </span><span style="color:#3186CD">let</span><span style="color:#0"> y = </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) x
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(y) == </span><span style="color:#ED9A11">s32</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(y == </span><span style="color:#74A35B">1</span><span style="color:#0">)</span></code></pre><p>
 <h3 id="acast">acast </h3></p>
 <p>
-Use <code>acast</code> to automatically cast to the expression on the left. </p>
+<code>acast</code> stands for <code>automatic</code> cast. Use it to let the compiler automatically cast to the expression on the left. </p>
 <pre><code><span style="color:#3186CD">let</span><span style="color:#0"> x: </span><span style="color:#ED9A11">f32</span><span style="color:#0"> = </span><span style="color:#74A35B">1.0</span><span style="color:#0">
 </span><span style="color:#3186CD">let</span><span style="color:#0"> y: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#3186CD">acast</span><span style="color:#0"> x    </span><span style="color:#6A9955">// cast 'x' to 's32'</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(y) == </span><span style="color:#ED9A11">s32</span><span style="color:#0">
@@ -1572,7 +1608,7 @@ Remember that dynamic arrays are part of the <code>Std.Core</code> module. Here 
     array[</span><span style="color:#74A35B">1</span><span style="color:#0">] = </span><span style="color:#74A35B">2</span><span style="color:#0">
 }</span></code></pre><p>
 
-  You can get the number of elements of an array with <code>@countof</code>. </p>
+  You can get the number of elements of an array with <code>@countof</code>, and the size in bytes with <code>@sizeof</code>. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [</span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array) == </span><span style="color:#74A35B">2</span><span style="color:#0">
@@ -1593,7 +1629,7 @@ Remember that dynamic arrays are part of the <code>Std.Core</code> module. Here 
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  An array literal has the form <code>[A, B, ...]</code>. </p>
+  An <b>array literal</b> has the form <code>[A, B, ...]</code>. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> arr = [</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">] </span><span style="color:#6A9955">// An array of four s32</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(arr) == </span><span style="color:#74A35B">4</span><span style="color:#0">
@@ -1602,11 +1638,13 @@ Remember that dynamic arrays are part of the <code>Std.Core</code> module. Here 
 
   The size of the array can be deduced from the initialisation expression. </p>
 <pre><code><span style="color:#0">{
+    </span><span style="color:#6A9955">// Here the dimension is not specified, but as the array is initialized with 2 elements, it can be deduced.</span><span style="color:#0">
     </span><span style="color:#3186CD">var</span><span style="color:#0"> array: [] </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = [</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">]
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#74A35B">1</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#74A35B">2</span><span style="color:#0">)
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array) == </span><span style="color:#74A35B">2</span><span style="color:#0">
 
+    </span><span style="color:#6A9955">// Here both dimensions and types are deduced thanks to the initialization expression.</span><span style="color:#0">
     </span><span style="color:#3186CD">var</span><span style="color:#0"> array1 = [</span><span style="color:#BB6643">"10"</span><span style="color:#0">, </span><span style="color:#BB6643">"20"</span><span style="color:#0">, </span><span style="color:#BB6643">"30"</span><span style="color:#0">]
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array1[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#BB6643">"10"</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(array1[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#BB6643">"20"</span><span style="color:#0">)
@@ -1670,7 +1708,7 @@ Of course an array can have multiple dimensions. </p>
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array) == </span><span style="color:#74A35B">4</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(array1) == </span><span style="color:#74A35B">2</span><span style="color:#0">
 }</span></code></pre><p>
-You can initialize a whole array variable (but not a constant) with one single value. Only basic types are accepted (integers, float, string, bool, rune). </p>
+You can initialize a whole array variable (but <b>not a constant</b>) with one single value. Only basic types are accepted (integers, float, string, bool, rune). </p>
 <pre><code><span style="color:#6A9955">// The whole array is initialized with 'true'</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> arr: [</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">] </span><span style="color:#ED9A11">bool</span><span style="color:#0"> = </span><span style="color:#3186CD">true</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(arr[</span><span style="color:#74A35B">0</span><span style="color:#0">, </span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#3186CD">true</span><span style="color:#0">)
@@ -1687,7 +1725,7 @@ A slice is a pointer on a buffer of datas, and a <code>u64</code> to count the n
 
   It is declared with <code>[..]</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> a: [..] </span><span style="color:#ED9A11">bool</span><span style="color:#0">
+    </span><span style="color:#3186CD">var</span><span style="color:#0"> a: [..] </span><span style="color:#ED9A11">bool</span><span style="color:#0">    </span><span style="color:#6A9955">// Slice of bools</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(a) == </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(*</span><span style="color:#ED9A11">void</span><span style="color:#0">) + </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u64</span><span style="color:#0">)
 }</span></code></pre><p>
 
@@ -1864,12 +1902,12 @@ A slice is a pointer on a buffer of datas, and a <code>u64</code> to count the n
 <h3 id="Multiple values pointers">Multiple values pointers </h3></p>
 <p>
 If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multiple values</b>, declare your pointer with <code>^</code> instead of <code>*</code>. </p>
-<p>
-
-  <code>ptr</code> is a pointer to a memory block of <code>u8</code>. </p>
 <pre><code><span style="color:#0">{
+    </span><span style="color:#6A9955">// `ptr` is a pointer to a memory block of `u8`.</span><span style="color:#0">
     </span><span style="color:#3186CD">var</span><span style="color:#0"> ptr: ^</span><span style="color:#ED9A11">u8</span><span style="color:#0">
-    ptr = ptr - </span><span style="color:#74A35B">1</span><span style="color:#0"> </span><span style="color:#6A9955">// Pointer arithmetic is now possible</span><span style="color:#0">
+
+    </span><span style="color:#6A9955">// Pointer arithmetic is now possible</span><span style="color:#0">
+    ptr = ptr - </span><span style="color:#74A35B">1</span><span style="color:#0">
 }</span></code></pre><p>
 
   Taking the address of an array element enables pointer arithmetic. </p>
@@ -1911,7 +1949,7 @@ Swag has also <b>references</b>, which are pointers that behave like values. </p
 </span><span style="color:#3186CD">let</span><span style="color:#0"> myRef: </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3186CD">ref</span><span style="color:#0"> </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = &x
 
 </span><span style="color:#6A9955">// This is a pointer that behaves like a value, so no explicit dereferencing is necessary.</span><span style="color:#0">
-</span><span style="color:#6A9955">// You can see this as a kind of an typealias.</span><span style="color:#0">
+</span><span style="color:#6A9955">// You can see this as a kind of an alias.</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(myRef == </span><span style="color:#74A35B">42</span><span style="color:#0">)</span></code></pre><p>
 When an affectation is done outside of an initialization, you will change the pointed value, and not the reference itself. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#74A35B">42</span><span style="color:#0">
@@ -1922,9 +1960,9 @@ When an affectation is done outside of an initialization, you will change the po
 myRef = </span><span style="color:#74A35B">66</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(myRef == </span><span style="color:#74A35B">66</span><span style="color:#0">)
 
-</span><span style="color:#6A9955">// Remember that 'myRef' is an typealias for 'x', so 'x' has also been changed.</span><span style="color:#0">
+</span><span style="color:#6A9955">// Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">66</span><span style="color:#0">)</span></code></pre><p>
-If you want to change the reference and not the pointed value, you can use <code>ref</code> in the affectation. </p>
+But unlike C++, you can change the reference (reassign it) and not the pointed value if you want. You must then use <code>ref</code> in the affectation. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#74A35B">1</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> y = </span><span style="color:#74A35B">1000</span><span style="color:#0">
 
@@ -1946,7 +1984,7 @@ Most of the time, you have to take the address of a variable to make a reference
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">dref</span><span style="color:#0"> ptr == </span><span style="color:#74A35B">4</span><span style="color:#0">)
 }</span></code></pre><p>
 This is usefull for structs for examples, as you can directly pass a literal to a function. </p>
-<pre><code><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0"> {x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">; y: </span><span style="color:#ED9A11">s32</span><span style="color:#0">; }  </span><span style="color:#6A9955">// Our first little struct !</span></code></pre><pre><code><span style="color:#FF6A00">titi0</span><span style="color:#0">({</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">})
+<pre><code><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0"> {x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, y: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> }  </span><span style="color:#6A9955">// Our first little struct !</span></code></pre><pre><code><span style="color:#FF6A00">titi0</span><span style="color:#0">({</span><span style="color:#74A35B">1</span><span style="color:#0">, </span><span style="color:#74A35B">2</span><span style="color:#0">})
 </span><span style="color:#FF6A00">titi1</span><span style="color:#0">({</span><span style="color:#74A35B">3</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">})
 </span><span style="color:#FF6A00">titi2</span><span style="color:#0">({</span><span style="color:#74A35B">5</span><span style="color:#0">, </span><span style="color:#74A35B">6</span><span style="color:#0">})</span></code></pre><pre><code><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">titi0</span><span style="color:#0">(param: </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3186CD">ref</span><span style="color:#0"> {x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, y: </span><span style="color:#ED9A11">s32</span><span style="color:#0">})
 {
@@ -2112,7 +2150,7 @@ Note that declaring a tuple type or a struct type is equivalent to a constant re
 <h2 id="030_enum">Enum</h2>
 <p>
 
-  Enums values, unlike C/C++, can end with <code>;</code>, ',' or an <code>eol</code>. </p>
+  Enums values, unlike C/C++, can end with <code>;</code> or <code>,</code> or an <code>eol</code>. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values0</span><span style="color:#0">
     {
@@ -2365,7 +2403,7 @@ You can have an enum of const slices. </p>
 
   In an expression, and if the enum name can be deduced, you can omit it and use the <code>.Value</code> syntax. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">, </span><span style="color:#3BC3A7">B</span><span style="color:#0"> }
 
     </span><span style="color:#6A9955">// The normal form</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> x = </span><span style="color:#3BC3A7">Values</span><span style="color:#0">.</span><span style="color:#3BC3A7">A</span><span style="color:#0">
@@ -2378,7 +2416,7 @@ You can have an enum of const slices. </p>
   Works also for flags. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.EnumFlags]</span><span style="color:#0">
-    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Values</span><span style="color:#0"> { </span><span style="color:#3BC3A7">A</span><span style="color:#0">, </span><span style="color:#3BC3A7">B</span><span style="color:#0"> }
 
     </span><span style="color:#3186CD">let</span><span style="color:#0"> x = </span><span style="color:#3BC3A7">Values</span><span style="color:#0">.</span><span style="color:#3BC3A7">A</span><span style="color:#0"> | </span><span style="color:#3BC3A7">Values</span><span style="color:#0">.</span><span style="color:#3BC3A7">B</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">((x & .</span><span style="color:#3BC3A7">A</span><span style="color:#0">) </span><span style="color:#B040BE">and</span><span style="color:#0"> (x & .</span><span style="color:#3BC3A7">B</span><span style="color:#0">))
@@ -2392,7 +2430,7 @@ You can have an enum of const slices. </p>
 }</span></code></pre><p>
 By type reflection, you can loop/visit all values of an enum. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0"> { </span><span style="color:#3BC3A7">R</span><span style="color:#0">; </span><span style="color:#3BC3A7">G</span><span style="color:#0">; </span><span style="color:#3BC3A7">B</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">RGB</span><span style="color:#0"> { </span><span style="color:#3BC3A7">R</span><span style="color:#0">, </span><span style="color:#3BC3A7">G</span><span style="color:#0">, </span><span style="color:#3BC3A7">B</span><span style="color:#0"> }
 
     </span><span style="color:#3186CD">var</span><span style="color:#0"> cpt = </span><span style="color:#74A35B">0</span><span style="color:#0">
     </span><span style="color:#B040BE">loop</span><span style="color:#0"> idx: </span><span style="color:#3BC3A7">RGB</span><span style="color:#0">
@@ -2460,13 +2498,12 @@ All symbols from a Swag source file are exported to other files of the same modu
 
 <h2 id="050_if">If</h2>
 <p>
-A basic test with <code>if</code>. Curlies are optional. The expression doesn't need to be enclosed with <code>()</code> unlike C/C++. </p>
+A basic test with <code>if</code>. Curlies are optional, and the expression doesn't need to be enclosed with <code>()</code> like in C/C++. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> a = </span><span style="color:#74A35B">0</span><span style="color:#0">
 </span><span style="color:#B040BE">if</span><span style="color:#0"> a == </span><span style="color:#74A35B">1</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
 </span><span style="color:#B040BE">if</span><span style="color:#0"> (a == </span><span style="color:#74A35B">1</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
-
 </span><span style="color:#B040BE">if</span><span style="color:#0"> a == </span><span style="color:#74A35B">0</span><span style="color:#0"> {
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">true</span><span style="color:#0">)</span></code></pre><pre><code><span style="color:#0">    </span><span style="color:#6A9955">// 'else' is of course also a thing</span><span style="color:#0">
     </span><span style="color:#B040BE">if</span><span style="color:#0"> a == </span><span style="color:#74A35B">0</span><span style="color:#0">
@@ -2491,18 +2528,22 @@ A basic test with <code>if</code>. Curlies are optional. The expression doesn't 
     </span><span style="color:#B040BE">if</span><span style="color:#0"> a == </span><span style="color:#74A35B">0</span><span style="color:#0"> </span><span style="color:#B040BE">or</span><span style="color:#0"> a == </span><span style="color:#74A35B">1</span><span style="color:#0">
         </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">true</span><span style="color:#0">)
 }</span></code></pre><p>
-You can also at the same time declare and test one variable in an <code>if</code> expression. <code>var</code> or <code>const</code> is mandatory in that case. </p>
-<pre><code><span style="color:#6A9955">// This will declare a variable 'a', and test if against 0.</span><span style="color:#0">
+You can also at the same time declare and test one variable in an <code>if</code> expression. <code>var</code>, <code>let</code> or <code>const</code> is mandatory in that case. </p>
+<pre><code><span style="color:#6A9955">// This will declare a variable 'a', and test it against 0.</span><span style="color:#0">
 </span><span style="color:#6A9955">// 'a' is then only visible in the 'if' block, and not outside.</span><span style="color:#0">
 </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#3186CD">var</span><span style="color:#0"> a = </span><span style="color:#74A35B">0</span><span style="color:#0">
 {
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
 }
 
+</span><span style="color:#6A9955">// So you can redeclare 'a' (this time as a constant).</span><span style="color:#0">
 </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#74A35B">1</span><span style="color:#0">
-{
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">1</span><span style="color:#0">)
-}
+</span><span style="color:#B040BE">else</span><span style="color:#0">
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
+
+</span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#3186CD">let</span><span style="color:#0"> a = </span><span style="color:#74A35B">1</span><span style="color:#0">
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">1</span><span style="color:#0">)
 </span><span style="color:#B040BE">else</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)</span></code></pre>
 <h2 id="051_loop">Loop</h2>
@@ -2510,7 +2551,7 @@ You can also at the same time declare and test one variable in an <code>if</code
 <code>loop</code> are used to iterate a given amount of time. </p>
 <p>
 
-  The loop expression value is evaluated <b>once</b>, and must be a positive value. </p>
+  The loop expression value is evaluated <b>once</b>, and must be a <b>positive value</b>. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> cpt = </span><span style="color:#74A35B">0</span><span style="color:#0">
     </span><span style="color:#B040BE">loop</span><span style="color:#0"> </span><span style="color:#74A35B">10</span><span style="color:#0"> </span><span style="color:#6A9955">// Loops 10 times</span><span style="color:#0">
@@ -2551,12 +2592,16 @@ You can also at the same time declare and test one variable in an <code>if</code
 </span><span style="color:#B040BE">loop</span><span style="color:#0"> arr    </span><span style="color:#6A9955">// The array contains 4 elements, so the loop count is 4</span><span style="color:#0">
     cpt += arr[</span><span style="color:#B4B44A">@index</span><span style="color:#0">]
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(cpt == </span><span style="color:#74A35B">10</span><span style="color:#0">+</span><span style="color:#74A35B">20</span><span style="color:#0">+</span><span style="color:#74A35B">30</span><span style="color:#0">+</span><span style="color:#74A35B">40</span><span style="color:#0">)</span></code></pre><p>
-<b>Warning !</b> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the <code>Std.Core</code> module. </p>
+</p>
+<blockquote><p>
+<b>Warning !</b> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the <code>Std.Core</code> module. </p></blockquote>
+<p>
+</p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> cpt = </span><span style="color:#74A35B">0</span><span style="color:#0">
 </span><span style="color:#B040BE">loop</span><span style="color:#0"> </span><span style="color:#BB6643">"⻘"</span><span style="color:#0">
     cpt += </span><span style="color:#74A35B">1</span><span style="color:#0">
 
-</span><span style="color:#6A9955">// cpt is equal to 3 because '⻘' is endoded with 3 bytes</span><span style="color:#0">
+</span><span style="color:#6A9955">// cpt is equal to 3 because '⻘' is encoded with 3 bytes</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(cpt == </span><span style="color:#74A35B">3</span><span style="color:#0">)</span></code></pre><p>
 <h3 id="break, continue">break, continue </h3></p>
 <p>
@@ -2590,7 +2635,7 @@ You can also at the same time declare and test one variable in an <code>if</code
 }</span></code></pre><p>
 <h3 id="Ranges">Ranges </h3></p>
 <p>
-Loop can also be used to iterate on a range of signed values. </p>
+Loop can also be used to iterate on a <b>range</b> of signed values. </p>
 <p>
 
   Syntax is <code>lower bound..upper bound</code> </p>
@@ -2894,7 +2939,7 @@ A loop without an expression but with a block is infinite. This is equivalent to
 
   <code>switch</code> can be marked with <code>Swag.Complete</code> to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Color</span><span style="color:#0"> { </span><span style="color:#3BC3A7">Red</span><span style="color:#0">; </span><span style="color:#3BC3A7">Green</span><span style="color:#0">; </span><span style="color:#3BC3A7">Blue</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">enum</span><span style="color:#0"> </span><span style="color:#3BC3A7">Color</span><span style="color:#0"> { </span><span style="color:#3BC3A7">Red</span><span style="color:#0">, </span><span style="color:#3BC3A7">Green</span><span style="color:#0">, </span><span style="color:#3BC3A7">Blue</span><span style="color:#0"> }
     </span><span style="color:#3186CD">let</span><span style="color:#0"> color = </span><span style="color:#3BC3A7">Color</span><span style="color:#0">.</span><span style="color:#3BC3A7">Red</span><span style="color:#0">
 
     </span><span style="color:#7F7F7F">#[Swag.Complete]</span><span style="color:#0">
@@ -2960,11 +3005,12 @@ A loop without an expression but with a block is infinite. This is equivalent to
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(success)
 }</span></code></pre><p>
 
-  A <code>case</code> expression doesn't need to be constant, except if the switch is marked with <code>Swag.Complete</code>. </p>
+  A <code>case</code> expression doesn't need to be constant. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">let</span><span style="color:#0"> test = </span><span style="color:#74A35B">2</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> a = </span><span style="color:#74A35B">0</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> b = </span><span style="color:#74A35B">1</span><span style="color:#0">
+
     </span><span style="color:#B040BE">switch</span><span style="color:#0"> test
     {
     </span><span style="color:#B040BE">case</span><span style="color:#0"> a:     </span><span style="color:#6A9955">// Test with a variable</span><span style="color:#0">
@@ -3098,13 +3144,13 @@ A loop without an expression but with a block is infinite. This is equivalent to
     }
 }</span></code></pre><p>
 
-  Variables can also be separated with ';' or ','. </p>
+  Variables can also be separated with <code>;</code> or <code>,</code>. The last one is not mandatory. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">{name: </span><span style="color:#ED9A11">string</span><span style="color:#0">, val1: </span><span style="color:#ED9A11">bool</span><span style="color:#0">}
     </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct1</span><span style="color:#0">{x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">; y, z: </span><span style="color:#ED9A11">s32</span><span style="color:#0">; val: </span><span style="color:#ED9A11">bool</span><span style="color:#0">; myS: </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">}
 }</span></code></pre><p>
 
-  A struct can be anonymous when declared as a variable type. Unlike tuples, syntax should be the same as for named structs. </p>
+  A struct can be anonymous when declared as a variable type. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> tuple: </span><span style="color:#3186CD">struct</span><span style="color:#0">
     {
@@ -3142,6 +3188,7 @@ A loop without an expression but with a block is infinite. This is equivalent to
 
   You can initialize a struct variable in different ways. </p>
 <pre><code><span style="color:#0">{
+    </span><span style="color:#6A9955">// At fields declaration</span><span style="color:#0">
     </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">
     {
         x, y: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">1</span><span style="color:#0">
@@ -3164,7 +3211,7 @@ A loop without an expression but with a block is infinite. This is equivalent to
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v2.x == </span><span style="color:#74A35B">1</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v2.y == </span><span style="color:#74A35B">20</span><span style="color:#0">)
 
-    </span><span style="color:#6A9955">// You can assign a tuple.</span><span style="color:#0">
+    </span><span style="color:#6A9955">// You can assign a tuple as long as the types are correct.</span><span style="color:#0">
     </span><span style="color:#3186CD">var</span><span style="color:#0"> v3: </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0"> = {</span><span style="color:#74A35B">10</span><span style="color:#0">, </span><span style="color:#74A35B">20</span><span style="color:#0">}
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v3.x == </span><span style="color:#74A35B">10</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v3.y == </span><span style="color:#74A35B">20</span><span style="color:#0">)
@@ -3224,16 +3271,22 @@ Like for an enum, <code>impl</code> is used to declare some stuff in the scope o
 
 </span><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">
 {
+    </span><span style="color:#6A9955">// Declare a constant in the scope of the struct</span><span style="color:#0">
     </span><span style="color:#3186CD">const</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyConst</span><span style="color:#0"> = </span><span style="color:#3186CD">true</span><span style="color:#0">
+
+    </span><span style="color:#6A9955">// Declare a function in the scope of the struct</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returnTrue</span><span style="color:#0">() => </span><span style="color:#3186CD">true</span><span style="color:#0">
-}</span></code></pre><pre><code><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">.</span><span style="color:#FF6A00">returnTrue</span><span style="color:#0">())
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">.</span><span style="color:#3BC3A7">MyConst</span><span style="color:#0">)</span></code></pre><p>
+}</span></code></pre><p>
+So to access the constant and the function, you have to use the <code>MyStruct</code> namespace. </p>
+<pre><code><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">.</span><span style="color:#3BC3A7">MyConst</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">.</span><span style="color:#FF6A00">returnTrue</span><span style="color:#0">())</span></code></pre><p>
 You can have multiple <code>impl</code> blocks. The difference with a namespace is that <code>self</code> and <code>Self</code> are defined inside an <code>impl</code> block. They refere to the corresponding type. </p>
 <pre><code><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">
 {
-    </span><span style="color:#6A9955">// 'self' is an typealias for 'var self: Self'</span><span style="color:#0">
+    </span><span style="color:#6A9955">// 'self' is an alias for 'var self: Self'</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returnX</span><span style="color:#0">(</span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#ED9A11">self</span><span style="color:#0">) => x
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returnY</span><span style="color:#0">(</span><span style="color:#ED9A11">self</span><span style="color:#0">)       => </span><span style="color:#ED9A11">self</span><span style="color:#0">.y
+
     </span><span style="color:#6A9955">// 'Self' is the corresponding type, in that case 'MyStruct'</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returnZ</span><span style="color:#0">(me: </span><span style="color:#ED9A11">Self</span><span style="color:#0">)   => me.z
 }</span></code></pre><p>
@@ -3249,7 +3302,7 @@ If you declare your function with <code>mtd</code> (method) instead of <code>fun
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">returnY</span><span style="color:#0">() == </span><span style="color:#74A35B">10</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c.</span><span style="color:#FF6A00">returnZ</span><span style="color:#0">() == </span><span style="color:#74A35B">20</span><span style="color:#0">)</span></code></pre><p>
 All functions in an <code>impl</code> block can be retrieved by reflection, as long as the struct is declared with <code>#[Swag.ExportType("methods")]</code> (by default, methods are not exported). </p>
-<pre><code><span style="color:#6A9955">// Creates a type typealias named 'Lambda'</span><span style="color:#0">
+<pre><code><span style="color:#6A9955">// Creates a type alias named 'Lambda'</span><span style="color:#0">
 </span><span style="color:#3186CD">typealias</span><span style="color:#0"> </span><span style="color:#3BC3A7">Lambda</span><span style="color:#0"> = </span><span style="color:#3186CD">func</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">)-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
 
 </span><span style="color:#3186CD">var</span><span style="color:#0"> fnX: </span><span style="color:#3BC3A7">Lambda</span><span style="color:#0">

@@ -10,7 +10,7 @@ Remember that dynamic arrays are part of the `Std.Core` module. Here we are only
         array[1] = 2
     }
 
-    // You can get the number of elements of an array with `@countof`.
+    // You can get the number of elements of an array with `@countof`, and the size in bytes with `@sizeof`.
     {
         var array: [2] s32
         #assert @countof(array) == 2
@@ -31,7 +31,7 @@ Remember that dynamic arrays are part of the `Std.Core` module. Here we are only
         @assert(array[1] == 2)
     }
 
-    // An array literal has the form `[A, B, ...]`.
+    // An **array literal** has the form `[A, B, ...]`.
     {
         var arr = [1, 2, 3, 4] // An array of four s32
         #assert @countof(arr) == 4
@@ -40,11 +40,13 @@ Remember that dynamic arrays are part of the `Std.Core` module. Here we are only
 
     // The size of the array can be deduced from the initialisation expression.
     {
+        // Here the dimension is not specified, but as the array is initialized with 2 elements, it can be deduced.
         var array: [] s32 = [1, 2]
         @assert(array[0] == 1)
         @assert(array[1] == 2)
         #assert @countof(array) == 2
 
+        // Here both dimensions and types are deduced thanks to the initialization expression.
         var array1 = ["10", "20", "30"]
         @assert(array1[0] == "10")
         @assert(array1[1] == "20")
@@ -115,7 +117,7 @@ Of course an array can have multiple dimensions.
 }
 
 /**
-You can initialize a whole array variable (but not a constant) with one single value. Only basic types are accepted (integers, float, string, bool, rune).
+You can initialize a whole array variable (but **not a constant**) with one single value. Only basic types are accepted (integers, float, string, bool, rune).
 */
 #test
 {

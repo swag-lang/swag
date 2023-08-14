@@ -9,10 +9,19 @@ These are all the Swag operators that can be used to manipulate variables and va
 {
     var x: s32 = 10
 
+    // Addition
     x = x + 1
+
+    // Substraction
     x = x - 1
+
+    // Multiplication
     x = x * 2
+
+    // Division
     x = x / 2
+
+    // Modulus
     x = x % 2
 }
 
@@ -41,17 +50,20 @@ These are all the Swag operators that can be used to manipulate variables and va
 
 /**
 # Assignment operators
+All the arithmetic and bitwise operators have an `affect` version.
 */
 #test
 {
+    var x: s32 = 10
+
     x += 1
     x -= 1
     x *= 2
     x /= 2
     x %= 2
     x ^= 2
-    x |= 0b0000_0001's32
-    x &= cast(s32) 0b0000_0001
+    x |= 0b0000_0001
+    x &= 0b0000_0001
     x <<= 1
     x >>= 1
 }
@@ -87,11 +99,22 @@ These are all the Swag operators that can be used to manipulate variables and va
     {
         var a = false
 
+        // Equal
         a = 1 == 1 ? true : false
+
+        // Not equal
         a = 1 != 1 ? true : false
+
+        // Lower equal
         a = 1 <= 1 ? true : false
+
+        // Greater equal
         a = 1 >= 1 ? true : false
+
+        // Lower
         a = 1 < 1 ? true : false
+
+        // Greater
         a = 1 > 1 ? true : false
     }
 
@@ -136,7 +159,7 @@ The ternary operator will test an expression, and will return a value depending 
 
 /**
 # Spaceshift operator
-Operator `<=>` will return -1, 0 or 1 if the expression on the left is lower, equal or greater than the expression on the right. The returned type is `s32`.
+Operator `<=>` will return -1, 0 or 1 if the expression on the left is **lower**, **equal** or **greater** than the expression on the right. The returned type is `s32`.
 ```
 A <=> B == -1 if A < B
 A <=> B == 0  if A == B
@@ -212,12 +235,18 @@ Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types
     #assert @typeof(0'u8 + 1'f64) == f64
 
     #assert @typeof(0's8 + 1'u16) == u16   // Priority to bigger type also
+}
 
-    // This means that a 8/16 bits operation (like an addition) can more easily overflow
-    // if you do not take care.
-    // In that case, you can use the ',up' modifier on the operation, which will promote
-    // the type to at least 32 bits. The operation will be done accordingly.
-
+/**
+This means that a 8/16 bits operation (like an addition) can more easily **overflow** if you do not take care.
+In that case, you can use the `,up` **modifier** on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly.
+*/
+#test
+{
     #assert @typeof(255'u8 +,up 1'u8) == u32
     #assert 255'u8 +,up 1'u8 == 256 // No overflow, because the operation is done in 32 bits.
 }
+
+/**
+We'll see later how Swag deals with that kind of overflow, and more generally, with **safety**.
+*/

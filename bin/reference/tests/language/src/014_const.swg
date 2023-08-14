@@ -41,3 +41,7 @@ Constants can have more than just simple types. In that case, there's a memory f
         ]
     }
 }
+
+/**
+So the difference between `let` and `const` is that the value of a constant should be known at compile time, where the value of a `let` can be dynamic. Other than that, both must be assigned once and only once.
+*/

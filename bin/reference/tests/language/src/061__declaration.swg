@@ -16,13 +16,13 @@
         }
     }
 
-    // Variables can also be separated with ';' or ','.
+    // Variables can also be separated with `;` or `,`. The last one is not mandatory.
     {
         struct MyStruct{name: string, val1: bool}
         struct MyStruct1{x: s32; y, z: s32; val: bool; myS: MyStruct}
     }
 
-    // A struct can be anonymous when declared as a variable type. Unlike tuples, syntax should be the same as for named structs.
+    // A struct can be anonymous when declared as a variable type.
     {
         var tuple: struct
         {
@@ -60,6 +60,7 @@
 
     // You can initialize a struct variable in different ways.
     {
+        // At fields declaration
         struct MyStruct
         {
             x, y: s32 = 1
@@ -82,7 +83,7 @@
         @assert(v2.x == 1)
         @assert(v2.y == 20)
 
-        // You can assign a tuple.
+        // You can assign a tuple as long as the types are correct.
         var v3: MyStruct = {10, 20}
         @assert(v3.x == 10)
         @assert(v3.y == 20)
@@ -103,7 +104,8 @@
 }
 
 /**
-A function can take an argument of type `struct`. No copy is done (this is equivalent to a const reference in C++).
+A function can take an argument of type `struct`.
+No copy is done (this is equivalent to a const reference in C++).
 */
 
 struct Struct3

@@ -1,5 +1,5 @@
 /**
-A basic test with `if`. Curlies are optional. The expression doesn't need to be enclosed with `()` unlike C/C++.
+A basic test with `if`. Curlies are optional, and the expression doesn't need to be enclosed with `()` like in C/C++.
 */
 
 #test
@@ -9,7 +9,6 @@ A basic test with `if`. Curlies are optional. The expression doesn't need to be 
         @assert(false)
     if (a == 1)
         @assert(false)
-
     if a == 0 {
         @assert(true)
     }
@@ -39,22 +38,25 @@ A basic test with `if`. Curlies are optional. The expression doesn't need to be 
 }
 
 /**
-You can also at the same time declare and test one variable in an `if` expression. `var` or `const` is mandatory in that case.
+You can also at the same time declare and test one variable in an `if` expression. `var`, `let` or `const` is mandatory in that case.
 */
-
 #test
 {
-    // This will declare a variable 'a', and test if against 0.
+    // This will declare a variable 'a', and test it against 0.
     // 'a' is then only visible in the 'if' block, and not outside.
     if var a = 0
     {
         @assert(false)
     }
 
+    // So you can redeclare 'a' (this time as a constant).
     if const a = 1
-    {
         @assert(a == 1)
-    }
+    else
+        @assert(false)
+
+    if let a = 1
+        @assert(a == 1)
     else
         @assert(false)
 }

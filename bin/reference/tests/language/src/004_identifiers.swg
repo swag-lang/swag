@@ -20,7 +20,7 @@ Note that some identifiers may start with `#`. This indicates a **compiler speci
 #main
 ```
 
-Some identifiers can also start with `@`. This indicates an **intrinsic** function.
+Some identifiers can also start with `@`. This indicates an **intrinsic** function which can be compile time only or also available at runtime (this depends on the intrinsic).
 ```
 @min()
 @max()

@@ -48,13 +48,14 @@
 # Multiple values pointers
 If you want to enable **pointer arithmetic**, and make a pointer to **multiple values**, declare your pointer with `^` instead of `*`.
 */
-
 #test
 {
-    // `ptr` is a pointer to a memory block of `u8`.
     {
+        // `ptr` is a pointer to a memory block of `u8`.
         var ptr: ^u8
-        ptr = ptr - 1 // Pointer arithmetic is now possible
+
+        // Pointer arithmetic is now possible
+        ptr = ptr - 1
     }
 
     // Taking the address of an array element enables pointer arithmetic.
