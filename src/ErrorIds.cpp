@@ -386,7 +386,7 @@ void initErrors()
     SWAG_ERROR(Err0763, "a %s cannot be marked with the 'Swag.Inline' attribute");
     SWAG_ERROR(Err0761, "a %s cannot be marked with the 'Swag.Macro' attribute");
     SWAG_ERROR(Err0762, "a %s cannot be marked with the 'Swag.Mixin' attribute");
-    SWAG_ERROR(Err0512, "a %s cannot be marked with the 'Swag.NoReturn' attribute");
+    SWAG_ERROR(Err0512, "a %s cannot be marked with the 'Swag.CalleeReturn' attribute");
     SWAG_ERROR(Err0860, "a %s cannot be marked with the 'Swag.NotGeneric' attribute");
     SWAG_ERROR(Err0804, "a '#message' block should have a parameter of type 'Swag.CompilerMsgMask' ('%s' provided)");
     SWAG_ERROR(Err0198, "a '#run' block should not be used as an expression");
@@ -644,7 +644,7 @@ void initErrors()
     SWAG_ERROR(Err0112, "the %s '%s' cannot be found in '%s'");
     SWAG_ERROR(Err0686, "the %s '%s' wants to interpret the next statement as a 'code' parameter but this is not possible inside a '%s' expression");
     SWAG_ERROR(Err0756, "the %s cannot have the 'Swag.Implicit' attribute because it is generic");
-    SWAG_ERROR(Err0755, "the %s cannot have the 'Swag.NoReturn' attribute without 'Swag.Macro' or 'Swag.Mixin'");
+    SWAG_ERROR(Err0755, "the %s cannot have the 'Swag.CalleeReturn' attribute without 'Swag.Macro' or 'Swag.Mixin'");
     SWAG_ERROR(Err0757, "the %s is marked with 'Swag.Macro' and 'Swag.Inline' attributes at the same time");
     SWAG_ERROR(Err0758, "the %s is marked with 'Swag.Macro' and 'Swag.Mixin' attributes at the same time");
     SWAG_ERROR(Err0759, "the %s is marked with 'Swag.Mixin' and 'Swag.Inline' attributes at the same time");
@@ -721,7 +721,7 @@ void initErrors()
     SWAG_ERROR(Err0652, "the function '%s' has an incorrect signature for interface '%s'");
     SWAG_ERROR(Err0751, "the function '%s' has the 'Swag.NotGeneric' attribute but seems to be generic");
     SWAG_ERROR(Err0098, "the function '%s' should be called with '()' and not curlies (this is reserved for struct initialization)");
-    SWAG_ERROR(Err0766, "the function cannot have a return type because it is flagged with the 'Swag.NoReturn' attribute");
+    SWAG_ERROR(Err0766, "the function cannot have a return type because it is flagged with the 'Swag.CalleeReturn' attribute");
     SWAG_ERROR(Err0123, "the generic value '%s' has already been deduced from parameters to be '%s' (and '%s' is provided here)");
     SWAG_ERROR(Err0085, "the identifier '%s' cannot be dereferenced like a struct or a pointer to struct (type is '%s')");
     SWAG_ERROR(Err0110, "the identifier '%s' cannot be found in %s '%s'");
@@ -1184,7 +1184,7 @@ void initErrors()
 
     SWAG_ERROR(Nte0046, "%s '%s' is waiting for %s '%s' to be solved");
     SWAG_ERROR(Nte0053, "%s '%s' is waiting for type '%s' to be generated");
-    SWAG_ERROR(Nte0011, "%s is marked with 'Swag.NoReturn', so the return is used inside %s");
+    SWAG_ERROR(Nte0011, "%s is marked with 'Swag.CalleeReturn', so the return is used inside %s");
     SWAG_ERROR(Nte0050, "%s of type '%s'");
     SWAG_ERROR(Nte0017, "'%s' has been found in '%s' because of a using field");
     SWAG_ERROR(Nte0001, "'%s' is %s of type '%s' which does not contain a subscope");

@@ -825,7 +825,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         if (retType->declNode)
             doInheritAccess(funcNode, retType->declNode);
 
-        // The function wants to return something, but has the 'Swag.NoReturn' attribute
+        // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
         {
             Diagnostic diag{funcNode->returnType->childs.front(), Err(Err0766)};

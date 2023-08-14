@@ -5101,7 +5101,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
 {
     auto node = context->node;
 
-    // For a try/throw inside an inline block, take the original function, except if it is flagged with 'Swag.noreturn'
+    // For a try/throw inside an inline block, take the original function, except if it is flagged with 'Swag.CalleeReturn'
     if (node->ownerInline)
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
