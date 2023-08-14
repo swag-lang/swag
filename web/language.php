@@ -24,6 +24,18 @@
         color: black;
     }
 
+    table {
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              80%;
+    }
+    td {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              30%;
+    }
+
     @media (min-width: 1024px) {
         html, body {
             height: 100%;
@@ -35,7 +47,7 @@
     }
     </style>
 <div class="lg:flex flex-1">
-<div class="left h-full lg:w-[350px]" x-data="{ open_content: false }">
+<div class="left h-full lg:w-[450px]" x-data="{ open_content: false }">
 <div class="flex items-center justify-between border lg:border-0 rounded pt-1 px-2" @click="open_content = ! open_content">
 <h1 class="leading-8 m-0 lg:my-5">Content</h1>
 <div class="leading-8 block lg:hidden"><img src="imgs/chevron.png" alt="" class="w-5" :class="open_content ? 'rotate-90' : ''" /></div>
@@ -95,8 +107,9 @@
 </ul>
 <li><a href="#015_operators">Operators</a></li>
 <ul>
-<li><a href="#Binary operators">Binary operators</a></li>
-<li><a href="#Affect operators">Affect operators</a></li>
+<li><a href="#Arithmetic operators">Arithmetic operators</a></li>
+<li><a href="#Bitwise operators">Bitwise operators</a></li>
+<li><a href="#Assignment operators">Assignment operators</a></li>
 <li><a href="#Unary operators">Unary operators</a></li>
 <li><a href="#Comparison operators">Comparison operators</a></li>
 <li><a href="#Logical operators">Logical operators</a></li>
@@ -1332,80 +1345,70 @@ Constants can have more than just simple types. In that case, there's a memory f
 }</span></code></pre>
 <h2 id="015_operators">Operators</h2>
 <p>
-These are the basic operators that can be used to manipulate values. </p>
+These are all the Swag operators that can be used to manipulate variables and values. </p>
 <p>
-
- <h3 id="Binary operators">Binary operators </h3></p>
-<p>
-</p>
-<pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">10</span><span style="color:#0">
-
-    x = x + </span><span style="color:#74A35B">1</span><span style="color:#0">
-    x = x - </span><span style="color:#74A35B">1</span><span style="color:#0">
-    x = x * </span><span style="color:#74A35B">2</span><span style="color:#0">
-    x = x / </span><span style="color:#74A35B">2</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// Modulo</span><span style="color:#0">
-    x = x % </span><span style="color:#74A35B">2</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// Xor</span><span style="color:#0">
-    x = x ^ </span><span style="color:#74A35B">2</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// Bitmask and</span><span style="color:#0">
-    x = x & </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">'</span><span style="color:#ED9A11">s32</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// Bitmask or</span><span style="color:#0">
-    x = x | </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// Shift bits left</span><span style="color:#0">
-    x = x << </span><span style="color:#74A35B">1</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// Shift bits right</span><span style="color:#0">
-    x = x >> </span><span style="color:#74A35B">1</span><span style="color:#0">
-}</span></code></pre><p>
-
- <h3 id="Affect operators">Affect operators </h3></p>
+<h3 id="Arithmetic operators">Arithmetic operators </h3></p>
 <p>
 </p>
-<pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">10</span><span style="color:#0">
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">10</span><span style="color:#0">
 
-    x += </span><span style="color:#74A35B">1</span><span style="color:#0">
-    x -= </span><span style="color:#74A35B">1</span><span style="color:#0">
-    x *= </span><span style="color:#74A35B">2</span><span style="color:#0">
-    x /= </span><span style="color:#74A35B">2</span><span style="color:#0">
-    x %= </span><span style="color:#74A35B">2</span><span style="color:#0">
-    x ^= </span><span style="color:#74A35B">2</span><span style="color:#0">
-    x |= </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">'</span><span style="color:#ED9A11">s32</span><span style="color:#0">
-    x &= </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">
-    x <<= </span><span style="color:#74A35B">1</span><span style="color:#0">
-    x >>= </span><span style="color:#74A35B">1</span><span style="color:#0">
-}</span></code></pre><p>
-
- <h3 id="Unary operators">Unary operators </h3></p>
+x = x + </span><span style="color:#74A35B">1</span><span style="color:#0">
+x = x - </span><span style="color:#74A35B">1</span><span style="color:#0">
+x = x * </span><span style="color:#74A35B">2</span><span style="color:#0">
+x = x / </span><span style="color:#74A35B">2</span><span style="color:#0">
+x = x % </span><span style="color:#74A35B">2</span></code></pre><p>
+<h3 id="Bitwise operators">Bitwise operators </h3></p>
 <p>
 </p>
-<pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#3186CD">true</span><span style="color:#0">
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> y = </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
-    </span><span style="color:#3186CD">var</span><span style="color:#0"> z = </span><span style="color:#74A35B">1</span><span style="color:#0">
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> = </span><span style="color:#74A35B">10</span><span style="color:#0">
 
-    </span><span style="color:#6A9955">// Invert boolean</span><span style="color:#0">
-    x = !x
+</span><span style="color:#6A9955">// Xor</span><span style="color:#0">
+x = x ^ </span><span style="color:#74A35B">2</span><span style="color:#0">
 
-    </span><span style="color:#6A9955">// Invert bits</span><span style="color:#0">
-    y = ~y
+</span><span style="color:#6A9955">// Bitmask and</span><span style="color:#0">
+x = x & </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">'</span><span style="color:#ED9A11">s32</span><span style="color:#0">
 
-    </span><span style="color:#6A9955">// Negative</span><span style="color:#0">
-    z = -z
+</span><span style="color:#6A9955">// Bitmask or</span><span style="color:#0">
+x = x | </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">
 
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(z == -</span><span style="color:#74A35B">1</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#3186CD">false</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(y == </span><span style="color:#74A35B">0b1111_1110</span><span style="color:#0">)
-}</span></code></pre><p>
+</span><span style="color:#6A9955">// Shift bits left</span><span style="color:#0">
+x = x << </span><span style="color:#74A35B">1</span><span style="color:#0">
 
- <h3 id="Comparison operators">Comparison operators </h3></p>
+</span><span style="color:#6A9955">// Shift bits right</span><span style="color:#0">
+x = x >> </span><span style="color:#74A35B">1</span></code></pre><p>
+<h3 id="Assignment operators">Assignment operators </h3></p>
+<p>
+</p>
+<pre><code><span style="color:#0">x += </span><span style="color:#74A35B">1</span><span style="color:#0">
+x -= </span><span style="color:#74A35B">1</span><span style="color:#0">
+x *= </span><span style="color:#74A35B">2</span><span style="color:#0">
+x /= </span><span style="color:#74A35B">2</span><span style="color:#0">
+x %= </span><span style="color:#74A35B">2</span><span style="color:#0">
+x ^= </span><span style="color:#74A35B">2</span><span style="color:#0">
+x |= </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">'</span><span style="color:#ED9A11">s32</span><span style="color:#0">
+x &= </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#ED9A11">s32</span><span style="color:#0">) </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">
+x <<= </span><span style="color:#74A35B">1</span><span style="color:#0">
+x >>= </span><span style="color:#74A35B">1</span></code></pre><p>
+<h3 id="Unary operators">Unary operators </h3></p>
+<p>
+</p>
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#3186CD">true</span><span style="color:#0">
+</span><span style="color:#3186CD">var</span><span style="color:#0"> y = </span><span style="color:#74A35B">0b0000_0001</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
+</span><span style="color:#3186CD">var</span><span style="color:#0"> z = </span><span style="color:#74A35B">1</span><span style="color:#0">
+
+</span><span style="color:#6A9955">// Invert boolean</span><span style="color:#0">
+x = !x
+
+</span><span style="color:#6A9955">// Invert bits</span><span style="color:#0">
+y = ~y
+
+</span><span style="color:#6A9955">// Negative</span><span style="color:#0">
+z = -z
+
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(z == -</span><span style="color:#74A35B">1</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#3186CD">false</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(y == </span><span style="color:#74A35B">0b1111_1110</span><span style="color:#0">)</span></code></pre><p>
+<h3 id="Comparison operators">Comparison operators </h3></p>
 <p>
 </p>
 <pre><code><span style="color:#0">{

@@ -12,6 +12,7 @@ enum State
     Test
     Blockquote
     List
+    Table
 }
 
 var g_Buf:  String  // Will contain the html page
@@ -33,6 +34,8 @@ func stateEnter(st: State)
         g_Buf += "<ul>\n"
     case Blockquote:
         g_Buf += "<blockquote><p>\n"
+    case Table:
+        g_Buf += "<table>\n"
     }
 }
 
@@ -46,6 +49,8 @@ func stateLeave(st: State)
         g_Buf += "</ul>\n"
     case Blockquote:
         g_Buf += "</p></blockquote>\n"
+    case Table:
+        g_Buf += "</table>\n"
     case Code, Test:
         flushCode()
     }
@@ -287,6 +292,18 @@ func processFile(fileName: string)
             curState = g_State.back()
         }
 
+        if curState == .Paragraph and Utf8.startsWith(lineTrim, "|")
+        {
+            pushState(.Table)
+            curState = g_State.back()
+        }
+
+        if curState == .Table and !Utf8.startsWith(lineTrim, "|")
+        {
+            popState()
+            curState = g_State.back()
+        }
+
         switch curState
         {
         //////////////////////////////////
@@ -296,6 +313,20 @@ func processFile(fileName: string)
             if lineTrim.isEmpty()
                 g_Buf += "</br>\n"
             addLine(lineTrim)
+
+        //////////////////////////////////
+        case Table:
+            lineTrim.remove(0, 1)
+            lineTrim.trim()
+            var cols = Tokenize.split(lineTrim, "|"'rune)
+            g_Buf += "<tr>"
+            visit c: cols
+            {
+                g_Buf += "<td>"
+                addLine(c)
+                g_Buf += "</td>"
+            }
+            g_Buf += "</tr>\n"
 
         //////////////////////////////////
         case Paragraph:
@@ -349,10 +380,14 @@ func processFile(fileName: string)
             }
 
             var nextLine: String
-            if @index != lines.count - 1
+            var ni = i + 1
+            while ni < lines.count
             {
-                nextLine = lines[@index+1]
+                nextLine = lines[ni]
                 nextLine.trim()
+                if !Utf8.startsWith(nextLine, "//")
+                    break
+                ni += 1
             }
 
             if g_CptBrace == 1 and Utf8.startsWith(lineTrim, "//") and nextLine == "{"
@@ -430,6 +465,18 @@ func generateOverview(in, out: string, old: bool)
                 color: black;
             }
 
+            table {
+                border:             1px solid LightGrey;
+                border-collapse:    collapse;
+                width:              80%;
+            }
+            td {
+                padding:            6px;
+                border:             1px solid LightGrey;
+                border-collapse:    collapse;
+                width:              30%;
+            }
+
             @media (min-width: 1024px) {
                 html, body {
                     height: 100%;
@@ -445,7 +492,10 @@ func generateOverview(in, out: string, old: bool)
 
     // Main page (left and right parts, left is for table of content, right is for content)
     g_Buf += "<div class=\"lg:flex flex-1\">\n"
-    g_Buf += "<div class=\"left h-full lg:w-[350px]\" x-data=\"{ open_content: false }\">\n"
+    if old
+        g_Buf += "<div class=\"left h-full lg:w-[450px]\" x-data=\"{ open_content: false }\">\n"
+    else
+        g_Buf += "<div class=\"left h-full lg:w-[350px]\" x-data=\"{ open_content: false }\">\n"
     let seekToc = g_Buf.length // This will be the place where we will insert the 'g_Toc' table of content
     g_Buf += "</div>\n"
 

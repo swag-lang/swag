@@ -1,74 +1,89 @@
 /**
-These are the basic operators that can be used to manipulate values.
+These are all the Swag operators that can be used to manipulate variables and values.
 */
 
+/**
+# Arithmetic operators
+*/
 #test
 {
-    // # Binary operators
-    {
-        var x: s32 = 10
+    var x: s32 = 10
 
-        x = x + 1
-        x = x - 1
-        x = x * 2
-        x = x / 2
+    x = x + 1
+    x = x - 1
+    x = x * 2
+    x = x / 2
+    x = x % 2
+}
 
-        // Modulo
-        x = x % 2
+/**
+# Bitwise operators
+*/
+#test
+{
+    var x: s32 = 10
 
-        // Xor
-        x = x ^ 2
+    // Xor
+    x = x ^ 2
 
-        // Bitmask and
-        x = x & 0b0000_0001's32
+    // Bitmask and
+    x = x & 0b0000_0001's32
 
-        // Bitmask or
-        x = x | cast(s32) 0b0000_0001
+    // Bitmask or
+    x = x | cast(s32) 0b0000_0001
 
-        // Shift bits left
-        x = x << 1
+    // Shift bits left
+    x = x << 1
 
-        // Shift bits right
-        x = x >> 1
-    }
+    // Shift bits right
+    x = x >> 1
+}
 
-    // # Affect operators
-    {
-        var x: s32 = 10
+/**
+# Assignment operators
+*/
+#test
+{
+    x += 1
+    x -= 1
+    x *= 2
+    x /= 2
+    x %= 2
+    x ^= 2
+    x |= 0b0000_0001's32
+    x &= cast(s32) 0b0000_0001
+    x <<= 1
+    x >>= 1
+}
 
-        x += 1
-        x -= 1
-        x *= 2
-        x /= 2
-        x %= 2
-        x ^= 2
-        x |= 0b0000_0001's32
-        x &= cast(s32) 0b0000_0001
-        x <<= 1
-        x >>= 1
-    }
+/**
+# Unary operators
+*/
+#test
+{
+    var x = true
+    var y = 0b0000_0001'u8
+    var z = 1
 
-    // # Unary operators
-    {
-        var x = true
-        var y = 0b0000_0001'u8
-        var z = 1
+    // Invert boolean
+    x = !x
 
-        // Invert boolean
-        x = !x
+    // Invert bits
+    y = ~y
 
-        // Invert bits
-        y = ~y
+    // Negative
+    z = -z
 
-        // Negative
-        z = -z
+    @assert(z == -1)
+    @assert(x == false)
+    @assert(y == 0b1111_1110)
+}
 
-        @assert(z == -1)
-        @assert(x == false)
-        @assert(y == 0b1111_1110)
-    }
-
-    // # Comparison operators
+/**
+# Comparison operators
+*/
+#test
+{
     {
         var a = false
 
