@@ -1572,9 +1572,21 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 ^
 <=>
 == !=
-< <= > >=</span></code></pre><p>
+< <= > >=
+</span><span style="color:#B040BE">and</span><span style="color:#0">
+</span><span style="color:#B040BE">or</span></code></pre><p>
 </p>
-
+<pre><code><span style="color:#6A9955">// Multiplication before addition</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#74A35B">10</span><span style="color:#0"> + </span><span style="color:#74A35B">2</span><span style="color:#0"> * </span><span style="color:#74A35B">3</span><span style="color:#0"> == </span><span style="color:#74A35B">16</span><span style="color:#0">)
+</span><span style="color:#6A9955">// Parentheses change precedence</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">((</span><span style="color:#74A35B">10</span><span style="color:#0"> + </span><span style="color:#74A35B">2</span><span style="color:#0">) * </span><span style="color:#74A35B">3</span><span style="color:#0"> == </span><span style="color:#74A35B">36</span><span style="color:#0">)
+</span><span style="color:#6A9955">// Addition and subtraction before comparison</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">((</span><span style="color:#74A35B">5</span><span style="color:#0"> + </span><span style="color:#74A35B">3</span><span style="color:#0"> < </span><span style="color:#74A35B">10</span><span style="color:#0"> - </span><span style="color:#74A35B">2</span><span style="color:#0">) == </span><span style="color:#3186CD">false</span><span style="color:#0">)
+</span><span style="color:#6A9955">// 'and' before 'or'</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">((</span><span style="color:#3186CD">false</span><span style="color:#0"> </span><span style="color:#B040BE">and</span><span style="color:#0"> </span><span style="color:#3186CD">false</span><span style="color:#0"> </span><span style="color:#B040BE">or</span><span style="color:#0"> </span><span style="color:#3186CD">true</span><span style="color:#0">) == </span><span style="color:#3186CD">true</span><span style="color:#0">)
+</span><span style="color:#6A9955">// '<<' before '&'</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">((</span><span style="color:#74A35B">10</span><span style="color:#0"> & </span><span style="color:#74A35B">2</span><span style="color:#0"> << </span><span style="color:#74A35B">1</span><span style="color:#0">) == </span><span style="color:#74A35B">0</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(((</span><span style="color:#74A35B">10</span><span style="color:#0"> & </span><span style="color:#74A35B">2</span><span style="color:#0">) << </span><span style="color:#74A35B">1</span><span style="color:#0">) == </span><span style="color:#74A35B">4</span><span style="color:#0">)</span></code></pre>
 <h2 id="016_cast">Cast</h2>
 <p>
 <h3 id="Explicit cast">Explicit cast </h3></p>
