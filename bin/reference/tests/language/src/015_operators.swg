@@ -267,6 +267,7 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 and
 or
 ```
+If two operators have the same precedence, the expression is evaluated from left to right.
 */
 #test
 {
