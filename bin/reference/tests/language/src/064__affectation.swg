@@ -21,7 +21,7 @@ impl Struct
     @assert(v.x == 4)
     @assert(v.y == 4)
     // Note that variable 'v' is also initiliazed with the default values.
-    // So here 'z' is still 666.
+    // So here 'z' is still 666 because 'opAffect' does not change it.
     @assert(v.z == 666)
 
     // This will call opAffect(bool) with 'true'

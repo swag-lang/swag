@@ -112,7 +112,7 @@ struct(T) IsSet
         // A `StringBuilder` is used to manipulate dynamic strings.
         var str = StrConv.StringBuilder{}
 
-        // We get the type of the generic parameter `T`
+        // We get the type of the generic parameter 'T'
         var typeof = @typeof(T)
 
         // Then we visit all the fields, assuming the type is a struct (or this will not compile).

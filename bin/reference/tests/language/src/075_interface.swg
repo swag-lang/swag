@@ -71,6 +71,9 @@ impl IReset for Point3
     }
 }
 
+/**
+We can then use these interfaces on either `Vector2` or `Vector3`.
+*/
 #test
 {
     var pt2: Point2
@@ -90,19 +93,34 @@ impl IReset for Point3
     @assert(pt3.z == 10+2)
     itf.reset()
     @assert(pt3.x == 0 and pt3.y == 0)
+}
 
-    // You can also access, with a normal call, all functions declared in an interface
-    // implementation block for a given struct.
-    // They are located in a dedicated scope.
+/**
+You can also access, with a normal call, all functions declared in an interface implementation block for a given struct.
+They are located in a dedicated scope.
+*/
+#test
+{
+    var pt2: Point2
+    var pt3: Point3
+
     pt2.IReset.set(10)
     pt2.IReset.reset()
     pt3.IReset.set(10)
     pt3.IReset.reset()
+}
 
-    // An interface is a real type, with a size equivalent to 2 pointers
+/**
+An interface is a real type, with a size equivalent to 2 pointers.
+*/
+#test
+{
+    var pt2: Point2
+    var pt3: Point3
+    var itf = cast(IReset) pt2
     #assert @sizeof(itf) == 2 * @sizeof(*void)
 
-    // You can retrieve the concrete type associated with an interface instance with '@kindof'
+    // You can retrieve the concrete type associated with an interface instance with '@kindof'.
     itf = cast(IReset) pt2
     @assert(@kindof(itf) == Point2)
     itf = cast(IReset) pt3

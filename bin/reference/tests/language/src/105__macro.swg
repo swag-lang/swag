@@ -21,7 +21,7 @@
         @assert(a == 0)
     }
 
-    // But you can force an identifier to be found outside of the scope of the macro with `#up`.
+    // But you can force an identifier to be found **outside** of the scope of the macro with `#up`.
     {
         #[Swag.Macro]
         func myMacro()
@@ -30,8 +30,8 @@
         }
 
         var a = 0
-        myMacro()
-        myMacro()
+        myMacro()   // This will change the 'a' above
+        myMacro()   // This will change the 'a' above
         @assert(a == 2)
     }
 
@@ -63,6 +63,7 @@
             // No conflict, in its own scope
             var a = 666
 
+            // Isolate the caller code, to avoid conflicts with the macro internals
             #macro
             {
                 // In the scope of the caller
@@ -134,7 +135,7 @@
         @assert(a == 10)
     }
 
-    // In a macro, you can use special variables named `@typealias<num>`. Note that this is also valid for mixins.
+    // In a macro, you can use special variables named `@alias<num>`. Note that this is also valid for mixins.
     {
         #[Swag.Macro]
         func call(v: s32, stmt: code)

@@ -477,6 +477,10 @@ func generateOverview(in, out: string, old: bool)
                 border-collapse:    collapse;
                 width:              30%;
             }
+            blockquote {
+                padding:            6px;
+                margin:             10px;
+            }
 
             @media (min-width: 1024px) {
                 html, body {

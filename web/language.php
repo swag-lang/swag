@@ -36,6 +36,10 @@
         border-collapse:    collapse;
         width:              30%;
     }
+    blockquote {
+        padding:            6px;
+        margin:             10px;
+    }
 
     @media (min-width: 1024px) {
         html, body {
@@ -206,6 +210,7 @@
 </ul>
 <li><a href="#064__post_copy_and_post_move">Post copy and post move</a></li>
 <ul>
+<li><a href="#moveref">moveref</a></li>
 </ul>
 <li><a href="#064__visit">Visit</a></li>
 <ul>
@@ -266,7 +271,7 @@
 <ul>
 </ul>
 </ul>
-<li><a href="#120_compiler_intrinsics">Compiler intrinsics</a></li>
+<li><a href="#120_intrinsics">Intrinsics</a></li>
 <ul>
 <li><a href="#Base">Base</a></li>
 <li><a href="#Buildin">Buildin</a></li>
@@ -3432,8 +3437,8 @@ A struct can have special operations in the <code>impl</code> block. This operat
     </span><span style="color:#7F7F7F">#[Swag.Macro]</span><span style="color:#0">
     {
         </span><span style="color:#3186CD">func</span><span style="color:#0">(ptr: </span><span style="color:#ED9A11">bool</span><span style="color:#0">) </span><span style="color:#B4B44A">opVisit</span><span style="color:#0">(</span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#ED9A11">self</span><span style="color:#0">, stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">) {}
-        </span><span style="color:#3186CD">func</span><span style="color:#0">(ptr: </span><span style="color:#ED9A11">bool</span><span style="color:#0">) </span><span style="color:#FF6A00">opVisitWhatever</span><span style="color:#0">(</span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#ED9A11">self</span><span style="color:#0">, stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">) {}
-        </span><span style="color:#3186CD">func</span><span style="color:#0">(ptr: </span><span style="color:#ED9A11">bool</span><span style="color:#0">) </span><span style="color:#FF6A00">opVisitAnother</span><span style="color:#0">(</span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#ED9A11">self</span><span style="color:#0">, stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">) {}
+        </span><span style="color:#3186CD">func</span><span style="color:#0">(ptr: </span><span style="color:#ED9A11">bool</span><span style="color:#0">) </span><span style="color:#B4B44A">opVisitWhatever</span><span style="color:#0">(</span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#ED9A11">self</span><span style="color:#0">, stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">) {}
+        </span><span style="color:#3186CD">func</span><span style="color:#0">(ptr: </span><span style="color:#ED9A11">bool</span><span style="color:#0">) </span><span style="color:#B4B44A">opVisitAnother</span><span style="color:#0">(</span><span style="color:#3186CD">using</span><span style="color:#0"> </span><span style="color:#ED9A11">self</span><span style="color:#0">, stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">) {}
     }
 }</span></code></pre>
 <h3 id="064__affectation">Affectation</h3>
@@ -3453,7 +3458,7 @@ A struct can have special operations in the <code>impl</code> block. This operat
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v.x == </span><span style="color:#74A35B">4</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v.y == </span><span style="color:#74A35B">4</span><span style="color:#0">)
 </span><span style="color:#6A9955">// Note that variable 'v' is also initiliazed with the default values.</span><span style="color:#0">
-</span><span style="color:#6A9955">// So here 'z' is still 666.</span><span style="color:#0">
+</span><span style="color:#6A9955">// So here 'z' is still 666 because 'opAffect' does not change it.</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(v.z == </span><span style="color:#74A35B">666</span><span style="color:#0">)
 
 </span><span style="color:#6A9955">// This will call opAffect(bool) with 'true'</span><span style="color:#0">
@@ -3567,7 +3572,7 @@ Swag accepts copy and move semantics for structures. In this examples, we use a 
 </span><span style="color:#3186CD">var</span><span style="color:#0"> b = </span><span style="color:#3BC3A7">Vector3</span><span style="color:#0">{</span><span style="color:#74A35B">100</span><span style="color:#0">, </span><span style="color:#74A35B">200</span><span style="color:#0">, </span><span style="color:#74A35B">300</span><span style="color:#0">}
 
 </span><span style="color:#6A9955">// "copy semantic". The default behaviour.</span><span style="color:#0">
-</span><span style="color:#6A9955">// 1. This will call 'opDrop' on 'a' if the function exists because 'a' could be already assigned.</span><span style="color:#0">
+</span><span style="color:#6A9955">// 1. This will call 'opDrop' on 'a' if the function exists because 'a' could already be assigned.</span><span style="color:#0">
 </span><span style="color:#6A9955">// 2. This will raw copy 'b' to 'a'.</span><span style="color:#0">
 </span><span style="color:#6A9955">// 3. This will call 'opPostCopy' on 'a' if it exists.</span><span style="color:#0">
 a = b
@@ -3575,11 +3580,11 @@ a = b
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a.y == </span><span style="color:#74A35B">201</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a.z == </span><span style="color:#74A35B">301</span><span style="color:#0">)
 
-</span><span style="color:#6A9955">// "move semantic" by adding the modifier `,move` just after `=`.</span><span style="color:#0">
+</span><span style="color:#6A9955">// "move semantic" by adding the modifier ',move' just after '='.</span><span style="color:#0">
 </span><span style="color:#6A9955">// 1. This will call 'opDrop' on 'a' if it exists</span><span style="color:#0">
 </span><span style="color:#6A9955">// 2. This will raw copy 'b' to 'a'</span><span style="color:#0">
 </span><span style="color:#6A9955">// 3. This will call 'opPostMove' on 'a' if it exists</span><span style="color:#0">
-</span><span style="color:#6A9955">// 4. This will reinitialize 'b' to its default values if 'opDrop' exists</span><span style="color:#0">
+</span><span style="color:#6A9955">// 4. This will reinitialize 'b' to the default values if 'opDrop' exists</span><span style="color:#0">
 a =,move b
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a.x == </span><span style="color:#74A35B">102</span><span style="color:#0">)     </span><span style="color:#6A9955">// +2 because of the call to opPostMove</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a.y == </span><span style="color:#74A35B">202</span><span style="color:#0">)
@@ -3601,7 +3606,9 @@ a =,nodrop,move b       </span><span style="color:#6A9955">// Move b to a withou
 </span><span style="color:#6A9955">// instead of '=,move'</span><span style="color:#0">
 a =,moveraw b
 a =,nodrop,moveraw b</span></code></pre><p>
-<code>moveref</code> can be used instead of <code>ref</code> in a function parameter to declare a move semantic intention. </p>
+<h4 id="moveref">moveref </h4></p>
+<p>
+<code>moveref</code> can be used instead of <code>ref</code> in a function parameter to declare a <b>move semantic</b> intention. </p>
 <pre><code><span style="color:#6A9955">// This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">assign</span><span style="color:#0">(to: </span><span style="color:#3186CD">ref</span><span style="color:#0"> </span><span style="color:#3BC3A7">Vector3</span><span style="color:#0">, from: </span><span style="color:#3186CD">moveref</span><span style="color:#0"> </span><span style="color:#3BC3A7">Vector3</span><span style="color:#0">)
 {
@@ -3682,8 +3689,8 @@ So now that the <code>opVisit</code> has been defined, we can <code>visit</code>
 </span><span style="color:#3186CD">var</span><span style="color:#0"> cpt = </span><span style="color:#74A35B">0</span><span style="color:#0">
 
 </span><span style="color:#6A9955">// Visiting each field in declaration order</span><span style="color:#0">
-</span><span style="color:#6A9955">// 'v' is an typealias for @alias0 (value)</span><span style="color:#0">
-</span><span style="color:#6A9955">// 'i' is an typealias for @alias1 (index)</span><span style="color:#0">
+</span><span style="color:#6A9955">// 'v' is an alias for @alias0 (value)</span><span style="color:#0">
+</span><span style="color:#6A9955">// 'i' is an alias for @alias1 (index)</span><span style="color:#0">
 </span><span style="color:#B040BE">visit</span><span style="color:#0"> v, i: myStruct
 {
     </span><span style="color:#B040BE">switch</span><span style="color:#0"> i
@@ -3701,7 +3708,7 @@ You can have variants of <code>opVisit</code> by specifying an <b>additional nam
 <pre><code><span style="color:#3186CD">impl</span><span style="color:#0"> </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">
 {
     </span><span style="color:#7F7F7F">#[Swag.Macro]</span><span style="color:#0">
-    </span><span style="color:#3186CD">mtd</span><span style="color:#0">(ptr: </span><span style="color:#ED9A11">bool</span><span style="color:#0">) </span><span style="color:#FF6A00">opVisitReverse</span><span style="color:#0">(stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">)   </span><span style="color:#6A9955">// We add 'Reverse' in the name</span><span style="color:#0">
+    </span><span style="color:#3186CD">mtd</span><span style="color:#0">(ptr: </span><span style="color:#ED9A11">bool</span><span style="color:#0">) </span><span style="color:#B4B44A">opVisitReverse</span><span style="color:#0">(stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">)   </span><span style="color:#6A9955">// We add 'Reverse' in the name</span><span style="color:#0">
     {
         </span><span style="color:#6A9955">// Visit fields in reverse order (z, y then x)</span><span style="color:#0">
         </span><span style="color:#B040BE">loop</span><span style="color:#0"> idx: </span><span style="color:#74A35B">3</span><span style="color:#0">
@@ -3752,7 +3759,9 @@ You can have variants of <code>opVisit</code> by specifying an <b>additional nam
         y: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
     }
 
+    </span><span style="color:#6A9955">// They are 2 fields in the struct but stored in only one s32, so the total size is 4 bytes.</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">) == </span><span style="color:#74A35B">4</span><span style="color:#0">
+
     </span><span style="color:#3186CD">var</span><span style="color:#0"> v = </span><span style="color:#3BC3A7">MyStruct</span><span style="color:#0">{}
     v.x = </span><span style="color:#74A35B">666</span><span style="color:#0">
 
@@ -3963,7 +3972,9 @@ And we implement interface <code>IReset</code> also for struct <code>Point3</cod
     {
         x, y, z = </span><span style="color:#74A35B">0</span><span style="color:#0">
     }
-}</span></code></pre><pre><code><span style="color:#3186CD">var</span><span style="color:#0"> pt2: </span><span style="color:#3BC3A7">Point2</span><span style="color:#0">
+}</span></code></pre><p>
+We can then use these interfaces on either <code>Vector2</code> or <code>Vector3</code>. </p>
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> pt2: </span><span style="color:#3BC3A7">Point2</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> pt3: </span><span style="color:#3BC3A7">Point3</span><span style="color:#0">
 
 </span><span style="color:#6A9955">// To get the interface associated to a given struct, use the 'cast' operator.</span><span style="color:#0">
@@ -3979,20 +3990,22 @@ itf.</span><span style="color:#FF6A00">set</span><span style="color:#0">(</span>
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(pt3.y == </span><span style="color:#74A35B">10</span><span style="color:#0">+</span><span style="color:#74A35B">1</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(pt3.z == </span><span style="color:#74A35B">10</span><span style="color:#0">+</span><span style="color:#74A35B">2</span><span style="color:#0">)
 itf.</span><span style="color:#FF6A00">reset</span><span style="color:#0">()
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(pt3.x == </span><span style="color:#74A35B">0</span><span style="color:#0"> </span><span style="color:#B040BE">and</span><span style="color:#0"> pt3.y == </span><span style="color:#74A35B">0</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(pt3.x == </span><span style="color:#74A35B">0</span><span style="color:#0"> </span><span style="color:#B040BE">and</span><span style="color:#0"> pt3.y == </span><span style="color:#74A35B">0</span><span style="color:#0">)</span></code></pre><p>
+You can also access, with a normal call, all functions declared in an interface implementation block for a given struct. They are located in a dedicated scope. </p>
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> pt2: </span><span style="color:#3BC3A7">Point2</span><span style="color:#0">
+</span><span style="color:#3186CD">var</span><span style="color:#0"> pt3: </span><span style="color:#3BC3A7">Point3</span><span style="color:#0">
 
-</span><span style="color:#6A9955">// You can also access, with a normal call, all functions declared in an interface</span><span style="color:#0">
-</span><span style="color:#6A9955">// implementation block for a given struct.</span><span style="color:#0">
-</span><span style="color:#6A9955">// They are located in a dedicated scope.</span><span style="color:#0">
 pt2.</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">.</span><span style="color:#FF6A00">set</span><span style="color:#0">(</span><span style="color:#74A35B">10</span><span style="color:#0">)
 pt2.</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">.</span><span style="color:#FF6A00">reset</span><span style="color:#0">()
 pt3.</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">.</span><span style="color:#FF6A00">set</span><span style="color:#0">(</span><span style="color:#74A35B">10</span><span style="color:#0">)
-pt3.</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">.</span><span style="color:#FF6A00">reset</span><span style="color:#0">()
-
-</span><span style="color:#6A9955">// An interface is a real type, with a size equivalent to 2 pointers</span><span style="color:#0">
+pt3.</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">.</span><span style="color:#FF6A00">reset</span><span style="color:#0">()</span></code></pre><p>
+An interface is a real type, with a size equivalent to 2 pointers. </p>
+<pre><code><span style="color:#3186CD">var</span><span style="color:#0"> pt2: </span><span style="color:#3BC3A7">Point2</span><span style="color:#0">
+</span><span style="color:#3186CD">var</span><span style="color:#0"> pt3: </span><span style="color:#3BC3A7">Point3</span><span style="color:#0">
+</span><span style="color:#3186CD">var</span><span style="color:#0"> itf = </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">) pt2
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(itf) == </span><span style="color:#74A35B">2</span><span style="color:#0"> * </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(*</span><span style="color:#ED9A11">void</span><span style="color:#0">)
 
-</span><span style="color:#6A9955">// You can retrieve the concrete type associated with an interface instance with '@kindof'</span><span style="color:#0">
+</span><span style="color:#6A9955">// You can retrieve the concrete type associated with an interface instance with '@kindof'.</span><span style="color:#0">
 itf = </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">) pt2
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@kindof</span><span style="color:#0">(itf) == </span><span style="color:#3BC3A7">Point2</span><span style="color:#0">)
 itf = </span><span style="color:#3186CD">cast</span><span style="color:#0">(</span><span style="color:#3BC3A7">IReset</span><span style="color:#0">) pt3
@@ -4090,7 +4103,6 @@ You can name parameters, and don't have to respect parameters order in that case
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(w == </span><span style="color:#74A35B">2.0</span><span style="color:#0">)
 }
 
-</span><span style="color:#6A9955">// You can name the fields of the function result too</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">returns2</span><span style="color:#0">() -> {x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, y: </span><span style="color:#ED9A11">s32</span><span style="color:#0">}
 {
     </span><span style="color:#6A9955">// You can return a tuple literal as long as the types match</span><span style="color:#0">
@@ -4105,14 +4117,14 @@ You can name parameters, and don't have to respect parameters order in that case
     </span><span style="color:#B040BE">return</span><span style="color:#0"> result
 }
 
-</span><span style="color:#6A9955">// You can access the tuple fields with the names (if specified), or with 'item?'</span><span style="color:#0">
+</span><span style="color:#6A9955">// You can access the struct fields with the names or with 'item?'</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> result = </span><span style="color:#FF6A00">returns2</span><span style="color:#0">()
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(result.x == </span><span style="color:#74A35B">1</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(result.item0 == </span><span style="color:#74A35B">1</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(result.y == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(result.item1 == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 
-</span><span style="color:#6A9955">// You can deconstruct the returned tuple</span><span style="color:#0">
+</span><span style="color:#6A9955">// You can deconstruct the returned struct</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> (x, y) = </span><span style="color:#FF6A00">returns2</span><span style="color:#0">()
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(x == </span><span style="color:#74A35B">1</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(y == </span><span style="color:#74A35B">2</span><span style="color:#0">)</span></code></pre>
@@ -4362,7 +4374,7 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">12</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  You can use the special name <code>@typealias</code> to create a named typealias for an identifier. </p>
+  You can use the special name <code>@alias</code> to create a named alias for an identifier. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Mixin]</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">inc10</span><span style="color:#0">()
@@ -4371,8 +4383,8 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     }
 
     </span><span style="color:#3186CD">var</span><span style="color:#0"> a, b = </span><span style="color:#74A35B">0</span><span style="color:#0">
-    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|a|)  </span><span style="color:#6A9955">// Passing typealias name 'a'</span><span style="color:#0">
-    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|b|)  </span><span style="color:#6A9955">// Passing typealias name 'b'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|a|)  </span><span style="color:#6A9955">// Passing alias name 'a'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">inc10</span><span style="color:#0">(|b|)  </span><span style="color:#6A9955">// Passing alias name 'b'</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == b </span><span style="color:#B040BE">and</span><span style="color:#0"> b == </span><span style="color:#74A35B">10</span><span style="color:#0">)
 }
 
@@ -4383,8 +4395,8 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
         </span><span style="color:#3186CD">let</span><span style="color:#0"> </span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> = value
     }
 
-    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|a| </span><span style="color:#74A35B">10</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing typealias name 'a'</span><span style="color:#0">
-    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|b| </span><span style="color:#74A35B">20</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing typealias name 'b'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|a| </span><span style="color:#74A35B">10</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing alias name 'a'</span><span style="color:#0">
+    </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(|b| </span><span style="color:#74A35B">20</span><span style="color:#0">)  </span><span style="color:#6A9955">// Passing alias name 'b'</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">10</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(b == </span><span style="color:#74A35B">20</span><span style="color:#0">)
     </span><span style="color:#FF6A00">setVar</span><span style="color:#0">(</span><span style="color:#74A35B">30</span><span style="color:#0">)      </span><span style="color:#6A9955">// No typealias, so name is @alias0</span><span style="color:#0">
@@ -4432,7 +4444,7 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">0</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  But you can force an identifier to be found outside of the scope of the macro with <code>#up</code>. </p>
+  But you can force an identifier to be found <b>outside</b> of the scope of the macro with <code>#up</code>. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Macro]</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">myMacro</span><span style="color:#0">()
@@ -4441,8 +4453,8 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     }
 
     </span><span style="color:#3186CD">var</span><span style="color:#0"> a = </span><span style="color:#74A35B">0</span><span style="color:#0">
-    </span><span style="color:#FF6A00">myMacro</span><span style="color:#0">()
-    </span><span style="color:#FF6A00">myMacro</span><span style="color:#0">()
+    </span><span style="color:#FF6A00">myMacro</span><span style="color:#0">()   </span><span style="color:#6A9955">// This will change the 'a' above</span><span style="color:#0">
+    </span><span style="color:#FF6A00">myMacro</span><span style="color:#0">()   </span><span style="color:#6A9955">// This will change the 'a' above</span><span style="color:#0">
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">2</span><span style="color:#0">)
 }</span></code></pre><p>
 
@@ -4474,6 +4486,7 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
         </span><span style="color:#6A9955">// No conflict, in its own scope</span><span style="color:#0">
         </span><span style="color:#3186CD">var</span><span style="color:#0"> a = </span><span style="color:#74A35B">666</span><span style="color:#0">
 
+        </span><span style="color:#6A9955">// Isolate the caller code, to avoid conflicts with the macro internals</span><span style="color:#0">
         </span><span style="color:#7F7F7F">#macro</span><span style="color:#0">
         {
             </span><span style="color:#6A9955">// In the scope of the caller</span><span style="color:#0">
@@ -4545,7 +4558,7 @@ Only a given amount of bytes of capture are possible (for now 48 bytes). That wa
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">10</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  In a macro, you can use special variables named <code>@typealias<num></code>. Note that this is also valid for mixins. </p>
+  In a macro, you can use special variables named <code>@alias<num></code>. Note that this is also valid for mixins. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#7F7F7F">#[Swag.Macro]</span><span style="color:#0">
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">call</span><span style="color:#0">(v: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, stmt: </span><span style="color:#ED9A11">code</span><span style="color:#0">)
@@ -4739,7 +4752,7 @@ If a function authorizes the caller to not use its return value, because it's no
 </span><span style="color:#FF6A00">mul</span><span style="color:#0">(</span><span style="color:#74A35B">2</span><span style="color:#0">, </span><span style="color:#74A35B">4</span><span style="color:#0">)</span></code></pre>
 <h3 id="110__retval">Retval</h3>
 <p>
-Inside a function, you can use the <code>retval</code> type which is an typealias to the function return type. </p>
+Inside a function, you can use the <code>retval</code> type which is an alias to the function return type. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">toto</span><span style="color:#0">()-></span><span style="color:#ED9A11">s32</span><span style="color:#0">
     {
@@ -4772,7 +4785,7 @@ But <code>retval</code> will also make a direct reference to the caller storage,
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(b == </span><span style="color:#74A35B">1.0</span><span style="color:#0">)
 }</span></code></pre><p>
 
-  This is the preferred way (because optimal) to return a struct, a tuple or an array. </p>
+  This is the preferred way (because optimal) to return a struct or an array. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">toto</span><span style="color:#0">()->[</span><span style="color:#74A35B">255</span><span style="color:#0">] </span><span style="color:#ED9A11">s32</span><span style="color:#0">
     {
@@ -4806,13 +4819,13 @@ In the case below, the function is located in <code>kernel32.dll</code> (under w
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#3BC3A7">ExitProcess</span><span style="color:#0">(uExitCode: </span><span style="color:#ED9A11">u32</span><span style="color:#0">);
     </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#3BC3A7">Sleep</span><span style="color:#0">(dwMilliseconds: </span><span style="color:#ED9A11">u32</span><span style="color:#0">);
 }</span></code></pre><p>
-Note that in the case of a system module, you will have to declare somewhere the imported library too. </p>
+Note that in the case of an external module, you will have to declare somewhere the imported library too. </p>
 <p>
 <code>#foreignlib</code> is here to force a link to the given library (when generating executables). </p>
 <pre><code><span style="color:#7F7F7F">#foreignlib</span><span style="color:#0"> </span><span style="color:#BB6643">"kernel32"</span></code></pre>
-<h2 id="120_compiler_intrinsics">Compiler intrinsics</h2>
+<h2 id="120_intrinsics">Intrinsics</h2>
 <p>
-This is the list of all compiler intrinsics. All intrinsics start with <code>@</code>, which is reserved for them. </p>
+This is the list of all intrinsics. All intrinsics start with <code>@</code>, which is reserved for them. </p>
 <pre><code><span style="color:#7F7F7F">#global</span><span style="color:#0"> skip</span></code></pre><p>
 <h3 id="Base">Base </h3></p>
 <p>
@@ -5027,7 +5040,7 @@ This is the list of all compiler intrinsics. All intrinsics start with <code>@</
 <code>@init</code> can be used to reinitialize a variable/array to the default value. </p>
 <p>
 
-  For a simple variable, default value is 0. </p>
+  For a simple variable, the default value is 0. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#74A35B">666</span><span style="color:#0">
     </span><span style="color:#B4B44A">@init</span><span style="color:#0">(&x)
@@ -5498,7 +5511,7 @@ Works also for structs. </p>
 
   <code>using</code> can also be used with a variable </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">Point</span><span style="color:#0"> { x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">; y: </span><span style="color:#ED9A11">s32</span><span style="color:#0">; }
+    </span><span style="color:#3186CD">struct</span><span style="color:#0"> </span><span style="color:#3BC3A7">Point</span><span style="color:#0"> { x: </span><span style="color:#ED9A11">s32</span><span style="color:#0">, y: </span><span style="color:#ED9A11">s32</span><span style="color:#0"> }
 
     </span><span style="color:#3186CD">var</span><span style="color:#0"> pt: </span><span style="color:#3BC3A7">Point</span><span style="color:#0">
 
@@ -5944,8 +5957,6 @@ Safety when slicing a sized value. </p>
 </p>
 <pre><code><span style="color:#7F7F7F">#[Swag.Safety("math", true)]</span></code></pre><p>
 Swag will panic if some math operations are invalid. </p>
-<p>
-Division by zero. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">f32</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> y = </span><span style="color:#74A35B">0</span><span style="color:#0">'</span><span style="color:#ED9A11">f32</span><span style="color:#0">
 </span><span style="color:#6A9955">//var z = x / y        // Division by zero, panic</span><span style="color:#0">
@@ -6071,13 +6082,13 @@ Unlike the C function <code>main()</code>, there's no argument, but you can use 
 }</span></code></pre><p>
 <h4 id="#premain">#premain </h4></p>
 <p>
-<code>#premain</code> will be called after all the modules have done their #init code, but before the #main function is called. </p>
+<code>#premain</code> will be called after all the modules have done their <code>#init</code> code, but before the <code>#main</code> function is called. </p>
 <pre><code><span style="color:#FF6A00">#premain</span><span style="color:#0">
 {
 }</span></code></pre>
 <h3 id="183__run">Run</h3>
 <p>
-<code>#run</code> is a special function that will be called at compile time. It can be used to precompute some global values for example. </p>
+<code>#run</code> is a special function that will be called at <b>compile time</b>. It can be used to precompute some global values for example. </p>
 <pre><code><span style="color:#3186CD">var</span><span style="color:#0"> </span><span style="color:#3BC3A7">G</span><span style="color:#0">: [</span><span style="color:#74A35B">5</span><span style="color:#0">] </span><span style="color:#ED9A11">f32</span><span style="color:#0"> = </span><span style="color:#3186CD">undefined</span></code></pre><p>
 Initialize <code>G</code> with <code>[1,2,4,8,16]</code> at compile time. </p>
 <pre><code><span style="color:#FF6A00">#run</span><span style="color:#0">
@@ -6504,7 +6515,7 @@ This is a real life example of an <code>#ast</code> usage from the <code>Std.Cor
         </span><span style="color:#6A9955">// A `StringBuilder` is used to manipulate dynamic strings.</span><span style="color:#0">
         </span><span style="color:#3186CD">var</span><span style="color:#0"> str = </span><span style="color:#3BC3A7">StrConv</span><span style="color:#0">.</span><span style="color:#3BC3A7">StringBuilder</span><span style="color:#0">{}
 
-        </span><span style="color:#6A9955">// We get the type of the generic parameter `T`</span><span style="color:#0">
+        </span><span style="color:#6A9955">// We get the type of the generic parameter 'T'</span><span style="color:#0">
         </span><span style="color:#3186CD">var</span><span style="color:#0"> typeof = </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#3BC3A7">T</span><span style="color:#0">)
 
         </span><span style="color:#6A9955">// Then we visit all the fields, assuming the type is a struct (or this will not compile).</span><span style="color:#0">
@@ -6717,7 +6728,7 @@ Some other markdown markers are also supported inside paragraphs. </p>
 {
     r, g, b: </span><span style="color:#ED9A11">s32</span><span style="color:#0">
 }</span></code></pre><p>
-You can create a reference to something in the current module with [name] or [name1.name2 etc.] </p>
+You can create a reference to something in the current module with <code>[name]</code> or <code>[name1.name2 etc.]</code> </p>
 <pre><code><span style="color:#6A9955">// This is a function with a 'value' parameter.</span><span style="color:#0">
 </span><span style="color:#3186CD">func</span><span style="color:#0"> </span><span style="color:#FF6A00">one</span><span style="color:#0">(value: </span><span style="color:#ED9A11">s32</span><span style="color:#0">)
 {

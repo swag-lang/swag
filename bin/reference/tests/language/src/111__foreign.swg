@@ -20,7 +20,7 @@ func ExitProcess(uExitCode: u32);
 }
 
 /**
-Note that in the case of a system module, you will have to declare somewhere the imported library too.
+Note that in the case of an external module, you will have to declare somewhere the imported library too.
 
 `#foreignlib` is here to force a link to the given library (when generating executables).
 */

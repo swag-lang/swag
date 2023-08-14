@@ -5,7 +5,7 @@
 
 #test
 {
-    // For a simple variable, default value is 0.
+    // For a simple variable, the default value is 0.
     {
         var x = 666
         @init(&x)

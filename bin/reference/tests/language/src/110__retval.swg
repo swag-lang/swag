@@ -1,5 +1,5 @@
 /**
-Inside a function, you can use the `retval` type which is an typealias to the function return type.
+Inside a function, you can use the `retval` type which is an alias to the function return type.
 */
 #test
 {
@@ -41,7 +41,7 @@ But `retval` will also make a direct reference to the caller storage, to avoid a
         @assert(b == 1.0)
     }
 
-    // This is the preferred way (because optimal) to return a struct, a tuple or an array.
+    // This is the preferred way (because optimal) to return a struct or an array.
     {
         func toto()->[255] s32
         {

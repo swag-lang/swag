@@ -249,7 +249,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("opAffectSuffix", State.FunctionSpecOp)
         mapWords.add("opIndex", State.FunctionSpecOp)
         mapWords.add("opIndexAssign", State.FunctionSpecOp)
-        mapWords.add("opVisit", State.FunctionSpecOp)
 
         mapWords.add("code", State.Type)
         mapWords.add("Self", State.Type)
@@ -586,17 +585,22 @@ impl IRichEditLexer for RichEditLexerSwag
                     let seekEnd = seek
                     seek = saveSeek
 
-                    let res = mapWords.find(word.toString())
-                    if res
-                        currentState = res.value
-                    elif word == "@"
-                        currentState = State.Keyword
-                    elif Latin1.isUpper(word[0])
-                        currentState = State.UserType
-                    elif c == "("'u8 and (Latin1.isLetter(word[0]) or word[0] == "_"'u8)
-                        currentState = State.FunctionCall
+                    if Utf8.startsWith(word, "opVisit")
+                        currentState = State.FunctionSpecOp
                     else
-                        currentState = State.Default
+                    {
+                        let res = mapWords.find(word.toString())
+                        if res
+                            currentState = res.value
+                        elif word == "@"
+                            currentState = State.Keyword
+                        elif Latin1.isUpper(word[0])
+                            currentState = State.UserType
+                        elif c == "("'u8 and (Latin1.isLetter(word[0]) or word[0] == "_"'u8)
+                            currentState = State.FunctionCall
+                        else
+                            currentState = State.Default
+                    }
 
                     while seek != seekEnd
                         seekNext()

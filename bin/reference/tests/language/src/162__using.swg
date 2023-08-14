@@ -11,7 +11,7 @@
 
     // `using` can also be used with a variable
     {
-        struct Point { x: s32; y: s32; }
+        struct Point { x: s32, y: s32 }
 
         var pt: Point
 

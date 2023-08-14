@@ -116,7 +116,6 @@ You can name parameters, and don't have to respect parameters order in that case
         @assert(w == 2.0)
     }
 
-    // You can name the fields of the function result too
     func returns2() -> {x: s32, y: s32}
     {
         // You can return a tuple literal as long as the types match
@@ -131,14 +130,14 @@ You can name parameters, and don't have to respect parameters order in that case
         return result
     }
 
-    // You can access the tuple fields with the names (if specified), or with 'item?'
+    // You can access the struct fields with the names or with 'item?'
     var result = returns2()
     @assert(result.x == 1)
     @assert(result.item0 == 1)
     @assert(result.y == 2)
     @assert(result.item1 == 2)
 
-    // You can deconstruct the returned tuple
+    // You can deconstruct the returned struct
     var (x, y) = returns2()
     @assert(x == 1)
     @assert(y == 2)

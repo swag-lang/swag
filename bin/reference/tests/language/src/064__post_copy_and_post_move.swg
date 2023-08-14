@@ -33,7 +33,7 @@ impl Vector3
     var b = Vector3{100, 200, 300}
 
     // "copy semantic". The default behaviour.
-    // 1. This will call 'opDrop' on 'a' if the function exists because 'a' could be already assigned.
+    // 1. This will call 'opDrop' on 'a' if the function exists because 'a' could already be assigned.
     // 2. This will raw copy 'b' to 'a'.
     // 3. This will call 'opPostCopy' on 'a' if it exists.
     a = b
@@ -41,11 +41,11 @@ impl Vector3
     @assert(a.y == 201)
     @assert(a.z == 301)
 
-    // "move semantic" by adding the modifier `,move` just after `=`.
+    // "move semantic" by adding the modifier ',move' just after '='.
     // 1. This will call 'opDrop' on 'a' if it exists
     // 2. This will raw copy 'b' to 'a'
     // 3. This will call 'opPostMove' on 'a' if it exists
-    // 4. This will reinitialize 'b' to its default values if 'opDrop' exists
+    // 4. This will reinitialize 'b' to the default values if 'opDrop' exists
     a =,move b
     @assert(a.x == 102)     // +2 because of the call to opPostMove
     @assert(a.y == 202)
@@ -70,7 +70,8 @@ impl Vector3
 }
 
 /**
-`moveref` can be used instead of `ref` in a function parameter to declare a move semantic intention.
+# moveref
+`moveref` can be used instead of `ref` in a function parameter to declare a **move semantic** intention.
 */
 
 #test

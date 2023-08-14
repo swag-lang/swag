@@ -158,9 +158,6 @@ Safety when slicing a sized value.
 Swag will panic if some math operations are invalid.
 */
 
-/**
-Division by zero.
-*/
 #test
 {
     var x = 1'f32

@@ -1,5 +1,5 @@
 /**
-`#run` is a special function that will be called at compile time.
+`#run` is a special function that will be called at **compile time**.
 It can be used to precompute some global values for example.
 */
 var G: [5] f32 = undefined

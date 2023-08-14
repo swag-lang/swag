@@ -51,7 +51,7 @@ The execution order in the same module is undefined, but is always the inverse o
 
 /**
 # #premain
-`#premain` will be called after all the modules have done their #init code, but before the #main function is called.
+`#premain` will be called after all the modules have done their `#init` code, but before the `#main` function is called.
 */
 #premain
 {

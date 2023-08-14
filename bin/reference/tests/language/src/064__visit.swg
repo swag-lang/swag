@@ -59,8 +59,8 @@ So now that the `opVisit` has been defined, we can `visit` it.
     var cpt = 0
 
     // Visiting each field in declaration order
-    // 'v' is an typealias for @alias0 (value)
-    // 'i' is an typealias for @alias1 (index)
+    // 'v' is an alias for @alias0 (value)
+    // 'i' is an alias for @alias1 (index)
     visit v, i: myStruct
     {
         switch i
