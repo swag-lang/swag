@@ -35,7 +35,7 @@ bool SemanticJob::canInheritAccess(AstNode* node)
     // Content of the function will propagate only if the function is inlined or generic
     if (node->ownerScope && node->ownerScope->kind == ScopeKind::FunctionBody)
     {
-        if (!(node->ownerFct->flags & AST_IS_GENERIC) && !node->ownerFct->mustUserInline())
+        if (!(node->ownerFct->flags & AST_IS_GENERIC) && !node->ownerFct->mustUserInline(true))
             return false;
     }
 

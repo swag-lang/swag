@@ -5,7 +5,6 @@ func(op: string, T) toto(x, y: T)->T
     #ast "return x" ++ op ++ "y"
 }
 
-#[Swag.CalleeReturn]
 #test
 {
     var x, y: s32

@@ -560,130 +560,6 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
     return doPrimaryExpression(parent, exprFlags, result);
 }
 
-static int getPrecedence(TokenId id)
-{
-    switch (id)
-    {
-    case TokenId::SymTilde:
-        return 0;
-    case TokenId::SymAsterisk:
-    case TokenId::SymSlash:
-    case TokenId::SymPercent:
-        return 1;
-    case TokenId::SymPlus:
-    case TokenId::SymMinus:
-        return 2;
-    case TokenId::SymGreaterGreater:
-    case TokenId::SymLowerLower:
-        return 3;
-    case TokenId::SymAmpersand:
-        return 4;
-    case TokenId::SymVertical:
-        return 5;
-    case TokenId::SymCircumflex:
-        return 6;
-    case TokenId::SymLowerEqualGreater:
-        return 7;
-    case TokenId::SymEqualEqual:
-    case TokenId::SymExclamEqual:
-        return 8;
-    case TokenId::SymLower:
-    case TokenId::SymLowerEqual:
-    case TokenId::SymGreater:
-    case TokenId::SymGreaterEqual:
-        return 9;
-    default:
-        break;
-    }
-
-    return -1;
-}
-
-static bool isAssociative(TokenId id)
-{
-    switch (id)
-    {
-    case TokenId::SymPlus:
-    case TokenId::SymAsterisk:
-    case TokenId::SymVertical:
-    case TokenId::SymCircumflex:
-    case TokenId::SymPlusPlus:
-        return true;
-    default:
-        break;
-    }
-
-    return false;
-}
-
-bool Parser::doOperatorPrecedence(AstNode** result)
-{
-    auto factor = *result;
-    if (factor->kind != AstNodeKind::FactorOp && factor->kind != AstNodeKind::BinaryOp)
-        return true;
-
-    auto left = factor->childs[0];
-    SWAG_CHECK(doOperatorPrecedence(&left));
-    auto right = factor->childs[1];
-    SWAG_CHECK(doOperatorPrecedence(&right));
-
-    if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !(right->flags & AST_IN_ATOMIC_EXPR))
-    {
-        auto myPrecedence    = getPrecedence(factor->tokenId);
-        auto rightPrecedence = getPrecedence(right->tokenId);
-
-        bool shuffle = false;
-        if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
-            shuffle = true;
-
-        // If operation is not associative, then we need to shuffle
-        //
-        // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
-        //
-        else if (!isAssociative(factor->tokenId) && (myPrecedence == rightPrecedence))
-            shuffle = true;
-
-        if (shuffle)
-        {
-            //   *
-            //  / \
-            // A   +
-            //    / \
-            //   B   C
-
-            //     +
-            //    / \
-            //   *   C
-            //  / \
-            // A   B
-            auto atom = factor->flags & AST_IN_ATOMIC_EXPR;
-            factor->flags &= ~AST_IN_ATOMIC_EXPR;
-
-            auto leftRight = right->childs[0];
-            Ast::removeFromParent(right);
-            if (factor->parent && factor == factor->parent->childs.front())
-                Ast::addChildFront(factor->parent, right);
-            else
-                Ast::addChildBack(factor->parent, right);
-            Ast::removeFromParent(leftRight);
-
-            Ast::removeFromParent(factor);
-            Ast::addChildBack(factor, leftRight);
-
-            Ast::addChildFront(right, factor);
-            SWAG_CHECK(doOperatorPrecedence(&right));
-
-            factor = right; // new root
-
-            if (atom)
-                factor->flags |= AST_IN_ATOMIC_EXPR;
-        }
-    }
-
-    *result = factor;
-    return true;
-}
-
 bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
 {
     auto opId = tokenId;
@@ -822,6 +698,136 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
     return true;
 }
 
+static int getPrecedence(TokenId id)
+{
+    switch (id)
+    {
+    case TokenId::SymTilde:
+        return 0;
+    case TokenId::SymAsterisk:
+    case TokenId::SymSlash:
+    case TokenId::SymPercent:
+        return 1;
+    case TokenId::SymPlus:
+    case TokenId::SymMinus:
+        return 2;
+    case TokenId::SymGreaterGreater:
+    case TokenId::SymLowerLower:
+        return 3;
+    case TokenId::SymAmpersand:
+        return 4;
+    case TokenId::SymVertical:
+        return 5;
+    case TokenId::SymCircumflex:
+        return 6;
+    case TokenId::SymLowerEqualGreater:
+        return 7;
+    case TokenId::SymEqualEqual:
+    case TokenId::SymExclamEqual:
+        return 8;
+    case TokenId::SymLower:
+    case TokenId::SymLowerEqual:
+    case TokenId::SymGreater:
+    case TokenId::SymGreaterEqual:
+        return 9;
+    case TokenId::KwdAnd:
+        return 10;
+    case TokenId::KwdOr:
+        return 11;
+    default:
+        break;
+    }
+
+    return -1;
+}
+
+static bool isAssociative(TokenId id)
+{
+    switch (id)
+    {
+    case TokenId::SymPlus:
+    case TokenId::SymAsterisk:
+    case TokenId::SymVertical:
+    case TokenId::SymCircumflex:
+    case TokenId::SymPlusPlus:
+    case TokenId::KwdAnd:
+    case TokenId::KwdOr:
+        return true;
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool Parser::doOperatorPrecedence(AstNode** result)
+{
+    auto factor = *result;
+    if (factor->kind != AstNodeKind::FactorOp && factor->kind != AstNodeKind::BinaryOp)
+        return true;
+
+    auto left = factor->childs[0];
+    SWAG_CHECK(doOperatorPrecedence(&left));
+    auto right = factor->childs[1];
+    SWAG_CHECK(doOperatorPrecedence(&right));
+
+    if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !(right->flags & AST_IN_ATOMIC_EXPR))
+    {
+        auto myPrecedence    = getPrecedence(factor->tokenId);
+        auto rightPrecedence = getPrecedence(right->tokenId);
+
+        bool shuffle = false;
+        if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
+            shuffle = true;
+
+        // If operation is not associative, then we need to shuffle
+        //
+        // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
+        //
+        else if (!isAssociative(factor->tokenId) && (myPrecedence == rightPrecedence))
+            shuffle = true;
+
+        if (shuffle)
+        {
+            //   *
+            //  / \
+            // A   +
+            //    / \
+            //   B   C
+
+            //     +
+            //    / \
+            //   *   C
+            //  / \
+            // A   B
+            auto atom = factor->flags & AST_IN_ATOMIC_EXPR;
+            factor->flags &= ~AST_IN_ATOMIC_EXPR;
+
+            auto leftRight = right->childs[0];
+            Ast::removeFromParent(right);
+            if (factor->parent && factor == factor->parent->childs.front())
+                Ast::addChildFront(factor->parent, right);
+            else
+                Ast::addChildBack(factor->parent, right);
+            Ast::removeFromParent(leftRight);
+
+            Ast::removeFromParent(factor);
+            Ast::addChildBack(factor, leftRight);
+
+            Ast::addChildFront(right, factor);
+            SWAG_CHECK(doOperatorPrecedence(&right));
+
+            factor = right; // new root
+
+            if (atom)
+                factor->flags |= AST_IN_ATOMIC_EXPR;
+        }
+    }
+
+    *result = factor;
+    return true;
+}
+
 bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
@@ -903,7 +909,6 @@ bool Parser::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     AstNode* leftNode;
     SWAG_CHECK(doFactorExpression(&parent, exprFlags, &leftNode));
     Ast::removeFromParent(leftNode);
-    SWAG_CHECK(doOperatorPrecedence(&leftNode));
 
     if (exprFlags & EXPR_FLAG_STOP_AFFECT && token.id == TokenId::SymEqual)
     {
@@ -925,6 +930,7 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     AstNode* leftNode;
     SWAG_CHECK(doCompareExpression(parent, exprFlags, &leftNode));
     Ast::removeFromParent(leftNode);
+    SWAG_CHECK(doOperatorPrecedence(&leftNode));
 
     bool isBinary = false;
     if ((token.id == TokenId::KwdOr) || (token.id == TokenId::KwdAnd))
@@ -942,6 +948,8 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 
     if (!isBinary)
         Ast::addChildBack(parent, leftNode);
+    else
+        SWAG_CHECK(doOperatorPrecedence(&leftNode));
 
     *result = leftNode;
     return true;

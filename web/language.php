@@ -122,6 +122,7 @@
 <li><a href="#Spaceshift operator">Spaceshift operator</a></li>
 <li><a href="#Null-coalescing operator">Null-coalescing operator</a></li>
 <li><a href="#Type promotion">Type promotion</a></li>
+<li><a href="#Operator precedence">Operator precedence</a></li>
 </ul>
 <li><a href="#016_cast">Cast</a></li>
 <ul>
@@ -1558,6 +1559,21 @@ This means that a 8/16 bits operation (like an addition) can more easily <b>over
 <pre><code><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> +,up </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">) == </span><span style="color:#ED9A11">u32</span><span style="color:#0">
 </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#74A35B">255</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> +,up </span><span style="color:#74A35B">1</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> == </span><span style="color:#74A35B">256</span><span style="color:#0"> </span><span style="color:#6A9955">// No overflow, because the operation is done in 32 bits.</span></code></pre><p>
 We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
+<p>
+<h3 id="Operator precedence">Operator precedence </h3></p>
+<p>
+</p>
+<pre><code><span style="color:#0">~
+* / %
++ -
+>> <<
+&
+|
+^
+<=>
+== !=
+< <= > >=</span></code></pre><p>
+</p>
 
 <h2 id="016_cast">Cast</h2>
 <p>

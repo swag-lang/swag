@@ -250,3 +250,35 @@ In that case, you can use the `,up` **modifier** on the operation, which will pr
 /**
 We'll see later how Swag deals with that kind of overflow, and more generally, with **safety**.
 */
+
+/**
+# Operator precedence
+```
+~
+* / %
++ -
+>> <<
+&
+|
+^
+<=>
+== !=
+< <= > >=
+and
+or
+```
+*/
+#test
+{
+    // Multiplication before addition
+    @assert(10 + 2 * 3 == 16)
+    // Parentheses change precedence
+    @assert((10 + 2) * 3 == 36)
+    // Addition and subtraction before comparison
+    @assert((5 + 3 < 10 - 2) == false)
+    // 'and' before 'or'
+    @assert((false and false or true) == true)
+    // '<<' before '&'
+    @assert((10 & 2 << 1) == 0)
+    @assert(((10 & 2) << 1) == 4)
+}

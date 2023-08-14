@@ -159,13 +159,13 @@ bool AstFuncDecl::mustAutoInline()
     return false;
 }
 
-bool AstFuncDecl::mustUserInline()
+bool AstFuncDecl::mustUserInline(bool forExport)
 {
     if (!content)
         return false;
     if (attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
         return true;
-    if (sourceFile->module->buildCfg.byteCodeInline == false)
+    if (sourceFile->module->buildCfg.byteCodeInline == false && !forExport)
         return false;
     if (attributeFlags & ATTRIBUTE_INLINE)
         return true;
