@@ -417,12 +417,15 @@
       ]
     },
     "characters": {
-      "patterns": [
-        {
-          "name": "string.quoted.single",
-          "match": "\\'\\w+\\'"
-        }
-      ]
+        "name": "string.quoted.single",
+        "begin": "`",
+        "end": "`",
+        "patterns": [
+          {
+            "name": "constant.character.escape",
+            "match": "\\\\."
+          }
+        ]
     },
     "operator-character": {
       "patterns": [

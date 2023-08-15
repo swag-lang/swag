@@ -1946,17 +1946,25 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Literal:
     {
         auto literalNode = CastAst<AstLiteral>(node, AstNodeKind::Literal);
-        if (literalNode->literalType == LiteralType::TT_RAW_STRING)
+        if (literalNode->literalType == LiteralType::TT_STRING_RAW)
             CONCAT_FIXED_STR(concat, "@\"");
-        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_ESCAPE_STRING)
+        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_STRING_ESCAPE)
             CONCAT_FIXED_STR(concat, "\"");
+        else if (literalNode->literalType == LiteralType::TT_STRING_MULTILINE || literalNode->literalType == LiteralType::TT_STRING_MULTILINE_ESCAPE)
+            CONCAT_FIXED_STR(concat, "\"\"\"");
+        else if (literalNode->literalType == LiteralType::TT_CHARACTER || literalNode->literalType == LiteralType::TT_CHARACTER_ESCAPE)
+            CONCAT_FIXED_STR(concat, "`");
 
         concat.addString(node->token.text);
 
-        if (literalNode->literalType == LiteralType::TT_RAW_STRING)
+        if (literalNode->literalType == LiteralType::TT_STRING_RAW)
             CONCAT_FIXED_STR(concat, "\"@");
-        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_ESCAPE_STRING)
+        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_STRING_ESCAPE)
             CONCAT_FIXED_STR(concat, "\"");
+        else if (literalNode->literalType == LiteralType::TT_STRING_MULTILINE || literalNode->literalType == LiteralType::TT_STRING_MULTILINE_ESCAPE)
+            CONCAT_FIXED_STR(concat, "\"\"\"");
+        else if (literalNode->literalType == LiteralType::TT_CHARACTER || literalNode->literalType == LiteralType::TT_CHARACTER_ESCAPE)
+            CONCAT_FIXED_STR(concat, "`");
 
         if (!node->childs.empty())
         {

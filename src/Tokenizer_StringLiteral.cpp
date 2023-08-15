@@ -55,8 +55,15 @@ void Tokenizer::trimMultilineString(Utf8& text)
 bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
 {
     unsigned offset;
-    token.id          = TokenId::LiteralString;
-    token.literalType = raw ? LiteralType::TT_RAW_STRING : LiteralType::TT_STRING;
+    token.id = TokenId::LiteralString;
+
+    if (raw)
+        token.literalType = LiteralType::TT_STRING_RAW;
+    else if (multiline)
+        token.literalType = LiteralType::TT_STRING_MULTILINE;
+    else
+        token.literalType = LiteralType::TT_STRING;
+
     token.text.clear();
 
     while (true)
@@ -111,7 +118,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
             // Escape sequence
             if (!raw && c == '\\')
             {
-                token.literalType = LiteralType::TT_ESCAPE_STRING;
+                token.literalType = multiline ? LiteralType::TT_STRING_MULTILINE_ESCAPE : LiteralType::TT_STRING_ESCAPE;
                 eatChar(c, offset);
                 c = peekChar(offset);
                 if (c)
@@ -206,7 +213,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         // Escape sequence
         if (c == '\\')
         {
-            token.literalType = LiteralType::TT_ESCAPE_CHARACTER;
+            token.literalType = LiteralType::TT_CHARACTER_ESCAPE;
             eatChar(c, offset);
             c = peekChar(offset);
             if (c)

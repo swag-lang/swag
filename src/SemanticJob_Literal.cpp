@@ -38,7 +38,9 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& 
 bool SemanticJob::processLiteralString(SemanticContext* context)
 {
     auto node = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
-    if (node->literalType != LiteralType::TT_ESCAPE_STRING && node->literalType != LiteralType::TT_ESCAPE_CHARACTER)
+    if (node->literalType != LiteralType::TT_STRING_ESCAPE &&
+        node->literalType != LiteralType::TT_STRING_MULTILINE_ESCAPE &&
+        node->literalType != LiteralType::TT_CHARACTER_ESCAPE)
         return true;
 
     auto loc = node->token.startLocation;
@@ -186,11 +188,13 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
             return Fmt(Err(Err0261), typeSuffix->getDisplayNameC());
         break;
 
-    case LiteralType::TT_RAW_STRING:
-    case LiteralType::TT_ESCAPE_STRING:
     case LiteralType::TT_STRING:
+    case LiteralType::TT_STRING_RAW:
+    case LiteralType::TT_STRING_MULTILINE:
+    case LiteralType::TT_STRING_ESCAPE:
+    case LiteralType::TT_STRING_MULTILINE_ESCAPE:
     case LiteralType::TT_CHARACTER:
-    case LiteralType::TT_ESCAPE_CHARACTER:
+    case LiteralType::TT_CHARACTER_ESCAPE:
     {
         VectorNative<uint32_t> uni;
         computedValue.text.toUni32(uni);

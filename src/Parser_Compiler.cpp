@@ -348,11 +348,6 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
 
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
-    auto literalNode = CastAst<AstLiteral>(literal, AstNodeKind::Literal);
-    if (literalNode->literalType != LiteralType::TT_STRING &&
-        literalNode->literalType != LiteralType::TT_RAW_STRING &&
-        literalNode->literalType != LiteralType::TT_ESCAPE_STRING)
-        return error(literal->token, Err(Syn0002));
     SWAG_CHECK(eatSemiCol("'#foreignlib'"));
     return true;
 }
