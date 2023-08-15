@@ -70,25 +70,25 @@ impl UUID
         result[5] = Tbl[(val8[2] >> 4)]
         result[6] = Tbl[(val8[3] & 0xF)]
         result[7] = Tbl[(val8[3] >> 4)]
-        result[8] = `-`'u8
+        result[8] = `-`
 
         result[9] = Tbl[(val8[4] & 0xF)]
         result[10] = Tbl[(val8[4] >> 4)]
         result[11] = Tbl[(val8[5] & 0xF)]
         result[12] = Tbl[(val8[5] >> 4)]
-        result[13] = `-`'u8
+        result[13] = `-`
 
         result[14] = Tbl[(val8[6] & 0xF)]
         result[15] = Tbl[(val8[6] >> 4)]
         result[16] = Tbl[(val8[7] & 0xF)]
         result[17] = Tbl[(val8[7] >> 4)]
-        result[18] = `-`'u8
+        result[18] = `-`
 
         result[19] = Tbl[(val8[8] & 0xF)]
         result[20] = Tbl[(val8[8] >> 4)]
         result[21] = Tbl[(val8[9] & 0xF)]
         result[22] = Tbl[(val8[9] >> 4)]
-        result[23] = `-`'u8
+        result[23] = `-`
 
         result[24] = Tbl[(val8[10] & 0xF)]
         result[25] = Tbl[(val8[10] >> 4)]

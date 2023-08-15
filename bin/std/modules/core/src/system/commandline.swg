@@ -29,7 +29,7 @@ func isOption(oneArg: string, _options: ParseOptions)->bool
 {
     if @countof(oneArg) == 0
         return false
-    return oneArg[0] == `-`'u8
+    return oneArg[0] == `-`
 }
 
 // Clean and split a list of arguments
