@@ -33,7 +33,7 @@
     {
         let str = "string"
         let ptr: const *u8 = @dataof(str)
-        @assert(dref ptr == `s`'u8)
+        @assert(dref ptr == `s`)
     }
 
     // You can be weird, but is this necessary ?

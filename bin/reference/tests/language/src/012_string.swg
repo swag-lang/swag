@@ -32,13 +32,13 @@ You cannot index a string to get a rune, except in ascii strings. This is becaus
 
         // Get the first byte of the string
         const b = a[0]
-        #assert b == `t`'u8
+        #assert b == `t`
         #assert @typeof(b) == @typeof(u8)
 
         // Here, the 'X' character in the middle does not have the index '1', because the
         // chinese character before is encoded in UTF8 with more than 1 byte.
         const c = "是X是"
-        #assert c[1] != `X`'u8 // False because the byte number 1 is not the character 'X'
+        #assert c[1] != `X` // False because the byte number 1 is not the character 'X'
     }
 }
 
@@ -176,31 +176,59 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
 
 /**
 # Character
-A single *character* can be casted to every unsigned integer type.
+A *character* is enclosed with **backticks**.
+*/
+#test
+{
+    let char0 = `a`
+    let char1 = `我`
+}
+
+/**
+By default, it's an untyped 32 bits integer that can be assigned to all integers (and type rune) as long as it fits.
 */
 #test
 {
     {
-        let a = `0`'u8
-        @assert(a == 48)
-        @assert(@typeof(a) == @typeof(u8))
-
-        let b = `1`'u16
-        @assert(b == 49)
-        @assert(@typeof(b) == @typeof(u16))
-
-        let c = `2`'u32
-        @assert(c == 50)
-        @assert(@typeof(c) == @typeof(u32))
-
-        let d = `3`'u64
-        @assert(d == 51)
-        @assert(@typeof(d) == @typeof(u64))
-
-        let e = `4`'rune
-        @assert(e == 52)
-        @assert(@typeof(e) == @typeof(rune))
+        let a: u8   = `a`
+        let b: u16  = `a`
+        let c: u32  = `我`
+        let d: u64  = `我`
+        let e: rune = `我`
     }
+
+    {
+        let a: s8   = `a`
+        let b: s16  = `a`
+        let c: s32  = `我`
+        let d: s64  = `我`
+    }
+}
+
+/**
+But a character can also be casted with a type postfix.
+*/
+#test
+{
+    let a = `0`'u8
+    @assert(a == 48)
+    @assert(@typeof(a) == u8)
+
+    let b = `1`'u16
+    @assert(b == 49)
+    @assert(@typeof(b) == u16)
+
+    let c = `2`'u32
+    @assert(c == 50)
+    @assert(@typeof(c) == u32)
+
+    let d = `3`'u64
+    @assert(d == 51)
+    @assert(@typeof(d) == u64)
+
+    let e = `4`'rune
+    @assert(e == 52)
+    @assert(@typeof(e) == rune)
 }
 
 /**

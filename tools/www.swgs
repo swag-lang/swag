@@ -120,7 +120,7 @@ func addLine(line: string)
     {
         let lastChar = i == @countof(line) - 1
 
-        if !lastChar and line[i] == "*"'u8 and line[i+1] == "*"'u8
+        if !lastChar and line[i] == `*` and line[i+1] == `*`
         {
             g_Buf += stateBold ? "</b>" : "<b>"
             stateBold = !stateBold
@@ -129,7 +129,7 @@ func addLine(line: string)
         }
 
         // Italic with '*'
-        if line[i] == "*"'u8
+        if line[i] == `*`
         {
             if !lastChar and !stateItalic and Latin1.isLetterOrDigit(line[i+1])
             {
@@ -147,7 +147,7 @@ func addLine(line: string)
         }
 
         // Inlined code with '`'
-        if line[i] == "`"'u8
+        if line[i] == `\``
         {
             if !stateCode
             {
@@ -165,11 +165,11 @@ func addLine(line: string)
         }
 
         // Reference
-        if !lastChar and line[i] == "["'u8
+        if !lastChar and line[i] == `[`
         {
             var linkName: String
             i += 1
-            while i < @countof(line) and line[i] != "]"'u8
+            while i < @countof(line) and line[i] != `]`
             {
                 linkName += line[i]
                 i += 1
@@ -178,7 +178,7 @@ func addLine(line: string)
             if i < @countof(line)
                 i += 1
 
-            if i >= @countof(line) or line[i] != "("'u8
+            if i >= @countof(line) or line[i] != `(`
             {
                 g_Buf += "["
                 g_Buf += linkName
@@ -189,7 +189,7 @@ func addLine(line: string)
 
             i += 1
             var linkValue: String
-            while line[i] and line[i] != ")"'u8
+            while line[i] and line[i] != `)`
             {
                 linkValue += line[i]
                 i += 1
@@ -208,9 +208,9 @@ func addLine(line: string)
 func flushCode()
 {
     // Remove empty lines before and after the code block
-    while g_Code.length and g_Code[0] == "\n"'u8
+    while g_Code.length and g_Code[0] == `\n`
         g_Code.remove(0, 1)
-    while g_Code.length and g_Code.back() == "\n"'u8
+    while g_Code.length and g_Code.back() == `\n`
         g_Code.removeBack()
     if g_Code.length == 0
         return
@@ -318,7 +318,7 @@ func processFile(fileName: string)
         case Table:
             lineTrim.remove(0, 1)
             lineTrim.trim()
-            var cols = Tokenize.split(lineTrim, "|"'rune)
+            var cols = Tokenize.split(lineTrim, `|`'rune)
             g_Buf += "<tr>"
             visit c: cols
             {
@@ -524,7 +524,7 @@ func generateOverview(in, out: string, old: bool)
 
         // If there's an additional '_' after 'NNN_', then this is a 'sub part'.
         let wasSubTitle = g_SubTitle
-        g_SubTitle = title[0] == "_"'u8
+        g_SubTitle = title[0] == `_`
         if g_SubTitle
             title = title[1..]
         if !wasSubTitle and g_SubTitle

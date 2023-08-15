@@ -940,8 +940,8 @@ Note that the order is not relevant in the same file, but it is also irrelevant 
 
   The <code>rune</code> type uses the string syntax, postfix with the type <code>rune</code>. It's a 32 bits unicode code point. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">"是"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#BB6643">"是"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">)
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(a) == </span><span style="color:#74A35B">4</span><span style="color:#0">)
 }</span></code></pre><p>
 <h3 id="Type reflection">Type reflection </h3></p>
@@ -1085,8 +1085,8 @@ In Swag, strings are encoded in UTF8. </p>
 
   A rune is an unicode codepoint, and is 32 bits. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"是"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a == </span><span style="color:#BB6643">"是"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a == </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(a) == </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u32</span><span style="color:#0">)
 }</span></code></pre><p>
 You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the <code>Std.Core</code> module will have all you need to manipulate UTF8 strings. </p>
@@ -1098,13 +1098,13 @@ You cannot index a string to get a rune, except in ascii strings. This is becaus
 
     </span><span style="color:#6A9955">// Get the first byte of the string</span><span style="color:#0">
     </span><span style="color:#3186CD">const</span><span style="color:#0"> b = a[</span><span style="color:#74A35B">0</span><span style="color:#0">]
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> b == </span><span style="color:#BB6643">"t"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> b == </span><span style="color:#BB6643">`t`</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(b) == </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
 
     </span><span style="color:#6A9955">// Here, the 'X' character in the middle does not have the index '1', because the</span><span style="color:#0">
     </span><span style="color:#6A9955">// chinese character before is encoded in UTF8 with more than 1 byte.</span><span style="color:#0">
     </span><span style="color:#3186CD">const</span><span style="color:#0"> c = </span><span style="color:#BB6643">"是X是"</span><span style="color:#0">
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> c[</span><span style="color:#74A35B">1</span><span style="color:#0">] != </span><span style="color:#BB6643">"X"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> </span><span style="color:#6A9955">// False because the byte number 1 is not the character 'X'</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> c[</span><span style="color:#74A35B">1</span><span style="color:#0">] != </span><span style="color:#BB6643">`X`</span><span style="color:#0"> </span><span style="color:#6A9955">// False because the byte number 1 is not the character 'X'</span><span style="color:#0">
 }</span></code></pre><p>
 Multiple adjacent strings are compiled as one. </p>
 <pre><code><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"this is "</span><span style="color:#0">   </span><span style="color:#BB6643">"a"</span><span style="color:#0">   </span><span style="color:#BB6643">" string"</span><span style="color:#0">
@@ -1211,28 +1211,44 @@ A multiline string starts and ends with <code>"""</code>. Unlike raw strings, th
 }</span></code></pre><p>
 <h3 id="Character">Character </h3></p>
 <p>
-A single <i>character</i> can be casted to every unsigned integer type. </p>
+A <i>character</i> is enclosed with <b>backticks</b>. </p>
+<pre><code><span style="color:#3186CD">let</span><span style="color:#0"> char0 = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+</span><span style="color:#3186CD">let</span><span style="color:#0"> char1 = </span><span style="color:#BB6643">`我`</span></code></pre><p>
+By default, it's an untyped 32 bits integer that can be assigned to all integers (and type rune) as long as it fits. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> a = </span><span style="color:#BB6643">"0"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">48</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(a) == </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u8</span><span style="color:#0">))
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">u8</span><span style="color:#0">   = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> b: </span><span style="color:#ED9A11">u16</span><span style="color:#0">  = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> c: </span><span style="color:#ED9A11">u32</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> d: </span><span style="color:#ED9A11">u64</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> e: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+}
 
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> b = </span><span style="color:#BB6643">"1"</span><span style="color:#0">'</span><span style="color:#ED9A11">u16</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(b == </span><span style="color:#74A35B">49</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(b) == </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u16</span><span style="color:#0">))
-
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> c = </span><span style="color:#BB6643">"2"</span><span style="color:#0">'</span><span style="color:#ED9A11">u32</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c == </span><span style="color:#74A35B">50</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(c) == </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u32</span><span style="color:#0">))
-
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> d = </span><span style="color:#BB6643">"3"</span><span style="color:#0">'</span><span style="color:#ED9A11">u64</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(d == </span><span style="color:#74A35B">51</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(d) == </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u64</span><span style="color:#0">))
-
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> e = </span><span style="color:#BB6643">"4"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(e == </span><span style="color:#74A35B">52</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(e) == </span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(</span><span style="color:#ED9A11">rune</span><span style="color:#0">))
+{
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">s8</span><span style="color:#0">   = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> b: </span><span style="color:#ED9A11">s16</span><span style="color:#0">  = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> c: </span><span style="color:#ED9A11">s32</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> d: </span><span style="color:#ED9A11">s64</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
 }</span></code></pre><p>
+But a character can also be casted with a type postfix. </p>
+<pre><code><span style="color:#3186CD">let</span><span style="color:#0"> a = </span><span style="color:#BB6643">`0`</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">48</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(a) == </span><span style="color:#ED9A11">u8</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> b = </span><span style="color:#BB6643">`1`</span><span style="color:#0">'</span><span style="color:#ED9A11">u16</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(b == </span><span style="color:#74A35B">49</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(b) == </span><span style="color:#ED9A11">u16</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> c = </span><span style="color:#BB6643">`2`</span><span style="color:#0">'</span><span style="color:#ED9A11">u32</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c == </span><span style="color:#74A35B">50</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(c) == </span><span style="color:#ED9A11">u32</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> d = </span><span style="color:#BB6643">`3`</span><span style="color:#0">'</span><span style="color:#ED9A11">u64</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(d == </span><span style="color:#74A35B">51</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(d) == </span><span style="color:#ED9A11">u64</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> e = </span><span style="color:#BB6643">`4`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(e == </span><span style="color:#74A35B">52</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(e) == </span><span style="color:#ED9A11">rune</span><span style="color:#0">)</span></code></pre><p>
 <h3 id="@stringof and @nameof">@stringof and @nameof </h3></p>
 <p>
 You can use the instrinsic <code>@stringof</code> to return at compile time the result of a constant expression as a string. </p>
@@ -1810,8 +1826,8 @@ A slice is a pointer on a buffer of datas, and a <code>u64</code> to count the n
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">let</span><span style="color:#0"> str = </span><span style="color:#BB6643">"string"</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> strSlice: </span><span style="color:#3186CD">const</span><span style="color:#0"> [..] </span><span style="color:#ED9A11">u8</span><span style="color:#0"> = </span><span style="color:#B4B44A">@mkslice</span><span style="color:#0">(</span><span style="color:#B4B44A">@dataof</span><span style="color:#0">(str), </span><span style="color:#74A35B">2</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(strSlice[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#BB6643">"s"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(strSlice[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#BB6643">"t"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(strSlice[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#BB6643">`s`</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(strSlice[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#BB6643">`t`</span><span style="color:#0">)
 }</span></code></pre><p>
 <h3 id="The slicing operator">The slicing operator </h3></p>
 <p>
@@ -1923,7 +1939,7 @@ A slice is a pointer on a buffer of datas, and a <code>u64</code> to count the n
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">let</span><span style="color:#0"> str = </span><span style="color:#BB6643">"string"</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> ptr: </span><span style="color:#3186CD">const</span><span style="color:#0"> *</span><span style="color:#ED9A11">u8</span><span style="color:#0"> = </span><span style="color:#B4B44A">@dataof</span><span style="color:#0">(str)
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">dref</span><span style="color:#0"> ptr == </span><span style="color:#BB6643">"s"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">dref</span><span style="color:#0"> ptr == </span><span style="color:#BB6643">`s`</span><span style="color:#0">)
 }</span></code></pre><p>
 
   You can be weird, but is this necessary ? </p>
@@ -2730,9 +2746,9 @@ A loop without an expression but with a block is infinite. This is equivalent to
         </span><span style="color:#3186CD">let</span><span style="color:#0"> a = </span><span style="color:#B4B44A">@index</span><span style="color:#0">
         </span><span style="color:#B040BE">switch</span><span style="color:#0"> a
         {
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">0</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">"A"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">1</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">"B"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">2</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">"C"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">0</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">`A`</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">1</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">`B`</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">2</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">`C`</span><span style="color:#0">)
         }
     }
 }</span></code></pre><p>
@@ -2744,9 +2760,9 @@ A loop without an expression but with a block is infinite. This is equivalent to
         </span><span style="color:#3186CD">let</span><span style="color:#0"> a = index
         </span><span style="color:#B040BE">switch</span><span style="color:#0"> a
         {
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">0</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">"A"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">1</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">"B"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">2</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">"C"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">0</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">`A`</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">1</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">`B`</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">2</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(value == </span><span style="color:#BB6643">`C`</span><span style="color:#0">)
         }
     }
 }</span></code></pre><p>
@@ -2759,9 +2775,9 @@ A loop without an expression but with a block is infinite. This is equivalent to
         </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#B4B44A">@index</span><span style="color:#0">)
         </span><span style="color:#B040BE">switch</span><span style="color:#0"> a
         {
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">0</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> == </span><span style="color:#BB6643">"A"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">1</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> == </span><span style="color:#BB6643">"B"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">2</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> == </span><span style="color:#BB6643">"C"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">0</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> == </span><span style="color:#BB6643">`A`</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">1</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> == </span><span style="color:#BB6643">`B`</span><span style="color:#0">)
+        </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#74A35B">2</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@alias0</span><span style="color:#0"> == </span><span style="color:#BB6643">`C`</span><span style="color:#0">)
         }
     }
 }</span></code></pre><p>
@@ -2892,11 +2908,11 @@ A loop without an expression but with a block is infinite. This is equivalent to
     </span><span style="color:#B040BE">default</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
     }
 
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> ch = </span><span style="color:#BB6643">"A"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> ch = </span><span style="color:#BB6643">`A`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
     </span><span style="color:#B040BE">switch</span><span style="color:#0"> ch
     {
-    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">"B"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
-    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">"A"</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">: </span><span style="color:#B040BE">break</span><span style="color:#0">
+    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">`B`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
+    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">`A`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">: </span><span style="color:#B040BE">break</span><span style="color:#0">
     }
 }</span></code></pre><p>
 
@@ -5979,7 +5995,7 @@ Safety when slicing a sized value. </p>
 </span><span style="color:#6A9955">//@assert(slice[0] == 1)</span></code></pre><pre><code><span style="color:#3186CD">var</span><span style="color:#0"> x = </span><span style="color:#BB6643">"string"</span><span style="color:#0">
 </span><span style="color:#3186CD">var</span><span style="color:#0"> idx = </span><span style="color:#74A35B">10</span><span style="color:#0">
 </span><span style="color:#6A9955">//var slice = x[0..idx]            // '10' is out of range, will panic</span><span style="color:#0">
-</span><span style="color:#6A9955">//@assert(slice[0] == "s"'u8)</span></code></pre><p>
+</span><span style="color:#6A9955">//@assert(slice[0] == `s`)</span></code></pre><p>
 <h3 id="math">math </h3></p>
 <p>
 </p>
@@ -6418,7 +6434,7 @@ With the <code>Swag.CompilerMsgMask.SemFunctions</code> flag, for example, <code
 
     </span><span style="color:#6A9955">// As an example, we count that name if it starts with "XX".</span><span style="color:#0">
     </span><span style="color:#6A9955">// But we could use custom function attributes instead...</span><span style="color:#0">
-    </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(nameFunc) > </span><span style="color:#74A35B">2</span><span style="color:#0"> </span><span style="color:#B040BE">and</span><span style="color:#0"> nameFunc[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#BB6643">"X"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0"> </span><span style="color:#B040BE">and</span><span style="color:#0"> nameFunc[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#BB6643">"X"</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
+    </span><span style="color:#B040BE">if</span><span style="color:#0"> </span><span style="color:#B4B44A">@countof</span><span style="color:#0">(nameFunc) > </span><span style="color:#74A35B">2</span><span style="color:#0"> </span><span style="color:#B040BE">and</span><span style="color:#0"> nameFunc[</span><span style="color:#74A35B">0</span><span style="color:#0">] == </span><span style="color:#BB6643">`X`</span><span style="color:#0"> </span><span style="color:#B040BE">and</span><span style="color:#0"> nameFunc[</span><span style="color:#74A35B">1</span><span style="color:#0">] == </span><span style="color:#BB6643">`X`</span><span style="color:#0">
         </span><span style="color:#3BC3A7">G</span><span style="color:#0"> += </span><span style="color:#74A35B">1</span><span style="color:#0">
 }
 

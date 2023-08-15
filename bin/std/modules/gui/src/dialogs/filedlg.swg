@@ -76,7 +76,7 @@ internal impl FileDlg
         curFolder = folder
         Path.normalize(&curFolder)
 
-        if curFolder.back() == `/`'u8
+        if curFolder.back() == `/`
             curFolder.removeBack()
 
         fillList()
@@ -95,7 +95,7 @@ internal impl FileDlg
             loop j: i+1
             {
                 str += all[j]
-                str += `/`'u8
+                str += `/`
             }
 
             comboPathStr.add(str)

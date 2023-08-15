@@ -10,9 +10,9 @@
             let a = @index
             switch a
             {
-            case 0: @assert(value == `A`'u8)
-            case 1: @assert(value == `B`'u8)
-            case 2: @assert(value == `C`'u8)
+            case 0: @assert(value == `A`)
+            case 1: @assert(value == `B`)
+            case 2: @assert(value == `C`)
             }
         }
     }
@@ -24,9 +24,9 @@
             let a = index
             switch a
             {
-            case 0: @assert(value == `A`'u8)
-            case 1: @assert(value == `B`'u8)
-            case 2: @assert(value == `C`'u8)
+            case 0: @assert(value == `A`)
+            case 1: @assert(value == `B`)
+            case 2: @assert(value == `C`)
             }
         }
     }
@@ -39,9 +39,9 @@
             @assert(a == @index)
             switch a
             {
-            case 0: @assert(@alias0 == `A`'u8)
-            case 1: @assert(@alias0 == `B`'u8)
-            case 2: @assert(@alias0 == `C`'u8)
+            case 0: @assert(@alias0 == `A`)
+            case 1: @assert(@alias0 == `B`)
+            case 2: @assert(@alias0 == `C`)
             }
         }
     }
