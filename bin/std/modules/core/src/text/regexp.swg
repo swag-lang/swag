@@ -438,9 +438,9 @@ impl RegExp
     {
         switch c
         {
-        case `\\`'rune, `(`'rune, `)`'rune, `*`'rune, `?`'rune,
-             `+`'rune, `.`'rune, `|`'rune, `[`'rune, `]`'rune,
-             `{`'rune, `}`'rune:
+        case `\\`, `(`, `)`, `*`, `?`,
+             `+`, `.`, `|`, `[`, `]`,
+             `{`, `}`:
              return true
         }
 
@@ -457,35 +457,35 @@ impl RegExp
             var c = dref pz
             switch c
             {
-            case `(`'rune:
+            case `(`:
                 openParen.add(cast(u32) nfaStack.count)
 
-            case `)`'rune:
+            case `)`:
                 try unionValidate()
                 if openParen.isEmpty()
                     throw "syntax, unexpected right parenthesis"
                 let op = openParen.popBack()
                 try operatorConcat(nfaStack.count - op)
 
-            case `*`'rune:
+            case `*`:
                 try operatorStar()
 
-            case `+`'rune:
+            case `+`:
                 try operatorPlus()
 
-            case `?`'rune:
+            case `?`:
                 try operatorQuestion()
 
-            case `|`'rune:
+            case `|`:
                 try unionValidate()
                 orOpStack.add(c)
                 orOpLevel.add(cast(u32) openParen.count)
 
-            case `.`'rune:
+            case `.`:
                 try unionValidate()
                 nfaPush(0'rune)
 
-            case `\\`'rune:
+            case `\\`:
                 if isReservedChar(pz[1])
                 {
                     c = pz[1]

@@ -487,8 +487,8 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(suffix->typeInfo->isNative(), context->report({suffix, Fmt(Err(Err0437), suffix->typeInfo->getDisplayNameC())}));
-
+    // Check suffix type is correct (should be native)
+    SWAG_VERIFY(suffix->typeInfo->isNative(), context->report({suffix, Fmt(Err(Err0439), suffix->typeInfo->getDisplayNameC())}));
     switch (suffix->typeInfo->nativeType)
     {
     case NativeTypeKind::S8:

@@ -618,7 +618,7 @@ void initErrors()
     SWAG_ERROR(Err0674, "invalid struct member name '%s'");
     SWAG_ERROR(Err0017, "invalid type declaration, symbol '%s' is not a type (it is %s)");
     SWAG_ERROR(Err0639, "label name '%s' already defined in the hierarchy");
-    SWAG_ERROR(Err0437, "literal suffix type must be native ('%s' provided)");
+    SWAG_ERROR(Err0437, nullptr);
     SWAG_ERROR(Err0558, "llvm backend cannot create target '%s'");
     SWAG_ERROR(Err0690, "mismatched lambda default parameters");
     SWAG_ERROR(Err0723, "mismatched types for field '%s', '%s' expected but '%s' provided");
