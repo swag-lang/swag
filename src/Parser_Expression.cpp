@@ -15,13 +15,17 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
     node->literalValue = token.literalValue;
 
     SWAG_CHECK(eatToken());
-    if (token.id == TokenId::SymQuote)
+
+    if (node->tokenId == TokenId::LiteralString || node->tokenId == TokenId::LiteralNumber)
     {
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Err(Syn0060)));
-        auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
-        SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
-        identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;
+        if (token.id == TokenId::SymQuote)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Err(Syn0060)));
+            auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
+            SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
+            identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;
+        }
     }
 
     return true;
@@ -237,6 +241,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::CompilerBuildNum:
     case TokenId::LiteralNumber:
     case TokenId::LiteralString:
+    case TokenId::LiteralCharacter:
         SWAG_CHECK(doLiteral(parent, result));
         break;
 

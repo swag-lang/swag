@@ -102,6 +102,8 @@ void initErrors()
     SWAG_ERROR(Tkn0018, "unexpected end of line found in the string literal");
     SWAG_ERROR(Tkn0019, "unexpected literal number prefix '%s' (should be '0x' or '0b')");
     SWAG_ERROR(Tkn0025, "unexpected end of file found in the comment");
+    SWAG_ERROR(Tkn0026, "unexpected end of line found in the character literal");
+    SWAG_ERROR(Tkn0027, "unexpected end of file found in the character literal");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

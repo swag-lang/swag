@@ -358,6 +358,14 @@ bool Tokenizer::nextToken(TokenParse& token)
             return true;
         }
 
+        // Character literal
+        ///////////////////////////////////////////
+        if (c == '`')
+        {
+            SWAG_CHECK(doCharacterLiteral(token));
+            return true;
+        }
+
         // String literal
         ///////////////////////////////////////////
         if (c == '"')

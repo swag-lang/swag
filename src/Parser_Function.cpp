@@ -42,6 +42,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
         case TokenId::CompilerBuildNum:
         case TokenId::LiteralNumber:
         case TokenId::LiteralString:
+        case TokenId::LiteralCharacter:
             SWAG_CHECK(doLiteral(param, &dummyResult));
             break;
 

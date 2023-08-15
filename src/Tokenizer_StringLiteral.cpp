@@ -174,3 +174,60 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
     realAppendName = false;
     return true;
 }
+
+bool Tokenizer::doCharacterLiteral(TokenParse& token)
+{
+    unsigned offset;
+    token.id          = TokenId::LiteralCharacter;
+    token.literalType = LiteralType::TT_CHARACTER;
+    token.text.clear();
+
+    startTokenName = curBuffer;
+    while (true)
+    {
+        auto c = peekChar(offset);
+
+        // Can't have a newline inside a normal string (but this is legit in raw string literals)
+        if (SWAG_IS_EOL(c))
+        {
+            token.startLocation = location;
+            error(token, Err(Tkn0026));
+            return false;
+        }
+
+        // End of file
+        if (!c)
+        {
+            location = token.startLocation;
+            error(token, Err(Tkn0017));
+            return false;
+        }
+
+        // Escape sequence
+        if (c == '\\')
+        {
+            token.literalType = LiteralType::TT_ESCAPE_CHARACTER;
+            eatChar(c, offset);
+            c = peekChar(offset);
+            if (c)
+                eatChar(c, offset);
+            token.endLocation = location;
+            continue;
+        }
+
+        // End marker
+        if (c == '`')
+        {
+            appendTokenName(token);
+            eatChar(c, offset);
+            token.endLocation = location;
+            break;
+        }
+
+        eatChar(c, offset);
+        token.endLocation = location;
+    }
+
+    realAppendName = false;
+    return true;
+}

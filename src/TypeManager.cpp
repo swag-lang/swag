@@ -90,29 +90,31 @@ void TypeManager::setup()
     typeInfoSliceRunes->computeName();
 
     memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
-    g_LiteralTypeToType[(int) LiteralType::TT_U8]              = typeInfoU8;
-    g_LiteralTypeToType[(int) LiteralType::TT_U16]             = typeInfoU16;
-    g_LiteralTypeToType[(int) LiteralType::TT_U32]             = typeInfoU32;
-    g_LiteralTypeToType[(int) LiteralType::TT_U64]             = typeInfoU64;
-    g_LiteralTypeToType[(int) LiteralType::TT_S8]              = typeInfoS8;
-    g_LiteralTypeToType[(int) LiteralType::TT_S16]             = typeInfoS16;
-    g_LiteralTypeToType[(int) LiteralType::TT_S32]             = typeInfoS32;
-    g_LiteralTypeToType[(int) LiteralType::TT_S64]             = typeInfoS64;
-    g_LiteralTypeToType[(int) LiteralType::TT_F32]             = typeInfoF32;
-    g_LiteralTypeToType[(int) LiteralType::TT_F64]             = typeInfoF64;
-    g_LiteralTypeToType[(int) LiteralType::TT_BOOL]            = typeInfoBool;
-    g_LiteralTypeToType[(int) LiteralType::TT_RUNE]            = typeInfoRune;
-    g_LiteralTypeToType[(int) LiteralType::TT_STRING]          = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_RAW_STRING]      = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_ESCAPE_STRING]   = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_VOID]            = typeInfoVoid;
-    g_LiteralTypeToType[(int) LiteralType::TT_NULL]            = typeInfoNull;
-    g_LiteralTypeToType[(int) LiteralType::TT_ANY]             = typeInfoAny;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]     = typeInfoUntypedInt;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]   = typeInfoUntypedFloat;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA] = typeInfoUntypedBinHexa;
-    g_LiteralTypeToType[(int) LiteralType::TT_CSTRING]         = typeInfoCString;
-    g_LiteralTypeToType[(int) LiteralType::TT_TYPE]            = nullptr; // will be done with registerTypeType
+    g_LiteralTypeToType[(int) LiteralType::TT_U8]               = typeInfoU8;
+    g_LiteralTypeToType[(int) LiteralType::TT_U16]              = typeInfoU16;
+    g_LiteralTypeToType[(int) LiteralType::TT_U32]              = typeInfoU32;
+    g_LiteralTypeToType[(int) LiteralType::TT_U64]              = typeInfoU64;
+    g_LiteralTypeToType[(int) LiteralType::TT_S8]               = typeInfoS8;
+    g_LiteralTypeToType[(int) LiteralType::TT_S16]              = typeInfoS16;
+    g_LiteralTypeToType[(int) LiteralType::TT_S32]              = typeInfoS32;
+    g_LiteralTypeToType[(int) LiteralType::TT_S64]              = typeInfoS64;
+    g_LiteralTypeToType[(int) LiteralType::TT_F32]              = typeInfoF32;
+    g_LiteralTypeToType[(int) LiteralType::TT_F64]              = typeInfoF64;
+    g_LiteralTypeToType[(int) LiteralType::TT_BOOL]             = typeInfoBool;
+    g_LiteralTypeToType[(int) LiteralType::TT_RUNE]             = typeInfoRune;
+    g_LiteralTypeToType[(int) LiteralType::TT_STRING]           = typeInfoString;
+    g_LiteralTypeToType[(int) LiteralType::TT_RAW_STRING]       = typeInfoString;
+    g_LiteralTypeToType[(int) LiteralType::TT_ESCAPE_STRING]    = typeInfoString;
+    g_LiteralTypeToType[(int) LiteralType::TT_CHARACTER]        = typeInfoUntypedInt;
+    g_LiteralTypeToType[(int) LiteralType::TT_ESCAPE_CHARACTER] = typeInfoUntypedInt;
+    g_LiteralTypeToType[(int) LiteralType::TT_VOID]             = typeInfoVoid;
+    g_LiteralTypeToType[(int) LiteralType::TT_NULL]             = typeInfoNull;
+    g_LiteralTypeToType[(int) LiteralType::TT_ANY]              = typeInfoAny;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]      = typeInfoUntypedInt;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]    = typeInfoUntypedFloat;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA]  = typeInfoUntypedBinHexa;
+    g_LiteralTypeToType[(int) LiteralType::TT_CSTRING]          = typeInfoCString;
+    g_LiteralTypeToType[(int) LiteralType::TT_TYPE]             = nullptr; // will be done with registerTypeType
 
     // Promotion matrix
 #define PR(__a, __b, __c)                                                      \

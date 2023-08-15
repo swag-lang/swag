@@ -38,7 +38,7 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& 
 bool SemanticJob::processLiteralString(SemanticContext* context)
 {
     auto node = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
-    if (node->literalType != LiteralType::TT_ESCAPE_STRING)
+    if (node->literalType != LiteralType::TT_ESCAPE_STRING && node->literalType != LiteralType::TT_ESCAPE_CHARACTER)
         return true;
 
     auto loc = node->token.startLocation;
@@ -189,41 +189,51 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
     case LiteralType::TT_RAW_STRING:
     case LiteralType::TT_ESCAPE_STRING:
     case LiteralType::TT_STRING:
+    case LiteralType::TT_CHARACTER:
+    case LiteralType::TT_ESCAPE_CHARACTER:
     {
         VectorNative<uint32_t> uni;
         computedValue.text.toUni32(uni);
         if (uni.size() != 1)
             return Fmt(Err(Err0262), computedValue.text.c_str());
 
-        switch (typeSuffix->nativeType)
+        if (typeSuffix->isUntypedInteger())
         {
-        case NativeTypeKind::Rune:
-            computedValue.reg.ch = uni[0];
-            break;
-
-        case NativeTypeKind::U8:
-            if (uni[0] > UINT8_MAX)
-                return Fmt(Err(Err0263), uni[0]);
-            computedValue.reg.u8 = (uint8_t) uni[0];
-            break;
-
-        case NativeTypeKind::U16:
-            if (uni[0] > UINT16_MAX)
-                return Fmt(Err(Err0287), uni[0]);
-            computedValue.reg.u16 = (uint16_t) uni[0];
-            break;
-
-        case NativeTypeKind::U32:
-            computedValue.reg.u32 = uni[0];
-            break;
-
-        case NativeTypeKind::U64:
             computedValue.reg.u64 = uni[0];
-            break;
-
-        default:
-            return Fmt(Err(Err0302), typeSuffix->getDisplayNameC());
         }
+        else
+        {
+            switch (typeSuffix->nativeType)
+            {
+            case NativeTypeKind::Rune:
+                computedValue.reg.ch = uni[0];
+                break;
+
+            case NativeTypeKind::U8:
+                if (uni[0] > UINT8_MAX)
+                    return Fmt(Err(Err0263), uni[0]);
+                computedValue.reg.u8 = (uint8_t) uni[0];
+                break;
+
+            case NativeTypeKind::U16:
+                if (uni[0] > UINT16_MAX)
+                    return Fmt(Err(Err0287), uni[0]);
+                computedValue.reg.u16 = (uint16_t) uni[0];
+                break;
+
+            case NativeTypeKind::U32:
+                computedValue.reg.u32 = uni[0];
+                break;
+
+            case NativeTypeKind::U64:
+                computedValue.reg.u64 = uni[0];
+                break;
+
+            default:
+                return Fmt(Err(Err0302), typeSuffix->getDisplayNameC());
+            }
+        }
+
         break;
     }
 
@@ -450,6 +460,16 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
     processLiteralString(context);
 
+    // Special case for character
+    if (node->tokenId == TokenId::LiteralCharacter)
+    {
+        auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, node->typeInfo, false);
+        if (!errMsg.empty())
+            return context->report({node, errMsg});
+        node->byteCodeFct = ByteCodeGenJob::emitLiteral;
+        return true;
+    }
+
     // Suffix
     auto suffix = node->childs.empty() ? nullptr : node->childs.front();
     if (!suffix || !suffix->typeInfo)
@@ -506,7 +526,6 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffix->typeInfo, negApplied);
     if (!errMsg.empty())
         return context->report({node, errMsg});
-
     node->typeInfo    = suffix->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitLiteral;
     return true;

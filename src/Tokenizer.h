@@ -37,6 +37,8 @@ enum class LiteralType : uint8_t
     TT_STRING,
     TT_RAW_STRING,
     TT_ESCAPE_STRING,
+    TT_CHARACTER,
+    TT_ESCAPE_CHARACTER,
     TT_RUNE,
     TT_F32,
     TT_F64,
@@ -111,6 +113,7 @@ struct Tokenizer
     bool doIntLiteral(TokenParse& token, uint32_t c);
     bool doFloatLiteral(TokenParse& token, uint32_t c);
     bool doSymbol(TokenParse& token, uint32_t c);
+    bool doCharacterLiteral(TokenParse& token);
     bool doStringLiteral(TokenParse& token, bool raw, bool multiline);
 
     void saveState(const TokenParse& token);
