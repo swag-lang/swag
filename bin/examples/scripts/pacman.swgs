@@ -1254,16 +1254,16 @@ func drawNumberAsSprite(number: s32)
     {
         switch str[i]
         {
-        case `0`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)
-        case `1`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num1Tex)
-        case `2`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num2Tex)
-        case `3`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num3Tex)
-        case `4`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num4Tex)
-        case `5`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num5Tex)
-        case `6`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num6Tex)
-        case `7`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num7Tex)
-        case `8`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num8Tex)
-        case `9`'u8: g_Painter.drawTexture(0, 0, 8, 8, g_Num9Tex)
+        case `0`: g_Painter.drawTexture(0, 0, 8, 8, g_Num0Tex)
+        case `1`: g_Painter.drawTexture(0, 0, 8, 8, g_Num1Tex)
+        case `2`: g_Painter.drawTexture(0, 0, 8, 8, g_Num2Tex)
+        case `3`: g_Painter.drawTexture(0, 0, 8, 8, g_Num3Tex)
+        case `4`: g_Painter.drawTexture(0, 0, 8, 8, g_Num4Tex)
+        case `5`: g_Painter.drawTexture(0, 0, 8, 8, g_Num5Tex)
+        case `6`: g_Painter.drawTexture(0, 0, 8, 8, g_Num6Tex)
+        case `7`: g_Painter.drawTexture(0, 0, 8, 8, g_Num7Tex)
+        case `8`: g_Painter.drawTexture(0, 0, 8, 8, g_Num8Tex)
+        case `9`: g_Painter.drawTexture(0, 0, 8, 8, g_Num9Tex)
         }
 
         translateMapCoords(-1,0)

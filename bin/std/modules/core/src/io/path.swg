@@ -106,7 +106,7 @@ func getFileNameWithoutExtension(fullname: string)->string
     {
         cpt -= 1
         let c = fullname[cpt]
-        if c == `.`'u8 and last == countof
+        if c == `.` and last == countof
             last = cpt
         elif isDirectorySeparator(c) or c == VolumeSeparatorChar
         {
@@ -132,7 +132,7 @@ func getExtension(fullname: string)->string
     {
         cpt -= 1
         let c = fullname[cpt]
-        if c == `.`'u8
+        if c == `.`
             return acast @mkslice(@dataof(fullname) + cpt, cast(u64) @countof(fullname) - cpt)
         if isDirectorySeparator(c) or c == VolumeSeparatorChar
             break
@@ -167,7 +167,7 @@ func hasExtension(fullname: string)->bool
     {
         cpt -= 1
         let c = fullname[cpt]
-        if c == `.`'u8
+        if c == `.`
             return true
         if isDirectorySeparator(c) or c == VolumeSeparatorChar
             break

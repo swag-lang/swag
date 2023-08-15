@@ -34,7 +34,7 @@ func __itoa(result: ^u8, value: s64)->^u8
 
     if value < 0
     {
-        dref ptr = `-`'u8
+        dref ptr = `-`
         ptr += 1
     }
 
@@ -95,17 +95,17 @@ func __ftoa(result: ^u8, value: f64)
     {
         if value < 0
         {
-            dref n = `-`'u8
+            dref n = `-`
             n += 1
         }
 
-        n[0] = `0`'u8
+        n[0] = `0`
         n += 1
     }
     else
         n = __itoa(result, ipart)
 
-    n[0] = `.`'u8
+    n[0] = `.`
     n += 1
 
     const AfterFracN = 8
@@ -127,7 +127,7 @@ func __ftoa(result: ^u8, value: f64)
         leadingZeros = 0
     while leadingZeros
     {
-        n[0] = `0`'u8
+        n[0] = `0`
         n += 1
         leadingZeros -= 1
     }
