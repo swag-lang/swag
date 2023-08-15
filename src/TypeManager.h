@@ -178,6 +178,7 @@ struct TypeManager
     TypeInfoFuncAttr* typeInfoOpCall2        = nullptr;
     TypeInfoCode*     typeInfoCode           = nullptr;
     TypeInfoSlice*    typeInfoSliceRunes     = nullptr;
+    TypeInfoNative*   typeInfoCharacter      = nullptr;
 
     TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
 };

@@ -101,7 +101,7 @@
 <li><a href="#Escape sequence">Escape sequence</a></li>
 <li><a href="#Raw string">Raw string</a></li>
 <li><a href="#Multiline string">Multiline string</a></li>
-<li><a href="#Character">Character</a></li>
+<li><a href="#Character literals">Character literals</a></li>
 <li><a href="#@stringof and @nameof">@stringof and @nameof</a></li>
 </ul>
 <li><a href="#013_variables">Variables</a></li>
@@ -938,10 +938,10 @@ Note that the order is not relevant in the same file, but it is also irrelevant 
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(a) == </span><span style="color:#74A35B">2</span><span style="color:#0"> * </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(*</span><span style="color:#ED9A11">void</span><span style="color:#0">))
 }</span></code></pre><p>
 
-  The <code>rune</code> type uses the string syntax, postfix with the type <code>rune</code>. It's a 32 bits unicode code point. </p>
+  The <code>rune</code> type is a 32 bits unicode code point. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
-    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">)
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">`是`</span><span style="color:#0">
+    </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#BB6643">`是`</span><span style="color:#0">)
     </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(a) == </span><span style="color:#74A35B">4</span><span style="color:#0">)
 }</span></code></pre><p>
 <h3 id="Type reflection">Type reflection </h3></p>
@@ -1085,8 +1085,8 @@ In Swag, strings are encoded in UTF8. </p>
 
   A rune is an unicode codepoint, and is 32 bits. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a == </span><span style="color:#BB6643">`是`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> a: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">`是`</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a == </span><span style="color:#BB6643">`是`</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(a) == </span><span style="color:#B4B44A">@sizeof</span><span style="color:#0">(</span><span style="color:#ED9A11">u32</span><span style="color:#0">)
 }</span></code></pre><p>
 You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the <code>Std.Core</code> module will have all you need to manipulate UTF8 strings. </p>
@@ -1209,12 +1209,12 @@ A multiline string starts and ends with <code>"""</code>. Unlike raw strings, th
     </span><span style="color:#6A9955">// a</span><span style="color:#0">
     </span><span style="color:#6A9955">// string</span><span style="color:#0">
 }</span></code></pre><p>
-<h3 id="Character">Character </h3></p>
+<h3 id="Character literals">Character literals </h3></p>
 <p>
 A <i>character</i> is enclosed with <b>backticks</b>. </p>
 <pre><code><span style="color:#3186CD">let</span><span style="color:#0"> char0 = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
 </span><span style="color:#3186CD">let</span><span style="color:#0"> char1 = </span><span style="color:#BB6643">`我`</span></code></pre><p>
-By default, it's an untyped 32 bits integer that can be assigned to all integers (and type rune) as long as it fits. </p>
+By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type <code>rune</code>. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">u8</span><span style="color:#0">   = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
     </span><span style="color:#3186CD">let</span><span style="color:#0"> b: </span><span style="color:#ED9A11">u16</span><span style="color:#0">  = </span><span style="color:#BB6643">`a`</span><span style="color:#0">

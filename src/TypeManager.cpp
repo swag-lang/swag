@@ -34,6 +34,7 @@ void TypeManager::setup()
     typeInfoUntypedInt     = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER);
     typeInfoUntypedBinHexa = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BINHEXA);
     typeInfoUntypedFloat   = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_UNTYPED_FLOAT);
+    typeInfoCharacter      = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER | TYPEINFO_CHARACTER);
 
     typeInfoVariadic = new TypeInfoVariadic();
     typeInfoVariadic->name.setView("...", 3);
@@ -107,8 +108,8 @@ void TypeManager::setup()
     g_LiteralTypeToType[(int) LiteralType::TT_STRING_MULTILINE]        = typeInfoString;
     g_LiteralTypeToType[(int) LiteralType::TT_STRING_ESCAPE]           = typeInfoString;
     g_LiteralTypeToType[(int) LiteralType::TT_STRING_MULTILINE_ESCAPE] = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_CHARACTER]               = typeInfoUntypedInt;
-    g_LiteralTypeToType[(int) LiteralType::TT_CHARACTER_ESCAPE]        = typeInfoUntypedInt;
+    g_LiteralTypeToType[(int) LiteralType::TT_CHARACTER]               = typeInfoCharacter;
+    g_LiteralTypeToType[(int) LiteralType::TT_CHARACTER_ESCAPE]        = typeInfoCharacter;
     g_LiteralTypeToType[(int) LiteralType::TT_VOID]                    = typeInfoVoid;
     g_LiteralTypeToType[(int) LiteralType::TT_NULL]                    = typeInfoNull;
     g_LiteralTypeToType[(int) LiteralType::TT_ANY]                     = typeInfoAny;

@@ -335,6 +335,7 @@ enum class ExportedTypeInfoFlags : uint32_t
     PointerRef        = 0x00001000,
     PointerMoveRef    = 0x00002000,
     PointerArithmetic = 0x00004000,
+    Character         = 0x00008000,
 };
 
 struct ExportedTypeInfo

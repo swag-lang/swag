@@ -141,7 +141,7 @@ func swapParams(what: string)->String
         var idx = line1.indexOf("(") + 1
         var glewStr = String.from(cast(string) line1.getTo(`)`, idx, includeDelimiter = false))
         #if LOG Console.printf("glewStr: %\n", glewStr)
-        glewStr += `;`
+        glewStr += `;`'u8
 
         ///////////////////
         let line2 = findLine(glewStr)

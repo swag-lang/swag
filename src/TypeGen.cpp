@@ -172,6 +172,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
         exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Generic;
     if (typeInfo->isTuple())
         exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Tuple;
+    if (typeInfo->isCharacter())
+        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Character;
 
     // True by default, will be removed by struct if necessary
     exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::CanCopy;

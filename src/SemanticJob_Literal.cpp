@@ -473,9 +473,10 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         // Convert to unsigned int for a character without suffix
         if (node->tokenId == TokenId::LiteralCharacter)
         {
-            auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, node->typeInfo, false);
+            auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, g_TypeMgr->typeInfoCharacter, false);
             if (!errMsg.empty())
                 return context->report({node, errMsg});
+            node->typeInfo    = g_TypeMgr->typeInfoCharacter;
             node->byteCodeFct = ByteCodeGenJob::emitLiteral;
             return true;
         }

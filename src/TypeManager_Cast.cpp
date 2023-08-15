@@ -770,6 +770,19 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
     {
         switch (fromType->nativeType)
         {
+        case NativeTypeKind::S32:
+            if (fromType->isCharacter())
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->typeInfo = g_TypeMgr->typeInfoRune;
+                }
+
+                return true;
+            }
+
+            break;
+
         case NativeTypeKind::String:
             if (fromNode && fromNode->hasComputedValue())
             {

@@ -80,6 +80,7 @@ const uint64_t TYPEINFO_POINTER_AUTO_REF         = 0x00002000'00000000;
 const uint64_t TYPEINFO_STRUCT_NO_INIT           = 0x00004000'00000000;
 const uint64_t TYPEINFO_SPECOP_GENERATED         = 0x00008000'00000000;
 const uint64_t TYPEINFO_STRUCT_EMPTY             = 0x00010000'00000000;
+const uint64_t TYPEINFO_CHARACTER                = 0x00020000'00000000;
 
 const uint8_t TYPEINFOPARAM_DEFINED_VALUE    = 0x01;
 const uint8_t TYPEINFOPARAM_HAS_USING        = 0x02;
@@ -306,6 +307,7 @@ struct TypeInfo
     bool isUntypedFloat()                   { return (flags & TYPEINFO_UNTYPED_FLOAT); }
     bool isUntypedBinHex()                  { return (flags & TYPEINFO_UNTYPED_BINHEXA); }
     bool isFakeAlias()                      { return (flags & TYPEINFO_FAKE_ALIAS); }
+    bool isCharacter()                      { return (flags & TYPEINFO_CHARACTER); }
     // clang-format on
 
     virtual bool        isSame(TypeInfo* from, uint64_t castFlags);

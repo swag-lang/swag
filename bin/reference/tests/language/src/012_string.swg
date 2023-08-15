@@ -15,8 +15,8 @@ In Swag, strings are encoded in UTF8.
 
     // A rune is an unicode codepoint, and is 32 bits.
     {
-        const a = `是`'rune
-        #assert a == `是`'rune
+        const a: rune = `是`
+        #assert a == `是`
         #assert @sizeof(a) == @sizeof(u32)
     }
 }
@@ -175,7 +175,7 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
 }
 
 /**
-# Character
+# Character literals
 A *character* is enclosed with **backticks**.
 */
 #test
@@ -185,7 +185,7 @@ A *character* is enclosed with **backticks**.
 }
 
 /**
-By default, it's an untyped 32 bits integer that can be assigned to all integers (and type rune) as long as it fits.
+By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type `rune`.
 */
 #test
 {

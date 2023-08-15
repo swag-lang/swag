@@ -95,7 +95,7 @@ internal impl FileDlg
             loop j: i+1
             {
                 str += all[j]
-                str += `/`
+                str += `/`'u8
             }
 
             comboPathStr.add(str)
