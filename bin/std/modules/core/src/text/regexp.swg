@@ -438,9 +438,9 @@ impl RegExp
     {
         switch c
         {
-        case "\\"'rune, "("'rune, ")"'rune, "*"'rune, "?"'rune,
-             "+"'rune, "."'rune, "|"'rune, "["'rune, "]"'rune,
-             "{"'rune, "}"'rune:
+        case `\\`'rune, `(`'rune, `)`'rune, `*`'rune, `?`'rune,
+             `+`'rune, `.`'rune, `|`'rune, `[`'rune, `]`'rune,
+             `{`'rune, `}`'rune:
              return true
         }
 
@@ -457,35 +457,35 @@ impl RegExp
             var c = dref pz
             switch c
             {
-            case "("'rune:
+            case `(`'rune:
                 openParen.add(cast(u32) nfaStack.count)
 
-            case ")"'rune:
+            case `)`'rune:
                 try unionValidate()
                 if openParen.isEmpty()
                     throw "syntax, unexpected right parenthesis"
                 let op = openParen.popBack()
                 try operatorConcat(nfaStack.count - op)
 
-            case "*"'rune:
+            case `*`'rune:
                 try operatorStar()
 
-            case "+"'rune:
+            case `+`'rune:
                 try operatorPlus()
 
-            case "?"'rune:
+            case `?`'rune:
                 try operatorQuestion()
 
-            case "|"'rune:
+            case `|`'rune:
                 try unionValidate()
                 orOpStack.add(c)
                 orOpLevel.add(cast(u32) openParen.count)
 
-            case "."'rune:
+            case `.`'rune:
                 try unionValidate()
                 nfaPush(0'rune)
 
-            case "\\"'rune:
+            case `\\`'rune:
                 if isReservedChar(pz[1])
                 {
                     c = pz[1]
@@ -677,20 +677,20 @@ impl RegExp
         let pzStart = pz
         let pzEnd = pz + @countof(sl)
 
-        preprocessed.add("("'rune)
+        preprocessed.add(`(`'rune)
         pz += 1
 
         var firstExp = true
-        while pz != pzEnd and pz[0] != "]"'rune
+        while pz != pzEnd and pz[0] != `]`'rune
         {
             if !firstExp
-                preprocessed.add("|"'rune)
+                preprocessed.add(`|`'rune)
             firstExp = false
 
             let subSlice = @mkslice(pz, pzEnd - pz)
 
             // Predefined sets
-            if pz[0] == "["'rune
+            if pz[0] == `[`'rune
             {
                 if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
                 {
@@ -701,11 +701,11 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:hexa:]"), false, 8) == 0
                 {
-                    preprocessed.add("("'rune)
+                    preprocessed.add(`(`'rune)
                     try preprocessInter(@runes("[a-fA-F]"))
-                    preprocessed.add("|"'rune)
+                    preprocessed.add(`|`'rune)
                     preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(")"'rune)
+                    preprocessed.add(`)`'rune)
                     pz += 8
                     continue
                 }
@@ -719,11 +719,11 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    preprocessed.add("("'rune)
+                    preprocessed.add(`(`'rune)
                     preprocessed.add(RuneAsciiLetter)
-                    preprocessed.add("|"'rune)
+                    preprocessed.add(`|`'rune)
                     preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(")"'rune)
+                    preprocessed.add(`)`'rune)
                     pz += 9
                     continue
                 }
@@ -765,20 +765,20 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    preprocessed.add("("'rune)
+                    preprocessed.add(`(`'rune)
                     preprocessed.add(RuneAsciiLetter)
-                    preprocessed.add("|"'rune)
+                    preprocessed.add(`|`'rune)
                     preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add("|"'rune)
-                    preprocessed.add("_"'rune)
-                    preprocessed.add(")"'rune)
+                    preprocessed.add(`|`'rune)
+                    preprocessed.add(`_`'rune)
+                    preprocessed.add(`)`'rune)
                     pz += 8
                     continue
                 }
             }
 
             // Specified interval
-            if @countof(subSlice) >= 3 and pz[1] == "-"'rune and pz[2] != "]"'rune
+            if @countof(subSlice) >= 3 and pz[1] == `-`'rune and pz[2] != `]`'rune
             {
                 var first = pz[0]
                 var end = pz[2]
@@ -787,7 +787,7 @@ impl RegExp
                 while first < end
                 {
                     preprocessed.add(first)
-                    preprocessed.add("|"'rune)
+                    preprocessed.add(`|`'rune)
                     first += 1
                 }
 
@@ -799,7 +799,7 @@ impl RegExp
             // This is not an interval
             if isReservedChar(dref pz)
             {
-                preprocessed.add("\\"'rune)
+                preprocessed.add(`\\`'rune)
                 preprocessed.add(dref pz)
                 pz += 1
             }
@@ -811,7 +811,7 @@ impl RegExp
 
         if pz != pzEnd
             pz += 1
-        preprocessed.add(")"'rune)
+        preprocessed.add(`)`'rune)
 
         return pz
     }
@@ -826,7 +826,7 @@ impl RegExp
         while pzStart != pzEnd and Unicode.isLatin1(pzStart[0]) and Latin1.isDigit(cast(u8) pzStart[0])
         {
             n *= 10
-            n += cast(u8) pzStart[0] - "0"'u8
+            n += cast(u8) pzStart[0] - `0`'u8
             pzStart += 1
         }
 
@@ -850,11 +850,11 @@ impl RegExp
         pz = try toI32(pz, pzEnd, &n)
 
         // m value
-        if pz[0] == ","'rune
+        if pz[0] == `,`'rune
         {
             m = -1
             pz += 1
-            if pz[0] != "}"'rune
+            if pz[0] != `}`'rune
                 pz = try toI32(pz, pzEnd, &m)
         }
         else
@@ -862,7 +862,7 @@ impl RegExp
             m = n
         }
 
-        if pz[0] != "}"'rune
+        if pz[0] != `}`'rune
             throw "syntax, missing '}'"
         if m != -1 and m < n
             throw "syntax, m < n in {n,m}"
@@ -872,25 +872,25 @@ impl RegExp
         pz += 1
 
         if n == 0 and m == -1 // {0,}
-            preprocessed.add("*"'rune)
+            preprocessed.add(`*`'rune)
         elif n == 0 and m == 1 // {0,1}
-            preprocessed.add("?"'rune)
+            preprocessed.add(`?`'rune)
         elif n == 1 and m == -1 // {1,}
-            preprocessed.add("+"'rune)
+            preprocessed.add(`+`'rune)
         elif n != 1 or m != 1 // {1,1}
         {
             // Isolate expression to duplicate
             let pze = preprocessed.buffer + preprocessed.count - 1
             var pz1 = pze
             var cptParen = 0
-            if pz[1] == ")"'rune
+            if pz[1] == `)`'rune
                 cptParen += 1
             while cptParen and pz1 != preprocessed.buffer
             {
                 pz1 -= 1
-                if pz1[0] == ")"'rune
+                if pz1[0] == `)`'rune
                     cptParen += 1
-                if pz1[0] == "("'rune
+                if pz1[0] == `(`'rune
                     cptParen -= 1
             }
 
@@ -918,7 +918,7 @@ impl RegExp
 
             if m == -1
             {
-                preprocessed.add("+"'rune)
+                preprocessed.add(`+`'rune)
             }
             else
             {
@@ -928,7 +928,7 @@ impl RegExp
                 while m
                 {
                     preprocessed.add(expr.toSlice())
-                    preprocessed.add("?"'rune)
+                    preprocessed.add(`?`'rune)
                     m -= 1
                 }
             }
@@ -940,25 +940,25 @@ impl RegExp
     mtd preprocessUnicode(sl: const [..] rune)->const ^rune throw
     {
         let pz = @dataof(sl) + 2
-        if pz[0] == "{"'rune
+        if pz[0] == `{`'rune
         {
-            if pz[1] == "L"'rune and pz[3] == "}"'rune
+            if pz[1] == `L`'rune and pz[3] == `}`'rune
             {
                 switch pz[2]
                 {
-                case "l"'rune:
+                case `l`'rune:
                     preprocessed.add(RuneUnicodeLetterLower)
                     return pz + 4
-                case "u"'rune:
+                case `u`'rune:
                     preprocessed.add(RuneUnicodeLetterUpper)
                     return pz + 4
                 }
             }
-            elif pz[1] == "S"'rune and pz[3] == "}"'rune
+            elif pz[1] == `S`'rune and pz[3] == `}`'rune
             {
                 switch pz[2]
                 {
-                case "m"'rune:
+                case `m`'rune:
                     preprocessed.add(RuneUnicodeSymbolMath)
                     return pz + 4
                 }
@@ -967,13 +967,13 @@ impl RegExp
 
         switch pz[0]
         {
-        case "L"'rune:
+        case `L`'rune:
             preprocessed.add(RuneUnicodeLetter)
             return pz + 1
-        case "N"'rune:
+        case `N`'rune:
             preprocessed.add(RuneUnicodeNumber)
             return pz + 1
-        case "S"'rune:
+        case `S`'rune:
             preprocessed.add(RuneUnicodeSymbol)
             return pz + 1
         }
@@ -985,44 +985,44 @@ impl RegExp
     {
         var pz = @dataof(sl)
         let c = dref pz
-        if c == "\\"'rune
+        if c == `\\`'rune
         {
             switch pz[1]
             {
-            case "d"'rune:
+            case `d`'rune:
                 try preprocessInter(@runes("[[:digit:]]"))
                 return pz + 2
-            case "w"'rune:
+            case `w`'rune:
                 try preprocessInter(@runes("[[:word:]]"))
                 return pz + 2
-            case "s"'rune:
+            case `s`'rune:
                 try preprocessInter(@runes("[[:space:]]"))
                 return pz + 2
-            case "l"'rune:
+            case `l`'rune:
                 try preprocessInter(@runes("[[:lower:]]"))
                 return pz + 2
-            case "u"'rune:
+            case `u`'rune:
                 try preprocessInter(@runes("[[:upper:]]"))
                 return pz + 2
-            case "a"'rune:
-                preprocessed.add("\a"'rune)
+            case `a`'rune:
+                preprocessed.add(`\a`'rune)
                 return pz + 2
-            case "f"'rune:
-                preprocessed.add("\f"'rune)
+            case `f`'rune:
+                preprocessed.add(`\f`'rune)
                 return pz + 2
-            case "n"'rune:
-                preprocessed.add("\n"'rune)
+            case `n`'rune:
+                preprocessed.add(`\n`'rune)
                 return pz + 2
-            case "r"'rune:
-                preprocessed.add("\r"'rune)
+            case `r`'rune:
+                preprocessed.add(`\r`'rune)
                 return pz + 2
-            case "t"'rune:
-                preprocessed.add("\t"'rune)
+            case `t`'rune:
+                preprocessed.add(`\t`'rune)
                 return pz + 2
-            case "v"'rune:
-                preprocessed.add("\v"'rune)
+            case `v`'rune:
+                preprocessed.add(`\v`'rune)
                 return pz + 2
-            case "p"'rune:
+            case `p`'rune:
                 pz = try preprocessUnicode(sl)
                 return pz
             }
@@ -1048,11 +1048,11 @@ impl RegExp
         {
             switch c
             {
-            case "["'rune:
+            case `[`'rune:
                 pz = try preprocessInter(@mkslice(pz, pzEnd - pz))
                 break
 
-            case "{"'rune:
+            case `{`'rune:
                 pz = try preprocessEnum(@mkslice(pz, pzEnd - pz))
                 break
 

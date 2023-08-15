@@ -55,10 +55,10 @@ impl TweakFile
         {
             one = Tokenize.eatSpaces(one)
             if @countof(one) == 0 continue
-            if one[0] == "#"'u8 continue // comment
+            if one[0] == `#`'u8 continue // comment
 
             // Folder
-            if one[0] == "/"'u8
+            if one[0] == `/`'u8
             {
                 one = Tokenize.eatCount(one, 1)
                 let folderName = catch StrConv.parseIdentifier(one)
@@ -97,7 +97,7 @@ impl TweakFile
             if !@countof(one)
                 throw Format.toString("line %: missing value", idx + 1)
 
-            if one[0] == "$"'u8
+            if one[0] == `$`'u8
             {
                 one = Tokenize.eatCount(one, 1)
                 let otherField = Reflection.getField(currentFolder.type, one)
@@ -116,10 +116,10 @@ impl TweakFile
                 throw Format.toString("line %: %", idx + 1, @errmsg)
 
             // Be sure there's nothing left
-            if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != "#"'u8
+            if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != `#`'u8
                 throw Format.toString("line %: syntax error in value", idx + 1)
             one = Tokenize.eatSpaces(one)
-            if @countof(one) and one[0] != "#"'u8
+            if @countof(one) and one[0] != `#`'u8
                 throw Format.toString("line %: invalid characters after value", idx + 1)
         }
 

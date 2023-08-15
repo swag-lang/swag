@@ -76,7 +76,7 @@ internal impl FileDlg
         curFolder = folder
         Path.normalize(&curFolder)
 
-        if curFolder.back() == "/"'u8
+        if curFolder.back() == `/`'u8
             curFolder.removeBack()
 
         fillList()
@@ -88,14 +88,14 @@ internal impl FileDlg
         comboPath.clear()
         comboPathStr.clear()
 
-        var all = Tokenize.split(curFolder.toString(), "/"'rune)
+        var all = Tokenize.split(curFolder.toString(), `/`'rune)
         loop i: all.count-1..0
         {
             var str: String
             loop j: i+1
             {
                 str += all[j]
-                str += "/"'u8
+                str += `/`'u8
             }
 
             comboPathStr.add(str)
@@ -162,7 +162,7 @@ internal impl FileDlg
 
         let item = comboType.getSelectedItem()
         var filter = dlgOptions.filters[cast(u64) item.userData0]
-        var tokens = Tokenize.split(filter.item1, ";"'rune)
+        var tokens = Tokenize.split(filter.item1, `;`'rune)
 
         visit &fi: curList
         {
@@ -484,7 +484,7 @@ impl FileDlg
         let item = comboType.getSelectedItem()
         var fi = dlgOptions.filters[cast(u64) item.userData0]
 
-        var tokens = Tokenize.split(editFile.text, ";"'rune)
+        var tokens = Tokenize.split(editFile.text, `;`'rune)
         visit t: tokens
         {
             // Be sure this is a valid file/folder name
@@ -503,7 +503,7 @@ impl FileDlg
             // Append extension if not done by the user
             if dlgOptions.mode != .SelectFolder and !Path.isExtension(val, fi.item1)
             {
-                var exts = Tokenize.split(fi.item1, ";"'rune)
+                var exts = Tokenize.split(fi.item1, `;`'rune)
                 val += exts[0]
             }
 

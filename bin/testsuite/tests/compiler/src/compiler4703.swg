@@ -54,7 +54,7 @@
     {
         let str = "string"
         let strSlice: const [..] u8 = @mkslice(@dataof(str), 2)
-        @assert(strSlice[0] == "s"'u8)
-        @assert(strSlice[1] == "t"'u8)
+        @assert(strSlice[0] == `s`'u8)
+        @assert(strSlice[1] == `t`'u8)
     }
 }

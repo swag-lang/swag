@@ -204,10 +204,10 @@ func FT_IMAGE_TAG(x1, x2, x3, x4: u32)->u32 => (x1 << 24) | (x2 << 16) | (x3 << 
 enum FT_Glyph_Format
 {
     FT_GLYPH_FORMAT_NONE      = 0
-    FT_GLYPH_FORMAT_COMPOSITE = FT_IMAGE_TAG("c"'u32, "o"'u32, "m"'u32, "p"'u32)
-    FT_GLYPH_FORMAT_BITMAP    = FT_IMAGE_TAG("b"'u32, "i"'u32, "t"'u32, "s"'u32)
-    FT_GLYPH_FORMAT_OUTLINE   = FT_IMAGE_TAG("o"'u32, "u"'u32, "t"'u32, "l"'u32)
-    FT_GLYPH_FORMAT_POLTTER   = FT_IMAGE_TAG("p"'u32, "l"'u32, "o"'u32, "t"'u32)
+    FT_GLYPH_FORMAT_COMPOSITE = FT_IMAGE_TAG(`c`'u32, `o`'u32, `m`'u32, `p`'u32)
+    FT_GLYPH_FORMAT_BITMAP    = FT_IMAGE_TAG(`b`'u32, `i`'u32, `t`'u32, `s`'u32)
+    FT_GLYPH_FORMAT_OUTLINE   = FT_IMAGE_TAG(`o`'u32, `u`'u32, `t`'u32, `l`'u32)
+    FT_GLYPH_FORMAT_POLTTER   = FT_IMAGE_TAG(`p`'u32, `l`'u32, `o`'u32, `t`'u32)
 }
 
 struct FT_Bitmap

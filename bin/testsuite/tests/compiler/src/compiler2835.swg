@@ -2,7 +2,7 @@
 #test
 {
     let x = 0'u8
-    if (x|32) == "e"'u8
+    if (x|32) == `e`'u8
     {
         @assert(false)
     }
@@ -13,7 +13,7 @@
 
 func toto(x: u8)
 {
-    if (x|32) == "e"'u8
+    if (x|32) == `e`'u8
     {
         @assert(false)
     }

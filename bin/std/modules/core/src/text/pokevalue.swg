@@ -24,7 +24,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         if structType.fromGeneric == @typeof(Array)
         {
             let valueType = structType.generics[0].pointedType
-            while @countof(one) and one[0] != "#"'u8
+            while @countof(one) and one[0] != `#`'u8
             {
                 let addrVal = Reflection.roomInArray(addr, valueType)
                 one = try pokeValue(addrVal, valueType, one)
@@ -41,7 +41,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         let arrayType = cast(const *TypeInfoArray) type
         var addrVal = cast(^u8) addr
         var cpt = 0
-        while @countof(one) and one[0] != "#"'u8
+        while @countof(one) and one[0] != `#`'u8
         {
             if cpt == arrayType.totalCount throw "too many values"
             one = try pokeValue(addrVal, arrayType.finalType, one)
@@ -99,9 +99,9 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
 
             one = Tokenize.eatSpaces(one)
             if !@countof(one) break
-            if one[0] == "#"'u8 break
+            if one[0] == `#`'u8 break
 
-            if one[0] != "|"'u8
+            if one[0] != `|`'u8
                 throw "invalid enum flags format"
             one = Tokenize.eatCount(one, 1)
         }

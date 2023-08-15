@@ -6,7 +6,7 @@ using Core, Utf8, Tokenize
 {
     var x: String = "This is a list of words, with: a bit of punctuation\tand a tab character."
 
-    var sep = [" "'rune, ",", ".", ":", "\t"]
+    var sep = [` `'rune, ",", ".", ":", "\t"]
     var arr = x.split(sep)
 
     visit v: arr
@@ -23,7 +23,7 @@ using Core, Utf8, Tokenize
 #test
 {
     var x: String = "This is a list of words"
-    var arr = x.split([" "'rune], 1)
+    var arr = x.split([` `'rune], 1)
     @assert(arr.count == 2)
     @assert(arr[0] == "This")
     @assert(arr[1] == "is a list of words")

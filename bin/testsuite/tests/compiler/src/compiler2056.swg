@@ -18,7 +18,7 @@ func swag_runtime_itoa(result: ^u8, value: s64)->*u8
     // Negative value
     if value < 0
     {
-        dref ptr = "-"'u8
+        dref ptr = `-`'u8
         ptr += 1
     }
 

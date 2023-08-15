@@ -147,7 +147,7 @@ Safety when slicing a sized value.
     var x = "string"
     var idx = 10
     //var slice = x[0..idx]            // '10' is out of range, will panic
-    //@assert(slice[0] == "s"'u8)
+    //@assert(slice[0] == `s`'u8)
 }
 
 /**

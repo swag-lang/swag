@@ -5,5 +5,5 @@ using Swag;
 #test
 {
 	let b = "XYZ";
-	@assert(b[2] == cast(u8) ("Z"'rune));
+	@assert(b[2] == cast(u8) (`Z`'rune));
 }

@@ -72,8 +72,8 @@
 
     // The `rune` type uses the string syntax, postfix with the type `rune`. It's a 32 bits unicode code point.
     {
-        let a: rune = "是"'rune
-        @assert(a == "是"'rune)
+        let a: rune = `是`'rune
+        @assert(a == `是`'rune)
         @assert(@sizeof(a) == 4)
     }
 }

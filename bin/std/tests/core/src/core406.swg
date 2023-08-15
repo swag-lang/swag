@@ -9,7 +9,7 @@ func(str: string) interpol()->String
     #ast
     {
         var d = @dataof(str)
-        while dref d != "{"'u8
+        while dref d != `{`'u8
             d += 1
         d += 1
 

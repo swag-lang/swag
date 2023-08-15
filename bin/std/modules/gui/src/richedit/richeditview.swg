@@ -324,7 +324,7 @@ impl RichEditView
         let y = py
 
         // Dummy character for empty lines, so that a selected line display something
-        var dummyChar = " "'rune
+        var dummyChar = ` `'rune
         var dummyStyle = 0'u8
         var count = line.length()
         var pChar = line.chars.buffer
@@ -354,7 +354,7 @@ impl RichEditView
             newStyle = ed.styles[dref pStyle]
 
             var cr = dref pChar
-            let isTabulation = cr == "\t"'rune
+            let isTabulation = cr == `\t`'rune
 
             var selected = false
             if ed.hasSelRect
@@ -391,10 +391,10 @@ impl RichEditView
 
             if ed.richEdFlags & .DrawBlanks
             {
-                if cr == " "'rune and pChar != &dummyChar
+                if cr == ` `'rune and pChar != &dummyChar
                 {
                     newStyle.colFg = getThemeColors().richEdit_TextSpecial
-                    cr = "."'rune
+                    cr = `.`'rune
                 }
                 elif isTabulation
                 {

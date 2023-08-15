@@ -16,7 +16,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    if (node->tokenId == TokenId::LiteralString || node->tokenId == TokenId::LiteralNumber)
+    if (node->tokenId == TokenId::LiteralCharacter || node->tokenId == TokenId::LiteralNumber)
     {
         if (token.id == TokenId::SymQuote)
         {

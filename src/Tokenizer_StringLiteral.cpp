@@ -235,6 +235,5 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         token.endLocation = location;
     }
 
-    realAppendName = false;
     return true;
 }

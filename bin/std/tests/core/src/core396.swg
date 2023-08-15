@@ -8,6 +8,6 @@ using Core
 
     visit k, v: h
     {
-        @assert(v[0] == "s"'u8)
+        @assert(v[0] == `s`'u8)
     }
 }

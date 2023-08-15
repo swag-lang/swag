@@ -359,7 +359,7 @@ impl Core.StrConv.IPokeValue for Color
         if @countof(one) == 0
             throw "missing color value"
 
-        if buf[0] == "0"'u8 and buf[1]|32 == "x"'u8
+        if buf[0] == `0`'u8 and buf[1]|32 == `x`'u8
         {
             (argb, eat, ovf) = try parseU32(one)
             if ovf throw "value overflow"

@@ -6,7 +6,7 @@ struct(N: s32) Vector
         var sb = StrConv.StringBuilder{}
         loop i: N
         {
-            sb.appendFormat("%", cast(rune) ("a"'u32 + i))
+            sb.appendFormat("%", cast(rune) (`a`'u32 + i))
             if i != N - 1 sb.appendString(",")
         }
 

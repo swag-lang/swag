@@ -12,15 +12,15 @@ func toto(xx: string, a: ...)
 	while i < @countof(xx)
 	{
 		let c = cast(rune) xx[i]
-		if c == "%"'rune
+		if c == `%`'rune
 		{
 			i += 1
 			switch cast(rune) xx[i]
 			{
-			case "d"'rune:
+			case `d`'rune:
 				@assert(valueof's32(a[idx]) == 10)
 				idx += 1
-			case "s"'rune:
+			case `s`'rune:
 				@assert(valueof'string(a[idx]) == "toto")
 				idx += 1
 			}

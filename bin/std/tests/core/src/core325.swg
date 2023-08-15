@@ -10,7 +10,7 @@ func sendWords(text: string)
     var start = 0'u64
     while start < @countof(text)
     {
-        var stop = Utf8.indexOf(text, " "'rune, start)
+        var stop = Utf8.indexOf(text, ` `'rune, start)
         if stop == Swag.U64.Max
             stop = @countof(text) - 1
         var word = text[start..stop]

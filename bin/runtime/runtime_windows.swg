@@ -348,8 +348,8 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
             loop it: @countof(fileName)
             {
                 if fileName[it] == startAfter.fileName[it] continue
-                if fileName[it] == "\\"'u8 and startAfter.fileName[it] == "/"'u8 continue
-                if fileName[it] == "/"'u8 and startAfter.fileName[it] == "\\"'u8 continue
+                if fileName[it] == `\\`'u8 and startAfter.fileName[it] == `/`'u8 continue
+                if fileName[it] == `/`'u8 and startAfter.fileName[it] == `\\`'u8 continue
                 samePath = false
                 break
             }

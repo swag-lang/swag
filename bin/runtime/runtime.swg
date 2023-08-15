@@ -81,28 +81,28 @@ func __convertArgcArgv(args: const ^u8)
     __argc = 0
     while dref cmdLine
     {
-        while dref cmdLine == " "'u8 cmdLine += 1
+        while dref cmdLine == ` `'u8 cmdLine += 1
         if dref cmdLine == 0 break
 
-        if dref cmdLine == "\""'u8
+        if dref cmdLine == `"`'u8
         {
             cmdLine += 1
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != "\""'u8 cmdLine += 1
+            while dref cmdLine and dref cmdLine != `"`'u8 cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
             if dref cmdLine cmdLine += 1
         }
         else
         {
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != " "'u8 cmdLine += 1
+            while dref cmdLine and dref cmdLine != ` `'u8 cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
         }
 
         __argc += 1
         if __argc == __MAX_ARGUMENTS
             return
-        while dref cmdLine and dref cmdLine == " "'u8 cmdLine += 1
+        while dref cmdLine and dref cmdLine == ` `'u8 cmdLine += 1
     }
 }
 

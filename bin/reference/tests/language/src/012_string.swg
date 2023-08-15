@@ -15,8 +15,8 @@ In Swag, strings are encoded in UTF8.
 
     // A rune is an unicode codepoint, and is 32 bits.
     {
-        const a = "是"'rune
-        #assert a == "是"'rune
+        const a = `是`'rune
+        #assert a == `是`'rune
         #assert @sizeof(a) == @sizeof(u32)
     }
 }
@@ -32,13 +32,13 @@ You cannot index a string to get a rune, except in ascii strings. This is becaus
 
         // Get the first byte of the string
         const b = a[0]
-        #assert b == "t"'u8
+        #assert b == `t`'u8
         #assert @typeof(b) == @typeof(u8)
 
         // Here, the 'X' character in the middle does not have the index '1', because the
         // chinese character before is encoded in UTF8 with more than 1 byte.
         const c = "是X是"
-        #assert c[1] != "X"'u8 // False because the byte number 1 is not the character 'X'
+        #assert c[1] != `X`'u8 // False because the byte number 1 is not the character 'X'
     }
 }
 
@@ -181,23 +181,23 @@ A single *character* can be casted to every unsigned integer type.
 #test
 {
     {
-        let a = "0"'u8
+        let a = `0`'u8
         @assert(a == 48)
         @assert(@typeof(a) == @typeof(u8))
 
-        let b = "1"'u16
+        let b = `1`'u16
         @assert(b == 49)
         @assert(@typeof(b) == @typeof(u16))
 
-        let c = "2"'u32
+        let c = `2`'u32
         @assert(c == 50)
         @assert(@typeof(c) == @typeof(u32))
 
-        let d = "3"'u64
+        let d = `3`'u64
         @assert(d == 51)
         @assert(@typeof(d) == @typeof(u64))
 
-        let e = "4"'rune
+        let e = `4`'rune
         @assert(e == 52)
         @assert(@typeof(e) == @typeof(rune))
     }

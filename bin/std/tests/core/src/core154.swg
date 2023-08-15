@@ -9,10 +9,10 @@ using Core
     {
         switch(idx)
         {
-            case 0:  @assert(c == "A"'rune); cpt += 1
-            case 1:  @assert(c == "假"'rune); cpt += 1
-            case 2:  @assert(c == "C"'rune); cpt += 1
-            case 3:  @assert(c == "D"'rune); cpt += 1
+            case 0:  @assert(c == `A`'rune); cpt += 1
+            case 1:  @assert(c == `假`'rune); cpt += 1
+            case 2:  @assert(c == `C`'rune); cpt += 1
+            case 3:  @assert(c == `D`'rune); cpt += 1
             default: @assert(false)
         }
     }

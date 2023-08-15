@@ -164,8 +164,8 @@ func @panic(message: string, loc: SourceCodeLocation)
         len = @countof(message)
         if len > 512 len = 512
         @memcpy(&str[0], @dataof(message), len)
-        str[len]     = "\n"'u8
-        str[len + 1] = "\n"'u8
+        str[len]     = `\n`'u8
+        str[len + 1] = `\n`'u8
         len += 2
     }
 

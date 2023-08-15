@@ -64,9 +64,9 @@ func swapParams(what: string)->String
         var idxEnd = idxNext
 
         var arr: string
-        if what[idxName] == "]"'u8
+        if what[idxName] == `]`'u8
         {
-            while what[idxName] != "["'u8 idxName -= 1
+            while what[idxName] != `[`'u8 idxName -= 1
             arr = what[idxName..idxNext - 1]
             idxEnd = idxName
             idxName -= 1
@@ -79,7 +79,7 @@ func swapParams(what: string)->String
 
         // Isolate parameter type
         var idxType = idxName - 1
-        while idxType and what[idxType - 1] != ","'u8 idxType -= 1
+        while idxType and what[idxType - 1] != `,`'u8 idxType -= 1
         if idxType idxType += 1
         var type = String.from(what[idxType..idxName - 1])
         type.trim()
@@ -87,7 +87,7 @@ func swapParams(what: string)->String
         #if LOG Console.printf("type: '%'\n", type)
 
         // Pointer
-        if type.lastRune() == "*"'rune
+        if type.lastRune() == `*`'rune
         {
             var idxType1 = cast(s32) (type.length - 2)
             while idxType1 >= 0 and Latin1.isSpace(type[idxType1])
@@ -139,27 +139,27 @@ func swapParams(what: string)->String
 
         ///////////////////
         var idx = line1.indexOf("(") + 1
-        var glewStr = String.from(cast(string) line1.getTo(")"'u8, idx, includeDelimiter = false))
+        var glewStr = String.from(cast(string) line1.getTo(`)`'u8, idx, includeDelimiter = false))
         #if LOG Console.printf("glewStr: %\n", glewStr)
-        glewStr += ";"'u8
+        glewStr += `;`'u8
 
         ///////////////////
         let line2 = findLine(glewStr)
         idx = line2.indexOf(" ") + 1
-        let proc = cast(string) line2.getTo(" "'u8, idx, includeDelimiter = false)
+        let proc = cast(string) line2.getTo(` `'u8, idx, includeDelimiter = false)
         #if LOG Console.printf("proc: %\n", proc)
 
         let line3 = findLine(proc)
         ///////////////////
         idx = line3.indexOf(" ")
         idx += 1
-        var retType = String.from(cast(string) line3.getTo(" "'u8, idx, includeDelimiter = false))
+        var retType = String.from(cast(string) line3.getTo(` `'u8, idx, includeDelimiter = false))
         if retType == "void" retType.clear()
         #if LOG Console.printf("retType: %\n", retType)
 
         idx = line3.lastIndexOf("(")
         idx += 1
-        var proto = String.from(cast(string) line3.getTo(")"'u8, idx, includeDelimiter = false))
+        var proto = String.from(cast(string) line3.getTo(`)`'u8, idx, includeDelimiter = false))
         proto += ", "
 
         ///////////////////

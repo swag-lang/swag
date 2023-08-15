@@ -18,7 +18,7 @@ func itoa(result: ^u8, value: s64)->^u8
     // Negative value
     if value < 0
     {
-        dref ptr = "-"'u8
+        dref ptr = `-`'u8
         ptr += 1
     }
 
@@ -50,17 +50,17 @@ func ftoa(result: ^u8, value: f64)
     {
         if value < 0
         {
-            dref n = "-"'u8
+            dref n = `-`'u8
             n += 1
         }
 
-        dref n = "0"'u8
+        dref n = `0`'u8
         n += 1
     }
     else
         n = itoa(result, ipart);
 
-    dref n = "."'u8; n += 1
+    dref n = `.`'u8; n += 1
 
     var afterPoint = 5
     if fpart < 0

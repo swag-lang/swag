@@ -1,3 +1,3 @@
-#global skip
-const X: u16 = c"A" // 我
-#print X
+//#global skip
+const X: u16 = `"` // 我
+#assert X == 34

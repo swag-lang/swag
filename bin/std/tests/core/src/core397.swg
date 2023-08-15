@@ -10,7 +10,7 @@ using Core
     var h1 = h
 
     visit k, v: h
-        @assert(v[0] == "s"'u8)
+        @assert(v[0] == `s`'u8)
     visit k, v: h1
-        @assert(v[0] == "s"'u8)
+        @assert(v[0] == `s`'u8)
 }

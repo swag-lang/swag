@@ -20,10 +20,10 @@ func toto(v: string)
 #test
 {
 	var t: titi
-	t.buf[0] = acast "1"'rune
-	t.buf[1] = acast "2"'rune
-	t.buf[2] = acast "3"'rune
-	t.buf[3] = acast "4"'rune
+	t.buf[0] = acast `1`'rune
+	t.buf[1] = acast `2`'rune
+	t.buf[2] = acast `3`'rune
+	t.buf[3] = acast `4`'rune
 
 	let x = t.toString()
 	toto(cast(string) x)

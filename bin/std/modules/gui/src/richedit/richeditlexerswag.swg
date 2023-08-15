@@ -18,6 +18,7 @@ struct RichEditLexerSwag
         Type
         Class
         String
+        Character
         Numeric
     }
 
@@ -43,6 +44,7 @@ struct RichEditLexerSwag
         UserType
         Constant
         String
+        Character
         Numeric
         NumericHex
         NumericBin
@@ -77,6 +79,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.FunctionCall]       = Function
         mapStyles[State.Constant]           = Keyword
         mapStyles[State.String]             = String
+        mapStyles[State.Character]          = Character
         mapStyles[State.Numeric]            = Numeric
         mapStyles[State.NumericFrac]        = Numeric
         mapStyles[State.NumericHex]         = Numeric
@@ -94,6 +97,7 @@ impl IRichEditLexer for RichEditLexerSwag
         ed.styles[Type].colFg         = 0xFFF6CC86
         ed.styles[Class].colFg        = 0xFF4EC9B0
         ed.styles[String].colFg       = 0xFFCE9178
+        ed.styles[Character].colFg    = 0xFFCE9178
         ed.styles[Numeric].colFg      = 0xFFB5CEA8
 
         mapWords.add("true", State.Constant)
@@ -375,7 +379,7 @@ impl IRichEditLexer for RichEditLexerSwag
     mtd impl insertRune(ed: *RichEditCtrl, ch: rune)->bool
     {
         // Smart return
-        if ch == "\n"'rune
+        if ch == `\n`'rune
         {
             var cp = ed.getBegSelection()
             let line = ed.lines[cp.lineIndex]
@@ -390,8 +394,8 @@ impl IRichEditLexer for RichEditLexerSwag
                     cpt += 1
                 }
 
-                if cpt < line.chars.count and line.chars[cpt] == "{"'rune
-                    str += "\t"'rune
+                if cpt < line.chars.count and line.chars[cpt] == `{`'rune
+                    str += `\t`'rune
             }
 
             ed.pushUndo()
@@ -452,16 +456,16 @@ impl IRichEditLexer for RichEditLexerSwag
             switch currentState
             {
             case State.NumericFrac:
-                if Unicode.isNumber(c) or c == "_"'u8
+                if Unicode.isNumber(c) or c == `_`'u8
                 {
                     seekNext()
                     continue
                 }
 
-                if c == "e"'rune
+                if c == `e`'rune
                 {
                     seekNext()
-                    if cn == "+"'rune or cn == "-"'rune
+                    if cn == `+`'rune or cn == `-`'rune
                         seekNext()
                     currentState = State.Numeric
                     continue
@@ -470,7 +474,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 currentState = State.Default
 
             case State.NumericHex:
-                if Unicode.isNumber(c) or c == "_"'u8
+                if Unicode.isNumber(c) or c == `_`'u8
                 {
                     seekNext()
                     continue
@@ -484,13 +488,13 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.NumericBin:
-                if Unicode.isNumber(c) or c == "_"'u8
+                if Unicode.isNumber(c) or c == `_`'u8
                 {
                     seekNext()
                     continue
                 }
 
-                if c != "0"'rune and c != "1"'rune
+                if c != `0`'rune and c != `1`'rune
                 {
                     currentState = State.Default
                     seekNext()
@@ -498,21 +502,21 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Numeric:
-                if c == "."'rune and cn == "."'rune
+                if c == `.`'rune and cn == `.`'rune
                 {
                     currentState = State.Default
                     seekNext()
                     continue
                 }
 
-                if c == "."'rune or c == "e"'rune or c == "E"'rune
+                if c == `.`'rune or c == `e`'rune or c == `E`'rune
                 {
                     currentState = State.NumericFrac
                     seekNext()
                     continue
                 }
 
-                if !Unicode.isNumber(c) and c != "."'rune
+                if !Unicode.isNumber(c) and c != `.`'rune
                 {
                     currentState = State.Default
                     seekNext()
@@ -520,14 +524,29 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.String:
-                if c == "\\"'rune
+                if c == `"`'rune
                 {
                     seekNext()
                     seekNext()
                     continue
                 }
 
-                if c == "\""'rune
+                if c == `"`'rune
+                {
+                    seekNext()
+                    currentState = State.Default
+                    continue
+                }
+
+            case State.Character:
+                if c == `\``'rune
+                {
+                    seekNext()
+                    seekNext()
+                    continue
+                }
+
+                if c == `\``'rune
                 {
                     seekNext()
                     currentState = State.Default
@@ -535,7 +554,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Comment:
-                if c == "*"'rune and cn == "/"'rune
+                if c == `*`'rune and cn == `/`'rune
                 {
                     seekNext()
                     seekNext()
@@ -546,7 +565,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == "/"'rune and cn == "*"'rune
+                if c == `/`'rune and cn == `*`'rune
                 {
                     currentCptCmt += 1
                     seekNext()
@@ -555,7 +574,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Attribute:
-                if c == "]"'rune
+                if c == `]`'rune
                 {
                     seekNext()
                     currentState = State.Default
@@ -563,7 +582,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Default:
-                if c == "#"'rune and cn == "["'rune
+                if c == `#`'rune and cn == `[`'rune
                 {
                     currentState = State.Attribute
                     seekNext()
@@ -571,11 +590,11 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if Unicode.isLetter(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
+                if Unicode.isLetter(c) or c == `_`'rune or c == `@`'rune or c == `#`'rune
                 {
                     var word: String
                     let saveSeek = seek
-                    while Unicode.isLetterOrDigit(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
+                    while Unicode.isLetterOrDigit(c) or c == `_`'rune or c == `@`'rune or c == `#`'rune
                     {
                         word += c
                         seek += 1
@@ -596,7 +615,7 @@ impl IRichEditLexer for RichEditLexerSwag
                             currentState = State.Keyword
                         elif Latin1.isUpper(word[0])
                             currentState = State.UserType
-                        elif c == "("'u8 and (Latin1.isLetter(word[0]) or word[0] == "_"'u8)
+                        elif c == `(`'u8 and (Latin1.isLetter(word[0]) or word[0] == `_`'u8)
                             currentState = State.FunctionCall
                         else
                             currentState = State.Default
@@ -608,14 +627,21 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == "\""'rune
+                if c == `"`'rune
                 {
                     currentState = State.String
                     seekNext()
                     continue
                 }
 
-                if Unicode.isNumber(c) and Unicode.toLower(cn) == "b"'u8
+                if c == `\``'rune
+                {
+                    currentState = State.Character
+                    seekNext()
+                    continue
+                }
+
+                if Unicode.isNumber(c) and Unicode.toLower(cn) == `b`'u8
                 {
                     currentState = State.NumericBin
                     seekNext()
@@ -623,7 +649,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if Unicode.isNumber(c) and Unicode.toLower(cn) == "x"'u8
+                if Unicode.isNumber(c) and Unicode.toLower(cn) == `x`'u8
                 {
                     currentState = State.NumericHex
                     seekNext()
@@ -638,7 +664,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == "/"'rune and cn == "*"'rune
+                if c == `/`'rune and cn == `*`'rune
                 {
                     currentCptCmt += 1
                     currentState = State.Comment
@@ -647,7 +673,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
-                if c == "/"'rune and cn == c
+                if c == `/`'rune and cn == c
                 {
                     currentState = State.LineComment
                     seekNext()

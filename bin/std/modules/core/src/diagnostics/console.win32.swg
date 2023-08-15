@@ -115,7 +115,7 @@ public func prompt()->String
         result.append(@mkstring(&buffer[0], dwRead))
 		if dwRead < BufSize
 			break
-		if buffer[BufSize - 1] == "\n"'u8
+		if buffer[BufSize - 1] == `\n`'u8
 			break
 	}
 

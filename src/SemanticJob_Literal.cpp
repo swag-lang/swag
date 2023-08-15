@@ -96,6 +96,9 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         case '\"':
             result.append('\"');
             continue;
+        case '`':
+            result.append('`');
+            continue;
         case 'x':
         {
             int  c1, c2;
@@ -188,11 +191,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
             return Fmt(Err(Err0261), typeSuffix->getDisplayNameC());
         break;
 
-    case LiteralType::TT_STRING:
-    case LiteralType::TT_STRING_RAW:
-    case LiteralType::TT_STRING_MULTILINE:
-    case LiteralType::TT_STRING_ESCAPE:
-    case LiteralType::TT_STRING_MULTILINE_ESCAPE:
     case LiteralType::TT_CHARACTER:
     case LiteralType::TT_CHARACTER_ESCAPE:
     {
@@ -464,16 +462,6 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
     processLiteralString(context);
 
-    // Special case for character
-    if (node->tokenId == TokenId::LiteralCharacter)
-    {
-        auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, node->typeInfo, false);
-        if (!errMsg.empty())
-            return context->report({node, errMsg});
-        node->byteCodeFct = ByteCodeGenJob::emitLiteral;
-        return true;
-    }
-
     // Suffix
     auto suffix = node->childs.empty() ? nullptr : node->childs.front();
     if (!suffix || !suffix->typeInfo)
@@ -481,6 +469,16 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         // If there's a suffix without a type, then this should be a 'user' suffix
         // Literal must have been flagged
         SWAG_ASSERT(!suffix || node->semFlags & SEMFLAG_LITERAL_SUFFIX);
+
+        // Convert to unsigned int for a character without suffix
+        if (node->tokenId == TokenId::LiteralCharacter)
+        {
+            auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, node->typeInfo, false);
+            if (!errMsg.empty())
+                return context->report({node, errMsg});
+            node->byteCodeFct = ByteCodeGenJob::emitLiteral;
+            return true;
+        }
 
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
         if (node->typeInfo->isNative(NativeTypeKind::F32) && node->literalType == LiteralType::TT_UNTYPED_FLOAT)

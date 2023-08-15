@@ -14,7 +14,7 @@ struct JSon
     output:         *ConcatBuffer
     indent:         u32
     fmtInt:         StrConv.ConvertFormatInt
-    fmtFloat:       StrConv.ConvertFormatFloat{fmt = "g"'u8}
+    fmtFloat:       StrConv.ConvertFormatFloat{fmt = `g`'u8}
     lastSeekValue:  ConcatBufferSeek
 }
 
@@ -25,7 +25,7 @@ impl JSon
         if !options.saveBlanks
             return
         loop indent * options.indentLevel
-            output.addNative(" "'u8)
+            output.addNative(` `'u8)
     }
 
     mtd startWrite(buf: *ConcatBuffer)
@@ -111,7 +111,7 @@ impl JSon
 
     mtd beginElement(val: TypeValue)
     {
-        output.addNative("\""'u8)
+        output.addNative(`"`'u8)
         output.addBytes(val.name)
         output.addBytes("\":")
         if options.saveBlanks
@@ -159,9 +159,9 @@ impl JSon
         }
         #elif NT == string
         {
-            output.addNative("\""'u8)
+            output.addNative(`"`'u8)
             output.addBytes(value)
-            output.addNative("\""'u8)
+            output.addNative(`"`'u8)
         }
         #else
         {

@@ -8,15 +8,16 @@ func isValidPathName(fullname: string)->bool
 {
     if @countof(fullname) == 0
         return false
+
     visit c: fullname
     {
-        if c < 32        return false
-        if c == "\""'u8  return false
-        if c == "<"'u8   return false
-        if c == ">"'u8   return false
-        if c == "|"'u8   return false
-        if c == "*"'u8   return false
-        if c == "?"'u8   return false
+        if c < 32       return false
+        if c == `"`'u8  return false
+        if c == `<`'u8  return false
+        if c == `>`'u8  return false
+        if c == `|`'u8  return false
+        if c == `*`'u8  return false
+        if c == `?`'u8  return false
     }
 
     return true
@@ -29,16 +30,16 @@ func isValidFileName(fullname: string)->bool
         return false
     visit c: fullname
     {
-        if c < 32        return false
-        if c == "\""'u8  return false
-        if c == "<"'u8   return false
-        if c == ">"'u8   return false
-        if c == "|"'u8   return false
-        if c == ":"'u8   return false
-        if c == "*"'u8   return false
-        if c == "?"'u8   return false
-        if c == "\\"'u8  return false
-        if c == "/"'u8   return false
+        if c < 32       return false
+        if c == `"`'u8  return false
+        if c == `<`'u8  return false
+        if c == `>`'u8  return false
+        if c == `|`'u8  return false
+        if c == `:`'u8  return false
+        if c == `*`'u8  return false
+        if c == `?`'u8  return false
+        if c == `\\`'u8 return false
+        if c == `/`'u8  return false
     }
 
     return true

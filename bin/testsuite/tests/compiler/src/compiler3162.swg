@@ -16,10 +16,10 @@ func toto(x: cvarargs)
 
     var str = cast(cstring) buf
     //@print(str)
-    @assert(buf[0] == "3"'u8)
-    @assert(buf[1] == "."'u8)
-    @assert(buf[2] == "1"'u8)
-    @assert(buf[3] == "4"'u8)
+    @assert(buf[0] == `3`'u8)
+    @assert(buf[1] == `.`'u8)
+    @assert(buf[2] == `1`'u8)
+    @assert(buf[3] == `4`'u8)
 
     @cvaend(&valist)
 }
