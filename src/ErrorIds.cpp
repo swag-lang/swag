@@ -469,7 +469,7 @@ void initErrors()
     SWAG_ERROR(Err0203, "cannot cast, not enough initializers ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0204, "cannot cast, too many initializers ('%d' expected, '%d' provided)");
     SWAG_ERROR(Err0261, "cannot convert a boolean literal to '%s'");
-    SWAG_ERROR(Err0302, "cannot convert from 'string' to '%s'");
+    SWAG_ERROR(Err0302, "cannot convert a character literal to '%s'");
     SWAG_ERROR(Err0287, "cannot convert the character literal to 'u16', value '%u' is too big");
     SWAG_ERROR(Err0263, "cannot convert the character literal to 'u8', value '%u' is too big");
     SWAG_ERROR(Err0059, "cannot convert the slice of type '%s' to a constant expression");

@@ -121,6 +121,26 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             continue;
         }
 
+        // Character
+        if (c == '`')
+        {
+            result += getColor(mode, SyntaxColor::SyntaxString);
+            result += c;
+            while (*pz && *pz != '`')
+            {
+                if (*pz == '\\')
+                    result += *pz++;
+                if (*pz)
+                    result += *pz++;
+            }
+
+            if (*pz == '`')
+                result += *pz++;
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += getColor(mode, SyntaxColor::SyntaxCode);
+            continue;
+        }
+
         // Line comment
         if (c == '/' && pz[0] == '/')
         {

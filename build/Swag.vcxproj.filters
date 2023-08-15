@@ -615,7 +615,7 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxColor.cpp">
-      <Filter>Report</Filter>
+      <Filter>Syntax</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -975,7 +975,7 @@
       <Filter>Jobs</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SyntaxColor.h">
-      <Filter>Report</Filter>
+      <Filter>Syntax</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
