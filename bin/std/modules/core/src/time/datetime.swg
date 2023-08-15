@@ -130,7 +130,7 @@ impl DateTime
             done = false
 
             // Blank
-            if !@countof(buf) or buf[0] != ` `'u8
+            if !@countof(buf) or buf[0] != ` `
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
@@ -153,7 +153,7 @@ impl DateTime
                 throw StrConv.ParseErrorInvalid
 
             // Blank
-            if !@countof(buf) or buf[0] != ` `'u8
+            if !@countof(buf) or buf[0] != ` `
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
@@ -167,7 +167,7 @@ impl DateTime
             buf = Tokenize.eatCount(buf, cast(u64) eat2)
 
             // Blank
-            if !@countof(buf) or buf[0] != ` `'u8
+            if !@countof(buf) or buf[0] != ` `
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
@@ -193,7 +193,7 @@ impl DateTime
             result.value.year = year
             result.eat += eat0
             buf = Tokenize.eatCount(buf, cast(u64) eat0)
-            if !@countof(buf) or buf[0] != `-`'u8
+            if !@countof(buf) or buf[0] != `-`
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
@@ -205,7 +205,7 @@ impl DateTime
             result.eat += eat1
             result.value.month = month
             buf = Tokenize.eatCount(buf, cast(u64) eat1)
-            if !@countof(buf) or buf[0] != `-`'u8
+            if !@countof(buf) or buf[0] != `-`
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
@@ -220,7 +220,7 @@ impl DateTime
         }
 
         // Blank
-        if !@countof(buf) or buf[0] != ` `'u8
+        if !@countof(buf) or buf[0] != ` `
             throw StrConv.ParseErrorInvalid
         buf = Tokenize.eatCount(buf, 1)
         result.eat += 1
@@ -232,7 +232,7 @@ impl DateTime
         result.eat += eat3
         result.value.hour = hour
         buf = Tokenize.eatCount(buf, cast(u64) eat3)
-        if !@countof(buf) or buf[0] != `:`'u8
+        if !@countof(buf) or buf[0] != `:`
             throw StrConv.ParseErrorInvalid
         buf = Tokenize.eatCount(buf, 1)
         result.eat += 1
@@ -244,7 +244,7 @@ impl DateTime
         result.eat += eat4
         result.value.minute = minute
         buf = Tokenize.eatCount(buf, cast(u64) eat4)
-        if !@countof(buf) or buf[0] != `:`'u8
+        if !@countof(buf) or buf[0] != `:`
             throw StrConv.ParseErrorInvalid
         buf = Tokenize.eatCount(buf, 1)
         result.eat += 1
@@ -260,7 +260,7 @@ impl DateTime
         // Milliseconds
         if fmt == .DateTimeMs or fmt == .IsoMs
         {
-            if !@countof(buf) or buf[0] != `.`'u8
+            if !@countof(buf) or buf[0] != `.`
                 throw StrConv.ParseErrorInvalid
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
@@ -347,13 +347,13 @@ impl StrConv.IConvert for DateTime
         {
             switch strFormat[0]
             {
-            case `a`'u8:
+            case `a`:
                 str = toString(.DateTime)
-            case `b`'u8:
+            case `b`:
                 str = toString(.DateTimeMs)
-            case `c`'u8:
+            case `c`:
                 str = toString(.Iso)
-            case `d`'u8:
+            case `d`:
                 str = toString(.IsoMs)
             }
         }

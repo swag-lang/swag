@@ -826,7 +826,7 @@ impl RegExp
         while pzStart != pzEnd and Unicode.isLatin1(pzStart[0]) and Latin1.isDigit(cast(u8) pzStart[0])
         {
             n *= 10
-            n += cast(u8) pzStart[0] - `0`'u8
+            n += cast(u8) pzStart[0] - `0`
             pzStart += 1
         }
 

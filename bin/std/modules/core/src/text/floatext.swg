@@ -312,7 +312,7 @@ impl FloatExt
             let v1 = v / 10
             v -= 10 * v1
             pos -= 1
-            buf[pos] = cast(u8) (v + `0`'u8)
+            buf[pos] = cast(u8) (v + `0`)
             v = v1
         }
 
@@ -339,7 +339,7 @@ impl FloatExt
                 }
 
                 let digit = fraction >> shift
-                d.d[nd] = cast(u8) (digit + `0`'u8)
+                d.d[nd] = cast(u8) (digit + `0`)
                 fraction -= digit << shift
                 nd += 1
                 needed -= 1
@@ -369,7 +369,7 @@ impl FloatExt
         // Trim trailing zeros.
         for var i = d.nd - 1; i >= 0; i -= 1
         {
-            if d.d[i] != `0`'u8
+            if d.d[i] != `0`
             {
                 d.nd = i + 1
                 break
@@ -398,7 +398,7 @@ impl FloatExt
             var i = d.nd - 1
             while i >= 0
             {
-                if d.d[i] == `9`'u8
+                if d.d[i] == `9`
                     d.nd -= 1
                 else
                     break
@@ -407,7 +407,7 @@ impl FloatExt
 
             if i < 0
             {
-                d.d[0] = `1`'u8
+                d.d[0] = `1`
                 d.nd = 1
                 d.dp += 1
             }
@@ -448,7 +448,7 @@ impl FloatExt
             {
                 let v1 = v / 10
                 v -= 10 * v1
-                buf[n] = cast(u8) (v + `0`'u8)
+                buf[n] = cast(u8) (v + `0`)
                 n -= 1
                 v = v1
             }
@@ -459,7 +459,7 @@ impl FloatExt
 
             d.nd = nd
             d.dp = nd
-            while d.nd > 0 and d.d[d.nd-1] == `0`'u8
+            while d.nd > 0 and d.d[d.nd-1] == `0`
                 d.nd -= 1
 
             if d.nd == 0 d.dp = 0
@@ -518,7 +518,7 @@ impl FloatExt
         {
             pow = uint64pow10[integerDigits-i-1]
             let digit = integer / cast(u32) pow
-            d.d[i] = cast(u8) (digit + `0`'u8)
+            d.d[i] = cast(u8) (digit + `0`)
             integer -= digit * cast(u32) pow
 
             // evaluate whether we should stop.
@@ -547,7 +547,7 @@ impl FloatExt
             fraction *= 10
             multiplier *= 10
             digit = cast(s64) (fraction >> shift)
-            d.d[d.nd] = cast(u8) (digit + `0`'u8)
+            d.d[d.nd] = cast(u8) (digit + `0`)
             d.nd += 1
             fraction -= cast(u64) digit << shift
             if fraction < allowance * multiplier
@@ -589,7 +589,7 @@ impl FloatExt
             return false
 
         // the number has actually reached zero.
-        if d.nd == 1 and d.d[0] == `0`'u8
+        if d.nd == 1 and d.d[0] == `0`
         {
             d.nd = 0
             d.dp = 0
