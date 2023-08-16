@@ -143,7 +143,7 @@ A string and a character can contain some *escape sequences* to specify special 
 */
 #test
 {
-    // An escape sequence starts with `\` and is followed by a letter.
+    // An escape sequence starts with a backslash `\`.
     {
         const a = "this is code ascii 0x00:   \0"   // null
         const b = "this is code ascii 0x07:   \a"   // bell

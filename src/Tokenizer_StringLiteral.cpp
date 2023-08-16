@@ -161,6 +161,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
             token.endLocation = location;
         }
 
+        // In order to concatenate adjacent string, we skip all blanks
         auto c = peekChar(offset);
         while (SWAG_IS_BLANK(c) || SWAG_IS_EOL(c))
         {
@@ -170,9 +171,33 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
             c = peekChar(offset);
         }
 
-        if (!raw && c == '"')
+        // And if after the blanks we have another string, then do it again
+        if (c == '"' && curBuffer[1] == '"' && curBuffer[2] == '"')
         {
+            raw            = false;
+            multiline      = true;
             realAppendName = true;
+            eatChar(c, offset);
+            eatChar(c, offset);
+            eatChar(c, offset);
+            continue;
+        }
+
+        if (c == '"')
+        {
+            raw            = false;
+            multiline      = false;
+            realAppendName = true;
+            eatChar(c, offset);
+            continue;
+        }
+
+        if (c == '@' && curBuffer[1] == '"')
+        {
+            raw            = true;
+            multiline      = true;
+            realAppendName = true;
+            eatChar(c, offset);
             eatChar(c, offset);
             continue;
         }
