@@ -99,7 +99,7 @@
 <li><a href="#012_string">String</a></li>
 <ul>
 <li><a href="#Character literals">Character literals</a></li>
-<li><a href="#Escape sequence">Escape sequence</a></li>
+<li><a href="#Escape sequences">Escape sequences</a></li>
 <li><a href="#Raw string">Raw string</a></li>
 <li><a href="#Multiline string">Multiline string</a></li>
 <li><a href="#@stringof and @nameof">@stringof and @nameof</a></li>
@@ -1166,12 +1166,12 @@ But the underlying type of a character can be forced with the use of a type post
 </span><span style="color:#3186CD">let</span><span style="color:#0"> e = </span><span style="color:#BB6643">`4`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(e == </span><span style="color:#74A35B">52</span><span style="color:#0">)
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(e) == </span><span style="color:#ED9A11">rune</span><span style="color:#0">)</span></code></pre><p>
-<h3 id="Escape sequence">Escape sequence </h3></p>
+<h3 id="Escape sequences">Escape sequences </h3></p>
 <p>
 A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
 <p>
 
-  An escape sequence starts with <code>\</code>. </p>
+  An escape sequence starts with <code>\</code> and is followed by a letter. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"this is code ascii 0x00:   \0"</span><span style="color:#0">   </span><span style="color:#6A9955">// null</span><span style="color:#0">
     </span><span style="color:#3186CD">const</span><span style="color:#0"> b = </span><span style="color:#BB6643">"this is code ascii 0x07:   \a"</span><span style="color:#0">   </span><span style="color:#6A9955">// bell</span><span style="color:#0">
@@ -1208,25 +1208,29 @@ A <i>raw string</i> does not transform the escape sequences inside it. </p>
 
   A raw string starts and ends with the character <code>@</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#3186CD">@</span><span style="color:#BB6643">"\u2F46"</span><span style="color:#3186CD">@</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">@"\u2F46"@</span><span style="color:#0">
     </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a != </span><span style="color:#BB6643">"⽆"</span><span style="color:#0">
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a == </span><span style="color:#3186CD">@</span><span style="color:#BB6643">"\u2F46"</span><span style="color:#3186CD">@</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a == </span><span style="color:#BB6643">@"\u2F46"@</span><span style="color:#0">
 }</span></code></pre><p>
 
-  A raw string can be declared on several lines because <code>eol</code> is now part of the string. </p>
+  This are equivalent </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#3186CD">@</span><span style="color:#BB6643">"this is</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"\\hello \\world"</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> b = </span><span style="color:#BB6643">@"\hello \world"@</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> a == b
+}</span></code></pre><p>
+
+  A raw string can spawn on multiple lines because the line feed is now part of the string. </p>
+<pre><code><span style="color:#0">{
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">@"this is</span><span style="color:#0">
 </span><span style="color:#BB6643">                a</span><span style="color:#0">
 </span><span style="color:#BB6643">                string</span><span style="color:#0">
-</span><span style="color:#BB6643">                "</span><span style="color:#3186CD">@</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// Every blanks before the ending mark `"@` will be removed from every other lines,</span><span style="color:#0">
-    </span><span style="color:#6A9955">// so the string before is equivalent to :</span><span style="color:#0">
-
-    </span><span style="color:#6A9955">// this is</span><span style="color:#0">
-    </span><span style="color:#6A9955">// a</span><span style="color:#0">
-    </span><span style="color:#6A9955">// string</span><span style="color:#0">
+</span><span style="color:#BB6643">                "@</span><span style="color:#0">
 }</span></code></pre><p>
+Every blanks before the ending mark <code>"@</code> will be removed from every other lines, so the string before is equivalent to : </p>
+<pre><code><span style="color:#6A9955">// this is</span><span style="color:#0">
+</span><span style="color:#6A9955">// a</span><span style="color:#0">
+</span><span style="color:#6A9955">// string</span></code></pre><p>
 <h3 id="Multiline string">Multiline string </h3></p>
 <p>
 A multiline string starts and ends with <code>"""</code>. Unlike raw strings, they still evaluate escape sequences. </p>

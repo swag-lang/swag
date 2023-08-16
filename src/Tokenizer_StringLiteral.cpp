@@ -142,6 +142,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
                 {
                     appendTokenName(token);
                     curBuffer += 3;
+                    location.column += 3;
                     trimMultilineString(token.text);
                     break;
                 }
@@ -150,6 +151,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
                 {
                     appendTokenName(token);
                     curBuffer += 2;
+                    location.column += 2;
                     trimMultilineString(token.text);
                     break;
                 }

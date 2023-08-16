@@ -44,6 +44,7 @@ struct RichEditLexerSwag
         UserType
         Constant
         String
+        RawString
         Character
         Numeric
         NumericHex
@@ -79,6 +80,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.FunctionCall]       = Function
         mapStyles[State.Constant]           = Keyword
         mapStyles[State.String]             = String
+        mapStyles[State.RawString]          = String
         mapStyles[State.Character]          = Character
         mapStyles[State.Numeric]            = Numeric
         mapStyles[State.NumericFrac]        = Numeric
@@ -538,6 +540,15 @@ impl IRichEditLexer for RichEditLexerSwag
                     continue
                 }
 
+            case State.RawString:
+                if c == `"` and cn == `@`
+                {
+                    seekNext()
+                    seekNext()
+                    currentState = State.Default
+                    continue
+                }
+
             case State.Character:
                 if c == `\\`
                 {
@@ -585,6 +596,14 @@ impl IRichEditLexer for RichEditLexerSwag
                 if c == `#` and cn == `[`
                 {
                     currentState = State.Attribute
+                    seekNext()
+                    seekNext()
+                    continue
+                }
+
+                if c == `@` and cn == `"`
+                {
+                    currentState = State.RawString
                     seekNext()
                     seekNext()
                     continue

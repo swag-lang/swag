@@ -188,20 +188,30 @@ A *raw string* does not transform the escape sequences inside it.
         #assert a == @"\u2F46"@
     }
 
-    // A raw string can be declared on several lines because `eol` is now part of the string.
+    // This are equivalent
+    {
+        const a = "\\hello \\world"
+        const b = @"\hello \world"@
+        #assert a == b
+    }
+
+    // A raw string can spawn on multiple lines because the line feed is now part of the string.
     {
         const a = @"this is
                     a
                     string
                     "@
-
-        // Every blanks before the ending mark `"@` will be removed from every other lines,
-        // so the string before is equivalent to :
-
-        // this is
-        // a
-        // string
     }
+}
+
+/**
+Every blanks **before** the ending mark `"@` will be removed from every other lines, so the string before is equivalent to :
+*/
+#test
+{
+    // this is
+    // a
+    // string
 }
 
 /**

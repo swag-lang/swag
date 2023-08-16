@@ -101,6 +101,25 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
     {
         Utf8 identifier;
 
+        // Raw string
+        if (c == '@' && *pz == '"')
+        {
+            result += getColor(mode, SyntaxColor::SyntaxString);
+            result += c;
+            while (*pz && (pz[0] != '"' || pz[1] != '@'))
+                result += *pz++;
+
+            if (*pz)
+            {
+                result += *pz++;
+                result += *pz++;
+            }
+
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += getColor(mode, SyntaxColor::SyntaxCode);
+            continue;
+        }
+
         // String
         if (c == '"')
         {
