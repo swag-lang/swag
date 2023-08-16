@@ -14,8 +14,8 @@
         let ch = `A`'rune
         switch ch
         {
-        case `B`'rune: @assert(false)
-        case `A`'rune: break
+        case `B`: @assert(false)
+        case `A`: break
         }
     }
 
