@@ -67,10 +67,10 @@ var notletterTest: []rune = [
     visit c: spaceTest      @assert(Unicode.isSpace(c))
     visit c: letterTest     @assert(Unicode.isLetter(c))
     visit c: notletterTest  @assert(!Unicode.isLetter(c))
-    @assert(Unicode.isLetter(`是`'rune))
-    @assert(!Unicode.isLetter(`‼`'rune))
+    @assert(Unicode.isLetter(`是`))
+    @assert(!Unicode.isLetter(`‼`))
 
-    @assert(Unicode.isNumber(`௧`'rune))
-    @assert(Unicode.isNumber(`൧`'rune))
-    @assert(Unicode.isNumber(`𑄷`'rune))
+    @assert(Unicode.isNumber(`௧`))
+    @assert(Unicode.isNumber(`൧`))
+    @assert(Unicode.isNumber(`𑄷`))
 }
