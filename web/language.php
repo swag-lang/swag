@@ -98,10 +98,10 @@
 </ul>
 <li><a href="#012_string">String</a></li>
 <ul>
+<li><a href="#Character literals">Character literals</a></li>
 <li><a href="#Escape sequence">Escape sequence</a></li>
 <li><a href="#Raw string">Raw string</a></li>
 <li><a href="#Multiline string">Multiline string</a></li>
-<li><a href="#Character literals">Character literals</a></li>
 <li><a href="#@stringof and @nameof">@stringof and @nameof</a></li>
 </ul>
 <li><a href="#013_variables">Variables</a></li>
@@ -1126,24 +1126,65 @@ a = </span><span style="color:#BB6643">"null"</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a != </span><span style="color:#3186CD">null</span><span style="color:#0">)
 a = </span><span style="color:#3186CD">null</span><span style="color:#0">
 </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#3186CD">null</span><span style="color:#0">)</span></code></pre><p>
+<h3 id="Character literals">Character literals </h3></p>
+<p>
+A <i>character</i> is enclosed with <b>backticks</b>. </p>
+<pre><code><span style="color:#3186CD">let</span><span style="color:#0"> char0 = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+</span><span style="color:#3186CD">let</span><span style="color:#0"> char1 = </span><span style="color:#BB6643">`我`</span></code></pre><p>
+By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type <code>rune</code>. </p>
+<pre><code><span style="color:#0">{
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">u8</span><span style="color:#0">   = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> b: </span><span style="color:#ED9A11">u16</span><span style="color:#0">  = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> c: </span><span style="color:#ED9A11">u32</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> d: </span><span style="color:#ED9A11">u64</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> e: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+}
+
+{
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">s8</span><span style="color:#0">   = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> b: </span><span style="color:#ED9A11">s16</span><span style="color:#0">  = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> c: </span><span style="color:#ED9A11">s32</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+    </span><span style="color:#3186CD">let</span><span style="color:#0"> d: </span><span style="color:#ED9A11">s64</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
+}</span></code></pre><p>
+But the underlying type of a character can be forced with the use of a type postfix. </p>
+<pre><code><span style="color:#3186CD">let</span><span style="color:#0"> a = </span><span style="color:#BB6643">`0`</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">48</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(a) == </span><span style="color:#ED9A11">u8</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> b = </span><span style="color:#BB6643">`1`</span><span style="color:#0">'</span><span style="color:#ED9A11">u16</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(b == </span><span style="color:#74A35B">49</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(b) == </span><span style="color:#ED9A11">u16</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> c = </span><span style="color:#BB6643">`2`</span><span style="color:#0">'</span><span style="color:#ED9A11">u32</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c == </span><span style="color:#74A35B">50</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(c) == </span><span style="color:#ED9A11">u32</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> d = </span><span style="color:#BB6643">`3`</span><span style="color:#0">'</span><span style="color:#ED9A11">u64</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(d == </span><span style="color:#74A35B">51</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(d) == </span><span style="color:#ED9A11">u64</span><span style="color:#0">)
+
+</span><span style="color:#3186CD">let</span><span style="color:#0"> e = </span><span style="color:#BB6643">`4`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(e == </span><span style="color:#74A35B">52</span><span style="color:#0">)
+</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(e) == </span><span style="color:#ED9A11">rune</span><span style="color:#0">)</span></code></pre><p>
 <h3 id="Escape sequence">Escape sequence </h3></p>
 <p>
-A string and a rune can contain some <i>escape sequences</i> to specify special characters. </p>
+A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
 <p>
 
   An escape sequence starts with <code>\</code>. </p>
 <pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"this is code ascii 0x00:   \0"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> b = </span><span style="color:#BB6643">"this is code ascii 0x07:   \a"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> c = </span><span style="color:#BB6643">"this is code ascii 0x08:   \b"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> d = </span><span style="color:#BB6643">"this is code ascii 0x09:   \t"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> e = </span><span style="color:#BB6643">"this is code ascii 0x0A:   \n"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> f = </span><span style="color:#BB6643">"this is code ascii 0x0B:   \v"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> g = </span><span style="color:#BB6643">"this is code ascii 0x0C:   \f"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> h = </span><span style="color:#BB6643">"this is code ascii 0x0D:   \r"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> i = </span><span style="color:#BB6643">"this is code ascii 0x22:   \""</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> j = </span><span style="color:#BB6643">"this is code ascii 0x27:   \'"</span><span style="color:#0">
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> k = </span><span style="color:#BB6643">"this is code ascii 0x5C:   \\"</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"this is code ascii 0x00:   \0"</span><span style="color:#0">   </span><span style="color:#6A9955">// null</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> b = </span><span style="color:#BB6643">"this is code ascii 0x07:   \a"</span><span style="color:#0">   </span><span style="color:#6A9955">// bell</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> c = </span><span style="color:#BB6643">"this is code ascii 0x08:   \b"</span><span style="color:#0">   </span><span style="color:#6A9955">// backspace</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> d = </span><span style="color:#BB6643">"this is code ascii 0x09:   \t"</span><span style="color:#0">   </span><span style="color:#6A9955">// horizontal tab</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> e = </span><span style="color:#BB6643">"this is code ascii 0x0A:   \n"</span><span style="color:#0">   </span><span style="color:#6A9955">// line feed</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> f = </span><span style="color:#BB6643">"this is code ascii 0x0B:   \v"</span><span style="color:#0">   </span><span style="color:#6A9955">// vertical tab</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> g = </span><span style="color:#BB6643">"this is code ascii 0x0C:   \f"</span><span style="color:#0">   </span><span style="color:#6A9955">// form feed</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> h = </span><span style="color:#BB6643">"this is code ascii 0x0D:   \r"</span><span style="color:#0">   </span><span style="color:#6A9955">// carriage return</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> i = </span><span style="color:#BB6643">"this is code ascii 0x22:   \""</span><span style="color:#0">   </span><span style="color:#6A9955">// double quote</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> j = </span><span style="color:#BB6643">"this is code ascii 0x27:   \'"</span><span style="color:#0">   </span><span style="color:#6A9955">// single quote</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> k = </span><span style="color:#BB6643">"this is code ascii 0x60:   \`"</span><span style="color:#0">   </span><span style="color:#6A9955">// backtick</span><span style="color:#0">
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> l = </span><span style="color:#BB6643">"this is code ascii 0x5C:   \\"</span><span style="color:#0">   </span><span style="color:#6A9955">// backslash</span><span style="color:#0">
 }</span></code></pre><p>
 
   An escape sequence can also be used to specify an ascii or a unicode value. </p>
@@ -1151,9 +1192,14 @@ A string and a rune can contain some <i>escape sequences</i> to specify special 
     </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"\x26"</span><span style="color:#0">        </span><span style="color:#6A9955">// 1 byte, hexadecimal, extended ascii</span><span style="color:#0">
     </span><span style="color:#3186CD">const</span><span style="color:#0"> b = </span><span style="color:#BB6643">"\u2626"</span><span style="color:#0">      </span><span style="color:#6A9955">// 2 bytes, hexadecimal, unicode 16 bits</span><span style="color:#0">
     </span><span style="color:#3186CD">const</span><span style="color:#0"> c = </span><span style="color:#BB6643">"\U26262626"</span><span style="color:#0">  </span><span style="color:#6A9955">// 4 bytes, hexadecimal, unicode 32 bits</span><span style="color:#0">
+}
 
-    </span><span style="color:#3186CD">const</span><span style="color:#0"> d = </span><span style="color:#BB6643">"\u2F46"</span><span style="color:#0">
-    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> d == </span><span style="color:#BB6643">"⽆"</span><span style="color:#0">
+{
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> d = </span><span style="color:#BB6643">"\u2F46\u2F46"</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> d == </span><span style="color:#BB6643">"⽆⽆"</span><span style="color:#0">
+
+    </span><span style="color:#3186CD">const</span><span style="color:#0"> e = </span><span style="color:#BB6643">`\u2F46`</span><span style="color:#0">
+    </span><span style="color:#7F7F7F">#assert</span><span style="color:#0"> e == </span><span style="color:#BB6643">`⽆`</span><span style="color:#0">
 }</span></code></pre><p>
 <h3 id="Raw string">Raw string </h3></p>
 <p>
@@ -1209,46 +1255,6 @@ A multiline string starts and ends with <code>"""</code>. Unlike raw strings, th
     </span><span style="color:#6A9955">// a</span><span style="color:#0">
     </span><span style="color:#6A9955">// string</span><span style="color:#0">
 }</span></code></pre><p>
-<h3 id="Character literals">Character literals </h3></p>
-<p>
-A <i>character</i> is enclosed with <b>backticks</b>. </p>
-<pre><code><span style="color:#3186CD">let</span><span style="color:#0"> char0 = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
-</span><span style="color:#3186CD">let</span><span style="color:#0"> char1 = </span><span style="color:#BB6643">`我`</span></code></pre><p>
-By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type <code>rune</code>. </p>
-<pre><code><span style="color:#0">{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">u8</span><span style="color:#0">   = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> b: </span><span style="color:#ED9A11">u16</span><span style="color:#0">  = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> c: </span><span style="color:#ED9A11">u32</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> d: </span><span style="color:#ED9A11">u64</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> e: </span><span style="color:#ED9A11">rune</span><span style="color:#0"> = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
-}
-
-{
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> a: </span><span style="color:#ED9A11">s8</span><span style="color:#0">   = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> b: </span><span style="color:#ED9A11">s16</span><span style="color:#0">  = </span><span style="color:#BB6643">`a`</span><span style="color:#0">
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> c: </span><span style="color:#ED9A11">s32</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
-    </span><span style="color:#3186CD">let</span><span style="color:#0"> d: </span><span style="color:#ED9A11">s64</span><span style="color:#0">  = </span><span style="color:#BB6643">`我`</span><span style="color:#0">
-}</span></code></pre><p>
-But a character can also be casted with a type postfix. </p>
-<pre><code><span style="color:#3186CD">let</span><span style="color:#0"> a = </span><span style="color:#BB6643">`0`</span><span style="color:#0">'</span><span style="color:#ED9A11">u8</span><span style="color:#0">
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(a == </span><span style="color:#74A35B">48</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(a) == </span><span style="color:#ED9A11">u8</span><span style="color:#0">)
-
-</span><span style="color:#3186CD">let</span><span style="color:#0"> b = </span><span style="color:#BB6643">`1`</span><span style="color:#0">'</span><span style="color:#ED9A11">u16</span><span style="color:#0">
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(b == </span><span style="color:#74A35B">49</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(b) == </span><span style="color:#ED9A11">u16</span><span style="color:#0">)
-
-</span><span style="color:#3186CD">let</span><span style="color:#0"> c = </span><span style="color:#BB6643">`2`</span><span style="color:#0">'</span><span style="color:#ED9A11">u32</span><span style="color:#0">
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(c == </span><span style="color:#74A35B">50</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(c) == </span><span style="color:#ED9A11">u32</span><span style="color:#0">)
-
-</span><span style="color:#3186CD">let</span><span style="color:#0"> d = </span><span style="color:#BB6643">`3`</span><span style="color:#0">'</span><span style="color:#ED9A11">u64</span><span style="color:#0">
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(d == </span><span style="color:#74A35B">51</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(d) == </span><span style="color:#ED9A11">u64</span><span style="color:#0">)
-
-</span><span style="color:#3186CD">let</span><span style="color:#0"> e = </span><span style="color:#BB6643">`4`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(e == </span><span style="color:#74A35B">52</span><span style="color:#0">)
-</span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#B4B44A">@typeof</span><span style="color:#0">(e) == </span><span style="color:#ED9A11">rune</span><span style="color:#0">)</span></code></pre><p>
 <h3 id="@stringof and @nameof">@stringof and @nameof </h3></p>
 <p>
 You can use the instrinsic <code>@stringof</code> to return at compile time the result of a constant expression as a string. </p>
@@ -2911,8 +2917,8 @@ A loop without an expression but with a block is infinite. This is equivalent to
     </span><span style="color:#3186CD">let</span><span style="color:#0"> ch = </span><span style="color:#BB6643">`A`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">
     </span><span style="color:#B040BE">switch</span><span style="color:#0"> ch
     {
-    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">`B`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
-    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">`A`</span><span style="color:#0">'</span><span style="color:#ED9A11">rune</span><span style="color:#0">: </span><span style="color:#B040BE">break</span><span style="color:#0">
+    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">`B`</span><span style="color:#0">: </span><span style="color:#B4B44A">@assert</span><span style="color:#0">(</span><span style="color:#3186CD">false</span><span style="color:#0">)
+    </span><span style="color:#B040BE">case</span><span style="color:#0"> </span><span style="color:#BB6643">`A`</span><span style="color:#0">: </span><span style="color:#B040BE">break</span><span style="color:#0">
     }
 }</span></code></pre><p>
 

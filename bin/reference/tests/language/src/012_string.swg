@@ -81,24 +81,82 @@ A string can be `null` if not defined.
 }
 
 /**
-# Escape sequence
-A string and a rune can contain some *escape sequences* to specify special characters.
+# Character literals
+A *character* is enclosed with **backticks**.
 */
 #test
 {
-    // An escape sequence starts with `\`.
+    let char0 = `a`
+    let char1 = `我`
+}
+
+/**
+By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type `rune`.
+*/
+#test
+{
     {
-        const a = "this is code ascii 0x00:   \0"
-        const b = "this is code ascii 0x07:   \a"
-        const c = "this is code ascii 0x08:   \b"
-        const d = "this is code ascii 0x09:   \t"
-        const e = "this is code ascii 0x0A:   \n"
-        const f = "this is code ascii 0x0B:   \v"
-        const g = "this is code ascii 0x0C:   \f"
-        const h = "this is code ascii 0x0D:   \r"
-        const i = "this is code ascii 0x22:   \""
-        const j = "this is code ascii 0x27:   \'"
-        const k = "this is code ascii 0x5C:   \\"
+        let a: u8   = `a`
+        let b: u16  = `a`
+        let c: u32  = `我`
+        let d: u64  = `我`
+        let e: rune = `我`
+    }
+
+    {
+        let a: s8   = `a`
+        let b: s16  = `a`
+        let c: s32  = `我`
+        let d: s64  = `我`
+    }
+}
+
+/**
+But the underlying type of a character can be forced with the use of a type postfix.
+*/
+#test
+{
+    let a = `0`'u8
+    @assert(a == 48)
+    @assert(@typeof(a) == u8)
+
+    let b = `1`'u16
+    @assert(b == 49)
+    @assert(@typeof(b) == u16)
+
+    let c = `2`'u32
+    @assert(c == 50)
+    @assert(@typeof(c) == u32)
+
+    let d = `3`'u64
+    @assert(d == 51)
+    @assert(@typeof(d) == u64)
+
+    let e = `4`'rune
+    @assert(e == 52)
+    @assert(@typeof(e) == rune)
+}
+
+/**
+# Escape sequences
+A string and a character can contain some *escape sequences* to specify special characters.
+*/
+#test
+{
+    // An escape sequence starts with `\` and is followed by a letter.
+    {
+        const a = "this is code ascii 0x00:   \0"   // null
+        const b = "this is code ascii 0x07:   \a"   // bell
+        const c = "this is code ascii 0x08:   \b"   // backspace
+        const d = "this is code ascii 0x09:   \t"   // horizontal tab
+        const e = "this is code ascii 0x0A:   \n"   // line feed
+        const f = "this is code ascii 0x0B:   \v"   // vertical tab
+        const g = "this is code ascii 0x0C:   \f"   // form feed
+        const h = "this is code ascii 0x0D:   \r"   // carriage return
+        const i = "this is code ascii 0x22:   \""   // double quote
+        const j = "this is code ascii 0x27:   \'"   // single quote
+        const k = "this is code ascii 0x60:   \`"   // backtick
+        const l = "this is code ascii 0x5C:   \\"   // backslash
     }
 
     // An escape sequence can also be used to specify an ascii or a unicode value.
@@ -106,9 +164,14 @@ A string and a rune can contain some *escape sequences* to specify special chara
         const a = "\x26"        // 1 byte, hexadecimal, extended ascii
         const b = "\u2626"      // 2 bytes, hexadecimal, unicode 16 bits
         const c = "\U26262626"  // 4 bytes, hexadecimal, unicode 32 bits
+    }
 
-        const d = "\u2F46"
-        #assert d == "⽆"
+    {
+        const d = "\u2F46\u2F46"
+        #assert d == "⽆⽆"
+
+        const e = `\u2F46`
+        #assert e == `⽆`
     }
 }
 
@@ -172,63 +235,6 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
         // a
         // string
     }
-}
-
-/**
-# Character literals
-A *character* is enclosed with **backticks**.
-*/
-#test
-{
-    let char0 = `a`
-    let char1 = `我`
-}
-
-/**
-By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type `rune`.
-*/
-#test
-{
-    {
-        let a: u8   = `a`
-        let b: u16  = `a`
-        let c: u32  = `我`
-        let d: u64  = `我`
-        let e: rune = `我`
-    }
-
-    {
-        let a: s8   = `a`
-        let b: s16  = `a`
-        let c: s32  = `我`
-        let d: s64  = `我`
-    }
-}
-
-/**
-But a character can also be casted with a type postfix.
-*/
-#test
-{
-    let a = `0`'u8
-    @assert(a == 48)
-    @assert(@typeof(a) == u8)
-
-    let b = `1`'u16
-    @assert(b == 49)
-    @assert(@typeof(b) == u16)
-
-    let c = `2`'u32
-    @assert(c == 50)
-    @assert(@typeof(c) == u32)
-
-    let d = `3`'u64
-    @assert(d == 51)
-    @assert(@typeof(d) == u64)
-
-    let e = `4`'rune
-    @assert(e == 52)
-    @assert(@typeof(e) == rune)
 }
 
 /**
