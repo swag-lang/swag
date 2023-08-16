@@ -428,8 +428,9 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user)
     if (user.empty())
         return "";
 
-    bool inCodeMode = false;
-    bool inBoldMode = false;
+    bool inCodeMode   = false;
+    bool inBoldMode   = false;
+    bool inItalicMode = false;
     Utf8 result;
 
     auto pz = user.c_str();
@@ -496,8 +497,20 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user)
                 result += "[";
         }
 
+        // Italic
+        if (*pz == '*' && pz[1] != '*' && (pz == user.c_str() || pz[-1] != '*'))
+        {
+            inItalicMode = !inItalicMode;
+            if (inItalicMode)
+                result += "<i>";
+            else
+                result += "</i>";
+            pz += 1;
+            continue;
+        }
+
         // Bold
-        if (*pz == '*' && pz[1] == '*')
+        if (*pz == '*' && pz[1] == '*' && pz[2] != '*' && (pz == user.c_str() || pz[-1] != '*'))
         {
             inBoldMode = !inBoldMode;
             if (inBoldMode)

@@ -1171,7 +1171,7 @@ But the underlying type of a character can be forced with the use of a type post
 A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
 <p>
 
-  An escape sequence starts with <code>\</code> and is followed by a letter. </p>
+  An escape sequence starts with a backslash <code>\</code>. </p>
 <pre><code><span style="color:#0">{
     </span><span style="color:#3186CD">const</span><span style="color:#0"> a = </span><span style="color:#BB6643">"this is code ascii 0x00:   \0"</span><span style="color:#0">   </span><span style="color:#6A9955">// null</span><span style="color:#0">
     </span><span style="color:#3186CD">const</span><span style="color:#0"> b = </span><span style="color:#BB6643">"this is code ascii 0x07:   \a"</span><span style="color:#0">   </span><span style="color:#6A9955">// bell</span><span style="color:#0">
@@ -1227,7 +1227,7 @@ A <i>raw string</i> does not transform the escape sequences inside it. </p>
 </span><span style="color:#BB6643">                string</span><span style="color:#0">
 </span><span style="color:#BB6643">                "@</span><span style="color:#0">
 }</span></code></pre><p>
-Every blanks before the ending mark <code>"@</code> will be removed from every other lines, so the string before is equivalent to : </p>
+Every blanks <b>before</b> the ending mark <code>"@</code> will be removed from every other lines, so the string before is equivalent to : </p>
 <pre><code><span style="color:#6A9955">// this is</span><span style="color:#0">
 </span><span style="color:#6A9955">// a</span><span style="color:#0">
 </span><span style="color:#6A9955">// string</span></code></pre><p>
@@ -6772,9 +6772,10 @@ For constants or enum values, the document comment is the one declared at the en
 {
     </span><span style="color:#3BC3A7">Red</span><span style="color:#0">         </span><span style="color:#6A9955">// This is a documentation comment</span><span style="color:#0">
 }</span></code></pre><p>
-Some other markdown markers are also supported inside paragraphs. </p>
+Some other markdown markers (or kind of) are also supported inside paragraphs. </p>
 <pre><code><span style="color:#6A9955">// `this is code` (backtick) for 'inline' code.</span><span style="color:#0">
 </span><span style="color:#6A9955">// 'single_word'  (tick) for 'inline' code.</span><span style="color:#0">
+</span><span style="color:#6A9955">// *italic*</span><span style="color:#0">
 </span><span style="color:#6A9955">// **bold**</span><span style="color:#0">
 </span><span style="color:#6A9955">// # Title</span><span style="color:#0">
 </span><span style="color:#6A9955">// ## Title</span><span style="color:#0">

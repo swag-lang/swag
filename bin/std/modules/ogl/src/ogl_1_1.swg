@@ -686,7 +686,7 @@ const GL_BGR_EXT                        = 0x80E0
 const GL_BGRA_EXT                       = 0x80E1
 
 /* EXT_paletted_texture */
-/* These must match the GL_COLOR_TABLE_*_SGI enumerants */
+/* These must match the GL_COLOR_TABLE_..._SGI enumerants */
 const GL_COLOR_TABLE_FORMAT_EXT         = 0x80D8
 const GL_COLOR_TABLE_WIDTH_EXT          = 0x80D9
 const GL_COLOR_TABLE_RED_SIZE_EXT       = 0x80DA

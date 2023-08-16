@@ -33,8 +33,6 @@ struct lldiv_t { quot, rem: s64; }
 	func realloc(ptr: *void, size: size_t)->*void;
 
 	func abort();
-	//func atexit(fn: *void)->s32;
-	//func at_quick_exit(fn: *void)->s32;
 	func exit(status: s32);
 	func _Exit(status: s32);
 	func getenv(name: cstring)->*u8;

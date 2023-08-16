@@ -127,12 +127,13 @@ For constants or enum values, the document comment is the one declared at the en
 }
 
 /**
-Some other markdown markers are also supported inside paragraphs.
+Some other markdown markers (or kind of) are also supported inside paragraphs.
 */
 #test
 {
     // `this is code` (backtick) for 'inline' code.
     // 'single_word'  (tick) for 'inline' code.
+    // *italic*
     // **bold**
     // # Title
     // ## Title
