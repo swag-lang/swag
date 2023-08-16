@@ -354,7 +354,7 @@ impl RichEditView
             newStyle = ed.styles[dref pStyle]
 
             var cr = dref pChar
-            let isTabulation = cr == `\t`'rune
+            let isTabulation = cr == `\t`
 
             var selected = false
             if ed.hasSelRect
@@ -391,10 +391,10 @@ impl RichEditView
 
             if ed.richEdFlags & .DrawBlanks
             {
-                if cr == ` `'rune and pChar != &dummyChar
+                if cr == ` ` and pChar != &dummyChar
                 {
                     newStyle.colFg = getThemeColors().richEdit_TextSpecial
-                    cr = `.`'rune
+                    cr = `.`
                 }
                 elif isTabulation
                 {

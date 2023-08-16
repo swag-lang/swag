@@ -13,7 +13,7 @@ impl RichEditCtrl
     {
         var size: retval
 
-        if line.chars[i] == `\t`'rune
+        if line.chars[i] == `\t`
         {
             size.x = getTabOffset(cast(s32) x)
         }
@@ -50,7 +50,7 @@ impl RichEditCtrl
     {
         let of = cast(s32) (x - getMarginLeft())
         let fontR = getFont().getFont(styles[0].fontMode)
-        var sizeBlank = Painter.measureRune(` `'rune, fontR)
+        var sizeBlank = Painter.measureRune(` `, fontR)
         let sx = cast(s32) (sizeBlank.x * tabSize)
 
         var tab = (of / sx) * sx
@@ -65,7 +65,7 @@ impl RichEditCtrl
     mtd getXExtent()->Math.Point
     {
         let fontR = getFont().getFont(styles[0].fontMode)
-        return Painter.measureRune(`X`'rune, fontR)
+        return Painter.measureRune(`X`, fontR)
     }
 
     mtd getCaretPos(cp: RichEditCursor)->Math.Rectangle
