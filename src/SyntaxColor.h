@@ -15,6 +15,7 @@ enum class SyntaxColor
     SyntaxLogic,
     SyntaxNumber,
     SyntaxString,
+    SyntaxAttribute,
 };
 
 enum class SyntaxColorMode

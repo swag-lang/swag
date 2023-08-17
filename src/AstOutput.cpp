@@ -90,6 +90,9 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     {
         if (s == nodeAttr->content)
             continue;
+        if (s->kind == AstNodeKind::AttrUse)
+            continue;
+
         if (!first)
             CONCAT_FIXED_STR(concat, ", ");
         else

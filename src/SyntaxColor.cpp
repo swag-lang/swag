@@ -37,6 +37,8 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
             return "\x1b[38;2;181;206;168m";
         case SyntaxColor::SyntaxString:
             return "\x1b[38;2;206;145;120m";
+        case SyntaxColor::SyntaxAttribute:
+            return "\x1b[38;2;170;170;170m";
         }
         break;
 
@@ -78,6 +80,9 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
         case SyntaxColor::SyntaxString:
             colorName = "SyntaxString";
             break;
+        case SyntaxColor::SyntaxAttribute:
+            colorName = "SyntaxAttribute";
+            break;
         }
 
         if (colorName)
@@ -100,6 +105,45 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
     while (c)
     {
         Utf8 identifier;
+
+        // Attribute
+        if (c == '#' && *pz == '[')
+        {
+            result += getColor(mode, SyntaxColor::SyntaxAttribute);
+            result += c;
+            result += *pz++;
+
+            int cpt = 1;
+            while (cpt)
+            {
+                if (*pz == '"')
+                {
+                    result += *pz++;
+                    while (*pz && *pz != '"')
+                    {
+                        if (*pz == '\\')
+                        {
+                            result += *pz++;
+                            result += *pz++;
+                        }
+                        else
+                            result += *pz++;
+                    }
+                    if (*pz)
+                        result += *pz++;
+                    continue;
+                }
+                else if (*pz == '[')
+                    cpt++;
+                else if (*pz == ']')
+                    cpt--;
+                result += *pz++;
+            }
+
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += getColor(mode, SyntaxColor::SyntaxCode);
+            continue;
+        }
 
         // Raw string
         if (c == '@' && *pz == '"')

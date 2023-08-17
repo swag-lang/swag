@@ -1072,6 +1072,7 @@ void ModuleGenDocJob::outputStyles()
         .SyntaxLogic     { color: #D8A0DF; }\n\
         .SyntaxNumber    { color: #B5CEA8; }\n\
         .SyntaxString    { color: #CE9178; }\n\
+        .SyntaxAttribute { color: #AAAAAA; }\n\
     ";
     helpContent += "</style>\n";
 }
