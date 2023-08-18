@@ -213,6 +213,10 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
     if (!userCss)
         outputStyles();
 
+    helpContent += "<blockquote>\n";
+    helpContent += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    helpContent += "</blockquote>\n";
+
     switch (docKind)
     {
     case DocKind::Api:
@@ -223,18 +227,18 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
         break;
     }
 
-    // Main page (left and right parts, left is for table of content, right is for content)
     helpOutput += "<div class=\"container\">\n";
+
     helpOutput += "<div class=\"left\">\n";
     helpOutput += helpToc;
     helpOutput += "</div>\n";
 
-    // Right page start
     helpOutput += "<div class=\"right\">\n";
     helpOutput += "<div class=\"page\">\n";
     helpOutput += helpContent;
     helpOutput += "</div>\n";
     helpOutput += "</div>\n";
+
     helpOutput += "</div>\n";
 
     helpOutput += "</body>\n";

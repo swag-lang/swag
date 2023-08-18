@@ -961,10 +961,6 @@ void GenDoc::generateToc()
 
 void GenDoc::generateContent()
 {
-    helpContent += "<blockquote>\n";
-    helpContent += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    helpContent += "</blockquote>\n";
-
     // Output module description
     if (module)
     {
