@@ -617,6 +617,9 @@
     <ClCompile Include="..\src\SyntaxColor.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\GenDoc.cpp">
+      <Filter>GenDoc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -977,6 +980,9 @@
     <ClInclude Include="..\src\SyntaxColor.h">
       <Filter>Syntax</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\GenDoc.h">
+      <Filter>GenDoc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -1056,6 +1062,9 @@
     </Filter>
     <Filter Include="DepManager">
       <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GenDoc">
+      <UniqueIdentifier>{d2110678-479a-4478-8f76-2eb5853fe96c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
