@@ -213,9 +213,6 @@ void Workspace::setupPaths()
     testsPath = workspacePath;
     testsPath.append(SWAG_TESTS_FOLDER);
 
-    examplesPath = workspacePath;
-    examplesPath.append(SWAG_EXAMPLES_FOLDER);
-
     modulesPath = workspacePath;
     modulesPath.append(SWAG_MODULES_FOLDER);
 

@@ -317,7 +317,6 @@ JobResult EnumerateModuleJob::execute()
         SWAG_ASSERT(!g_CommandLine.scriptCommand);
         loadFilesInModules(g_Workspace->dependenciesPath);
         loadFilesInModules(g_Workspace->modulesPath);
-        loadFilesInModules(g_Workspace->examplesPath);
         if (g_CommandLine.test)
             loadFilesInModules(g_Workspace->testsPath);
         return JobResult::ReleaseJob;
@@ -328,7 +327,6 @@ JobResult EnumerateModuleJob::execute()
     {
         enumerateModules(g_Workspace->dependenciesPath);
         enumerateModules(g_Workspace->modulesPath);
-        enumerateModules(g_Workspace->examplesPath);
         if (g_CommandLine.test)
             enumerateModules(g_Workspace->testsPath);
     }

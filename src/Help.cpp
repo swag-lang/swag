@@ -29,7 +29,7 @@ void help(CommandLineParser& cmdParser, const Utf8& cmd)
     {
         g_Log.messageInfo("\n");
         g_Log.messageInfo("Command 'build' compiles the specified workspace, or the current folder if it's a valid workspace.\n");
-        g_Log.messageInfo("It will compile all the modules located in '/modules' and '/examples', and their dependencies.\n");
+        g_Log.messageInfo("It will compile all the modules located in '/modules' and their dependencies.\n");
         g_Log.messageInfo("If you want to compile only one module, add '--module:moduleName'.\n");
         g_Log.messageInfo("Build results are located in the workspace '/output' folder.\n");
 

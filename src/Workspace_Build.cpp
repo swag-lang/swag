@@ -33,8 +33,6 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     // Module name is equivalent to the folder name, except for specific folders
     if (parent == SWAG_TESTS_FOLDER)
         moduleName = "test_";
-    else if (parent == SWAG_EXAMPLES_FOLDER)
-        moduleName = "example_";
 
     moduleName += cFileName;
 
@@ -42,8 +40,6 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     kind = ModuleKind::Module;
     if (parent == SWAG_TESTS_FOLDER)
         kind = ModuleKind::Test;
-    else if (parent == SWAG_EXAMPLES_FOLDER)
-        kind = ModuleKind::Example;
     else if (parent == SWAG_DEPENDENCIES_FOLDER)
         kind = ModuleKind::Dependency;
     else if (parent == SWAG_MODULES_FOLDER)

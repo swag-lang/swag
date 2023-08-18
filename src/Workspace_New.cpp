@@ -160,12 +160,6 @@ void Workspace::newCommand()
             OS::exit(-1);
         }
 
-        if (!filesystem::create_directories(examplesPath, err))
-        {
-            Report::errorOS(Fmt(Err(Fat0004), examplesPath.string().c_str()));
-            OS::exit(-1);
-        }
-
         if (!filesystem::create_directories(testsPath, err))
         {
             Report::errorOS(Fmt(Err(Fat0004), testsPath.string().c_str()));

@@ -146,7 +146,6 @@ void Workspace::cleanCommand()
 
     // Clean all public folders of the workspace modules
     cleanPublic(modulesPath);
-    cleanPublic(examplesPath);
     cleanPublic(testsPath);
 
     // Clean the full content of the dependency path

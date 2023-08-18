@@ -427,7 +427,6 @@ bool ModuleDepManager::execute()
     {
         enumerateCfgFiles(g_Workspace->dependenciesPath);
         enumerateCfgFiles(g_Workspace->modulesPath);
-        enumerateCfgFiles(g_Workspace->examplesPath);
         if (g_CommandLine.test || g_CommandLine.listDepCmd || g_CommandLine.fetchDep)
             enumerateCfgFiles(g_Workspace->testsPath);
     }
