@@ -8,7 +8,7 @@ struct AstFuncDecl;
 
 struct GenDoc
 {
-    void generate(Module* mdl);
+    void generate(Module* mdl, DocKind docKind);
     void outputStyles();
 
     Module* module = nullptr;
@@ -16,6 +16,11 @@ struct GenDoc
     Utf8    helpContent;
     Utf8    fullFileName;
     Utf8    fileName;
+
+    // Examples
+    ///////////////////////////////////
+
+    void generateExamples();
 
     // Api
     ///////////////////////////////////

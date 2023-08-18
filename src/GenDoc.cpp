@@ -162,7 +162,7 @@ void GenDoc::outputStyles()
     helpContent += "</style>\n";
 }
 
-void GenDoc::generate(Module* mdl)
+void GenDoc::generate(Module* mdl, DocKind docKind)
 {
     module = mdl;
     concat.init();
@@ -212,7 +212,15 @@ void GenDoc::generate(Module* mdl)
     if (!userCss)
         outputStyles();
 
-    generateApi();
+    switch (docKind)
+    {
+    case DocKind::Api:
+        generateApi();
+        break;
+    case DocKind::Examples:
+        generateExamples();
+        break;
+    }
 
     helpContent += "</body>\n";
     helpContent += "</html>\n";

@@ -3,6 +3,6 @@
 
 JobResult ModuleGenDocJob::execute()
 {
-    genDoc.generate(module);
+    genDoc.generate(module, docKind);
     return JobResult::ReleaseJob;
 }

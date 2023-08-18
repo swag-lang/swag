@@ -623,6 +623,9 @@
     <ClCompile Include="..\src\GenDoc_Api.cpp">
       <Filter>GenDoc</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\GenDoc_Examples.cpp">
+      <Filter>GenDoc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

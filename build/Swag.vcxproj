@@ -440,6 +440,7 @@
     <ClCompile Include="..\src\ErrorIds.cpp" />
     <ClCompile Include="..\src\GenDoc.cpp" />
     <ClCompile Include="..\src\GenDoc_Api.cpp" />
+    <ClCompile Include="..\src\GenDoc_Examples.cpp" />
     <ClCompile Include="..\src\JobGroup.cpp" />
     <ClCompile Include="..\src\LoadSourceFileJob.cpp" />
     <ClCompile Include="..\src\mimalloc\alloc-aligned.c">
