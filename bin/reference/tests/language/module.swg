@@ -10,5 +10,6 @@
         cfg.backendKind    = .Executable
         cfg.warnDefaultDisabled = true
         cfg.warnAsWarning = "Wrn0009"
+        cfg.docKind = .Examples
     }
 }
