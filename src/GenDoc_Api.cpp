@@ -897,15 +897,15 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
 
     if (first)
     {
-        helpContent += Fmt("<h2 class=\"section\">%s</h2>\n", sectionName);
+        helpToc += Fmt("<h2 class=\"section\">%s</h2>\n", sectionName);
         first = false;
     }
 
-    helpContent += Fmt("<h3 class=\"categ\">%s</h3>\n", categName);
-    helpContent += "<ul class=\"tocbullet\">\n";
+    helpToc += Fmt("<h3 class=\"categ\">%s</h3>\n", categName);
+    helpToc += "<ul class=\"tocbullet\">\n";
     for (auto& t : pendingNodes)
-        helpContent += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
-    helpContent += "</ul>\n";
+        helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
+    helpToc += "</ul>\n";
 
     pendingNodes.clear();
 }
@@ -946,9 +946,9 @@ void GenDoc::generateToc()
             return strcmp(a.category.c_str(), b.category.c_str()) < 0; });
 
     if (!module)
-        helpContent += "<h1>Swag Runtime</h1>\n";
+        helpToc += "<h1>Swag Runtime</h1>\n";
     else
-        helpContent += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
+        helpToc += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
 
     generateTocSection(AstNodeKind::Namespace, "Namespaces");
     generateTocSection(AstNodeKind::StructDecl, "Structs");
@@ -1301,6 +1301,8 @@ void GenDoc::generateContent()
 
 void GenDoc::generateApi()
 {
+    concat.init();
+
     // Collect content
     if (module)
         collectScopes(module->scopeRoot);
@@ -1361,17 +1363,6 @@ void GenDoc::generateApi()
         allNodes.push_back(oneRef);
     }
 
-    // Main page (left and right parts, left is for table of content, right is for content)
-    helpContent += "<div class=\"container\">\n";
-    helpContent += "<div class=\"left\">\n";
     generateToc();
-    helpContent += "</div>\n";
-
-    // Right page start
-    helpContent += "<div class=\"right\">\n";
-    helpContent += "<div class=\"page\">\n";
     generateContent();
-    helpContent += "</div>\n";
-    helpContent += "</div>\n";
-    helpContent += "</div>\n";
 }

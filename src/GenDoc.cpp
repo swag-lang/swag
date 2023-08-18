@@ -10,8 +10,8 @@
 
 void GenDoc::outputStyles()
 {
-    helpContent += "<style>\n";
-    helpContent +=
+    helpOutput += "<style>\n";
+    helpOutput +=
         ".container {\n\
             display:        flex;\n\
             flex-wrap:      nowrap;\n\
@@ -146,27 +146,27 @@ void GenDoc::outputStyles()
     ";
 
     float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
-    helpContent += Fmt(".SyntaxCode { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
-    helpContent += Fmt(".SyntaxComment { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
-    helpContent += Fmt(".SyntaxCompiler { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
-    helpContent += Fmt(".SyntaxFunction { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
-    helpContent += Fmt(".SyntaxConstant { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
-    helpContent += Fmt(".SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
-    helpContent += Fmt(".SyntaxType { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
-    helpContent += Fmt(".SyntaxKeyword { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
-    helpContent += Fmt(".SyntaxLogic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
-    helpContent += Fmt(".SyntaxNumber { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
-    helpContent += Fmt(".SyntaxString { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
-    helpContent += Fmt(".SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += Fmt(".SyntaxCode { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
+    helpOutput += Fmt(".SyntaxComment { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
+    helpOutput += Fmt(".SyntaxCompiler { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
+    helpOutput += Fmt(".SyntaxFunction { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
+    helpOutput += Fmt(".SyntaxConstant { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
+    helpOutput += Fmt(".SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
+    helpOutput += Fmt(".SyntaxType { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
+    helpOutput += Fmt(".SyntaxKeyword { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
+    helpOutput += Fmt(".SyntaxLogic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
+    helpOutput += Fmt(".SyntaxNumber { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
+    helpOutput += Fmt(".SyntaxString { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
+    helpOutput += Fmt(".SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
 
-    helpContent += "</style>\n";
+    helpOutput += "</style>\n";
 }
 
 void GenDoc::generate(Module* mdl, DocKind docKind)
 {
     module = mdl;
-    concat.init();
 
+    // Output filename
     auto filePath = g_Workspace->targetPath;
     if (!module)
     {
@@ -184,6 +184,7 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
     fullFileName.makeLower();
     fileName = filePath.filename().string();
 
+    // Write for output
     FILE* f = nullptr;
     if (fopen_s(&f, fullFileName.c_str(), "wb"))
     {
@@ -191,22 +192,22 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
         return;
     }
 
-    helpContent += "<html>\n";
-    helpContent += "<body>\n";
+    helpOutput += "<html>\n";
+    helpOutput += "<body>\n";
 
-    helpContent += "<head>\n";
-    helpContent += "<meta charset=\"UTF-8\">\n";
+    helpOutput += "<head>\n";
+    helpOutput += "<meta charset=\"UTF-8\">\n";
 
     // Css
     bool userCss = false;
     if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
     {
         Utf8 css{(const char*) module->buildCfg.docCss.buffer, (uint32_t) module->buildCfg.docCss.count};
-        helpContent += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
+        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
         userCss = true;
     }
 
-    helpContent += "</head>\n";
+    helpOutput += "</head>\n";
 
     // Embbeded styles
     if (!userCss)
@@ -222,10 +223,24 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
         break;
     }
 
-    helpContent += "</body>\n";
-    helpContent += "</html>\n";
+    // Main page (left and right parts, left is for table of content, right is for content)
+    helpOutput += "<div class=\"container\">\n";
+    helpOutput += "<div class=\"left\">\n";
+    helpOutput += helpToc;
+    helpOutput += "</div>\n";
+
+    // Right page start
+    helpOutput += "<div class=\"right\">\n";
+    helpOutput += "<div class=\"page\">\n";
+    helpOutput += helpContent;
+    helpOutput += "</div>\n";
+    helpOutput += "</div>\n";
+    helpOutput += "</div>\n";
+
+    helpOutput += "</body>\n";
+    helpOutput += "</html>\n";
 
     // Write file
-    fwrite(helpContent.c_str(), 1, helpContent.length(), f);
+    fwrite(helpOutput.c_str(), 1, helpOutput.length(), f);
     fclose(f);
 }

@@ -13,6 +13,8 @@ struct GenDoc
 
     Module* module = nullptr;
     Concat  concat;
+    Utf8    helpOutput;
+    Utf8    helpToc;
     Utf8    helpContent;
     Utf8    fullFileName;
     Utf8    fileName;
