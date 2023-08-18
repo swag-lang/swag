@@ -1071,19 +1071,22 @@ void ModuleGenDocJob::outputStyles()
             width:              94%;\n\
             margin-left:        20px;\n\
         }\n\
-        .SyntaxCode      { color: #000000; }\n\
-        .SyntaxComment   { color: #6A9955; }\n\
-        .SyntaxCompiler  { color: #AAAAAA; }\n\
-        .SyntaxFunction  { color: #FF7411; }\n\
-        .SyntaxConstant  { color: #569cd6; }\n\
-        .SyntaxIntrinsic { color: #DCDCAA; }\n\
-        .SyntaxType      { color: #4EC9B0; }\n\
-        .SyntaxKeyword   { color: #569cd6; }\n\
-        .SyntaxLogic     { color: #D8A0DF; }\n\
-        .SyntaxNumber    { color: #B5CEA8; }\n\
-        .SyntaxString    { color: #CE9178; }\n\
-        .SyntaxAttribute { color: #AAAAAA; }\n\
     ";
+
+    float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
+    helpContent += Fmt(".SyntaxCode { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
+    helpContent += Fmt(".SyntaxComment { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
+    helpContent += Fmt(".SyntaxCompiler { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
+    helpContent += Fmt(".SyntaxFunction { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
+    helpContent += Fmt(".SyntaxConstant { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
+    helpContent += Fmt(".SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
+    helpContent += Fmt(".SyntaxType { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
+    helpContent += Fmt(".SyntaxKeyword { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
+    helpContent += Fmt(".SyntaxLogic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
+    helpContent += Fmt(".SyntaxNumber { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
+    helpContent += Fmt(".SyntaxString { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
+    helpContent += Fmt(".SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
+
     helpContent += "</style>\n";
 }
 

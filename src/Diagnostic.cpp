@@ -379,7 +379,7 @@ Utf8 Diagnostic::syntax(const Utf8& line)
 {
     if (!g_CommandLine.logColors)
         return line;
-    if (!g_CommandLine.errorCodeColors)
+    if (!g_CommandLine.errorSyntaxColor)
         return line;
     return syntaxColor(line, SyntaxColorMode::ForLog);
 }

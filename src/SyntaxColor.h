@@ -24,4 +24,5 @@ enum class SyntaxColorMode
     ForLog,
 };
 
-Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode);
+uint32_t getSyntaxColor(SyntaxColor color, float lum);
+Utf8     syntaxColor(const Utf8& line, SyntaxColorMode mode);

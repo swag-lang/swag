@@ -268,6 +268,7 @@ struct BuildCfg
 
     // Documentation
     SwagSlice docCss;
+    float     docSyntaxColorLum = 0.5f;
 };
 
 enum class TypeInfoKind : uint8_t

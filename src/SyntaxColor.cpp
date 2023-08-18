@@ -8,39 +8,154 @@
 #include "LanguageSpec.h"
 #include "SyntaxColor.h"
 
+struct RGBColor
+{
+    unsigned char r, g, b;
+};
+
+static void rgbToHsl(RGBColor color, float* h, float* s, float* l)
+{
+    float r = color.r / 255.0f;
+    float g = color.g / 255.0f;
+    float b = color.b / 255.0f;
+
+    float maxVal = fmaxf(fmaxf(r, g), b);
+    float minVal = fminf(fminf(r, g), b);
+
+    *l = (maxVal + minVal) / 2;
+
+    if (maxVal == minVal)
+    {
+        *h = *s = 0;
+    }
+    else
+    {
+        float d = maxVal - minVal;
+        *s      = (*l > 0.5) ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
+
+        if (maxVal == r)
+        {
+            *h = (g - b) / d + ((g < b) ? 6 : 0);
+        }
+        else if (maxVal == g)
+        {
+            *h = (b - r) / d + 2;
+        }
+        else if (maxVal == b)
+        {
+            *h = (r - g) / d + 4;
+        }
+        *h /= 6;
+    }
+}
+
+static float hueToRgb(float p, float q, float t)
+{
+    if (t < 0)
+        t += 1;
+    if (t > 1)
+        t -= 1;
+    if (t < 1.0f / 6)
+        return p + (q - p) * 6 * t;
+    if (t < 1.0f / 2)
+        return q;
+    if (t < 2.0f / 3)
+        return p + (q - p) * (2.0f / 3 - t) * 6;
+    return p;
+}
+
+static RGBColor hslToRgb(float h, float s, float l)
+{
+    float r, g, b;
+
+    if (s == 0)
+    {
+        r = g = b = l;
+    }
+    else
+    {
+        float q = (l < 0.5) ? l * (1 + s) : l + s - l * s;
+        float p = 2 * l - q;
+
+        r = hueToRgb(p, q, h + 1.0f / 3);
+        g = hueToRgb(p, q, h);
+        b = hueToRgb(p, q, h - 1.0f / 3);
+    }
+
+    RGBColor result;
+    result.r = (unsigned char) (r * 255.0f);
+    result.g = (unsigned char) (g * 255.0f);
+    result.b = (unsigned char) (b * 255.0f);
+    return result;
+}
+
+uint32_t getSyntaxColor(SyntaxColor color, float lum)
+{
+    RGBColor rgb;
+    switch (color)
+    {
+    case SyntaxColor::SyntaxCode:
+        rgb = {0xCC, 0xCC, 0xCC};
+        break;
+    case SyntaxColor::SyntaxComment:
+        rgb = {0x6A, 0x99, 0x55};
+        break;
+    case SyntaxColor::SyntaxCompiler:
+        rgb = {0xAA, 0xAA, 0xAA};
+        break;
+    case SyntaxColor::SyntaxFunction:
+        rgb = {0xFF, 0x74, 0x11};
+        break;
+    case SyntaxColor::SyntaxConstant:
+        rgb = {0x56, 0x8c, 0xd6};
+        break;
+    case SyntaxColor::SyntaxIntrinsic:
+        rgb = {0xdc, 0xdc, 0xaa};
+        break;
+    case SyntaxColor::SyntaxType:
+        rgb = {0x4e, 0xc9, 0xb0};
+        break;
+    case SyntaxColor::SyntaxKeyword:
+        rgb = {0x56, 0x9c, 0xd6};
+        break;
+    case SyntaxColor::SyntaxLogic:
+        rgb = {0xd8, 0xa0, 0xdf};
+        break;
+    case SyntaxColor::SyntaxNumber:
+        rgb = {0xb5, 0xce, 0xa8};
+        break;
+    case SyntaxColor::SyntaxString:
+        rgb = {0xce, 0x91, 0x78};
+        break;
+    case SyntaxColor::SyntaxAttribute:
+        rgb = {0xaa, 0xaa, 0xaa};
+        break;
+    default:
+        rgb = {0x00, 0x00, 0x00};
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    if (lum > 0)
+    {
+        float h, s, l;
+        rgbToHsl(rgb, &h, &s, &l);
+        rgb = hslToRgb(h, s, lum);
+    }
+
+    return (rgb.r << 16) | (rgb.g << 8) | (rgb.b);
+}
+
 static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
 {
     switch (mode)
     {
     case SyntaxColorMode::ForLog:
-        switch (color)
-        {
-        case SyntaxColor::SyntaxCode:
-            return "\x1b[97m";
-        case SyntaxColor::SyntaxComment:
-            return "\x1b[38;2;106;153;85m";
-        case SyntaxColor::SyntaxCompiler:
-            return "\x1b[38;2;255;116;17m";
-        case SyntaxColor::SyntaxFunction:
-            return "\x1b[38;2;255;116;17m";
-        case SyntaxColor::SyntaxConstant:
-            return "\x1b[38;2;78;201;176m";
-        case SyntaxColor::SyntaxIntrinsic:
-            return "\x1b[38;2;220;220;170m";
-        case SyntaxColor::SyntaxType:
-            return "\x1b[38;2;246;204;134m";
-        case SyntaxColor::SyntaxKeyword:
-            return "\x1b[38;2;86;156;214m";
-        case SyntaxColor::SyntaxLogic:
-            return "\x1b[38;2;216;160;223m";
-        case SyntaxColor::SyntaxNumber:
-            return "\x1b[38;2;181;206;168m";
-        case SyntaxColor::SyntaxString:
-            return "\x1b[38;2;206;145;120m";
-        case SyntaxColor::SyntaxAttribute:
-            return "\x1b[38;2;170;170;170m";
-        }
-        break;
+    {
+        auto rgb = getSyntaxColor(color, g_CommandLine.errorSyntaxColorLum);
+        return Fmt("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+    }
+    break;
 
     case SyntaxColorMode::ForDoc:
     {
@@ -101,6 +216,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
     uint32_t    c, offset;
     Utf8        result;
 
+    result += getColor(mode, SyntaxColor::SyntaxCode);
     pz = Utf8::decodeUtf8(pz, c, offset);
     while (c)
     {

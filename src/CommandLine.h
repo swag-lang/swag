@@ -70,21 +70,22 @@ struct CommandLine
     pair<void*, void*>         userArgumentsSlice;
 
     // Display
-    bool silent                = false;
-    bool ignoreBadParams       = false;
-    bool logColors             = true;
-    bool logAscii              = false;
-    bool verbose               = false;
-    bool verboseCmdLine        = false;
-    bool verbosePath           = false;
-    bool verboseLink           = false;
-    bool verboseTestErrors     = false;
-    bool verboseConcreteTypes  = false;
-    bool verboseBackendCommand = false;
-    bool verboseStages         = false;
-    bool errorOneLine          = false;
-    bool errorAbsolute         = false;
-    bool errorCodeColors       = true;
+    bool  silent                = false;
+    bool  ignoreBadParams       = false;
+    bool  logColors             = true;
+    bool  logAscii              = false;
+    bool  verbose               = false;
+    bool  verboseCmdLine        = false;
+    bool  verbosePath           = false;
+    bool  verboseLink           = false;
+    bool  verboseTestErrors     = false;
+    bool  verboseConcreteTypes  = false;
+    bool  verboseBackendCommand = false;
+    bool  verboseStages         = false;
+    bool  errorOneLine          = false;
+    bool  errorAbsolute         = false;
+    bool  errorSyntaxColor      = true;
+    float errorSyntaxColorLum   = -1.0f;
 
     // Output
     Utf8 buildCfg           = "fast-debug";

@@ -742,7 +742,8 @@ namespace Swag
 
         repoPath:       string                  // Repository access path to the module
 
-        docCss:         string                  // The 'css' file to include in generated documentations
+        docCss:             string              // The 'css' file to include in generated documentations
+        docSyntaxColorLum:  f32 = 0.5           // Code syntax color luminosity between 0 and 1
     }
 
     // #########################################################
