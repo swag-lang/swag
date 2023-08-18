@@ -700,6 +700,13 @@ namespace Swag
         Oz  // Optim for size level 2
     }
 
+    enum DocKind
+    {
+        None        // Do not generate documentation for that module
+        Api         // Generate 'api like' documentation
+        Examples    // Generate 'examples like' documentation
+    }
+
     // The current module build configuration.
     // See [ICompiler]
     struct BuildCfg
@@ -742,6 +749,7 @@ namespace Swag
 
         repoPath:       string                  // Repository access path to the module
 
+        docKind             = DocKind.None
         docCss:             string              // The 'css' file to include in generated documentations
         docSyntaxColorLum:  f32 = 0.5           // Code syntax color luminosity between 0 and 1
     }

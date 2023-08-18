@@ -771,16 +771,18 @@ JobResult ModuleBuildJob::execute()
                 auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
                 outputJob->module       = nullptr;
                 outputJob->dependentJob = this;
+                outputJob->docKind      = DocKind::Api;
                 jobsToAdd.push_back(outputJob);
             }
         }
 
-        if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable)
+        if (module->buildCfg.docKind != DocKind::None)
         {
             module->logPass(ModuleBuildPass::GenerateDoc);
             auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
             outputJob->module       = module;
             outputJob->dependentJob = this;
+            outputJob->docKind      = module->buildCfg.docKind;
             jobsToAdd.push_back(outputJob);
         }
 

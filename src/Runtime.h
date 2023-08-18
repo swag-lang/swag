@@ -218,6 +218,13 @@ enum class BuildCfgBackendOptim
     Oz,
 };
 
+enum class DocKind
+{
+    None,
+    Api,
+    Examples,
+};
+
 struct BuildCfg
 {
     // Module informations
@@ -267,6 +274,7 @@ struct BuildCfg
     SwagSlice repoPath;
 
     // Documentation
+    DocKind   docKind = DocKind::None;
     SwagSlice docCss;
     float     docSyntaxColorLum = 0.5f;
 };

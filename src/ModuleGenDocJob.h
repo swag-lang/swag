@@ -67,6 +67,7 @@ struct ModuleGenDocJob : public Job
     void generateToc();
     void generateContent();
 
+    DocKind                  docKind;
     Concat                   concat;
     AstOutput                output;
     AstOutput::OutputContext outputCxt;

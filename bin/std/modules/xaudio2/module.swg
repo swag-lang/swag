@@ -13,6 +13,7 @@
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "XAudio2"
         cfg.backendKind = .Export
+        cfg.docKind = .Api
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/xaudio2"
     }
 }

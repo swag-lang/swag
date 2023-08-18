@@ -11,6 +11,7 @@
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "Libc"
         cfg.backendKind = .Export
+        cfg.docKind = .Api
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc"
     }
 }

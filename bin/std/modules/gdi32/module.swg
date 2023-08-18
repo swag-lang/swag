@@ -13,6 +13,7 @@
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "Gdi32"
         cfg.backendKind = .Export
+        cfg.docKind = .Api
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32"
     }
 }
