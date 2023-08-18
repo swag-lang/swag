@@ -1,6 +1,6 @@
 /*
     :LICENCE
-    Based on stb_vorbis.c by Sean Barrett (https://github.com/nothings/stb/tree/master).
+    Based on stb_vorbis.c (1.22) by Sean Barrett (https://github.com/nothings/stb/tree/master).
     The original code has been modified for Swag.
     MIT License
 */
@@ -74,21 +74,22 @@ typealias codetype = f32
 #[Swag.Opaque]
 public struct Codebook
 {
-    dimensions, entries:    s32
-    codeword_lengths:       ^u8
-    minimum_value:          f32
-    delta_value:            f32
-    value_bits:             u8
-    lookup_type:            u8
-    sequence_p:             u8
-    sparse:                 u8
-    lookup_values:          u32
-    multiplicands:          *codetype
-    codewords:              *u32
-    fast_huffman:           [FAST_HUFFMAN_TABLE_SIZE] s16
-    sorted_codewords:       *u32
-    sorted_values:          *s32
-    sorted_entries:         s32
+    codeword_lengths:   Array'u8
+    dimensions:         s32
+    entries:            s32
+    minimum_value:      f32
+    delta_value:        f32
+    value_bits:         u8
+    lookup_type:        u8
+    sequence_p:         u8
+    sparse:             u8
+    lookup_values:      u32
+    multiplicands:      *codetype
+    codewords:          Array'u32
+    fast_huffman:       [FAST_HUFFMAN_TABLE_SIZE] s16
+    sorted_codewords:   *u32
+    sorted_values:      *s32
+    sorted_entries:     s32
 }
 
 impl Vorbis
@@ -376,6 +377,7 @@ impl Vorbis
         // codebooks
         let codebookCount = getBits(8) + 1
         codebooks.resize(acast codebookCount)
+        var tmpLengths: Array'u8
         loop i: codebookCount
         {
             let c = codebooks.buffer + i
@@ -392,8 +394,17 @@ impl Vorbis
             if c.dimensions == 0 and c.entries != 0
                 throw "VORBIS_invalid_setup"
 
-            var lengths: Array'u8
-            lengths.resize(acast c.entries)
+            var lengths: ^u8
+            if c.sparse
+            {
+                tmpLengths.resize(acast c.entries)
+                lengths = tmpLengths.buffer
+            }
+            else
+            {
+                c.codeword_lengths.resize(acast c.entries)
+                lengths = c.codeword_lengths.buffer
+            }
 
             var total: s32
             if ordered
@@ -408,7 +419,7 @@ impl Vorbis
                         throw "VORBIS_invalid_setup"
                     if current_entry + n > c.entries
                         throw "VORBIS_invalid_setup"
-                    Memory.set(lengths.buffer + current_entry, current_length, acast n)
+                    Memory.set(lengths + current_entry, current_length, acast n)
                     current_entry += n
                     current_length += 1
                 }
@@ -428,6 +439,40 @@ impl Vorbis
                     else
                         lengths[j] = acast NO_CODE
                 }
+            }
+
+            // convert sparse items to non-sparse!
+            if c.sparse and total >= c.entries >> 2
+            {
+                c.codeword_lengths =,move tmpLengths
+                lengths = c.codeword_lengths.buffer
+                c.sparse = 0
+            }
+
+            // compute the size of the sorted tables
+            var sorted_count: s32
+            if c.sparse
+                sorted_count = total
+            else
+            {
+                sorted_count = 0
+                loop j: c.entries
+                {
+                    if lengths[j] > STB_VORBIS_FAST_HUFFMAN_LENGTH and lengths[j] != NO_CODE
+                        sorted_count += 1
+                }
+            }
+
+            c.sorted_entries = sorted_count
+            var values: ^u32
+
+            if !c.spare
+            {
+                c.codewords.resize(c.entries)
+            }
+            else
+            {
+
             }
         }
     }
