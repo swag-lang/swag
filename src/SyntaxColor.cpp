@@ -114,7 +114,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             result += *pz++;
 
             int cpt = 1;
-            while (cpt)
+            while (cpt && *pz)
             {
                 if (*pz == '"')
                 {

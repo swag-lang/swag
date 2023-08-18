@@ -146,6 +146,7 @@
         .SyntaxLogic     { color: #D8A0DF; }
         .SyntaxNumber    { color: #B5CEA8; }
         .SyntaxString    { color: #CE9178; }
+        .SyntaxAttribute { color: #AAAAAA; }
     </style>
 <div class="container">
 <div class="left">
@@ -1662,7 +1663,7 @@ string</td>
 <td id="Core_Latin1_CharProperties" class="tdname">
 CharProperties</td>
 <td class="tdtype">
-<a href="const [256] core.html#const [256] Core_Latin1_CharAttribute">const [256] Core.Latin1.CharAttribute</a></td>
+const [256] Core.Latin1.CharAttribute</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2032,7 +2033,7 @@ This is a generic dynamic array.</p>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 <p>
 Associated allocator.</p>
@@ -2934,7 +2935,7 @@ Initializes an Array that contains values copied from the specified array.</p>
 <p>
 Visit every elements of the array.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -2952,7 +2953,7 @@ Visit every elements of the array.</p>
 <p>
 Visit every elements of the array from end to start.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -3210,7 +3211,7 @@ Returns a slice.</p>
 <td class="tdname">
 <b>using</b> base</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*T)">Core.Array'(*T)</a></td>
+Core.Array'(*T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3522,7 +3523,7 @@ buffer</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3842,7 +3843,7 @@ Sets the value of the bit at a specific position.</p>
 <p>
 Visit all the booleans.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -3957,7 +3958,7 @@ Performs the bitwise XOR operation between the elements of the current <code cla
 <td class="tdname">
 readBuffer</td>
 <td class="tdtype">
-<a href="const [.html#const [__] u8">const [..] u8</a></td>
+const [..] u8</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3965,7 +3966,7 @@ readBuffer</td>
 <td class="tdname">
 writeBuffer</td>
 <td class="tdtype">
-<a href="*core.html#*Core_Array'(u8)">*Core.Array'(u8)</a></td>
+*Core.Array'(u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4547,7 +4548,7 @@ Clean and split a list of arguments -option:value or -option=value =&gt; -option
 <td class="tdname">
 isSet</td>
 <td class="tdtype">
-<a href="core.html#Core_CommandLine_IsSet'(T)">Core.CommandLine.IsSet'(T)</a></td>
+Core.CommandLine.IsSet'(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4649,7 +4650,7 @@ Clean and split a list of arguments -option:value or -option=value =&gt; -option
 <td class="tdname">
 stream</td>
 <td class="tdtype">
-<a href="const [.html#const [__] u8">const [..] u8</a></td>
+const [..] u8</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5306,7 +5307,7 @@ Represents a growable buffer, which is divided in buckets to avoid a copy/reallo
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5314,7 +5315,7 @@ allocator</td>
 <td class="tdname">
 firstBucket</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ConcatBufferBucket">*Core.ConcatBufferBucket</a></td>
+*Core.ConcatBufferBucket</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5322,7 +5323,7 @@ firstBucket</td>
 <td class="tdname">
 curBucket</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ConcatBufferBucket">*Core.ConcatBufferBucket</a></td>
+*Core.ConcatBufferBucket</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5330,7 +5331,7 @@ curBucket</td>
 <td class="tdname">
 lastBucket</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ConcatBufferBucket">*Core.ConcatBufferBucket</a></td>
+*Core.ConcatBufferBucket</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5516,7 +5517,7 @@ Set the current <code class="incode">seek</code>.</p>
 <a href="#Core_ConcatBuffer_toSlice">toSlice(self)</a></td>
 <td class="enumeration">
 <p>
-Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>).</p>
+Convert to a slice <i>only* if the buffer is linear (see <code class="incode">makeLinear</code>).</i></p>
 </td>
 </tr>
 <tr>
@@ -5782,7 +5783,7 @@ Move the content.</p>
 <p>
 Visit all valid buckets.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -5902,7 +5903,7 @@ Set the current <code class="incode">seek</code>.</p>
 </table>
 </p>
 <p>
-Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>).</p>
+Convert to a slice <i>only* if the buffer is linear (see <code class="incode">makeLinear</code>).</i></p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toSlice</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;[..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 </code>
@@ -5948,7 +5949,7 @@ datas</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ConcatBufferBucket">*Core.ConcatBufferBucket</a></td>
+*Core.ConcatBufferBucket</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5993,7 +5994,7 @@ u64</td>
 <td class="tdname">
 bucket</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ConcatBufferBucket">*Core.ConcatBufferBucket</a></td>
+*Core.ConcatBufferBucket</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6488,7 +6489,7 @@ bool</td>
 <td class="tdname">
 filterLambda</td>
 <td class="tdtype">
-<a href="func(core.html#func(Core_File_FileInfo)->bool">func(Core.File.FileInfo)->bool</a></td>
+func(Core.File.FileInfo)->bool</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6672,7 +6673,7 @@ work</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="core.html#Core_Env_ProcessHandle">Core.Env.ProcessHandle</a></td>
+Core.Env.ProcessHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7296,7 +7297,7 @@ name</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="core.html#Core_File_FileHandle">Core.File.FileHandle</a></td>
+Core.File.FileHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7569,7 +7570,7 @@ Write to the given file stream, and returns the number of written bytes.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7662,7 +7663,7 @@ stream</td>
 <td class="tdname">
 buffer</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(u8)">Core.Array'(u8)</a></td>
+Core.Array'(u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7820,7 +7821,7 @@ Read from the current position to the end, and returns the corresponding utf8 st
 <td class="tdname">
 folders</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Core_File_Folder)">Core.Array'(Core.File.Folder)</a></td>
+Core.Array'(Core.File.Folder)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -8152,7 +8153,7 @@ Read a file, and store the result in an utf8 string.</p>
 <p>
 Call user code for each line.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readEachLines</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, encoding = </span><span class="SyntaxConstant"><a href="#Core_File_TextEncoding">TextEncoding</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Utf8</span><span class="SyntaxCode">, stmt: code) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
@@ -8295,14 +8296,14 @@ Format a string in <code class="incode">dest</code> Can be lot faster than the c
 <p>
 String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toInterp</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, exp: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
 String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toInterp</span><span class="SyntaxCode">(exp: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode">
 </code>
 </p>
@@ -8648,7 +8649,7 @@ Update the hash value with <code class="incode">buffer</code> content.</p>
 <td class="tdname">
 compute</td>
 <td class="tdtype">
-<a href="func(const *core.html#func(const *Core_Hash_IHash32)->u32">func(const *Core.Hash.IHash32)->u32</a></td>
+func(const *Core.Hash.IHash32)->u32</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9017,7 +9018,7 @@ s32</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9025,7 +9026,7 @@ allocator</td>
 <td class="tdname">
 table</td>
 <td class="tdtype">
-<a href="^core.html#^Core_HashSetEntry'(K)">^Core.HashSetEntry'(K)</a></td>
+^Core.HashSetEntry'(K)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9340,7 +9341,7 @@ Add a new key.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -9461,7 +9462,7 @@ s32</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9469,7 +9470,7 @@ allocator</td>
 <td class="tdname">
 table</td>
 <td class="tdtype">
-<a href="^core.html#^Core_HashTableEntry'(K, V)">^Core.HashTableEntry'(K, V)</a></td>
+^Core.HashTableEntry'(K, V)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -9819,7 +9820,7 @@ Free the hashtable content.</p>
 <p>
 alias0 is the key, and alias1 is the value.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -9913,7 +9914,7 @@ V</td>
 <td class="tdname">
 print</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_ILogWriter, string)">func(*Core.ILogWriter, string)</a></td>
+func(*Core.ILogWriter, string)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10417,7 +10418,7 @@ pressed</td>
 <td class="tdname">
 position</td>
 <td class="tdtype">
-<a href="[25] core.html#[25] Core_Math_Point">[25] Core.Math.Point</a></td>
+[25] Core.Math.Point</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12091,7 +12092,7 @@ Compute current keyboard state.</p>
 <td class="tdname">
 nativeState</td>
 <td class="tdtype">
-<a href="[256] win32.html#[256] Win32_BYTE">[256] Win32.BYTE</a></td>
+[256] Win32.BYTE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12483,7 +12484,7 @@ pressedTime</td>
 <td class="tdname">
 pressedPos</td>
 <td class="tdtype">
-<a href="[5] core.html#[5] Core_Math_Point">[5] Core.Math.Point</a></td>
+[5] Core.Math.Point</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12765,7 +12766,7 @@ Done</td>
 <td class="tdname">
 buffer</td>
 <td class="tdtype">
-<a href="[.html#[__] T">[..] T</a></td>
+[..] T</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12834,7 +12835,7 @@ Returns true is the job system has been initialized.</p>
 <p>
 Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parallelFor</span><span class="SyntaxCode">(count: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stmt: code)
 </code>
 </p>
@@ -12852,7 +12853,7 @@ Do a for loop in parallel chunks Exposed variables: - @alias0: current loop inde
 <p>
 Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">parallelVisit</span><span class="SyntaxCode">(range: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, offset: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stmt: code)
 </code>
 </p>
@@ -13341,7 +13342,7 @@ Make an utf8 buffer upper case, dealing only with latin1 table.</p>
 <td class="tdname">
 head</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ListNode'(T)">*Core.ListNode'(T)</a></td>
+*Core.ListNode'(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13349,7 +13350,7 @@ head</td>
 <td class="tdname">
 tail</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ListNode'(T)">*Core.ListNode'(T)</a></td>
+*Core.ListNode'(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13592,7 +13593,7 @@ Insert a node before the reference.</p>
 <p>
 Visit every elements of the list @alias0 is the value @alias1 is the node @alias2 is the index.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -13610,7 +13611,7 @@ Visit every elements of the list @alias0 is the value @alias1 is the node @alias
 <p>
 Visit every elements of the list from tail to head @alias0 is the value @alias1 is the node @alias2 is the index.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -13633,7 +13634,7 @@ Visit every elements of the list from tail to head @alias0 is the value @alias1 
 <td class="tdname">
 prev</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ListNode'(T)">*Core.ListNode'(T)</a></td>
+*Core.ListNode'(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13641,7 +13642,7 @@ prev</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ListNode'(T)">*Core.ListNode'(T)</a></td>
+*Core.ListNode'(T)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13694,7 +13695,7 @@ dt</td>
 <td class="tdname">
 writers</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Core_ILogWriter)">Core.Array'(Core.ILogWriter)</a></td>
+Core.Array'(Core.ILogWriter)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -16241,7 +16242,7 @@ Set transform to identity.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -19548,7 +19549,7 @@ Allocate and initialize the given type.</p>
 <p>
 Push a new allocator for the given block of code.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushAllocator</span><span class="SyntaxCode">(allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">, stmt: code)
 </code>
 </p>
@@ -19566,7 +19567,7 @@ Push a new allocator for the given block of code.</p>
 <p>
 Push the temporary allocator for the given block of code.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushTempAllocator</span><span class="SyntaxCode">(stmt: code)
 </code>
 </p>
@@ -20858,7 +20859,7 @@ Returns the given associated attributes to <code class="incode">value</code>.</p
 </table>
 </p>
 <p>
-Returns the enum value name corresponding to the value pointed by <code class="incode">valueAddr</code> Can have multiple names if the enum is tagged with #<a href="swag.html#Swag_EnumFlags">Swag.EnumFlags</a>.</p>
+Returns the enum value name corresponding to the value pointed by <code class="incode">valueAddr</code> Can have multiple names if the enum is tagged with #<a href="swag.runtime.html#Swag_EnumFlags">Swag.EnumFlags</a>.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getEnumName</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, valueAddr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, fullname = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode">
 </code>
@@ -22458,7 +22459,7 @@ The struct does not need versionning.</p>
 <td class="tdname">
 start</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder, const [__] u8) throw">func(*Core.Serialization.IDecoder, const [..] u8) throw</a></td>
+func(*Core.Serialization.IDecoder, const [..] u8) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22466,7 +22467,7 @@ start</td>
 <td class="tdname">
 end</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder) throw">func(*Core.Serialization.IDecoder) throw</a></td>
+func(*Core.Serialization.IDecoder) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22474,7 +22475,7 @@ end</td>
 <td class="tdname">
 beginField</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder, Swag_TypeValue)->bool throw">func(*Core.Serialization.IDecoder, Swag.TypeValue)->bool throw</a></td>
+func(*Core.Serialization.IDecoder, Swag.TypeValue)->bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22482,7 +22483,7 @@ beginField</td>
 <td class="tdname">
 endField</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder) throw">func(*Core.Serialization.IDecoder) throw</a></td>
+func(*Core.Serialization.IDecoder) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22490,7 +22491,7 @@ endField</td>
 <td class="tdname">
 beginSection</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder, Core_Serialization_SectionKind) throw">func(*Core.Serialization.IDecoder, Core.Serialization.SectionKind) throw</a></td>
+func(*Core.Serialization.IDecoder, Core.Serialization.SectionKind) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22498,7 +22499,7 @@ beginSection</td>
 <td class="tdname">
 endSection</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder) throw">func(*Core.Serialization.IDecoder) throw</a></td>
+func(*Core.Serialization.IDecoder) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22506,7 +22507,7 @@ endSection</td>
 <td class="tdname">
 getVersion</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->u32">func(*Core.Serialization.IDecoder)->u32</a></td>
+func(*Core.Serialization.IDecoder)->u32</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22514,7 +22515,7 @@ getVersion</td>
 <td class="tdname">
 read</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder, *void, const *Swag_TypeInfo) throw">func(*Core.Serialization.IDecoder, *void, const *Swag.TypeInfo) throw</a></td>
+func(*Core.Serialization.IDecoder, *void, const *Swag.TypeInfo) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22522,7 +22523,7 @@ read</td>
 <td class="tdname">
 readBufferU8</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder, u64)->*u8 throw">func(*Core.Serialization.IDecoder, u64)->*u8 throw</a></td>
+func(*Core.Serialization.IDecoder, u64)->*u8 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22530,7 +22531,7 @@ readBufferU8</td>
 <td class="tdname">
 readBool</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->bool throw">func(*Core.Serialization.IDecoder)->bool throw</a></td>
+func(*Core.Serialization.IDecoder)->bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22538,7 +22539,7 @@ readBool</td>
 <td class="tdname">
 readS8</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->s8 throw">func(*Core.Serialization.IDecoder)->s8 throw</a></td>
+func(*Core.Serialization.IDecoder)->s8 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22546,7 +22547,7 @@ readS8</td>
 <td class="tdname">
 readS16</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->s16 throw">func(*Core.Serialization.IDecoder)->s16 throw</a></td>
+func(*Core.Serialization.IDecoder)->s16 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22554,7 +22555,7 @@ readS16</td>
 <td class="tdname">
 readS32</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->s32 throw">func(*Core.Serialization.IDecoder)->s32 throw</a></td>
+func(*Core.Serialization.IDecoder)->s32 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22562,7 +22563,7 @@ readS32</td>
 <td class="tdname">
 readS64</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->s64 throw">func(*Core.Serialization.IDecoder)->s64 throw</a></td>
+func(*Core.Serialization.IDecoder)->s64 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22570,7 +22571,7 @@ readS64</td>
 <td class="tdname">
 readU8</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->u8 throw">func(*Core.Serialization.IDecoder)->u8 throw</a></td>
+func(*Core.Serialization.IDecoder)->u8 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22578,7 +22579,7 @@ readU8</td>
 <td class="tdname">
 readU16</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->u16 throw">func(*Core.Serialization.IDecoder)->u16 throw</a></td>
+func(*Core.Serialization.IDecoder)->u16 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22586,7 +22587,7 @@ readU16</td>
 <td class="tdname">
 readU32</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->u32 throw">func(*Core.Serialization.IDecoder)->u32 throw</a></td>
+func(*Core.Serialization.IDecoder)->u32 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22594,7 +22595,7 @@ readU32</td>
 <td class="tdname">
 readU64</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->u64 throw">func(*Core.Serialization.IDecoder)->u64 throw</a></td>
+func(*Core.Serialization.IDecoder)->u64 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22602,7 +22603,7 @@ readU64</td>
 <td class="tdname">
 readF32</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->f32 throw">func(*Core.Serialization.IDecoder)->f32 throw</a></td>
+func(*Core.Serialization.IDecoder)->f32 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22610,7 +22611,7 @@ readF32</td>
 <td class="tdname">
 readF64</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IDecoder)->f64 throw">func(*Core.Serialization.IDecoder)->f64 throw</a></td>
+func(*Core.Serialization.IDecoder)->f64 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22931,7 +22932,7 @@ readF64</td>
 <td class="tdname">
 start</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, *Core_ConcatBuffer) throw">func(*Core.Serialization.IEncoder, *Core.ConcatBuffer) throw</a></td>
+func(*Core.Serialization.IEncoder, *Core.ConcatBuffer) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22939,7 +22940,7 @@ start</td>
 <td class="tdname">
 end</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder) throw">func(*Core.Serialization.IEncoder) throw</a></td>
+func(*Core.Serialization.IEncoder) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22947,7 +22948,7 @@ end</td>
 <td class="tdname">
 beginField</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, Swag_TypeValue) throw">func(*Core.Serialization.IEncoder, Swag.TypeValue) throw</a></td>
+func(*Core.Serialization.IEncoder, Swag.TypeValue) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22955,7 +22956,7 @@ beginField</td>
 <td class="tdname">
 endField</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder) throw">func(*Core.Serialization.IEncoder) throw</a></td>
+func(*Core.Serialization.IEncoder) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22963,7 +22964,7 @@ endField</td>
 <td class="tdname">
 beginSection</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, Core_Serialization_SectionKind) throw">func(*Core.Serialization.IEncoder, Core.Serialization.SectionKind) throw</a></td>
+func(*Core.Serialization.IEncoder, Core.Serialization.SectionKind) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22971,7 +22972,7 @@ beginSection</td>
 <td class="tdname">
 endSection</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder) throw">func(*Core.Serialization.IEncoder) throw</a></td>
+func(*Core.Serialization.IEncoder) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22979,7 +22980,7 @@ endSection</td>
 <td class="tdname">
 write</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, const ^void, const *Swag_TypeInfo) throw">func(*Core.Serialization.IEncoder, const ^void, const *Swag.TypeInfo) throw</a></td>
+func(*Core.Serialization.IEncoder, const ^void, const *Swag.TypeInfo) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22987,7 +22988,7 @@ write</td>
 <td class="tdname">
 writeBufferU8</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, const ^u8, u64) throw">func(*Core.Serialization.IEncoder, const ^u8, u64) throw</a></td>
+func(*Core.Serialization.IEncoder, const ^u8, u64) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -22995,7 +22996,7 @@ writeBufferU8</td>
 <td class="tdname">
 writeBool</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, bool)">func(*Core.Serialization.IEncoder, bool)</a></td>
+func(*Core.Serialization.IEncoder, bool)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23003,7 +23004,7 @@ writeBool</td>
 <td class="tdname">
 writeS8</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, s8)">func(*Core.Serialization.IEncoder, s8)</a></td>
+func(*Core.Serialization.IEncoder, s8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23011,7 +23012,7 @@ writeS8</td>
 <td class="tdname">
 writeS16</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, s16)">func(*Core.Serialization.IEncoder, s16)</a></td>
+func(*Core.Serialization.IEncoder, s16)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23019,7 +23020,7 @@ writeS16</td>
 <td class="tdname">
 writeS32</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, s32)">func(*Core.Serialization.IEncoder, s32)</a></td>
+func(*Core.Serialization.IEncoder, s32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23027,7 +23028,7 @@ writeS32</td>
 <td class="tdname">
 writeS64</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, s64)">func(*Core.Serialization.IEncoder, s64)</a></td>
+func(*Core.Serialization.IEncoder, s64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23035,7 +23036,7 @@ writeS64</td>
 <td class="tdname">
 writeU8</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, u8)">func(*Core.Serialization.IEncoder, u8)</a></td>
+func(*Core.Serialization.IEncoder, u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23043,7 +23044,7 @@ writeU8</td>
 <td class="tdname">
 writeU16</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, u16)">func(*Core.Serialization.IEncoder, u16)</a></td>
+func(*Core.Serialization.IEncoder, u16)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23051,7 +23052,7 @@ writeU16</td>
 <td class="tdname">
 writeU32</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, u32)">func(*Core.Serialization.IEncoder, u32)</a></td>
+func(*Core.Serialization.IEncoder, u32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23059,7 +23060,7 @@ writeU32</td>
 <td class="tdname">
 writeU64</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, u64)">func(*Core.Serialization.IEncoder, u64)</a></td>
+func(*Core.Serialization.IEncoder, u64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23067,7 +23068,7 @@ writeU64</td>
 <td class="tdname">
 writeF32</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, f32)">func(*Core.Serialization.IEncoder, f32)</a></td>
+func(*Core.Serialization.IEncoder, f32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23075,7 +23076,7 @@ writeF32</td>
 <td class="tdname">
 writeF64</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_IEncoder, f64)">func(*Core.Serialization.IEncoder, f64)</a></td>
+func(*Core.Serialization.IEncoder, f64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23381,7 +23382,7 @@ writeF64</td>
 <td class="tdname">
 read</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_ISerialize, Core_Serialization_IDecoder)->bool throw">func(*Core.Serialization.ISerialize, Core.Serialization.IDecoder)->bool throw</a></td>
+func(*Core.Serialization.ISerialize, Core.Serialization.IDecoder)->bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23389,7 +23390,7 @@ read</td>
 <td class="tdname">
 write</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_ISerialize, Core_Serialization_IEncoder)->bool throw">func(*Core.Serialization.ISerialize, Core.Serialization.IEncoder)->bool throw</a></td>
+func(*Core.Serialization.ISerialize, Core.Serialization.IEncoder)->bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23397,7 +23398,7 @@ write</td>
 <td class="tdname">
 readElement</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_ISerialize, Swag_TypeValue, *void, Core_Serialization_IDecoder)->bool throw">func(*Core.Serialization.ISerialize, Swag.TypeValue, *void, Core.Serialization.IDecoder)->bool throw</a></td>
+func(*Core.Serialization.ISerialize, Swag.TypeValue, *void, Core.Serialization.IDecoder)->bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23405,7 +23406,7 @@ readElement</td>
 <td class="tdname">
 writeElement</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_ISerialize, Swag_TypeValue, const *void, Core_Serialization_IEncoder)->bool throw">func(*Core.Serialization.ISerialize, Swag.TypeValue, const *void, Core.Serialization.IEncoder)->bool throw</a></td>
+func(*Core.Serialization.ISerialize, Swag.TypeValue, const *void, Core.Serialization.IEncoder)->bool throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23413,7 +23414,7 @@ writeElement</td>
 <td class="tdname">
 postSerialize</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_Serialization_ISerialize, *void, Core_Serialization_IDecoder) throw">func(*Core.Serialization.ISerialize, *void, Core.Serialization.IDecoder) throw</a></td>
+func(*Core.Serialization.ISerialize, *void, Core.Serialization.IDecoder) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23970,7 +23971,7 @@ options</td>
 <td class="tdname">
 freeSections</td>
 <td class="tdtype">
-<a href="core.html#Core_ArrayPtr'(Core_Serialization_Read_TagBinSection)">Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</a></td>
+Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23978,7 +23979,7 @@ freeSections</td>
 <td class="tdname">
 sections</td>
 <td class="tdtype">
-<a href="core.html#Core_ArrayPtr'(Core_Serialization_Read_TagBinSection)">Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</a></td>
+Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -23986,7 +23987,7 @@ sections</td>
 <td class="tdname">
 convertNextNative</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfoNative">const *Swag.TypeInfoNative</a></td>
+const *Swag.TypeInfoNative</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -24413,7 +24414,7 @@ Accept to try to read a newest version, otherwise error.</p>
 <td class="tdname">
 mapSeek</td>
 <td class="tdtype">
-<a href="core.html#Core_HashTable'(u32, u64)">Core.HashTable'(u32, u64)</a></td>
+Core.HashTable'(u32, u64)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -24684,7 +24685,7 @@ End the previous section.</p>
 <p>
 Serialize one value.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MT</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">serialize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, res: *</span><span class="SyntaxConstant">MT</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 </code>
 </p>
@@ -24771,7 +24772,7 @@ options</td>
 <td class="tdname">
 output</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ConcatBuffer">*Core.ConcatBuffer</a></td>
+*Core.ConcatBuffer</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25171,7 +25172,7 @@ bool</td>
 <td class="tdname">
 output</td>
 <td class="tdtype">
-<a href="*core.html#*Core_ConcatBuffer">*Core.ConcatBuffer</a></td>
+*Core.ConcatBuffer</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25179,7 +25180,7 @@ output</td>
 <td class="tdname">
 freeSections</td>
 <td class="tdtype">
-<a href="core.html#Core_ArrayPtr'(Core_Serialization_Write_TagBinSection)">Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</a></td>
+Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25187,7 +25188,7 @@ freeSections</td>
 <td class="tdname">
 sections</td>
 <td class="tdtype">
-<a href="core.html#Core_ArrayPtr'(Core_Serialization_Write_TagBinSection)">Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</a></td>
+Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -25513,7 +25514,7 @@ startSeek</td>
 <td class="tdname">
 mapSeek</td>
 <td class="tdtype">
-<a href="core.html#Core_HashTable'(u32, Core_ConcatBufferSeek)">Core.HashTable'(u32, Core.ConcatBufferSeek)</a></td>
+Core.HashTable'(u32, Core.ConcatBufferSeek)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -26668,7 +26669,7 @@ Initializes an Array that contains values copied from the specified array.</p>
 <p>
 Vist every elements of the array.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -26686,7 +26687,7 @@ Vist every elements of the array.</p>
 <p>
 Vist every elements of the array from end to start.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -27139,7 +27140,7 @@ The format <code class="incode">fmt</code> is one of <code class="incode">e</cod
 <td class="tdname">
 convert</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_StrConv_IConvert, *Core_ConcatBuffer, const *Core_StrConv_ConvertFormat, string)">func(*Core.StrConv.IConvert, *Core.ConcatBuffer, const *Core.StrConv.ConvertFormat, string)</a></td>
+func(*Core.StrConv.IConvert, *Core.ConcatBuffer, const *Core.StrConv.ConvertFormat, string)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -27160,7 +27161,7 @@ convert</td>
 <td class="tdname">
 poke</td>
 <td class="tdtype">
-<a href="func(*core.html#func(*Core_StrConv_IPokeValue, string)->string throw">func(*Core.StrConv.IPokeValue, string)->string throw</a></td>
+func(*Core.StrConv.IPokeValue, string)->string throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -28205,7 +28206,7 @@ u64</td>
 <td class="tdname">
 allocator</td>
 <td class="tdtype">
-<a href="swag.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -29047,7 +29048,7 @@ Returns the byte at the given index.</p>
 <p>
 Visit the String utf8 bytes @alias0 will contain the byte or the pointer to the byte @alias1 will contain the byte index.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBytes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -29065,7 +29066,7 @@ Visit the String utf8 bytes @alias0 will contain the byte or the pointer to the 
 <p>
 Visit the string runes See Utf8.visitRunes for aliases.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitRunes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -29301,7 +29302,7 @@ Remove whitespaces at the start of the String.</p>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="win32.html#Win32_HANDLE">Win32.HANDLE</a></td>
+Win32.HANDLE</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -29500,7 +29501,7 @@ Wait for the event to be signaled.</p>
 <td class="tdname">
 v</td>
 <td class="tdtype">
-<a href="win32.html#Win32_SRWLOCK">Win32.SRWLOCK</a></td>
+Win32.SRWLOCK</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -29599,7 +29600,7 @@ Unlock mutex.</p>
 <td class="tdname">
 v</td>
 <td class="tdtype">
-<a href="win32.html#Win32_SRWLOCK">Win32.SRWLOCK</a></td>
+Win32.SRWLOCK</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -29811,7 +29812,7 @@ Unlock mutex.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">scopedLock</span><span class="SyntaxCode">(syncObj: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)
 </code>
 </p>
@@ -29827,7 +29828,7 @@ Unlock mutex.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">sharedLock</span><span class="SyntaxCode">(syncObj: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)
 </code>
 </p>
@@ -29845,7 +29846,7 @@ Unlock mutex.</p>
 <p>
 Push a new execution context for the given block of code.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushContext</span><span class="SyntaxCode">(cxt: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">, stmt: code)
 </code>
 </p>
@@ -29865,7 +29866,7 @@ Push a new execution context for the given block of code.</p>
 <td class="tdname">
 userLambda</td>
 <td class="tdtype">
-<a href="closure(core.html#closure(Core_Threading_Thread)">closure(Core.Threading.Thread)</a></td>
+closure(Core.Threading.Thread)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -29873,7 +29874,7 @@ userLambda</td>
 <td class="tdname">
 context</td>
 <td class="tdtype">
-<a href="swag.html#Swag_Context">Swag.Context</a></td>
+<a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -29897,7 +29898,7 @@ priority</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="core.html#Core_Threading_ThreadHandle">Core.Threading.ThreadHandle</a></td>
+Core.Threading.ThreadHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -31141,7 +31142,7 @@ Stops time interval measurement, resets the elapsed time to zero, and starts mea
 <p>
 Measure until the end of the scope, and print the result in the console.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scopeMeasure</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"stopwatch"</span><span class="SyntaxCode">)
 </code>
 </p>
@@ -31197,7 +31198,7 @@ Represents an interval of time, stored as a 64 bits integer.</p>
 <td class="tdname">
 ticks</td>
 <td class="tdtype">
-<a href="core.html#Core_Time_Ticks">Core.Time.Ticks</a></td>
+Core.Time.Ticks</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -31625,7 +31626,7 @@ Converts a TimeSpan to a DateTime.</p>
 <td class="tdname">
 userLambda</td>
 <td class="tdtype">
-<a href="func(core.html#func(Core_Time_Timer)">func(Core.Time.Timer)</a></td>
+func(Core.Time.Timer)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -31633,7 +31634,7 @@ userLambda</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="core.html#Core_Time_TimerHandle">Core.Time.TimerHandle</a></td>
+Core.Time.TimerHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -31641,7 +31642,7 @@ handle</td>
 <td class="tdname">
 context</td>
 <td class="tdtype">
-<a href="swag.html#Swag_Context">Swag.Context</a></td>
+<a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
 <td class="enumeration">
 </td>
 </tr>
@@ -33062,7 +33063,7 @@ Return true if the string starts with <code class="incode">str</code>.</p>
 <p>
 Macro to visit the unicode characters of the utf8 sequence.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">visitRunes</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, stmt: code)
 </code>
 </p>

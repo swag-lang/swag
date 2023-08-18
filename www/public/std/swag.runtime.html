@@ -146,6 +146,7 @@
         .SyntaxLogic     { color: #D8A0DF; }
         .SyntaxNumber    { color: #B5CEA8; }
         .SyntaxString    { color: #CE9178; }
+        .SyntaxAttribute { color: #AAAAAA; }
     </style>
 <div class="container">
 <div class="left">
@@ -1683,7 +1684,7 @@ Returns the list of all loaded modules.</p>
 </table>
 </p>
 <p>
-Returns (val1 <i> val2) + val3.</p>
+Returns (val1 * val2) + val3.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, val2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, val3: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </code>
@@ -2865,7 +2866,7 @@ Alignement constraint.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2873,7 +2874,7 @@ type</td>
 <td class="tdname">
 params</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_AttributeParam">const [..] Swag.AttributeParam</a></td>
+const [..] Swag.AttributeParam</td>
 <td class="enumeration">
 <p>
 Attribute parameters.</p>
@@ -3722,7 +3723,7 @@ Depends on <code class="incode">kind</code>.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 Depends on <code class="incode">kind</code>.</p>
@@ -3975,7 +3976,7 @@ Other fields, can be in any order A temporary allocator.</p>
 <td class="tdname">
 traces</td>
 <td class="tdtype">
-<a href="[32] const *swag.html#[32] const *Swag_SourceCodeLocation">[32] const *Swag.SourceCodeLocation</a></td>
+[32] const *Swag.SourceCodeLocation</td>
 <td class="enumeration">
 <p>
 Stack trace, in case of errors.</p>
@@ -3985,7 +3986,7 @@ Stack trace, in case of errors.</p>
 <td class="tdname">
 errors</td>
 <td class="tdtype">
-<a href="[32] swag.html#[32] Swag_Error">[32] Swag.Error</a></td>
+[32] Swag.Error</td>
 <td class="enumeration">
 <p>
 All errors.</p>
@@ -4015,7 +4016,7 @@ When an exception is raised, this are the parameters.</p>
 <td class="tdname">
 panic</td>
 <td class="tdtype">
-<a href="func(string, swag.html#func(string, Swag_SourceCodeLocation)">func(string, Swag.SourceCodeLocation)</a></td>
+func(string, Swag.SourceCodeLocation)</td>
 <td class="enumeration">
 <p>
 A function to call if theres a panic.</p>
@@ -4115,7 +4116,7 @@ MutexRW</td>
 <td class="tdname">
 firstAlloc</td>
 <td class="tdtype">
-<a href="*swag.html#*Swag_DebugAllocatorHeader">*Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 <p>
 First allocated block.</p>
@@ -4125,7 +4126,7 @@ First allocated block.</p>
 <td class="tdname">
 firstFree</td>
 <td class="tdtype">
-<a href="*swag.html#*Swag_DebugAllocatorHeader">*Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 <p>
 First freed block.</p>
@@ -4135,7 +4136,7 @@ First freed block.</p>
 <td class="tdname">
 lastFree</td>
 <td class="tdtype">
-<a href="*swag.html#*Swag_DebugAllocatorHeader">*Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 <p>
 Last freed block.</p>
@@ -4584,7 +4585,7 @@ string</td>
 <td class="tdname">
 prev</td>
 <td class="tdtype">
-<a href="*swag.html#*Swag_DebugAllocatorHeader">*Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4592,7 +4593,7 @@ prev</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-<a href="*swag.html#*Swag_DebugAllocatorHeader">*Swag.DebugAllocatorHeader</a></td>
+*Swag.DebugAllocatorHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4909,7 +4910,7 @@ The <code class="incode">opDrop</code> function to call when the process must ex
 <td class="tdname">
 req</td>
 <td class="tdtype">
-<a href="func(*swag.html#func(*Swag_IAllocator, *Swag_AllocatorRequest)">func(*Swag.IAllocator, *Swag.AllocatorRequest)</a></td>
+func(*Swag.IAllocator, *Swag.AllocatorRequest)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4947,7 +4948,7 @@ This is the interface to communicate with the compiler.</p>
 <td class="tdname">
 getMessage</td>
 <td class="tdtype">
-<a href="func(*swag.html#func(*Swag_ICompiler)->const *Swag_CompilerMessage">func(*Swag.ICompiler)->const *Swag.CompilerMessage</a></td>
+func(*Swag.ICompiler)->const *Swag.CompilerMessage</td>
 <td class="enumeration">
 <p>
 Returns the compiler message in a <code class="incode">#message</code> function.</p>
@@ -4957,7 +4958,7 @@ Returns the compiler message in a <code class="incode">#message</code> function.
 <td class="tdname">
 getBuildCfg</td>
 <td class="tdtype">
-<a href="func(*swag.html#func(*Swag_ICompiler)->*Swag_BuildCfg">func(*Swag.ICompiler)->*Swag.BuildCfg</a></td>
+func(*Swag.ICompiler)->*Swag.BuildCfg</td>
 <td class="enumeration">
 <p>
 Returns the build configuration of the current module.</p>
@@ -4967,7 +4968,7 @@ Returns the build configuration of the current module.</p>
 <td class="tdname">
 compileString</td>
 <td class="tdtype">
-<a href="func(*swag.html#func(*Swag_ICompiler, string)">func(*Swag.ICompiler, string)</a></td>
+func(*Swag.ICompiler, string)</td>
 <td class="enumeration">
 <p>
 Compile a global string.</p>
@@ -5194,7 +5195,7 @@ Name of the module.</p>
 <td class="tdname">
 types</td>
 <td class="tdtype">
-<a href="const [.html#const [__] const *Swag_TypeInfo">const [..] const *Swag.TypeInfo</a></td>
+const [..] const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 All exported types.</p>
@@ -5438,7 +5439,7 @@ Defined some informations about the current process.</p>
 <td class="tdname">
 modules</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_Module">const [..] Swag.Module</a></td>
+const [..] Swag.Module</td>
 <td class="enumeration">
 <p>
 The list of all modules.</p>
@@ -5538,8 +5539,8 @@ Enable/Disable one or more safety checks.</p>
 <p>
  For example:</p>
 <p class="code">
-<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Safety">Safety</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">""</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]                    </span><span class="SyntaxComment">// Disable all</span><span class="SyntaxCode">
- #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Safety">Safety</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"boundcheck|nan"</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)]      </span><span class="SyntaxComment">// Disable 'boundcheck' and 'nan' checks</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"> </span><span class="SyntaxAttribute">#[<a href="#Swag_Safety">Swag.Safety</a>("", false)]</span><span class="SyntaxCode">                    </span><span class="SyntaxComment">// Disable all</span><span class="SyntaxCode">
+ </span><span class="SyntaxAttribute">#[<a href="#Swag_Safety">Swag.Safety</a>("boundcheck|nan", false)]</span><span class="SyntaxCode">      </span><span class="SyntaxComment">// Disable 'boundcheck' and 'nan' checks</span><span class="SyntaxCode">
 </code>
 </p>
 <p>
@@ -5741,7 +5742,7 @@ This will call <code class="incode">release</code> prior to changing the capacit
 <td class="tdname">
 prev</td>
 <td class="tdtype">
-<a href="*swag.html#*Swag_ScratchAllocator_LeakHeader">*Swag.ScratchAllocator.LeakHeader</a></td>
+*Swag.ScratchAllocator.LeakHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -5749,7 +5750,7 @@ prev</td>
 <td class="tdname">
 next</td>
 <td class="tdtype">
-<a href="*swag.html#*Swag_ScratchAllocator_LeakHeader">*Swag.ScratchAllocator.LeakHeader</a></td>
+*Swag.ScratchAllocator.LeakHeader</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6196,7 +6197,7 @@ padding</td>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -6227,7 +6228,7 @@ The underlying type.</p>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -6237,7 +6238,7 @@ The underlying type.</p>
 <td class="tdname">
 finalType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 If this is an array with multiple dimensions, this will be the final type.</p>
@@ -6288,7 +6289,7 @@ The total number of elements in case this has multiple dimensions.</p>
 <td class="tdname">
 values</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_TypeValue">const [..] Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the values.</p>
@@ -6298,7 +6299,7 @@ All the values.</p>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying enum type.</p>
@@ -6308,7 +6309,7 @@ The underlying enum type.</p>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_Attribute">const [..] Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 All the attributes.</p>
@@ -6488,7 +6489,7 @@ This is a 32 bits character.</p>
 <td class="tdname">
 generics</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_TypeValue">const [..] Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 Generic parameters.</p>
@@ -6498,7 +6499,7 @@ Generic parameters.</p>
 <td class="tdname">
 parameters</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_TypeValue">const [..] Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 Parameters.</p>
@@ -6508,7 +6509,7 @@ Parameters.</p>
 <td class="tdname">
 returnType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The return type, or <code class="incode">null</code>.</p>
@@ -6518,7 +6519,7 @@ The return type, or <code class="incode">null</code>.</p>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_Attribute">const [..] Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 All the attributes.</p>
@@ -6549,7 +6550,7 @@ All the attributes.</p>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6920,7 +6921,7 @@ Undefined</td>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The pointed type.</p>
@@ -6951,7 +6952,7 @@ The pointed type.</p>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -7032,7 +7033,7 @@ User name of the struct.</p>
 <td class="tdname">
 fromGeneric</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 If it comes from a generic instantiation, this is the original generic struct.</p>
@@ -7042,7 +7043,7 @@ If it comes from a generic instantiation, this is the original generic struct.</
 <td class="tdname">
 generics</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_TypeValue">const [..] Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 Generic parameters.</p>
@@ -7052,7 +7053,7 @@ Generic parameters.</p>
 <td class="tdname">
 fields</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_TypeValue">const [..] Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the fields.</p>
@@ -7062,7 +7063,7 @@ All the fields.</p>
 <td class="tdname">
 methods</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_TypeValue">const [..] Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the methods, if exported.</p>
@@ -7072,7 +7073,7 @@ All the methods, if exported.</p>
 <td class="tdname">
 interfaces</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_TypeValue">const [..] Swag.TypeValue</a></td>
+const [..] Swag.TypeValue</td>
 <td class="enumeration">
 <p>
 All the interfaces.</p>
@@ -7082,7 +7083,7 @@ All the interfaces.</p>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_Attribute">const [..] Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 All the attributes.</p>
@@ -7113,7 +7114,7 @@ All the attributes.</p>
 <td class="tdname">
 rawType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 The underlying type.</p>
@@ -7148,7 +7149,7 @@ Name of the value.</p>
 <td class="tdname">
 pointedType</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfo">const *Swag.TypeInfo</a></td>
+const *Swag.TypeInfo</td>
 <td class="enumeration">
 <p>
 Type of the value.</p>
@@ -7168,7 +7169,7 @@ Pointer to the constant value.</p>
 <td class="tdname">
 attributes</td>
 <td class="tdtype">
-<a href="const [.html#const [__] Swag_Attribute">const [..] Swag.Attribute</a></td>
+const [..] Swag.Attribute</td>
 <td class="enumeration">
 <p>
 Associated attributes.</p>
@@ -7270,10 +7271,10 @@ Change the behavior of a given warning or list of warnings.</p>
 <p>
  For example:</p>
 <p class="code">
-<code style="white-space: break-spaces"> #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span><span class="SyntaxCode">)
- #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0003|wrn0004"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Disable</span><span class="SyntaxCode">)
- #global #[</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(</span><span class="SyntaxString">"wrn0001"</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Enable</span><span class="SyntaxCode">)]
-</code>
+<code style="white-space: break-spaces"> </span><span class="SyntaxAttribute">#[<a href="#Swag_Warn">Swag.Warn</a>("wrn0004", <a href="swag.runtime.html#Swag_WarnLevel_Error">Swag.WarnLevel.Error</a>)
+ #[<a href="#Swag_Warn">Swag.Warn</a>("wrn0003|wrn0004", <a href="swag.runtime.html#Swag_WarnLevel_Disable">Swag.WarnLevel.Disable</a>)
+ #global #[<a href="#Swag_Warn">Swag.Warn</a>("wrn0001", <a href="swag.runtime.html#Swag_WarnLevel_Enable">Swag.WarnLevel.Enable</a>)]
+</span><span class="SyntaxCode"></code>
 </p>
 <p>
  You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a></p>

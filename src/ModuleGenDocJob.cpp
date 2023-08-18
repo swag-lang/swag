@@ -406,10 +406,12 @@ Utf8 ModuleGenDocJob::findReference(const Utf8& name)
 
     Vector<Utf8> tkns;
     Utf8::tokenize(name, '.', tkns);
-    if (tkns.size() > 1)
+    if (tkns.size() <= 1)
+        return "";
+
+    if (tkns[0] == "Swag")
     {
-        tkns[0].makeLower();
-        return Fmt("<a href=\"%s.html#%s\">%s</a>", tkns[0].c_str(), toRef(name).c_str(), name.c_str());
+        return Fmt("<a href=\"swag.runtime.html#%s\">%s</a>", toRef(name).c_str(), name.c_str());
     }
 
     return "";
@@ -498,7 +500,7 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user)
         }
 
         // Italic
-        if (*pz == '*' && pz[1] != '*' && (pz == user.c_str() || pz[-1] != '*'))
+        if (*pz == '*' && pz[1] != '*' && !SWAG_IS_BLANK(pz[1]) && (pz == user.c_str() || pz[-1] != '*'))
         {
             inItalicMode = !inItalicMode;
             if (inItalicMode)
@@ -510,7 +512,7 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user)
         }
 
         // Bold
-        if (*pz == '*' && pz[1] == '*' && pz[2] != '*' && (pz == user.c_str() || pz[-1] != '*'))
+        if (*pz == '*' && pz[1] == '*' && pz[2] != '*' && !SWAG_IS_BLANK(pz[2]) && (pz == user.c_str() || pz[-1] != '*'))
         {
             inBoldMode = !inBoldMode;
             if (inBoldMode)
@@ -553,6 +555,14 @@ Utf8 ModuleGenDocJob::getFormattedText(const Utf8& user)
 
         result += *pz++;
     }
+
+    // Be sure it's closed
+    if (inBoldMode)
+        result += "</b>";
+    if (inItalicMode)
+        result += "</i>";
+    if (inCodeMode)
+        result += "</code>";
 
     return result;
 }

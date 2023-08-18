@@ -146,6 +146,7 @@
         .SyntaxLogic     { color: #D8A0DF; }
         .SyntaxNumber    { color: #B5CEA8; }
         .SyntaxString    { color: #CE9178; }
+        .SyntaxAttribute { color: #AAAAAA; }
     </style>
 <div class="container">
 <div class="left">
@@ -694,7 +695,7 @@ f64</td>
 <td id="Pixel_InvalidRenderTargetHandle" class="tdname">
 InvalidRenderTargetHandle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_RenderTargetHandle">Pixel.RenderTargetHandle</a></td>
+Pixel.RenderTargetHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -702,7 +703,7 @@ InvalidRenderTargetHandle</td>
 <td id="Pixel_InvalidRenderTargetSurfaceHandle" class="tdname">
 InvalidRenderTargetSurfaceHandle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_RenderTargetSurfaceHandle">Pixel.RenderTargetSurfaceHandle</a></td>
+Pixel.RenderTargetSurfaceHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -710,7 +711,7 @@ InvalidRenderTargetSurfaceHandle</td>
 <td id="Pixel_InvalidShaderHandle" class="tdname">
 InvalidShaderHandle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderHandle">Pixel.ShaderHandle</a></td>
+Pixel.ShaderHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -718,7 +719,7 @@ InvalidShaderHandle</td>
 <td id="Pixel_InvalidShaderParamHandle" class="tdname">
 InvalidShaderParamHandle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -726,7 +727,7 @@ InvalidShaderParamHandle</td>
 <td id="Pixel_InvalidTextureHandle" class="tdname">
 InvalidTextureHandle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_TextureHandle">Pixel.TextureHandle</a></td>
+Pixel.TextureHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -1934,7 +1935,7 @@ uvMode</td>
 <td class="tdname">
 uvRect</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+Core.Math.Rectangle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2157,7 +2158,7 @@ PreserveCollinear</td>
 <td class="tdname">
 x</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_Clipper_CInt">Pixel.Clipper.CInt</a></td>
+Pixel.Clipper.CInt</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2165,7 +2166,7 @@ x</td>
 <td class="tdname">
 y</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_Clipper_CInt">Pixel.Clipper.CInt</a></td>
+Pixel.Clipper.CInt</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -2581,7 +2582,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 <a href="#Pixel_Color_toVector4">toVector4(self)</a></td>
 <td class="enumeration">
 <p>
-Get the color as a <a href="math.html#Math_Vector4">Math.Vector4</a>.</p>
+Get the color as a [Math.Vector4].</p>
 </td>
 </tr>
 </table>
@@ -3089,7 +3090,7 @@ Retrieve all components as floating point values between 0 and 1.</p>
 </table>
 </p>
 <p>
-Get the color as a <a href="math.html#Math_Vector4">Math.Vector4</a>.</p>
+Get the color as a [Math.Vector4].</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toVector4</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">
 </code>
@@ -3163,7 +3164,7 @@ id</td>
 <td class="tdname">
 <b>using</b> params</td>
 <td class="tdtype">
-<a href="{clear: {color: pixel.html#{clear: {color: Pixel_Color}, drawTriangles: {start: u32, count: u32}, transform: {tr: Core_Math_Transform2}, clippingRect: {rect: Core_Math_Rectangle}, clippingRegion: {mode: Pixel_ClippingMode}, font: {fontRef: *Pixel_Font}, blendingMode: {mode: Pixel_BlendingMode}, textureFont: {font: *Pixel_Font, atlasIndex: s32}, colorMask: Pixel_ColorMask, renderTgt: {tgt: *Pixel_RenderTarget, paintAlpha: bool}, shader: {shader: *Pixel_ShaderBase}, shaderParam: {param: Pixel_ShaderParamHandle, type: const *Swag_TypeInfo, _f32: f32, _s32: s32}, texture0: {boundRect: Core_Math_Vector4, textureRect: Core_Math_Vector4, type: Pixel_BrushType, hatch: Pixel_HatchStyle, uvMode: Pixel_UVMode, interpolationMode: Pixel_InterpolationMode, texture: Pixel_Texture}}">{clear: {color: Pixel.Color}, drawTriangles: {start: u32, count: u32}, transform: {tr: Core.Math.Transform2}, clippingRect: {rect: Core.Math.Rectangle}, clippingRegion: {mode: Pixel.ClippingMode}, font: {fontRef: *Pixel.Font}, blendingMode: {mode: Pixel.BlendingMode}, textureFont: {font: *Pixel.Font, atlasIndex: s32}, colorMask: Pixel.ColorMask, renderTgt: {tgt: *Pixel.RenderTarget, paintAlpha: bool}, shader: {shader: *Pixel.ShaderBase}, shaderParam: {param: Pixel.ShaderParamHandle, type: const *Swag.TypeInfo, _f32: f32, _s32: s32}, texture0: {boundRect: Core.Math.Vector4, textureRect: Core.Math.Vector4, type: Pixel.BrushType, hatch: Pixel.HatchStyle, uvMode: Pixel.UVMode, interpolationMode: Pixel.InterpolationMode, texture: Pixel.Texture}}</a></td>
+{clear: {color: Pixel.Color}, drawTriangles: {start: u32, count: u32}, transform: {tr: Core.Math.Transform2}, clippingRect: {rect: Core.Math.Rectangle}, clippingRegion: {mode: Pixel.ClippingMode}, font: {fontRef: *Pixel.Font}, blendingMode: {mode: Pixel.BlendingMode}, textureFont: {font: *Pixel.Font, atlasIndex: s32}, colorMask: Pixel.ColorMask, renderTgt: {tgt: *Pixel.RenderTarget, paintAlpha: bool}, shader: {shader: *Pixel.ShaderBase}, shaderParam: {param: Pixel.ShaderParamHandle, type: const *Swag.TypeInfo, _f32: f32, _s32: s32}, texture0: {boundRect: Core.Math.Vector4, textureRect: Core.Math.Vector4, type: Pixel.BrushType, hatch: Pixel.HatchStyle, uvMode: Pixel.UVMode, interpolationMode: Pixel.InterpolationMode, texture: Pixel.Texture}}</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3494,7 +3495,7 @@ type</td>
 <td class="tdname">
 position</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3502,7 +3503,7 @@ position</td>
 <td class="tdname">
 p1</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3510,7 +3511,7 @@ p1</td>
 <td class="tdname">
 p2</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3630,7 +3631,7 @@ bool</td>
 <td class="tdname">
 fullname</td>
 <td class="tdtype">
-<a href="core.html#Core_String">Core.String</a></td>
+Core.String</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3638,7 +3639,7 @@ fullname</td>
 <td class="tdname">
 typeFace</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_TypeFace">*Pixel.TypeFace</a></td>
+*Pixel.TypeFace</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3654,7 +3655,7 @@ u32</td>
 <td class="tdname">
 atlases</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Pixel_GlyphAtlas)">Core.Array'(Pixel.GlyphAtlas)</a></td>
+Core.Array'(Pixel.GlyphAtlas)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3662,7 +3663,7 @@ atlases</td>
 <td class="tdname">
 asciiRef</td>
 <td class="tdtype">
-<a href="[128] pixel.html#[128] Pixel_GlyphDesc">[128] Pixel.GlyphDesc</a></td>
+[128] Pixel.GlyphDesc</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3670,7 +3671,7 @@ asciiRef</td>
 <td class="tdname">
 unicodeRef</td>
 <td class="tdtype">
-<a href="core.html#Core_HashTable'(rune, *Pixel_GlyphDesc)">Core.HashTable'(rune, *Pixel.GlyphDesc)</a></td>
+Core.HashTable'(rune, *Pixel.GlyphDesc)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3791,7 +3792,7 @@ Release the given font.</p>
 <td class="tdname">
 regular</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Font">*Pixel.Font</a></td>
+*Pixel.Font</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3799,7 +3800,7 @@ regular</td>
 <td class="tdname">
 bold</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Font">*Pixel.Font</a></td>
+*Pixel.Font</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3807,7 +3808,7 @@ bold</td>
 <td class="tdname">
 italic</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Font">*Pixel.Font</a></td>
+*Pixel.Font</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3815,7 +3816,7 @@ italic</td>
 <td class="tdname">
 boldItalic</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Font">*Pixel.Font</a></td>
+*Pixel.Font</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3966,7 +3967,7 @@ Set the font corresponding to a given style.</p>
 <td class="tdname">
 name</td>
 <td class="tdtype">
-<a href="core.html#Core_String">Core.String</a></td>
+Core.String</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -3974,7 +3975,7 @@ name</td>
 <td class="tdname">
 faces</td>
 <td class="tdtype">
-<a href="[4] pixel.html#[4] Pixel_FontFamilyStyleEnumerate">[4] Pixel.FontFamilyStyleEnumerate</a></td>
+[4] Pixel.FontFamilyStyleEnumerate</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4032,7 +4033,7 @@ BoldItalic</td>
 <td class="tdname">
 name</td>
 <td class="tdtype">
-<a href="core.html#Core_String">Core.String</a></td>
+Core.String</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4040,7 +4041,7 @@ name</td>
 <td class="tdname">
 face</td>
 <td class="tdtype">
-<a href="gdi32.html#Gdi32_LOGFONTW">Gdi32.LOGFONTW</a></td>
+Gdi32.LOGFONTW</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4262,7 +4263,7 @@ u32</td>
 <td class="tdname">
 datas</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(u8)">Core.Array'(u8)</a></td>
+Core.Array'(u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4315,7 +4316,7 @@ s32</td>
 <td class="tdname">
 uv</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+Core.Math.Rectangle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4623,7 +4624,7 @@ Interface to decode a buffer.</p>
 <td class="tdname">
 canDecode</td>
 <td class="tdtype">
-<a href="func(*pixel.html#func(*Pixel_IImageDecoder, string)->bool">func(*Pixel.IImageDecoder, string)->bool</a></td>
+func(*Pixel.IImageDecoder, string)->bool</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4631,7 +4632,7 @@ canDecode</td>
 <td class="tdname">
 decode</td>
 <td class="tdtype">
-<a href="func(*pixel.html#func(*Pixel_IImageDecoder, const [__] u8, Pixel_DecodeOptions)->Pixel_Image throw">func(*Pixel.IImageDecoder, const [..] u8, Pixel.DecodeOptions)->Pixel.Image throw</a></td>
+func(*Pixel.IImageDecoder, const [..] u8, Pixel.DecodeOptions)->Pixel.Image throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4654,7 +4655,7 @@ Interface to decode a buffer.</p>
 <td class="tdname">
 canEncode</td>
 <td class="tdtype">
-<a href="func(*pixel.html#func(*Pixel_IImageEncoder, string)->bool">func(*Pixel.IImageEncoder, string)->bool</a></td>
+func(*Pixel.IImageEncoder, string)->bool</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4662,7 +4663,7 @@ canEncode</td>
 <td class="tdname">
 encode</td>
 <td class="tdtype">
-<a href="func(*pixel.html#func(*Pixel_IImageEncoder, *Core_ConcatBuffer, Pixel_Image, any) throw">func(*Pixel.IImageEncoder, *Core.ConcatBuffer, Pixel.Image, any) throw</a></td>
+func(*Pixel.IImageEncoder, *Core.ConcatBuffer, Pixel.Image, any) throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -4685,7 +4686,7 @@ An image buffer, in various pixel formats.</p>
 <td class="tdname">
 pixels</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(u8)">Core.Array'(u8)</a></td>
+Core.Array'(u8)</td>
 <td class="enumeration">
 <p>
 All the pixels.</p>
@@ -4765,7 +4766,7 @@ Bytes per pixel.</p>
 <td class="tdname">
 workingBuffer</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Image">*Pixel.Image</a></td>
+*Pixel.Image</td>
 <td class="enumeration">
 <p>
 Temporary buffer for filters and transformations.</p>
@@ -6290,7 +6291,7 @@ Mix with another image.</p>
 </table>
 </p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)
 </code>
 </p>
@@ -6615,7 +6616,7 @@ Turn image by a given predefined angle.</p>
 <p>
 Macro to visit all pixels of the image in parallel chunks.</p>
 <p class="code">
-<code style="white-space: break-spaces">#[</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode">]
+<code style="white-space: break-spaces"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">visitPixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stride: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, stmt: code)
 </code>
 </p>
@@ -6870,7 +6871,7 @@ RoundAnchor</td>
 <td class="tdname">
 elements</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Pixel_Element)">Core.Array'(Pixel.Element)</a></td>
+Core.Array'(Pixel.Element)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6878,7 +6879,7 @@ elements</td>
 <td class="tdname">
 startPoint</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6886,7 +6887,7 @@ startPoint</td>
 <td class="tdname">
 endPoint</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6942,7 +6943,7 @@ bool</td>
 <td class="tdname">
 bvMin</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6950,7 +6951,7 @@ bvMin</td>
 <td class="tdname">
 bvMax</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6958,7 +6959,7 @@ bvMax</td>
 <td class="tdname">
 endPosBuffer</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6974,7 +6975,7 @@ polygon</td>
 <td class="tdname">
 points</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_Poly2Tri_Point)">Core.Array'(*Pixel.Poly2Tri.Point)</a></td>
+Core.Array'(*Pixel.Poly2Tri.Point)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6982,7 +6983,7 @@ points</td>
 <td class="tdname">
 triangles</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_Poly2Tri_Triangle)">Core.Array'(*Pixel.Poly2Tri.Triangle)</a></td>
+Core.Array'(*Pixel.Poly2Tri.Triangle)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -6990,7 +6991,7 @@ triangles</td>
 <td class="tdname">
 edgeList</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_Poly2Tri_Edge)">Core.Array'(*Pixel.Poly2Tri.Edge)</a></td>
+Core.Array'(*Pixel.Poly2Tri.Edge)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7353,7 +7354,7 @@ Reset the path.</p>
 <td class="tdname">
 paths</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_LinePath)">Core.Array'(*Pixel.LinePath)</a></td>
+Core.Array'(*Pixel.LinePath)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7361,7 +7362,7 @@ paths</td>
 <td class="tdname">
 bvMin</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7369,7 +7370,7 @@ bvMin</td>
 <td class="tdname">
 bvMax</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7730,7 +7731,7 @@ paintQuality</td>
 <td class="tdname">
 transform</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Transform2">Core.Math.Transform2</a></td>
+Core.Math.Transform2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7754,7 +7755,7 @@ interpolationMode</td>
 <td class="tdname">
 clippingRect</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+Core.Math.Rectangle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7762,7 +7763,7 @@ clippingRect</td>
 <td class="tdname">
 stackClipRect</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Core_Math_Rectangle)">Core.Array'(Core.Math.Rectangle)</a></td>
+Core.Array'(Core.Math.Rectangle)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7799,7 +7800,7 @@ colorMask</td>
 <td class="tdname">
 commandBuffer</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Pixel_Command)">Core.Array'(Pixel.Command)</a></td>
+Core.Array'(Pixel.Command)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7807,7 +7808,7 @@ commandBuffer</td>
 <td class="tdname">
 vertexBuffer</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Pixel_VertexLayout)">Core.Array'(Pixel.VertexLayout)</a></td>
+Core.Array'(Pixel.VertexLayout)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7815,7 +7816,7 @@ vertexBuffer</td>
 <td class="tdname">
 triangulateIdx</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(s32)">Core.Array'(s32)</a></td>
+Core.Array'(s32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7863,7 +7864,7 @@ sharedLinePathList</td>
 <td class="tdname">
 sharedRoundTmp</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'({factor: f32, pos: Core_Math_Vector2})">Core.Array'({factor: f32, pos: Core.Math.Vector2})</a></td>
+Core.Array'({factor: f32, pos: Core.Math.Vector2})</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7879,7 +7880,7 @@ curState</td>
 <td class="tdname">
 stackState</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Pixel_PaintState)">Core.Array'(Pixel.PaintState)</a></td>
+Core.Array'(Pixel.PaintState)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7887,7 +7888,7 @@ stackState</td>
 <td class="tdname">
 stackTransform</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Core_Math_Transform2)">Core.Array'(Core.Math.Transform2)</a></td>
+Core.Array'(Core.Math.Transform2)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7903,7 +7904,7 @@ lastTexture0Type</td>
 <td class="tdname">
 stackRT</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_RenderTarget)">Core.Array'(*Pixel.RenderTarget)</a></td>
+Core.Array'(*Pixel.RenderTarget)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7911,7 +7912,7 @@ stackRT</td>
 <td class="tdname">
 curRT</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_RenderTarget">*Pixel.RenderTarget</a></td>
+*Pixel.RenderTarget</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -7919,7 +7920,7 @@ curRT</td>
 <td class="tdname">
 lastTexture0Handle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_TextureHandle">Pixel.TextureHandle</a></td>
+Pixel.TextureHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10054,7 +10055,7 @@ brush</td>
 <td class="tdname">
 pattern</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(f32)">Core.Array'(f32)</a></td>
+Core.Array'(f32)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10405,7 +10406,7 @@ Returns true if the given pixel format has an alpha channel.</p>
 <td class="tdname">
 compressionLevel</td>
 <td class="tdtype">
-<a href="core.html#Core_Compress_Deflate_CompressionLevel">Core.Compress.Deflate.CompressionLevel</a></td>
+Core.Compress.Deflate.CompressionLevel</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10475,7 +10476,7 @@ bool</td>
 <td class="tdname">
 p</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Poly2Tri_Point">*Pixel.Poly2Tri.Point</a></td>
+*Pixel.Poly2Tri.Point</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10483,7 +10484,7 @@ p</td>
 <td class="tdname">
 q</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Poly2Tri_Point">*Pixel.Poly2Tri.Point</a></td>
+*Pixel.Poly2Tri.Point</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10504,7 +10505,7 @@ q</td>
 <td class="tdname">
 <b>using</b> v</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10512,7 +10513,7 @@ q</td>
 <td class="tdname">
 edgeList</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_Poly2Tri_Edge)">Core.Array'(*Pixel.Poly2Tri.Edge)</a></td>
+Core.Array'(*Pixel.Poly2Tri.Edge)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10520,7 +10521,7 @@ edgeList</td>
 <td class="tdname">
 border</td>
 <td class="tdtype">
-<a href="[2] *pixel.html#[2] *Pixel_Poly2Tri_Edge">[2] *Pixel.Poly2Tri.Edge</a></td>
+[2] *Pixel.Poly2Tri.Edge</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10721,7 +10722,7 @@ delaunayEdge</td>
 <td class="tdname">
 points</td>
 <td class="tdtype">
-<a href="[3] *pixel.html#[3] *Pixel_Poly2Tri_Point">[3] *Pixel.Poly2Tri.Point</a></td>
+[3] *Pixel.Poly2Tri.Point</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10729,7 +10730,7 @@ points</td>
 <td class="tdname">
 neighbors</td>
 <td class="tdtype">
-<a href="[3] *pixel.html#[3] *Pixel_Poly2Tri_Triangle">[3] *Pixel.Poly2Tri.Triangle</a></td>
+[3] *Pixel.Poly2Tri.Triangle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10758,7 +10759,7 @@ bool</td>
 <td class="tdname">
 points</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Core_Math_Vector2)">Core.Array'(Core.Math.Vector2)</a></td>
+Core.Array'(Core.Math.Vector2)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10798,7 +10799,7 @@ f32</td>
 <td class="tdname">
 bvMin</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -10806,7 +10807,7 @@ bvMin</td>
 <td class="tdname">
 bvMax</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11091,7 +11092,7 @@ Slow but quality offset with a joinStyle.</p>
 <td class="tdname">
 vertexbuffer</td>
 <td class="tdtype">
-<a href="ogl.html#Ogl_GLuint">Ogl.GLuint</a></td>
+Ogl.GLuint</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11123,7 +11124,7 @@ shaderBlur</td>
 <td class="tdname">
 worldTransform</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Transform2">Core.Math.Transform2</a></td>
+Core.Math.Transform2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11131,7 +11132,7 @@ worldTransform</td>
 <td class="tdname">
 orthoMatrix</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Matrix4x4">Core.Math.Matrix4x4</a></td>
+Core.Math.Matrix4x4</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11139,7 +11140,7 @@ orthoMatrix</td>
 <td class="tdname">
 modelMatrix</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Matrix4x4">Core.Math.Matrix4x4</a></td>
+Core.Math.Matrix4x4</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11147,7 +11148,7 @@ modelMatrix</td>
 <td class="tdname">
 whiteTexture</td>
 <td class="tdtype">
-<a href="ogl.html#Ogl_GLuint">Ogl.GLuint</a></td>
+Ogl.GLuint</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11155,7 +11156,7 @@ whiteTexture</td>
 <td class="tdname">
 hatchTextures</td>
 <td class="tdtype">
-<a href="[36] ogl.html#[36] Ogl_GLuint">[36] Ogl.GLuint</a></td>
+[36] Ogl.GLuint</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11179,7 +11180,7 @@ curRC</td>
 <td class="tdname">
 stackReleasedRT</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_RenderTarget)">Core.Array'(*Pixel.RenderTarget)</a></td>
+Core.Array'(*Pixel.RenderTarget)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11187,7 +11188,7 @@ stackReleasedRT</td>
 <td class="tdname">
 stackRT</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(*Pixel_RenderTarget)">Core.Array'(*Pixel.RenderTarget)</a></td>
+Core.Array'(*Pixel.RenderTarget)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11195,7 +11196,7 @@ stackRT</td>
 <td class="tdname">
 curRT</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_RenderTarget">*Pixel.RenderTarget</a></td>
+*Pixel.RenderTarget</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11203,7 +11204,7 @@ curRT</td>
 <td class="tdname">
 curShader</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_ShaderBase">*Pixel.ShaderBase</a></td>
+*Pixel.ShaderBase</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11960,7 +11961,7 @@ Update content of texture.</p>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_RenderTargetHandle">Pixel.RenderTargetHandle</a></td>
+Pixel.RenderTargetHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -11976,7 +11977,7 @@ colorBuffer</td>
 <td class="tdname">
 depthStencil</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_RenderTargetSurfaceHandle">Pixel.RenderTargetSurfaceHandle</a></td>
+Pixel.RenderTargetSurfaceHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12013,7 +12014,7 @@ u64</td>
 <td class="tdname">
 hDC</td>
 <td class="tdtype">
-<a href="win32.html#Win32_HDC">Win32.HDC</a></td>
+Win32.HDC</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12021,7 +12022,7 @@ hDC</td>
 <td class="tdname">
 hRC</td>
 <td class="tdtype">
-<a href="ogl.html#Ogl_HGLRC">Ogl.HGLRC</a></td>
+Ogl.HGLRC</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12106,7 +12107,7 @@ s32</td>
 <td class="tdname">
 boundRect</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+Core.Math.Rectangle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12114,7 +12115,7 @@ boundRect</td>
 <td class="tdname">
 pos</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Point">Core.Math.Point</a></td>
+Core.Math.Point</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12122,7 +12123,7 @@ pos</td>
 <td class="tdname">
 font</td>
 <td class="tdtype">
-<a href="*pixel.html#*Pixel_Font">*Pixel.Font</a></td>
+*Pixel.Font</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12153,7 +12154,7 @@ Represents a string with embedded formats.</p>
 <td class="tdname">
 raw</td>
 <td class="tdtype">
-<a href="core.html#Core_String">Core.String</a></td>
+Core.String</td>
 <td class="enumeration">
 <p>
 The string as passed by the user.</p>
@@ -12163,7 +12164,7 @@ The string as passed by the user.</p>
 <td class="tdname">
 chunks</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(Pixel_RichChunk)">Core.Array'(Pixel.RichChunk)</a></td>
+Core.Array'(Pixel.RichChunk)</td>
 <td class="enumeration">
 <p>
 The corresponding list of chunks.</p>
@@ -12173,7 +12174,7 @@ The corresponding list of chunks.</p>
 <td class="tdname">
 layoutRect</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+Core.Math.Rectangle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12181,7 +12182,7 @@ layoutRect</td>
 <td class="tdname">
 boundRect</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+Core.Math.Rectangle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12197,7 +12198,7 @@ If dirty, <code class="incode">Compute</code>.</p>
 </tr>
 </table>
 <p>
- This kind of string is a specific version of <a href="core.html#Core_String">Core.String</a> but specific for painting. It can contains some special markers to change its appearence.</p>
+ This kind of string is a specific version of [Core.String] but specific for painting. It can contains some special markers to change its appearence.</p>
 <p class="code">
 <code style="white-space: break-spaces"> &lt;b&gt; this is bold&lt;b&gt;
  &lt;p1&gt; this will have special color </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">&lt;p1&gt;
@@ -12450,7 +12451,7 @@ fontStyle</td>
 <td class="tdname">
 palette</td>
 <td class="tdtype">
-<a href="[4] pixel.html#[4] Pixel_Color">[4] Pixel.Color</a></td>
+[4] Pixel.Color</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12532,7 +12533,7 @@ flags</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderHandle">Pixel.ShaderHandle</a></td>
+Pixel.ShaderHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12540,7 +12541,7 @@ handle</td>
 <td class="tdname">
 mvp</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12548,7 +12549,7 @@ mvp</td>
 <td class="tdname">
 mdl</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12556,7 +12557,7 @@ mdl</td>
 <td class="tdname">
 boundRect</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12564,7 +12565,7 @@ boundRect</td>
 <td class="tdname">
 textureRect</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12572,7 +12573,7 @@ textureRect</td>
 <td class="tdname">
 uvMode</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12580,7 +12581,7 @@ uvMode</td>
 <td class="tdname">
 copyMode</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12588,7 +12589,7 @@ copyMode</td>
 <td class="tdname">
 textureW</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12596,7 +12597,7 @@ textureW</td>
 <td class="tdname">
 textureH</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12625,7 +12626,7 @@ textureH</td>
 <td class="tdname">
 radius</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -12633,7 +12634,7 @@ radius</td>
 <td class="tdname">
 axis</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_ShaderParamHandle">Pixel.ShaderParamHandle</a></td>
+Pixel.ShaderParamHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13013,7 +13014,7 @@ Bottom</td>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="pixel.html#Pixel_TextureHandle">Pixel.TextureHandle</a></td>
+Pixel.TextureHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13201,7 +13202,7 @@ string</td>
 <td class="tdname">
 buffer</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(u8)">Core.Array'(u8)</a></td>
+Core.Array'(u8)</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13209,7 +13210,7 @@ buffer</td>
 <td class="tdname">
 face</td>
 <td class="tdtype">
-<a href="freetype.html#FreeType_FT_Face">FreeType.FT_Face</a></td>
+FreeType.FT_Face</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13569,7 +13570,7 @@ Strikeout</td>
 <td class="tdname">
 pos</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13577,7 +13578,7 @@ pos</td>
 <td class="tdname">
 uv</td>
 <td class="tdtype">
-<a href="core.html#Core_Math_Vector2">Core.Math.Vector2</a></td>
+Core.Math.Vector2</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -13593,7 +13594,7 @@ u32</td>
 <td class="tdname">
 aa</td>
 <td class="tdtype">
-<a href="[12] core.html#[12] Core_Math_Vector4">[12] Core.Math.Vector4</a></td>
+[12] Core.Math.Vector4</td>
 <td class="enumeration">
 </td>
 </tr>

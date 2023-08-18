@@ -146,6 +146,7 @@
         .SyntaxLogic     { color: #D8A0DF; }
         .SyntaxNumber    { color: #B5CEA8; }
         .SyntaxString    { color: #CE9178; }
+        .SyntaxAttribute { color: #AAAAAA; }
     </style>
 <div class="container">
 <div class="left">
@@ -243,13 +244,13 @@ First, you have to initialize the audio engine by calling <a href="#Audio_create
 <p>
 You then have to load a sound file.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"<a href="mysound.html#mySound_wav">mySound.wav</a>"</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
 Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="incode">loadDatas</code> to false.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"<a href="mysound.html#mySound_wav">mySound.wav</a>"</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
+<code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
 </code>
 </p>
 <p>
@@ -259,7 +260,7 @@ Once you have a sound file, the simplest way to play it is by calling <a href="#
 </code>
 </p>
 <p>
-To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then <a href="voice.html#Voice_Play">Voice.Play</a> on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with.</p>
+To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [Voice.Play] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> voice = </span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode">.</span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(&soundFile)
 voice.</span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)
@@ -285,7 +286,7 @@ Represents a bus.</p>
 <td class="tdname">
 handle</td>
 <td class="tdtype">
-<a href="audio.html#Audio_BusHandle">Audio.BusHandle</a></td>
+Audio.BusHandle</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -485,7 +486,7 @@ The requested encoding.</p>
 <td class="tdname">
 type</td>
 <td class="tdtype">
-<a href="const *swag.html#const *Swag_TypeInfoStruct">const *Swag.TypeInfoStruct</a></td>
+const *Swag.TypeInfoStruct</td>
 <td class="enumeration">
 <p>
 The real type of the codec.</p>
@@ -510,7 +511,7 @@ Interface to describe a codec.</p>
 <td class="tdname">
 canEncode</td>
 <td class="tdtype">
-<a href="func(*audio.html#func(*Audio_ICodec, Audio_SoundFileEncoding)->bool">func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</a></td>
+func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -518,7 +519,7 @@ canEncode</td>
 <td class="tdname">
 canDecode</td>
 <td class="tdtype">
-<a href="func(*audio.html#func(*Audio_ICodec, Audio_SoundFileEncoding)->bool">func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</a></td>
+func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -526,7 +527,7 @@ canDecode</td>
 <td class="tdname">
 init</td>
 <td class="tdtype">
-<a href="func(*audio.html#func(*Audio_ICodec, ^void, u64)->u64 throw">func(*Audio.ICodec, ^void, u64)->u64 throw</a></td>
+func(*Audio.ICodec, ^void, u64)->u64 throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -534,7 +535,7 @@ init</td>
 <td class="tdname">
 decode</td>
 <td class="tdtype">
-<a href="func(*audio.html#func(*Audio_ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw">func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</a></td>
+func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -557,7 +558,7 @@ Represents a sound file.</p>
 <td class="tdname">
 fullname</td>
 <td class="tdtype">
-<a href="core.html#Core_String">Core.String</a></td>
+Core.String</td>
 <td class="enumeration">
 </td>
 </tr>
@@ -565,7 +566,7 @@ fullname</td>
 <td class="tdname">
 datas</td>
 <td class="tdtype">
-<a href="core.html#Core_Array'(u8)">Core.Array'(u8)</a></td>
+Core.Array'(u8)</td>
 <td class="enumeration">
 <p>
 Prefetched datas (in encoding format).</p>
