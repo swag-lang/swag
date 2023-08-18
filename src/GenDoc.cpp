@@ -208,11 +208,14 @@ void GenDoc::generate(Module* mdl)
 
     helpContent += "</head>\n";
 
-    // Embbed styles
+    // Embbeded styles
     if (!userCss)
         outputStyles();
 
     generateApi();
+
+    helpContent += "</body>\n";
+    helpContent += "</html>\n";
 
     // Write file
     fwrite(helpContent.c_str(), 1, helpContent.length(), f);

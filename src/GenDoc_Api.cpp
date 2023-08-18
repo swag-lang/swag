@@ -17,6 +17,29 @@ static Utf8 toRef(Utf8 str)
     return str;
 }
 
+static int sortOrder(AstNodeKind kind)
+{
+    switch (kind)
+    {
+    case AstNodeKind::Namespace:
+        return 0;
+    case AstNodeKind::StructDecl:
+        return 1;
+    case AstNodeKind::InterfaceDecl:
+        return 2;
+    case AstNodeKind::EnumDecl:
+        return 3;
+    case AstNodeKind::ConstDecl:
+        return 4;
+    case AstNodeKind::FuncDecl:
+        return 5;
+    case AstNodeKind::AttrDecl:
+        return 6;
+    default:
+        return 7;
+    }
+}
+
 static bool canCollectNode(AstNode* node)
 {
     if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
@@ -936,29 +959,6 @@ void GenDoc::generateToc()
     generateTocSection(AstNodeKind::FuncDecl, "Functions");
 }
 
-int GenDoc::sortOrder(AstNodeKind kind)
-{
-    switch (kind)
-    {
-    case AstNodeKind::Namespace:
-        return 0;
-    case AstNodeKind::StructDecl:
-        return 1;
-    case AstNodeKind::InterfaceDecl:
-        return 2;
-    case AstNodeKind::EnumDecl:
-        return 3;
-    case AstNodeKind::ConstDecl:
-        return 4;
-    case AstNodeKind::FuncDecl:
-        return 5;
-    case AstNodeKind::AttrDecl:
-        return 6;
-    default:
-        return 7;
-    }
-}
-
 void GenDoc::generateContent()
 {
     helpContent += "<blockquote>\n";
@@ -1374,6 +1374,4 @@ void GenDoc::generateApi()
     helpContent += "</div>\n";
     helpContent += "</div>\n";
     helpContent += "</div>\n";
-    helpContent += "</body>\n";
-    helpContent += "</html>\n";
 }

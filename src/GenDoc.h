@@ -57,7 +57,6 @@ struct GenDoc
     void collectScopes(Scope* root);
     void computeUserComments(UserComment& result, const Utf8& txt);
     Utf8 getDocComment(AstNode* node);
-    int  sortOrder(AstNodeKind kind);
     Utf8 findReference(const Utf8& name);
     Utf8 getReference(const Utf8& name);
     Utf8 getFormattedText(const Utf8& user);
