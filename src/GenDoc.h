@@ -8,6 +8,18 @@ struct AstFuncDecl;
 
 struct GenDoc
 {
+    void generate(Module* mdl);
+    void outputStyles();
+
+    Module* module = nullptr;
+    Concat  concat;
+    Utf8    helpContent;
+    Utf8    fullFileName;
+    Utf8    fileName;
+
+    // Api
+    ///////////////////////////////////
+
     enum class UserBlockKind
     {
         Paragraph,
@@ -40,15 +52,12 @@ struct GenDoc
         VectorNative<AstNode*> nodes;
     };
 
-    void generate(Module* mdl);
-
+    void generateApi();
     void collectNode(AstNode* node);
     void collectScopes(Scope* root);
-
     void computeUserComments(UserComment& result, const Utf8& txt);
     Utf8 getDocComment(AstNode* node);
     int  sortOrder(AstNodeKind kind);
-
     Utf8 findReference(const Utf8& name);
     Utf8 getReference(const Utf8& name);
     Utf8 getFormattedText(const Utf8& user);
@@ -58,23 +67,14 @@ struct GenDoc
     void outputUserBlock(const UserBlock& user);
     void outputUserComment(const UserComment& user);
     void outputCode(const Utf8& code);
-    void outputStyles();
     void outputTitle(OneRef& c);
-
     void generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
     void generateTocSection(AstNodeKind kind, const char* name);
     void generateToc();
     void generateContent();
 
-    Module* module = nullptr;
-
-    Concat                   concat;
-    AstOutput                output;
-    AstOutput::OutputContext outputCxt;
-    Utf8                     helpContent;
-    Utf8                     fullFileName;
-    Utf8                     fileName;
-
+    AstOutput                       output;
+    AstOutput::OutputContext        outputCxt;
     MapUtf8<VectorNative<AstNode*>> collect;
     MapUtf8<Utf8>                   collectInvert;
     Vector<OneRef>                  allNodes;
