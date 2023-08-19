@@ -172,15 +172,17 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs)
 {
     if (code.empty())
         return;
-    helpContent += "<p class=\"code\">\n";
-    helpContent += "<code style=\"white-space: break-spaces\">";
-
-    auto repl = code;
 
     // Remove trailing eol
+    auto repl = code;
     repl.trim();
-    while (repl.back() == '\n')
+    while (repl.length() && repl.back() == '\n')
         repl.removeBack();
+    if (repl.empty())
+        return;
+
+    helpContent += "<p class=\"code\">\n";
+    helpContent += "<code style=\"white-space: break-spaces\">";
 
     // Kind of a hack for now... Try to keep references, but try to keep <> also...
     if (code.find("<a href") == -1)
@@ -243,7 +245,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
 {
     for (auto& l : lines)
     {
-        if (l.back() == '\r')
+        if (l.length() && l.back() == '\r')
             l.removeBack();
     }
 
@@ -252,46 +254,47 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
     {
         UserBlock blk;
 
+        // Start of a block
         // Zap blank lines at the start of the block
         for (; start < lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
-            if (!line.empty())
-            {
-                if (line == "---")
-                {
-                    blk.kind = UserBlockKind::RawParagraph;
-                    start++;
-                }
-                else if (line == "```")
-                {
-                    blk.kind = UserBlockKind::Code;
-                    start++;
-                }
-                else if (line[0] == '>')
-                {
-                    blk.kind = UserBlockKind::Blockquote;
-                }
-                else if (line[0] == '|')
-                {
-                    blk.kind = UserBlockKind::Table;
-                }
-                else if (line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
-                {
-                    blk.kind = UserBlockKind::Title1;
-                }
-                else if (line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
-                {
-                    blk.kind = UserBlockKind::Title2;
-                }
-                else
-                {
-                    blk.lines.push_back(lines[start++]);
-                }
+            if (line.empty())
+                continue;
 
-                break;
+            if (line == "---")
+            {
+                blk.kind = UserBlockKind::RawParagraph;
+                start++;
             }
+            else if (line == "```")
+            {
+                blk.kind = UserBlockKind::Code;
+                start++;
+            }
+            else if (line[0] == '>')
+            {
+                blk.kind = UserBlockKind::Blockquote;
+            }
+            else if (line[0] == '|')
+            {
+                blk.kind = UserBlockKind::Table;
+            }
+            else if (line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
+            {
+                blk.kind = UserBlockKind::Title1;
+            }
+            else if (line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
+            {
+                blk.kind = UserBlockKind::Title2;
+            }
+            else
+            {
+                blk.lines.push_back(lines[start++]);
+            }
+
+            break;
         }
 
         // The short description (first line) can end with '.'.
@@ -306,22 +309,23 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
             auto line = lines[start];
             line.trim();
 
-            // End of the paragraph if empty line
-            if (line.empty() && blk.kind != UserBlockKind::RawParagraph && blk.kind != UserBlockKind::Code)
-                break;
-
-            if (blk.kind == UserBlockKind::Blockquote && line[0] != '>')
-                break;
-            if (blk.kind != UserBlockKind::Blockquote && line[0] == '>')
-                break;
-            if (blk.kind == UserBlockKind::Table && line[0] != '|')
-                break;
-            if (blk.kind != UserBlockKind::Table && line[0] == '|')
-                break;
-            if (blk.kind != UserBlockKind::Title1 && line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
-                break;
-            if (blk.kind != UserBlockKind::Title2 && line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
-                break;
+            if (blk.kind != UserBlockKind::RawParagraph && blk.kind != UserBlockKind::Code)
+            {
+                if (line.empty()) // End of the paragraph if empty line
+                    break;
+                if (blk.kind == UserBlockKind::Blockquote && line[0] != '>')
+                    break;
+                if (blk.kind != UserBlockKind::Blockquote && line[0] == '>')
+                    break;
+                if (blk.kind == UserBlockKind::Table && line[0] != '|')
+                    break;
+                if (blk.kind != UserBlockKind::Table && line[0] == '|')
+                    break;
+                if (blk.kind != UserBlockKind::Title1 && line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
+                    break;
+                if (blk.kind != UserBlockKind::Title2 && line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
+                    break;
+            }
 
             if (line[0] == '>')
             {
@@ -466,7 +470,10 @@ void GenDoc::outputUserBlock(const UserBlock& user)
                 helpContent += "</ul>\n";
             }
 
-            helpContent += getFormattedText(user.lines[i]);
+            if (user.kind == UserBlockKind::RawParagraph)
+                helpContent += user.lines[i];
+            else
+                helpContent += getFormattedText(user.lines[i]);
         }
 
         // Add one line break after each line, except the last line from a raw block, because we do

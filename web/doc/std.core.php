@@ -26077,17 +26077,17 @@ Set some format options with a given user string.</p>
 </p>
 <p>
  Format is:</p>
-<p style="white-space: break-spaces"> <code class="incode">[+][fmt][precision]</code>
+<p style="white-space: break-spaces"> `[+][fmt][precision]`
 
- <code class="incode">[+]</code>
+ `[+]`
       force the positive sign if number is positive
- <code class="incode">[fmt]</code> output format:
-      <code class="incode">e (-d.dddde±dd, a decimal exponent)</code>
-      <code class="incode">E (-d.ddddE±dd, a decimal exponent)</code>
-      <code class="incode">f (-ddd.dddd, no exponent)</code>
-      <code class="incode">g (<code class="incode">e</code> for large exponents, <code class="incode">f</code> otherwise)</code>
-      <code class="incode">G (<code class="incode">E</code> for large exponents, <code class="incode">f</code> otherwise)</code>
- <code class="incode">[precision]</code>
+ `[fmt]` output format:
+      `e (-d.dddde±dd, a decimal exponent)`
+      `E (-d.ddddE±dd, a decimal exponent)`
+      `f (-ddd.dddd, no exponent)`
+      `g ('e' for large exponents, 'f' otherwise)`
+      `G ('E' for large exponents, 'f' otherwise)`
+ `[precision]`
       integer, precision of the fractional part</p>
 <p>
 <table class="item">
@@ -26175,15 +26175,15 @@ Set some format options with a given user string.</p>
 </p>
 <p>
  Format is:</p>
-<p style="white-space: break-spaces"> <code class="incode">[+][B|D|X][padding][width]</code>
+<p style="white-space: break-spaces"> `[+][B|D|X][padding][width]`
 
- <code class="incode">[+]</code>
+ `[+]`
       force sign for positive numbers
- <code class="incode">[B|D|X]</code>
+ `[B|D|X]`
       binary, decimal, hexadecimal
- <code class="incode">[padding]</code>
+ `[padding]`
       padding character, in ascii, mandatory before the next field
- <code class="incode">[width]</code>
+ `[width]`
       width of the output, in characters</p>
 <p>
 <table class="item">
@@ -31887,9 +31887,9 @@ Macro to visit the unicode characters of the utf8 sequence.</p>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">visitRunes</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, stmt: code)</code>
 </p>
-<p style="white-space: break-spaces"> <code class="incode">@alias0</code> will contain the character
- <code class="incode">@alias1</code> will contain the character index
- <code class="incode">@alias2</code> will contain the byte index of that character within the utf8 sequence</p>
+<p style="white-space: break-spaces"> '@alias0' will contain the character
+ '@alias1' will contain the character index
+ '@alias2' will contain the byte index of that character within the utf8 sequence</p>
 <p>
 <table class="item">
 <tr>

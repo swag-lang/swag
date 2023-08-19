@@ -6508,12 +6508,12 @@ Macro to visit all pixels of the image in parallel chunks.</p>
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">visitPixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stride: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, stmt: code)</code>
 </p>
 <p style="white-space: break-spaces"> Exported variables:
- <code class="incode">pix</code>        address of the pixel
- <code class="incode">image</code>      the processed image
- <code class="incode">index</code>      the pixel index
- <code class="incode">x</code>          the pixel x coordinates
- <code class="incode">y</code>          the pixel y coordinates
- <code class="incode">userData</code></p>
+ 'pix'        address of the pixel
+ 'image'      the processed image
+ 'index'      the pixel index
+ 'x'          the pixel x coordinates
+ 'y'          the pixel y coordinates
+ 'userData'</p>
 <p>
 <table class="item">
 <tr>

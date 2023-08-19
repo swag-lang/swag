@@ -153,40 +153,32 @@
 <div class="page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
-<p>
-<h1 id="How to build Swag">How to build Swag</h1></p>
-<p>
-</p>
-<p>
-<h2 id="LLVM">LLVM</h2></p>
-<p>
-</p>
+<h2>
+How to build Swag</h2>
+<h3>
+LLVM</h3>
 <p>
 Swag has two backends, a <code class="incode">x86_64</code> custom backend written for fast compile, but with far from optimal generated code, and <code class="incode">llvm</code> for optimized builds.</p>
 <p>
 The <a href="https://releases.llvm.org/download.html">LLVM</a> source tree is included in the Swag source tree for convenience. Version is <code class="incode">15.0.7</code>.</p>
 <p>
 In order to build LLVM, you will have to install <a href="https://cmake.org/download/">cmake 3.23.2</a> (or later) and <a href="https://www.python.org/downloads/">python 3</a>.</p>
-<p>
-<h2 id="Build">Build</h2></p>
-<p>
-</p>
+<h3>
+Build</h3>
 <p>
 You will need <code class="incode">Visual Studio 2022 17.1</code> or later.</p>
 <p>
-</p>
 <ul>
-<li>As there's no automatic detection, edit <code class="incode">vs_build_cfg.bat</code> to match your version of Visual Studio and of the Windows SDK.</li>
-<li>Launch <code class="incode">swag/build/vs_build_llvm_release.bat</code>. Note that building LLVM takes a crazy amount of time and memory, and can require multiple tries.</li>
-<li>Launch <code class="incode">swag/build/vs_build_swag_release.bat</code>.</li>
-<li>You can also launch <code class="incode">swag/build/vs_build_extern.bat</code>. This will build and update some external libraries in the standard workspace, and copy some libraries from the windows SDK.</li>
+<li> As there's no automatic detection, edit <code class="incode">vs_build_cfg.bat</code> to match your version of Visual Studio and of the Windows SDK.</li>
+<li> Launch <code class="incode">swag/build/vs_build_llvm_release.bat</code>. Note that building LLVM takes a crazy amount of time and memory, and can require multiple tries.</li>
+<li> Launch <code class="incode">swag/build/vs_build_swag_release.bat</code>.</li>
+<li> You can also launch <code class="incode">swag/build/vs_build_extern.bat</code>. This will build and update some external libraries in the standard workspace, and copy some libraries from the windows SDK.</li>
 </ul>
-<p>
 </p>
 <p>
 If LLVM has been compiled once, you can also use the <code class="incode">Swag.sln</code> workspace in the <code class="incode">build</code> subfolder.</p>
-<p>
-<h2 id="Windows SDK">Windows SDK</h2></p>
+<h3>
+Windows SDK</h3>
 <p>
 The path to the SDK version is defined in <code class="incode">vs_build_cfg.bat</code>.</p>
 <p>

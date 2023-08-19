@@ -154,20 +154,18 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <p>
-</p>
 <ul>
-<li><a href="../doc/std.core.php">std.core</a></li>
-<li><a href="../doc/std.pixel.php">std.pixel</a></li>
-<li><a href="../doc/std.gui.php">std.gui</a></li>
-<li><a href="../doc/std.ogl.php">std.ogl</a></li>
-<li><a href="../doc/std.libc.php">std.libc</a></li>
-<li><a href="../doc/std.freetype.php">std.freetype</a></li>
-<li><a href="../doc/std.win32.php">std.win32</a></li>
-<li><a href="../doc/std.gdi32.php">std.gdi32</a></li>
-<li><a href="../doc/std.xinput.php">std.xinput</a></li>
-<li><a href="../doc/std.audio.php">std.audio</a></li>
+<li> <a href="../doc/std.core.php">std.core</a></li>
+<li> <a href="../doc/std.pixel.php">std.pixel</a></li>
+<li> <a href="../doc/std.gui.php">std.gui</a></li>
+<li> <a href="../doc/std.ogl.php">std.ogl</a></li>
+<li> <a href="../doc/std.libc.php">std.libc</a></li>
+<li> <a href="../doc/std.freetype.php">std.freetype</a></li>
+<li> <a href="../doc/std.win32.php">std.win32</a></li>
+<li> <a href="../doc/std.gdi32.php">std.gdi32</a></li>
+<li> <a href="../doc/std.xinput.php">std.xinput</a></li>
+<li> <a href="../doc/std.audio.php">std.audio</a>.</li>
 </ul>
-<p>
 </p>
 </div>
 </div>

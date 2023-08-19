@@ -27,8 +27,6 @@ bool GenDoc::generatePages()
         }
 
         startPage();
-        stateEnter(UserBlockKind::Code);
-        state.push_back(UserBlockKind::Code);
         if (!processFile(file->path, 0))
             return false;
         endPage();
