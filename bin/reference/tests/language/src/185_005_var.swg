@@ -4,23 +4,23 @@ A global variable can be tagged with `#[Swag.Tls]` to store it in the thread loc
 #[Swag.Tls]
 var G = 0
 
+/**
+A local variable can be tagged with `#[Swag.Global]` to make it global (aka `static` in C/C++).
+*/
 #test
 {
-    // A local variable can be tagged with `#[Swag.Global]` to make it global (aka `static` in C/C++).
+    func toto()->s32
     {
-        func toto()->s32
-        {
-            #[Swag.Global]
-            var G1 = 0
+        #[Swag.Global]
+        var G1 = 0
 
-            G1 += 1
-            return G1
-        }
-
-        @assert(toto() == 1)
-        @assert(toto() == 2)
-        @assert(toto() == 3)
+        G1 += 1
+        return G1
     }
+
+    @assert(toto() == 1)
+    @assert(toto() == 2)
+    @assert(toto() == 3)
 }
 
 /**

@@ -1,40 +1,47 @@
+/**
+`using` brings the scope of a namespace, a struct or an enum in the current one.
+*/
 #test
 {
-    // `using` brings the scope of a namespace, a struct or an enum in the current one.
-    {
-        enum RGB { R; G; B; }
-        @assert(RGB.R == 0)
+    enum RGB { R; G; B; }
+    @assert(RGB.R == 0)
 
-        using RGB
-        @assert(G == 1)
-    }
-
-    // `using` can also be used with a variable
-    {
-        struct Point { x: s32, y: s32 }
-
-        var pt: Point
-
-        using pt
-        x = 1 // no need to specify 'pt'
-        y = 2 // no need to specify 'pt'
-
-        @assert(pt.x == 1)
-        @assert(pt.y == 2)
-    }
-
-    // You can declare a variable with `using` just before.
-    {
-        struct Point { x: s32; y: s32; }
-
-        using var pt: Point
-        x = 1 // no need to specify 'pt'
-        y = 2 // no need to specify 'pt'
-
-        @assert(pt.x == 1)
-        @assert(pt.y == 2)
-    }
+    using RGB
+    @assert(G == 1)
 }
+
+/**
+`using` can also be used with a variable
+*/
+#test
+{
+    struct Point { x: s32, y: s32 }
+
+    var pt: Point
+
+    using pt
+    x = 1 // no need to specify 'pt'
+    y = 2 // no need to specify 'pt'
+
+    @assert(pt.x == 1)
+    @assert(pt.y == 2)
+}
+
+/**
+You can declare a variable with `using` just before.
+*/
+#test
+{
+    struct Point { x: s32; y: s32; }
+
+    using var pt: Point
+    x = 1 // no need to specify 'pt'
+    y = 2 // no need to specify 'pt'
+
+    @assert(pt.x == 1)
+    @assert(pt.y == 2)
+}
+
 
 /**
 # For a function parameter

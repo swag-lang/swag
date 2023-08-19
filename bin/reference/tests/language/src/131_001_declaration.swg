@@ -56,32 +56,43 @@ Generic types can be deduced from parameters, so `func'type()` is not always nec
 /**
 You can also specify constants as generic parameters.
 */
+
+/**
+`N` is a constant a type `s32`.
+*/
 #test
 {
-    // `N` is a constant a type `s32`.
-    {
-        func(const N: s32) myFunc() = @assert(N == 10)
-        myFunc'10()
-    }
-
-    // `const` can also be omitted, as an identifier followed by a type definition is considered to be a constant and not a type.
-    {
-        func(N: s32) myFunc() = @assert(N == 10)
-        myFunc'10()
-    }
-
-    // You can also assign a default value to the constant.
-    {
-        func(N: s32 = 10) myFunc() = @assert(N == 10)
-        myFunc()
-    }
-
-    // You can ommit the type if you declare the constant with `const`. It will be deduced from the assignment expression.
-    {
-        func(const N = 10) myFunc() = @assert(N == 10)
-        myFunc()
-    }
+    func(const N: s32) myFunc() = @assert(N == 10)
+    myFunc'10()
 }
+
+/**
+`const` can also be omitted, as an identifier followed by a type definition is considered to be a constant and not a type.
+*/
+#test
+{
+    func(N: s32) myFunc() = @assert(N == 10)
+    myFunc'10()
+}
+
+/**
+You can also assign a default value to the constant.
+*/
+#test
+{
+    func(N: s32 = 10) myFunc() = @assert(N == 10)
+    myFunc()
+}
+
+/**
+You can ommit the type if you declare the constant with `const`. It will be deduced from the assignment expression.
+*/
+#test
+{
+    func(const N = 10) myFunc() = @assert(N == 10)
+    myFunc()
+}
+
 
 /**
 You can mix types and constants.

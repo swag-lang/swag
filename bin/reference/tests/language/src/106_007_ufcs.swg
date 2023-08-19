@@ -4,26 +4,27 @@
 
 #test
 {
-    {
-        func myFunc(param: bool) => param
+    func myFunc(param: bool) => param
 
-        let b = false
-        @assert(myFunc(b) == b.myFunc())
-    }
+    let b = false
+    @assert(myFunc(b) == b.myFunc())
+}
 
-    // This means that in Swag, there are only *static* functions, but which can be called like *methods*.
-    {
-        struct Point { x, y: s32; }
-        func set(using pt: *Point, value: s32) { x, y = value; }
+/**
+This means that in Swag, there are only *static* functions, but which can be called like *methods*.
+*/
+#test
+{
+    struct Point { x, y: s32; }
+    func set(using pt: *Point, value: s32) { x, y = value; }
 
-        var pt: Point
+    var pt: Point
 
-        // Ufcs call
-        pt.set(10)
-        @assert(pt.x == 10 and pt.y == 10)
+    // Ufcs call
+    pt.set(10)
+    @assert(pt.x == 10 and pt.y == 10)
 
-        // Normal call
-        set(&pt, 20)
-        @assert(pt.x == 20 and pt.y == 20)
-    }
+    // Normal call
+    set(&pt, 20)
+    @assert(pt.x == 20 and pt.y == 20)
 }

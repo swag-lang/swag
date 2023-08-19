@@ -66,10 +66,8 @@ Functions can be nested inside other functions.
     func sub(x, y: s32) => x - y
 
     // Simple call.
-    {
-        let x = sub(5, 2)
-        @assert(x == 3)
-    }
+    let x = sub(5, 2)
+    @assert(x == 3)
 }
 
 /**

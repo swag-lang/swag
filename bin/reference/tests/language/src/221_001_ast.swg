@@ -1,26 +1,31 @@
 /**
 The most simple way to produce a string which contains the Swag code to compile is with an `#ast` block. An `#ast` block is executed at compile time and the string it returns will be compiled **inplace**.
 */
+
+/**
+The `#ast` can be a simple expression with the string to compile.
+*/
 #test
 {
-    // The `#ast` can be a simple expression with the string to compile.
-    {
-        #ast "var x = 666"
-        @assert(x == 666)
-    }
-
-    // Or it can be a block, with an explicit `return`
-    {
-        var cpt = 2
-        #ast
-        {
-            const INC = 5
-            return "cpt += " ++ INC   // Equivalent to 'cpt += 5'
-        }
-
-        @assert(cpt == 7)
-    }
+    #ast "var x = 666"
+    @assert(x == 666)
 }
+
+/**
+Or it can be a block, with an explicit `return`
+*/
+#test
+{
+    var cpt = 2
+    #ast
+    {
+        const INC = 5
+        return "cpt += " ++ INC   // Equivalent to 'cpt += 5'
+    }
+
+    @assert(cpt == 7)
+}
+
 
 /**
 # Struct and enums
