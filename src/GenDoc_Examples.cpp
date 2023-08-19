@@ -65,7 +65,18 @@ void GenDoc::popState()
         stateEnter(state.back());
 }
 
-bool GenDoc::processFile(const Path& fileName)
+void GenDoc::addTitle(const Utf8& title, int level)
+{
+    helpContent += Fmt("<h%d id=\"%s\">", level, title.c_str());
+    helpContent += title;
+    helpContent += Fmt("</h%d>", level);
+
+    helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", title.c_str(), title.c_str());
+    popState();
+    pushState(UserBlockKind::Paragraph);
+}
+
+bool GenDoc::processFile(const Path& fileName, int titleLevel)
 {
     ifstream ifs(fileName);
 
@@ -89,6 +100,30 @@ bool GenDoc::processFile(const Path& fileName)
         lineTrim.trim();
 
         auto curState = state.back();
+
+        if (lineTrim.startsWith("# "))
+        {
+            lineTrim.remove(0, 2);
+            lineTrim.trim();
+            addTitle(lineTrim, titleLevel + 1);
+            continue;
+        }
+
+        if (lineTrim.startsWith("## "))
+        {
+            lineTrim.remove(0, 3);
+            lineTrim.trim();
+            addTitle(lineTrim, titleLevel + 2);
+            continue;
+        }
+
+        if (lineTrim.startsWith("### "))
+        {
+            lineTrim.remove(0, 4);
+            lineTrim.trim();
+            addTitle(lineTrim, titleLevel + 3);
+            continue;
+        }
 
         if (lineTrim.startsWith("/**"))
         {
@@ -128,7 +163,8 @@ bool GenDoc::processFile(const Path& fileName)
             lineTrim.trim();
             if (lineTrim.empty())
                 helpContent += "</br>\n";
-            helpContent += getFormattedText(lineTrim);
+            else
+                helpContent += getFormattedText(lineTrim);
             break;
 
             //////////////////////////////////
@@ -308,10 +344,10 @@ bool GenDoc::generateExamples()
         helpContent += title;
         helpContent += Fmt("</h%d>", titleLevel);
 
-        helpToc += "<ul>\n";
+        helpToc += "<ul class=\"tocbullet\">\n";
         stateEnter(UserBlockKind::Code);
         state.push_back(UserBlockKind::Code);
-        if (!processFile(file->path))
+        if (!processFile(file->path, titleLevel))
             return false;
         helpToc += "</ul>\n";
     }

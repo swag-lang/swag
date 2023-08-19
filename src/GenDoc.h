@@ -42,7 +42,8 @@ struct GenDoc
     ///////////////////////////////////
 
     bool generateExamples();
-    bool processFile(const Path& fileName);
+    void addTitle(const Utf8& title, int level);
+    bool processFile(const Path& fileName, int titleLevel);
     void stateEnter(UserBlockKind st);
     void stateLeave(UserBlockKind st);
     void pushState(UserBlockKind st);
