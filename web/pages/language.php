@@ -520,9 +520,9 @@ Note that if you want to compile and run a single module in the workspace, you c
 </p>
 
 <h2 id="001_hello_mad_world">Hello mad world</h2><p>
-Lets start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the <a href="libraries.php">Swag standard modules</a>.</p>
+Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the <a href="libraries.php">Swag standard modules</a>.</p>
 <p>
-<code class="incode">#main</code> is the <b>program entry point</b>, a special compiler function (thats why the name starts with <code class="incode">#</code>). It must be defined only once for a native executable.<code class="incode">@print</code> is an <b>intrinsic</b>, a special built-in function (thats why the name starts with <code class="incode">@</code>). It is part of the <a href="std/swag.runtime.html">compiler runtime</a> which comes with the compiler.</p>
+<code class="incode">#main</code> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <code class="incode">#</code>). It must be defined only once for a native executable.<code class="incode">@print</code> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <code class="incode">@</code>). It is part of the <a href="std/swag.runtime.html">compiler runtime</a> which comes with the compiler.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
 {
@@ -532,7 +532,7 @@ Lets start with the most simple version of the "hello world" example. This is a 
 <p>
 </p>
 <p>
-Next, a version that this time uses the <code class="incode">Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module.The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but lets keep it simple.</p>
+Next, a version that this time uses the <code class="incode">Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module.The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
 {
@@ -594,7 +594,7 @@ Now a stupid version that generates the code to do the print thanks to <b>meta p
 <p>
 </p>
 <p>
-And finally lets be more and more crazy.</p>
+And finally let's be more and more crazy.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">
 
@@ -651,7 +651,7 @@ A module is a <code class="incode">dll</code> (under windows) or an executable, 
 Typically, the entire workspace is compiled.</p>
 
 <h2 id="003_comments">Comments</h2><p>
-Lets start with the basics. Swag support classical single-line and multi-line comments.</p>
+Let's start with the basics. Swag support classical single-line and multi-line comments.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Single-line comment</span><span class="SyntaxCode">
 
@@ -968,7 +968,7 @@ cvarargs</code>
 </p>
 
 <h2 id="006_semicolon">Semicolon</h2><p>
-In Swag, theres no need to end a statement with <code class="incode">;</code> like in C/C++. Most of the time a <code class="incode">end of line</code> is enough.</p>
+In Swag, there's no need to end a statement with <code class="incode">;</code> like in C/C++. Most of the time a <code class="incode">end of line</code> is enough.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Declare two variables x and y of type s32 (signed 32 bits), and initialize them to 1.</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -982,7 +982,7 @@ y += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == x)     </span><span class="SyntaxComment">// Verify that y is equal to x.</span><span class="SyntaxCode"></code>
 </p>
 <p>
-The semicolons are not mandatory, but its possible to use them if you want.</p>
+The semicolons are not mandatory, but it's possible to use them if you want.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxComment">// You can notice that the type of x and y is not specified here. This is due to type inference (we will see that later).</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x, y = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">;
@@ -1256,7 +1256,7 @@ A rune is an unicode codepoint, and is 32 bits.</p>
 #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </p>
 <p>
-You cannot index a string to get a rune, except in ascii strings. This is because we didnt want the runtime to come with the cost of UTF8 encoding/decoding. But note that the <code class="incode">Std.Core</code> module will have all you need to manipulate UTF8 strings.</p>
+You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the <code class="incode">Std.Core</code> module will have all you need to manipulate UTF8 strings.</p>
 <p>
 So in that case you will retrieve a byte.</p>
 <p class="code">
@@ -1310,7 +1310,7 @@ A <i>character</i> is enclosed with <b>backticks</b>.</p>
 </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> char1 = </span><span class="SyntaxString">`我`</span><span class="SyntaxCode"></code>
 </p>
 <p>
-By default, its a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type <code class="incode">rune</code>.</p>
+By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type <code class="incode">rune</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">{
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">   = </span><span class="SyntaxString">`a`</span><span class="SyntaxCode">
@@ -1499,7 +1499,7 @@ Or</p>
 </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(b == </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">)</code>
 </p>
 <p>
-If you dont assign a value, then the variable will be initialized with its default value (0). So a variable is <b>always</b> initialized.</p>
+If you don't assign a value, then the variable will be initialized with its default value (0). So a variable is <b>always</b> initialized.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
@@ -1550,7 +1550,7 @@ The same goes for multiple variables.</p>
 </p>
 
 <h2 id="014_const">Const</h2><p>
-If you use <code class="incode">const</code> instead of <code class="incode">var</code>, the value must be known by the compiler. Theres no memory footprint if the type is a value or a string.</p>
+If you use <code class="incode">const</code> instead of <code class="incode">var</code>, the value must be known by the compiler. There's no memory footprint if the type is a value or a string.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxComment">// These are constants and not variables. So they cannot be changed after the declaration.</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
@@ -1560,7 +1560,7 @@ If you use <code class="incode">const</code> instead of <code class="incode">var
 #assert b == </span><span class="SyntaxString">"string"</span><span class="SyntaxCode"></code>
 </p>
 <p>
-Constants can have more than just simple types. In that case, theres a memory footprint, because those constants are stored in the data segment. But that means also you could take the address of such constants at runtime.</p>
+Constants can have more than just simple types. In that case, there's a memory footprint, because those constants are stored in the data segment. But that means also you could take the address of such constants at runtime.</p>
 <p>
 This is our first static array. It contains <code class="incode">3</code> elements, and the type of the elements is <code class="incode">s32</code>.</p>
 <p class="code">
@@ -1770,7 +1770,7 @@ Operator <code class="incode">&lt;=&gt;</code> will return -1, 0 or 1 if the exp
 <p>
 The operator <code class="incode">orelse</code> will return the left expression if it is not zero, otherwise it will return the right expression.</p>
 <p>
-Works with strings, pointers and structures with the <code class="incode">opData</code> special function (well see that later).</p>
+Works with strings, pointers and structures with the <code class="incode">opData</code> special function (we'll see that later).</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"string1"</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b = </span><span class="SyntaxString">"string2"</span><span class="SyntaxCode">
@@ -1816,7 +1816,7 @@ This means that a 8/16 bits operation (like an addition) can more easily <b>over
 #assert </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> +,up </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">256</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// No overflow, because the operation is done in 32 bits.</span><span class="SyntaxCode"></code>
 </p>
 <p>
-Well see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>.</p>
+We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>.</p>
 <p>
 <h3 id="Operator precedence">Operator precedence</h3></p>
 <p>
@@ -2342,7 +2342,7 @@ Note that declaring a tuple type or a struct type is equivalent to a constant re
 </p>
 
 <h2 id="024_any">Any</h2><p>
-<code class="incode">any</code> is a specific type that can store every other types. <code class="incode">any</code> is <b>not a variant</b>. Its a dynamic typed reference to an existing value.</p>
+<code class="incode">any</code> is a specific type that can store every other types. <code class="incode">any</code> is <b>not a variant</b>. It's a dynamic typed reference to an existing value.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">any</span><span class="SyntaxCode">
 
@@ -2801,7 +2801,7 @@ By type reflection, you can loop/visit all values of an enum.</p>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }</code>
 </p>
 <p>
-Note the <code class="incode">impl enum</code> syntax. Well see later that <code class="incode">impl</code> is also used for structs.</p>
+Note the <code class="incode">impl enum</code> syntax. We'll see later that <code class="incode">impl</code> is also used for structs.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">
 {
@@ -2854,7 +2854,7 @@ You can also put <code class="incode">using</code> in front of the namespace to 
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">FileSymbol</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// No need to specify 'Private' because of the 'using'</span><span class="SyntaxCode"></code>
 </p>
 <p>
-This is equivalent to <code class="incode">private</code>, but you dont have to specify a name, the compiler will generate it for you.</p>
+This is equivalent to <code class="incode">private</code>, but you don't have to specify a name, the compiler will generate it for you.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">private</span><span class="SyntaxCode"> {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OtherSymbol</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -2866,7 +2866,7 @@ This is equivalent to <code class="incode">private</code>, but you dont have to 
 All symbols from a Swag source file are exported to other files of the same module. So using <code class="incode">private</code> can protect from name conflicts.</p>
 
 <h2 id="050_if">If</h2><p>
-A basic test with <code class="incode">if</code>. Curlies are optional, and the expression doesnt need to be enclosed with <code class="incode">()</code> like in C/C++.</p>
+A basic test with <code class="incode">if</code>. Curlies are optional, and the expression doesn't need to be enclosed with <code class="incode">()</code> like in C/C++.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> a == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -2959,7 +2959,7 @@ You can name that index if you want.</p>
 </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt1 == cpt)</code>
 </p>
 <p>
-<code class="incode">loop</code> can be used on every types that accept the <code class="incode">@countof</code> intrinsic. So you can loop on a slice, an array, a string... and well see later, even on a struct.</p>
+<code class="incode">loop</code> can be used on every types that accept the <code class="incode">@countof</code> intrinsic. So you can loop on a slice, an array, a string... and we'll see later, even on a struct.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">]
 #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(arr) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
@@ -3227,7 +3227,7 @@ You can also <code class="incode">break</code> and <code class="incode">continue
 </p>
 
 <h2 id="055_switch">Switch</h2><p>
-<code class="incode">switch</code> works like in C/C++, except that no <code class="incode">break</code> is necessary (except if the <code class="incode">case</code> is empty). That means that theres no automatic <code class="incode">fallthrough</code> from one case to another.</p>
+<code class="incode">switch</code> works like in C/C++, except that no <code class="incode">break</code> is necessary (except if the <code class="incode">case</code> is empty). That means that there's no automatic <code class="incode">fallthrough</code> from one case to another.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">switch</span><span class="SyntaxCode"> value
@@ -3384,7 +3384,7 @@ If they overlap, the first valid range will be used.</p>
 </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(success)</code>
 </p>
 <p>
-A <code class="incode">case</code> expression doesnt need to be constant.</p>
+A <code class="incode">case</code> expression doesn't need to be constant.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> test = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -3680,7 +3680,7 @@ You can have multiple <code class="incode">impl</code> blocks. The difference wi
 }</code>
 </p>
 <p>
-If you declare your function with <code class="incode">mtd</code> (method) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">using self</code>.If you declare your function with <code class="incode">mtd const</code> (method const) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">const using self</code>.Other than that, its exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <code class="incode">using self</code>.</p>
+If you declare your function with <code class="incode">mtd</code> (method) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">using self</code>.If you declare your function with <code class="incode">mtd const</code> (method const) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">const using self</code>.Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <code class="incode">using self</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
@@ -3884,7 +3884,7 @@ If <code class="incode">opAffect</code> is supposed to initialize the full conte
 }</code>
 </p>
 <p>
-Here the variable <code class="incode">v</code> will not be initialized prior to the affectation. This is more optimal, as theres only one initialization.</p>
+Here the variable <code class="incode">v</code> will not be initialized prior to the affectation. This is more optimal, as there's only one initialization.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> v: </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.x == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
@@ -3961,7 +3961,7 @@ You can loop on a struct value if <code class="incode">opCount</code> has been d
 </p>
 
 <h3 id="064_006_post_copy_and_post_move">Post copy and post move</h3><p>
-Swag accepts copy and move semantics for structures. In this examples, we use a <code class="incode">Vector3</code> to illustrate, even if of course that kind of struct does not need a move semantic, as theres no heap involved.</p>
+Swag accepts copy and move semantics for structures. In this examples, we use a <code class="incode">Vector3</code> to illustrate, even if of course that kind of struct does not need a move semantic, as there's no heap involved.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector3</span><span class="SyntaxCode">
 {
@@ -4544,7 +4544,7 @@ Functions can be nested inside other functions.</p>
 </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)</code>
 </p>
 <p>
-You can name parameters, and dont have to respect parameters order in that case.</p>
+You can name parameters, and don't have to respect parameters order in that case.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sub</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x - y
 
@@ -4710,7 +4710,7 @@ Lambdas can have default parameters values.</p>
 <h3 id="103_003_closure">Closure</h3><p>
 Swag supports a limited set of the <code class="incode">closure</code> concept.</p>
 <p>
-Only a given amount of bytes of capture are possible (for now 48 bytes). That way theres never an hidden allocation.Another limitation is that you can only capture <code class="incode">simple</code> variables (no struct with <code class="incode">opDrop</code>, <code class="incode">opPostCopy</code>, <code class="incode">opPostMove</code> for example).</p>
+Only a given amount of bytes of capture are possible (for now 48 bytes). That way there's never an hidden allocation.Another limitation is that you can only capture <code class="incode">simple</code> variables (no struct with <code class="incode">opDrop</code>, <code class="incode">opPostCopy</code>, <code class="incode">opPostMove</code> for example).</p>
 <p>
 A closure is declared like a lambda, with the captured variables between <code class="incode">|...|</code> before the function parameters.</p>
 <p class="code">
@@ -4727,7 +4727,7 @@ A closure is declared like a lambda, with the captured variables between <code c
 </span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">()</code>
 </p>
 <p>
-You can also capture by pointer with <code class="incode">&</code> (otherwise its a copy).</p>
+You can also capture by pointer with <code class="incode">&</code> (otherwise it's a copy).</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">125</span><span class="SyntaxCode">
 
@@ -5126,7 +5126,7 @@ In that case, <code class="incode">parameters</code> is a slice of <code class="
 </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxString">"true"</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">5.6</span><span class="SyntaxCode">)</code>
 </p>
 <p>
-If all variadic parameters are of the same type, you can force it. Parameters then wont be of type <code class="incode">any</code>.</p>
+If all variadic parameters are of the same type, you can force it. Parameters then won't be of type <code class="incode">any</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, parameters: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">...)
 {
@@ -5266,7 +5266,7 @@ By default, you must always use the returned value of a function, otherwise the 
 </span><span class="SyntaxKeyword">discard</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)</code>
 </p>
 <p>
-If a function authorizes the caller to not use its return value, because its not that important, it can be marked with <code class="incode">Swag.Discardable</code>.</p>
+If a function authorizes the caller to not use its return value, because it's not that important, it can be marked with <code class="incode">Swag.Discardable</code>.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Discardable]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mul</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> =&gt; x * y
@@ -5670,7 +5670,7 @@ But there is also <code class="incode">@drop</code> intrinsic, which works the s
 
 <h2 id="130_generic">Generic</h2>
 <h3 id="131_001_declaration">Declaration</h3><p>
-A function can be generic by specifying some parameters after <code class="incode">func</code>.At the call site, you specify the generic parameters with <code class="incode">funcCall(type1, type2, ...)(parameters)</code>.Note that parenthesis can be omitted if theres only one generic parameter.</p>
+A function can be generic by specifying some parameters after <code class="incode">func</code>.At the call site, you specify the generic parameters with <code class="incode">funcCall'(type1, type2, ...)(parameters)</code>.Note that parenthesis can be omitted if there's only one generic parameter.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">{
     </span><span class="SyntaxComment">// Here 'T' is a generic type.</span><span class="SyntaxCode">
@@ -5709,7 +5709,7 @@ A function can be generic by specifying some parameters after <code class="incod
 }</code>
 </p>
 <p>
-Generic types can be deduced from parameters, so <code class="incode">functype()</code> is not always necessary.</p>
+Generic types can be deduced from parameters, so <code class="incode">func'type()</code> is not always necessary.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(val: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) =&gt; </span><span class="SyntaxNumber">2</span><span class="SyntaxCode"> * val
 
@@ -5801,7 +5801,7 @@ Like functions, a struct can also be generic.</p>
 <p>
 On a function, you can use <code class="incode">#validif</code> to check if the usage of the function is correct.</p>
 <p>
-If the <code class="incode">#validif</code> expression returns false, then the function will not be considered for the call. If theres no other overload to match, then the compiler will raise an error.</p>
+If the <code class="incode">#validif</code> expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error.</p>
 <p>
 The <code class="incode">#validif</code> expression is evaluated <b>only once</b>, whatever the call, so it is typically used to check generic parameters.</p>
 <p class="code">
@@ -5883,7 +5883,7 @@ By using <code class="incode">@compilererror</code>, you can then trigger your o
 </span><span class="SyntaxComment">// var x = sum'f32(1, 2)</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<code class="incode">#validif</code> can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because theres no overload in the case of structures.</p>
+<code class="incode">#validif</code> can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">
     #validif </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"> == </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"> == </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
@@ -6009,7 +6009,7 @@ Works also for structs.</p>
 
 <h2 id="160_scoping">Scoping</h2>
 <h3 id="161_001_defer">Defer</h3><p>
-<code class="incode">defer</code> is used to call an expression when the current scope is left. Its purely compile time, so it does not evaluate until the block is left.</p>
+<code class="incode">defer</code> is used to call an expression when the current scope is left. It's purely compile time, so it does not evaluate until the block is left.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> v = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
@@ -6051,7 +6051,7 @@ v += </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> x *= </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">            </span><span class="SyntaxComment">// Will be executed first</span><span class="SyntaxCode"></code>
 </p>
 <p>
-Its typically used to unregister/destroy a resource, by putting the release code just after the creation one.</p>
+It's typically used to unregister/destroy a resource, by putting the release code just after the creation one.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createResource</span><span class="SyntaxCode">() =&gt; </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseResource</span><span class="SyntaxCode">(resource: *</span><span class="SyntaxType">bool</span><span class="SyntaxCode">) = </span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"> resource = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
@@ -6283,7 +6283,7 @@ You can then use the new name in place of the original type. This does not creat
 #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Float64</span><span class="SyntaxCode">) == </span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
 </p>
 <p>
-But to create a new type, a <code class="incode">typealias</code> can also be marked with the <code class="incode">Swag.Strict</code> attribute. In that case, all implicit casts wont be done. Explicit cast are still possible.</p>
+But to create a new type, a <code class="incode">typealias</code> can also be marked with the <code class="incode">Swag.Strict</code> attribute. In that case, all implicit casts won't be done. Explicit cast are still possible.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Strict]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyType</span><span class="SyntaxCode"> = </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
@@ -6425,7 +6425,7 @@ Note that you can use a block instead of one single statement (this does not cre
 }</code>
 </p>
 <p>
-When a function is marked with <code class="incode">throw</code>, the <code class="incode">try</code> for a function call is automatic if not specified. That means that most of the time its not necessary to specify it.</p>
+When a function is marked with <code class="incode">throw</code>, the <code class="incode">try</code> for a function call is automatic if not specified. That means that most of the time it's not necessary to specify it.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mySubFunc2</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 {
@@ -6749,7 +6749,7 @@ A more complicated <code class="incode">#assert</code>.</p>
 }</code>
 </p>
 <p>
-Unlike the C function <code class="incode">main()</code>, theres no argument, but you can use the intrinsic <code class="incode">@args</code> to get a slice of all the parameters.</p>
+Unlike the C function <code class="incode">main()</code>, there's no argument, but you can use the intrinsic <code class="incode">@args</code> to get a slice of all the parameters.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
 {
@@ -7446,7 +7446,7 @@ The documentation comment needs to be placed just before a function, struct or e
 </span><span class="SyntaxComment">// This is yet another paragraph.</span><span class="SyntaxCode"></code>
 </p>
 <p>
-The first paragraph is considered to be the short description which can appear on specific partsof the documentation. So make it short.</p>
+The first paragraph is considered to be the 'short description' which can appear on specific partsof the documentation. So make it short.</p>
 <p>
 If the first line ends with a dot <code class="incode">.</code>, then this marks the end of the paragraph, i.e. the end of the short description.</p>
 <p class="code">

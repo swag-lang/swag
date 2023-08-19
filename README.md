@@ -8,7 +8,7 @@
 
 Swag is a native and/or interpreted system programming language made for fun because, let's be honest, C++ is now an horrible beast ! This is my fourth compiler (two others were written for two game engines and one other for... something else). But this one is by far the most advanced.
 
-You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/doc/language.html).
+You can visit the official [Website](https://swag-lang.org/) or the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel. If you want to take a first look at the language, this is [here](https://www.swag-lang.org/doc/language.php).
 
 Note that a simple `visual studio code` [extension](https://marketplace.visualstudio.com/items?itemName=swag-lang.swag) exists for syntax coloration.
 
@@ -56,10 +56,10 @@ Here is a **screen capture software** fully written in Swag with the help of the
 
 # For the braves
 
-* [Start](https://swag-lang.org/getting-started.php) your first project, compile it, run it.
-* Use the compiler as a [script](https://swag-lang.org/swag-as-script.php) interpreter.
-* [Contribute](https://swag-lang.org/contribute-tests.php) to the compiler **test suite**, this will help (a lot).
+* [Start](https://swag-lang.org/pages/getting-started.php) your first project, compile it, run it.
+* Use the compiler as a [script](https://swag-lang.org/pages/swag-as-script.php) interpreter.
+* [Contribute](https://swag-lang.org/pages/contribute-tests.php) to the compiler **test suite**, this will help (a lot).
 
 # For the very braves
 
-* [How to build](https://swag-lang.org/how-to-build-swag.php) the compiler with the full source tree.
+* [How to build](https://swag-lang.org/pages/how-to-build-swag.php) the compiler with the full source tree.

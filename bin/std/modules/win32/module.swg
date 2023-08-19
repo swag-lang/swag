@@ -13,6 +13,7 @@
         cfg.moduleNamespace = "Win32"
         cfg.backendKind = .Export
         cfg.docKind = .Api
+        cfg.docOutputExtension = ".php"
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32"
     }
 }

@@ -13,7 +13,7 @@
 <p align="center" style="color:white;font-size:40px;"> <b>SWAG</b> Programming Language </p> </p>
 <p>
 <div style="margin-top:40px;padding-bottom:40px;color:White;font-size:20px;"> 
-<p align="center"><a href="getting-started.php" style="color:Orange;">Getting Started</a></p> 
+<p align="center"><a href="pages/getting-started.php" style="color:Orange;">Getting Started</a></p> 
 <p align="center"><a href="https://github.com/swag-lang/swag/releases" style="color:Orange;">Download the Compiler</a></p> </div> </p>
 <p>
 </div> </p>
@@ -41,9 +41,9 @@ Imagine C++, but where everything could be <i>constexpr</i>. </td> </p>
 <p></p>
 ---
 
-> To take a look at the language, this is [here](doc/language.html).
+> To take a look at the language, this is [here](doc/language.php).
 >
-> To take a look at the standard list of modules, this is [here](std.php).
+> To take a look at the standard list of modules, this is [here](pages/std.php).
 >
-> To use Swag as a scripting language, this is [here](swag-as-script.php).
+> To use Swag as a scripting language, this is [here](pages/swag-as-script.php).
 */

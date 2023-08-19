@@ -16,6 +16,7 @@
         cfg.moduleNamespace = "Ogl"
         cfg.backendKind = .DynamicLib
         cfg.docKind = .Api
+        cfg.docOutputExtension = ".php"
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/ogl"
     }
 }

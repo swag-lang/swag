@@ -42,6 +42,7 @@ voice.play(Loop)
         cfg.moduleNamespace = "Audio"
         cfg.backendKind = .DynamicLib
         cfg.docKind = .Api
+        cfg.docOutputExtension = ".php"
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio"
     }
 }
