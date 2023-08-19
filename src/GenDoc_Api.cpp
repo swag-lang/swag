@@ -357,10 +357,10 @@ void GenDoc::outputTitle(OneRef& c)
     }
 
     helpContent += "<p>\n";
-    helpContent += "<table class=\"h3\">\n";
+    helpContent += "<table class=\"item\">\n";
     helpContent += "<tr>\n";
-    helpContent += "<td class=\"h3\">\n";
-    helpContent += Fmt("<h3 class=\"content\" id=\"%s\">", toRef(c.fullName).c_str());
+    helpContent += "<td class=\"item\">\n";
+    helpContent += Fmt("<span class=\"content\" id=\"%s\">", toRef(c.fullName).c_str());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
@@ -382,7 +382,7 @@ void GenDoc::outputTitle(OneRef& c)
         helpContent += tkn.back();
     helpContent += "</span>";
 
-    helpContent += "</h3>\n";
+    helpContent += "</span>\n";
     helpContent += "</td>\n";
 
     // Add a reference to the source code
@@ -747,7 +747,6 @@ void GenDoc::generateContent()
         computeUserComments(userComment, module->docComment);
         if (!userComment.shortDesc.lines.empty())
         {
-            helpContent += "<h2>Overview</h2>\n";
             outputUserBlock(userComment.shortDesc);
             outputUserComment(userComment);
         }
@@ -761,7 +760,7 @@ void GenDoc::generateContent()
                 return false;
             return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
-    helpContent += "<h2>Content</h2>\n";
+    helpContent += "<h1>Content</h1>\n";
 
     for (int i = 0; i < allNodes.size(); i++)
     {

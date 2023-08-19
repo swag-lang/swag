@@ -97,26 +97,23 @@ void GenDoc::outputStyles()
             font-weight:        bold;\n\
             font-size:          100%;\n\
         }\n\
-        .right h1 {\n\
-            margin-top:         50px;\n\
-            margin-bottom:      50px;\n\
-        }\n\
         .left h2 {\n\
             background-color:   Black;\n\
             color:              White;\n\
             padding:            6px;\n\
         }\n\
-        table.h3 {\n\
+        .right h1 {\n\
+            margin-top:         50px;\n\
+            margin-bottom:      50px;\n\
+        }\n\
+        table.item {\n\
             background-color:   Black;\n\
             color:              White;\n\
             width:              100%;\n\
             margin-top:         70px;\n\
             margin-right:       0px;\n\
-        }\n\
-        h3.content {\n\
-            margin-bottom:      2px;\n\
-            margin-right:       0px;\n\
-            width:              100%;\n\
+            padding:            4px;\n\
+            font-size:          110%;\n\
         }\n\
         .srcref {\n\
             text-align:         right;\n\
@@ -456,8 +453,9 @@ bool GenDoc::generate(Module* mdl, DocKind docKind)
         helpToc += Fmt("<h1>%s</h1>\n", titleToc.c_str());
 
         Utf8 titleContent{module->buildCfg.docTitleContent};
-        if (!titleContent.empty())
-            helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
+        if (titleContent.empty())
+            titleContent = "Overview";
+        helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
     }
 
     switch (docKind)
