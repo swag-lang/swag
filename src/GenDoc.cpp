@@ -8,6 +8,222 @@
 #include "Version.h"
 #include "SyntaxColor.h"
 
+Utf8 GenDoc::toRef(Utf8 str)
+{
+    str.replace(".", "_");
+    return str;
+}
+
+void GenDoc::outputCode(const Utf8& code)
+{
+    if (code.empty())
+        return;
+    helpContent += "<p class=\"code\">\n";
+    helpContent += "<code style=\"white-space: break-spaces\">";
+
+    // Kind of a hack for now... Try to keep references, but try to keep <> also...
+    auto repl = code;
+    if (code.find("<a href") == -1)
+    {
+        repl.replace("<", "&lt;");
+        repl.replace(">", "&gt;");
+    }
+
+    // Syntax coloration
+    auto codeText = syntaxColor(repl, SyntaxColorMode::ForDoc);
+
+    // References
+    repl.clear();
+    const char* pz = codeText.c_str();
+    while (*pz)
+    {
+        if (SWAG_IS_ALPHA(*pz) || *pz == '_')
+        {
+            Utf8 nameToRef;
+            while (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.')
+                nameToRef += *pz++;
+            repl += getReference(nameToRef);
+        }
+        else
+        {
+            repl += *pz++;
+        }
+    }
+
+    helpContent += repl;
+    helpContent += "</code>\n";
+    helpContent += "</p>\n";
+}
+
+Utf8 GenDoc::findReference(const Utf8& name)
+{
+    auto it = collectInvert.find(name);
+    if (it != collectInvert.end())
+        return Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+
+    Vector<Utf8> tkns;
+    Utf8::tokenize(name, '.', tkns);
+    if (tkns.size() <= 1)
+        return "";
+
+    if (tkns[0] == "Swag")
+    {
+        return Fmt("<a href=\"swag.runtime.html#%s\">%s</a>", toRef(name).c_str(), name.c_str());
+    }
+
+    return "";
+}
+
+Utf8 GenDoc::getReference(const Utf8& name)
+{
+    auto ref = findReference(name);
+    if (ref.empty())
+        return name;
+    return ref;
+}
+
+Utf8 GenDoc::getFormattedText(const Utf8& user)
+{
+    if (user.empty())
+        return "";
+
+    bool inCodeMode   = false;
+    bool inBoldMode   = false;
+    bool inItalicMode = false;
+    Utf8 result;
+
+    auto pz = user.c_str();
+    while (*pz)
+    {
+        if (*pz == '<')
+        {
+            result += "&lt;";
+            pz++;
+            continue;
+        }
+
+        if (*pz == '>')
+        {
+            result += "&gt;";
+            pz++;
+            continue;
+        }
+
+        // [reference] to create an html link to the current document
+        if (*pz == '[')
+        {
+            bool startBracket = false;
+            if (*pz == '[')
+            {
+                startBracket = true;
+                pz++;
+            }
+
+            if (SWAG_IS_ALPHA(*pz) || *pz == '#' || *pz == '@')
+            {
+                Utf8 name;
+                name += *pz++;
+                while (*pz && (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.'))
+                    name += *pz++;
+
+                if (startBracket && *pz != ']')
+                {
+                    result += "[";
+                    result += name;
+                }
+                else
+                {
+                    if (*pz == ']')
+                        pz++;
+
+                    auto ref = findReference(name);
+                    if (!ref.empty())
+                    {
+                        result += ref;
+                    }
+                    else
+                    {
+                        if (startBracket)
+                            result += "[";
+                        result += name;
+                        if (startBracket)
+                            result += "]";
+                    }
+                }
+                continue;
+            }
+            else if (startBracket)
+                result += "[";
+        }
+
+        // Italic
+        if (*pz == '*' && pz[1] != '*' && !SWAG_IS_BLANK(pz[1]) && (pz == user.c_str() || pz[-1] != '*'))
+        {
+            inItalicMode = !inItalicMode;
+            if (inItalicMode)
+                result += "<i>";
+            else
+                result += "</i>";
+            pz += 1;
+            continue;
+        }
+
+        // Bold
+        if (*pz == '*' && pz[1] == '*' && pz[2] != '*' && !SWAG_IS_BLANK(pz[2]) && (pz == user.c_str() || pz[-1] != '*'))
+        {
+            inBoldMode = !inBoldMode;
+            if (inBoldMode)
+                result += "<b>";
+            else
+                result += "</b>";
+            pz += 2;
+            continue;
+        }
+
+        // 'word'
+        if (*pz == '\'')
+        {
+            auto pz1 = pz + 1;
+            while (*pz1 && !SWAG_IS_BLANK(*pz1) && *pz1 != '\'')
+                pz1++;
+            if (*pz1 == '\'')
+            {
+                result += "<code class=\"incode\">";
+                pz++;
+                while (pz != pz1)
+                    result += *pz++;
+                result += "</code>";
+            }
+            pz++;
+            continue;
+        }
+
+        // embedded code line
+        if (*pz == '`')
+        {
+            inCodeMode = !inCodeMode;
+            if (inCodeMode)
+                result += "<code class=\"incode\">";
+            else
+                result += "</code>";
+            pz++;
+            continue;
+        }
+
+        result += *pz++;
+    }
+
+    // Be sure it's closed
+    if (inBoldMode)
+        result += "</b>";
+    if (inItalicMode)
+        result += "</i>";
+    if (inCodeMode)
+        result += "</code>";
+
+    return result;
+}
+
 void GenDoc::outputStyles()
 {
     helpOutput += "<style>\n";
@@ -162,7 +378,7 @@ void GenDoc::outputStyles()
     helpOutput += "</style>\n";
 }
 
-void GenDoc::generate(Module* mdl, DocKind docKind)
+bool GenDoc::generate(Module* mdl, DocKind docKind)
 {
     module = mdl;
 
@@ -182,14 +398,13 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
 
     fullFileName = filePath.string();
     fullFileName.makeLower();
-    fileName = filePath.filename().string();
 
     // Write for output
     FILE* f = nullptr;
     if (fopen_s(&f, fullFileName.c_str(), "wb"))
     {
         Report::errorOS(Fmt(Err(Err0524), fullFileName.c_str()));
-        return;
+        return false;
     }
 
     helpOutput += "<html>\n";
@@ -220,10 +435,12 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
     switch (docKind)
     {
     case DocKind::Api:
-        generateApi();
+        if (!generateApi())
+            return false;
         break;
     case DocKind::Examples:
-        generateExamples();
+        if (!generateExamples())
+            return false;
         break;
     }
 
@@ -247,4 +464,6 @@ void GenDoc::generate(Module* mdl, DocKind docKind)
     // Write file
     fwrite(helpOutput.c_str(), 1, helpOutput.length(), f);
     fclose(f);
+
+    return true;
 }
