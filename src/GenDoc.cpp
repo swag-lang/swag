@@ -95,6 +95,8 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     auto pz = user.c_str();
     while (*pz)
     {
+        char prevC = pz == user.c_str() ? 0 : pz[-1];
+
         if (*pz == '<')
         {
             result += "&lt;";
@@ -154,27 +156,33 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         }
 
         // Italic
-        if (*pz == '*' && pz[1] != '*' && !SWAG_IS_BLANK(pz[1]) && (pz == user.c_str() || pz[-1] != '*'))
+        if (prevC != '*' && pz[0] == '*' && pz[1] != '*')
         {
-            inItalicMode = !inItalicMode;
-            if (inItalicMode)
-                result += "<i>";
-            else
-                result += "</i>";
-            pz += 1;
-            continue;
+            if ((!inItalicMode && !SWAG_IS_BLANK(pz[1])) || inItalicMode)
+            {
+                inItalicMode = !inItalicMode;
+                if (inItalicMode)
+                    result += "<i>";
+                else
+                    result += "</i>";
+                pz += 1;
+                continue;
+            }
         }
 
         // Bold
-        if (*pz == '*' && pz[1] == '*' && pz[2] != '*' && !SWAG_IS_BLANK(pz[2]) && (pz == user.c_str() || pz[-1] != '*'))
+        if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] != '*')
         {
-            inBoldMode = !inBoldMode;
-            if (inBoldMode)
-                result += "<b>";
-            else
-                result += "</b>";
-            pz += 2;
-            continue;
+            if ((!inBoldMode && !SWAG_IS_BLANK(pz[2])) || inBoldMode)
+            {
+                inBoldMode = !inBoldMode;
+                if (inBoldMode)
+                    result += "<b>";
+                else
+                    result += "</b>";
+                pz += 2;
+                continue;
+            }
         }
 
         // 'word'
