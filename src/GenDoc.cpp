@@ -303,7 +303,8 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 while (*pz && *pz != ')')
                     ref += *pz++;
                 result += Fmt("<a href=\"%s\">%s</a>", ref.c_str(), name.c_str());
-                if (*pz) pz++;
+                if (*pz)
+                    pz++;
                 continue;
             }
 
@@ -401,24 +402,31 @@ void GenDoc::startPage()
     helpContent.clear();
     helpToc.clear();
 
-    helpOutput += "<html>\n";
-    helpOutput += "<body>\n";
-
-    helpOutput += "<head>\n";
-    helpOutput += "<meta charset=\"UTF-8\">\n";
-
-    // Css
     bool userCss = false;
-    if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
+    Utf8 header;
+
+    if (module)
+        header = Utf8{module->buildCfg.docPageHeader};
+    if (header.empty())
     {
-        Utf8 css{module->buildCfg.docCss};
-        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
-        userCss = true;
+        header += "<html>\n";
+        header += "<body>\n";
+        header += "<head>\n";
+        header += "<meta charset=\"UTF-8\">\n";
+
+        // Css
+        if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
+        {
+            Utf8 css{module->buildCfg.docCss};
+            header += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
+            userCss = true;
+        }
+
+        header += "</head>\n";
     }
 
-    helpOutput += "</head>\n";
+    helpOutput += header;
 
-    // Embbeded styles
     if (!userCss)
         outputStyles();
 
@@ -446,8 +454,16 @@ void GenDoc::endPage()
 
     helpOutput += "</div>\n";
 
-    helpOutput += "</body>\n";
-    helpOutput += "</html>\n";
+    Utf8 footer;
+    if (module)
+        footer = Utf8{module->buildCfg.docPageFooter};
+    if (footer.empty())
+    {
+        footer += "</body>\n";
+        footer += "</html>\n";
+    }
+
+    helpOutput += footer;
 }
 
 bool GenDoc::generate(Module* mdl, DocKind kind)
@@ -476,12 +492,16 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
             filePath.append(g_Workspace->workspacePath.filename().string().c_str());
             filePath += ".";
             filePath += module->name.c_str();
-            filePath += ".html";
         }
         else
         {
             filePath.append(fileName.c_str());
         }
+
+        Utf8 extName{module->buildCfg.docOutputExtension};
+        if (extName.empty())
+            extName = ".html";
+        filePath += extName.c_str();
     }
 
     fullFileName = filePath.string();

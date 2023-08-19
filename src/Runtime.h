@@ -277,9 +277,12 @@ struct BuildCfg
     // Documentation
     DocKind   docKind = DocKind::None;
     SwagSlice docOutputName;
+    SwagSlice docOutputExtension;
     SwagSlice docTitleToc;
     SwagSlice docTitleContent;
     SwagSlice docCss;
+    SwagSlice docPageHeader;
+    SwagSlice docPageFooter;
     float     docSyntaxColorLum = 0.5f;
 };
 

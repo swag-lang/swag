@@ -1,7 +1,5 @@
 /**
-> **Work in progress**.
->
-> There's no "official" release yet.
+> There's **no official** release yet.
 >
 > Everything (including this web site) is still under construction...
 
@@ -15,7 +13,7 @@
 <p align="center" style="color:white;font-size:40px;"> <b>SWAG</b> Programming Language </p> </p>
 <p>
 <div style="margin-top:40px;padding-bottom:40px;color:White;font-size:20px;"> 
-<p align="center"><a href="gen/getting-started.html" style="color:Orange;">Getting Started</a></p> 
+<p align="center"><a href="getting-started.php" style="color:Orange;">Getting Started</a></p> 
 <p align="center"><a href="https://github.com/swag-lang/swag/releases" style="color:Orange;">Download the Compiler</a></p> </div> </p>
 <p>
 </div> </p>
@@ -45,7 +43,7 @@ Imagine C++, but where everything could be <i>constexpr</i>. </td> </p>
 
 > To take a look at the language, this is [here](doc/language.html).
 >
-> To take a look at the standard list of modules, this is [here](gen/std.html).
+> To take a look at the standard list of modules, this is [here](std.php).
 >
-> To use Swag as a scripting language, this is [here](gen/swag-as-script.html).
+> To use Swag as a scripting language, this is [here](swag-as-script.php).
 */

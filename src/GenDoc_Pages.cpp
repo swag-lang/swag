@@ -12,7 +12,10 @@ bool GenDoc::generatePages()
     {
         auto filePath = g_Workspace->targetPath;
         filePath.append(file->name.c_str());
-        filePath.replace_extension(".html");
+        Utf8 extName{module->buildCfg.docOutputExtension};
+        if (extName.empty())
+            extName = ".html";
+        filePath.replace_extension(extName.c_str());
         fullFileName = filePath.string();
 
         // Write for output

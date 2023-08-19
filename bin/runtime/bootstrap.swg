@@ -751,10 +751,13 @@ namespace Swag
         repoPath:       string                  // Repository access path to the module
 
         docKind             = DocKind.None
-        docOutputName:      string              // The name of the output .html file
+        docOutputName:      string              // The name of the output file (without extension)
+        docOutputExtension: string              // The output extension
         docTitleToc:        string              // Title for the table of content
         docTitleContent:    string              // Title for the main document content
         docCss:             string              // The 'css' file to include in generated documentations
+        docPageHeader:      string              // To add at the start of a documentation page
+        docPageFooter:      string              // To add at the end of a documentation page
         docSyntaxColorLum:  f32 = 0.5           // Code syntax color luminosity between 0 and 1
     }
 

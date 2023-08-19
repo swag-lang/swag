@@ -3,6 +3,5 @@
 
 xcopy ..\bin\std\output\fast-compile-windows-x86_64\*.html              ..\web\doc /Y
 xcopy ..\bin\reference\output\fast-compile-windows-x86_64\language.html ..\web\doc /Y
-xcopy ..\bin\reference\output\fast-compile-windows-x86_64\index.html    ..\web /Y
-xcopy ..\bin\reference\output\fast-compile-windows-x86_64\*.html        ..\web\gen /Y
+xcopy ..\bin\reference\output\fast-compile-windows-x86_64\*.php         ..\web /Y
 xcopy ..\web\*.* "d:\program files\xampp\htdocs\web\" /E /Y

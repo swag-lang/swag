@@ -11,9 +11,10 @@
         cfg.warnDefaultDisabled = true
         cfg.warnAsWarning = "Wrn0009"
 
-        cfg.docOutputName = "language.html"
         cfg.docTitleToc = "Content"
         cfg.docTitleContent = "Swag language reference"
         cfg.docKind = .Examples
+        cfg.docOutputName = "language"
+        cfg.docOutputExtension = ".php"
     }
 }
