@@ -21,6 +21,18 @@ struct GenDoc
         Title2,
     };
 
+    struct UserBlock
+    {
+        UserBlockKind kind = UserBlockKind::Paragraph;
+        Vector<Utf8>  lines;
+    };
+
+    struct UserComment
+    {
+        UserBlock         shortDesc;
+        Vector<UserBlock> blocks;
+    };
+
     void startPage();
     void endPage();
     Utf8 toRef(Utf8 str);
@@ -28,8 +40,11 @@ struct GenDoc
     void outputStyles();
     Utf8 findReference(const Utf8& name);
     Utf8 getReference(const Utf8& name);
+    void computeUserComments(UserComment& result, Vector<Utf8>& lines);
     Utf8 getFormattedText(const Utf8& user);
     void outputCode(const Utf8& code, bool makeRefs);
+    void outputUserBlock(const UserBlock& user);
+    void outputUserComment(const UserComment& user);
 
     Module*       module = nullptr;
     DocKind       docKind;
@@ -62,18 +77,6 @@ struct GenDoc
     // Api
     ///////////////////////////////////
 
-    struct UserBlock
-    {
-        UserBlockKind kind = UserBlockKind::Paragraph;
-        Vector<Utf8>  lines;
-    };
-
-    struct UserComment
-    {
-        UserBlock         shortDesc;
-        Vector<UserBlock> blocks;
-    };
-
     struct OneRef
     {
         Utf8                   category;
@@ -91,8 +94,6 @@ struct GenDoc
     Utf8 getOutputNode(AstNode* node);
     void outputType(AstNode* node);
     void outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags);
-    void outputUserBlock(const UserBlock& user);
-    void outputUserComment(const UserComment& user);
     void outputTitle(OneRef& c);
     void generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
     void generateTocSection(AstNodeKind kind, const char* name);

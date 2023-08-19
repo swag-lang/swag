@@ -239,6 +239,280 @@ Utf8 GenDoc::findReference(const Utf8& name)
     return "";
 }
 
+void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
+{
+    for (auto& l : lines)
+    {
+        if (l.back() == '\r')
+            l.removeBack();
+    }
+
+    int start = 0;
+    while (start < lines.size())
+    {
+        UserBlock blk;
+
+        // Zap blank lines at the start of the block
+        for (; start < lines.size(); start++)
+        {
+            auto line = lines[start];
+            line.trim();
+            if (!line.empty())
+            {
+                if (line == "---")
+                {
+                    blk.kind = UserBlockKind::RawParagraph;
+                    start++;
+                }
+                else if (line == "```")
+                {
+                    blk.kind = UserBlockKind::Code;
+                    start++;
+                }
+                else if (line[0] == '>')
+                {
+                    blk.kind = UserBlockKind::Blockquote;
+                }
+                else if (line[0] == '|')
+                {
+                    blk.kind = UserBlockKind::Table;
+                }
+                else if (line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
+                {
+                    blk.kind = UserBlockKind::Title1;
+                }
+                else if (line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
+                {
+                    blk.kind = UserBlockKind::Title2;
+                }
+                else
+                {
+                    blk.lines.push_back(lines[start++]);
+                }
+
+                break;
+            }
+        }
+
+        // The short description (first line) can end with '.'.
+        if (!blk.lines.empty() && result.blocks.empty() && !blk.lines[0].empty() && blk.lines[0].back() == '.')
+        {
+            result.blocks.emplace_back(std::move(blk));
+            continue;
+        }
+
+        for (; start < lines.size(); start++)
+        {
+            auto line = lines[start];
+            line.trim();
+
+            // End of the paragraph if empty line
+            if (line.empty() && blk.kind != UserBlockKind::RawParagraph && blk.kind != UserBlockKind::Code)
+                break;
+
+            if (blk.kind == UserBlockKind::Blockquote && line[0] != '>')
+                break;
+            if (blk.kind != UserBlockKind::Blockquote && line[0] == '>')
+                break;
+            if (blk.kind == UserBlockKind::Table && line[0] != '|')
+                break;
+            if (blk.kind != UserBlockKind::Table && line[0] == '|')
+                break;
+            if (blk.kind != UserBlockKind::Title1 && line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
+                break;
+            if (blk.kind != UserBlockKind::Title2 && line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
+                break;
+
+            if (line[0] == '>')
+            {
+                line.remove(0, 1);
+                line.trim();
+                line += "\n";
+                blk.lines.push_back(line);
+                continue;
+            }
+
+            if (line == "---")
+            {
+                if (blk.kind == UserBlockKind::RawParagraph)
+                    start++;
+                break;
+            }
+
+            if (line == "```")
+            {
+                if (blk.kind == UserBlockKind::Code)
+                    start++;
+                break;
+            }
+
+            if (blk.kind == UserBlockKind::Title1)
+            {
+                line.remove(0, 2);
+                blk.lines.push_back(line);
+                start++;
+                break;
+            }
+
+            if (blk.kind == UserBlockKind::Title2)
+            {
+                line.remove(0, 3);
+                blk.lines.push_back(line);
+                start++;
+                break;
+            }
+
+            blk.lines.push_back(lines[start]);
+        }
+
+        if (!blk.lines.empty())
+            result.blocks.emplace_back(std::move(blk));
+    }
+
+    // First block is the "short description"
+    if (!result.blocks.empty() && result.blocks[0].kind == UserBlockKind::Paragraph)
+    {
+        result.shortDesc = std::move(result.blocks[0]);
+        result.blocks.erase(result.blocks.begin());
+        result.shortDesc.lines[0].trim();
+        if (result.shortDesc.lines.back().back() != '.')
+            result.shortDesc.lines.back() += '.';
+    }
+}
+
+void GenDoc::outputUserBlock(const UserBlock& user)
+{
+    if (user.lines.empty())
+        return;
+
+    if (user.kind == UserBlockKind::Code)
+    {
+        Utf8 block;
+        for (auto& l : user.lines)
+        {
+            block += l;
+            block += "\n";
+        }
+
+        outputCode(block, false);
+        return;
+    }
+
+    switch (user.kind)
+    {
+    case UserBlockKind::Paragraph:
+        helpContent += "<p>\n";
+        break;
+    case UserBlockKind::RawParagraph:
+        helpContent += "<p style=\"white-space: break-spaces\">";
+        break;
+    case UserBlockKind::Blockquote:
+        helpContent += "<blockquote><p>";
+        break;
+    case UserBlockKind::Table:
+        helpContent += "<table class=\"enumeration\">\n";
+        break;
+    case UserBlockKind::Title1:
+        helpContent += "<h2>\n";
+        break;
+    case UserBlockKind::Title2:
+        helpContent += "<h3>\n";
+        break;
+    }
+
+    bool startList = false;
+    for (int i = 0; i < user.lines.size(); i++)
+    {
+        auto line = user.lines[i];
+        line.trim();
+
+        if (user.kind == UserBlockKind::Table)
+        {
+            Vector<Utf8> tkn;
+            Utf8::tokenize(line, '|', tkn);
+            helpContent += "<tr>";
+            for (int it = 0; it < tkn.size(); it++)
+            {
+                auto& t = tkn[it];
+                if (it == 0)
+                    helpContent += "<td class=\"tdname\">";
+                else
+                    helpContent += "<td class=\"tdtype\">";
+                helpContent += getFormattedText(t);
+                helpContent += "</td>";
+            }
+            helpContent += "</tr>\n";
+        }
+
+        // <li>
+        else if (line.length() && line[0] == '*')
+        {
+            if (!startList)
+            {
+                startList = true;
+                helpContent += "<ul>\n";
+            }
+
+            helpContent += "<li>";
+            line.remove(0, 1);
+            helpContent += getFormattedText(line);
+            helpContent += "</li>\n";
+        }
+        else
+        {
+            if (startList)
+            {
+                startList = false;
+                helpContent += "</ul>\n";
+            }
+
+            helpContent += getFormattedText(user.lines[i]);
+        }
+
+        // Add one line break after each line, except the last line from a raw block, because we do
+        // not want one useless empty line
+        if (user.kind == UserBlockKind::RawParagraph)
+        {
+            if (i != user.lines.size() - 1)
+                helpContent += "\n";
+        }
+    }
+
+    if (startList)
+    {
+        startList = false;
+        helpContent += "</ul>\n";
+    }
+
+    switch (user.kind)
+    {
+    case UserBlockKind::Paragraph:
+        helpContent += "</p>\n";
+        break;
+    case UserBlockKind::RawParagraph:
+        helpContent += "</p>\n";
+        break;
+    case UserBlockKind::Blockquote:
+        helpContent += "</p></blockquote>\n";
+        break;
+    case UserBlockKind::Table:
+        helpContent += "</table>\n";
+        break;
+    case UserBlockKind::Title1:
+        helpContent += "</h2>\n";
+        break;
+    case UserBlockKind::Title2:
+        helpContent += "</h3>\n";
+        break;
+    }
+}
+
+void GenDoc::outputUserComment(const UserComment& user)
+{
+    for (auto& b : user.blocks)
+        outputUserBlock(b);
+}
+
 Utf8 GenDoc::getReference(const Utf8& name)
 {
     auto ref = findReference(name);
