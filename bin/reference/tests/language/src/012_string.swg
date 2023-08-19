@@ -2,44 +2,48 @@
 In Swag, strings are encoded in UTF8.
 */
 
+/**
+They also can be compared.
+*/
 #test
 {
-    // They also can be compared.
-    {
-        const a = "this is a chinese character: 是"
-        #assert a == "this is a chinese character: 是"
+    const a = "this is a chinese character: 是"
+    #assert a == "this is a chinese character: 是"
 
-        const b = "these are some cyrillic characters: ӜИ"
-        #assert b == "these are some cyrillic characters: ӜИ"
-    }
+    const b = "these are some cyrillic characters: ӜИ"
+    #assert b == "these are some cyrillic characters: ӜИ"
+}
 
-    // A rune is an unicode codepoint, and is 32 bits.
-    {
-        const a: rune = `是`
-        #assert a == `是`
-        #assert @sizeof(a) == @sizeof(u32)
-    }
+/**
+A rune is an unicode codepoint, and is 32 bits.
+*/
+#test
+{
+    const a: rune = `是`
+    #assert a == `是`
+    #assert @sizeof(a) == @sizeof(u32)
 }
 
 /**
 You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the `Std.Core` module will have all you need to manipulate UTF8 strings.
 */
+
+/**
+So in that case you will retrieve a byte.
+*/
 #test
 {
-    // So in that case you will retrieve a byte.
-    {
-        const a = "this is a chinese character: 是"
+    const a = "this is a chinese character: 是"
 
-        // Get the first byte of the string
-        const b = a[0]
-        #assert b == `t`
-        #assert @typeof(b) == @typeof(u8)
+    // Get the first byte of the string
+    const b = a[0]
+    #assert b == `t`
+    #assert @typeof(b) == @typeof(u8)
 
-        // Here, the 'X' character in the middle does not have the index '1', because the
-        // chinese character before is encoded in UTF8 with more than 1 byte.
-        const c = "是X是"
-        #assert c[1] != `X` // False because the byte number 1 is not the character 'X'
-    }
+    // Here, the 'X' character in the middle does not have the index '1', because the
+    // chinese character before is encoded in UTF8 with more than 1 byte.
+    const c = "是X是"
+    #assert c[1] != `X` // False because the byte number 1 is not the character 'X'
 }
 
 /**
@@ -141,25 +145,31 @@ But the underlying type of a character can be forced with the use of a type post
 # Escape sequences
 A string and a character can contain some *escape sequences* to specify special characters.
 */
+
+/**
+An escape sequence starts with a backslash `\`.
+*/
 #test
 {
-    // An escape sequence starts with a backslash `\`.
-    {
-        const a = "this is code ascii 0x00:   \0"   // null
-        const b = "this is code ascii 0x07:   \a"   // bell
-        const c = "this is code ascii 0x08:   \b"   // backspace
-        const d = "this is code ascii 0x09:   \t"   // horizontal tab
-        const e = "this is code ascii 0x0A:   \n"   // line feed
-        const f = "this is code ascii 0x0B:   \v"   // vertical tab
-        const g = "this is code ascii 0x0C:   \f"   // form feed
-        const h = "this is code ascii 0x0D:   \r"   // carriage return
-        const i = "this is code ascii 0x22:   \""   // double quote
-        const j = "this is code ascii 0x27:   \'"   // single quote
-        const k = "this is code ascii 0x60:   \`"   // backtick
-        const l = "this is code ascii 0x5C:   \\"   // backslash
-    }
+    const a = "this is code ascii 0x00:   \0"   // null
+    const b = "this is code ascii 0x07:   \a"   // bell
+    const c = "this is code ascii 0x08:   \b"   // backspace
+    const d = "this is code ascii 0x09:   \t"   // horizontal tab
+    const e = "this is code ascii 0x0A:   \n"   // line feed
+    const f = "this is code ascii 0x0B:   \v"   // vertical tab
+    const g = "this is code ascii 0x0C:   \f"   // form feed
+    const h = "this is code ascii 0x0D:   \r"   // carriage return
+    const i = "this is code ascii 0x22:   \""   // double quote
+    const j = "this is code ascii 0x27:   \'"   // single quote
+    const k = "this is code ascii 0x60:   \`"   // backtick
+    const l = "this is code ascii 0x5C:   \\"   // backslash
+}
 
-    // An escape sequence can also be used to specify an ascii or a unicode value.
+/**
+An escape sequence can also be used to specify an ascii or a unicode value.
+*/
+#test
+{
     {
         const a = "\x26"        // 1 byte, hexadecimal, extended ascii
         const b = "\u2626"      // 2 bytes, hexadecimal, unicode 16 bits
@@ -179,29 +189,36 @@ A string and a character can contain some *escape sequences* to specify special 
 # Raw string
 A *raw string* does not transform the escape sequences inside it.
 */
+
+/**
+A raw string starts and ends with the character `@`.
+*/
 #test
 {
-    // A raw string starts and ends with the character `@`.
-    {
-        const a = @"\u2F46"@
-        #assert a != "⽆"
-        #assert a == @"\u2F46"@
-    }
+    const a = @"\u2F46"@
+    #assert a != "⽆"
+    #assert a == @"\u2F46"@
+}
 
-    // This are equivalent
-    {
-        const a = "\\hello \\world"
-        const b = @"\hello \world"@
-        #assert a == b
-    }
+/**
+This are equivalent
+*/
+#test
+{
+    const a = "\\hello \\world"
+    const b = @"\hello \world"@
+    #assert a == b
+}
 
-    // A raw string can spawn on multiple lines because the line feed is now part of the string.
-    {
-        const a = @"this is
-                    a
-                    string
-                    "@
-    }
+/**
+A raw string can spawn on multiple lines because the line feed is now part of the string.
+*/
+#test
+{
+    const a = @"this is
+                a
+                string
+                "@
 }
 
 /**
@@ -220,31 +237,32 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
 */
 #test
 {
-    {
-        const a = """this is
-                     a
-                     string
-                     """
+    const a = """this is
+                 a
+                 string
+                 """
 
-        // Equivalent to :
+    // Equivalent to :
 
-        // this is
-        // a
-        // string
-    }
+    // this is
+    // a
+    // string
+}
 
-    // In a multiline or a raw string, if you end a line with `\`, the following "eol" will **not** be part of the string.
-    {
-        const a = """\
-                     this is
-                     a
-                     string
-                     """
-        // Is equivalent to :
-        // this is
-        // a
-        // string
-    }
+/**
+In a multiline or a raw string, if you end a line with `\`, the following "eol" will **not** be part of the string.
+*/
+#test
+{
+    const a = """\
+              this is
+              a
+              string
+              """
+    // Is equivalent to :
+    // this is
+    // a
+    // string
 }
 
 /**
@@ -253,15 +271,16 @@ You can use the instrinsic `@stringof` to return at compile time the result of a
 */
 #test
 {
-    {
-        const X = 1
-        #assert @stringof(X) == "1"
-        #assert @stringof(X + 10) == "11"
-    }
+    const X = 1
+    #assert @stringof(X) == "1"
+    #assert @stringof(X + 10) == "11"
+}
 
-    // You can also use `@nameof` to return the name of a variable, function etc.
-    {
-        const X = 1
-        #assert @nameof(X) == "X"
-    }
+/**
+You can also use `@nameof` to return the name of a variable, function etc.
+*/
+#test
+{
+    const X = 1
+    #assert @nameof(X) == "X"
 }

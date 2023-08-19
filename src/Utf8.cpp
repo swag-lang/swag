@@ -905,19 +905,8 @@ bool Utf8::isNumber(const char* pz)
 
 bool Utf8::startsWith(const char* pz) const
 {
-    if (!buffer)
+    auto len = strlen(pz);
+    if (len > count)
         return false;
-
-    auto in = buffer;
-    while (*pz)
-    {
-        if (*in != *pz)
-            return false;
-        if (*buffer == 0 && *in)
-            return false;
-        pz++;
-        in++;
-    }
-
-    return true;
+    return memcmp(buffer, pz, len) == 0;
 }

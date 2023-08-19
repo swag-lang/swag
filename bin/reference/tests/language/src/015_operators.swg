@@ -192,29 +192,33 @@ A <=> B == 1  if A > B
 # Null-coalescing operator
 The operator `orelse` will return the left expression if it is not zero, otherwise it will return the right expression.
 */
+
+/**
+Works with strings, pointers and structures with the `opData` special function (we'll see that later).
+*/
 #test
 {
-    // Works with strings, pointers and structures with the `opData` special function (we'll see that later).
-    {
-        var a = "string1"
-        let b = "string2"
+    var a = "string1"
+    let b = "string2"
 
-        // c = a if a is not null, else c = b.
-        var c = a orelse b
-        @assert(c == "string1")
+    // c = a if a is not null, else c = b.
+    var c = a orelse b
+    @assert(c == "string1")
 
-        a = null
-        c = a orelse b
-        @assert(c == "string2")
-    }
+    a = null
+    c = a orelse b
+    @assert(c == "string2")
+}
 
-    // Works also for basic types like integers.
-    {
-        let a = 0
-        let b = 1
-        let c = a orelse b
-        @assert(c == b)
-    }
+/**
+Works also for basic types like integers.
+*/
+#test
+{
+    let a = 0
+    let b = 1
+    let c = a orelse b
+    @assert(c == b)
 }
 
 /**

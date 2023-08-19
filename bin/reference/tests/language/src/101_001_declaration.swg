@@ -57,9 +57,11 @@ func toto(x: s32, y = Values.A)
     #assert @typeof(y) == Values
 }
 
+/**
+Functions can be nested inside other functions.
+*/
 #test
 {
-    // Functions can be nested inside other functions.
     // This are not closure but just functions in a sub scope.
     func sub(x, y: s32) => x - y
 
@@ -94,28 +96,32 @@ You can name parameters, and don't have to respect parameters order in that case
 /**
 # Multiple return values
 */
+
+/**
+An **anonymous struct** can be used to return multiple values in a function.
+*/
 #test
 {
-    // An **anonymous struct** can be used to return multiple values in a function.
+    func myFunction() -> {x, y: f32}
     {
-        func myFunction() -> {x, y: f32}
-        {
-            return {1.0, 2.0}
-        }
-
-        var result = myFunction()
-        @assert(result.item0 == 1.0)
-        @assert(result.item1 == 2.0)
-
-        var (x, y) = myFunction()
-        @assert(x == 1.0)
-        @assert(y == 2.0)
-
-        var (z, w) = myFunction()
-        @assert(z == 1.0)
-        @assert(w == 2.0)
+        return {1.0, 2.0}
     }
 
+    var result = myFunction()
+    @assert(result.item0 == 1.0)
+    @assert(result.item1 == 2.0)
+
+    var (x, y) = myFunction()
+    @assert(x == 1.0)
+    @assert(y == 2.0)
+
+    var (z, w) = myFunction()
+    @assert(z == 1.0)
+    @assert(w == 2.0)
+}
+
+#test
+{
     func returns2() -> {x: s32, y: s32}
     {
         // You can return a tuple literal as long as the types match

@@ -226,11 +226,11 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
 
             //////////////////////////////////
         case UserBlockKind::Code:
-            if (l.startsWith("```"))
+            if (lineTrim.startsWith("```"))
                 popState();
             else if (l.startsWith("#test"))
                 pushState(UserBlockKind::Test);
-            else
+            else if (!lineTrim.empty() || !helpCode.empty())
             {
                 helpCode += l;
                 helpCode += "\n";
@@ -269,22 +269,26 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
             if (cptBrace == 1 && lineTrim.startsWith("//") && nextLine == "{")
             {
                 lineTrim.remove(0, 2);
-                popState();
-                pushState(UserBlockKind::Paragraph);
-                helpContent += "\n";
-                helpContent += getFormattedText(lineTrim);
-                popState();
-                pushState(UserBlockKind::Test);
-                continue;
+                //popState();
+                //pushState(UserBlockKind::Paragraph);
+                //helpContent += "\n";
+                //helpContent += getFormattedText(lineTrim);
+                printf("xxxx %s\n", lineTrim.c_str());
+                //popState();
+                //pushState(UserBlockKind::Test);
+                //continue;
             }
 
-            auto lineLine = l;
+            helpCode += l;
+            helpCode += "\n";
+
+            /*auto lineLine = l;
             if (lineLine.startsWith("    "))
             {
                 lineLine.remove(0, 4);
                 helpCode += lineLine;
                 helpCode += "\n";
-            }
+            }*/
             break;
         }
     }

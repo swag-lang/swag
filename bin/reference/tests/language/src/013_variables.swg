@@ -7,33 +7,37 @@ To declare a variable, use the `let` or `var` keyword, followed by `:` and then 
 */
 #test
 {
-    {
-        // Variable 'a' is of type 'u32' and its value is '1'. It cannot be changed.
-        let a: u32 = 1
-        @assert(a == 1)
+    // Variable 'a' is of type 'u32' and its value is '1'. It cannot be changed.
+    let a: u32 = 1
+    @assert(a == 1)
 
-        let b: string = "string"
-        @assert(b == "string")
+    let b: string = "string"
+    @assert(b == "string")
 
-        // Variable 'c' is declared with 'var', so it can be changed.
-        var c: s32 = 42
-        c += 1
-        @assert(c == 43)
-    }
+    // Variable 'c' is declared with 'var', so it can be changed.
+    var c: s32 = 42
+    c += 1
+    @assert(c == 43)
+}
 
-    // We have already seen that we can declare multiple variables on the same line.
-    {
-        let a, b: u32 = 123
-        @assert(a == 123)
-        @assert(b == 123)
-    }
+/**
+We have already seen that we can declare multiple variables on the same line.
+*/
+#test
+{
+    let a, b: u32 = 123
+    @assert(a == 123)
+    @assert(b == 123)
+}
 
-    // Or
-    {
-        let a: u32 = 12, b: f32 = 1.5
-        @assert(a == 12)
-        @assert(b == 1.5)
-    }
+/**
+Or
+*/
+#test
+{
+    let a: u32 = 12, b: f32 = 1.5
+    @assert(a == 12)
+    @assert(b == 1.5)
 }
 
 /**
@@ -63,35 +67,39 @@ But if you really do not want the variable to be initialized, you can assign it 
 /**
 We have seen that the type is optional in the declaration if it can be deduced from the assignment.
 */
+
+/**
+These are a bunch of **type inferences**.
+*/
 #test
 {
-    // These are a bunch of **type inferences**.
-    {
-        let a = 1.5
-        @assert(a == 1.5)
-        #assert @typeof(a) == f32
+    let a = 1.5
+    @assert(a == 1.5)
+    #assert @typeof(a) == f32
 
-        let b = "string"
-        @assert(b == "string")
-        #assert @typeof(b) == string
+    let b = "string"
+    @assert(b == "string")
+    #assert @typeof(b) == string
 
-        let c = 1.5'f64
-        @assert(c == 1.5)
-        #assert @typeof(c) == f64
-    }
+    let c = 1.5'f64
+    @assert(c == 1.5)
+    #assert @typeof(c) == f64
+}
 
-    // The same goes for multiple variables.
-    {
-        let a, b = true
-        @assert(a == true)
-        @assert(b == true)
-        #assert @typeof(a) == @typeof(true)
-        #assert @typeof(b) == @typeof(a)
+/**
+The same goes for multiple variables.
+*/
+#test
+{
+    let a, b = true
+    @assert(a == true)
+    @assert(b == true)
+    #assert @typeof(a) == @typeof(true)
+    #assert @typeof(b) == @typeof(a)
 
-        let c = 1.5, d = "string"
-        @assert(c == 1.5)
-        @assert(d == "string")
-        #assert @typeof(c) == f32
-        #assert @typeof(d) == string
-    }
+    let c = 1.5, d = "string"
+    @assert(c == 1.5)
+    @assert(d == "string")
+    #assert @typeof(c) == f32
+    #assert @typeof(d) == string
 }
