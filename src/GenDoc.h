@@ -27,7 +27,7 @@ struct GenDoc
     Utf8 findReference(const Utf8& name);
     Utf8 getReference(const Utf8& name);
     Utf8 getFormattedText(const Utf8& user);
-    void outputCode(const Utf8& code);
+    void outputCode(const Utf8& code, bool makeRefs);
 
     Module*       module = nullptr;
     Concat        concat;

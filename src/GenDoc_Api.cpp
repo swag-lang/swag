@@ -429,7 +429,7 @@ void GenDoc::outputUserBlock(const UserBlock& user)
             block += "\n";
         }
 
-        outputCode(block);
+        outputCode(block, false);
         return;
     }
 
@@ -857,7 +857,7 @@ void GenDoc::generateContent()
                 code += "struct ";
                 code += structNode->token.text;
                 code += getOutputNode(structNode->genericParameters);
-                outputCode(code);
+                outputCode(code, true);
             }
 
             // Fields
@@ -991,12 +991,12 @@ void GenDoc::generateContent()
                 if (!subUserComment.shortDesc.lines.empty())
                 {
                     outputUserBlock(subUserComment.shortDesc);
-                    outputCode(code);
+                    outputCode(code, true);
                     code.clear();
                 }
             }
 
-            outputCode(code);
+            outputCode(code, true);
 
             for (auto n : c.nodes)
             {
@@ -1056,7 +1056,7 @@ void GenDoc::generateContent()
                 if (attrNode->parameters)
                     code += getOutputNode(attrNode->parameters);
                 code += "\n";
-                outputCode(code);
+                outputCode(code, true);
             }
 
             for (auto n : c.nodes)

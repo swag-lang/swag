@@ -43,7 +43,7 @@ void GenDoc::stateLeave(UserBlockKind st)
         break;
     case UserBlockKind::Code:
     case UserBlockKind::Test:
-        outputCode(helpCode);
+        outputCode(helpCode, false);
         helpCode.clear();
         break;
     }

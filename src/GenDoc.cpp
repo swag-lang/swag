@@ -165,7 +165,7 @@ Utf8 GenDoc::toRef(Utf8 str)
     return str;
 }
 
-void GenDoc::outputCode(const Utf8& code)
+void GenDoc::outputCode(const Utf8& code, bool makeRefs)
 {
     if (code.empty())
         return;
@@ -190,20 +190,25 @@ void GenDoc::outputCode(const Utf8& code)
     auto codeText = syntaxColor(repl, SyntaxColorMode::ForDoc);
 
     // References
-    repl.clear();
-    const char* pz = codeText.c_str();
-    while (*pz)
+    if (!makeRefs)
+        repl = std::move(codeText);
+    else
     {
-        if (SWAG_IS_ALPHA(*pz) || *pz == '_')
+        repl.clear();
+        const char* pz = codeText.c_str();
+        while (*pz)
         {
-            Utf8 nameToRef;
-            while (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.')
-                nameToRef += *pz++;
-            repl += getReference(nameToRef);
-        }
-        else
-        {
-            repl += *pz++;
+            if (SWAG_IS_ALPHA(*pz) || *pz == '_')
+            {
+                Utf8 nameToRef;
+                while (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.')
+                    nameToRef += *pz++;
+                repl += getReference(nameToRef);
+            }
+            else
+            {
+                repl += *pz++;
+            }
         }
     }
 
