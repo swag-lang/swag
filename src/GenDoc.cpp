@@ -106,6 +106,9 @@ void GenDoc::outputStyles()
             margin-top:         50px;\n\
             margin-bottom:      50px;\n\
         }\n\
+        .right h2 {\n\
+            margin-top:         35px;\n\
+        }\n\
         table.item {\n\
             background-color:   Black;\n\
             color:              White;\n\
