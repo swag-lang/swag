@@ -275,6 +275,7 @@ struct BuildCfg
 
     // Documentation
     DocKind   docKind = DocKind::None;
+    SwagSlice docOutputName;
     SwagSlice docTitleToc;
     SwagSlice docTitleContent;
     SwagSlice docCss;

@@ -750,6 +750,7 @@ namespace Swag
         repoPath:       string                  // Repository access path to the module
 
         docKind             = DocKind.None
+        docOutputName:      string              // The name of the output .html file
         docTitleToc:        string              // Title for the table of content
         docTitleContent:    string              // Title for the main document content
         docCss:             string              // The 'css' file to include in generated documentations

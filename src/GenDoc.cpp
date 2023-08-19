@@ -406,10 +406,18 @@ bool GenDoc::generate(Module* mdl, DocKind docKind)
     }
     else
     {
-        filePath.append(g_Workspace->workspacePath.filename().string().c_str());
-        filePath += ".";
-        filePath += module->name.c_str();
-        filePath += ".html";
+        Utf8 fileName{module->buildCfg.docOutputName};
+        if (fileName.empty())
+        {
+            filePath.append(g_Workspace->workspacePath.filename().string().c_str());
+            filePath += ".";
+            filePath += module->name.c_str();
+            filePath += ".html";
+        }
+        else
+        {
+            filePath.append(fileName.c_str());
+        }
     }
 
     fullFileName = filePath.string();

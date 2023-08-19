@@ -74,7 +74,7 @@
         td:last-child {
             width:              auto;
         }
-        .tocbullet {
+        .left ul {
             list-style-type:    none;
             margin-left:        -20px;
         }
@@ -89,26 +89,26 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        h1.content {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        h2.section {
+        .left h2 {
             background-color:   Black;
             color:              White;
             padding:            6px;
         }
-        table.h3 {
+        .right h1 {
+            margin-top:         50px;
+            margin-bottom:      50px;
+        }
+        .right h2 {
+            margin-top:         35px;
+        }
+        table.item {
             background-color:   Black;
             color:              White;
             width:              100%;
             margin-top:         70px;
             margin-right:       0px;
-        }
-        h3.content {
-            margin-bottom:      2px;
-            margin-right:       0px;
-            width:              100%;
+            padding:            4px;
+            font-size:          110%;
         }
         .srcref {
             text-align:         right;
@@ -151,40 +151,40 @@
 <div class="container">
 <div class="left">
 <h1>Module audio</h1>
-<h2 class="section">Structs</h2>
-<h3 class="categ"></h3>
-<ul class="tocbullet">
+<h2>Structs</h2>
+<h3></h3>
+<ul>
 <li><a href="#Audio_Bus">Bus</a></li>
 <li><a href="#Audio_Voice">Voice</a></li>
 </ul>
-<h3 class="categ">codec</h3>
-<ul class="tocbullet">
+<h3>codec</h3>
+<ul>
 <li><a href="#Audio_Codec">Codec</a></li>
 </ul>
-<h3 class="categ">file</h3>
-<ul class="tocbullet">
+<h3>file</h3>
+<ul>
 <li><a href="#Audio_SoundFile">SoundFile</a></li>
 </ul>
-<h2 class="section">Interfaces</h2>
-<h3 class="categ">codec</h3>
-<ul class="tocbullet">
+<h2>Interfaces</h2>
+<h3>codec</h3>
+<ul>
 <li><a href="#Audio_ICodec">ICodec</a></li>
 </ul>
-<h2 class="section">Enums</h2>
-<h3 class="categ"></h3>
-<ul class="tocbullet">
+<h2>Enums</h2>
+<h3></h3>
+<ul>
 <li><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></li>
 <li><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></li>
 <li><a href="#Audio_VoiceState">VoiceState</a></li>
 </ul>
-<h3 class="categ">file</h3>
-<ul class="tocbullet">
+<h3>file</h3>
+<ul>
 <li><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></li>
 <li><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></li>
 </ul>
-<h2 class="section">Functions</h2>
-<h3 class="categ"></h3>
-<ul class="tocbullet">
+<h2>Functions</h2>
+<h3></h3>
+<ul>
 <li><a href="#Audio_convertDBToPercent">Audio.convertDBToPercent</a></li>
 <li><a href="#Audio_convertPercentToDB">Audio.convertPercentToDB</a></li>
 <li><a href="#Audio_createEngine">Audio.createEngine</a></li>
@@ -204,12 +204,12 @@
 <li><a href="#Audio_Voice_setVolumeDB">Voice.setVolumeDB</a></li>
 <li><a href="#Audio_Voice_stop">Voice.stop</a></li>
 </ul>
-<h3 class="categ">codec</h3>
-<ul class="tocbullet">
+<h3>codec</h3>
+<ul>
 <li><a href="#Audio_addCodec">Audio.addCodec</a></li>
 </ul>
-<h3 class="categ">driver</h3>
-<ul class="tocbullet">
+<h3>driver</h3>
+<ul>
 <li><a href="#Audio_Bus_getVolume">Bus.getVolume</a></li>
 <li><a href="#Audio_Bus_setVolume">Bus.setVolume</a></li>
 <li><a href="#Audio_Voice_getVolume">Voice.getVolume</a></li>
@@ -217,8 +217,8 @@
 <li><a href="#Audio_Voice_setRooting">Voice.setRooting</a></li>
 <li><a href="#Audio_Voice_setVolume">Voice.setVolume</a></li>
 </ul>
-<h3 class="categ">file</h3>
-<ul class="tocbullet">
+<h3>file</h3>
+<ul>
 <li><a href="#Audio_SoundFile_load">SoundFile.load</a></li>
 <li><a href="#Audio_Wav_loadFile">Wav.loadFile</a></li>
 </ul>
@@ -227,7 +227,7 @@
 <div class="page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
-<h1 class="content">Overview</h1>
+<h1>Overview</h1>
 <p>
 <code class="incode">Std.Audio</code> is a module to decode and play sound files.</p>
 <p>
@@ -238,41 +238,36 @@ How to play a sound</h2>
 First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>.</p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">createEngine</span><span class="SyntaxCode">()
-</span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">() </span><span class="SyntaxComment">// Don't forget to destroy the engine when you are done</span><span class="SyntaxCode">
-</code>
+</span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">() </span><span class="SyntaxComment">// Don't forget to destroy the engine when you are done</span><span class="SyntaxCode"></code>
 </p>
 <p>
 You then have to load a sound file.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">)
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SoundFile</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">)</code>
 </p>
 <p>
 Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="incode">loadDatas</code> to false.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SoundFile</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </p>
 <p>
 Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode">.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(soundFile)
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Voice</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(soundFile)</code>
 </p>
 <p>
 To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [Voice.Play] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> voice = </span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode">.</span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(&soundFile)
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> voice = </span><span class="SyntaxConstant">Voice</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(&soundFile)
 voice.</span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)
-voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Loop</span><span class="SyntaxCode">)
-</code>
+voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Loop</span><span class="SyntaxCode">)</code>
 </p>
-<h1 class="content">Content</h1>
+<h1>Content</h1>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Bus"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Bus</span></h3>
+<td class="item">
+<span class="content" id="Audio_Bus"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Bus</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L5" class="src">[src]</a></td>
@@ -345,10 +340,10 @@ Set the playing bus volume in DB.</p>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Bus_create"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">create</span></h3>
+<td class="item">
+<span class="content" id="Audio_Bus_create"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">create</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L15" class="src">[src]</a></td>
@@ -358,16 +353,15 @@ Set the playing bus volume in DB.</p>
 <p>
 Creates an audio bus.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(numChannels: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, parent: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(numChannels: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, parent: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
  You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a> Note that you can have a graph of buses, because a bus can have another bus as <code class="incode">parent</code>.</p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Bus_destroy"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">destroy</span></h3>
+<td class="item">
+<span class="content" id="Audio_Bus_destroy"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">destroy</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L27" class="src">[src]</a></td>
@@ -377,14 +371,13 @@ Creates an audio bus.</p>
 <p>
 Destroy the bus (immediatly).</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Bus_getVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolume</span></h3>
+<td class="item">
+<span class="content" id="Audio_Bus_getVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolume</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L372" class="src">[src]</a></td>
@@ -394,14 +387,13 @@ Destroy the bus (immediatly).</p>
 <p>
 Returns the actual volume.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Bus_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolumeDB</span></h3>
+<td class="item">
+<span class="content" id="Audio_Bus_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolumeDB</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L43" class="src">[src]</a></td>
@@ -411,14 +403,13 @@ Returns the actual volume.</p>
 <p>
 Returns the actual volume, in DB.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Bus_setVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolume</span></h3>
+<td class="item">
+<span class="content" id="Audio_Bus_setVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolume</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L361" class="src">[src]</a></td>
@@ -428,14 +419,13 @@ Returns the actual volume, in DB.</p>
 <p>
 Set the playing bus volume between [0..1].</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Bus_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolumeDB</span></h3>
+<td class="item">
+<span class="content" id="Audio_Bus_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolumeDB</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L37" class="src">[src]</a></td>
@@ -445,14 +435,13 @@ Set the playing bus volume between [0..1].</p>
 <p>
 Set the playing bus volume in DB.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Codec"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Codec</span></h3>
+<td class="item">
+<span class="content" id="Audio_Codec"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Codec</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L48" class="src">[src]</a></td>
@@ -494,10 +483,10 @@ The real type of the codec.</p>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_ICodec"><span class="titletype">interface</span> <span class="titlelight">Audio.</span><span class="titlestrong">ICodec</span></h3>
+<td class="item">
+<span class="content" id="Audio_ICodec"><span class="titletype">interface</span> <span class="titlelight">Audio.</span><span class="titlestrong">ICodec</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L6" class="src">[src]</a></td>
@@ -541,10 +530,10 @@ func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</td>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundFile"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFile</span></h3>
+<td class="item">
+<span class="content" id="Audio_SoundFile"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFile</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L34" class="src">[src]</a></td>
@@ -697,10 +686,10 @@ Load a <code class="incode">SoundFile</code> from disk.</p>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundFile_load"><span class="titletype">func</span> <span class="titlelight">SoundFile.</span><span class="titlestrong">load</span></h3>
+<td class="item">
+<span class="content" id="Audio_SoundFile_load"><span class="titletype">func</span> <span class="titlelight">SoundFile.</span><span class="titlestrong">load</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L59" class="src">[src]</a></td>
@@ -710,16 +699,15 @@ Load a <code class="incode">SoundFile</code> from disk.</p>
 <p>
 Load a <code class="incode">SoundFile</code> from disk.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">load</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, loadMetaDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">load</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, loadMetaDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
  Will load the sound datas if <code class="incode">loadDatas</code> is true. Will load the sound metadatas if <code class="incode">loadMetaData</code> is true.</p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundFileEncoding"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileEncoding</span></h3>
+<td class="item">
+<span class="content" id="Audio_SoundFileEncoding"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileEncoding</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L22" class="src">[src]</a></td>
@@ -777,10 +765,10 @@ Pcm, uncompressed, float 32 bits per sample.</p>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_SoundFileValidityMask"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileValidityMask</span></h3>
+<td class="item">
+<span class="content" id="Audio_SoundFileValidityMask"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileValidityMask</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L6" class="src">[src]</a></td>
@@ -858,10 +846,10 @@ MetaData</td>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Voice</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Voice</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L32" class="src">[src]</a></td>
@@ -978,10 +966,10 @@ Stop the playing voice.</p>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_create"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">create</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_create"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">create</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L94" class="src">[src]</a></td>
@@ -991,16 +979,15 @@ Stop the playing voice.</p>
 <p>
 Creates a new voice for a given sound file.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, createFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, createFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
  A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>.</p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_destroy"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">destroy</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_destroy"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">destroy</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L154" class="src">[src]</a></td>
@@ -1010,14 +997,13 @@ Creates a new voice for a given sound file.</p>
 <p>
 Destroy the voice.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_getVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolume</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_getVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolume</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L265" class="src">[src]</a></td>
@@ -1027,14 +1013,13 @@ Destroy the voice.</p>
 <p>
 Returns the actual volume.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolumeDB</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolumeDB</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L177" class="src">[src]</a></td>
@@ -1044,14 +1029,13 @@ Returns the actual volume.</p>
 <p>
 Returns the actual volume, in DB.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_isPlaying"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">isPlaying</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_isPlaying"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">isPlaying</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L163" class="src">[src]</a></td>
@@ -1061,14 +1045,13 @@ Returns the actual volume, in DB.</p>
 <p>
 Returns true if the voice is currently playing.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isPlaying</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isPlaying</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_pause"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">pause</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_pause"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">pause</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L134" class="src">[src]</a></td>
@@ -1078,14 +1061,13 @@ Returns true if the voice is currently playing.</p>
 <p>
 Pause the playing voice.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_play"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">play</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_play"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">play</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L108" class="src">[src]</a></td>
@@ -1095,24 +1077,22 @@ Pause the playing voice.</p>
 <p>
 Creates a voice and plays it.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, createFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, createFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
 Plays a voice.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
  By default, the voice will be destroyed when stopped or finished.</p>
 <p>
  By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="incode">DestroyOnStop</code> flag in <code class="incode">playFlags</code>. See <a href="#Audio_Voice_create">Voice.create</a></p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_setFrequencyRatio"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setFrequencyRatio</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_setFrequencyRatio"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setFrequencyRatio</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L277" class="src">[src]</a></td>
@@ -1122,16 +1102,15 @@ Plays a voice.</p>
 <p>
 Set the playing pitch.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrequencyRatio</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ratio: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrequencyRatio</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ratio: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
  The voice should have been created with <code class="incode">VoiceCreateFlags.AcceptPitch</code>. See <a href="#Audio_Voice_create">Voice.create</a></p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_setRooting"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setRooting</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_setRooting"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setRooting</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L289" class="src">[src]</a></td>
@@ -1141,16 +1120,15 @@ Set the playing pitch.</p>
 <p>
 Root a voice to a given list of buses.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRooting</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buses: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRooting</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buses: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
  You can also set <code class="incode">buses</code> to null if you want to root the voice only to the main bus (which is the default).</p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_setVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolume</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_setVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolume</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L254" class="src">[src]</a></td>
@@ -1160,14 +1138,13 @@ Root a voice to a given list of buses.</p>
 <p>
 Set the playing voice volume between [0..1].</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolumeDB</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolumeDB</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L171" class="src">[src]</a></td>
@@ -1177,14 +1154,13 @@ Set the playing voice volume between [0..1].</p>
 <p>
 Set the playing voice volume.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Voice_stop"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">stop</span></h3>
+<td class="item">
+<span class="content" id="Audio_Voice_stop"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">stop</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L143" class="src">[src]</a></td>
@@ -1194,14 +1170,13 @@ Set the playing voice volume.</p>
 <p>
 Stop the playing voice.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_VoiceCreateFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceCreateFlags</span></h3>
+<td class="item">
+<span class="content" id="Audio_VoiceCreateFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceCreateFlags</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L4" class="src">[src]</a></td>
@@ -1235,10 +1210,10 @@ Default</td>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_VoicePlayFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoicePlayFlags</span></h3>
+<td class="item">
+<span class="content" id="Audio_VoicePlayFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoicePlayFlags</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L13" class="src">[src]</a></td>
@@ -1276,10 +1251,10 @@ Default</td>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_VoiceState"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceState</span></h3>
+<td class="item">
+<span class="content" id="Audio_VoiceState"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceState</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L22" class="src">[src]</a></td>
@@ -1313,10 +1288,10 @@ PendingDestroy</td>
 </tr>
 </table>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_Wav_loadFile"><span class="titletype">func</span> <span class="titlelight">Wav.</span><span class="titlestrong">loadFile</span></h3>
+<td class="item">
+<span class="content" id="Audio_Wav_loadFile"><span class="titletype">func</span> <span class="titlelight">Wav.</span><span class="titlestrong">loadFile</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L231" class="src">[src]</a></td>
@@ -1326,14 +1301,13 @@ PendingDestroy</td>
 <p>
 Load a wav file.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">loadFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FileStream</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, loadMetaDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">loadFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FileStream</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, loadMetaDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_addCodec"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">addCodec</span></h3>
+<td class="item">
+<span class="content" id="Audio_addCodec"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">addCodec</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L21" class="src">[src]</a></td>
@@ -1343,14 +1317,13 @@ Load a wav file.</p>
 <p>
 Register a codec.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">addCodec</span><span class="SyntaxCode">()
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">addCodec</span><span class="SyntaxCode">()</code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_convertDBToPercent"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertDBToPercent</span></h3>
+<td class="item">
+<span class="content" id="Audio_convertDBToPercent"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertDBToPercent</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\helpers.swg#L4" class="src">[src]</a></td>
@@ -1360,14 +1333,13 @@ Register a codec.</p>
 <p>
 Convert a DB value to a percent.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertDBToPercent</span><span class="SyntaxCode">(dbVolume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertDBToPercent</span><span class="SyntaxCode">(dbVolume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_convertPercentToDB"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertPercentToDB</span></h3>
+<td class="item">
+<span class="content" id="Audio_convertPercentToDB"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertPercentToDB</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\helpers.swg#L12" class="src">[src]</a></td>
@@ -1377,14 +1349,13 @@ Convert a DB value to a percent.</p>
 <p>
 Convert a percent value to DB.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertPercentToDB</span><span class="SyntaxCode">(percentVolume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertPercentToDB</span><span class="SyntaxCode">(percentVolume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_createEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">createEngine</span></h3>
+<td class="item">
+<span class="content" id="Audio_createEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">createEngine</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L7" class="src">[src]</a></td>
@@ -1394,16 +1365,15 @@ Convert a percent value to DB.</p>
 <p>
 Creates the audio engine.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createEngine</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createEngine</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 <p>
  Must be called once, before anything else.</p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_destroyEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">destroyEngine</span></h3>
+<td class="item">
+<span class="content" id="Audio_destroyEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">destroyEngine</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L14" class="src">[src]</a></td>
@@ -1413,16 +1383,15 @@ Creates the audio engine.</p>
 <p>
 Destroy the audio engine.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">()
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">()</code>
 </p>
 <p>
  Must be called at the end, when engine is no more used.</p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_getOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">getOutputVolume</span></h3>
+<td class="item">
+<span class="content" id="Audio_getOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">getOutputVolume</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L23" class="src">[src]</a></td>
@@ -1432,14 +1401,13 @@ Destroy the audio engine.</p>
 <p>
 Get the general output volume.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOutputVolume</span><span class="SyntaxCode">()
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOutputVolume</span><span class="SyntaxCode">()</code>
 </p>
 <p>
-<table class="h3">
+<table class="item">
 <tr>
-<td class="h3">
-<h3 class="content" id="Audio_setOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">setOutputVolume</span></h3>
+<td class="item">
+<span class="content" id="Audio_setOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">setOutputVolume</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L20" class="src">[src]</a></td>
@@ -1449,8 +1417,7 @@ Get the general output volume.</p>
 <p>
 Set the general output volume.</p>
 <p class="code">
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setOutputVolume</span><span class="SyntaxCode">(volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setOutputVolume</span><span class="SyntaxCode">(volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
 </div>
 </div>

@@ -8,8 +8,8 @@
         </div>
         <ul class="text-white text-md mt-3 xl:mt-0" :class="open_menu ? '' : 'hidden xl:flex'">
             <li class="xl:mr-5 mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="index.php" class="<?=$_SERVER['REQUEST_URI'] == '/index.php' ? 'border-b' : ''?> hover:border-b">Home</a></li>
-            <li class="xl:mr-5 mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="language.php" class="<?=$_SERVER['REQUEST_URI'] == '/language.php' ? 'border-b' : ''?> hover:border-b">Overview</a></li>
-            <li class="xl:mr-5 mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="std/swag.runtime.html" target="_blank" class="hover:border-b">Runtime</a></li>
+            <li class="xl:mr-5 mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="doc/language.html" target="_blank" class="hover:border-b">Overview</a></li>
+            <li class="xl:mr-5 mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="doc/swag.runtime.html" target="_blank" class="hover:border-b">Runtime</a></li>
             <li class="xl:mr-5 mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="std.php" class="<?=$_SERVER['REQUEST_URI'] == '/std.php' ? 'border-b' : ''?> hover:border-b">Std</a></li>
             <li class="xl:mr-5 mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q" target="_blank" class="hover:border-b">YouTube</a></li>
             <li class="mb-1 xl:mb-0 ml-2 xl:ml-0"><a href="https://github.com/swag-lang/swag" target="_blank" class="hover:border-b">Github</a></li>

@@ -34,7 +34,7 @@
 <p>
 </p>
 <blockquote><p>
-To take a look at the language, this is <a href="language.php">here</a>. </br>
+To take a look at the language, this is <a href="doc/language.html">here</a>. </br>
  To take a look at the standard list of modules, this is <a href="std.php">here</a>. </br>
  To use Swag as a scripting language, this is <a href="swag_as_script.php">here</a> </p></blockquote>
 </p>

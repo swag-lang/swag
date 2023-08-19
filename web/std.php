@@ -6,16 +6,16 @@
 <p>
 </p>
 <ul>
-<li><a href="std/std.core.html">std.core</a> </li>
-<li><a href="std/std.pixel.html">std.pixel</a> </li>
-<li><a href="std/std.gui.html">std.gui</a> </li>
-<li><a href="std/std.ogl.html">std.ogl</a> </li>
-<li><a href="std/std.libc.html">std.libc</a> </li>
-<li><a href="std/std.freetype.html">std.freetype</a> </li>
-<li><a href="std/std.win32.html">std.win32</a> </li>
-<li><a href="std/std.gdi32.html">std.gdi32</a> </li>
-<li><a href="std/std.xinput.html">std.xinput</a> </li>
-<li><a href="std/std.audio.html">std.audio</a> </li>
+<li><a href="doc/std.core.html">std.core</a> </li>
+<li><a href="doc/std.pixel.html">std.pixel</a> </li>
+<li><a href="doc/std.gui.html">std.gui</a> </li>
+<li><a href="doc/std.ogl.html">std.ogl</a> </li>
+<li><a href="doc/std.libc.html">std.libc</a> </li>
+<li><a href="doc/std.freetype.html">std.freetype</a> </li>
+<li><a href="doc/std.win32.html">std.win32</a> </li>
+<li><a href="doc/std.gdi32.html">std.gdi32</a> </li>
+<li><a href="doc/std.xinput.html">std.xinput</a> </li>
+<li><a href="doc/std.audio.html">std.audio</a> </li>
 </ul>
 </p>
 </div>
