@@ -56,10 +56,10 @@ Here is a **screen capture software** fully written in Swag with the help of the
 
 # For the braves
 
-* [Start](https://swag-lang.org/getting_started.php) your first project, compile it, run it.
-* Use the compiler as a [script](https://swag-lang.org/swag_as_script.php) interpreter.
-* [Contribute](https://swag-lang.org/contribute_tests.php) to the compiler **test suite**, this will help (a lot).
+* [Start](https://swag-lang.org/getting-started.php) your first project, compile it, run it.
+* Use the compiler as a [script](https://swag-lang.org/swag-as-script.php) interpreter.
+* [Contribute](https://swag-lang.org/contribute-tests.php) to the compiler **test suite**, this will help (a lot).
 
 # For the very braves
 
-* [How to build](https://swag-lang.org/how_to_build_swag.php) the compiler with the full source tree.
+* [How to build](https://swag-lang.org/how-to-build-swag.php) the compiler with the full source tree.
