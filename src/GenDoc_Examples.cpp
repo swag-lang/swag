@@ -4,7 +4,6 @@
 #include "Report.h"
 #include "ErrorIds.h"
 #include "Vector.h"
-#pragma optimize("", off)
 
 void GenDoc::stateEnter(UserBlockKind st)
 {
@@ -101,28 +100,31 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
 
         auto curState = state.back();
 
-        if (lineTrim.startsWith("# "))
+        if (curState != UserBlockKind::Code && curState != UserBlockKind::Test)
         {
-            lineTrim.remove(0, 2);
-            lineTrim.trim();
-            addTitle(lineTrim, titleLevel + 1);
-            continue;
-        }
+            if (lineTrim.startsWith("# "))
+            {
+                lineTrim.remove(0, 2);
+                lineTrim.trim();
+                addTitle(lineTrim, titleLevel + 1);
+                continue;
+            }
 
-        if (lineTrim.startsWith("## "))
-        {
-            lineTrim.remove(0, 3);
-            lineTrim.trim();
-            addTitle(lineTrim, titleLevel + 2);
-            continue;
-        }
+            if (lineTrim.startsWith("## "))
+            {
+                lineTrim.remove(0, 3);
+                lineTrim.trim();
+                addTitle(lineTrim, titleLevel + 2);
+                continue;
+            }
 
-        if (lineTrim.startsWith("### "))
-        {
-            lineTrim.remove(0, 4);
-            lineTrim.trim();
-            addTitle(lineTrim, titleLevel + 3);
-            continue;
+            if (lineTrim.startsWith("### "))
+            {
+                lineTrim.remove(0, 4);
+                lineTrim.trim();
+                addTitle(lineTrim, titleLevel + 3);
+                continue;
+            }
         }
 
         if (lineTrim.startsWith("/**"))
@@ -168,6 +170,18 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
             break;
 
             //////////////////////////////////
+        case UserBlockKind::RawParagraph:
+            if (lineTrim.startsWith("---"))
+            {
+                popState();
+            }
+            else
+            {
+                helpContent += l;
+            }
+            break;
+
+            //////////////////////////////////
         case UserBlockKind::Paragraph:
             if (lineTrim.empty())
             {
@@ -177,6 +191,10 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
             else if (lineTrim.startsWith("```"))
             {
                 pushState(UserBlockKind::Code);
+            }
+            else if (lineTrim.startsWith("---"))
+            {
+                pushState(UserBlockKind::RawParagraph);
             }
             else if (lineTrim.startsWith("* "))
             {

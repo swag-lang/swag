@@ -223,6 +223,7 @@ enum class DocKind
     None,
     Api,
     Examples,
+    Pages,
 };
 
 struct BuildCfg

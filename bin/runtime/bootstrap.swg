@@ -705,6 +705,7 @@ namespace Swag
         None        // Do not generate documentation for that module
         Api         // Generate 'api like' documentation
         Examples    // Generate 'examples like' documentation
+        Pages       // Generate one page per file
     }
 
     // The current module build configuration.

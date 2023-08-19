@@ -21,8 +21,10 @@ struct GenDoc
         Title2,
     };
 
+    void startPage();
+    void endPage();
     Utf8 toRef(Utf8 str);
-    bool generate(Module* mdl, DocKind docKind);
+    bool generate(Module* mdl, DocKind kind);
     void outputStyles();
     Utf8 findReference(const Utf8& name);
     Utf8 getReference(const Utf8& name);
@@ -30,6 +32,7 @@ struct GenDoc
     void outputCode(const Utf8& code, bool makeRefs);
 
     Module*       module = nullptr;
+    DocKind       docKind;
     Concat        concat;
     Utf8          helpOutput;
     Utf8          helpToc;
@@ -37,6 +40,11 @@ struct GenDoc
     Utf8          helpCode;
     Utf8          fullFileName;
     MapUtf8<Utf8> collectInvert;
+
+    // Pages
+    ///////////////////////////////////
+
+    bool generatePages();
 
     // Examples
     ///////////////////////////////////

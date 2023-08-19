@@ -303,6 +303,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 while (*pz && *pz != ')')
                     ref += *pz++;
                 result += Fmt("<a href=\"%s\">%s</a>", ref.c_str(), name.c_str());
+                if (*pz) pz++;
                 continue;
             }
 
@@ -394,9 +395,72 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     return result;
 }
 
-bool GenDoc::generate(Module* mdl, DocKind docKind)
+void GenDoc::startPage()
 {
-    module = mdl;
+    helpOutput.clear();
+    helpContent.clear();
+    helpToc.clear();
+
+    helpOutput += "<html>\n";
+    helpOutput += "<body>\n";
+
+    helpOutput += "<head>\n";
+    helpOutput += "<meta charset=\"UTF-8\">\n";
+
+    // Css
+    bool userCss = false;
+    if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
+    {
+        Utf8 css{module->buildCfg.docCss};
+        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
+        userCss = true;
+    }
+
+    helpOutput += "</head>\n";
+
+    // Embbeded styles
+    if (!userCss)
+        outputStyles();
+
+    helpContent += "<blockquote>\n";
+    helpContent += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    helpContent += "</blockquote>\n";
+}
+
+void GenDoc::endPage()
+{
+    helpOutput += "<div class=\"container\">\n";
+
+    if (docKind != DocKind::Pages)
+    {
+        helpOutput += "<div class=\"left\">\n";
+        helpOutput += helpToc;
+        helpOutput += "</div>\n";
+    }
+
+    helpOutput += "<div class=\"right\">\n";
+    helpOutput += "<div class=\"page\">\n";
+    helpOutput += helpContent;
+    helpOutput += "</div>\n";
+    helpOutput += "</div>\n";
+
+    helpOutput += "</div>\n";
+
+    helpOutput += "</body>\n";
+    helpOutput += "</html>\n";
+}
+
+bool GenDoc::generate(Module* mdl, DocKind kind)
+{
+    module  = mdl;
+    docKind = kind;
+
+    if (docKind == DocKind::Pages)
+    {
+        if (!generatePages())
+            return false;
+        return true;
+    }
 
     // Output filename
     auto filePath = g_Workspace->targetPath;
@@ -431,30 +495,7 @@ bool GenDoc::generate(Module* mdl, DocKind docKind)
         return false;
     }
 
-    helpOutput += "<html>\n";
-    helpOutput += "<body>\n";
-
-    helpOutput += "<head>\n";
-    helpOutput += "<meta charset=\"UTF-8\">\n";
-
-    // Css
-    bool userCss = false;
-    if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
-    {
-        Utf8 css{(const char*) module->buildCfg.docCss.buffer, (uint32_t) module->buildCfg.docCss.count};
-        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
-        userCss = true;
-    }
-
-    helpOutput += "</head>\n";
-
-    // Embbeded styles
-    if (!userCss)
-        outputStyles();
-
-    helpContent += "<blockquote>\n";
-    helpContent += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    helpContent += "</blockquote>\n";
+    startPage();
 
     // Titles
     if (!module)
@@ -486,26 +527,16 @@ bool GenDoc::generate(Module* mdl, DocKind docKind)
         break;
     }
 
-    helpOutput += "<div class=\"container\">\n";
-
-    helpOutput += "<div class=\"left\">\n";
-    helpOutput += helpToc;
-    helpOutput += "</div>\n";
-
-    helpOutput += "<div class=\"right\">\n";
-    helpOutput += "<div class=\"page\">\n";
-    helpOutput += helpContent;
-    helpOutput += "</div>\n";
-    helpOutput += "</div>\n";
-
-    helpOutput += "</div>\n";
-
-    helpOutput += "</body>\n";
-    helpOutput += "</html>\n";
+    endPage();
 
     // Write file
-    fwrite(helpOutput.c_str(), 1, helpOutput.length(), f);
-    fclose(f);
+    if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
+    {
+        Report::errorOS(Fmt(Err(Err0525), fullFileName.c_str()));
+        fclose(f);
+        return false;
+    }
 
+    fclose(f);
     return true;
 }
