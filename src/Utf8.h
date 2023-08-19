@@ -64,6 +64,7 @@ struct Utf8
     void        insert(uint32_t index, char c);
     bool        compareNoCase(const Utf8& txt1);
     bool        startsWith(const char* pz) const;
+    int         countOf(char c) const;
 
                 operator const char*();
     void        operator=(const char* txt);

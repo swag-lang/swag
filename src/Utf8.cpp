@@ -910,3 +910,14 @@ bool Utf8::startsWith(const char* pz) const
         return false;
     return memcmp(buffer, pz, len) == 0;
 }
+
+int Utf8::countOf(char c) const
+{
+    int cpt = 0;
+    for (uint32_t i = 0; i < count; i++)
+    {
+        if (buffer[i] == c)
+            cpt++;
+    }
+    return cpt;
+}

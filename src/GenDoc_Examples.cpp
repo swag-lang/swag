@@ -95,8 +95,8 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
 
     for (int i = 0; i < lines.size(); i++)
     {
-        const auto& l        = lines[i];
-        auto        lineTrim = l;
+        auto& l        = lines[i];
+        auto  lineTrim = l;
         lineTrim.trim();
 
         auto curState = state.back();
@@ -227,9 +227,14 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
             //////////////////////////////////
         case UserBlockKind::Code:
             if (lineTrim.startsWith("```"))
+            {
                 popState();
-            else if (l.startsWith("#test"))
+            }
+            else if (lineTrim.startsWith("#test"))
+            {
                 pushState(UserBlockKind::Test);
+                cptBrace = lineTrim.countOf('{');
+            }
             else if (!lineTrim.empty() || !helpCode.empty())
             {
                 helpCode += l;
@@ -239,56 +244,28 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
 
             //////////////////////////////////
         case UserBlockKind::Test:
-            if (lineTrim == "{")
+            if (!cptBrace)
             {
-                cptBrace += 1;
-                if (cptBrace == 1)
-                    continue;
-            }
-            else if (lineTrim == "}")
-            {
-                cptBrace -= 1;
-                if (cptBrace == 0)
-                {
-                    popState();
-                    continue;
-                }
+                cptBrace += lineTrim.countOf('{');
+                continue;
             }
 
-            Utf8 nextLine;
-            auto ni = i + 1;
-            while (ni < lines.size())
+            cptBrace += lineTrim.countOf('{');
+            cptBrace -= lineTrim.countOf('}');
+            if (cptBrace <= 0)
             {
-                nextLine = lines[ni];
-                nextLine.trim();
-                if (!nextLine.startsWith("//"))
-                    break;
-                ni += 1;
+                popState();
+                continue;
             }
 
-            if (cptBrace == 1 && lineTrim.startsWith("//") && nextLine == "{")
-            {
-                lineTrim.remove(0, 2);
-                //popState();
-                //pushState(UserBlockKind::Paragraph);
-                //helpContent += "\n";
-                //helpContent += getFormattedText(lineTrim);
-                printf("xxxx %s\n", lineTrim.c_str());
-                //popState();
-                //pushState(UserBlockKind::Test);
-                //continue;
-            }
+            // Remove one indentation level, as this should be the norm to have one in a #test block
+            if (l.startsWith("    "))
+                l.remove(0, 4);
+            else if (l.startsWith("\t"))
+                l.remove(0, 1);
 
             helpCode += l;
             helpCode += "\n";
-
-            /*auto lineLine = l;
-            if (lineLine.startsWith("    "))
-            {
-                lineLine.remove(0, 4);
-                helpCode += lineLine;
-                helpCode += "\n";
-            }*/
             break;
         }
     }

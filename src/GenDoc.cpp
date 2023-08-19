@@ -21,8 +21,14 @@ void GenDoc::outputCode(const Utf8& code)
     helpContent += "<p class=\"code\">\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
 
-    // Kind of a hack for now... Try to keep references, but try to keep <> also...
     auto repl = code;
+
+    // Remove trailing eol
+    repl.trim();
+    while (repl.back() == '\n')
+        repl.removeBack();
+
+    // Kind of a hack for now... Try to keep references, but try to keep <> also...
     if (code.find("<a href") == -1)
     {
         repl.replace("<", "&lt;");
