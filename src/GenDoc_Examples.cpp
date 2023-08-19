@@ -282,7 +282,7 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
 
 bool GenDoc::generateExamples()
 {
-    helpToc += "<ul class=\"tocbullet\">\n";
+    helpToc += "<ul>\n";
     sort(module->files.begin(), module->files.end(), [](SourceFile* a, SourceFile* b)
          { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
 
@@ -309,7 +309,7 @@ bool GenDoc::generateExamples()
 
         while (lastTitleLevel < titleLevel)
         {
-            helpToc += "<ul class=\"tocbullet\">\n";
+            helpToc += "<ul>\n";
             lastTitleLevel++;
         }
 
@@ -326,7 +326,7 @@ bool GenDoc::generateExamples()
         helpContent += title;
         helpContent += Fmt("</h%d>", titleLevel);
 
-        helpToc += "<ul class=\"tocbullet\">\n";
+        helpToc += "<ul>\n";
         stateEnter(UserBlockKind::Code);
         state.push_back(UserBlockKind::Code);
         if (!processFile(file->path, titleLevel))

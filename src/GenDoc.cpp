@@ -82,7 +82,7 @@ void GenDoc::outputStyles()
         td:last-child {\n\
             width:              auto;\n\
         }\n\
-        .tocbullet {\n\
+        .left ul {\n\
             list-style-type:    none;\n\
             margin-left:        -20px;\n\
         }\n\
