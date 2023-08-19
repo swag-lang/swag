@@ -2,6 +2,7 @@
 #include "VectorNative.h"
 #include "Mutex.h"
 struct Path;
+struct SwagSlice;
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
 #define SWAG_IS_ALPHAHEX(__c) ((__c >= 'a' && __c <= 'f') || (__c >= 'A' && __c <= 'F'))
@@ -21,6 +22,7 @@ struct Utf8
 
     Utf8();
     Utf8(const char* from);
+    Utf8(const SwagSlice& slice);
     Utf8(const char* from, uint32_t len);
     Utf8(const string& from);
     Utf8(const Utf8& from);

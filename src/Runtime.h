@@ -275,6 +275,8 @@ struct BuildCfg
 
     // Documentation
     DocKind   docKind = DocKind::None;
+    SwagSlice docTitleToc;
+    SwagSlice docTitleContent;
     SwagSlice docCss;
     float     docSyntaxColorLum = 0.5f;
 };

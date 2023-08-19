@@ -681,11 +681,11 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
 
     if (first)
     {
-        helpToc += Fmt("<h2 class=\"section\">%s</h2>\n", sectionName);
+        helpToc += Fmt("<h2>%s</h2>\n", sectionName);
         first = false;
     }
 
-    helpToc += Fmt("<h3 class=\"categ\">%s</h3>\n", categName);
+    helpToc += Fmt("<h3>%s</h3>\n", categName);
     helpToc += "<ul class=\"tocbullet\">\n";
     for (auto& t : pendingNodes)
         helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
@@ -729,11 +729,6 @@ void GenDoc::generateToc()
                 return strcmp(a.fullName.buffer, b.fullName.buffer) < 0;
             return strcmp(a.category.c_str(), b.category.c_str()) < 0; });
 
-    if (!module)
-        helpToc += "<h1>Swag Runtime</h1>\n";
-    else
-        helpToc += Fmt("<h1>Module %s</h1>\n", module->name.c_str());
-
     generateTocSection(AstNodeKind::Namespace, "Namespaces");
     generateTocSection(AstNodeKind::StructDecl, "Structs");
     generateTocSection(AstNodeKind::InterfaceDecl, "Interfaces");
@@ -752,7 +747,7 @@ void GenDoc::generateContent()
         computeUserComments(userComment, module->docComment);
         if (!userComment.shortDesc.lines.empty())
         {
-            helpContent += "<h1 class=\"content\">Overview</h1>\n";
+            helpContent += "<h2>Overview</h2>\n";
             outputUserBlock(userComment.shortDesc);
             outputUserComment(userComment);
         }
@@ -766,7 +761,7 @@ void GenDoc::generateContent()
                 return false;
             return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
-    helpContent += "<h1 class=\"content\">Content</h1>\n";
+    helpContent += "<h2>Content</h2>\n";
 
     for (int i = 0; i < allNodes.size(); i++)
     {

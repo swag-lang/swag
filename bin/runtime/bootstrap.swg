@@ -750,6 +750,8 @@ namespace Swag
         repoPath:       string                  // Repository access path to the module
 
         docKind             = DocKind.None
+        docTitleToc:        string              // Title for the table of content
+        docTitleContent:    string              // Title for the main document content
         docCss:             string              // The 'css' file to include in generated documentations
         docSyntaxColorLum:  f32 = 0.5           // Code syntax color luminosity between 0 and 1
     }

@@ -10,6 +10,9 @@
         cfg.backendKind    = .Executable
         cfg.warnDefaultDisabled = true
         cfg.warnAsWarning = "Wrn0009"
+
+        cfg.docTitleToc = "Content"
+        cfg.docTitleContent = "Swag language reference"
         cfg.docKind = .Examples
     }
 }

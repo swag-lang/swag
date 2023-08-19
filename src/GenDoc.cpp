@@ -8,6 +8,160 @@
 #include "Version.h"
 #include "SyntaxColor.h"
 
+void GenDoc::outputStyles()
+{
+    helpOutput += "<style>\n";
+    helpOutput +=
+        ".container {\n\
+            display:        flex;\n\
+            flex-wrap:      nowrap;\n\
+            flex-direction: row;\n\
+            height:         100%;\n\
+            line-height:    1.3em;\n\
+            font-family:    Segoe UI;\n\
+        }\n\
+        .left {\n\
+            display:    block;\n\
+            overflow-y: scroll;\n\
+            width:      650;\n\
+            height:     100%;\n\
+        }\n\
+        .right {\n\
+            display:     block;\n\
+            overflow-y:  scroll;\n\
+            width:       100%;\n\
+            line-height: 1.3em;\n\
+            height:      100%;\n\
+        }\n\
+        .page {\n\
+            width:  1000;\n\
+            margin: 0 auto;\n\
+        }\n\
+        blockquote {\n\
+            background-color:   LightYellow;\n\
+            border-left:        6px solid Orange;\n\
+            padding:            10px;\n\
+            width:              90%;\n\
+        }\n\
+        a {\n\
+            text-decoration: none;\n\
+            color:           DoggerBlue;\n\
+        }\n\
+        a:hover {\n\
+            text-decoration: underline;\n\
+        }\n\
+        a.src {\n\
+            font-size:          90%;\n\
+            color:              LightGrey;\n\
+        }\n\
+        table.enumeration {\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              100%;\n\
+            font-size:          90%;\n\
+        }\n\
+        td.enumeration {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              30%;\n\
+        }\n\
+        td.tdname {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              20%;\n\
+            background-color:   #f8f8f8;\n\
+        }\n\
+        td.tdtype {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              auto;\n\
+        }\n\
+        td:last-child {\n\
+            width:              auto;\n\
+        }\n\
+        .tocbullet {\n\
+            list-style-type:    none;\n\
+            margin-left:        -20px;\n\
+        }\n\
+        .titletype {\n\
+            font-weight:        normal;\n\
+            font-size:          80%;\n\
+        }\n\
+        .titlelight {\n\
+            font-weight:        normal;\n\
+        }\n\
+        .titlestrong {\n\
+            font-weight:        bold;\n\
+            font-size:          100%;\n\
+        }\n\
+        .right h1 {\n\
+            margin-top:         50px;\n\
+            margin-bottom:      50px;\n\
+        }\n\
+        .left h2 {\n\
+            background-color:   Black;\n\
+            color:              White;\n\
+            padding:            6px;\n\
+        }\n\
+        table.h3 {\n\
+            background-color:   Black;\n\
+            color:              White;\n\
+            width:              100%;\n\
+            margin-top:         70px;\n\
+            margin-right:       0px;\n\
+        }\n\
+        h3.content {\n\
+            margin-bottom:      2px;\n\
+            margin-right:       0px;\n\
+            width:              100%;\n\
+        }\n\
+        .srcref {\n\
+            text-align:         right;\n\
+        }\n\
+        .incode {\n\
+            background-color:   #eeeeee;\n\
+            padding:            2px;\n\
+            border: 1px dotted  #cccccc;\n\
+        }\n\
+        .tdname .incode {\n\
+            background-color:   revert;\n\
+            padding:            2px;\n\
+            border:             revert;\n\
+        }\n\
+        .addinfos {\n\
+            font-size:          90%;\n\
+            white-space:        break-spaces;\n\
+            overflow-wrap:      break-word;\n\
+        }\n\
+        .code {\n\
+            background-color:   #eeeeee;\n\
+            border:             1px solid LightGrey;\n\
+            padding:            10px;\n\
+            width:              94%;\n\
+            margin-left:        20px;\n\
+        }\n\
+    ";
+
+    float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
+    helpOutput += Fmt(".SyntaxCode { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
+    helpOutput += Fmt(".SyntaxComment { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
+    helpOutput += Fmt(".SyntaxCompiler { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
+    helpOutput += Fmt(".SyntaxFunction { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
+    helpOutput += Fmt(".SyntaxConstant { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
+    helpOutput += Fmt(".SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
+    helpOutput += Fmt(".SyntaxType { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
+    helpOutput += Fmt(".SyntaxKeyword { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
+    helpOutput += Fmt(".SyntaxLogic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
+    helpOutput += Fmt(".SyntaxNumber { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
+    helpOutput += Fmt(".SyntaxString { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
+    helpOutput += Fmt(".SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
+
+    helpOutput += "</style>\n";
+}
+
 Utf8 GenDoc::toRef(Utf8 str)
 {
     str.replace(".", "_");
@@ -235,160 +389,6 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     return result;
 }
 
-void GenDoc::outputStyles()
-{
-    helpOutput += "<style>\n";
-    helpOutput +=
-        ".container {\n\
-            display:        flex;\n\
-            flex-wrap:      nowrap;\n\
-            flex-direction: row;\n\
-            height:         100%;\n\
-            line-height:    1.3em;\n\
-            font-family:    Segoe UI;\n\
-        }\n\
-        .left {\n\
-            display:    block;\n\
-            overflow-y: scroll;\n\
-            width:      650;\n\
-            height:     100%;\n\
-        }\n\
-        .right {\n\
-            display:     block;\n\
-            overflow-y:  scroll;\n\
-            width:       100%;\n\
-            line-height: 1.3em;\n\
-            height:      100%;\n\
-        }\n\
-        .page {\n\
-            width:  1000;\n\
-            margin: 0 auto;\n\
-        }\n\
-        blockquote {\n\
-            background-color:   LightYellow;\n\
-            border-left:        6px solid Orange;\n\
-            padding:            10px;\n\
-            width:              90%;\n\
-        }\n\
-        a {\n\
-            text-decoration: none;\n\
-            color:           DoggerBlue;\n\
-        }\n\
-        a:hover {\n\
-            text-decoration: underline;\n\
-        }\n\
-        a.src {\n\
-            font-size:          90%;\n\
-            color:              LightGrey;\n\
-        }\n\
-        table.enumeration {\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              100%;\n\
-            font-size:          90%;\n\
-        }\n\
-        td.enumeration {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              30%;\n\
-        }\n\
-        td.tdname {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              20%;\n\
-            background-color:   #f8f8f8;\n\
-        }\n\
-        td.tdtype {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              auto;\n\
-        }\n\
-        td:last-child {\n\
-            width:              auto;\n\
-        }\n\
-        .tocbullet {\n\
-            list-style-type:    none;\n\
-            margin-left:        -20px;\n\
-        }\n\
-        .titletype {\n\
-            font-weight:        normal;\n\
-            font-size:          80%;\n\
-        }\n\
-        .titlelight {\n\
-            font-weight:        normal;\n\
-        }\n\
-        .titlestrong {\n\
-            font-weight:        bold;\n\
-            font-size:          100%;\n\
-        }\n\
-        h1.content {\n\
-            margin-top:         50px;\n\
-            margin-bottom:      50px;\n\
-        }\n\
-        h2.section {\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            padding:            6px;\n\
-        }\n\
-        table.h3 {\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            width:              100%;\n\
-            margin-top:         70px;\n\
-            margin-right:       0px;\n\
-        }\n\
-        h3.content {\n\
-            margin-bottom:      2px;\n\
-            margin-right:       0px;\n\
-            width:              100%;\n\
-        }\n\
-        .srcref {\n\
-            text-align:         right;\n\
-        }\n\
-        .incode {\n\
-            background-color:   #eeeeee;\n\
-            padding:            2px;\n\
-            border: 1px dotted  #cccccc;\n\
-        }\n\
-        .tdname .incode {\n\
-            background-color:   revert;\n\
-            padding:            2px;\n\
-            border:             revert;\n\
-        }\n\
-        .addinfos {\n\
-            font-size:          90%;\n\
-            white-space:        break-spaces;\n\
-            overflow-wrap:      break-word;\n\
-        }\n\
-        .code {\n\
-            background-color:   #eeeeee;\n\
-            border:             1px solid LightGrey;\n\
-            padding:            10px;\n\
-            width:              94%;\n\
-            margin-left:        20px;\n\
-        }\n\
-    ";
-
-    float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
-    helpOutput += Fmt(".SyntaxCode { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
-    helpOutput += Fmt(".SyntaxComment { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
-    helpOutput += Fmt(".SyntaxCompiler { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
-    helpOutput += Fmt(".SyntaxFunction { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
-    helpOutput += Fmt(".SyntaxConstant { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
-    helpOutput += Fmt(".SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
-    helpOutput += Fmt(".SyntaxType { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
-    helpOutput += Fmt(".SyntaxKeyword { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
-    helpOutput += Fmt(".SyntaxLogic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
-    helpOutput += Fmt(".SyntaxNumber { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
-    helpOutput += Fmt(".SyntaxString { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
-    helpOutput += Fmt(".SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
-
-    helpOutput += "</style>\n";
-}
-
 bool GenDoc::generate(Module* mdl, DocKind docKind)
 {
     module = mdl;
@@ -442,6 +442,23 @@ bool GenDoc::generate(Module* mdl, DocKind docKind)
     helpContent += "<blockquote>\n";
     helpContent += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     helpContent += "</blockquote>\n";
+
+    // Titles
+    if (!module)
+    {
+        helpToc += "<h1>Swag Runtime</h1>\n";
+    }
+    else
+    {
+        Utf8 titleToc{module->buildCfg.docTitleToc};
+        if (titleToc.empty())
+            titleToc = Fmt("Module %s", module->name.c_str());
+        helpToc += Fmt("<h1>%s</h1>\n", titleToc.c_str());
+
+        Utf8 titleContent{module->buildCfg.docTitleContent};
+        if (!titleContent.empty())
+            helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
+    }
 
     switch (docKind)
     {

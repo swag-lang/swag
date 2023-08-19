@@ -2,6 +2,7 @@
 #include "Utf8.h"
 #include "Crc32.h"
 #include "Statistics.h"
+#include "Runtime.h"
 
 Utf8::Utf8()
 {
@@ -39,11 +40,20 @@ Utf8::Utf8(const char* from)
     count = len;
 }
 
+Utf8::Utf8(const SwagSlice& slice)
+{
+    if (!slice.buffer || !slice.count)
+        return;
+    reserve((uint32_t) slice.count + 1);
+    memcpy(buffer, slice.buffer, slice.count);
+    buffer[slice.count] = 0;
+    count               = (uint32_t) slice.count;
+}
+
 Utf8::Utf8(const char* from, uint32_t len)
 {
-    if (!len)
+    if (!from || !len)
         return;
-
     reserve(len + 1);
     memcpy(buffer, from, len);
     buffer[len] = 0;
