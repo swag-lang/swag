@@ -176,7 +176,7 @@ You will need <code class="incode">Visual Studio 2022 17.1</code> or later.</p>
 <p>
 </p>
 <ul>
-<li>As theres no automatic detection, edit <code class="incode">vs_build_cfg.bat</code> to match your version of Visual Studio and of the Windows SDK.</li>
+<li>As there's no automatic detection, edit <code class="incode">vs_build_cfg.bat</code> to match your version of Visual Studio and of the Windows SDK.</li>
 <li>Launch <code class="incode">swag/build/vs_build_llvm_release.bat</code>. Note that building LLVM takes a crazy amount of time and memory, and can require multiple tries.</li>
 <li>Launch <code class="incode">swag/build/vs_build_swag_release.bat</code>.</li>
 <li>You can also launch <code class="incode">swag/build/vs_build_extern.bat</code>. This will build and update some external libraries in the standard workspace, and copy some libraries from the windows SDK.</li>

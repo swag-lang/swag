@@ -156,7 +156,7 @@
 <p>
 </p>
 <blockquote><p>
-Theres <b>no official</b> release yet.</br>
+There's <b>no official</b> release yet.</br>
 Everything (including this web site) is still under construction...</p></blockquote>
 <p>
 </p>

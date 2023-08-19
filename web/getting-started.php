@@ -266,7 +266,7 @@ You can also build and run your workspace.</p>
 <p>
 <h3 id="Note on Windows Defender realtime protection">Note on Windows Defender realtime protection</h3></p>
 <p>
-Its activated by default under Windows 10, and runs each time you launch an executable or a process.This can increase the compile time of your project, so consider excluding your Swag folder from it !</p>
+It's activated by default under Windows 10, and runs each time you launch an executable or a process.This can increase the compile time of your project, so consider excluding your Swag folder from it !</p>
 <p>
 <a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a></p>
 <p>
@@ -287,9 +287,9 @@ The Swag folder contains the compiler <code class="incode">swag.exe</code>, but 
 <p>
 <h1 id="The Swag language">The Swag language</h1></p>
 <p>
-You should take a look at the <code class="incode">reference/</code> sub folder in the Swag directory, or to the corresponding <a href="language.php">documentation</a>.It contains the list of all that can be done with the language, in the form of small tests (in fact its not really exhaustive, but should be...).</p>
+You should take a look at the <code class="incode">reference/</code> sub folder in the Swag directory, or to the corresponding <a href="language.php">documentation</a>.It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...).</p>
 <p>
-Its a good starting point to familiarize yourself with the language.</p>
+It's a good starting point to familiarize yourself with the language.</p>
 <p>
 And as this is a normal Swag workspace, you could also build and test it with <code class="incode">swag test -w:swag/reference</code>.</p>
 <p>

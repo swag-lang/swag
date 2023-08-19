@@ -365,8 +365,10 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 while (pz != pz1)
                     result += *pz++;
                 result += "</code>";
+                pz++;
             }
-            pz++;
+            else
+                result += *pz++;
             continue;
         }
 
