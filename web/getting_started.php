@@ -122,7 +122,7 @@ The Swag folder contains the compiler <code>swag.exe</code>, but also a bunch of
 <p>
 <h1 id="The Swag language">The Swag language </h1></p>
 <p>
-You should take a look at the <code>reference/</code> sub folder in the Swag directory, or to the corresponding <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
+You should take a look at the <code>reference/</code> sub folder in the Swag directory, or to the corresponding <a href="doc/language.html">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
 <p>
 It's a good starting point to familiarize yourself with the language. </p>
 <p>
