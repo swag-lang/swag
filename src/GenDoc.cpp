@@ -110,50 +110,47 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         }
 
         // [reference] to create an html link to the current document
-        if (*pz == '[')
+        if (*pz == '[' && (SWAG_IS_ALPHA(pz[1]) || pz[1] == '#' || pz[1] == '@'))
         {
-            bool startBracket = false;
-            if (*pz == '[')
-            {
-                startBracket = true;
-                pz++;
-            }
+            pz++;
 
-            if (SWAG_IS_ALPHA(*pz) || *pz == '#' || *pz == '@')
-            {
-                Utf8 name;
+            Utf8 name;
+            name += *pz++;
+            while (*pz && *pz != ']')
                 name += *pz++;
-                while (*pz && (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.'))
-                    name += *pz++;
 
-                if (startBracket && *pz != ']')
-                {
-                    result += "[";
-                    result += name;
-                }
-                else
-                {
-                    if (*pz == ']')
-                        pz++;
-
-                    auto ref = findReference(name);
-                    if (!ref.empty())
-                    {
-                        result += ref;
-                    }
-                    else
-                    {
-                        if (startBracket)
-                            result += "[";
-                        result += name;
-                        if (startBracket)
-                            result += "]";
-                    }
-                }
+            if (*pz != ']')
+            {
+                result += "[";
+                result += name;
                 continue;
             }
-            else if (startBracket)
-                result += "[";
+
+            pz++;
+
+            // Markdown reference
+            if (*pz == '(')
+            {
+                Utf8 ref;
+                pz++;
+                while (*pz && *pz != ')')
+                    ref += *pz++;
+                result += Fmt("<a href=\"%s\">%s</a>", ref.c_str(), name.c_str());
+                continue;
+            }
+
+            // Doc reference
+            auto ref = findReference(name);
+            if (!ref.empty())
+            {
+                result += ref;
+                continue;
+            }
+
+            result += "[";
+            result += name;
+            result += "]";
+            continue;
         }
 
         // Italic
