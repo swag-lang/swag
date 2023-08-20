@@ -15,6 +15,7 @@ struct GenDoc
         Code,
         Blockquote,
         Table,
+        List,
         Title1,
         Title2,
     };

@@ -7,6 +7,7 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "SyntaxColor.h"
+#pragma optimize("", off)
 
 void GenDoc::outputStyles()
 {
@@ -281,6 +282,10 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
             {
                 blk.kind = UserBlockKind::Table;
             }
+            else if (line.length() > 1 && line[0] == '*' && SWAG_IS_BLANK(line[1]))
+            {
+                blk.kind = UserBlockKind::List;
+            }
             else if (line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
             {
                 blk.kind = UserBlockKind::Title1;
@@ -305,69 +310,95 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
             continue;
         }
 
-        for (; start < lines.size(); start++)
+        bool mustEnd = false;
+        for (; start < lines.size() && !mustEnd; start++)
         {
             auto line = lines[start];
             line.trim();
 
-            if (blk.kind != UserBlockKind::RawParagraph && blk.kind != UserBlockKind::Code)
+            switch (blk.kind)
             {
-                if (line.empty()) // End of the paragraph if empty line
-                    break;
-                if (blk.kind == UserBlockKind::Blockquote && line[0] != '>')
-                    break;
-                if (blk.kind != UserBlockKind::Blockquote && line[0] == '>')
-                    break;
-                if (blk.kind == UserBlockKind::Table && line[0] != '|')
-                    break;
-                if (blk.kind != UserBlockKind::Table && line[0] == '|')
-                    break;
-                if (blk.kind != UserBlockKind::Title1 && line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
-                    break;
-                if (blk.kind != UserBlockKind::Title2 && line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
-                    break;
-            }
-
-            if (line[0] == '>')
-            {
-                line.remove(0, 1);
-                line.trim();
-                line += "\n";
+            case UserBlockKind::Title1:
+                line.remove(0, 2); // #<blank>
                 blk.lines.push_back(line);
-                continue;
-            }
-
-            if (line == "---")
-            {
-                if (blk.kind == UserBlockKind::RawParagraph)
-                    start++;
-                break;
-            }
-
-            if (line == "```")
-            {
-                if (blk.kind == UserBlockKind::Code)
-                    start++;
-                break;
-            }
-
-            if (blk.kind == UserBlockKind::Title1)
-            {
-                line.remove(0, 2);
-                blk.lines.push_back(line);
+                mustEnd = true;
                 start++;
                 break;
-            }
-
-            if (blk.kind == UserBlockKind::Title2)
-            {
-                line.remove(0, 3);
+            case UserBlockKind::Title2:
+                line.remove(0, 3); // ##<blank>
                 blk.lines.push_back(line);
+                mustEnd = true;
                 start++;
                 break;
-            }
 
-            blk.lines.push_back(lines[start]);
+            case UserBlockKind::RawParagraph:
+                if (line == "---")
+                {
+                    mustEnd = true;
+                    start++;
+                }
+                else
+                    blk.lines.push_back(lines[start]);
+                break;
+
+            case UserBlockKind::Code:
+                if (line == "```")
+                {
+                    mustEnd = true;
+                    start++;
+                }
+                else
+                    blk.lines.push_back(lines[start]);
+                break;
+
+            case UserBlockKind::Paragraph:
+                if (line.empty())
+                    mustEnd = true;
+                else if (line == "---")
+                    mustEnd = true;
+                else if (line == "```")
+                    mustEnd = true;
+                else if (line[0] == '>')
+                    mustEnd = true;
+                else if (line[0] == '|')
+                    mustEnd = true;
+                else
+                    blk.lines.push_back(lines[start]);
+                break;
+
+            case UserBlockKind::Table:
+                if (line[0] != '|')
+                    mustEnd = true;
+                else
+                    blk.lines.push_back(lines[start]);
+                break;
+
+            case UserBlockKind::List:
+                if (line.length() == 1 || line[0] != '*' || !SWAG_IS_BLANK(line[1]))
+                    mustEnd = true;
+                else
+                {
+                    line.remove(0, 2); // *<blank>
+                    line.trim();
+                    blk.lines.push_back(line);
+                }
+                break;
+
+            case UserBlockKind::Blockquote:
+                if (line[0] != '>')
+                    mustEnd = true;
+                else
+                {
+                    line.remove(0, 1);
+                    line.trim();
+                    blk.lines.push_back(line);
+                }
+                break;
+
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
         }
 
         if (!blk.lines.empty())
@@ -390,7 +421,9 @@ void GenDoc::outputUserBlock(const UserBlock& user)
     if (user.lines.empty())
         return;
 
-    if (user.kind == UserBlockKind::Code)
+    switch (user.kind)
+    {
+    case UserBlockKind::Code:
     {
         Utf8 block;
         for (auto& l : user.lines)
@@ -403,29 +436,36 @@ void GenDoc::outputUserBlock(const UserBlock& user)
         return;
     }
 
-    switch (user.kind)
-    {
-    case UserBlockKind::Paragraph:
-        helpContent += "<p>\n";
-        break;
     case UserBlockKind::RawParagraph:
         helpContent += "<p style=\"white-space: break-spaces\">";
         break;
+
     case UserBlockKind::Blockquote:
-        helpContent += "<blockquote><p>";
+        helpContent += "<blockquote>\n";
+        helpContent += "<p>";
         break;
+
+    case UserBlockKind::Paragraph:
+        helpContent += "<p>";
+        break;
+
+    case UserBlockKind::List:
+        helpContent += "<ul>\n";
+        break;
+
     case UserBlockKind::Table:
         helpContent += "<table class=\"enumeration\">\n";
         break;
+
     case UserBlockKind::Title1:
-        helpContent += "<h2>\n";
+        helpContent += "<h2>";
         break;
+
     case UserBlockKind::Title2:
-        helpContent += "<h3>\n";
+        helpContent += "<h3>";
         break;
     }
 
-    bool startList = false;
     for (int i = 0; i < user.lines.size(); i++)
     {
         auto line = user.lines[i];
@@ -448,60 +488,52 @@ void GenDoc::outputUserBlock(const UserBlock& user)
             }
             helpContent += "</tr>\n";
         }
-
-        // <li>
-        else if (line.length() && line[0] == '*')
+        else if (user.kind == UserBlockKind::List)
         {
-            if (!startList)
-            {
-                startList = true;
-                helpContent += "<ul>\n";
-            }
-
             helpContent += "<li>";
-            line.remove(0, 1);
             helpContent += getFormattedText(line);
             helpContent += "</li>\n";
         }
-        else
+        else if (user.kind == UserBlockKind::RawParagraph)
         {
-            if (startList)
-            {
-                startList = false;
-                helpContent += "</ul>\n";
-            }
+            helpContent += user.lines[i];
 
-            if (user.kind == UserBlockKind::RawParagraph)
-                helpContent += user.lines[i];
-            else
-                helpContent += getFormattedText(user.lines[i]);
-        }
-
-        // Add one line break after each line, except the last line from a raw block, because we do
-        // not want one useless empty line
-        if (user.kind == UserBlockKind::RawParagraph)
-        {
+            // Add one line break after each line, except the last line from a raw block, because we do
+            // not want one useless empty line
             if (i != user.lines.size() - 1)
                 helpContent += "\n";
         }
-    }
-
-    if (startList)
-    {
-        startList = false;
-        helpContent += "</ul>\n";
+        else if (user.kind == UserBlockKind::Paragraph || user.kind == UserBlockKind::Blockquote)
+        {
+            if (line.empty())
+                helpContent += "</p><p>";
+            else
+            {
+                helpContent += getFormattedText(user.lines[i]);
+                helpContent += " ";
+            }
+        }
+        else
+        {
+            helpContent += getFormattedText(user.lines[i]);
+            helpContent += " ";
+        }
     }
 
     switch (user.kind)
     {
-    case UserBlockKind::Paragraph:
-        helpContent += "</p>\n";
-        break;
     case UserBlockKind::RawParagraph:
         helpContent += "</p>\n";
         break;
+    case UserBlockKind::Paragraph:
+        helpContent += "</p>\n";
+        break;
     case UserBlockKind::Blockquote:
-        helpContent += "</p></blockquote>\n";
+        helpContent += "</p>\n";
+        helpContent += "</blockquote>\n";
+        break;
+    case UserBlockKind::List:
+        helpContent += "</ul>\n";
         break;
     case UserBlockKind::Table:
         helpContent += "</table>\n";

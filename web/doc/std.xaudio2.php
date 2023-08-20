@@ -281,8 +281,7 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h1>Overview</h1>
-<p>
-Wrapper for Microsoft XAudio2 library.</p>
+<p>Wrapper for Microsoft XAudio2 library. </p>
 <h1>Content</h1>
 <p>
 <table class="item">
@@ -582,8 +581,7 @@ XAUDIO2_1024_QUANTUM</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in XAudio2Create to specify nondefault processing quantum of 21.33 ms (1024 samples at 48KHz).</p>
+<p>Used in XAudio2Create to specify nondefault processing quantum of 21.33 ms (1024 samples at 48KHz). </p>
 </td>
 </tr>
 <tr>
@@ -600,8 +598,7 @@ XAUDIO2_COMMIT_ALL</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Used in IXAudio2::CommitChanges.</p>
+<p>Used in IXAudio2::CommitChanges. </p>
 </td>
 </tr>
 <tr>
@@ -610,8 +607,7 @@ XAUDIO2_COMMIT_NOW</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Numeric values with special meanings Used as an OperationSet argument.</p>
+<p>Numeric values with special meanings Used as an OperationSet argument. </p>
 </td>
 </tr>
 <tr>
@@ -620,8 +616,7 @@ XAUDIO2_DEBUG_ENGINE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in XAudio2Create.</p>
+<p>Used in XAudio2Create. </p>
 </td>
 </tr>
 <tr>
@@ -630,8 +625,7 @@ XAUDIO2_DEFAULT_CHANNELS</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Used in CreateMasteringVoice.</p>
+<p>Used in CreateMasteringVoice. </p>
 </td>
 </tr>
 <tr>
@@ -640,8 +634,7 @@ XAUDIO2_DEFAULT_FREQ_RATIO</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Default MaxFrequencyRatio argument.</p>
+<p>Default MaxFrequencyRatio argument. </p>
 </td>
 </tr>
 <tr>
@@ -650,8 +643,7 @@ XAUDIO2_DEFAULT_SAMPLERATE</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Used in CreateMasteringVoice.</p>
+<p>Used in CreateMasteringVoice. </p>
 </td>
 </tr>
 <tr>
@@ -660,8 +652,7 @@ XAUDIO2_END_OF_STREAM</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in XAUDIO2_BUFFER.Flags.</p>
+<p>Used in XAUDIO2_BUFFER.Flags. </p>
 </td>
 </tr>
 <tr>
@@ -670,8 +661,7 @@ XAUDIO2_INVALID_OPSET</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Not allowed for OperationSet arguments.</p>
+<p>Not allowed for OperationSet arguments. </p>
 </td>
 </tr>
 <tr>
@@ -680,8 +670,7 @@ XAUDIO2_LOG_API_CALLS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Public API function entries and exits.</p>
+<p>Public API function entries and exits. </p>
 </td>
 </tr>
 <tr>
@@ -690,8 +679,7 @@ XAUDIO2_LOG_DETAIL</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-More detailed chit-chat.</p>
+<p>More detailed chit-chat. </p>
 </td>
 </tr>
 <tr>
@@ -700,8 +688,7 @@ XAUDIO2_LOG_ERRORS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS and all the other settings are zero. For handled errors with serious effects.</p>
+<p>Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS and all the other settings are zero. For handled errors with serious effects. </p>
 </td>
 </tr>
 <tr>
@@ -710,8 +697,7 @@ XAUDIO2_LOG_FUNC_CALLS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Internal function entries and exits.</p>
+<p>Internal function entries and exits. </p>
 </td>
 </tr>
 <tr>
@@ -720,8 +706,7 @@ XAUDIO2_LOG_INFO</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Informational chit-chat (e.g. state changes).</p>
+<p>Informational chit-chat (e.g. state changes). </p>
 </td>
 </tr>
 <tr>
@@ -730,8 +715,7 @@ XAUDIO2_LOG_LOCKS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Usage of critical sections and mutexes.</p>
+<p>Usage of critical sections and mutexes. </p>
 </td>
 </tr>
 <tr>
@@ -740,8 +724,7 @@ XAUDIO2_LOG_MEMORY</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Memory heap usage information.</p>
+<p>Memory heap usage information. </p>
 </td>
 </tr>
 <tr>
@@ -750,8 +733,7 @@ XAUDIO2_LOG_STREAMING</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Audio streaming information.</p>
+<p>Audio streaming information. </p>
 </td>
 </tr>
 <tr>
@@ -760,8 +742,7 @@ XAUDIO2_LOG_TIMING</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Delays detected and other timing data.</p>
+<p>Delays detected and other timing data. </p>
 </td>
 </tr>
 <tr>
@@ -770,8 +751,7 @@ XAUDIO2_LOG_WARNINGS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-For handled errors that may be recoverable.</p>
+<p>For handled errors that may be recoverable. </p>
 </td>
 </tr>
 <tr>
@@ -780,8 +760,7 @@ XAUDIO2_LOOP_INFINITE</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Used in XAUDIO2_BUFFER.LoopCount.</p>
+<p>Used in XAUDIO2_BUFFER.LoopCount. </p>
 </td>
 </tr>
 <tr>
@@ -790,8 +769,7 @@ XAUDIO2_MAX_AUDIO_CHANNELS</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Maximum channels in an audio stream.</p>
+<p>Maximum channels in an audio stream. </p>
 </td>
 </tr>
 <tr>
@@ -800,8 +778,7 @@ XAUDIO2_MAX_BUFFERS_SYSTEM</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Maximum buffers allowed for system threads (Xbox 360 only).</p>
+<p>Maximum buffers allowed for system threads (Xbox 360 only). </p>
 </td>
 </tr>
 <tr>
@@ -810,8 +787,7 @@ XAUDIO2_MAX_BUFFER_BYTES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Maximum bytes allowed in a source buffer.</p>
+<p>Maximum bytes allowed in a source buffer. </p>
 </td>
 </tr>
 <tr>
@@ -820,8 +796,7 @@ XAUDIO2_MAX_FILTER_FREQUENCY</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Maximum XAUDIO2_FILTER_PARAMETERS.Frequency.</p>
+<p>Maximum XAUDIO2_FILTER_PARAMETERS.Frequency. </p>
 </td>
 </tr>
 <tr>
@@ -830,8 +805,7 @@ XAUDIO2_MAX_FILTER_ONEOVERQ</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Maximum XAUDIO2_FILTER_PARAMETERS.OneOverQ.</p>
+<p>Maximum XAUDIO2_FILTER_PARAMETERS.OneOverQ. </p>
 </td>
 </tr>
 <tr>
@@ -840,8 +814,7 @@ XAUDIO2_MAX_FREQ_RATIO</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Maximum MaxFrequencyRatio argument.</p>
+<p>Maximum MaxFrequencyRatio argument. </p>
 </td>
 </tr>
 <tr>
@@ -850,8 +823,7 @@ XAUDIO2_MAX_INSTANCES</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Maximum simultaneous XAudio2 objects on Xbox 360.</p>
+<p>Maximum simultaneous XAudio2 objects on Xbox 360. </p>
 </td>
 </tr>
 <tr>
@@ -860,8 +832,7 @@ XAUDIO2_MAX_LOOP_COUNT</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Maximum non-infinite XAUDIO2_BUFFER.LoopCount.</p>
+<p>Maximum non-infinite XAUDIO2_BUFFER.LoopCount. </p>
 </td>
 </tr>
 <tr>
@@ -870,8 +841,7 @@ XAUDIO2_MAX_QUEUED_BUFFERS</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Maximum buffers allowed in a voice queue.</p>
+<p>Maximum buffers allowed in a voice queue. </p>
 </td>
 </tr>
 <tr>
@@ -880,8 +850,7 @@ XAUDIO2_MAX_SAMPLE_RATE</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Maximum audio sample rate supported.</p>
+<p>Maximum audio sample rate supported. </p>
 </td>
 </tr>
 <tr>
@@ -890,8 +859,7 @@ XAUDIO2_MAX_VOLUME_LEVEL</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Maximum acceptable volume level (2^24).</p>
+<p>Maximum acceptable volume level (2^24). </p>
 </td>
 </tr>
 <tr>
@@ -900,8 +868,7 @@ XAUDIO2_MIN_FREQ_RATIO</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Minimum SetFrequencyRatio argument.</p>
+<p>Minimum SetFrequencyRatio argument. </p>
 </td>
 </tr>
 <tr>
@@ -910,8 +877,7 @@ XAUDIO2_MIN_SAMPLE_RATE</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Minimum audio sample rate supported.</p>
+<p>Minimum audio sample rate supported. </p>
 </td>
 </tr>
 <tr>
@@ -920,8 +886,7 @@ XAUDIO2_NO_LOOP_REGION</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-Used in XAUDIO2_BUFFER.LoopCount.</p>
+<p>Used in XAUDIO2_BUFFER.LoopCount. </p>
 </td>
 </tr>
 <tr>
@@ -930,8 +895,7 @@ XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in CreateMasteringVoice to create a virtual audio client.</p>
+<p>Used in CreateMasteringVoice to create a virtual audio client. </p>
 </td>
 </tr>
 <tr>
@@ -940,8 +904,7 @@ XAUDIO2_PLAY_TAILS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in IXAudio2SourceVoice::Stop.</p>
+<p>Used in IXAudio2SourceVoice::Stop. </p>
 </td>
 </tr>
 <tr>
@@ -950,8 +913,7 @@ XAUDIO2_SEND_USEFILTER</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in XAUDIO2_SEND_DESCRIPTOR.Flags.</p>
+<p>Used in XAUDIO2_SEND_DESCRIPTOR.Flags. </p>
 </td>
 </tr>
 <tr>
@@ -960,8 +922,7 @@ XAUDIO2_STOP_ENGINE_WHEN_IDLE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in XAudio2Create to force the engine to Stop when no source voices are Started, and Start when a voice is Started.</p>
+<p>Used in XAudio2Create to force the engine to Stop when no source voices are Started, and Start when a voice is Started. </p>
 </td>
 </tr>
 <tr>
@@ -970,8 +931,7 @@ XAUDIO2_VOICE_NOPITCH</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in IXAudio2::CreateSourceVoice.</p>
+<p>Used in IXAudio2::CreateSourceVoice. </p>
 </td>
 </tr>
 <tr>
@@ -980,8 +940,7 @@ XAUDIO2_VOICE_NOSAMPLESPLAYED</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in IXAudio2SourceVoice::GetState.</p>
+<p>Used in IXAudio2SourceVoice::GetState. </p>
 </td>
 </tr>
 <tr>
@@ -990,8 +949,7 @@ XAUDIO2_VOICE_NOSRC</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in IXAudio2::CreateSourceVoice.</p>
+<p>Used in IXAudio2::CreateSourceVoice. </p>
 </td>
 </tr>
 <tr>
@@ -1000,8 +958,7 @@ XAUDIO2_VOICE_USEFILTER</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Used in IXAudio2::CreateSource/SubmixVoice.</p>
+<p>Used in IXAudio2::CreateSource/SubmixVoice. </p>
 </td>
 </tr>
 </table>
@@ -1922,8 +1879,7 @@ flags</td>
 <td class="tdtype">
 XAudio2.UINT32</td>
 <td class="enumeration">
-<p>
-Either 0 or XAUDIO2_END_OF_STREAM.</p>
+<p>Either 0 or XAUDIO2_END_OF_STREAM. </p>
 </td>
 </tr>
 <tr>
@@ -1932,8 +1888,7 @@ audioBytes</td>
 <td class="tdtype">
 XAudio2.UINT32</td>
 <td class="enumeration">
-<p>
-Size of the audio data buffer in bytes.</p>
+<p>Size of the audio data buffer in bytes. </p>
 </td>
 </tr>
 <tr>
@@ -1942,8 +1897,7 @@ pAudioData</td>
 <td class="tdtype">
 const *Win32.BYTE</td>
 <td class="enumeration">
-<p>
-Pointer to the audio data buffer.</p>
+<p>Pointer to the audio data buffer. </p>
 </td>
 </tr>
 <tr>
@@ -1952,8 +1906,7 @@ playBegin</td>
 <td class="tdtype">
 XAudio2.UINT32</td>
 <td class="enumeration">
-<p>
-First sample in this buffer to be played.</p>
+<p>First sample in this buffer to be played. </p>
 </td>
 </tr>
 <tr>
@@ -1962,8 +1915,7 @@ playLength</td>
 <td class="tdtype">
 XAudio2.UINT32</td>
 <td class="enumeration">
-<p>
-Length of the region to be played in samples, or 0 to play the whole buffer.</p>
+<p>Length of the region to be played in samples, or 0 to play the whole buffer. </p>
 </td>
 </tr>
 <tr>
@@ -1972,8 +1924,7 @@ loopBegin</td>
 <td class="tdtype">
 XAudio2.UINT32</td>
 <td class="enumeration">
-<p>
-First sample of the region to be looped.</p>
+<p>First sample of the region to be looped. </p>
 </td>
 </tr>
 <tr>
@@ -1982,8 +1933,7 @@ loopLength</td>
 <td class="tdtype">
 XAudio2.UINT32</td>
 <td class="enumeration">
-<p>
-Length of the desired loop region in samples, or 0 to loop the entire buffer.</p>
+<p>Length of the desired loop region in samples, or 0 to loop the entire buffer. </p>
 </td>
 </tr>
 <tr>
@@ -1992,8 +1942,7 @@ loopCount</td>
 <td class="tdtype">
 XAudio2.UINT32</td>
 <td class="enumeration">
-<p>
-Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever.</p>
+<p>Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever. </p>
 </td>
 </tr>
 <tr>
@@ -2002,8 +1951,7 @@ pContext</td>
 <td class="tdtype">
 *void</td>
 <td class="enumeration">
-<p>
-Context value to be passed back in callbacks.</p>
+<p>Context value to be passed back in callbacks. </p>
 </td>
 </tr>
 </table>
@@ -2156,8 +2104,7 @@ f32</td>
 </tr>
 </table>
 </p>
-<p>
-Used in XAUDIO2_FILTER_PARAMETERS below.</p>
+<p>Used in XAUDIO2_FILTER_PARAMETERS below. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -2169,40 +2116,35 @@ LowPassFilter</td>
 <td class="tdname">
 BandPassFilter</td>
 <td class="enumeration">
-<p>
-Attenuates frequencies above the cutoff frequency (state-variable filter).</p>
+<p>Attenuates frequencies above the cutoff frequency (state-variable filter). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 HighPassFilter</td>
 <td class="enumeration">
-<p>
-Attenuates frequencies outside a given range      (state-variable filter).</p>
+<p>Attenuates frequencies outside a given range      (state-variable filter). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 NotchFilter</td>
 <td class="enumeration">
-<p>
-Attenuates frequencies below the cutoff frequency (state-variable filter).</p>
+<p>Attenuates frequencies below the cutoff frequency (state-variable filter). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 LowPassOnePoleFilter</td>
 <td class="enumeration">
-<p>
-Attenuates frequencies inside a given range       (state-variable filter).</p>
+<p>Attenuates frequencies inside a given range       (state-variable filter). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 HighPassOnePoleFilter</td>
 <td class="enumeration">
-<p>
-Attenuates frequencies above the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect) Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect).</p>
+<p>Attenuates frequencies above the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect)  Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect). </p>
 </td>
 </tr>
 </table>

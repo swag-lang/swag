@@ -1342,32 +1342,28 @@ Core.Array'(Gui.KeyShortcut)</td>
 <td class="enumeration">
 <a href="#Gui_Application_addTimer">addTimer(self, const ref Duration, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Register a new timer for the given <code class="incode">target</code>.</p>
+<p>Register a new timer for the given <code class="incode">target</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_createSurface">createSurface(self, s32, s32, s32, s32, SurfaceFlags, *Wnd, HookEvent)</a></td>
 <td class="enumeration">
-<p>
-Creates a new surface.</p>
+<p>Creates a new surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_deleteTimer">deleteTimer(self, *Timer)</a></td>
 <td class="enumeration">
-<p>
-Delete and unregister timer.</p>
+<p>Delete and unregister timer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_destroyWnd">destroyWnd(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
+<p>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </p>
 </td>
 </tr>
 <tr>
@@ -1380,8 +1376,7 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 <td class="enumeration">
 <a href="#Gui_Application_exitModal">exitModal(self, string)</a></td>
 <td class="enumeration">
-<p>
-End current modal loop.</p>
+<p>End current modal loop. </p>
 </td>
 </tr>
 <tr>
@@ -1406,16 +1401,14 @@ End current modal loop.</p>
 <td class="enumeration">
 <a href="#Gui_Application_getHotKeyShortcut">getHotKeyShortcut(self, KeyModifiers, Key)</a></td>
 <td class="enumeration">
-<p>
-Get the id associated with a shortcut. null if none.</p>
+<p>Get the id associated with a shortcut. null if none. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_getHotKeyShortcutNameFor">getHotKeyShortcutNameFor(self, WndId)</a></td>
 <td class="enumeration">
-<p>
-Get the name associated with a given id shortcut.</p>
+<p>Get the name associated with a given id shortcut. </p>
 </td>
 </tr>
 <tr>
@@ -1434,8 +1427,7 @@ Get the name associated with a given id shortcut.</p>
 <td class="enumeration">
 <a href="#Gui_Application_getMouseCapture">getMouseCapture(self)</a></td>
 <td class="enumeration">
-<p>
-Return the captured wnd for mouse.</p>
+<p>Return the captured wnd for mouse. </p>
 </td>
 </tr>
 <tr>
@@ -1448,88 +1440,77 @@ Return the captured wnd for mouse.</p>
 <td class="enumeration">
 <a href="#Gui_Application_getWndAtMouse">getWndAtMouse(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the window under the given point.</p>
+<p>Returns the window under the given point. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_invalidate">invalidate(self)</a></td>
 <td class="enumeration">
-<p>
-Force all surfaces to be painted.</p>
+<p>Force all surfaces to be painted. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_loadState">loadState(self)</a></td>
 <td class="enumeration">
-<p>
-Load the application state.</p>
+<p>Load the application state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_popCursor">popCursor(self)</a></td>
 <td class="enumeration">
-<p>
-Pop a new mouse cursor.</p>
+<p>Pop a new mouse cursor. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_postEvent">postEvent(self, *Event)</a></td>
 <td class="enumeration">
-<p>
-Post a new event (thread safe).</p>
+<p>Post a new event (thread safe). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_postQuitEvent">postQuitEvent(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Ask to exit the application.</p>
+<p>Ask to exit the application. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_pushCursor">pushCursor(self, const ref Cursor)</a></td>
 <td class="enumeration">
-<p>
-Push a new mouse cursor.</p>
+<p>Push a new mouse cursor. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_registerFrameEvent">registerFrameEvent(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Register a window to receive a FrameEvent each running loop.</p>
+<p>Register a window to receive a FrameEvent each running loop. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_registerHookEvents">registerHookEvents(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Register a window to receive hook events.</p>
+<p>Register a window to receive hook events. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_registerHotKey">registerHotKey(self, KeyModifiers, Key, WndId, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Register a global os key action.</p>
+<p>Register a global os key action. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_run">run(self)</a></td>
 <td class="enumeration">
-<p>
-Run until exit.</p>
+<p>Run until exit. </p>
 </td>
 </tr>
 <tr>
@@ -1542,16 +1523,14 @@ Run until exit.</p>
 <td class="enumeration">
 <a href="#Gui_Application_runSurface">runSurface(s32, s32, s32, s32, string, *Wnd, bool, bool, HookEvent, func(*Application))</a></td>
 <td class="enumeration">
-<p>
-Create a main surface, and run.</p>
+<p>Create a main surface, and run. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_saveState">saveState(self)</a></td>
 <td class="enumeration">
-<p>
-Save the application state.</p>
+<p>Save the application state. </p>
 </td>
 </tr>
 <tr>
@@ -1564,40 +1543,35 @@ Save the application state.</p>
 <td class="enumeration">
 <a href="#Gui_Application_setActivated">setActivated(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Set activated state.</p>
+<p>Set activated state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_setAppIcon">setAppIcon(self, const ref Image)</a></td>
 <td class="enumeration">
-<p>
-Associate a configuration file.</p>
+<p>Associate a configuration file. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_setConfigPath">setConfigPath(self, string)</a></td>
 <td class="enumeration">
-<p>
-Associate a configuration file.</p>
+<p>Associate a configuration file. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Unregister a window that receives a FrameEvent each running loop.</p>
+<p>Unregister a window that receives a FrameEvent each running loop. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Unregister a window to receive hook events.</p>
+<p>Unregister a window to receive hook events. </p>
 </td>
 </tr>
 </table>
@@ -1612,8 +1586,7 @@ Unregister a window to receive hook events.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a new timer for the given <code class="incode">target</code>.</p>
+<p>Register a new timer for the given <code class="incode">target</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addTimer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, time: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Duration</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode"></code>
 </p>
@@ -1628,8 +1601,7 @@ Register a new timer for the given <code class="incode">target</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new surface.</p>
+<p>Creates a new surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, flags = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">OverlappedWindow</span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hook: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HookEvent</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -1644,8 +1616,7 @@ Creates a new surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Delete and unregister timer.</p>
+<p>Delete and unregister timer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteTimer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, timer: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -1660,8 +1631,7 @@ Delete and unregister timer.</p>
 </tr>
 </table>
 </p>
-<p>
-Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
+<p>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyWnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -1690,8 +1660,7 @@ Destroy a window To cleanly close a window, you should call wnd.destroy().</p>
 </tr>
 </table>
 </p>
-<p>
-End current modal loop.</p>
+<p>End current modal loop. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exitModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, exitId: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">""</span><span class="SyntaxCode">)</code>
 </p>
@@ -1748,8 +1717,7 @@ End current modal loop.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the id associated with a shortcut. null if none.</p>
+<p>Get the id associated with a shortcut. null if none. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getHotKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -1768,8 +1736,7 @@ Get the id associated with a shortcut. null if none.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the name associated with a given id shortcut.</p>
+<p>Get the name associated with a given id shortcut. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getHotKeyShortcutNameFor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </p>
@@ -1812,8 +1779,7 @@ Get the name associated with a given id shortcut.</p>
 </tr>
 </table>
 </p>
-<p>
-Return the captured wnd for mouse.</p>
+<p>Return the captured wnd for mouse. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMouseCapture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </p>
@@ -1842,8 +1808,7 @@ Return the captured wnd for mouse.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the window under the given point.</p>
+<p>Returns the window under the given point. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getWndAtMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </p>
@@ -1858,8 +1823,7 @@ Returns the window under the given point.</p>
 </tr>
 </table>
 </p>
-<p>
-Force all surfaces to be painted.</p>
+<p>Force all surfaces to be painted. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -1874,8 +1838,7 @@ Force all surfaces to be painted.</p>
 </tr>
 </table>
 </p>
-<p>
-Load the application state.</p>
+<p>Load the application state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">loadState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -1890,8 +1853,7 @@ Load the application state.</p>
 </tr>
 </table>
 </p>
-<p>
-Pop a new mouse cursor.</p>
+<p>Pop a new mouse cursor. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popCursor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -1906,8 +1868,7 @@ Pop a new mouse cursor.</p>
 </tr>
 </table>
 </p>
-<p>
-Post a new event (thread safe).</p>
+<p>Post a new event (thread safe). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, event: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -1922,8 +1883,7 @@ Post a new event (thread safe).</p>
 </tr>
 </table>
 </p>
-<p>
-Ask to exit the application.</p>
+<p>Ask to exit the application. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postQuitEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, quitCode: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </p>
@@ -1938,8 +1898,7 @@ Ask to exit the application.</p>
 </tr>
 </table>
 </p>
-<p>
-Push a new mouse cursor.</p>
+<p>Push a new mouse cursor. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushCursor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cursor: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Cursor">Cursor</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -1954,8 +1913,7 @@ Push a new mouse cursor.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a window to receive a FrameEvent each running loop.</p>
+<p>Register a window to receive a FrameEvent each running loop. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -1970,8 +1928,7 @@ Register a window to receive a FrameEvent each running loop.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a window to receive hook events.</p>
+<p>Register a window to receive hook events. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerHookEvents</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -1986,8 +1943,7 @@ Register a window to receive hook events.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a global os key action.</p>
+<p>Register a global os key action. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerHotKey</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -2002,8 +1958,7 @@ Register a global os key action.</p>
 </tr>
 </table>
 </p>
-<p>
-Run until exit.</p>
+<p>Run until exit. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">run</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </p>
@@ -2032,8 +1987,7 @@ Run until exit.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a main surface, and run.</p>
+<p>Create a main surface, and run. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">runSurface</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, title: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, borders = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, canSize = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, hook: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HookEvent</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, init: </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">) = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </p>
@@ -2048,8 +2002,7 @@ Create a main surface, and run.</p>
 </tr>
 </table>
 </p>
-<p>
-Save the application state.</p>
+<p>Save the application state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">saveState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -2078,8 +2031,7 @@ Save the application state.</p>
 </tr>
 </table>
 </p>
-<p>
-Set activated state.</p>
+<p>Set activated state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setActivated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, activated: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -2094,8 +2046,7 @@ Set activated state.</p>
 </tr>
 </table>
 </p>
-<p>
-Associate a configuration file.</p>
+<p>Associate a configuration file. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAppIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, img: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</code>
 </p>
@@ -2110,8 +2061,7 @@ Associate a configuration file.</p>
 </tr>
 </table>
 </p>
-<p>
-Associate a configuration file.</p>
+<p>Associate a configuration file. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setConfigPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -2126,8 +2076,7 @@ Associate a configuration file.</p>
 </tr>
 </table>
 </p>
-<p>
-Unregister a window that receives a FrameEvent each running loop.</p>
+<p>Unregister a window that receives a FrameEvent each running loop. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unregisterFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -2142,8 +2091,7 @@ Unregister a window that receives a FrameEvent each running loop.</p>
 </tr>
 </table>
 </p>
-<p>
-Unregister a window to receive hook events.</p>
+<p>Unregister a window to receive hook events. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unregisterHookEvents</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -2318,8 +2266,7 @@ f32</td>
 <td class="enumeration">
 <a href="#Gui_BlendColor_apply">apply(self, *Wnd, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Apply the color lerp to reach <code class="incode">target</code>.</p>
+<p>Apply the color lerp to reach <code class="incode">target</code>. </p>
 </td>
 </tr>
 <tr>
@@ -2340,8 +2287,7 @@ Apply the color lerp to reach <code class="incode">target</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Apply the color lerp to reach <code class="incode">target</code>.</p>
+<p>Apply the color lerp to reach <code class="incode">target</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">apply</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, target: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </p>
@@ -2605,8 +2551,7 @@ RightAlign</td>
 </tr>
 </table>
 </p>
-<p>
-Add data of a given format to the clipboard.</p>
+<p>Add data of a given format to the clipboard. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addData</span><span class="SyntaxCode">(fmt: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Clipboard</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Format</span><span class="SyntaxCode">, data: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -2621,8 +2566,7 @@ Add data of a given format to the clipboard.</p>
 </tr>
 </table>
 </p>
-<p>
-Add an image.</p>
+<p>Add an image. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addImage</span><span class="SyntaxCode">(image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</code>
 </p>
@@ -2637,8 +2581,7 @@ Add an image.</p>
 </tr>
 </table>
 </p>
-<p>
-Add string to clipboard.</p>
+<p>Add string to clipboard. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addString</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -2653,8 +2596,7 @@ Add string to clipboard.</p>
 </tr>
 </table>
 </p>
-<p>
-Get data of the given format.</p>
+<p>Get data of the given format. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getData</span><span class="SyntaxCode">(fmt: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Clipboard</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Format</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -2669,8 +2611,7 @@ Get data of the given format.</p>
 </tr>
 </table>
 </p>
-<p>
-Get image from clipboard.</p>
+<p>Get image from clipboard. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getImage</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></code>
 </p>
@@ -2685,8 +2626,7 @@ Get image from clipboard.</p>
 </tr>
 </table>
 </p>
-<p>
-Get utf8 string from clipboard.</p>
+<p>Get utf8 string from clipboard. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getString</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </p>
@@ -2701,8 +2641,7 @@ Get utf8 string from clipboard.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the clipboard contains the given format.</p>
+<p>Returns true if the clipboard contains the given format. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasFormat</span><span class="SyntaxCode">(fmt: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Clipboard</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Format</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -2717,8 +2656,7 @@ Returns true if the clipboard contains the given format.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the clipbboard contains an image.</p>
+<p>Returns true if the clipbboard contains an image. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasImage</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -2733,8 +2671,7 @@ Returns true if the clipbboard contains an image.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the clipboard contains a string.</p>
+<p>Returns true if the clipboard contains a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasString</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -2749,8 +2686,7 @@ Returns true if the clipboard contains a string.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a new format.</p>
+<p>Register a new format. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerFormat</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Clipboard</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Format</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -2901,8 +2837,7 @@ s32</td>
 <td class="enumeration">
 <a href="#Gui_ColorPicker_change">change(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Change one component, HSL or alpha.</p>
+<p>Change one component, HSL or alpha. </p>
 </td>
 </tr>
 <tr>
@@ -2915,24 +2850,21 @@ Change one component, HSL or alpha.</p>
 <td class="enumeration">
 <a href="#Gui_ColorPicker_getColor">getColor(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the selected color.</p>
+<p>Returns the selected color. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ColorPicker_setColor">setColor(self, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Set the base color, and repaint.</p>
+<p>Set the base color, and repaint. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ColorPicker_setMode">setMode(self, ColorPickerMode)</a></td>
 <td class="enumeration">
-<p>
-Set the color picker box mode.</p>
+<p>Set the color picker box mode. </p>
 </td>
 </tr>
 </table>
@@ -3003,8 +2935,7 @@ Set the color picker box mode.</p>
 </tr>
 </table>
 </p>
-<p>
-Change one component, HSL or alpha.</p>
+<p>Change one component, HSL or alpha. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">change</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, s: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </p>
@@ -3033,8 +2964,7 @@ Change one component, HSL or alpha.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the selected color.</p>
+<p>Returns the selected color. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
 </p>
@@ -3049,8 +2979,7 @@ Returns the selected color.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the base color, and repaint.</p>
+<p>Set the base color, and repaint. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, col: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </p>
@@ -3065,8 +2994,7 @@ Set the base color, and repaint.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the color picker box mode.</p>
+<p>Set the color picker box mode. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -3263,24 +3191,21 @@ radioB</td>
 <td class="enumeration">
 <a href="#Gui_ColorPickerCtrl_getColor">getColor(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the selected color.</p>
+<p>Returns the selected color. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ColorPickerCtrl_setColor">setColor(self, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Set the selected color.</p>
+<p>Set the selected color. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ColorPickerCtrl_setMode">setMode(self, ColorPickerViewMode)</a></td>
 <td class="enumeration">
-<p>
-Change the display mode.</p>
+<p>Change the display mode. </p>
 </td>
 </tr>
 </table>
@@ -3323,8 +3248,7 @@ Change the display mode.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the selected color.</p>
+<p>Returns the selected color. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
 </p>
@@ -3339,8 +3263,7 @@ Returns the selected color.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the selected color.</p>
+<p>Set the selected color. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </p>
@@ -3355,8 +3278,7 @@ Set the selected color.</p>
 </tr>
 </table>
 </p>
-<p>
-Change the display mode.</p>
+<p>Change the display mode. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -3665,24 +3587,21 @@ aniText</td>
 <td class="enumeration">
 <a href="#Gui_ComboBox_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
 <td class="enumeration">
-<p>
-Add a new item.</p>
+<p>Add a new item. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ComboBox_addSeparator">addSeparator(self)</a></td>
 <td class="enumeration">
-<p>
-Add a separator.</p>
+<p>Add a separator. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ComboBox_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Remove all items.</p>
+<p>Remove all items. </p>
 </td>
 </tr>
 <tr>
@@ -3695,16 +3614,14 @@ Remove all items.</p>
 <td class="enumeration">
 <a href="#Gui_ComboBox_getSelectedItem">getSelectedItem(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the selected item.</p>
+<p>Returns the selected item. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ComboBox_selectItem">selectItem(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Set the selected item index.</p>
+<p>Set the selected item index. </p>
 </td>
 </tr>
 </table>
@@ -3761,8 +3678,7 @@ Set the selected item index.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new item.</p>
+<p>Add a new item. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, userData0: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, userData1: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -3777,8 +3693,7 @@ Add a new item.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a separator.</p>
+<p>Add a separator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -3793,8 +3708,7 @@ Add a separator.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove all items.</p>
+<p>Remove all items. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -3823,8 +3737,7 @@ Remove all items.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the selected item.</p>
+<p>Returns the selected item. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -3839,8 +3752,7 @@ Returns the selected item.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the selected item index.</p>
+<p>Set the selected item index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </p>
@@ -4206,8 +4118,7 @@ bool</td>
 <td class="enumeration">
 <a href="#Gui_Cursor_wait">wait()</a></td>
 <td class="enumeration">
-<p>
-Force the wait cursor.</p>
+<p>Force the wait cursor. </p>
 </td>
 </tr>
 </table>
@@ -4264,8 +4175,7 @@ Force the wait cursor.</p>
 </tr>
 </table>
 </p>
-<p>
-Force the wait cursor.</p>
+<p>Force the wait cursor. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wait</span><span class="SyntaxCode">()</code>
 </p>
@@ -4426,32 +4336,28 @@ closure(*Gui.Dialog, Gui.WndId)->bool</td>
 <td class="enumeration">
 <a href="#Gui_Dialog_addButton">addButton(self, string, WndId, bool)</a></td>
 <td class="enumeration">
-<p>
-Add a button.</p>
+<p>Add a button. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Dialog_createDialog">createDialog(*Surface, s32, s32, string)</a></td>
 <td class="enumeration">
-<p>
-Creates a simple dialog box.</p>
+<p>Creates a simple dialog box. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Dialog_createSurface">createSurface(self, *Surface, s32, s32, s32, s32, SurfaceFlags)</a></td>
 <td class="enumeration">
-<p>
-Creates an associated surface.</p>
+<p>Creates an associated surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Dialog_doModal">doModal(self)</a></td>
 <td class="enumeration">
-<p>
-Display dialog as modal, and returns the user selected window id.</p>
+<p>Display dialog as modal, and returns the user selected window id. </p>
 </td>
 </tr>
 <tr>
@@ -4500,8 +4406,7 @@ Display dialog as modal, and returns the user selected window id.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a button.</p>
+<p>Add a button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addButton</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">, isDefault: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PushButton">PushButton</a></span><span class="SyntaxCode"></code>
 </p>
@@ -4516,8 +4421,7 @@ Add a button.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a simple dialog box.</p>
+<p>Creates a simple dialog box. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createDialog</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, width = </span><span class="SyntaxNumber">512</span><span class="SyntaxCode">, height = </span><span class="SyntaxNumber">300</span><span class="SyntaxCode">, title: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode"></code>
 </p>
@@ -4532,8 +4436,7 @@ Creates a simple dialog box.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates an associated surface.</p>
+<p>Creates an associated surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width = </span><span class="SyntaxNumber">512</span><span class="SyntaxCode">, height = </span><span class="SyntaxNumber">300</span><span class="SyntaxCode">, flags = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"></code>
 </p>
@@ -4548,8 +4451,7 @@ Creates an associated surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Display dialog as modal, and returns the user selected window id.</p>
+<p>Display dialog as modal, and returns the user selected window id. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -4871,88 +4773,77 @@ s32</td>
 <td class="enumeration">
 <a href="#Gui_EditBox_deleteSelection">deleteSelection(self)</a></td>
 <td class="enumeration">
-<p>
-Delete selected text.</p>
+<p>Delete selected text. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_getText">getText(self)</a></td>
 <td class="enumeration">
-<p>
-Get the associated text.</p>
+<p>Get the associated text. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_selectAll">selectAll(self)</a></td>
 <td class="enumeration">
-<p>
-Select all text.</p>
+<p>Select all text. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setForm">setForm(self, EditBoxForm)</a></td>
 <td class="enumeration">
-<p>
-Set the editbox form.</p>
+<p>Set the editbox form. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setInputF64">setInputF64(self, f64, f64)</a></td>
 <td class="enumeration">
-<p>
-Editbox will edit floating points.</p>
+<p>Editbox will edit floating points. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setInputS64">setInputS64(self, s64, s64)</a></td>
 <td class="enumeration">
-<p>
-Editbox will edit signed integers.</p>
+<p>Editbox will edit signed integers. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setInputU64">setInputU64(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Editbox will edit unsigned integers.</p>
+<p>Editbox will edit unsigned integers. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setNote">setNote(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set the editbox note.</p>
+<p>Set the editbox note. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setSelection">setSelection(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Set current selection.</p>
+<p>Set current selection. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setText">setText(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set the editbox content.</p>
+<p>Set the editbox content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditBox_setTextSilent">setTextSilent(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set the editbox content, but do not notify change.</p>
+<p>Set the editbox content, but do not notify change. </p>
 </td>
 </tr>
 </table>
@@ -5051,8 +4942,7 @@ Set the editbox content, but do not notify change.</p>
 </tr>
 </table>
 </p>
-<p>
-Delete selected text.</p>
+<p>Delete selected text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -5067,8 +4957,7 @@ Delete selected text.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the associated text.</p>
+<p>Get the associated text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -5083,8 +4972,7 @@ Get the associated text.</p>
 </tr>
 </table>
 </p>
-<p>
-Select all text.</p>
+<p>Select all text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -5099,8 +4987,7 @@ Select all text.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the editbox form.</p>
+<p>Set the editbox form. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxForm">EditBoxForm</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -5115,8 +5002,7 @@ Set the editbox form.</p>
 </tr>
 </table>
 </p>
-<p>
-Editbox will edit floating points.</p>
+<p>Editbox will edit floating points. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputF64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min = -</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
 </p>
@@ -5131,8 +5017,7 @@ Editbox will edit floating points.</p>
 </tr>
 </table>
 </p>
-<p>
-Editbox will edit signed integers.</p>
+<p>Editbox will edit signed integers. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">S64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Min</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">S64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
 </p>
@@ -5147,8 +5032,7 @@ Editbox will edit signed integers.</p>
 </tr>
 </table>
 </p>
-<p>
-Editbox will edit unsigned integers.</p>
+<p>Editbox will edit unsigned integers. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">U64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
 </p>
@@ -5163,8 +5047,7 @@ Editbox will edit unsigned integers.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the editbox note.</p>
+<p>Set the editbox note. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setNote</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, note: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -5179,8 +5062,7 @@ Set the editbox note.</p>
 </tr>
 </table>
 </p>
-<p>
-Set current selection.</p>
+<p>Set current selection. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, start: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, end: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -5195,8 +5077,7 @@ Set current selection.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the editbox content.</p>
+<p>Set the editbox content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -5211,8 +5092,7 @@ Set the editbox content.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the editbox content, but do not notify change.</p>
+<p>Set the editbox content, but do not notify change. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTextSilent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -5423,8 +5303,7 @@ edit</td>
 <td class="enumeration">
 <a href="#Gui_EditCtrl_create">create(*Wnd, string, string, const ref Rectangle, WndId, EditBoxFlags)</a></td>
 <td class="enumeration">
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 </td>
 </tr>
 </table>
@@ -5453,8 +5332,7 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {}, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditCtrl">EditCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -5509,40 +5387,35 @@ richEdit</td>
 <td class="enumeration">
 <a href="#Gui_EditDlg_createMultiLine">createMultiLine(*Surface, s32)</a></td>
 <td class="enumeration">
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditDlg_createSingleLine">createSingleLine(*Surface)</a></td>
 <td class="enumeration">
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditDlg_getText">getText(self)</a></td>
 <td class="enumeration">
-<p>
-Get the text.</p>
+<p>Get the text. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditDlg_setMessage">setMessage(self, string, s32)</a></td>
 <td class="enumeration">
-<p>
-Associate a message above the editbox.</p>
+<p>Associate a message above the editbox. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_EditDlg_setText">setText(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set the text.</p>
+<p>Set the text. </p>
 </td>
 </tr>
 </table>
@@ -5557,8 +5430,7 @@ Set the text.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createMultiLine</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, heightEdit = </span><span class="SyntaxNumber">150</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditDlg">EditDlg</a></span><span class="SyntaxCode"></code>
 </p>
@@ -5573,8 +5445,7 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createSingleLine</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditDlg">EditDlg</a></span><span class="SyntaxCode"></code>
 </p>
@@ -5589,8 +5460,7 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the text.</p>
+<p>Get the text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </p>
@@ -5605,8 +5475,7 @@ Get the text.</p>
 </tr>
 </table>
 </p>
-<p>
-Associate a message above the editbox.</p>
+<p>Associate a message above the editbox. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMessage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)</code>
 </p>
@@ -5621,8 +5490,7 @@ Associate a message above the editbox.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the text.</p>
+<p>Set the text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -5661,8 +5529,7 @@ label</td>
 <td class="enumeration">
 <a href="#Gui_EmbInfoCtrl_create">create(*Wnd, string, EmbInfoCtrlKind, s32, bool)</a></td>
 <td class="enumeration">
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 </td>
 </tr>
 </table>
@@ -5677,8 +5544,7 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EmbInfoCtrlKind">EmbInfoCtrlKind</a></span><span class="SyntaxCode">, height = </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">, top = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EmbInfoCtrl">EmbInfoCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -6112,24 +5978,21 @@ Core.Array'(Core.File.FileInfo)</td>
 <td class="enumeration">
 <a href="#Gui_FileDlg_create">create(*Surface, const ref FileDlgOptions)</a></td>
 <td class="enumeration">
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_FileDlg_getSelectedName">getSelectedName(self)</a></td>
 <td class="enumeration">
-<p>
-Get the first selection.</p>
+<p>Get the first selection. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_FileDlg_getSelectedNames">getSelectedNames(self)</a></td>
 <td class="enumeration">
-<p>
-Get all selections.</p>
+<p>Get all selections. </p>
 </td>
 </tr>
 </table>
@@ -6158,8 +6021,7 @@ Get all selections.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, opt: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FileDlg">FileDlg</a></span><span class="SyntaxCode"></code>
 </p>
@@ -6174,8 +6036,7 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the first selection.</p>
+<p>Get the first selection. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedName</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </p>
@@ -6190,8 +6051,7 @@ Get the first selection.</p>
 </tr>
 </table>
 </p>
-<p>
-Get all selections.</p>
+<p>Get all selections. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedNames</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode">)</code>
 </p>
@@ -6510,16 +6370,14 @@ Pixel.Color</td>
 <td class="enumeration">
 <a href="#Gui_FrameWnd_setFrameFlags">setFrameFlags(self, FrameWndFlags, FrameWndFlags)</a></td>
 <td class="enumeration">
-<p>
-Set the frame wnd flags.</p>
+<p>Set the frame wnd flags. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_FrameWnd_setFrameForm">setFrameForm(self, FrameWndForm)</a></td>
 <td class="enumeration">
-<p>
-Set the frame wnd form.</p>
+<p>Set the frame wnd form. </p>
 </td>
 </tr>
 <tr>
@@ -6610,8 +6468,7 @@ Set the frame wnd form.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the frame wnd flags.</p>
+<p>Set the frame wnd flags. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add = </span><span class="SyntaxConstant"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </p>
@@ -6626,8 +6483,7 @@ Set the frame wnd flags.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the frame wnd form.</p>
+<p>Set the frame wnd form. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWndForm">FrameWndForm</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -6847,40 +6703,35 @@ Core.Array'(f32)</td>
 <td class="enumeration">
 <a href="#Gui_GridLayoutCtrl_computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
-<p>
-Recompute layout of all childs.</p>
+<p>Recompute layout of all childs. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_GridLayoutCtrl_create">create(*Wnd, s32, s32, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Create a layout control.</p>
+<p>Create a layout control. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild(self, *Wnd, s32, s32, s32, s32)</a></td>
 <td class="enumeration">
-<p>
-Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>.</p>
+<p>Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_GridLayoutCtrl_setColSize">setColSize(self, s32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set size, in pixel, of a given column.</p>
+<p>Set size, in pixel, of a given column. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_GridLayoutCtrl_setRowSize">setRowSize(self, s32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set size, in pixel, of a given row.</p>
+<p>Set size, in pixel, of a given row. </p>
 </td>
 </tr>
 </table>
@@ -6909,8 +6760,7 @@ Set size, in pixel, of a given row.</p>
 </tr>
 </table>
 </p>
-<p>
-Recompute layout of all childs.</p>
+<p>Recompute layout of all childs. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -6925,8 +6775,7 @@ Recompute layout of all childs.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a layout control.</p>
+<p>Create a layout control. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, numColumns: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, numRows: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_GridLayoutCtrl">GridLayoutCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -6941,13 +6790,11 @@ Create a layout control.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>.</p>
+<p>Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColRowChild</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, child: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, col: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, row: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, spanH: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, spanV: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Window can cover multiple columns and rows.</p>
+<p> Window can cover multiple columns and rows. </p>
 <p>
 <table class="item">
 <tr>
@@ -6959,8 +6806,7 @@ Set the wnd associated with the given <code class="incode">col</code> and <code 
 </tr>
 </table>
 </p>
-<p>
-Set size, in pixel, of a given column.</p>
+<p>Set size, in pixel, of a given column. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, col: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -6975,8 +6821,7 @@ Set size, in pixel, of a given column.</p>
 </tr>
 </table>
 </p>
-<p>
-Set size, in pixel, of a given row.</p>
+<p>Set size, in pixel, of a given row. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRowSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, row: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -7140,8 +6985,7 @@ s32</td>
 <td class="enumeration">
 <a href="#Gui_Header_addItem">addItem(self, string, f32, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Add a new view.</p>
+<p>Add a new view. </p>
 </td>
 </tr>
 <tr>
@@ -7154,72 +6998,63 @@ Add a new view.</p>
 <td class="enumeration">
 <a href="#Gui_Header_getItem">getItem(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Returns the given item, by index.</p>
+<p>Returns the given item, by index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_getItemByCol">getItemByCol(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Returns the given item, by column.</p>
+<p>Returns the given item, by column. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_getItemPosition">getItemPosition(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Get an item position by index.</p>
+<p>Get an item position by index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_getItemPositionByCol">getItemPositionByCol(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Get an item position by column.</p>
+<p>Get an item position by column. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_getItemWidth">getItemWidth(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Get an item width by index.</p>
+<p>Get an item width by index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_getItemWidthByCol">getItemWidthByCol(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Get an item width by column.</p>
+<p>Get an item width by column. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_getTotalItemsWidth">getTotalItemsWidth(self)</a></td>
 <td class="enumeration">
-<p>
-Get the header total width.</p>
+<p>Get the header total width. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_setItemWidth">setItemWidth(self, u32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set an item width by index.</p>
+<p>Set an item width by index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Header_setItemWidthByCol">setItemWidthByCol(self, u32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set an item width by column.</p>
+<p>Set an item width by column. </p>
 </td>
 </tr>
 </table>
@@ -7276,8 +7111,7 @@ Set an item width by column.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new view.</p>
+<p>Add a new view. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tabName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, width = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -7306,8 +7140,7 @@ Add a new view.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the given item, by index.</p>
+<p>Returns the given item, by index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -7322,8 +7155,7 @@ Returns the given item, by index.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the given item, by column.</p>
+<p>Returns the given item, by column. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -7338,8 +7170,7 @@ Returns the given item, by column.</p>
 </tr>
 </table>
 </p>
-<p>
-Get an item position by index.</p>
+<p>Get an item position by index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -7354,8 +7185,7 @@ Get an item position by index.</p>
 </tr>
 </table>
 </p>
-<p>
-Get an item position by column.</p>
+<p>Get an item position by column. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemPositionByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -7370,8 +7200,7 @@ Get an item position by column.</p>
 </tr>
 </table>
 </p>
-<p>
-Get an item width by index.</p>
+<p>Get an item width by index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -7386,8 +7215,7 @@ Get an item width by index.</p>
 </tr>
 </table>
 </p>
-<p>
-Get an item width by column.</p>
+<p>Get an item width by column. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemWidthByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -7402,8 +7230,7 @@ Get an item width by column.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the header total width.</p>
+<p>Get the header total width. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTotalItemsWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -7418,8 +7245,7 @@ Get the header total width.</p>
 </tr>
 </table>
 </p>
-<p>
-Set an item width by index.</p>
+<p>Set an item width by index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItemWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -7434,8 +7260,7 @@ Set an item width by index.</p>
 </tr>
 </table>
 </p>
-<p>
-Set an item width by column.</p>
+<p>Set an item width by column. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItemWidthByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -7894,16 +7719,14 @@ f32</td>
 <td class="enumeration">
 <a href="#Gui_Icon_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set icon to invalid.</p>
+<p>Set icon to invalid. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Icon_from">from(*ImageList, s32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Initialize the icon from an image list.</p>
+<p>Initialize the icon from an image list. </p>
 </td>
 </tr>
 <tr>
@@ -7916,16 +7739,14 @@ Initialize the icon from an image list.</p>
 <td class="enumeration">
 <a href="#Gui_Icon_paint">paint(self, *Painter, f32, f32, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Paint icon at the given position.</p>
+<p>Paint icon at the given position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Icon_set">set(self, *ImageList, s32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Initialize the icon from an image list.</p>
+<p>Initialize the icon from an image list. </p>
 </td>
 </tr>
 </table>
@@ -7949,8 +7770,7 @@ Initialize the icon from an image list.</p>
 </tr>
 </table>
 </p>
-<p>
-Set icon to invalid.</p>
+<p>Set icon to invalid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -7965,8 +7785,7 @@ Set icon to invalid.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the icon from an image list.</p>
+<p>Initialize the icon from an image list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">from</span><span class="SyntaxCode">(imageList: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">, index: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, sizeX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, sizeY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></code>
 </p>
@@ -8009,8 +7828,7 @@ Initialize the icon from an image list.</p>
 </tr>
 </table>
 </p>
-<p>
-Paint icon at the given position.</p>
+<p>Paint icon at the given position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
 </p>
@@ -8025,8 +7843,7 @@ Paint icon at the given position.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the icon from an image list.</p>
+<p>Initialize the icon from an image list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, imageList: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">, index: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, sizeX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, sizeY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </p>
@@ -8097,24 +7914,21 @@ Gui.SigArray'(closure(*Gui.IconButton))</td>
 <td class="enumeration">
 <a href="#Gui_IconBar_addCheckableItem">addCheckableItem(self, const ref Icon, WndId)</a></td>
 <td class="enumeration">
-<p>
-Add a new checkable button.</p>
+<p>Add a new checkable button. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_IconBar_addCheckableToggleItem">addCheckableToggleItem(self, const ref Icon, WndId)</a></td>
 <td class="enumeration">
-<p>
-Add a new checkable button.</p>
+<p>Add a new checkable button. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_IconBar_addItem">addItem(self, const ref Icon, WndId, IconButtonFlags)</a></td>
 <td class="enumeration">
-<p>
-Add a new button.</p>
+<p>Add a new button. </p>
 </td>
 </tr>
 <tr>
@@ -8127,8 +7941,7 @@ Add a new button.</p>
 <td class="enumeration">
 <a href="#Gui_IconBar_setIconBarFlags">setIconBarFlags(self, IconBarFlags, IconBarFlags)</a></td>
 <td class="enumeration">
-<p>
-Change bar flags.</p>
+<p>Change bar flags. </p>
 </td>
 </tr>
 </table>
@@ -8157,8 +7970,7 @@ Change bar flags.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new checkable button.</p>
+<p>Add a new checkable button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addCheckableItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
 </p>
@@ -8173,8 +7985,7 @@ Add a new checkable button.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new checkable button.</p>
+<p>Add a new checkable button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addCheckableToggleItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
 </p>
@@ -8189,8 +8000,7 @@ Add a new checkable button.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new button.</p>
+<p>Add a new button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, iconBtnFlags = </span><span class="SyntaxConstant"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
 </p>
@@ -8219,8 +8029,7 @@ Add a new button.</p>
 </tr>
 </table>
 </p>
-<p>
-Change bar flags.</p>
+<p>Change bar flags. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIconBarFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add = </span><span class="SyntaxConstant"><a href="#Gui_IconBarFlags">IconBarFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_IconBarFlags">IconBarFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </p>
@@ -8378,16 +8187,14 @@ popup</td>
 <td class="enumeration">
 <a href="#Gui_IconButton_setCheck">setCheck(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Set the check state of the button (if the button is checkable).</p>
+<p>Set the check state of the button (if the button is checkable). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_IconButton_setForm">setForm(self, IconButtonForm)</a></td>
 <td class="enumeration">
-<p>
-Set the button form.</p>
+<p>Set the button form. </p>
 </td>
 </tr>
 </table>
@@ -8500,8 +8307,7 @@ Set the button form.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the check state of the button (if the button is checkable).</p>
+<p>Set the check state of the button (if the button is checkable). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCheck</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, checked: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -8516,8 +8322,7 @@ Set the check state of the button (if the button is checkable).</p>
 </tr>
 </table>
 </p>
-<p>
-Set the button form.</p>
+<p>Set the button form. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonForm">IconButtonForm</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -8799,8 +8604,7 @@ s32</td>
 <td class="enumeration">
 <a href="#Gui_ImageList_set">set(self, const ref Texture, s32, s32, s32)</a></td>
 <td class="enumeration">
-<p>
-Initialize image list.</p>
+<p>Initialize image list. </p>
 </td>
 </tr>
 </table>
@@ -8843,8 +8647,7 @@ Initialize image list.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize image list.</p>
+<p>Initialize image list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, fsx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, fsy: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, cpt: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </p>
@@ -8903,40 +8706,35 @@ Pixel.Texture</td>
 <td class="enumeration">
 <a href="#Gui_ImageRect_setFile">setFile(self, string)</a></td>
 <td class="enumeration">
-<p>
-Load and set movie.</p>
+<p>Load and set movie. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ImageRect_setImage">setImage(self, const ref ImageList)</a></td>
 <td class="enumeration">
-<p>
-Associate image.</p>
+<p>Associate image. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ImageRect_setImage">setImage(self, const ref Image)</a></td>
 <td class="enumeration">
-<p>
-Associate image.</p>
+<p>Associate image. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ImageRect_setImage">setImage(self, const ref Texture)</a></td>
 <td class="enumeration">
-<p>
-Associate image.</p>
+<p>Associate image. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ImageRect_setMovie">setMovie(self, const ref ImageList)</a></td>
 <td class="enumeration">
-<p>
-Set movie as an image list.</p>
+<p>Set movie as an image list. </p>
 </td>
 </tr>
 </table>
@@ -8993,8 +8791,7 @@ Set movie as an image list.</p>
 </tr>
 </table>
 </p>
-<p>
-Load and set movie.</p>
+<p>Load and set movie. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -9009,18 +8806,15 @@ Load and set movie.</p>
 </tr>
 </table>
 </p>
-<p>
-Associate image.</p>
+<p>Associate image. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Associate image.</p>
+<p>Associate image. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Associate image.</p>
+<p>Associate image. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">)</code>
 </p>
@@ -9035,8 +8829,7 @@ Associate image.</p>
 </tr>
 </table>
 </p>
-<p>
-Set movie as an image list.</p>
+<p>Set movie as an image list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMovie</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -9288,16 +9081,14 @@ Core.Math.Vector4</td>
 <td class="enumeration">
 <a href="#Gui_Label_getText">getText(self)</a></td>
 <td class="enumeration">
-<p>
-Get the text.</p>
+<p>Get the text. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Label_setText">setText(self, string)</a></td>
 <td class="enumeration">
-<p>
-Change the text.</p>
+<p>Change the text. </p>
 </td>
 </tr>
 </table>
@@ -9340,8 +9131,7 @@ Change the text.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the text.</p>
+<p>Get the text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -9356,8 +9146,7 @@ Get the text.</p>
 </tr>
 </table>
 </p>
-<p>
-Change the text.</p>
+<p>Change the text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -9657,56 +9446,49 @@ bool</td>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_addColumn">addColumn(self, string, f32, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Add one column in a multi columns list.</p>
+<p>Add one column in a multi columns list. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Clear all lines.</p>
+<p>Clear all lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_collapse">collapse(self, *ListLine)</a></td>
 <td class="enumeration">
-<p>
-Collapse the given line.</p>
+<p>Collapse the given line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_collapseAll">collapseAll(self)</a></td>
 <td class="enumeration">
-<p>
-Collapse all lines.</p>
+<p>Collapse all lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
-<p>
-Compute global layout, once all lines have been added.</p>
+<p>Compute global layout, once all lines have been added. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_createLine">createLine(self, *ListLine)</a></td>
 <td class="enumeration">
-<p>
-Add one new line.</p>
+<p>Add one new line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_createLine">createLine(self, string, const ref Icon, *ListLine)</a></td>
 <td class="enumeration">
-<p>
-Add one line, and set first column.</p>
+<p>Add one line, and set first column. </p>
 </td>
 </tr>
 <tr>
@@ -9725,176 +9507,154 @@ Add one line, and set first column.</p>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_ensureVisibleLine">ensureVisibleLine(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Set the corresponding line visible.</p>
+<p>Set the corresponding line visible. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_expand">expand(self, *ListLine)</a></td>
 <td class="enumeration">
-<p>
-Expand the given line.</p>
+<p>Expand the given line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getCheckedLines">getCheckedLines(self)</a></td>
 <td class="enumeration">
-<p>
-Get all the checked lines.</p>
+<p>Get all the checked lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getFirstVisibleLineIndex">getFirstVisibleLineIndex(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the first visible line index.</p>
+<p>Returns the first visible line index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getFocusLine">getFocusLine(self)</a></td>
 <td class="enumeration">
-<p>
-Get the line with the keyboard focus.</p>
+<p>Get the line with the keyboard focus. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getLastVisibleLineIndex">getLastVisibleLineIndex(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the last visible line index.</p>
+<p>Returns the last visible line index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getLine">getLine(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Get a line by index.</p>
+<p>Get a line by index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getLineCount">getLineCount(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the number of lines in the list.</p>
+<p>Returns the number of lines in the list. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getLineHeight">getLineHeight(self)</a></td>
 <td class="enumeration">
-<p>
-Get the height of one line.</p>
+<p>Get the height of one line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a selected line Mostly for singlesel mode.</p>
+<p>Returns a selected line  Mostly for singlesel mode. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines(self)</a></td>
 <td class="enumeration">
-<p>
-Get all the selected lines.</p>
+<p>Get all the selected lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_isLineSelected">isLineSelected(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Returns.</p>
+<p>Returns. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_isSelectedLine">isSelectedLine(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the line at the given index is selected.</p>
+<p>Returns true if the line at the given index is selected. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_selectLine">selectLine(self, u32, bool)</a></td>
 <td class="enumeration">
-<p>
-Select of unselect the given line.</p>
+<p>Select of unselect the given line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_selectLines">selectLines(self, u32, u32, bool)</a></td>
 <td class="enumeration">
-<p>
-Select a range of lines.</p>
+<p>Select a range of lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_setColumnWidth">setColumnWidth(self, u32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the column width.</p>
+<p>Set the column width. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_setFocus">setFocus(self)</a></td>
 <td class="enumeration">
-<p>
-Set focus to the list.</p>
+<p>Set focus to the list. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_setVirtualCount">setVirtualCount(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Set the number of lines in a virtual list.</p>
+<p>Set the number of lines in a virtual list. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_sort">sort(self)</a></td>
 <td class="enumeration">
-<p>
-Sort list as before.</p>
+<p>Sort list as before. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_sort">sort(self, u32, bool, bool)</a></td>
 <td class="enumeration">
-<p>
-Sort the list by a given column If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
+<p>Sort the list by a given column  If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_toggleExpand">toggleExpand(self, *ListLine)</a></td>
 <td class="enumeration">
-<p>
-Collapse the given line.</p>
+<p>Collapse the given line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ListCtrl_unselectAll">unselectAll(self)</a></td>
 <td class="enumeration">
-<p>
-Unselect all lines.</p>
+<p>Unselect all lines. </p>
 </td>
 </tr>
 </table>
@@ -9909,8 +9669,7 @@ Unselect all lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Add one column in a multi columns list.</p>
+<p>Add one column in a multi columns list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addColumn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})</code>
 </p>
@@ -9925,8 +9684,7 @@ Add one column in a multi columns list.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear all lines.</p>
+<p>Clear all lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -9941,8 +9699,7 @@ Clear all lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Collapse the given line.</p>
+<p>Collapse the given line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">collapse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -9957,8 +9714,7 @@ Collapse the given line.</p>
 </tr>
 </table>
 </p>
-<p>
-Collapse all lines.</p>
+<p>Collapse all lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">collapseAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -9973,8 +9729,7 @@ Collapse all lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute global layout, once all lines have been added.</p>
+<p>Compute global layout, once all lines have been added. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -9989,13 +9744,11 @@ Compute global layout, once all lines have been added.</p>
 </tr>
 </table>
 </p>
-<p>
-Add one new line.</p>
+<p>Add one new line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, parentLine: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
-Add one line, and set first column.</p>
+<p>Add one line, and set first column. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, parentLine: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </p>
@@ -10038,8 +9791,7 @@ Add one line, and set first column.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the corresponding line visible.</p>
+<p>Set the corresponding line visible. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureVisibleLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </p>
@@ -10054,8 +9806,7 @@ Set the corresponding line visible.</p>
 </tr>
 </table>
 </p>
-<p>
-Expand the given line.</p>
+<p>Expand the given line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -10070,8 +9821,7 @@ Expand the given line.</p>
 </tr>
 </table>
 </p>
-<p>
-Get all the checked lines.</p>
+<p>Get all the checked lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCheckedLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -10086,8 +9836,7 @@ Get all the checked lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the first visible line index.</p>
+<p>Returns the first visible line index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFirstVisibleLineIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -10102,8 +9851,7 @@ Returns the first visible line index.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the line with the keyboard focus.</p>
+<p>Get the line with the keyboard focus. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFocusLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </p>
@@ -10118,8 +9866,7 @@ Get the line with the keyboard focus.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the last visible line index.</p>
+<p>Returns the last visible line index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLastVisibleLineIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -10134,8 +9881,7 @@ Returns the last visible line index.</p>
 </tr>
 </table>
 </p>
-<p>
-Get a line by index.</p>
+<p>Get a line by index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </p>
@@ -10150,8 +9896,7 @@ Get a line by index.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of lines in the list.</p>
+<p>Returns the number of lines in the list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLineCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -10166,8 +9911,7 @@ Returns the number of lines in the list.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the height of one line.</p>
+<p>Get the height of one line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLineHeight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -10182,8 +9926,7 @@ Get the height of one line.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a selected line Mostly for singlesel mode.</p>
+<p>Returns a selected line  Mostly for singlesel mode. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </p>
@@ -10198,8 +9941,7 @@ Returns a selected line Mostly for singlesel mode.</p>
 </tr>
 </table>
 </p>
-<p>
-Get all the selected lines.</p>
+<p>Get all the selected lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -10214,8 +9956,7 @@ Get all the selected lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns.</p>
+<p>Returns. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isLineSelected</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -10230,8 +9971,7 @@ Returns.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the line at the given index is selected.</p>
+<p>Returns true if the line at the given index is selected. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSelectedLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -10246,8 +9986,7 @@ Returns true if the line at the given index is selected.</p>
 </tr>
 </table>
 </p>
-<p>
-Select of unselect the given line.</p>
+<p>Select of unselect the given line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
@@ -10262,8 +10001,7 @@ Select of unselect the given line.</p>
 </tr>
 </table>
 </p>
-<p>
-Select a range of lines.</p>
+<p>Select a range of lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, start: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, end: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
@@ -10278,8 +10016,7 @@ Select a range of lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the column width.</p>
+<p>Set the column width. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColumnWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -10294,8 +10031,7 @@ Set the column width.</p>
 </tr>
 </table>
 </p>
-<p>
-Set focus to the list.</p>
+<p>Set focus to the list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -10310,8 +10046,7 @@ Set focus to the list.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the number of lines in a virtual list.</p>
+<p>Set the number of lines in a virtual list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVirtualCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, count: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </p>
@@ -10326,13 +10061,11 @@ Set the number of lines in a virtual list.</p>
 </tr>
 </table>
 </p>
-<p>
-Sort list as before.</p>
+<p>Sort list as before. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
-<p>
-Sort the list by a given column If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the header (if it exists).</p>
+<p>Sort the list by a given column  If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, descentOrder = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, persistent = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </p>
@@ -10347,8 +10080,7 @@ Sort the list by a given column If <code class="incode">persistent</code> is tru
 </tr>
 </table>
 </p>
-<p>
-Collapse the given line.</p>
+<p>Collapse the given line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toggleExpand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -10363,8 +10095,7 @@ Collapse the given line.</p>
 </tr>
 </table>
 </p>
-<p>
-Unselect all lines.</p>
+<p>Unselect all lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -10414,16 +10145,14 @@ VertLines</td>
 <td class="tdname">
 ForceMarginExpandMark</td>
 <td class="enumeration">
-<p>
-Force one margin even if no expand mark.</p>
+<p>Force one margin even if no expand mark. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 NoMouseEmptySel</td>
 <td class="enumeration">
-<p>
-Click does not clear selection if not on an item.</p>
+<p>Click does not clear selection if not on an item. </p>
 </td>
 </tr>
 <tr>
@@ -10639,8 +10368,7 @@ bool</td>
 <td class="enumeration">
 <a href="#Gui_ListLine_getItem">getItem(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Get an item by index.</p>
+<p>Get an item by index. </p>
 </td>
 </tr>
 <tr>
@@ -10653,8 +10381,7 @@ Get an item by index.</p>
 <td class="enumeration">
 <a href="#Gui_ListLine_setItem">setItem(self, u32, string, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Initialize a given column item.</p>
+<p>Initialize a given column item. </p>
 </td>
 </tr>
 </table>
@@ -10683,8 +10410,7 @@ Initialize a given column item.</p>
 </tr>
 </table>
 </p>
-<p>
-Get an item by index.</p>
+<p>Get an item by index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListItem">ListItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -10713,8 +10439,7 @@ Get an item by index.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize a given column item.</p>
+<p>Initialize a given column item. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListItem">ListItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -10981,40 +10706,35 @@ bool</td>
 <td class="enumeration">
 <a href="#Gui_MenuCtrl_addItem">addItem(self, WndId)</a></td>
 <td class="enumeration">
-<p>
-Add a new item.</p>
+<p>Add a new item. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MenuCtrl_addItem">addItem(self, string, WndId, const ref Icon, string, bool, bool)</a></td>
 <td class="enumeration">
-<p>
-Add a new item.</p>
+<p>Add a new item. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MenuCtrl_addPopup">addPopup(self, *MenuCtrl, WndId)</a></td>
 <td class="enumeration">
-<p>
-Add a new popup item.</p>
+<p>Add a new popup item. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MenuCtrl_addPopup">addPopup(self, string, *MenuCtrl, const ref Icon, WndId)</a></td>
 <td class="enumeration">
-<p>
-Add a new popup item.</p>
+<p>Add a new popup item. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MenuCtrl_addSeparator">addSeparator(self)</a></td>
 <td class="enumeration">
-<p>
-Add a separator.</p>
+<p>Add a separator. </p>
 </td>
 </tr>
 <tr>
@@ -11039,8 +10759,7 @@ Add a separator.</p>
 <td class="enumeration">
 <a href="#Gui_MenuCtrl_doModal">doModal(self, const ref Point, PopupPos, bool)</a></td>
 <td class="enumeration">
-<p>
-Make the popup menu modal Will return the selected id.</p>
+<p>Make the popup menu modal  Will return the selected id. </p>
 </td>
 </tr>
 <tr>
@@ -11103,13 +10822,11 @@ Make the popup menu modal Will return the selected id.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new item.</p>
+<p>Add a new item. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Add a new item.</p>
+<p>Add a new item. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, rightName: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, disabled = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, checked = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </p>
@@ -11124,13 +10841,11 @@ Add a new item.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new popup item.</p>
+<p>Add a new popup item. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, popup: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Add a new popup item.</p>
+<p>Add a new popup item. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, popup: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </p>
@@ -11145,8 +10860,7 @@ Add a new popup item.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a separator.</p>
+<p>Add a separator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -11203,8 +10917,7 @@ Add a separator.</p>
 </tr>
 </table>
 </p>
-<p>
-Make the popup menu modal Will return the selected id.</p>
+<p>Make the popup menu modal  Will return the selected id. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, surfacePos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">, pos = </span><span class="SyntaxConstant"><a href="#Gui_PopupPos">PopupPos</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TopLeft</span><span class="SyntaxCode">, autoDestroy: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"></code>
 </p>
@@ -11290,80 +11003,70 @@ label</td>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_confirm">confirm(*Surface, string, string)</a></td>
 <td class="enumeration">
-<p>
-Message box to <code class="incode">confirm</code> something.</p>
+<p>Message box to <code class="incode">confirm</code> something. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_create">create(*Surface, string, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_doModal">doModal(self, *Surface)</a></td>
 <td class="enumeration">
-<p>
-Display the box, centered, and returns the id of the pressed button.</p>
+<p>Display the box, centered, and returns the id of the pressed button. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_error">error(*Surface, string, string)</a></td>
 <td class="enumeration">
-<p>
-Message box to show an error.</p>
+<p>Message box to show an error. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_ok">ok(*Surface, string, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Message box with a <code class="incode">ok</code>.</p>
+<p>Message box with a <code class="incode">ok</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_okCancel">okCancel(*Surface, string, string, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button.</p>
+<p>Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_setIcon">setIcon(self, const ref Icon, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Set big icon.</p>
+<p>Set big icon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_setIconColor">setIconColor(self, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Set big icon color (icon must has been set before).</p>
+<p>Set big icon color (icon must has been set before). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_yesNo">yesNo(*Surface, string, string, string, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button.</p>
+<p>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel(*Surface, string, string, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button.</p>
+<p>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </p>
 </td>
 </tr>
 </table>
@@ -11378,8 +11081,7 @@ Message box with a <code class="incode">yes</code> and <code class="incode">no</
 </tr>
 </table>
 </p>
-<p>
-Message box to <code class="incode">confirm</code> something.</p>
+<p>Message box to <code class="incode">confirm</code> something. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">confirm</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, question: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"></code>
 </p>
@@ -11394,8 +11096,7 @@ Message box to <code class="incode">confirm</code> something.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates the message box.</p>
+<p>Creates the message box. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MessageDlg">MessageDlg</a></span><span class="SyntaxCode"></code>
 </p>
@@ -11410,8 +11111,7 @@ Creates the message box.</p>
 </tr>
 </table>
 </p>
-<p>
-Display the box, centered, and returns the id of the pressed button.</p>
+<p>Display the box, centered, and returns the id of the pressed button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -11426,8 +11126,7 @@ Display the box, centered, and returns the id of the pressed button.</p>
 </tr>
 </table>
 </p>
-<p>
-Message box to show an error.</p>
+<p>Message box to show an error. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">error</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, error: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </p>
@@ -11442,8 +11141,7 @@ Message box to show an error.</p>
 </tr>
 </table>
 </p>
-<p>
-Message box with a <code class="incode">ok</code>.</p>
+<p>Message box with a <code class="incode">ok</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ok</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})</code>
 </p>
@@ -11458,8 +11156,7 @@ Message box with a <code class="incode">ok</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button.</p>
+<p>Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">okCancel</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, defaultId = </span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BtnCancel</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"></code>
 </p>
@@ -11474,8 +11171,7 @@ Message box with a <code class="incode">ok</code> and <code class="incode">cance
 </tr>
 </table>
 </p>
-<p>
-Set big icon.</p>
+<p>Set big icon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </p>
@@ -11490,8 +11186,7 @@ Set big icon.</p>
 </tr>
 </table>
 </p>
-<p>
-Set big icon color (icon must has been set before).</p>
+<p>Set big icon color (icon must has been set before). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIconColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </p>
@@ -11506,8 +11201,7 @@ Set big icon color (icon must has been set before).</p>
 </tr>
 </table>
 </p>
-<p>
-Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button.</p>
+<p>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">yesNo</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, title: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, defaultId = </span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BtnNo</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"></code>
 </p>
@@ -11522,8 +11216,7 @@ Message box with a <code class="incode">yes</code> and <code class="incode">no</
 </tr>
 </table>
 </p>
-<p>
-Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button.</p>
+<p>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">yesNoCancel</span><span class="SyntaxCode">(from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, defaultId = </span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BtnCancel</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"></code>
 </p>
@@ -11754,48 +11447,42 @@ bool</td>
 <td class="enumeration">
 <a href="#Gui_Movie_isValid">isValid(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the movie has valid content.</p>
+<p>Returns true if the movie has valid content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Movie_pause">pause(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Set/Reset pause state.</p>
+<p>Set/Reset pause state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Movie_set">set(self, const ref ImageList)</a></td>
 <td class="enumeration">
-<p>
-Associate an image list.</p>
+<p>Associate an image list. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Movie_set">set(self, string)</a></td>
 <td class="enumeration">
-<p>
-Associate a filename.</p>
+<p>Associate a filename. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Movie_setFrameIndex">setFrameIndex(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Set the current video frame.</p>
+<p>Set the current video frame. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Movie_update">update(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Update timing and change frames.</p>
+<p>Update timing and change frames. </p>
 </td>
 </tr>
 </table>
@@ -11824,8 +11511,7 @@ Update timing and change frames.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the movie has valid content.</p>
+<p>Returns true if the movie has valid content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -11840,8 +11526,7 @@ Returns true if the movie has valid content.</p>
 </tr>
 </table>
 </p>
-<p>
-Set/Reset pause state.</p>
+<p>Set/Reset pause state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, state: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -11856,13 +11541,11 @@ Set/Reset pause state.</p>
 </tr>
 </table>
 </p>
-<p>
-Associate an image list.</p>
+<p>Associate an image list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, imageList: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Associate a filename.</p>
+<p>Associate a filename. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -11877,8 +11560,7 @@ Associate a filename.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the current video frame.</p>
+<p>Set the current video frame. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -11893,8 +11575,7 @@ Set the current video frame.</p>
 </tr>
 </table>
 </p>
-<p>
-Update timing and change frames.</p>
+<p>Update timing and change frames. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, dt: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -12099,24 +11780,21 @@ bc</td>
 <td class="enumeration">
 <a href="#Gui_PaintImage_draw">draw(self, func(*void, *Application, *Painter))</a></td>
 <td class="enumeration">
-<p>
-Draw to an image by calling the closure.</p>
+<p>Draw to an image by calling the closure. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PaintImage_draw">draw(s32, s32, func(*void, *Application, *Painter))</a></td>
 <td class="enumeration">
-<p>
-One shot paint to image.</p>
+<p>One shot paint to image. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PaintImage_init">init(self, s32, s32)</a></td>
 <td class="enumeration">
-<p>
-First init the PaintImage instance.</p>
+<p>First init the PaintImage instance. </p>
 </td>
 </tr>
 </table>
@@ -12131,13 +11809,11 @@ First init the PaintImage instance.</p>
 </tr>
 </table>
 </p>
-<p>
-Draw to an image by calling the closure.</p>
+<p>Draw to an image by calling the closure. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, call: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">))-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></code>
 </p>
-<p>
-One shot paint to image.</p>
+<p>One shot paint to image. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, call: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">))-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></code>
 </p>
@@ -12152,8 +11828,7 @@ One shot paint to image.</p>
 </tr>
 </table>
 </p>
-<p>
-First init the PaintImage instance.</p>
+<p>First init the PaintImage instance. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -12240,32 +11915,28 @@ s32</td>
 <td class="enumeration">
 <a href="#Gui_PalettePicker_addColor">addColor(self, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Add a color.</p>
+<p>Add a color. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PalettePicker_addHueColors">addHueColors(self, s32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Add a range of changing <code class="incode">hue</code>.</p>
+<p>Add a range of changing <code class="incode">hue</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PalettePicker_addLumColors">addLumColors(self, s32, const ref Color)</a></td>
 <td class="enumeration">
-<p>
-Add a range of changing <code class="incode">luminance</code>.</p>
+<p>Add a range of changing <code class="incode">luminance</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PalettePicker_addSatColors">addSatColors(self, s32, const ref Color, f32)</a></td>
 <td class="enumeration">
-<p>
-Add a range of changing <code class="incode">saturation</code>.</p>
+<p>Add a range of changing <code class="incode">saturation</code>. </p>
 </td>
 </tr>
 <tr>
@@ -12314,8 +11985,7 @@ Add a range of changing <code class="incode">saturation</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a color.</p>
+<p>Add a color. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, c: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </p>
@@ -12330,8 +12000,7 @@ Add a color.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a range of changing <code class="incode">hue</code>.</p>
+<p>Add a range of changing <code class="incode">hue</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addHueColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, sat: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, lum: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -12346,8 +12015,7 @@ Add a range of changing <code class="incode">hue</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a range of changing <code class="incode">luminance</code>.</p>
+<p>Add a range of changing <code class="incode">luminance</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addLumColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, base: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </p>
@@ -12362,8 +12030,7 @@ Add a range of changing <code class="incode">luminance</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a range of changing <code class="incode">saturation</code>.</p>
+<p>Add a range of changing <code class="incode">saturation</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSatColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, base: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, lum: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
 </p>
@@ -12488,32 +12155,28 @@ s32</td>
 <td class="enumeration">
 <a href="#Gui_PopupListCtrl_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
 <td class="enumeration">
-<p>
-Add a new item in the list.</p>
+<p>Add a new item in the list. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PopupListCtrl_addSeparator">addSeparator(self)</a></td>
 <td class="enumeration">
-<p>
-Add a separator.</p>
+<p>Add a separator. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PopupListCtrl_create">create(*Wnd)</a></td>
 <td class="enumeration">
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PopupListCtrl_show">show(self, f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Show popup.</p>
+<p>Show popup. </p>
 </td>
 </tr>
 </table>
@@ -12528,8 +12191,7 @@ Show popup.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new item in the list.</p>
+<p>Add a new item in the list. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, userData0: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, userData1: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </p>
@@ -12544,8 +12206,7 @@ Add a new item in the list.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a separator.</p>
+<p>Add a separator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -12560,8 +12221,7 @@ Add a separator.</p>
 </tr>
 </table>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(owner: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -12576,8 +12236,7 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
-<p>
-Show popup.</p>
+<p>Show popup. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)</code>
 </p>
@@ -12894,8 +12553,7 @@ f32</td>
 <td class="enumeration">
 <a href="#Gui_ProgressBar_setProgression">setProgression(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the progression in [0..1] range.</p>
+<p>Set the progression in [0..1] range. </p>
 </td>
 </tr>
 </table>
@@ -12938,8 +12596,7 @@ Set the progression in [0..1] range.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the progression in [0..1] range.</p>
+<p>Set the progression in [0..1] range. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setProgression</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, prg: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -13107,32 +12764,28 @@ Core.Array'({item: *Gui.PropertyListItem, lvl: s32})</td>
 <td class="enumeration">
 <a href="#Gui_PropertyList_addItem">addItem(self, any)</a></td>
 <td class="enumeration">
-<p>
-Add a new struct to display.</p>
+<p>Add a new struct to display. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PropertyList_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
-<p>
-Creates a new PropertyList instance.</p>
+<p>Creates a new PropertyList instance. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PropertyList_refresh">refresh(self)</a></td>
 <td class="enumeration">
-<p>
-Refresh displayed values.</p>
+<p>Refresh displayed values. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PropertyList_setStringFilter">setStringFilter(self, string)</a></td>
 <td class="enumeration">
-<p>
-Show hidden content depending on the input filter.</p>
+<p>Show hidden content depending on the input filter. </p>
 </td>
 </tr>
 </table>
@@ -13227,8 +12880,7 @@ Show hidden content depending on the input filter.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new struct to display.</p>
+<p>Add a new struct to display. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, val: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)</code>
 </p>
@@ -13243,8 +12895,7 @@ Add a new struct to display.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new PropertyList instance.</p>
+<p>Creates a new PropertyList instance. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {}, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PropertyList">PropertyList</a></span><span class="SyntaxCode"></code>
 </p>
@@ -13259,8 +12910,7 @@ Creates a new PropertyList instance.</p>
 </tr>
 </table>
 </p>
-<p>
-Refresh displayed values.</p>
+<p>Refresh displayed values. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">refresh</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -13275,8 +12925,7 @@ Refresh displayed values.</p>
 </tr>
 </table>
 </p>
-<p>
-Show hidden content depending on the input filter.</p>
+<p>Show hidden content depending on the input filter. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setStringFilter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, filter: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -13331,16 +12980,14 @@ prop</td>
 <td class="enumeration">
 <a href="#Gui_PropertyListCtrl_addItem">addItem(self, any)</a></td>
 <td class="enumeration">
-<p>
-Add a new struct to display.</p>
+<p>Add a new struct to display. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_PropertyListCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
-<p>
-Creates a new PropertyList instance.</p>
+<p>Creates a new PropertyList instance. </p>
 </td>
 </tr>
 </table>
@@ -13355,8 +13002,7 @@ Creates a new PropertyList instance.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new struct to display.</p>
+<p>Add a new struct to display. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, val: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)</code>
 </p>
@@ -13371,8 +13017,7 @@ Add a new struct to display.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new PropertyList instance.</p>
+<p>Creates a new PropertyList instance. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {}, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PropertyListCtrl">PropertyListCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -13755,8 +13400,7 @@ Gui.SigArray'(closure(*Gui.RadioButton))</td>
 <td class="enumeration">
 <a href="#Gui_RadioButton_setChecked">setChecked(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Set the checked state.</p>
+<p>Set the checked state. </p>
 </td>
 </tr>
 </table>
@@ -13813,8 +13457,7 @@ Set the checked state.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the checked state.</p>
+<p>Set the checked state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setChecked</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, checked: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -13960,8 +13603,7 @@ CursorPageUp</td>
 <td class="tdname">
 CursorPageDown</td>
 <td class="enumeration">
-<p>
-CMD_CURSOR_MATCH_PAIR.</p>
+<p>CMD_CURSOR_MATCH_PAIR. </p>
 </td>
 </tr>
 <tr>
@@ -13992,8 +13634,7 @@ DeleteRight</td>
 <td class="tdname">
 DeleteLine</td>
 <td class="enumeration">
-<p>
-CMD_EDIT_DELETE_LINE.</p>
+<p>CMD_EDIT_DELETE_LINE. </p>
 </td>
 </tr>
 <tr>
@@ -14018,8 +13659,7 @@ DeleteWordLeft</td>
 <td class="tdname">
 DeleteWordRight</td>
 <td class="enumeration">
-<p>
-CMD_EDIT_DELETE_LINE_LEFTCMD_EDIT_DELETE_LINE_RIGHT.</p>
+<p>CMD_EDIT_DELETE_LINE_LEFT CMD_EDIT_DELETE_LINE_RIGHT. </p>
 </td>
 </tr>
 <tr>
@@ -14158,8 +13798,7 @@ SelectPageUp</td>
 <td class="tdname">
 SelectPageDown</td>
 <td class="enumeration">
-<p>
-CMD_SEL_HIDE_LINECMD_MARKER_BOOKMARK_ADDCMD_MARKER_BOOKMARK_PREVCMD_MARKER_BOOKMARK_NEXTCMD_MARKER_BOOKMARK_FASTCMD_MAKE_UPPERCMD_MAKE_LOWERCMD_COMMENT_CPPCMD_UNCOMMENT_CPP.</p>
+<p>CMD_SEL_HIDE_LINE CMD_MARKER_BOOKMARK_ADD CMD_MARKER_BOOKMARK_PREV CMD_MARKER_BOOKMARK_NEXT CMD_MARKER_BOOKMARK_FAST CMD_MAKE_UPPER CMD_MAKE_LOWER CMD_COMMENT_CPP CMD_UNCOMMENT_CPP. </p>
 </td>
 </tr>
 </table>
@@ -14516,8 +14155,7 @@ selBegUndo</td>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_addText">addText(self, string, RichEditStyleRef)</a></td>
 <td class="enumeration">
-<p>
-Append a text with a given style.</p>
+<p>Append a text with a given style. </p>
 </td>
 </tr>
 <tr>
@@ -14536,8 +14174,7 @@ Append a text with a given style.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_charPressed">charPressed(self, Key, rune, KeyModifiers)</a></td>
 <td class="enumeration">
-<p>
-Simulate a keyboard character pressed.</p>
+<p>Simulate a keyboard character pressed. </p>
 </td>
 </tr>
 <tr>
@@ -14550,8 +14187,7 @@ Simulate a keyboard character pressed.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Clear content.</p>
+<p>Clear content. </p>
 </td>
 </tr>
 <tr>
@@ -14588,8 +14224,7 @@ Clear content.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_deleteBegLine">deleteBegLine(self, string, bool)</a></td>
 <td class="enumeration">
-<p>
-Delete a given text at the start of each selected line.</p>
+<p>Delete a given text at the start of each selected line. </p>
 </td>
 </tr>
 <tr>
@@ -14644,16 +14279,14 @@ Delete a given text at the start of each selected line.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_evaluateSize">evaluateSize(self)</a></td>
 <td class="enumeration">
-<p>
-Evaluate the rendering size.</p>
+<p>Evaluate the rendering size. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_executeCommand">executeCommand(self, RichEditCommand)</a></td>
 <td class="enumeration">
-<p>
-Execute a command.</p>
+<p>Execute a command. </p>
 </td>
 </tr>
 <tr>
@@ -14696,8 +14329,7 @@ Execute a command.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_getRune">getRune(self, const ref RichEditCursor)</a></td>
 <td class="enumeration">
-<p>
-Get the rune at the given cursor pos.</p>
+<p>Get the rune at the given cursor pos. </p>
 </td>
 </tr>
 <tr>
@@ -14710,8 +14342,7 @@ Get the rune at the given cursor pos.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_getSelectedText">getSelectedText(self)</a></td>
 <td class="enumeration">
-<p>
-Get the selected text.</p>
+<p>Get the selected text. </p>
 </td>
 </tr>
 <tr>
@@ -14724,16 +14355,14 @@ Get the selected text.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_getText">getText(self)</a></td>
 <td class="enumeration">
-<p>
-Get the full text.</p>
+<p>Get the full text. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_getTextAndStyles">getTextAndStyles(self)</a></td>
 <td class="enumeration">
-<p>
-Get the full text with the associated styles per character.</p>
+<p>Get the full text with the associated styles per character. </p>
 </td>
 </tr>
 <tr>
@@ -14746,40 +14375,35 @@ Get the full text with the associated styles per character.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_insertBegLine">insertBegLine(self, string)</a></td>
 <td class="enumeration">
-<p>
-Insert text at the start of each selected line.</p>
+<p>Insert text at the start of each selected line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_insertRune">insertRune(self, rune)</a></td>
 <td class="enumeration">
-<p>
-Insert a rune.</p>
+<p>Insert a rune. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_insertText">insertText(self, string)</a></td>
 <td class="enumeration">
-<p>
-Insert a text with a given style.</p>
+<p>Insert a text with a given style. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_insertText">insertText(self, string, const ref Array'(u8))</a></td>
 <td class="enumeration">
-<p>
-Insert a text with a style per character.</p>
+<p>Insert a text with a style per character. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_isReadOnly">isReadOnly(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the rich edit is read only.</p>
+<p>Returns true if the rich edit is read only. </p>
 </td>
 </tr>
 <tr>
@@ -14792,16 +14416,14 @@ Returns true if the rich edit is read only.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_keyPressed">keyPressed(self, Key, KeyModifiers)</a></td>
 <td class="enumeration">
-<p>
-Simulate a keyboard pressed.</p>
+<p>Simulate a keyboard pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_lexAll">lexAll(self)</a></td>
 <td class="enumeration">
-<p>
-Lex the full text.</p>
+<p>Lex the full text. </p>
 </td>
 </tr>
 <tr>
@@ -14946,16 +14568,14 @@ Lex the full text.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_setForm">setForm(self, RichEditForm)</a></td>
 <td class="enumeration">
-<p>
-Set form.</p>
+<p>Set form. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_setLexer">setLexer(self, IRichEditLexer)</a></td>
 <td class="enumeration">
-<p>
-Associate a lexer.</p>
+<p>Associate a lexer. </p>
 </td>
 </tr>
 <tr>
@@ -14968,8 +14588,7 @@ Associate a lexer.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_setRichEdFlags">setRichEdFlags(self, RichEditFlags)</a></td>
 <td class="enumeration">
-<p>
-Set richedit flags.</p>
+<p>Set richedit flags. </p>
 </td>
 </tr>
 <tr>
@@ -14982,8 +14601,7 @@ Set richedit flags.</p>
 <td class="enumeration">
 <a href="#Gui_RichEditCtrl_setText">setText(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set the text content.</p>
+<p>Set the text content. </p>
 </td>
 </tr>
 <tr>
@@ -15018,8 +14636,7 @@ Set the text content.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a text with a given style.</p>
+<p>Append a text with a given style. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, txtStyle: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RichEditStyleRef</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </p>
@@ -15062,8 +14679,7 @@ Append a text with a given style.</p>
 </tr>
 </table>
 </p>
-<p>
-Simulate a keyboard character pressed.</p>
+<p>Simulate a keyboard character pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">charPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)</code>
 </p>
@@ -15092,8 +14708,7 @@ Simulate a keyboard character pressed.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear content.</p>
+<p>Clear content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15178,8 +14793,7 @@ Clear content.</p>
 </tr>
 </table>
 </p>
-<p>
-Delete a given text at the start of each selected line.</p>
+<p>Delete a given text at the start of each selected line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteBegLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, txt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, lastLine: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -15306,8 +14920,7 @@ Delete a given text at the start of each selected line.</p>
 </tr>
 </table>
 </p>
-<p>
-Evaluate the rendering size.</p>
+<p>Evaluate the rendering size. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">evaluateSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -15326,8 +14939,7 @@ Evaluate the rendering size.</p>
 </tr>
 </table>
 </p>
-<p>
-Execute a command.</p>
+<p>Execute a command. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">executeCommand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cmd: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -15426,8 +15038,7 @@ Execute a command.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the rune at the given cursor pos.</p>
+<p>Get the rune at the given cursor pos. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -15460,8 +15071,7 @@ Get the rune at the given cursor pos.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the selected text.</p>
+<p>Get the selected text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </p>
@@ -15490,8 +15100,7 @@ Get the selected text.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the full text.</p>
+<p>Get the full text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </p>
@@ -15506,8 +15115,7 @@ Get the full text.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the full text with the associated styles per character.</p>
+<p>Get the full text with the associated styles per character. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTextAndStyles</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -15540,8 +15148,7 @@ Get the full text with the associated styles per character.</p>
 </tr>
 </table>
 </p>
-<p>
-Insert text at the start of each selected line.</p>
+<p>Insert text at the start of each selected line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertBegLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, txt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -15556,8 +15163,7 @@ Insert text at the start of each selected line.</p>
 </tr>
 </table>
 </p>
-<p>
-Insert a rune.</p>
+<p>Insert a rune. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
@@ -15572,13 +15178,11 @@ Insert a rune.</p>
 </tr>
 </table>
 </p>
-<p>
-Insert a text with a given style.</p>
+<p>Insert a text with a given style. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Insert a text with a style per character.</p>
+<p>Insert a text with a style per character. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, txtStyles: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">))</code>
 </p>
@@ -15593,8 +15197,7 @@ Insert a text with a style per character.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the rich edit is read only.</p>
+<p>Returns true if the rich edit is read only. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isReadOnly</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15623,8 +15226,7 @@ Returns true if the rich edit is read only.</p>
 </tr>
 </table>
 </p>
-<p>
-Simulate a keyboard pressed.</p>
+<p>Simulate a keyboard pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">keyPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)</code>
 </p>
@@ -15639,8 +15241,7 @@ Simulate a keyboard pressed.</p>
 </tr>
 </table>
 </p>
-<p>
-Lex the full text.</p>
+<p>Lex the full text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lexAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15977,8 +15578,7 @@ Lex the full text.</p>
 </tr>
 </table>
 </p>
-<p>
-Set form.</p>
+<p>Set form. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditForm">RichEditForm</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -15993,8 +15593,7 @@ Set form.</p>
 </tr>
 </table>
 </p>
-<p>
-Associate a lexer.</p>
+<p>Associate a lexer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setLexer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, lex: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -16023,8 +15622,7 @@ Associate a lexer.</p>
 </tr>
 </table>
 </p>
-<p>
-Set richedit flags.</p>
+<p>Set richedit flags. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRichEdFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, flags: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditFlags">RichEditFlags</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -16053,8 +15651,7 @@ Set richedit flags.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the text content.</p>
+<p>Set the text content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -16858,16 +16455,14 @@ Core.Math.Point</td>
 <td class="enumeration">
 <a href="#Gui_ScrollWnd_getScrollPos">getScrollPos(self)</a></td>
 <td class="enumeration">
-<p>
-Get the current scroll position.</p>
+<p>Get the current scroll position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_ScrollWnd_setScrollPos">setScrollPos(self, const ref Point)</a></td>
 <td class="enumeration">
-<p>
-Set the current scroll position.</p>
+<p>Set the current scroll position. </p>
 </td>
 </tr>
 <tr>
@@ -16880,8 +16475,7 @@ Set the current scroll position.</p>
 <td class="enumeration">
 <a href="#Gui_ScrollWnd_setScrollSize">setScrollSize(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the scroll size (window virtual size).</p>
+<p>Set the scroll size (window virtual size). </p>
 </td>
 </tr>
 </table>
@@ -16952,8 +16546,7 @@ Set the scroll size (window virtual size).</p>
 </tr>
 </table>
 </p>
-<p>
-Get the current scroll position.</p>
+<p>Get the current scroll position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </p>
@@ -16968,8 +16561,7 @@ Get the current scroll position.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the current scroll position.</p>
+<p>Set the current scroll position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
 </p>
@@ -16987,8 +16579,7 @@ Set the current scroll position.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the scroll size (window virtual size).</p>
+<p>Set the scroll size (window virtual size). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17080,16 +16671,14 @@ Core.Array'({start: u32, end: u32})</td>
 <td class="enumeration">
 <a href="#Gui_SelModel_select">select(self, u32, bool)</a></td>
 <td class="enumeration">
-<p>
-Select the given index.</p>
+<p>Select the given index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_SelModel_unselectAll">unselectAll(self)</a></td>
 <td class="enumeration">
-<p>
-Unselect all.</p>
+<p>Unselect all. </p>
 </td>
 </tr>
 </table>
@@ -17170,8 +16759,7 @@ Unselect all.</p>
 </tr>
 </table>
 </p>
-<p>
-Select the given index.</p>
+<p>Select the given index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">select</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -17186,8 +16774,7 @@ Select the given index.</p>
 </tr>
 </table>
 </p>
-<p>
-Unselect all.</p>
+<p>Unselect all. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17637,16 +17224,14 @@ aniStep2</td>
 <td class="enumeration">
 <a href="#Gui_Slider_setMinMax">setMinMax(self, f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values.</p>
+<p>Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Slider_setRangeValues">setRangeValues(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set left and right values, for a range.</p>
+<p>Set left and right values, for a range. </p>
 </td>
 </tr>
 <tr>
@@ -17659,16 +17244,14 @@ Set left and right values, for a range.</p>
 <td class="enumeration">
 <a href="#Gui_Slider_setValueLeft">setValueLeft(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the left value (in case of a range).</p>
+<p>Set the left value (in case of a range). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Slider_setValueRight">setValueRight(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the right value (in case of a range).</p>
+<p>Set the right value (in case of a range). </p>
 </td>
 </tr>
 </table>
@@ -17767,8 +17350,7 @@ Set the right value (in case of a range).</p>
 </tr>
 </table>
 </p>
-<p>
-Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values.</p>
+<p>Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMax</span><span class="SyntaxCode">(self, min: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, steps: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </p>
@@ -17783,8 +17365,7 @@ Set the <code class="incode">min</code>, <code class="incode">max</code> and <co
 </tr>
 </table>
 </p>
-<p>
-Set left and right values, for a range.</p>
+<p>Set left and right values, for a range. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRangeValues</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17813,8 +17394,7 @@ Set left and right values, for a range.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the left value (in case of a range).</p>
+<p>Set the left value (in case of a range). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValueLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17829,8 +17409,7 @@ Set the left value (in case of a range).</p>
 </tr>
 </table>
 </p>
-<p>
-Set the right value (in case of a range).</p>
+<p>Set the right value (in case of a range). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValueRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17909,40 +17488,35 @@ edit</td>
 <td class="enumeration">
 <a href="#Gui_SliderCtrl_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
 <td class="enumeration">
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set a f32 range.</p>
+<p>Set a f32 range. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_SliderCtrl_setMinMaxS64">setMinMaxS64(self, s64, s64)</a></td>
 <td class="enumeration">
-<p>
-Set a f64 range.</p>
+<p>Set a f64 range. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_SliderCtrl_setMinMaxU64">setMinMaxU64(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Set a u64 range.</p>
+<p>Set a u64 range. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_SliderCtrl_setValue">setValue(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the slider current value.</p>
+<p>Set the slider current value. </p>
 </td>
 </tr>
 </table>
@@ -17971,8 +17545,7 @@ Set the slider current value.</p>
 </tr>
 </table>
 </p>
-<p>
-Create the popup list, but do not display it.</p>
+<p>Create the popup list, but do not display it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {}, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SliderCtrl">SliderCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17987,8 +17560,7 @@ Create the popup list, but do not display it.</p>
 </tr>
 </table>
 </p>
-<p>
-Set a f32 range.</p>
+<p>Set a f32 range. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxF32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -18003,8 +17575,7 @@ Set a f32 range.</p>
 </tr>
 </table>
 </p>
-<p>
-Set a f64 range.</p>
+<p>Set a f64 range. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)</code>
 </p>
@@ -18019,8 +17590,7 @@ Set a f64 range.</p>
 </tr>
 </table>
 </p>
-<p>
-Set a u64 range.</p>
+<p>Set a u64 range. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -18035,8 +17605,7 @@ Set a u64 range.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the slider current value.</p>
+<p>Set the slider current value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -18150,16 +17719,14 @@ bool</td>
 <td class="enumeration">
 <a href="#Gui_SplitterCtrl_addPane">addPane(self, *Wnd, f32, bool)</a></td>
 <td class="enumeration">
-<p>
-Add a new pane.</p>
+<p>Add a new pane. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_SplitterCtrl_create">create(*Wnd, const ref Rectangle, bool, WndId)</a></td>
 <td class="enumeration">
-<p>
-Creates a new SplitterCtrl instance.</p>
+<p>Creates a new SplitterCtrl instance. </p>
 </td>
 </tr>
 <tr>
@@ -18172,8 +17739,7 @@ Creates a new SplitterCtrl instance.</p>
 <td class="enumeration">
 <a href="#Gui_SplitterCtrl_setPaneSize">setPaneSize(self, u32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the pane size (size of the first view).</p>
+<p>Set the pane size (size of the first view). </p>
 </td>
 </tr>
 </table>
@@ -18230,8 +17796,7 @@ Set the pane size (size of the first view).</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new pane.</p>
+<p>Add a new pane. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPane</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pane: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, paneSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">, title = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SplitterItem">SplitterItem</a></span><span class="SyntaxCode"></code>
 </p>
@@ -18246,8 +17811,7 @@ Add a new pane.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new SplitterCtrl instance.</p>
+<p>Creates a new SplitterCtrl instance. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {}, vertical = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -18276,8 +17840,7 @@ Creates a new SplitterCtrl instance.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the pane size (size of the first view).</p>
+<p>Set the pane size (size of the first view). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPaneSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, newSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -18424,16 +17987,14 @@ f32</td>
 <td class="enumeration">
 <a href="#Gui_StackLayoutCtrl_computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
-<p>
-Recompute layout of all childs.</p>
+<p>Recompute layout of all childs. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_StackLayoutCtrl_create">create(*Wnd, StackLayoutKind, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Create a layout control.</p>
+<p>Create a layout control. </p>
 </td>
 </tr>
 </table>
@@ -18462,8 +18023,7 @@ Create a layout control.</p>
 </tr>
 </table>
 </p>
-<p>
-Recompute layout of all childs.</p>
+<p>Recompute layout of all childs. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -18478,8 +18038,7 @@ Recompute layout of all childs.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a layout control.</p>
+<p>Create a layout control. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span><span class="SyntaxCode"> = .</span><span class="SyntaxConstant">Top</span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span><span class="SyntaxCode"></code>
 </p>
@@ -18726,136 +18285,119 @@ bool</td>
 <td class="enumeration">
 <a href="#Gui_Surface_bringToTop">bringToTop(self)</a></td>
 <td class="enumeration">
-<p>
-Bring the surface at the top of the Z order.</p>
+<p>Bring the surface at the top of the Z order. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_center">center(self, *Surface)</a></td>
 <td class="enumeration">
-<p>
-Center this surface relative to <code class="incode">from</code>.</p>
+<p>Center this surface relative to <code class="incode">from</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_constaintToScreen">constaintToScreen(self)</a></td>
 <td class="enumeration">
-<p>
-Constraint a window to be inside the closest monitor.</p>
+<p>Constraint a window to be inside the closest monitor. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_create">create(*Surface, s32, s32, s32, s32, SurfaceFlags, *Surface)</a></td>
 <td class="enumeration">
-<p>
-Creates the surface.</p>
+<p>Creates the surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_destroy">destroy(self)</a></td>
 <td class="enumeration">
-<p>
-Destroy the surface.</p>
+<p>Destroy the surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_disable">disable(self)</a></td>
 <td class="enumeration">
-<p>
-Enable the surface.</p>
+<p>Enable the surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_enable">enable(self)</a></td>
 <td class="enumeration">
-<p>
-Enable the surface.</p>
+<p>Enable the surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_getView">getView(self)</a></td>
 <td class="enumeration">
-<p>
-Returns inside view.</p>
+<p>Returns inside view. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_hide">hide(self)</a></td>
 <td class="enumeration">
-<p>
-Hide the surface.</p>
+<p>Hide the surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_invalidate">invalidate(self)</a></td>
 <td class="enumeration">
-<p>
-Invalidate the full surface to be painted.</p>
+<p>Invalidate the full surface to be painted. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Invalidate one part of the surface to be painted.</p>
+<p>Invalidate one part of the surface to be painted. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_paint">paint(self)</a></td>
 <td class="enumeration">
-<p>
-Main surface paint function.</p>
+<p>Main surface paint function. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_screenToSurface">screenToSurface(self, *Point)</a></td>
 <td class="enumeration">
-<p>
-Transform a point in screen space relative to the surface.</p>
+<p>Transform a point in screen space relative to the surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_setIcon">setIcon(self, const ref Icon)</a></td>
 <td class="enumeration">
-<p>
-Set the surface icon.</p>
+<p>Set the surface icon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_setPosition">setPosition(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Set the surface position.</p>
+<p>Set the surface position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_setSurfaceFlags">setSurfaceFlags(self, SurfaceFlags, SurfaceFlags)</a></td>
 <td class="enumeration">
-<p>
-Change flag surfaces.</p>
+<p>Change flag surfaces. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_setTitle">setTitle(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set the surface title.</p>
+<p>Set the surface title. </p>
 </td>
 </tr>
 <tr>
@@ -18868,40 +18410,35 @@ Set the surface title.</p>
 <td class="enumeration">
 <a href="#Gui_Surface_show">show(self)</a></td>
 <td class="enumeration">
-<p>
-Show the surface.</p>
+<p>Show the surface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_showMaximized">showMaximized(self)</a></td>
 <td class="enumeration">
-<p>
-Show the surface as maximized.</p>
+<p>Show the surface as maximized. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_showMinimized">showMinimized(self)</a></td>
 <td class="enumeration">
-<p>
-Show the surface as minimized.</p>
+<p>Show the surface as minimized. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_showNormal">showNormal(self)</a></td>
 <td class="enumeration">
-<p>
-Show the surface in its default state.</p>
+<p>Show the surface in its default state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Surface_surfaceToScreen">surfaceToScreen(self, *Point)</a></td>
 <td class="enumeration">
-<p>
-Transform a point relative to the surface in screen space.</p>
+<p>Transform a point relative to the surface in screen space. </p>
 </td>
 </tr>
 </table>
@@ -18916,8 +18453,7 @@ Transform a point relative to the surface in screen space.</p>
 </tr>
 </table>
 </p>
-<p>
-Bring the surface at the top of the Z order.</p>
+<p>Bring the surface at the top of the Z order. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -18932,8 +18468,7 @@ Bring the surface at the top of the Z order.</p>
 </tr>
 </table>
 </p>
-<p>
-Center this surface relative to <code class="incode">from</code>.</p>
+<p>Center this surface relative to <code class="incode">from</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">center</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -18948,8 +18483,7 @@ Center this surface relative to <code class="incode">from</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Constraint a window to be inside the closest monitor.</p>
+<p>Constraint a window to be inside the closest monitor. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">constaintToScreen</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -18964,8 +18498,7 @@ Constraint a window to be inside the closest monitor.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates the surface.</p>
+<p>Creates the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(surface: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">, mainSurface: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -18980,8 +18513,7 @@ Creates the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Destroy the surface.</p>
+<p>Destroy the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -18996,8 +18528,7 @@ Destroy the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Enable the surface.</p>
+<p>Enable the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19012,8 +18543,7 @@ Enable the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Enable the surface.</p>
+<p>Enable the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19028,8 +18558,7 @@ Enable the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns inside view.</p>
+<p>Returns inside view. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19044,8 +18573,7 @@ Returns inside view.</p>
 </tr>
 </table>
 </p>
-<p>
-Hide the surface.</p>
+<p>Hide the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hide</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19060,8 +18588,7 @@ Hide the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Invalidate the full surface to be painted.</p>
+<p>Invalidate the full surface to be painted. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19076,8 +18603,7 @@ Invalidate the full surface to be painted.</p>
 </tr>
 </table>
 </p>
-<p>
-Invalidate one part of the surface to be painted.</p>
+<p>Invalidate one part of the surface to be painted. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </p>
@@ -19092,8 +18618,7 @@ Invalidate one part of the surface to be painted.</p>
 </tr>
 </table>
 </p>
-<p>
-Main surface paint function.</p>
+<p>Main surface paint function. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19108,8 +18633,7 @@ Main surface paint function.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a point in screen space relative to the surface.</p>
+<p>Transform a point in screen space relative to the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pt: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
 </p>
@@ -19124,8 +18648,7 @@ Transform a point in screen space relative to the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the surface icon.</p>
+<p>Set the surface icon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -19140,8 +18663,7 @@ Set the surface icon.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the surface position.</p>
+<p>Set the surface position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </p>
@@ -19156,8 +18678,7 @@ Set the surface position.</p>
 </tr>
 </table>
 </p>
-<p>
-Change flag surfaces.</p>
+<p>Change flag surfaces. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSurfaceFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </p>
@@ -19172,8 +18693,7 @@ Change flag surfaces.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the surface title.</p>
+<p>Set the surface title. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTitle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -19202,8 +18722,7 @@ Set the surface title.</p>
 </tr>
 </table>
 </p>
-<p>
-Show the surface.</p>
+<p>Show the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19218,8 +18737,7 @@ Show the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Show the surface as maximized.</p>
+<p>Show the surface as maximized. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showMaximized</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19234,8 +18752,7 @@ Show the surface as maximized.</p>
 </tr>
 </table>
 </p>
-<p>
-Show the surface as minimized.</p>
+<p>Show the surface as minimized. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showMinimized</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19250,8 +18767,7 @@ Show the surface as minimized.</p>
 </tr>
 </table>
 </p>
-<p>
-Show the surface in its default state.</p>
+<p>Show the surface in its default state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showNormal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19266,8 +18782,7 @@ Show the surface in its default state.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a point relative to the surface in screen space.</p>
+<p>Transform a point relative to the surface in screen space. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">surfaceToScreen</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pt: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
 </p>
@@ -19661,8 +19176,7 @@ f32</td>
 <td class="enumeration">
 <a href="#Gui_Tab_addItem">addItem(self, string, const ref Icon, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Add a new view.</p>
+<p>Add a new view. </p>
 </td>
 </tr>
 <tr>
@@ -19675,16 +19189,14 @@ Add a new view.</p>
 <td class="enumeration">
 <a href="#Gui_Tab_select">select(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Select one tab at the given index.</p>
+<p>Select one tab at the given index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Tab_setForm">setForm(self, TabForm)</a></td>
 <td class="enumeration">
-<p>
-Set the tab form.</p>
+<p>Set the tab form. </p>
 </td>
 </tr>
 </table>
@@ -19755,8 +19267,7 @@ Set the tab form.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new view.</p>
+<p>Add a new view. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tabName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </p>
@@ -19785,8 +19296,7 @@ Add a new view.</p>
 </tr>
 </table>
 </p>
-<p>
-Select one tab at the given index.</p>
+<p>Select one tab at the given index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">select</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </p>
@@ -19801,8 +19311,7 @@ Select one tab at the given index.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the tab form.</p>
+<p>Set the tab form. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tabForm: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabForm">TabForm</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -20085,16 +19594,14 @@ colors</td>
 <td class="enumeration">
 <a href="#Gui_Theme_createDefaultFont">createDefaultFont(self, u32, FontFamilyStyle)</a></td>
 <td class="enumeration">
-<p>
-Create a default font with the given size.</p>
+<p>Create a default font with the given size. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Theme_createDefaultFontFS">createDefaultFontFS(self, u32, FontFamilyStyle)</a></td>
 <td class="enumeration">
-<p>
-Create a default font (fixed size) with the given size.</p>
+<p>Create a default font (fixed size) with the given size. </p>
 </td>
 </tr>
 <tr>
@@ -20145,8 +19652,7 @@ Create a default font (fixed size) with the given size.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a default font with the given size.</p>
+<p>Create a default font with the given size. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createDefaultFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, style = </span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Regular</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode"></code>
 </p>
@@ -20161,8 +19667,7 @@ Create a default font with the given size.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a default font (fixed size) with the given size.</p>
+<p>Create a default font (fixed size) with the given size. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createDefaultFontFS</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, style = </span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Regular</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode"></code>
 </p>
@@ -24561,8 +24066,7 @@ Pixel.FontFamily</td>
 <td class="enumeration">
 <a href="#Gui_ThemeStyle_create">create(self, *ThemeStyle)</a></td>
 <td class="enumeration">
-<p>
-Create a specific style based on the parent.</p>
+<p>Create a specific style based on the parent. </p>
 </td>
 </tr>
 <tr>
@@ -24663,8 +24167,7 @@ Create a specific style based on the parent.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a specific style based on the parent.</p>
+<p>Create a specific style based on the parent. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyle">ThemeStyle</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -24974,8 +24477,7 @@ aniMark</td>
 </tr>
 </table>
 </p>
-<p>
-Hide the current tooltip, if visible.</p>
+<p>Hide the current tooltip, if visible. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hide</span><span class="SyntaxCode">()</code>
 </p>
@@ -24990,8 +24492,7 @@ Hide the current tooltip, if visible.</p>
 </tr>
 </table>
 </p>
-<p>
-Show a tooltip.</p>
+<p>Show a tooltip. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(owner: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, surfacePos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, delay: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Duration</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">500</span><span class="SyntaxCode">'ms)</code>
 </p>
@@ -25254,8 +24755,7 @@ Gui.HookEvent</td>
 <td class="enumeration">
 <a href="#Gui_Wnd_applyLayout">applyLayout(self)</a></td>
 <td class="enumeration">
-<p>
-Apply the current layout (childs constraints).</p>
+<p>Apply the current layout (childs constraints). </p>
 </td>
 </tr>
 <tr>
@@ -25268,16 +24768,14 @@ Apply the current layout (childs constraints).</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_bringToFront">bringToFront(self)</a></td>
 <td class="enumeration">
-<p>
-Force the window to be the first painted (before all siblings).</p>
+<p>Force the window to be the first painted (before all siblings). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_bringToTop">bringToTop(self)</a></td>
 <td class="enumeration">
-<p>
-Force the window to be the last painted (on top of siblings).</p>
+<p>Force the window to be the last painted (on top of siblings). </p>
 </td>
 </tr>
 <tr>
@@ -25314,40 +24812,35 @@ Force the window to be the last painted (on top of siblings).</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_destroy">destroy(self)</a></td>
 <td class="enumeration">
-<p>
-Destroy the window.</p>
+<p>Destroy the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_destroyNow">destroyNow(self)</a></td>
 <td class="enumeration">
-<p>
-Destroy the window.</p>
+<p>Destroy the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_disable">disable(self)</a></td>
 <td class="enumeration">
-<p>
-Disable the window.</p>
+<p>Disable the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_enable">enable(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Enable/Disable the window.</p>
+<p>Enable/Disable the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_fitPosInParent">fitPosInParent(self, f32, f32, bool, bool)</a></td>
 <td class="enumeration">
-<p>
-Be sure rect is fully inside the parent rectangle (if possible).</p>
+<p>Be sure rect is fully inside the parent rectangle (if possible). </p>
 </td>
 </tr>
 <tr>
@@ -25360,32 +24853,28 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_getChildById">getChildById(self, string)</a></td>
 <td class="enumeration">
-<p>
-Retrieve the child with the given id.</p>
+<p>Retrieve the child with the given id. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_getClientRect">getClientRect(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the client area.</p>
+<p>Returns the client area. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the client area, with <code class="incode">padding</code> applied.</p>
+<p>Returns the client area, with <code class="incode">padding</code> applied. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_getFocus">getFocus(self)</a></td>
 <td class="enumeration">
-<p>
-Get the window with the keyboard focus.</p>
+<p>Get the window with the keyboard focus. </p>
 </td>
 </tr>
 <tr>
@@ -25398,16 +24887,14 @@ Get the window with the keyboard focus.</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_getKeyShortcut">getKeyShortcut(self, KeyModifiers, Key)</a></td>
 <td class="enumeration">
-<p>
-Get the id associated with a shortcut. null if none.</p>
+<p>Get the id associated with a shortcut. null if none. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_getKeyShortcutNameFor">getKeyShortcutNameFor(self, WndId)</a></td>
 <td class="enumeration">
-<p>
-Get the name associated with a given id shortcut.</p>
+<p>Get the name associated with a given id shortcut. </p>
 </td>
 </tr>
 <tr>
@@ -25420,32 +24907,28 @@ Get the name associated with a given id shortcut.</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_getOwner">getOwner(self)</a></td>
 <td class="enumeration">
-<p>
-Get the owner of the window.</p>
+<p>Get the owner of the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_getParentById">getParentById(self, string)</a></td>
 <td class="enumeration">
-<p>
-Retrieve the parent with the given id.</p>
+<p>Retrieve the parent with the given id. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_getRectIn">getRectIn(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Get the wnd position relative to a given parent.</p>
+<p>Get the wnd position relative to a given parent. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_getSurfaceRect">getSurfaceRect(self)</a></td>
 <td class="enumeration">
-<p>
-Get the wnd position in the surface.</p>
+<p>Get the wnd position in the surface. </p>
 </td>
 </tr>
 <tr>
@@ -25494,64 +24977,56 @@ Get the wnd position in the surface.</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_getWndAt">getWndAt(self, f32, f32, bool, bool)</a></td>
 <td class="enumeration">
-<p>
-Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
+<p>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_hasFocus">hasFocus(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the window has the keyboard focus.</p>
+<p>Returns true if the window has the keyboard focus. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_hide">hide(self)</a></td>
 <td class="enumeration">
-<p>
-Hide the window.</p>
+<p>Hide the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_invalidate">invalidate(self)</a></td>
 <td class="enumeration">
-<p>
-Force the window to be repainted.</p>
+<p>Force the window to be repainted. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Force o local position to be repainted.</p>
+<p>Force o local position to be repainted. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_isEnabled">isEnabled(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if window, and all its parents, are enabled.</p>
+<p>Returns true if window, and all its parents, are enabled. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_isParentOf">isParentOf(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>.</p>
+<p>Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_isVisible">isVisible(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Returns true if window, and all its parents, are visible.</p>
+<p>Returns true if window, and all its parents, are visible. </p>
 </td>
 </tr>
 <tr>
@@ -25564,40 +25039,35 @@ Returns true if window, and all its parents, are visible.</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Point)</a></td>
 <td class="enumeration">
-<p>
-Convert a local coordinate to a surface coordinate.</p>
+<p>Convert a local coordinate to a surface coordinate. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Convert a local coordinate to a surface coordinate.</p>
+<p>Convert a local coordinate to a surface coordinate. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_move">move(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Move the wnd.</p>
+<p>Move the wnd. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_notifyEvent">notifyEvent(self, Kind)</a></td>
 <td class="enumeration">
-<p>
-Send a notification event.</p>
+<p>Send a notification event. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent(self, Kind)</a></td>
 <td class="enumeration">
-<p>
-Send a notification event.</p>
+<p>Send a notification event. </p>
 </td>
 </tr>
 <tr>
@@ -25646,16 +25116,14 @@ Send a notification event.</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_registerAction">registerAction(self)</a></td>
 <td class="enumeration">
-<p>
-Register one new action.</p>
+<p>Register one new action. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_registerKeyShortcut">registerKeyShortcut(self, KeyModifiers, Key, WndId)</a></td>
 <td class="enumeration">
-<p>
-Register a keyboard shortcut.</p>
+<p>Register a keyboard shortcut. </p>
 </td>
 </tr>
 <tr>
@@ -25668,32 +25136,28 @@ Register a keyboard shortcut.</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_resize">resize(self, f32, f32, bool)</a></td>
 <td class="enumeration">
-<p>
-Resize the wnd.</p>
+<p>Resize the wnd. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_screenToSurface">screenToSurface(self, const ref Point)</a></td>
 <td class="enumeration">
-<p>
-Convert a screen coordinate to a surface coordinate (relative to my surface).</p>
+<p>Convert a screen coordinate to a surface coordinate (relative to my surface). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_sendCommandEvent">sendCommandEvent(self, WndId)</a></td>
 <td class="enumeration">
-<p>
-Send the command event with the given id to the window.</p>
+<p>Send the command event with the given id to the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_sendComputeCommandStateEvent">sendComputeCommandStateEvent(self, WndId)</a></td>
 <td class="enumeration">
-<p>
-Send the command state event with the given id to the window.</p>
+<p>Send the command state event with the given id to the window. </p>
 </td>
 </tr>
 <tr>
@@ -25754,72 +25218,63 @@ Send the command state event with the given id to the window.</p>
 <td class="enumeration">
 <a href="#Gui_Wnd_setFocus">setFocus(self)</a></td>
 <td class="enumeration">
-<p>
-Set the keyboard focus.</p>
+<p>Set the keyboard focus. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_setMargin">setMargin(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set margin for childs If a value is Swag.F32.Inf, then it won't be changed.</p>
+<p>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_setPadding">setPadding(self, f32, f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set padding for childs If a value is Swag.F32.Inf, then it won't be changed.</p>
+<p>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_setParent">setParent(self, *Wnd)</a></td>
 <td class="enumeration">
-<p>
-Set window parent.</p>
+<p>Set window parent. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_setPosition">setPosition(self, const ref Rectangle, bool)</a></td>
 <td class="enumeration">
-<p>
-Move and size the wnd.</p>
+<p>Move and size the wnd. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_setPosition">setPosition(self, f32, f32, f32, f32, bool)</a></td>
 <td class="enumeration">
-<p>
-Move and size the wnd.</p>
+<p>Move and size the wnd. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_show">show(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Show the window.</p>
+<p>Show the window. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_surfaceToLocal">surfaceToLocal(self, const ref Point)</a></td>
 <td class="enumeration">
-<p>
-Convert a surface coordinate to a local coordinate (relative to me).</p>
+<p>Convert a surface coordinate to a local coordinate (relative to me). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_Wnd_updateCommandState">updateCommandState(self)</a></td>
 <td class="enumeration">
-<p>
-Main function to update command state of various windows/widgets.</p>
+<p>Main function to update command state of various windows/widgets. </p>
 </td>
 </tr>
 </table>
@@ -26142,8 +25597,7 @@ Main function to update command state of various windows/widgets.</p>
 </tr>
 </table>
 </p>
-<p>
-Apply the current layout (childs constraints).</p>
+<p>Apply the current layout (childs constraints). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26161,8 +25615,7 @@ Apply the current layout (childs constraints).</p>
 </tr>
 </table>
 </p>
-<p>
-Force the window to be the first painted (before all siblings).</p>
+<p>Force the window to be the first painted (before all siblings). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToFront</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26177,8 +25630,7 @@ Force the window to be the first painted (before all siblings).</p>
 </tr>
 </table>
 </p>
-<p>
-Force the window to be the last painted (on top of siblings).</p>
+<p>Force the window to be the last painted (on top of siblings). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26237,8 +25689,7 @@ Force the window to be the last painted (on top of siblings).</p>
 </tr>
 </table>
 </p>
-<p>
-Destroy the window.</p>
+<p>Destroy the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26253,8 +25704,7 @@ Destroy the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Destroy the window.</p>
+<p>Destroy the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26269,8 +25719,7 @@ Destroy the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Disable the window.</p>
+<p>Disable the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26285,8 +25734,7 @@ Disable the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Enable/Disable the window.</p>
+<p>Enable/Disable the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, state = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
@@ -26301,8 +25749,7 @@ Enable/Disable the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Be sure rect is fully inside the parent rectangle (if possible).</p>
+<p>Be sure rect is fully inside the parent rectangle (if possible). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fitPosInParent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, marginW: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, marginH: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, simX = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, simY = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </p>
@@ -26331,8 +25778,7 @@ Be sure rect is fully inside the parent rectangle (if possible).</p>
 </tr>
 </table>
 </p>
-<p>
-Retrieve the child with the given id.</p>
+<p>Retrieve the child with the given id. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getChildById</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, childId: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </p>
@@ -26347,8 +25793,7 @@ Retrieve the child with the given id.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the client area.</p>
+<p>Returns the client area. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </p>
@@ -26363,8 +25808,7 @@ Returns the client area.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the client area, with <code class="incode">padding</code> applied.</p>
+<p>Returns the client area, with <code class="incode">padding</code> applied. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientRectPadding</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </p>
@@ -26379,8 +25823,7 @@ Returns the client area, with <code class="incode">padding</code> applied.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the window with the keyboard focus.</p>
+<p>Get the window with the keyboard focus. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </p>
@@ -26409,8 +25852,7 @@ Get the window with the keyboard focus.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the id associated with a shortcut. null if none.</p>
+<p>Get the id associated with a shortcut. null if none. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"></code>
 </p>
@@ -26425,8 +25867,7 @@ Get the id associated with a shortcut. null if none.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the name associated with a given id shortcut.</p>
+<p>Get the name associated with a given id shortcut. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyShortcutNameFor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </p>
@@ -26455,8 +25896,7 @@ Get the name associated with a given id shortcut.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the owner of the window.</p>
+<p>Get the owner of the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOwner</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </p>
@@ -26471,8 +25911,7 @@ Get the owner of the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Retrieve the parent with the given id.</p>
+<p>Retrieve the parent with the given id. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getParentById</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, parentId: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </p>
@@ -26487,8 +25926,7 @@ Retrieve the parent with the given id.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the wnd position relative to a given parent.</p>
+<p>Get the wnd position relative to a given parent. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRectIn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, in: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </p>
@@ -26503,8 +25941,7 @@ Get the wnd position relative to a given parent.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the wnd position in the surface.</p>
+<p>Get the wnd position in the surface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSurfaceRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </p>
@@ -26617,8 +26054,7 @@ Get the wnd position in the surface.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the child window at the given coordinate Coordinate is expressed in the parent system.</p>
+<p>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getWndAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, getDisabled = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, getHidden = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </p>
@@ -26633,8 +26069,7 @@ Get the child window at the given coordinate Coordinate is expressed in the pare
 </tr>
 </table>
 </p>
-<p>
-Returns true if the window has the keyboard focus.</p>
+<p>Returns true if the window has the keyboard focus. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26649,8 +26084,7 @@ Returns true if the window has the keyboard focus.</p>
 </tr>
 </table>
 </p>
-<p>
-Hide the window.</p>
+<p>Hide the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hide</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26665,8 +26099,7 @@ Hide the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Force the window to be repainted.</p>
+<p>Force the window to be repainted. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26681,8 +26114,7 @@ Force the window to be repainted.</p>
 </tr>
 </table>
 </p>
-<p>
-Force o local position to be repainted.</p>
+<p>Force o local position to be repainted. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </p>
@@ -26697,8 +26129,7 @@ Force o local position to be repainted.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if window, and all its parents, are enabled.</p>
+<p>Returns true if window, and all its parents, are enabled. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEnabled</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -26713,8 +26144,7 @@ Returns true if window, and all its parents, are enabled.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>.</p>
+<p>Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isParentOf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, child: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -26729,8 +26159,7 @@ Returns true if <code class="incode">child</code> is in the child hieararchy of 
 </tr>
 </table>
 </p>
-<p>
-Returns true if window, and all its parents, are visible.</p>
+<p>Returns true if window, and all its parents, are visible. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isVisible</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, onlyMe = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -26759,13 +26188,11 @@ Returns true if window, and all its parents, are visible.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a local coordinate to a surface coordinate.</p>
+<p>Convert a local coordinate to a surface coordinate. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Convert a local coordinate to a surface coordinate.</p>
+<p>Convert a local coordinate to a surface coordinate. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </p>
@@ -26780,8 +26207,7 @@ Convert a local coordinate to a surface coordinate.</p>
 </tr>
 </table>
 </p>
-<p>
-Move the wnd.</p>
+<p>Move the wnd. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">move</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -26796,8 +26222,7 @@ Move the wnd.</p>
 </tr>
 </table>
 </p>
-<p>
-Send a notification event.</p>
+<p>Send a notification event. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">notifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode">)</code>
 </p>
@@ -26812,8 +26237,7 @@ Send a notification event.</p>
 </tr>
 </table>
 </p>
-<p>
-Send a notification event.</p>
+<p>Send a notification event. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ownerNotifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode">)</code>
 </p>
@@ -26926,8 +26350,7 @@ Send a notification event.</p>
 </tr>
 </table>
 </p>
-<p>
-Register one new action.</p>
+<p>Register one new action. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">registerAction</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26942,8 +26365,7 @@ Register one new action.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a keyboard shortcut.</p>
+<p>Register a keyboard shortcut. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)</code>
 </p>
@@ -26972,8 +26394,7 @@ Register a keyboard shortcut.</p>
 </tr>
 </table>
 </p>
-<p>
-Resize the wnd.</p>
+<p>Resize the wnd. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
@@ -26988,8 +26409,7 @@ Resize the wnd.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a screen coordinate to a surface coordinate (relative to my surface).</p>
+<p>Convert a screen coordinate to a surface coordinate (relative to my surface). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </p>
@@ -27004,13 +26424,11 @@ Convert a screen coordinate to a surface coordinate (relative to my surface).</p
 </tr>
 </table>
 </p>
-<p>
-Send the command event with the given id to the window.</p>
+<p>Send the command event with the given id to the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- The command will be updated first, and if it is not disabled, it will be sent.</p>
+<p> The command will be updated first, and if it is not disabled, it will be sent. </p>
 <p>
 <table class="item">
 <tr>
@@ -27022,13 +26440,11 @@ Send the command event with the given id to the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Send the command state event with the given id to the window.</p>
+<p>Send the command state event with the given id to the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendComputeCommandStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns the updated command state.</p>
+<p> Returns the updated command state. </p>
 <p>
 <table class="item">
 <tr>
@@ -27140,8 +26556,7 @@ Send the command state event with the given id to the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the keyboard focus.</p>
+<p>Set the keyboard focus. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -27156,8 +26571,7 @@ Set the keyboard focus.</p>
 </tr>
 </table>
 </p>
-<p>
-Set margin for childs If a value is Swag.F32.Inf, then it won't be changed.</p>
+<p>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMargin</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, bottom: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">)</code>
 </p>
@@ -27172,8 +26586,7 @@ Set margin for childs If a value is Swag.F32.Inf, then it won't be changed.</p>
 </tr>
 </table>
 </p>
-<p>
-Set padding for childs If a value is Swag.F32.Inf, then it won't be changed.</p>
+<p>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPadding</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, bottom: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">)</code>
 </p>
@@ -27188,8 +26601,7 @@ Set padding for childs If a value is Swag.F32.Inf, then it won't be changed.</p>
 </tr>
 </table>
 </p>
-<p>
-Set window parent.</p>
+<p>Set window parent. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setParent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, who: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -27204,13 +26616,11 @@ Set window parent.</p>
 </tr>
 </table>
 </p>
-<p>
-Move and size the wnd.</p>
+<p>Move and size the wnd. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Move and size the wnd.</p>
+<p>Move and size the wnd. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
@@ -27225,8 +26635,7 @@ Move and size the wnd.</p>
 </tr>
 </table>
 </p>
-<p>
-Show the window.</p>
+<p>Show the window. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, b = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
@@ -27241,8 +26650,7 @@ Show the window.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a surface coordinate to a local coordinate (relative to me).</p>
+<p>Convert a surface coordinate to a local coordinate (relative to me). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">surfaceToLocal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </p>
@@ -27257,13 +26665,11 @@ Convert a surface coordinate to a local coordinate (relative to me).</p>
 </tr>
 </table>
 </p>
-<p>
-Main function to update command state of various windows/widgets.</p>
+<p>Main function to update command state of various windows/widgets. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">updateCommandState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
-<p>
- This will update the state of this window, and all of its childs</p>
+<p> This will update the state of this window, and all of its childs </p>
 <p>
 <table class="item">
 <tr>
@@ -27384,16 +26790,14 @@ f32</td>
 <td class="enumeration">
 <a href="#Gui_WrapLayoutCtrl_computeLayout">computeLayout(self)</a></td>
 <td class="enumeration">
-<p>
-Recompute layout of all childs.</p>
+<p>Recompute layout of all childs. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Gui_WrapLayoutCtrl_create">create(*Wnd, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Create a layout control.</p>
+<p>Create a layout control. </p>
 </td>
 </tr>
 </table>
@@ -27422,8 +26826,7 @@ Create a layout control.</p>
 </tr>
 </table>
 </p>
-<p>
-Recompute layout of all childs.</p>
+<p>Recompute layout of all childs. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -27438,8 +26841,7 @@ Recompute layout of all childs.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a layout control.</p>
+<p>Create a layout control. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, position: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span><span class="SyntaxCode"></code>
 </p>

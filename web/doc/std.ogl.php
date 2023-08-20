@@ -2185,8 +2185,7 @@ GL_4D_COLOR_TEXTURE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-FeedBackToken.</p>
+<p>FeedBackToken. </p>
 </td>
 </tr>
 <tr>
@@ -2299,8 +2298,7 @@ GL_ADD</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-AlphaFunction.</p>
+<p>AlphaFunction. </p>
 </td>
 </tr>
 <tr>
@@ -2333,8 +2331,7 @@ GL_ALL_ATTRIB_BITS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-BeginMode.</p>
+<p>BeginMode. </p>
 </td>
 </tr>
 <tr>
@@ -2439,8 +2436,7 @@ GL_ALWAYS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-AttribMask.</p>
+<p>AttribMask. </p>
 </td>
 </tr>
 <tr>
@@ -2553,8 +2549,7 @@ GL_AUX3</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-ErrorCode.</p>
+<p>ErrorCode. </p>
 </td>
 </tr>
 <tr>
@@ -2611,8 +2606,7 @@ GL_BGRA_EXT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-EXT_paletted_texture  These must match the GL_COLOR_TABLE_..._SGI enumerants.</p>
+<p>EXT_paletted_texture  These must match the GL_COLOR_TABLE_..._SGI enumerants. </p>
 </td>
 </tr>
 <tr>
@@ -2645,8 +2639,7 @@ GL_BITMAP</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-PolygonMode.</p>
+<p>PolygonMode. </p>
 </td>
 </tr>
 <tr>
@@ -2927,8 +2920,7 @@ GL_CCW</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-GetMapTarget.</p>
+<p>GetMapTarget. </p>
 </td>
 </tr>
 <tr>
@@ -3001,8 +2993,7 @@ GL_CLIENT_ALL_ATTRIB_BITS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-polygon_offset.</p>
+<p>polygon_offset. </p>
 </td>
 </tr>
 <tr>
@@ -3139,8 +3130,7 @@ GL_CLIP_PLANE5</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-DataType.</p>
+<p>DataType. </p>
 </td>
 </tr>
 <tr>
@@ -3421,8 +3411,7 @@ GL_COLOR_INDEX16_EXT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-WIN_draw_range_elements.</p>
+<p>WIN_draw_range_elements. </p>
 </td>
 </tr>
 <tr>
@@ -3463,8 +3452,7 @@ GL_COLOR_INDEXES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-MatrixMode.</p>
+<p>MatrixMode. </p>
 </td>
 </tr>
 <tr>
@@ -3729,8 +3717,7 @@ GL_COMPARE_R_TO_TEXTURE_ARB</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
------------------------------ GL_ARB_imaging ----------------------------.</p>
+<p>----------------------------- GL_ARB_imaging ----------------------------. </p>
 </td>
 </tr>
 <tr>
@@ -3747,8 +3734,7 @@ GL_COMPILE_AND_EXECUTE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-LogicOp.</p>
+<p>LogicOp. </p>
 </td>
 </tr>
 <tr>
@@ -4005,8 +3991,7 @@ GL_CONVOLUTION_BORDER_COLOR</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-------------------- GL_ARB_framebuffer_no_attachments -------------------.</p>
+<p>------------------- GL_ARB_framebuffer_no_attachments -------------------. </p>
 </td>
 </tr>
 <tr>
@@ -4279,8 +4264,7 @@ GL_DECAL</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureEnvParameter.</p>
+<p>TextureEnvParameter. </p>
 </td>
 </tr>
 <tr>
@@ -4289,8 +4273,7 @@ GL_DECR</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-StringName.</p>
+<p>StringName. </p>
 </td>
 </tr>
 <tr>
@@ -4491,8 +4474,7 @@ GL_DOMAIN</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-GetTarget.</p>
+<p>GetTarget. </p>
 </td>
 </tr>
 <tr>
@@ -4525,8 +4507,7 @@ GL_DOUBLE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-DrawBufferMode.</p>
+<p>DrawBufferMode. </p>
 </td>
 </tr>
 <tr>
@@ -4543,8 +4524,7 @@ GL_DOUBLE_EXT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-EXT_bgra.</p>
+<p>EXT_bgra. </p>
 </td>
 </tr>
 <tr>
@@ -4889,8 +4869,7 @@ GL_EXP2</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-FrontFaceDirection.</p>
+<p>FrontFaceDirection. </p>
 </td>
 </tr>
 <tr>
@@ -4899,8 +4878,7 @@ GL_EXTENSIONS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureCoordName.</p>
+<p>TextureCoordName. </p>
 </td>
 </tr>
 <tr>
@@ -4941,8 +4919,7 @@ GL_EYE_PLANE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureMagFilter.</p>
+<p>TextureMagFilter. </p>
 </td>
 </tr>
 <tr>
@@ -4951,8 +4928,7 @@ GL_FALSE</td>
 <td class="tdtype">
 u8</td>
 <td class="enumeration">
-<p>
-ClipPlaneName.</p>
+<p>ClipPlaneName. </p>
 </td>
 </tr>
 <tr>
@@ -5001,8 +4977,7 @@ GL_FILL</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-RenderingMode.</p>
+<p>RenderingMode. </p>
 </td>
 </tr>
 <tr>
@@ -5307,8 +5282,7 @@ GL_FOG_SPECULAR_TEXTURE_WIN</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-For compatibility with OpenGL v1.0.</p>
+<p>For compatibility with OpenGL v1.0. </p>
 </td>
 </tr>
 <tr>
@@ -6333,8 +6307,7 @@ GL_LIGHT7</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-LightParameter.</p>
+<p>LightParameter. </p>
 </td>
 </tr>
 <tr>
@@ -6399,8 +6372,7 @@ GL_LINEAR</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureMinFilter.</p>
+<p>TextureMinFilter. </p>
 </td>
 </tr>
 <tr>
@@ -6417,8 +6389,7 @@ GL_LINEAR_MIPMAP_LINEAR</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureParameterName.</p>
+<p>TextureParameterName. </p>
 </td>
 </tr>
 <tr>
@@ -6467,8 +6438,7 @@ GL_LINE_RESET_TOKEN</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-FogMode.</p>
+<p>FogMode. </p>
 </td>
 </tr>
 <tr>
@@ -6725,8 +6695,7 @@ GL_LUMINANCE_ALPHA</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-PixelType.</p>
+<p>PixelType. </p>
 </td>
 </tr>
 <tr>
@@ -7063,8 +7032,7 @@ GL_MAX_ELEMENTS_INDICES_WIN</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-WIN_phong_shading.</p>
+<p>WIN_phong_shading. </p>
 </td>
 </tr>
 <tr>
@@ -7641,8 +7609,7 @@ GL_NICEST</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-LightName.</p>
+<p>LightName. </p>
 </td>
 </tr>
 <tr>
@@ -7859,8 +7826,7 @@ GL_ONE_MINUS_DST_ALPHA</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-BlendingFactorSrc.</p>
+<p>BlendingFactorSrc. </p>
 </td>
 </tr>
 <tr>
@@ -7973,8 +7939,7 @@ GL_OUT_OF_MEMORY</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-FeedBackMode.</p>
+<p>FeedBackMode. </p>
 </td>
 </tr>
 <tr>
@@ -8079,8 +8044,7 @@ GL_PHONG_HINT_WIN</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-WIN_specular_fog.</p>
+<p>WIN_specular_fog. </p>
 </td>
 </tr>
 <tr>
@@ -8417,8 +8381,7 @@ GL_POLYGON</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-BlendingFactorDest.</p>
+<p>BlendingFactorDest. </p>
 </td>
 </tr>
 <tr>
@@ -8459,8 +8422,7 @@ GL_POLYGON_OFFSET_FILL</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-texture.</p>
+<p>texture. </p>
 </td>
 </tr>
 <tr>
@@ -8821,8 +8783,7 @@ GL_PROXY_TEXTURE_2D</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-texture_object.</p>
+<p>texture_object. </p>
 </td>
 </tr>
 <tr>
@@ -8871,8 +8832,7 @@ GL_Q</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureEnvMode.</p>
+<p>TextureEnvMode. </p>
 </td>
 </tr>
 <tr>
@@ -8881,8 +8841,7 @@ GL_QUADRATIC_ATTENUATION</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-ListMode.</p>
+<p>ListMode. </p>
 </td>
 </tr>
 <tr>
@@ -9235,8 +9194,7 @@ GL_REPEAT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-ClientAttribMask.</p>
+<p>ClientAttribMask. </p>
 </td>
 </tr>
 <tr>
@@ -9933,8 +9891,7 @@ GL_SELECT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-ShadingModel.</p>
+<p>ShadingModel. </p>
 </td>
 </tr>
 <tr>
@@ -9983,8 +9940,7 @@ GL_SET</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-MaterialParameter.</p>
+<p>MaterialParameter. </p>
 </td>
 </tr>
 <tr>
@@ -10105,8 +10061,7 @@ GL_SMOOTH</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-StencilOp.</p>
+<p>StencilOp. </p>
 </td>
 </tr>
 <tr>
@@ -10203,8 +10158,7 @@ GL_SPHERE_MAP</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureGenParameter.</p>
+<p>TextureGenParameter. </p>
 </td>
 </tr>
 <tr>
@@ -10309,8 +10263,7 @@ GL_SRC_ALPHA_SATURATE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Boolean.</p>
+<p>Boolean. </p>
 </td>
 </tr>
 <tr>
@@ -10399,8 +10352,7 @@ GL_STENCIL</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-PixelFormat.</p>
+<p>PixelFormat. </p>
 </td>
 </tr>
 <tr>
@@ -10705,8 +10657,7 @@ GL_T4F_C4F_N3F_V4F</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Extensions.</p>
+<p>Extensions. </p>
 </td>
 </tr>
 <tr>
@@ -10747,8 +10698,7 @@ GL_TEXTURE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-PixelCopyType.</p>
+<p>PixelCopyType. </p>
 </td>
 </tr>
 <tr>
@@ -11093,8 +11043,7 @@ GL_TEXTURE_BINDING_2D</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-vertex_array.</p>
+<p>vertex_array. </p>
 </td>
 </tr>
 <tr>
@@ -11175,8 +11124,7 @@ GL_TEXTURE_BORDER</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-HintMode.</p>
+<p>HintMode. </p>
 </td>
 </tr>
 <tr>
@@ -11473,8 +11421,7 @@ GL_TEXTURE_ENV</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureGenMode.</p>
+<p>TextureGenMode. </p>
 </td>
 </tr>
 <tr>
@@ -11483,8 +11430,7 @@ GL_TEXTURE_ENV_COLOR</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureEnvTarget.</p>
+<p>TextureEnvTarget. </p>
 </td>
 </tr>
 <tr>
@@ -11765,8 +11711,7 @@ GL_TEXTURE_WRAP_T</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-TextureWrapMode.</p>
+<p>TextureWrapMode. </p>
 </td>
 </tr>
 <tr>
@@ -12551,8 +12496,7 @@ GL_WIN_draw_range_elements</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-EXT_vertex_array.</p>
+<p>EXT_vertex_array. </p>
 </td>
 </tr>
 <tr>

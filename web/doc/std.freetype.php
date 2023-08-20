@@ -240,8 +240,7 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h1>Overview</h1>
-<p>
-:LICENCE    The freetype module is a wrapper for the great Freetype 2 library.    See LICENCE.md for the corresponding licence (FTL).</p>
+<p>:LICENCE     The freetype module is a wrapper for the great Freetype 2 library.     See LICENCE.md for the corresponding licence (FTL). </p>
 <h1>Content</h1>
 <p>
 <table class="item">
@@ -681,8 +680,7 @@ encoding</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-FT_Encoding.</p>
+<p>FT_Encoding. </p>
 </td>
 </tr>
 <tr>
@@ -1017,8 +1015,7 @@ finalizer</td>
 <td class="tdtype">
 *void</td>
 <td class="enumeration">
-<p>
-FT_Generic_Finalizer.</p>
+<p>FT_Generic_Finalizer. </p>
 </td>
 </tr>
 </table>
@@ -1810,8 +1807,7 @@ move_to</td>
 <td class="tdtype">
 *void</td>
 <td class="enumeration">
-<p>
-FT_Outline_MoveToFunc.</p>
+<p>FT_Outline_MoveToFunc. </p>
 </td>
 </tr>
 <tr>
@@ -1820,8 +1816,7 @@ line_to</td>
 <td class="tdtype">
 *void</td>
 <td class="enumeration">
-<p>
-FT_Outline_LineToFunc.</p>
+<p>FT_Outline_LineToFunc. </p>
 </td>
 </tr>
 <tr>
@@ -1830,8 +1825,7 @@ conic_to</td>
 <td class="tdtype">
 *void</td>
 <td class="enumeration">
-<p>
-FT_Outline_ConicToFunc.</p>
+<p>FT_Outline_ConicToFunc. </p>
 </td>
 </tr>
 <tr>
@@ -1840,8 +1834,7 @@ cubic_to</td>
 <td class="tdtype">
 *void</td>
 <td class="enumeration">
-<p>
-FT_Outline_CubicToFunc.</p>
+<p>FT_Outline_CubicToFunc. </p>
 </td>
 </tr>
 <tr>

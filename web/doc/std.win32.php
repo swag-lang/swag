@@ -1411,10 +1411,8 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h1>Overview</h1>
-<p>
-Wrappers for Microsoft Windows Sdk Libraries.</p>
-<p>
- 10.0.19041.0</p>
+<p>Wrappers for Microsoft Windows Sdk Libraries. </p>
+<p> 10.0.19041.0 </p>
 <h1>Content</h1>
 <p>
 <table class="item">
@@ -1642,8 +1640,7 @@ CSIDL_ADMINTOOLS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\Start Menu\Programs\Administrative Tools.</p>
+<p>&lt;user name&gt;\Start Menu\Programs\Administrative Tools. </p>
 </td>
 </tr>
 <tr>
@@ -1652,8 +1649,7 @@ CSIDL_ALTSTARTUP</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-non localized startup.</p>
+<p>non localized startup. </p>
 </td>
 </tr>
 <tr>
@@ -1662,8 +1658,7 @@ CSIDL_APPDATA</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\Application Data.</p>
+<p>&lt;user name&gt;\Application Data. </p>
 </td>
 </tr>
 <tr>
@@ -1672,8 +1667,7 @@ CSIDL_BITBUCKET</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;desktop&gt;\Recycle Bin.</p>
+<p>&lt;desktop&gt;\Recycle Bin. </p>
 </td>
 </tr>
 <tr>
@@ -1682,8 +1676,7 @@ CSIDL_CDBURN_AREA</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning.</p>
+<p>USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning. </p>
 </td>
 </tr>
 <tr>
@@ -1692,8 +1685,7 @@ CSIDL_COMMON_ADMINTOOLS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Start Menu\Programs\Administrative Tools.</p>
+<p>All Users\Start Menu\Programs\Administrative Tools. </p>
 </td>
 </tr>
 <tr>
@@ -1702,8 +1694,7 @@ CSIDL_COMMON_ALTSTARTUP</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-non localized common startup.</p>
+<p>non localized common startup. </p>
 </td>
 </tr>
 <tr>
@@ -1712,8 +1703,7 @@ CSIDL_COMMON_APPDATA</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Application Data.</p>
+<p>All Users\Application Data. </p>
 </td>
 </tr>
 <tr>
@@ -1722,8 +1712,7 @@ CSIDL_COMMON_DESKTOPDIRECTORY</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Desktop.</p>
+<p>All Users\Desktop. </p>
 </td>
 </tr>
 <tr>
@@ -1732,8 +1721,7 @@ CSIDL_COMMON_DOCUMENTS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Documents.</p>
+<p>All Users\Documents. </p>
 </td>
 </tr>
 <tr>
@@ -1750,8 +1738,7 @@ CSIDL_COMMON_MUSIC</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\My Music.</p>
+<p>All Users\My Music. </p>
 </td>
 </tr>
 <tr>
@@ -1760,8 +1747,7 @@ CSIDL_COMMON_OEM_LINKS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Links to All Users OEM specific apps.</p>
+<p>Links to All Users OEM specific apps. </p>
 </td>
 </tr>
 <tr>
@@ -1770,8 +1756,7 @@ CSIDL_COMMON_PICTURES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\My Pictures.</p>
+<p>All Users\My Pictures. </p>
 </td>
 </tr>
 <tr>
@@ -1780,8 +1765,7 @@ CSIDL_COMMON_PROGRAMS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Start Menu\Programs.</p>
+<p>All Users\Start Menu\Programs. </p>
 </td>
 </tr>
 <tr>
@@ -1790,8 +1774,7 @@ CSIDL_COMMON_STARTMENU</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Start Menu.</p>
+<p>All Users\Start Menu. </p>
 </td>
 </tr>
 <tr>
@@ -1800,8 +1783,7 @@ CSIDL_COMMON_STARTUP</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Startup.</p>
+<p>All Users\Startup. </p>
 </td>
 </tr>
 <tr>
@@ -1810,8 +1792,7 @@ CSIDL_COMMON_TEMPLATES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\Templates.</p>
+<p>All Users\Templates. </p>
 </td>
 </tr>
 <tr>
@@ -1820,8 +1801,7 @@ CSIDL_COMMON_VIDEO</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-All Users\My Video.</p>
+<p>All Users\My Video. </p>
 </td>
 </tr>
 <tr>
@@ -1830,8 +1810,7 @@ CSIDL_COMPUTERSNEARME</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Computers Near Me (computered from Workgroup membership).</p>
+<p>Computers Near Me (computered from Workgroup membership). </p>
 </td>
 </tr>
 <tr>
@@ -1840,8 +1819,7 @@ CSIDL_CONNECTIONS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Network and Dial-up Connections.</p>
+<p>Network and Dial-up Connections. </p>
 </td>
 </tr>
 <tr>
@@ -1850,8 +1828,7 @@ CSIDL_CONTROLS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-My Computer\Control Panel.</p>
+<p>My Computer\Control Panel. </p>
 </td>
 </tr>
 <tr>
@@ -1868,8 +1845,7 @@ CSIDL_DESKTOP</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;desktop&gt;.</p>
+<p>&lt;desktop&gt;. </p>
 </td>
 </tr>
 <tr>
@@ -1878,8 +1854,7 @@ CSIDL_DESKTOPDIRECTORY</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\Desktop.</p>
+<p>&lt;user name&gt;\Desktop. </p>
 </td>
 </tr>
 <tr>
@@ -1888,8 +1863,7 @@ CSIDL_DRIVES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-My Computer.</p>
+<p>My Computer. </p>
 </td>
 </tr>
 <tr>
@@ -1898,8 +1872,7 @@ CSIDL_FAVORITES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\Favorites.</p>
+<p>&lt;user name&gt;\Favorites. </p>
 </td>
 </tr>
 <tr>
@@ -1908,8 +1881,7 @@ CSIDL_FLAG_CREATE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-combine with CSIDL_ value to force folder creation in SHGetFolderPath().</p>
+<p>combine with CSIDL_ value to force folder creation in SHGetFolderPath(). </p>
 </td>
 </tr>
 <tr>
@@ -1918,8 +1890,7 @@ CSIDL_FLAG_DONT_UNEXPAND</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-combine with CSIDL_ value to avoid unexpanding environment variables.</p>
+<p>combine with CSIDL_ value to avoid unexpanding environment variables. </p>
 </td>
 </tr>
 <tr>
@@ -1928,8 +1899,7 @@ CSIDL_FLAG_DONT_VERIFY</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-combine with CSIDL_ value to return an unverified folder path.</p>
+<p>combine with CSIDL_ value to return an unverified folder path. </p>
 </td>
 </tr>
 <tr>
@@ -1938,8 +1908,7 @@ CSIDL_FLAG_MASK</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-mask for all possible flag values.</p>
+<p>mask for all possible flag values. </p>
 </td>
 </tr>
 <tr>
@@ -1948,8 +1917,7 @@ CSIDL_FLAG_NO_ALIAS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-combine with CSIDL_ value to insure non-typealias versions of the pidl.</p>
+<p>combine with CSIDL_ value to insure non-typealias versions of the pidl. </p>
 </td>
 </tr>
 <tr>
@@ -1958,8 +1926,7 @@ CSIDL_FLAG_PER_USER_INIT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-combine with CSIDL_ value to indicate per-user init (eg. upgrade).</p>
+<p>combine with CSIDL_ value to indicate per-user init (eg. upgrade). </p>
 </td>
 </tr>
 <tr>
@@ -1968,8 +1935,7 @@ CSIDL_FONTS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-windows\fonts.</p>
+<p>windows\fonts. </p>
 </td>
 </tr>
 <tr>
@@ -1986,8 +1952,7 @@ CSIDL_INTERNET</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Internet Explorer (icon on desktop).</p>
+<p>Internet Explorer (icon on desktop). </p>
 </td>
 </tr>
 <tr>
@@ -2004,8 +1969,7 @@ CSIDL_LOCAL_APPDATA</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\Local Settings\Applicaiton Data (non roaming).</p>
+<p>&lt;user name&gt;\Local Settings\Applicaiton Data (non roaming). </p>
 </td>
 </tr>
 <tr>
@@ -2014,8 +1978,7 @@ CSIDL_MYDOCUMENTS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Personal was just a silly name for My Documents.</p>
+<p>Personal was just a silly name for My Documents. </p>
 </td>
 </tr>
 <tr>
@@ -2024,8 +1987,7 @@ CSIDL_MYMUSIC</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-"My Music" folder.</p>
+<p>"My Music" folder. </p>
 </td>
 </tr>
 <tr>
@@ -2034,8 +1996,7 @@ CSIDL_MYPICTURES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-C:\Program Files\My Pictures.</p>
+<p>C:\Program Files\My Pictures. </p>
 </td>
 </tr>
 <tr>
@@ -2044,8 +2005,7 @@ CSIDL_MYVIDEO</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-"My Videos" folder.</p>
+<p>"My Videos" folder. </p>
 </td>
 </tr>
 <tr>
@@ -2054,8 +2014,7 @@ CSIDL_NETHOOD</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\nethood.</p>
+<p>&lt;user name&gt;\nethood. </p>
 </td>
 </tr>
 <tr>
@@ -2064,8 +2023,7 @@ CSIDL_NETWORK</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Network Neighborhood (My Network Places).</p>
+<p>Network Neighborhood (My Network Places). </p>
 </td>
 </tr>
 <tr>
@@ -2074,8 +2032,7 @@ CSIDL_PERSONAL</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-My Documents.</p>
+<p>My Documents. </p>
 </td>
 </tr>
 <tr>
@@ -2084,8 +2041,7 @@ CSIDL_PRINTERS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-My Computer\Printers.</p>
+<p>My Computer\Printers. </p>
 </td>
 </tr>
 <tr>
@@ -2094,8 +2050,7 @@ CSIDL_PRINTHOOD</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\PrintHood.</p>
+<p>&lt;user name&gt;\PrintHood. </p>
 </td>
 </tr>
 <tr>
@@ -2104,8 +2059,7 @@ CSIDL_PROFILE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-USERPROFILE.</p>
+<p>USERPROFILE. </p>
 </td>
 </tr>
 <tr>
@@ -2114,8 +2068,7 @@ CSIDL_PROGRAMS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Start Menu\Programs.</p>
+<p>Start Menu\Programs. </p>
 </td>
 </tr>
 <tr>
@@ -2124,8 +2077,7 @@ CSIDL_PROGRAM_FILES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-C:\Program Files.</p>
+<p>C:\Program Files. </p>
 </td>
 </tr>
 <tr>
@@ -2134,8 +2086,7 @@ CSIDL_PROGRAM_FILESX86</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-x86 C:\Program Files on RISC.</p>
+<p>x86 C:\Program Files on RISC. </p>
 </td>
 </tr>
 <tr>
@@ -2144,8 +2095,7 @@ CSIDL_PROGRAM_FILES_COMMON</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-C:\Program Files\Common.</p>
+<p>C:\Program Files\Common. </p>
 </td>
 </tr>
 <tr>
@@ -2154,8 +2104,7 @@ CSIDL_PROGRAM_FILES_COMMONX86</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-x86 Program Files\Common on RISC.</p>
+<p>x86 Program Files\Common on RISC. </p>
 </td>
 </tr>
 <tr>
@@ -2164,8 +2113,7 @@ CSIDL_RECENT</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\Recent.</p>
+<p>&lt;user name&gt;\Recent. </p>
 </td>
 </tr>
 <tr>
@@ -2174,8 +2122,7 @@ CSIDL_RESOURCES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Resource Direcotry.</p>
+<p>Resource Direcotry. </p>
 </td>
 </tr>
 <tr>
@@ -2184,8 +2131,7 @@ CSIDL_RESOURCES_LOCALIZED</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Localized Resource Direcotry.</p>
+<p>Localized Resource Direcotry. </p>
 </td>
 </tr>
 <tr>
@@ -2194,8 +2140,7 @@ CSIDL_SENDTO</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\SendTo.</p>
+<p>&lt;user name&gt;\SendTo. </p>
 </td>
 </tr>
 <tr>
@@ -2204,8 +2149,7 @@ CSIDL_STARTMENU</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-&lt;user name&gt;\Start Menu.</p>
+<p>&lt;user name&gt;\Start Menu. </p>
 </td>
 </tr>
 <tr>
@@ -2214,8 +2158,7 @@ CSIDL_STARTUP</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Start Menu\Programs\Startup.</p>
+<p>Start Menu\Programs\Startup. </p>
 </td>
 </tr>
 <tr>
@@ -2224,8 +2167,7 @@ CSIDL_SYSTEM</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-GetSystemDirectory().</p>
+<p>GetSystemDirectory(). </p>
 </td>
 </tr>
 <tr>
@@ -2234,8 +2176,7 @@ CSIDL_SYSTEMX86</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-x86 system directory on RISC.</p>
+<p>x86 system directory on RISC. </p>
 </td>
 </tr>
 <tr>
@@ -2252,8 +2193,7 @@ CSIDL_WINDOWS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-GetWindowsDirectory().</p>
+<p>GetWindowsDirectory(). </p>
 </td>
 </tr>
 <tr>
@@ -4126,8 +4066,7 @@ SHGFI_ADDOVERLAYS</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-apply the appropriate overlays.</p>
+<p>apply the appropriate overlays. </p>
 </td>
 </tr>
 <tr>
@@ -4136,8 +4075,7 @@ SHGFI_ATTRIBUTES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get attributes.</p>
+<p>get attributes. </p>
 </td>
 </tr>
 <tr>
@@ -4146,8 +4084,7 @@ SHGFI_ATTR_SPECIFIED</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get only specified attributes.</p>
+<p>get only specified attributes. </p>
 </td>
 </tr>
 <tr>
@@ -4156,8 +4093,7 @@ SHGFI_DISPLAYNAME</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get display name.</p>
+<p>get display name. </p>
 </td>
 </tr>
 <tr>
@@ -4166,8 +4102,7 @@ SHGFI_EXETYPE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-return exe type.</p>
+<p>return exe type. </p>
 </td>
 </tr>
 <tr>
@@ -4176,8 +4111,7 @@ SHGFI_ICON</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get icon.</p>
+<p>get icon. </p>
 </td>
 </tr>
 <tr>
@@ -4186,8 +4120,7 @@ SHGFI_ICONLOCATION</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get icon location.</p>
+<p>get icon location. </p>
 </td>
 </tr>
 <tr>
@@ -4196,8 +4129,7 @@ SHGFI_LARGEICON</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get large icon.</p>
+<p>get large icon. </p>
 </td>
 </tr>
 <tr>
@@ -4206,8 +4138,7 @@ SHGFI_LINKOVERLAY</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-put a link overlay on icon.</p>
+<p>put a link overlay on icon. </p>
 </td>
 </tr>
 <tr>
@@ -4216,8 +4147,7 @@ SHGFI_OPENICON</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get open icon.</p>
+<p>get open icon. </p>
 </td>
 </tr>
 <tr>
@@ -4226,8 +4156,7 @@ SHGFI_OVERLAYINDEX</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Get the index of the overlay.</p>
+<p>Get the index of the overlay. </p>
 </td>
 </tr>
 <tr>
@@ -4236,8 +4165,7 @@ SHGFI_PIDL</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-pszPath is a pidl.</p>
+<p>pszPath is a pidl. </p>
 </td>
 </tr>
 <tr>
@@ -4246,8 +4174,7 @@ SHGFI_SELECTED</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-show icon in selected state.</p>
+<p>show icon in selected state. </p>
 </td>
 </tr>
 <tr>
@@ -4256,8 +4183,7 @@ SHGFI_SHELLICONSIZE</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get shell size icon.</p>
+<p>get shell size icon. </p>
 </td>
 </tr>
 <tr>
@@ -4266,8 +4192,7 @@ SHGFI_SMALLICON</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get small icon.</p>
+<p>get small icon. </p>
 </td>
 </tr>
 <tr>
@@ -4276,8 +4201,7 @@ SHGFI_SYSICONINDEX</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get system icon index.</p>
+<p>get system icon index. </p>
 </td>
 </tr>
 <tr>
@@ -4286,8 +4210,7 @@ SHGFI_TYPENAME</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-get type name.</p>
+<p>get type name. </p>
 </td>
 </tr>
 <tr>
@@ -4296,8 +4219,7 @@ SHGFI_USEFILEATTRIBUTES</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-use passed dwFileAttribute.</p>
+<p>use passed dwFileAttribute. </p>
 </td>
 </tr>
 <tr>
@@ -4314,8 +4236,7 @@ SHGSI_ICONLOCATION</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-you always get the icon location.</p>
+<p>you always get the icon location. </p>
 </td>
 </tr>
 <tr>
@@ -13318,744 +13239,651 @@ szTypeName</td>
 <td class="tdname">
 SIID_DOCNOASSOC</td>
 <td class="enumeration">
-<p>
-document (blank page) no associated program.</p>
+<p>document (blank page) no associated program. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DOCASSOC</td>
 <td class="enumeration">
-<p>
-document with an associated program.</p>
+<p>document with an associated program. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_APPLICATION</td>
 <td class="enumeration">
-<p>
-generic application with no custom icon.</p>
+<p>generic application with no custom icon. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_FOLDER</td>
 <td class="enumeration">
-<p>
-folder (closed).</p>
+<p>folder (closed). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_FOLDEROPEN</td>
 <td class="enumeration">
-<p>
-folder (open).</p>
+<p>folder (open). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVE525</td>
 <td class="enumeration">
-<p>
-5.25" floppy disk drive.</p>
+<p>5.25" floppy disk drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVE35</td>
 <td class="enumeration">
-<p>
-3.5" floppy disk drive.</p>
+<p>3.5" floppy disk drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVEREMOVE</td>
 <td class="enumeration">
-<p>
-removable drive.</p>
+<p>removable drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVEFIXED</td>
 <td class="enumeration">
-<p>
-fixed (hard disk) drive.</p>
+<p>fixed (hard disk) drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVENET</td>
 <td class="enumeration">
-<p>
-network drive.</p>
+<p>network drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVENETDISABLED</td>
 <td class="enumeration">
-<p>
-disconnected network drive.</p>
+<p>disconnected network drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVECD</td>
 <td class="enumeration">
-<p>
-CD drive.</p>
+<p>CD drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVERAM</td>
 <td class="enumeration">
-<p>
-RAM disk drive.</p>
+<p>RAM disk drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_WORLD</td>
 <td class="enumeration">
-<p>
-entire network.</p>
+<p>entire network. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_SERVER</td>
 <td class="enumeration">
-<p>
-a computer on the network.</p>
+<p>a computer on the network. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_PRINTER</td>
 <td class="enumeration">
-<p>
-printer.</p>
+<p>printer. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MYNETWORK</td>
 <td class="enumeration">
-<p>
-My network places.</p>
+<p>My network places. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_FIND</td>
 <td class="enumeration">
-<p>
-Find.</p>
+<p>Find. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_HELP</td>
 <td class="enumeration">
-<p>
-Help.</p>
+<p>Help. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_SHARE</td>
 <td class="enumeration">
-<p>
-overlay for shared items.</p>
+<p>overlay for shared items. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_LINK</td>
 <td class="enumeration">
-<p>
-overlay for shortcuts to items.</p>
+<p>overlay for shortcuts to items. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_SLOWFILE</td>
 <td class="enumeration">
-<p>
-overlay for slow items.</p>
+<p>overlay for slow items. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_RECYCLER</td>
 <td class="enumeration">
-<p>
-empty recycle bin.</p>
+<p>empty recycle bin. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_RECYCLERFULL</td>
 <td class="enumeration">
-<p>
-full recycle bin.</p>
+<p>full recycle bin. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIACDAUDIO</td>
 <td class="enumeration">
-<p>
-Audio CD Media.</p>
+<p>Audio CD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_LOCK</td>
 <td class="enumeration">
-<p>
-Security lock.</p>
+<p>Security lock. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_AUTOLIST</td>
 <td class="enumeration">
-<p>
-AutoList.</p>
+<p>AutoList. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_PRINTERNET</td>
 <td class="enumeration">
-<p>
-Network printer.</p>
+<p>Network printer. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_SERVERSHARE</td>
 <td class="enumeration">
-<p>
-Server share.</p>
+<p>Server share. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_PRINTERFAX</td>
 <td class="enumeration">
-<p>
-Fax printer.</p>
+<p>Fax printer. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_PRINTERFAXNET</td>
 <td class="enumeration">
-<p>
-Networked Fax Printer.</p>
+<p>Networked Fax Printer. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_PRINTERFILE</td>
 <td class="enumeration">
-<p>
-Print to File.</p>
+<p>Print to File. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_STACK</td>
 <td class="enumeration">
-<p>
-Stack.</p>
+<p>Stack. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIASVCD</td>
 <td class="enumeration">
-<p>
-SVCD Media.</p>
+<p>SVCD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_STUFFEDFOLDER</td>
 <td class="enumeration">
-<p>
-Folder containing other items.</p>
+<p>Folder containing other items. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVEUNKNOWN</td>
 <td class="enumeration">
-<p>
-Unknown drive.</p>
+<p>Unknown drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVEDVD</td>
 <td class="enumeration">
-<p>
-DVD Drive.</p>
+<p>DVD Drive. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIADVD</td>
 <td class="enumeration">
-<p>
-DVD Media.</p>
+<p>DVD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIADVDRAM</td>
 <td class="enumeration">
-<p>
-DVD-RAM Media.</p>
+<p>DVD-RAM Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIADVDRW</td>
 <td class="enumeration">
-<p>
-DVD-RW Media.</p>
+<p>DVD-RW Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIADVDR</td>
 <td class="enumeration">
-<p>
-DVD-R Media.</p>
+<p>DVD-R Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIADVDROM</td>
 <td class="enumeration">
-<p>
-DVD-ROM Media.</p>
+<p>DVD-ROM Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIACDAUDIOPLUS</td>
 <td class="enumeration">
-<p>
-CD+ (Enhanced CD) Media.</p>
+<p>CD+ (Enhanced CD) Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIACDRW</td>
 <td class="enumeration">
-<p>
-CD-RW Media.</p>
+<p>CD-RW Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIACDR</td>
 <td class="enumeration">
-<p>
-CD-R Media.</p>
+<p>CD-R Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIACDBURN</td>
 <td class="enumeration">
-<p>
-Burning CD.</p>
+<p>Burning CD. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIABLANKCD</td>
 <td class="enumeration">
-<p>
-Blank CD Media.</p>
+<p>Blank CD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIACDROM</td>
 <td class="enumeration">
-<p>
-CD-ROM Media.</p>
+<p>CD-ROM Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_AUDIOFILES</td>
 <td class="enumeration">
-<p>
-Audio files.</p>
+<p>Audio files. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_IMAGEFILES</td>
 <td class="enumeration">
-<p>
-Image files.</p>
+<p>Image files. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_VIDEOFILES</td>
 <td class="enumeration">
-<p>
-Video files.</p>
+<p>Video files. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MIXEDFILES</td>
 <td class="enumeration">
-<p>
-Mixed files.</p>
+<p>Mixed files. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_FOLDERBACK</td>
 <td class="enumeration">
-<p>
-Folder back.</p>
+<p>Folder back. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_FOLDERFRONT</td>
 <td class="enumeration">
-<p>
-Folder front.</p>
+<p>Folder front. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_SHIELD</td>
 <td class="enumeration">
-<p>
-Security shield. Use for UAC prompts only.</p>
+<p>Security shield. Use for UAC prompts only. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_WARNING</td>
 <td class="enumeration">
-<p>
-Warning.</p>
+<p>Warning. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_INFO</td>
 <td class="enumeration">
-<p>
-Informational.</p>
+<p>Informational. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_ERROR</td>
 <td class="enumeration">
-<p>
-Error.</p>
+<p>Error. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_KEY</td>
 <td class="enumeration">
-<p>
-Key / Secure.</p>
+<p>Key / Secure. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_SOFTWARE</td>
 <td class="enumeration">
-<p>
-Software.</p>
+<p>Software. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_RENAME</td>
 <td class="enumeration">
-<p>
-Rename.</p>
+<p>Rename. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DELETE</td>
 <td class="enumeration">
-<p>
-Delete.</p>
+<p>Delete. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAAUDIODVD</td>
 <td class="enumeration">
-<p>
-Audio DVD Media.</p>
+<p>Audio DVD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAMOVIEDVD</td>
 <td class="enumeration">
-<p>
-Movie DVD Media.</p>
+<p>Movie DVD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAENHANCEDCD</td>
 <td class="enumeration">
-<p>
-Enhanced CD Media.</p>
+<p>Enhanced CD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAENHANCEDDVD</td>
 <td class="enumeration">
-<p>
-Enhanced DVD Media.</p>
+<p>Enhanced DVD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAHDDVD</td>
 <td class="enumeration">
-<p>
-HD-DVD Media.</p>
+<p>HD-DVD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIABLURAY</td>
 <td class="enumeration">
-<p>
-BluRay Media.</p>
+<p>BluRay Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAVCD</td>
 <td class="enumeration">
-<p>
-VCD Media.</p>
+<p>VCD Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIADVDPLUSR</td>
 <td class="enumeration">
-<p>
-DVD+R Media.</p>
+<p>DVD+R Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIADVDPLUSRW</td>
 <td class="enumeration">
-<p>
-DVD+RW Media.</p>
+<p>DVD+RW Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DESKTOPPC</td>
 <td class="enumeration">
-<p>
-desktop computer.</p>
+<p>desktop computer. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MOBILEPC</td>
 <td class="enumeration">
-<p>
-mobile computer (laptop/notebook).</p>
+<p>mobile computer (laptop/notebook). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_USERS</td>
 <td class="enumeration">
-<p>
-users.</p>
+<p>users. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIASMARTMEDIA</td>
 <td class="enumeration">
-<p>
-Smart Media.</p>
+<p>Smart Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIACOMPACTFLASH</td>
 <td class="enumeration">
-<p>
-Compact Flash.</p>
+<p>Compact Flash. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DEVICECELLPHONE</td>
 <td class="enumeration">
-<p>
-Cell phone.</p>
+<p>Cell phone. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DEVICECAMERA</td>
 <td class="enumeration">
-<p>
-Camera.</p>
+<p>Camera. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DEVICEVIDEOCAMERA</td>
 <td class="enumeration">
-<p>
-Video camera.</p>
+<p>Video camera. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DEVICEAUDIOPLAYER</td>
 <td class="enumeration">
-<p>
-Audio player.</p>
+<p>Audio player. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_NETWORKCONNECT</td>
 <td class="enumeration">
-<p>
-Connect to network.</p>
+<p>Connect to network. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_INTERNET</td>
 <td class="enumeration">
-<p>
-Internet.</p>
+<p>Internet. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_ZIPFILE</td>
 <td class="enumeration">
-<p>
-ZIP file.</p>
+<p>ZIP file. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_SETTINGS</td>
 <td class="enumeration">
-<p>
-Settings 107-131 are internal Vista RTM icons 132-159 for SP1 icons.</p>
+<p>Settings  107-131 are internal Vista RTM icons  132-159 for SP1 icons. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVEHDDVD</td>
 <td class="enumeration">
-<p>
-HDDVD Drive (all types).</p>
+<p>HDDVD Drive (all types). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_DRIVEBD</td>
 <td class="enumeration">
-<p>
-BluRay Drive (all types).</p>
+<p>BluRay Drive (all types). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAHDDVDROM</td>
 <td class="enumeration">
-<p>
-HDDVD-ROM Media.</p>
+<p>HDDVD-ROM Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAHDDVDR</td>
 <td class="enumeration">
-<p>
-HDDVD-R Media.</p>
+<p>HDDVD-R Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIAHDDVDRAM</td>
 <td class="enumeration">
-<p>
-HDDVD-RAM Media.</p>
+<p>HDDVD-RAM Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIABDROM</td>
 <td class="enumeration">
-<p>
-BluRay ROM Media.</p>
+<p>BluRay ROM Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIABDR</td>
 <td class="enumeration">
-<p>
-BluRay R Media.</p>
+<p>BluRay R Media. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_MEDIABDRE</td>
 <td class="enumeration">
-<p>
-BluRay RE Media (Rewriable and RAM).</p>
+<p>BluRay RE Media (Rewriable and RAM). </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 SIID_CLUSTEREDDRIVE</td>
 <td class="enumeration">
-<p>
-Clustered disk 160+ are for Windows 7 icons.</p>
+<p>Clustered disk  160+ are for Windows 7 icons. </p>
 </td>
 </tr>
 <tr>
@@ -14572,8 +14400,7 @@ dwOemId</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-Must be updated to an union.</p>
+<p>Must be updated to an union. </p>
 </td>
 </tr>
 <tr>
@@ -15784,8 +15611,7 @@ Win32.LPCWSTR</td>
 </tr>
 </table>
 </p>
-<p>
-Fill the context error message.</p>
+<p>Fill the context error message. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setError</span><span class="SyntaxCode">(errorMessageID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>

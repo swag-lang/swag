@@ -338,8 +338,7 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h1>Overview</h1>
-<p>
-Wrapper for Microsoft Gdi32 library.</p>
+<p>Wrapper for Microsoft Gdi32 library. </p>
 <h1>Content</h1>
 <p>
 <table class="item">
@@ -455,8 +454,7 @@ BLACKNESS</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = BLACK.</p>
+<p>dest = BLACK. </p>
 </td>
 </tr>
 <tr>
@@ -481,8 +479,7 @@ CAPTUREBLT</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-Include layered windows.</p>
+<p>Include layered windows. </p>
 </td>
 </tr>
 <tr>
@@ -555,8 +552,7 @@ DSTINVERT</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = (NOT dest).</p>
+<p>dest = (NOT dest). </p>
 </td>
 </tr>
 <tr>
@@ -797,8 +793,7 @@ MERGECOPY</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = (source AND pattern).</p>
+<p>dest = (source AND pattern). </p>
 </td>
 </tr>
 <tr>
@@ -807,8 +802,7 @@ MERGEPAINT</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = (NOT source) OR dest.</p>
+<p>dest = (NOT source) OR dest. </p>
 </td>
 </tr>
 <tr>
@@ -817,8 +811,7 @@ NOMIRRORBITMAP</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-Do not Mirror the bitmap in this call.</p>
+<p>Do not Mirror the bitmap in this call. </p>
 </td>
 </tr>
 <tr>
@@ -827,8 +820,7 @@ NOTSRCCOPY</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = (NOT source).</p>
+<p>dest = (NOT source). </p>
 </td>
 </tr>
 <tr>
@@ -837,8 +829,7 @@ NOTSRCERASE</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = (NOT src) AND (NOT dest).</p>
+<p>dest = (NOT src) AND (NOT dest). </p>
 </td>
 </tr>
 <tr>
@@ -887,8 +878,7 @@ PATCOPY</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = pattern.</p>
+<p>dest = pattern. </p>
 </td>
 </tr>
 <tr>
@@ -897,8 +887,7 @@ PATINVERT</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = pattern XOR dest.</p>
+<p>dest = pattern XOR dest. </p>
 </td>
 </tr>
 <tr>
@@ -907,8 +896,7 @@ PATPAINT</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = DPSnoo.</p>
+<p>dest = DPSnoo. </p>
 </td>
 </tr>
 <tr>
@@ -1117,8 +1105,7 @@ PS_DASH</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
--------.</p>
+<p>-------. </p>
 </td>
 </tr>
 <tr>
@@ -1127,8 +1114,7 @@ PS_DASHDOT</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-_._._._.</p>
+<p>_._._._. </p>
 </td>
 </tr>
 <tr>
@@ -1137,8 +1123,7 @@ PS_DASHDOTDOT</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-_.._.._.</p>
+<p>_.._.._. </p>
 </td>
 </tr>
 <tr>
@@ -1147,8 +1132,7 @@ PS_DOT</td>
 <td class="tdtype">
 s32</td>
 <td class="enumeration">
-<p>
-.......</p>
+<p>....... </p>
 </td>
 </tr>
 <tr>
@@ -1221,8 +1205,7 @@ SRCAND</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = source AND dest.</p>
+<p>dest = source AND dest. </p>
 </td>
 </tr>
 <tr>
@@ -1231,8 +1214,7 @@ SRCCOPY</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = source.</p>
+<p>dest = source. </p>
 </td>
 </tr>
 <tr>
@@ -1241,8 +1223,7 @@ SRCERASE</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = source AND (NOT dest ).</p>
+<p>dest = source AND (NOT dest ). </p>
 </td>
 </tr>
 <tr>
@@ -1251,8 +1232,7 @@ SRCINVERT</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = source XOR dest.</p>
+<p>dest = source XOR dest. </p>
 </td>
 </tr>
 <tr>
@@ -1261,8 +1241,7 @@ SRCPAINT</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = source OR dest.</p>
+<p>dest = source OR dest. </p>
 </td>
 </tr>
 <tr>
@@ -1335,8 +1314,7 @@ WHITENESS</td>
 <td class="tdtype">
 Win32.DWORD</td>
 <td class="enumeration">
-<p>
-dest = WHITE.</p>
+<p>dest = WHITE. </p>
 </td>
 </tr>
 <tr>

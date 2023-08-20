@@ -1616,12 +1616,9 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h1>Overview</h1>
-<p>
-The <code class="incode">Std.core</code> module contains basic types and algorithms.</p>
-<p>
- It is the base of all other modules of the standard <code class="incode">Std</code> workspace.</p>
-<p>
- You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on.</p>
+<p>The <code class="incode">Std.core</code> module contains basic types and algorithms. </p>
+<p> It is the base of all other modules of the standard <code class="incode">Std</code> workspace. </p>
+<p> You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>
 <h1>Content</h1>
 <p>
 <table class="item">
@@ -1777,8 +1774,7 @@ DaysTo10000</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of days from 1/1/0001 to 12/31/9999.</p>
+<p>Number of days from 1/1/0001 to 12/31/9999. </p>
 </td>
 </tr>
 <tr>
@@ -1787,8 +1783,7 @@ DaysTo1601</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of days from 1/1/0001 to 12/31/1600.</p>
+<p>Number of days from 1/1/0001 to 12/31/1600. </p>
 </td>
 </tr>
 <tr>
@@ -1797,8 +1792,7 @@ DaysTo1899</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of days from 1/1/0001 to 12/30/1899.</p>
+<p>Number of days from 1/1/0001 to 12/30/1899. </p>
 </td>
 </tr>
 <tr>
@@ -1807,8 +1801,7 @@ DaysTo1970</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of days from 1/1/0001 to 12/31/1969.</p>
+<p>Number of days from 1/1/0001 to 12/31/1969. </p>
 </td>
 </tr>
 <tr>
@@ -2023,8 +2016,7 @@ bool</td>
 </tr>
 </table>
 </p>
-<p>
-This is a generic dynamic array.</p>
+<p>This is a generic dynamic array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -2035,8 +2027,7 @@ allocator</td>
 <td class="tdtype">
 <a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
 <td class="enumeration">
-<p>
-Associated allocator.</p>
+<p>Associated allocator. </p>
 </td>
 </tr>
 <tr>
@@ -2045,8 +2036,7 @@ buffer</td>
 <td class="tdtype">
 ^T</td>
 <td class="enumeration">
-<p>
-Memory block of all datas.</p>
+<p>Memory block of all datas. </p>
 </td>
 </tr>
 <tr>
@@ -2055,8 +2045,7 @@ count</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of valid datas.</p>
+<p>Number of valid datas. </p>
 </td>
 </tr>
 <tr>
@@ -2065,8 +2054,7 @@ capacity</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of elements that can be stored in the buffer.</p>
+<p>Number of elements that can be stored in the buffer. </p>
 </td>
 </tr>
 </table>
@@ -2076,176 +2064,154 @@ Number of elements that can be stored in the buffer.</p>
 <td class="enumeration">
 <a href="#Core_Array_add">add(self, T)</a></td>
 <td class="enumeration">
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_add">add(self, const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Append a slice to the end of this instance.</p>
+<p>Append a slice to the end of this instance. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_add">add(self, moveref T)</a></td>
 <td class="enumeration">
-<p>
-Move one element at the end of the array.</p>
+<p>Move one element at the end of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_addOnce">addOnce(self, T)</a></td>
 <td class="enumeration">
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_back">back(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a copy of the last element.</p>
+<p>Returns a copy of the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_backPtr">backPtr(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the address of the last element.</p>
+<p>Returns the address of the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set the number of elements to 0.</p>
+<p>Set the number of elements to 0. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_contains">contains(self, V)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the given <code class="incode">value</code> is in the array.</p>
+<p>Returns true if the given <code class="incode">value</code> is in the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_createBuffer">createBuffer(u64)</a></td>
 <td class="enumeration">
-<p>
-Create a working buffer.</p>
+<p>Create a working buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_createTemp">createTemp()</a></td>
 <td class="enumeration">
-<p>
-Create a temporary array.</p>
+<p>Create a temporary array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_emplaceAddress">emplaceAddress(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements, but does not initialize them. Returns the address of the first element.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
 <td class="enumeration">
-<p>
-Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are moved at the end of the array. Order is preserved.</p>
+<p>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_free">free(self)</a></td>
 <td class="enumeration">
-<p>
-Free the array content.</p>
+<p>Free the array content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_front">front(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a copy of the first element.</p>
+<p>Returns a copy of the first element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_frontPtr">frontPtr(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the address of the first element.</p>
+<p>Returns the address of the first element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_grow">grow(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Ensure the Array is big enough to store at least <code class="incode">newCount</code> elements Number of valid elements does not change.</p>
+<p>Ensure the Array is big enough to store at least <code class="incode">newCount</code> elements  Number of valid elements does not change. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_insertAt">insertAt(self, u64, T)</a></td>
 <td class="enumeration">
-<p>
-Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_insertAt">insertAt(self, u64, const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
+<p>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_insertAt">insertAt(self, u64, moveref T)</a></td>
 <td class="enumeration">
-<p>
-Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_isEmpty">isEmpty(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the array is empty.</p>
+<p>Returns true if the array is empty. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_popBack">popBack(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a copy of the last element, and remove it from the array.</p>
+<p>Returns a copy of the last element, and remove it from the array. </p>
 </td>
 </tr>
 <tr>
@@ -2258,104 +2224,91 @@ Returns a copy of the last element, and remove it from the array.</p>
 <td class="enumeration">
 <a href="#Core_Array_remove">remove(self, V)</a></td>
 <td class="enumeration">
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_remove">remove(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>.</p>
+<p>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_removeAt">removeAt(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove an element at <code class="incode">index</code> by replacing it with the last element.</p>
+<p>Remove an element at <code class="incode">index</code> by replacing it with the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others.</p>
+<p>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_removeBack">removeBack(self)</a></td>
 <td class="enumeration">
-<p>
-Remove the last element.</p>
+<p>Remove the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_removeOrdered">removeOrdered(self, V)</a></td>
 <td class="enumeration">
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_reserve">reserve(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Reserve room for <code class="incode">newCapacity</code> elements without changing the array count Number of valid elements does not change.</p>
+<p>Reserve room for <code class="incode">newCapacity</code> elements without changing the array count  Number of valid elements does not change. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_resize">resize(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Change the number of valid elements in the array.</p>
+<p>Change the number of valid elements in the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_sort">sort(self)</a></td>
 <td class="enumeration">
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_sort">sort(self, func(*void, T, T)->s32)</a></td>
 <td class="enumeration">
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_sortReverse">sortReverse(self)</a></td>
 <td class="enumeration">
-<p>
-Sort array in reverse order (from biggest to lowest value).</p>
+<p>Sort array in reverse order (from biggest to lowest value). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_swap">swap(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Swap two elements.</p>
+<p>Swap two elements. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_toSlice">toSlice(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a slice.</p>
+<p>Returns a slice. </p>
 </td>
 </tr>
 </table>
@@ -2365,8 +2318,7 @@ Returns a slice.</p>
 <td class="enumeration">
 <a href="#Core_Array_opAffect">opAffect(self, const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Initializes an Array that contains values copied from the specified array.</p>
+<p>Initializes an Array that contains values copied from the specified array. </p>
 </td>
 </tr>
 <tr>
@@ -2439,16 +2391,14 @@ Initializes an Array that contains values copied from the specified array.</p>
 <td class="enumeration">
 <a href="#Core_Array_opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit every elements of the array.</p>
+<p>Visit every elements of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Array_opVisitBack">opVisitBack(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit every elements of the array from end to start.</p>
+<p>Visit every elements of the array from end to start. </p>
 </td>
 </tr>
 </table>
@@ -2463,18 +2413,15 @@ Visit every elements of the array from end to start.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Append a slice to the end of this instance.</p>
+<p>Append a slice to the end of this instance. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Move one element at the end of the array.</p>
+<p>Move one element at the end of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -2489,8 +2436,7 @@ Move one element at the end of the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addOnce</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -2505,8 +2451,7 @@ Add a copy of one element at the end of the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a copy of the last element.</p>
+<p>Returns a copy of the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">back</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -2521,8 +2466,7 @@ Returns a copy of the last element.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the address of the last element.</p>
+<p>Returns the address of the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">backPtr</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -2537,8 +2481,7 @@ Returns the address of the last element.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the number of elements to 0.</p>
+<p>Set the number of elements to 0. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -2553,8 +2496,7 @@ Set the number of elements to 0.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given <code class="incode">value</code> is in the array.</p>
+<p>Returns true if the given <code class="incode">value</code> is in the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -2569,8 +2511,7 @@ Returns true if the given <code class="incode">value</code> is in the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a working buffer.</p>
+<p>Create a working buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createBuffer</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -2585,8 +2526,7 @@ Create a working buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a temporary array.</p>
+<p>Create a temporary array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">TA</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">createTemp</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">TA</span><span class="SyntaxCode">)</code>
 </p>
@@ -2601,8 +2541,7 @@ Create a temporary array.</p>
 </tr>
 </table>
 </p>
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements, but does not initialize them. Returns the address of the first element.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceAddress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, num: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -2617,8 +2556,7 @@ Reserve room at the end of the array for <code class="incode">num</code> element
 </tr>
 </table>
 </p>
-<p>
-Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are moved at the end of the array. Order is preserved.</p>
+<p>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -2633,13 +2571,11 @@ Move some values at the given index. If <code class="incode">index</code> is equ
 </tr>
 </table>
 </p>
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceInitAddress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, num: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns the address of the first element</p>
+<p> Returns the address of the first element </p>
 <p>
 <table class="item">
 <tr>
@@ -2651,8 +2587,7 @@ Reserve room at the end of the array for <code class="incode">num</code> element
 </tr>
 </table>
 </p>
-<p>
-Free the array content.</p>
+<p>Free the array content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -2667,8 +2602,7 @@ Free the array content.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a copy of the first element.</p>
+<p>Returns a copy of the first element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">front</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -2683,8 +2617,7 @@ Returns a copy of the first element.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the address of the first element.</p>
+<p>Returns the address of the first element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">frontPtr</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -2699,8 +2632,7 @@ Returns the address of the first element.</p>
 </tr>
 </table>
 </p>
-<p>
-Ensure the Array is big enough to store at least <code class="incode">newCount</code> elements Number of valid elements does not change.</p>
+<p>Ensure the Array is big enough to store at least <code class="incode">newCount</code> elements  Number of valid elements does not change. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">grow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCount: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -2715,18 +2647,15 @@ Ensure the Array is big enough to store at least <code class="incode">newCount</
 </tr>
 </table>
 </p>
-<p>
-Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
+<p>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -2741,8 +2670,7 @@ Move a value at the given index. If <code class="incode">index</code> is equal t
 </tr>
 </table>
 </p>
-<p>
-Returns true if the array is empty.</p>
+<p>Returns true if the array is empty. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -2757,8 +2685,7 @@ Returns true if the array is empty.</p>
 </tr>
 </table>
 </p>
-<p>
-Initializes an Array that contains values copied from the specified array.</p>
+<p>Initializes an Array that contains values copied from the specified array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, arr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -2901,8 +2828,7 @@ Initializes an Array that contains values copied from the specified array.</p>
 </tr>
 </table>
 </p>
-<p>
-Visit every elements of the array.</p>
+<p>Visit every elements of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -2918,8 +2844,7 @@ Visit every elements of the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Visit every elements of the array from end to start.</p>
+<p>Visit every elements of the array from end to start. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -2935,8 +2860,7 @@ Visit every elements of the array from end to start.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a copy of the last element, and remove it from the array.</p>
+<p>Returns a copy of the last element, and remove it from the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -2965,13 +2889,11 @@ Returns a copy of the last element, and remove it from the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>.</p>
+<p>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, num: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -2986,13 +2908,11 @@ Remove <code class="incode">num</code> elements starting at <code class="incode"
 </tr>
 </table>
 </p>
-<p>
-Remove an element at <code class="incode">index</code> by replacing it with the last element.</p>
+<p>Remove an element at <code class="incode">index</code> by replacing it with the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Order is <b>not preserved</b></p>
+<p> Order is <b>not preserved</b> </p>
 <p>
 <table class="item">
 <tr>
@@ -3004,13 +2924,11 @@ Remove an element at <code class="incode">index</code> by replacing it with the 
 </tr>
 </table>
 </p>
-<p>
-Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others.</p>
+<p>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeAtOrdered</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, numValues: </span><span class="SyntaxType">u64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Order is preserved</p>
+<p> Order is preserved </p>
 <p>
 <table class="item">
 <tr>
@@ -3022,8 +2940,7 @@ Remove <code class="incode">numValues</code> elements at <code class="incode">in
 </tr>
 </table>
 </p>
-<p>
-Remove the last element.</p>
+<p>Remove the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -3038,8 +2955,7 @@ Remove the last element.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">removeOrdered</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
@@ -3054,8 +2970,7 @@ Remove the given <code class="incode">value</code> If not found, does nothing.</
 </tr>
 </table>
 </p>
-<p>
-Reserve room for <code class="incode">newCapacity</code> elements without changing the array count Number of valid elements does not change.</p>
+<p>Reserve room for <code class="incode">newCapacity</code> elements without changing the array count  Number of valid elements does not change. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reserve</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -3070,8 +2985,7 @@ Reserve room for <code class="incode">newCapacity</code> elements without changi
 </tr>
 </table>
 </p>
-<p>
-Change the number of valid elements in the array.</p>
+<p>Change the number of valid elements in the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCount: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -3086,13 +3000,11 @@ Change the number of valid elements in the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -3107,8 +3019,7 @@ Sort array.</p>
 </tr>
 </table>
 </p>
-<p>
-Sort array in reverse order (from biggest to lowest value).</p>
+<p>Sort array in reverse order (from biggest to lowest value). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sortReverse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -3123,8 +3034,7 @@ Sort array in reverse order (from biggest to lowest value).</p>
 </tr>
 </table>
 </p>
-<p>
-Swap two elements.</p>
+<p>Swap two elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">swap</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx0: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, idx1: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -3139,8 +3049,7 @@ Swap two elements.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a slice.</p>
+<p>Returns a slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toSlice</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;[..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -3174,32 +3083,28 @@ Core.Array'(*T)</td>
 <td class="enumeration">
 <a href="#Core_ArrayPtr_addNewPtr">addNewPtr(self)</a></td>
 <td class="enumeration">
-<p>
-Allocate a new pointer, and add it to the array.</p>
+<p>Allocate a new pointer, and add it to the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ArrayPtr_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Release content.</p>
+<p>Release content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ArrayPtr_deletePtr">deletePtr(self, *T)</a></td>
 <td class="enumeration">
-<p>
-Delete one pointer allocated here.</p>
+<p>Delete one pointer allocated here. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ArrayPtr_newPtr">newPtr(self)</a></td>
 <td class="enumeration">
-<p>
-Allocate a new pointer by using the contextual allocator.</p>
+<p>Allocate a new pointer by using the contextual allocator. </p>
 </td>
 </tr>
 </table>
@@ -3223,8 +3128,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 </table>
 </p>
-<p>
-Allocate a new pointer, and add it to the array.</p>
+<p>Allocate a new pointer, and add it to the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addNewPtr</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -3239,8 +3143,7 @@ Allocate a new pointer, and add it to the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Release content.</p>
+<p>Release content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -3255,8 +3158,7 @@ Release content.</p>
 </tr>
 </table>
 </p>
-<p>
-Delete one pointer allocated here.</p>
+<p>Delete one pointer allocated here. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deletePtr</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, item: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -3271,8 +3173,7 @@ Delete one pointer allocated here.</p>
 </tr>
 </table>
 </p>
-<p>
-Allocate a new pointer by using the contextual allocator.</p>
+<p>Allocate a new pointer by using the contextual allocator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">newPtr</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -3448,8 +3349,7 @@ Allocate a new pointer by using the contextual allocator.</p>
 </tr>
 </table>
 </p>
-<p>
-Manages a compact array of bit values, which are represented as booleans, where <code class="incode">true</code> indicates that the bit is on (1) and <code class="incode">false</code> indicates the bit is off (0).</p>
+<p>Manages a compact array of bit values, which are represented as booleans, where <code class="incode">true</code> indicates that  the bit is on (1) and <code class="incode">false</code> indicates the bit is off (0). </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -3490,80 +3390,70 @@ u64</td>
 <td class="enumeration">
 <a href="#Core_BitArray_and">and(self, const ref BitArray)</a></td>
 <td class="enumeration">
-<p>
-Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array.</p>
+<p>Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_get">get(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Gets the value of the bit at a specific position.</p>
+<p>Gets the value of the bit at a specific position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_invert">invert(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Inverts the value of the bit at a specific position.</p>
+<p>Inverts the value of the bit at a specific position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_not">not(self)</a></td>
 <td class="enumeration">
-<p>
-Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>.</p>
+<p>Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_or">or(self, const ref BitArray)</a></td>
 <td class="enumeration">
-<p>
-Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array.</p>
+<p>Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_reserve">reserve(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Reserve the given amount of bits.</p>
+<p>Reserve the given amount of bits. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_reserve">reserve(self, u64, bool)</a></td>
 <td class="enumeration">
-<p>
-Reserve the given amount of bits and set an initial value to all bits.</p>
+<p>Reserve the given amount of bits and set an initial value to all bits. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_set">set(self, u64, bool)</a></td>
 <td class="enumeration">
-<p>
-Sets the bit at a specific position to the specified value.</p>
+<p>Sets the bit at a specific position to the specified value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_setAll">setAll(self, bool)</a></td>
 <td class="enumeration">
-<p>
-Sets all bits to the specified value.</p>
+<p>Sets all bits to the specified value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_xor">xor(self, const ref BitArray)</a></td>
 <td class="enumeration">
-<p>
-Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array.</p>
+<p>Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
 </td>
 </tr>
 </table>
@@ -3573,8 +3463,7 @@ Performs the bitwise XOR operation between the elements of the current <code cla
 <td class="enumeration">
 <a href="#Core_BitArray_opAffect">opAffect(self, const [..] bool)</a></td>
 <td class="enumeration">
-<p>
-Initializes a <code class="incode">BitArray</code> that contains bit values copied from the specified array of booleans.</p>
+<p>Initializes a <code class="incode">BitArray</code> that contains bit values copied from the specified array of booleans. </p>
 </td>
 </tr>
 <tr>
@@ -3587,32 +3476,28 @@ Initializes a <code class="incode">BitArray</code> that contains bit values copi
 <td class="enumeration">
 <a href="#Core_BitArray_opEquals">opEquals(self, const ref BitArray)</a></td>
 <td class="enumeration">
-<p>
-Compares two arrays, and returns <code class="incode">true</code> if they are equal.</p>
+<p>Compares two arrays, and returns <code class="incode">true</code> if they are equal. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_opIndex">opIndex(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Gets the value of the bit at a specific position.</p>
+<p>Gets the value of the bit at a specific position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_opIndexAffect">opIndexAffect(self, u64, bool)</a></td>
 <td class="enumeration">
-<p>
-Sets the value of the bit at a specific position.</p>
+<p>Sets the value of the bit at a specific position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_BitArray_opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit all the booleans.</p>
+<p>Visit all the booleans. </p>
 </td>
 </tr>
 </table>
@@ -3627,13 +3512,11 @@ Visit all the booleans.</p>
 </tr>
 </table>
 </p>
-<p>
-Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array.</p>
+<p>Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">and</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_BitArray">BitArray</a></span><span class="SyntaxCode">)</code>
 </p>
-<p>
- The current <code class="incode">BitArray</code> will be modified to store the result of the bitwise AND operation.</p>
+<p> The current <code class="incode">BitArray</code> will be modified to store the result of the bitwise AND operation. </p>
 <p>
 <table class="item">
 <tr>
@@ -3645,8 +3528,7 @@ Performs the bitwise AND operation between the elements of the current <code cla
 </tr>
 </table>
 </p>
-<p>
-Gets the value of the bit at a specific position.</p>
+<p>Gets the value of the bit at a specific position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">get</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -3661,8 +3543,7 @@ Gets the value of the bit at a specific position.</p>
 </tr>
 </table>
 </p>
-<p>
-Inverts the value of the bit at a specific position.</p>
+<p>Inverts the value of the bit at a specific position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -3677,8 +3558,7 @@ Inverts the value of the bit at a specific position.</p>
 </tr>
 </table>
 </p>
-<p>
-Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>.</p>
+<p>Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">not</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -3693,8 +3573,7 @@ Inverts all the bit values, so that elements set to <code class="incode">true</c
 </tr>
 </table>
 </p>
-<p>
-Initializes a <code class="incode">BitArray</code> that contains bit values copied from the specified array of booleans.</p>
+<p>Initializes a <code class="incode">BitArray</code> that contains bit values copied from the specified array of booleans. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, what: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -3723,8 +3602,7 @@ Initializes a <code class="incode">BitArray</code> that contains bit values copi
 </tr>
 </table>
 </p>
-<p>
-Compares two arrays, and returns <code class="incode">true</code> if they are equal.</p>
+<p>Compares two arrays, and returns <code class="incode">true</code> if they are equal. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_BitArray">BitArray</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -3739,8 +3617,7 @@ Compares two arrays, and returns <code class="incode">true</code> if they are eq
 </tr>
 </table>
 </p>
-<p>
-Gets the value of the bit at a specific position.</p>
+<p>Gets the value of the bit at a specific position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -3755,8 +3632,7 @@ Gets the value of the bit at a specific position.</p>
 </tr>
 </table>
 </p>
-<p>
-Sets the value of the bit at a specific position.</p>
+<p>Sets the value of the bit at a specific position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opIndexAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -3771,8 +3647,7 @@ Sets the value of the bit at a specific position.</p>
 </tr>
 </table>
 </p>
-<p>
-Visit all the booleans.</p>
+<p>Visit all the booleans. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -3788,13 +3663,11 @@ Visit all the booleans.</p>
 </tr>
 </table>
 </p>
-<p>
-Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array.</p>
+<p>Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">or</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_BitArray">BitArray</a></span><span class="SyntaxCode">)</code>
 </p>
-<p>
- The current BitArray will be modified to store the result of the bitwise OR operation.</p>
+<p> The current BitArray will be modified to store the result of the bitwise OR operation. </p>
 <p>
 <table class="item">
 <tr>
@@ -3806,13 +3679,11 @@ Performs the bitwise OR operation between the elements of the current <code clas
 </tr>
 </table>
 </p>
-<p>
-Reserve the given amount of bits.</p>
+<p>Reserve the given amount of bits. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reserve</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, maxBits: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Reserve the given amount of bits and set an initial value to all bits.</p>
+<p>Reserve the given amount of bits and set an initial value to all bits. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reserve</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, maxBits: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, initialValue: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -3827,8 +3698,7 @@ Reserve the given amount of bits and set an initial value to all bits.</p>
 </tr>
 </table>
 </p>
-<p>
-Sets the bit at a specific position to the specified value.</p>
+<p>Sets the bit at a specific position to the specified value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -3843,8 +3713,7 @@ Sets the bit at a specific position to the specified value.</p>
 </tr>
 </table>
 </p>
-<p>
-Sets all bits to the specified value.</p>
+<p>Sets all bits to the specified value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -3859,13 +3728,11 @@ Sets all bits to the specified value.</p>
 </tr>
 </table>
 </p>
-<p>
-Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array.</p>
+<p>Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">xor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_BitArray">BitArray</a></span><span class="SyntaxCode">)</code>
 </p>
-<p>
- The current BitArray will be modified to store the result of the bitwise XOR operation.</p>
+<p> The current BitArray will be modified to store the result of the bitwise XOR operation. </p>
 <p>
 <table class="item">
 <tr>
@@ -3917,128 +3784,112 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_ByteStream_getSeek">getSeek(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the seek value.</p>
+<p>Returns the seek value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_isEof">isEof(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if end has been reached.</p>
+<p>Returns true if end has been reached. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_length">length(self)</a></td>
 <td class="enumeration">
-<p>
-Returns length of associated slice.</p>
+<p>Returns length of associated slice. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_moveSeek">moveSeek(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Seek to the next byte.</p>
+<p>Seek to the next byte. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_openRead">openRead(const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Creates a byte stream to read from a slice.</p>
+<p>Creates a byte stream to read from a slice. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_openWrite">openWrite(*Array'(u8))</a></td>
 <td class="enumeration">
-<p>
-Creates a byte stream to write to an array.</p>
+<p>Creates a byte stream to write to an array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_peekU8">peekU8(self)</a></td>
 <td class="enumeration">
-<p>
-Read one byte and seek.</p>
+<p>Read one byte and seek. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_readBytes">readBytes(self, *u8, u64)</a></td>
 <td class="enumeration">
-<p>
-Read the given amount of bytes.</p>
+<p>Read the given amount of bytes. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_readData">readData(self)</a></td>
 <td class="enumeration">
-<p>
-Get the buffer of datas to read.</p>
+<p>Get the buffer of datas to read. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_readNative">readNative(self)</a></td>
 <td class="enumeration">
-<p>
-Read a <code class="incode">native</code> type value.</p>
+<p>Read a <code class="incode">native</code> type value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_readU8">readU8(self)</a></td>
 <td class="enumeration">
-<p>
-Read one byte and seek.</p>
+<p>Read one byte and seek. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a slice of the remaing bytes to read.</p>
+<p>Returns a slice of the remaing bytes to read. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_remainReadToString">remainReadToString(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a string of the remaing bytes to read.</p>
+<p>Returns a string of the remaing bytes to read. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_setSeek">setSeek(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Seek to the given position.</p>
+<p>Seek to the given position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_writeBytes">writeBytes(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Write the given amount of bytes.</p>
+<p>Write the given amount of bytes. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ByteStream_writeNative">writeNative(self, T)</a></td>
 <td class="enumeration">
-<p>
-Write a <code class="incode">native</code> type value.</p>
+<p>Write a <code class="incode">native</code> type value. </p>
 </td>
 </tr>
 </table>
@@ -4053,8 +3904,7 @@ Write a <code class="incode">native</code> type value.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the seek value.</p>
+<p>Returns the seek value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -4069,8 +3919,7 @@ Returns the seek value.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if end has been reached.</p>
+<p>Returns true if end has been reached. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEof</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -4085,8 +3934,7 @@ Returns true if end has been reached.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns length of associated slice.</p>
+<p>Returns length of associated slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">length</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -4101,8 +3949,7 @@ Returns length of associated slice.</p>
 </tr>
 </table>
 </p>
-<p>
-Seek to the next byte.</p>
+<p>Seek to the next byte. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveSeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, offset: </span><span class="SyntaxType">u64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </p>
@@ -4117,8 +3964,7 @@ Seek to the next byte.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a byte stream to read from a slice.</p>
+<p>Creates a byte stream to read from a slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">openRead</span><span class="SyntaxCode">(readBuffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ByteStream">ByteStream</a></span><span class="SyntaxCode"></code>
 </p>
@@ -4133,8 +3979,7 @@ Creates a byte stream to read from a slice.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a byte stream to write to an array.</p>
+<p>Creates a byte stream to write to an array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">openWrite</span><span class="SyntaxCode">(writeBuffer: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">))-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ByteStream">ByteStream</a></span><span class="SyntaxCode"></code>
 </p>
@@ -4149,8 +3994,7 @@ Creates a byte stream to write to an array.</p>
 </tr>
 </table>
 </p>
-<p>
-Read one byte and seek.</p>
+<p>Read one byte and seek. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">peekU8</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -4165,8 +4009,7 @@ Read one byte and seek.</p>
 </tr>
 </table>
 </p>
-<p>
-Read the given amount of bytes.</p>
+<p>Read the given amount of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readBytes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, dest: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -4181,8 +4024,7 @@ Read the given amount of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the buffer of datas to read.</p>
+<p>Get the buffer of datas to read. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readData</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -4197,8 +4039,7 @@ Get the buffer of datas to read.</p>
 </tr>
 </table>
 </p>
-<p>
-Read a <code class="incode">native</code> type value.</p>
+<p>Read a <code class="incode">native</code> type value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">readNative</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -4213,8 +4054,7 @@ Read a <code class="incode">native</code> type value.</p>
 </tr>
 </table>
 </p>
-<p>
-Read one byte and seek.</p>
+<p>Read one byte and seek. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readU8</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -4229,8 +4069,7 @@ Read one byte and seek.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a slice of the remaing bytes to read.</p>
+<p>Returns a slice of the remaing bytes to read. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remainReadToSlice</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -4245,8 +4084,7 @@ Returns a slice of the remaing bytes to read.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a string of the remaing bytes to read.</p>
+<p>Returns a string of the remaing bytes to read. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remainReadToString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -4261,8 +4099,7 @@ Returns a string of the remaing bytes to read.</p>
 </tr>
 </table>
 </p>
-<p>
-Seek to the given position.</p>
+<p>Seek to the given position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, offset: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -4277,8 +4114,7 @@ Seek to the given position.</p>
 </tr>
 </table>
 </p>
-<p>
-Write the given amount of bytes.</p>
+<p>Write the given amount of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">writeBytes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, slice: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -4293,8 +4129,7 @@ Write the given amount of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Write a <code class="incode">native</code> type value.</p>
+<p>Write a <code class="incode">native</code> type value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">writeNative</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, val: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -4365,24 +4200,21 @@ Unicode</td>
 <td class="enumeration">
 <a href="#Core_CommandLine_isOption">isOption(string, const ref ParseOptions)</a></td>
 <td class="enumeration">
-<p>
-Returns true if <code class="incode">oneArg</code> is a valid option (starting with a delimiter).</p>
+<p>Returns true if <code class="incode">oneArg</code> is a valid option (starting with a delimiter). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_CommandLine_parse">parse(*T, const [..] string, const ref ParseOptions)</a></td>
 <td class="enumeration">
-<p>
-Parse all the arguments and fill the result.</p>
+<p>Parse all the arguments and fill the result. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_CommandLine_splitArguments">splitArguments(const [..] string, const ref ParseOptions)</a></td>
 <td class="enumeration">
-<p>
-Clean and split a list of arguments -option:value or -option=value =&gt; -option value.</p>
+<p>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </p>
 </td>
 </tr>
 </table>
@@ -4485,8 +4317,7 @@ Core.CommandLine.IsSet'(T)</td>
 </tr>
 </table>
 </p>
-<p>
-Returns true if <code class="incode">oneArg</code> is a valid option (starting with a delimiter).</p>
+<p>Returns true if <code class="incode">oneArg</code> is a valid option (starting with a delimiter). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isOption</span><span class="SyntaxCode">(oneArg: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, _options: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine">CommandLine</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -4501,8 +4332,7 @@ Returns true if <code class="incode">oneArg</code> is a valid option (starting w
 </tr>
 </table>
 </p>
-<p>
-Parse all the arguments and fill the result.</p>
+<p>Parse all the arguments and fill the result. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">parse</span><span class="SyntaxCode">(st: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, args: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">string</span><span class="SyntaxCode">, options = </span><span class="SyntaxConstant"><a href="#Core_CommandLine">CommandLine</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span><span class="SyntaxCode">{})-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine">CommandLine</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine_Result">Result</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -4531,8 +4361,7 @@ Parse all the arguments and fill the result.</p>
 </tr>
 </table>
 </p>
-<p>
-Clean and split a list of arguments -option:value or -option=value =&gt; -option value.</p>
+<p>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">splitArguments</span><span class="SyntaxCode">(args: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">string</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine">CommandLine</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -4909,16 +4738,14 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_Compress_Deflate_compress">compress(self, *Array'(u8), const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Compress the source buffer.</p>
+<p>Compress the source buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Compress_Deflate_init">init(self, CompressionLevel, CompressionStrategy, CompressionFlags)</a></td>
 <td class="enumeration">
-<p>
-Initialize the compressor Can be called multiple times.</p>
+<p>Initialize the compressor  Can be called multiple times. </p>
 </td>
 </tr>
 </table>
@@ -5050,8 +4877,7 @@ Fixed</td>
 </tr>
 </table>
 </p>
-<p>
-Compress the source buffer.</p>
+<p>Compress the source buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">), src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -5066,8 +4892,7 @@ Compress the source buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the compressor Can be called multiple times.</p>
+<p>Initialize the compressor  Can be called multiple times. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, level = </span><span class="SyntaxConstant"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">, strategy = </span><span class="SyntaxConstant"><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">, flags = </span><span class="SyntaxConstant"><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)</code>
 </p>
@@ -5088,8 +4913,7 @@ Initialize the compressor Can be called multiple times.</p>
 <td class="enumeration">
 <a href="#Core_Compress_Inflate_decompress">decompress(self, const [..] u8, u32)</a></td>
 <td class="enumeration">
-<p>
-Decompress the associated stream.</p>
+<p>Decompress the associated stream. </p>
 </td>
 </tr>
 </table>
@@ -5104,8 +4928,7 @@ Decompress the associated stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Decompress the associated stream.</p>
+<p>Decompress the associated stream. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decompress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buf: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, winSize: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">InflateMaxDistance</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -5126,16 +4949,14 @@ Decompress the associated stream.</p>
 <td class="enumeration">
 <a href="#Core_Compress_ZLib_compress">compress(self, const [..] u8, CompressionLevel)</a></td>
 <td class="enumeration">
-<p>
-Decompress stream.</p>
+<p>Decompress stream. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Compress_ZLib_decompress">decompress(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Decompress stream.</p>
+<p>Decompress stream. </p>
 </td>
 </tr>
 </table>
@@ -5150,8 +4971,7 @@ Decompress stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Decompress stream.</p>
+<p>Decompress stream. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, level = </span><span class="SyntaxConstant"><a href="#Core_Compress_Deflate">Deflate</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -5166,8 +4986,7 @@ Decompress stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Decompress stream.</p>
+<p>Decompress stream. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decompress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -5182,8 +5001,7 @@ Decompress stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when the buffer needs to increase its size. This is the main difference with Array.</p>
+<p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when  the buffer needs to increase its size. This is the main difference with Array. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -5256,40 +5074,35 @@ viewFirstBucket</td>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_addBytes">addBytes(self, const [..] u8, bool)</a></td>
 <td class="enumeration">
-<p>
-Append a slice of bytes to the buffer If <code class="incode">contiguous</code> is false, the slice will be divided in chunks if necessary.</p>
+<p>Append a slice of bytes to the buffer  If <code class="incode">contiguous</code> is false, the slice will be divided in chunks if necessary. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_addNative">addNative(self, T)</a></td>
 <td class="enumeration">
-<p>
-Append one byte to the buffer.</p>
+<p>Append one byte to the buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_addStruct">addStruct(self, T)</a></td>
 <td class="enumeration">
-<p>
-Append the content of a struct.</p>
+<p>Append the content of a struct. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Clear the content without freing the buffers.</p>
+<p>Clear the content without freing the buffers. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_count">count(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the number of bytes.</p>
+<p>Returns the number of bytes. </p>
 </td>
 </tr>
 <tr>
@@ -5302,112 +5115,98 @@ Returns the number of bytes.</p>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_getOffset">getOffset(const ref ConcatBufferSeek)</a></td>
 <td class="enumeration">
-<p>
-Get the linearized seek offset.</p>
+<p>Get the linearized seek offset. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_getSeek">getSeek(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the current <code class="incode">seek</code> in the buffer.</p>
+<p>Returns the current <code class="incode">seek</code> in the buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_grow">grow(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Be sure that there is enough room to store at least <code class="incode">numBytes</code> bytes.</p>
+<p>Be sure that there is enough room to store at least <code class="incode">numBytes</code> bytes. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_makeLinear">makeLinear(self)</a></td>
 <td class="enumeration">
-<p>
-linearize all buckets in one single big bucket.</p>
+<p>linearize all buckets in one single big bucket. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_moveSeek">moveSeek(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Seek current write pointer.</p>
+<p>Seek current write pointer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_moveToString">moveToString(self)</a></td>
 <td class="enumeration">
-<p>
-Move the content.</p>
+<p>Move the content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_release">release(self)</a></td>
 <td class="enumeration">
-<p>
-Release all allocated buffers.</p>
+<p>Release all allocated buffers. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_setAllocator">setAllocator(self, IAllocator)</a></td>
 <td class="enumeration">
-<p>
-Associate an allocator with the buffer.</p>
+<p>Associate an allocator with the buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_setBucketSize">setBucketSize(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Set the granularity of datas when allocated new buckets. Minimum size is 4.</p>
+<p>Set the granularity of datas when allocated new buckets. Minimum size is 4. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_setEndSeek">setEndSeek(self, const ref ConcatBufferSeek)</a></td>
 <td class="enumeration">
-<p>
-Set the end <code class="incode">seek</code>.</p>
+<p>Set the end <code class="incode">seek</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket(self, [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Share <code class="incode">data</code> with the firstBucket.</p>
+<p>Share <code class="incode">data</code> with the firstBucket. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_setSeek">setSeek(self, const ref ConcatBufferSeek)</a></td>
 <td class="enumeration">
-<p>
-Set the current <code class="incode">seek</code>.</p>
+<p>Set the current <code class="incode">seek</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_toSlice">toSlice(self)</a></td>
 <td class="enumeration">
-<p>
-Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>).</p>
+<p>Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_toString">toString(self)</a></td>
 <td class="enumeration">
-<p>
-Convert buffer to a String.</p>
+<p>Convert buffer to a String. </p>
 </td>
 </tr>
 </table>
@@ -5423,8 +5222,7 @@ Convert buffer to a String.</p>
 <td class="enumeration">
 <a href="#Core_ConcatBuffer_opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit all valid buckets.</p>
+<p>Visit all valid buckets. </p>
 </td>
 </tr>
 </table>
@@ -5439,8 +5237,7 @@ Visit all valid buckets.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a slice of bytes to the buffer If <code class="incode">contiguous</code> is false, the slice will be divided in chunks if necessary.</p>
+<p>Append a slice of bytes to the buffer  If <code class="incode">contiguous</code> is false, the slice will be divided in chunks if necessary. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addBytes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, bytes: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, contiguous = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </p>
@@ -5455,8 +5252,7 @@ Append a slice of bytes to the buffer If <code class="incode">contiguous</code> 
 </tr>
 </table>
 </p>
-<p>
-Append one byte to the buffer.</p>
+<p>Append one byte to the buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">addNative</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, val: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -5471,8 +5267,7 @@ Append one byte to the buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Append the content of a struct.</p>
+<p>Append the content of a struct. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">addStruct</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, val: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -5487,8 +5282,7 @@ Append the content of a struct.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear the content without freing the buffers.</p>
+<p>Clear the content without freing the buffers. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -5503,8 +5297,7 @@ Clear the content without freing the buffers.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of bytes.</p>
+<p>Returns the number of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -5538,8 +5331,7 @@ Returns the number of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the linearized seek offset.</p>
+<p>Get the linearized seek offset. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOffset</span><span class="SyntaxCode">(seek: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -5554,8 +5346,7 @@ Get the linearized seek offset.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the current <code class="incode">seek</code> in the buffer.</p>
+<p>Returns the current <code class="incode">seek</code> in the buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span><span class="SyntaxCode"></code>
 </p>
@@ -5570,8 +5361,7 @@ Returns the current <code class="incode">seek</code> in the buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Be sure that there is enough room to store at least <code class="incode">numBytes</code> bytes.</p>
+<p>Be sure that there is enough room to store at least <code class="incode">numBytes</code> bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">grow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, numBytes: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -5586,8 +5376,7 @@ Be sure that there is enough room to store at least <code class="incode">numByte
 </tr>
 </table>
 </p>
-<p>
-linearize all buckets in one single big bucket.</p>
+<p>linearize all buckets in one single big bucket. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeLinear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -5602,8 +5391,7 @@ linearize all buckets in one single big bucket.</p>
 </tr>
 </table>
 </p>
-<p>
-Seek current write pointer.</p>
+<p>Seek current write pointer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveSeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, num: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -5618,8 +5406,7 @@ Seek current write pointer.</p>
 </tr>
 </table>
 </p>
-<p>
-Move the content.</p>
+<p>Move the content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveToString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -5648,8 +5435,7 @@ Move the content.</p>
 </tr>
 </table>
 </p>
-<p>
-Visit all valid buckets.</p>
+<p>Visit all valid buckets. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -5665,8 +5451,7 @@ Visit all valid buckets.</p>
 </tr>
 </table>
 </p>
-<p>
-Release all allocated buffers.</p>
+<p>Release all allocated buffers. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -5681,13 +5466,11 @@ Release all allocated buffers.</p>
 </tr>
 </table>
 </p>
-<p>
-Associate an allocator with the buffer.</p>
+<p>Associate an allocator with the buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllocator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, alloc: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- The allocator can only be changed if the buffer has no pending buckets.</p>
+<p> The allocator can only be changed if the buffer has no pending buckets. </p>
 <p>
 <table class="item">
 <tr>
@@ -5699,8 +5482,7 @@ Associate an allocator with the buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the granularity of datas when allocated new buckets. Minimum size is 4.</p>
+<p>Set the granularity of datas when allocated new buckets. Minimum size is 4. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setBucketSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -5715,8 +5497,7 @@ Set the granularity of datas when allocated new buckets. Minimum size is 4.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the end <code class="incode">seek</code>.</p>
+<p>Set the end <code class="incode">seek</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setEndSeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, seek: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -5731,8 +5512,7 @@ Set the end <code class="incode">seek</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Share <code class="incode">data</code> with the firstBucket.</p>
+<p>Share <code class="incode">data</code> with the firstBucket. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFirstBucket</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, data: [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -5747,8 +5527,7 @@ Share <code class="incode">data</code> with the firstBucket.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the current <code class="incode">seek</code>.</p>
+<p>Set the current <code class="incode">seek</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, seek: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -5763,8 +5542,7 @@ Set the current <code class="incode">seek</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>).</p>
+<p>Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toSlice</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;[..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -5779,8 +5557,7 @@ Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode"
 </tr>
 </table>
 </p>
-<p>
-Convert buffer to a String.</p>
+<p>Convert buffer to a String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -5980,8 +5757,7 @@ DarkMagenta</td>
 </tr>
 </table>
 </p>
-<p>
-Fatal error Exit the process with code -1.</p>
+<p>Fatal error  Exit the process with code -1. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fatal</span><span class="SyntaxCode">(msg: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, args: ...)</code>
 </p>
@@ -5996,13 +5772,11 @@ Fatal error Exit the process with code -1.</p>
 </tr>
 </table>
 </p>
-<p>
-Use to access console with multiple threads.</p>
+<p>Use to access console with multiple threads. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lock</span><span class="SyntaxCode">()</code>
 </p>
-<p>
- No console function is thread safe, so it is the user responsability to lock the console when necessary</p>
+<p> No console function is thread safe, so it is the user responsability  to lock the console when necessary </p>
 <p>
 <table class="item">
 <tr>
@@ -6014,8 +5788,7 @@ Use to access console with multiple threads.</p>
 </tr>
 </table>
 </p>
-<p>
-Write a bunch of parameters to the console.</p>
+<p>Write a bunch of parameters to the console. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(params: ...)</code>
 </p>
@@ -6030,8 +5803,7 @@ Write a bunch of parameters to the console.</p>
 </tr>
 </table>
 </p>
-<p>
-Write a formatted message to the console.</p>
+<p>Write a formatted message to the console. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, params: ...)</code>
 </p>
@@ -6046,8 +5818,7 @@ Write a formatted message to the console.</p>
 </tr>
 </table>
 </p>
-<p>
-Write a line to the console.</p>
+<p>Write a line to the console. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">println</span><span class="SyntaxCode">(params: ...)</code>
 </p>
@@ -6062,8 +5833,7 @@ Write a line to the console.</p>
 </tr>
 </table>
 </p>
-<p>
-Wait for using input, and returns the corresponding string.</p>
+<p>Wait for using input, and returns the corresponding string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">prompt</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -6078,8 +5848,7 @@ Wait for using input, and returns the corresponding string.</p>
 </tr>
 </table>
 </p>
-<p>
-Restore the console colors to their default values.</p>
+<p>Restore the console colors to their default values. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetColor</span><span class="SyntaxCode">()</code>
 </p>
@@ -6094,8 +5863,7 @@ Restore the console colors to their default values.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the console background color.</p>
+<p>Set the console background color. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setBackColor</span><span class="SyntaxCode">(color: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Console_Color">Color</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -6110,8 +5878,7 @@ Set the console background color.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the console foreground color.</p>
+<p>Set the console foreground color. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTextColor</span><span class="SyntaxCode">(color: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Console_Color">Color</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -6126,8 +5893,7 @@ Set the console foreground color.</p>
 </tr>
 </table>
 </p>
-<p>
-Disable console output. This is a counter, so can be called multiple times with the same <code class="incode">value</code> Like any other console functions, this is not thread-safe =&gt; call <code class="incode">lock</code> before if necessary, and <code class="incode">unlock</code> after.</p>
+<p>Disable console output. This is a counter, so can be called  multiple times with the same <code class="incode">value</code>  Like any other console functions, this is not thread-safe  =&gt; call <code class="incode">lock</code> before if necessary, and <code class="incode">unlock</code> after. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">silent</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -6212,8 +5978,7 @@ Disable console output. This is a counter, so can be called multiple times with 
 </tr>
 </table>
 </p>
-<p>
-Try to attach to a debugger by calling "vsjitdebugger.exe" If it works, it will open a dialog box to pickup a visual studio instance.</p>
+<p>Try to attach to a debugger by calling "vsjitdebugger.exe"  If it works, it will open a dialog box to pickup a visual studio instance. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">attach</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6228,8 +5993,7 @@ Try to attach to a debugger by calling "vsjitdebugger.exe" If it works, it will 
 </tr>
 </table>
 </p>
-<p>
-Trigger a breakpoint.</p>
+<p>Trigger a breakpoint. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">debugBreak</span><span class="SyntaxCode">()</code>
 </p>
@@ -6244,8 +6008,7 @@ Trigger a breakpoint.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if a debugger is attached to the current process.</p>
+<p>Returns true if a debugger is attached to the current process. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isAttached</span><span class="SyntaxCode">()</code>
 </p>
@@ -6260,8 +6023,7 @@ Returns true if a debugger is attached to the current process.</p>
 </tr>
 </table>
 </p>
-<p>
-Debug log.</p>
+<p>Debug log. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log</span><span class="SyntaxCode">(msg: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -6359,8 +6121,7 @@ func(Core.File.FileInfo)->bool</td>
 </tr>
 </table>
 </p>
-<p>
-Enumerate a directory.</p>
+<p>Enumerate a directory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enumerate</span><span class="SyntaxCode">(dirName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Directory</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileInfo">FileInfo</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6375,8 +6136,7 @@ Enumerate a directory.</p>
 </tr>
 </table>
 </p>
-<p>
-Get all the directories in the given directory.</p>
+<p>Get all the directories in the given directory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enumerateDirectories</span><span class="SyntaxCode">(dirName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, matchExtension: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, recurse = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileInfo">FileInfo</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6391,8 +6151,7 @@ Get all the directories in the given directory.</p>
 </tr>
 </table>
 </p>
-<p>
-Get all the files of the given directory.</p>
+<p>Get all the files of the given directory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enumerateFiles</span><span class="SyntaxCode">(dirName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, matchExtension: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, recurse = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileInfo">FileInfo</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6407,8 +6166,7 @@ Get all the files of the given directory.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given directory exists.</p>
+<p>Returns true if the given directory exists. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exists</span><span class="SyntaxCode">(dirName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -6423,8 +6181,7 @@ Returns true if the given directory exists.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the current directory.</p>
+<p>Returns the current directory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCurrent</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6439,8 +6196,7 @@ Returns the current directory.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the list of logical drives.</p>
+<p>Get the list of logical drives. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDrives</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6455,8 +6211,7 @@ Get the list of logical drives.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the current directory.</p>
+<p>Set the current directory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCurrent</span><span class="SyntaxCode">(dirname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6516,8 +6271,7 @@ Core.Env.ProcessHandle</td>
 <td class="enumeration">
 <a href="#Core_Env_Process_waitForExit">waitForExit(self)</a></td>
 <td class="enumeration">
-<p>
-Wait for the process to be done.</p>
+<p>Wait for the process to be done. </p>
 </td>
 </tr>
 </table>
@@ -6532,8 +6286,7 @@ Wait for the process to be done.</p>
 </tr>
 </table>
 </p>
-<p>
-Wait for the process to be done.</p>
+<p>Wait for the process to be done. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">waitForExit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -6656,8 +6409,7 @@ string</td>
 </tr>
 </table>
 </p>
-<p>
-Starts a new process with arguments, and wait for it to be done.</p>
+<p>Starts a new process with arguments, and wait for it to be done. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doSyncProcess</span><span class="SyntaxCode">(fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, arguments: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -6672,8 +6424,7 @@ Starts a new process with arguments, and wait for it to be done.</p>
 </tr>
 </table>
 </p>
-<p>
-Exit the current process.</p>
+<p>Exit the current process. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exit</span><span class="SyntaxCode">(exitCode: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </p>
@@ -6688,8 +6439,7 @@ Exit the current process.</p>
 </tr>
 </table>
 </p>
-<p>
-Get a given argument, or null.</p>
+<p>Get a given argument, or null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getArg</span><span class="SyntaxCode">(idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -6704,8 +6454,7 @@ Get a given argument, or null.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the program command line arguments as a [..] string.</p>
+<p>Get the program command line arguments as a [..] string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getArgs</span><span class="SyntaxCode">()</code>
 </p>
@@ -6720,8 +6469,7 @@ Get the program command line arguments as a [..] string.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the list of all monitors.</p>
+<p>Get the list of all monitors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMonitors</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Env</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Env_Monitor">Monitor</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -6736,8 +6484,7 @@ Get the list of all monitors.</p>
 </tr>
 </table>
 </p>
-<p>
-The system font directory.</p>
+<p>The system font directory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSpecialDirectory</span><span class="SyntaxCode">(what: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Env</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Env_SpecialDirectory">SpecialDirectory</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -6752,8 +6499,7 @@ The system font directory.</p>
 </tr>
 </table>
 </p>
-<p>
-Get a given argument, or null.</p>
+<p>Get a given argument, or null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasArg</span><span class="SyntaxCode">(arg: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -6768,13 +6514,11 @@ Get a given argument, or null.</p>
 </tr>
 </table>
 </p>
-<p>
-Starts a new process with arguments.</p>
+<p>Starts a new process with arguments. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startProcess</span><span class="SyntaxCode">(info: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Env</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Env_StartInfo">StartInfo</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Env</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Env_Process">Process</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Starts a new process with arguments.</p>
+<p>Starts a new process with arguments. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startProcess</span><span class="SyntaxCode">(fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, arguments: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Env</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Env_Process">Process</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7153,72 +6897,63 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_File_FileStream_close">close(self)</a></td>
 <td class="enumeration">
-<p>
-Close the given file stream.</p>
+<p>Close the given file stream. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_getPosition">getPosition(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the current seek position of the given file stream.</p>
+<p>Returns the current seek position of the given file stream. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_getSize">getSize(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the given file stream length on disk.</p>
+<p>Returns the given file stream length on disk. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_isOpen">isOpen(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the stream is valid.</p>
+<p>Returns true if the stream is valid. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_read">read(self, *void, u64)</a></td>
 <td class="enumeration">
-<p>
-Read from the given file stream, and returns the number of bytes.</p>
+<p>Read from the given file stream, and returns the number of bytes. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_readValue">readValue(self, *T)</a></td>
 <td class="enumeration">
-<p>
-Read from the given file stream, and returns <code class="incode">true</code> if all bytes have been read.</p>
+<p>Read from the given file stream, and returns <code class="incode">true</code> if all bytes have been read. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_setPosition">setPosition(self, SeekOrigin, u64)</a></td>
 <td class="enumeration">
-<p>
-Set the current seek position of the given file stream.</p>
+<p>Set the current seek position of the given file stream. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_skipPosition">skipPosition(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Skip <code class="incode">bytes</code> from current position.</p>
+<p>Skip <code class="incode">bytes</code> from current position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_FileStream_write">write(self, const *void, u64)</a></td>
 <td class="enumeration">
-<p>
-Write to the given file stream, and returns the number of written bytes.</p>
+<p>Write to the given file stream, and returns the number of written bytes. </p>
 </td>
 </tr>
 </table>
@@ -7233,8 +6968,7 @@ Write to the given file stream, and returns the number of written bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Close the given file stream.</p>
+<p>Close the given file stream. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">close</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -7249,8 +6983,7 @@ Close the given file stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the current seek position of the given file stream.</p>
+<p>Returns the current seek position of the given file stream. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7265,8 +6998,7 @@ Returns the current seek position of the given file stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the given file stream length on disk.</p>
+<p>Returns the given file stream length on disk. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7281,8 +7013,7 @@ Returns the given file stream length on disk.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the stream is valid.</p>
+<p>Returns true if the stream is valid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isOpen</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -7297,8 +7028,7 @@ Returns true if the stream is valid.</p>
 </tr>
 </table>
 </p>
-<p>
-Read from the given file stream, and returns the number of bytes.</p>
+<p>Read from the given file stream, and returns the number of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">read</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, length: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -7313,8 +7043,7 @@ Read from the given file stream, and returns the number of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Read from the given file stream, and returns <code class="incode">true</code> if all bytes have been read.</p>
+<p>Read from the given file stream, and returns <code class="incode">true</code> if all bytes have been read. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">readValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -7329,8 +7058,7 @@ Read from the given file stream, and returns <code class="incode">true</code> if
 </tr>
 </table>
 </p>
-<p>
-Set the current seek position of the given file stream.</p>
+<p>Set the current seek position of the given file stream. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, origin: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_SeekOrigin">SeekOrigin</a></span><span class="SyntaxCode">, seek: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7345,8 +7073,7 @@ Set the current seek position of the given file stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Skip <code class="incode">bytes</code> from current position.</p>
+<p>Skip <code class="incode">bytes</code> from current position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">skipPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, bytes: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7361,8 +7088,7 @@ Skip <code class="incode">bytes</code> from current position.</p>
 </tr>
 </table>
 </p>
-<p>
-Write to the given file stream, and returns the number of written bytes.</p>
+<p>Write to the given file stream, and returns the number of written bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">write</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, length: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7518,32 +7244,28 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_File_TextReader_close">close(self)</a></td>
 <td class="enumeration">
-<p>
-Close the reader.</p>
+<p>Close the reader. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_TextReader_open">open(self, string, TextEncoding)</a></td>
 <td class="enumeration">
-<p>
-Open the reader.</p>
+<p>Open the reader. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_TextReader_readLine">readLine(self, ref String)</a></td>
 <td class="enumeration">
-<p>
-Read one line of text.</p>
+<p>Read one line of text. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_TextReader_readToEnd">readToEnd(self)</a></td>
 <td class="enumeration">
-<p>
-Read from the current position to the end, and returns the corresponding utf8 string.</p>
+<p>Read from the current position to the end, and returns the corresponding  utf8 string. </p>
 </td>
 </tr>
 </table>
@@ -7558,8 +7280,7 @@ Read from the current position to the end, and returns the corresponding utf8 st
 </tr>
 </table>
 </p>
-<p>
-Close the reader.</p>
+<p>Close the reader. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">close</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -7574,8 +7295,7 @@ Close the reader.</p>
 </tr>
 </table>
 </p>
-<p>
-Open the reader.</p>
+<p>Open the reader. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">open</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, encoding = </span><span class="SyntaxConstant"><a href="#Core_File_TextEncoding">TextEncoding</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Utf8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7590,13 +7310,11 @@ Open the reader.</p>
 </tr>
 </table>
 </p>
-<p>
-Read one line of text.</p>
+<p>Read one line of text. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns false at the end</p>
+<p> Returns false at the end </p>
 <p>
 <table class="item">
 <tr>
@@ -7608,8 +7326,7 @@ Read one line of text.</p>
 </tr>
 </table>
 </p>
-<p>
-Read from the current position to the end, and returns the corresponding utf8 string.</p>
+<p>Read from the current position to the end, and returns the corresponding  utf8 string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readToEnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -7640,32 +7357,28 @@ Core.Array'(Core.File.Folder)</td>
 <td class="enumeration">
 <a href="#Core_File_TweakFile_parse">parse(self, const ref Array'(string))</a></td>
 <td class="enumeration">
-<p>
-Parse a list of lines.</p>
+<p>Parse a list of lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_TweakFile_parse">parse(self, string)</a></td>
 <td class="enumeration">
-<p>
-Parse a list of lines.</p>
+<p>Parse a list of lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_TweakFile_parseFile">parseFile(self, string)</a></td>
 <td class="enumeration">
-<p>
-Read and parse a file.</p>
+<p>Read and parse a file. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_File_TweakFile_registerFolder">registerFolder(self, *T)</a></td>
 <td class="enumeration">
-<p>
-Register a new structure to be parsed.</p>
+<p>Register a new structure to be parsed. </p>
 </td>
 </tr>
 </table>
@@ -7680,13 +7393,11 @@ Register a new structure to be parsed.</p>
 </tr>
 </table>
 </p>
-<p>
-Parse a list of lines.</p>
+<p>Parse a list of lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, lines: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">)) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Parse a list of lines.</p>
+<p>Parse a list of lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, content: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7701,8 +7412,7 @@ Parse a list of lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Read and parse a file.</p>
+<p>Read and parse a file. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7717,8 +7427,7 @@ Read and parse a file.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a new structure to be parsed.</p>
+<p>Register a new structure to be parsed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">registerFolder</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, folder: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -7733,8 +7442,7 @@ Register a new structure to be parsed.</p>
 </tr>
 </table>
 </p>
-<p>
-Delete the specified file.</p>
+<p>Delete the specified file. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">delete</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7749,8 +7457,7 @@ Delete the specified file.</p>
 </tr>
 </table>
 </p>
-<p>
-Duplicate a file.</p>
+<p>Duplicate a file. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">duplicate</span><span class="SyntaxCode">(newName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, oldName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7765,8 +7472,7 @@ Duplicate a file.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given file exists.</p>
+<p>Returns true if the given file exists. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exists</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -7781,8 +7487,7 @@ Returns true if the given file exists.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns attributes associated to the given filename.</p>
+<p>Returns attributes associated to the given filename. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttributes</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileAttributes">FileAttributes</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7797,8 +7502,7 @@ Returns attributes associated to the given filename.</p>
 </tr>
 </table>
 </p>
-<p>
-Get informations about a file.</p>
+<p>Get informations about a file. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFileInfo</span><span class="SyntaxCode">(fullName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileInfo">FileInfo</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7813,8 +7517,7 @@ Get informations about a file.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns various file informations.</p>
+<p>Returns various file informations. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getInfo</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileInfo">FileInfo</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7829,8 +7532,7 @@ Returns various file informations.</p>
 </tr>
 </table>
 </p>
-<p>
-Locate file in the file explorer.</p>
+<p>Locate file in the file explorer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">locateInExplorer</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -7845,8 +7547,7 @@ Locate file in the file explorer.</p>
 </tr>
 </table>
 </p>
-<p>
-Open a new file stream.</p>
+<p>Open a new file stream. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">open</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileMode">FileMode</a></span><span class="SyntaxCode">, access: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileAccess">FileAccess</a></span><span class="SyntaxCode">, share: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileShare">FileShare</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileStream">FileStream</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7861,8 +7562,7 @@ Open a new file stream.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new file stream for reading.</p>
+<p>Creates a new file stream for reading. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">openRead</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileStream">FileStream</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7877,8 +7577,7 @@ Creates a new file stream for reading.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new file stream for writing.</p>
+<p>Creates a new file stream for writing. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">openWrite</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileStream">FileStream</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7893,8 +7592,7 @@ Creates a new file stream for writing.</p>
 </tr>
 </table>
 </p>
-<p>
-Read a file, and store the result in an array of bytes.</p>
+<p>Read a file, and store the result in an array of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readAllBytes</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7909,8 +7607,7 @@ Read a file, and store the result in an array of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Read all the lines of a file.</p>
+<p>Read all the lines of a file. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readAllLines</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, encoding = </span><span class="SyntaxConstant"><a href="#Core_File_TextEncoding">TextEncoding</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Utf8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7925,8 +7622,7 @@ Read all the lines of a file.</p>
 </tr>
 </table>
 </p>
-<p>
-Read a file, and store the result in an utf8 string.</p>
+<p>Read a file, and store the result in an utf8 string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readAllText</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, encoding = </span><span class="SyntaxConstant"><a href="#Core_File_TextEncoding">TextEncoding</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Utf8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7941,8 +7637,7 @@ Read a file, and store the result in an utf8 string.</p>
 </tr>
 </table>
 </p>
-<p>
-Call user code for each line.</p>
+<p>Call user code for each line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">readEachLines</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, encoding = </span><span class="SyntaxConstant"><a href="#Core_File_TextEncoding">TextEncoding</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Utf8</span><span class="SyntaxCode">, stmt: code) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
@@ -7958,8 +7653,7 @@ Call user code for each line.</p>
 </tr>
 </table>
 </p>
-<p>
-Change the file write date/time.</p>
+<p>Change the file write date/time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">touch</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7974,13 +7668,11 @@ Change the file write date/time.</p>
 </tr>
 </table>
 </p>
-<p>
-Write a file with the content of a slice of bytes.</p>
+<p>Write a file with the content of a slice of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">writeAllBytes</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Write a file with the content of a <code class="incode">ConcatBuffer</code>.</p>
+<p>Write a file with the content of a <code class="incode">ConcatBuffer</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">writeAllBytes</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -7995,8 +7687,7 @@ Write a file with the content of a <code class="incode">ConcatBuffer</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Write a file with the content of an array of string, one per line.</p>
+<p>Write a file with the content of an array of string, one per line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">writeAllLines</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, lines: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">))-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -8011,8 +7702,7 @@ Write a file with the content of an array of string, one per line.</p>
 </tr>
 </table>
 </p>
-<p>
-Format a string and put the result in a ConcatBuffer.</p>
+<p>Format a string and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">append</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, fmt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, values: ...)</code>
 </p>
@@ -8027,8 +7717,7 @@ Format a string and put the result in a ConcatBuffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Check if this is a valid <code class="incode">fmt</code> <code class="incode">values</code> pair, coherent with <code class="incode">format</code> specification.</p>
+<p>Check if this is a valid <code class="incode">fmt</code> <code class="incode">values</code> pair, coherent with <code class="incode">format</code> specification. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkFormat</span><span class="SyntaxCode">(fct: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, fmt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, values: ...)</code>
 </p>
@@ -8043,8 +7732,7 @@ Check if this is a valid <code class="incode">fmt</code> <code class="incode">va
 </tr>
 </table>
 </p>
-<p>
-Count the number of valid <code class="incode">%</code> placeholders in the string format Note that %% will not be counted, as this represents the <code class="incode">%</code> character.</p>
+<p>Count the number of valid <code class="incode">%</code> placeholders in the string format  Note that %% will not be counted, as this represents the <code class="incode">%</code> character. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countPercent</span><span class="SyntaxCode">(fmt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -8059,8 +7747,7 @@ Count the number of valid <code class="incode">%</code> placeholders in the stri
 </tr>
 </table>
 </p>
-<p>
-Format a string in <code class="incode">dest</code> Can be lot faster than the convenient version which returns a string.</p>
+<p>Format a string in <code class="incode">dest</code>  Can be lot faster than the convenient version which returns a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">replaceString</span><span class="SyntaxCode">(dest: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode">, fmt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, values: ...)</code>
 </p>
@@ -8075,14 +7762,12 @@ Format a string in <code class="incode">dest</code> Can be lot faster than the c
 </tr>
 </table>
 </p>
-<p>
-String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
+<p>String interolation  Format is "my {&lt;value to interpolate&gt;:format}. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toInterp</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, exp: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
+<p>String interolation  Format is "my {&lt;value to interpolate&gt;:format}. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toInterp</span><span class="SyntaxCode">(exp: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
@@ -8098,8 +7783,7 @@ String interolation Format is "my {&lt;value to interpolate&gt;:format}.</p>
 </tr>
 </table>
 </p>
-<p>
-Format a string and returns the result as a String.</p>
+<p>Format a string and returns the result as a String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">(fmt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, values: ...)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -8135,8 +7819,7 @@ numberFormat</td>
 </tr>
 </table>
 </p>
-<p>
-Provides culture-specific information for formatting and parsing numeric values.</p>
+<p>Provides culture-specific information for formatting and parsing numeric values. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -8174,8 +7857,7 @@ u8</td>
 </tr>
 </table>
 </p>
-<p>
-Returns the global culture info structure.</p>
+<p>Returns the global culture info structure. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCultureInfo</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Globalization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Globalization_CultureInfo">CultureInfo</a></span><span class="SyntaxCode"></code>
 </p>
@@ -8190,8 +7872,7 @@ Returns the global culture info structure.</p>
 </tr>
 </table>
 </p>
-<p>
-Max address.</p>
+<p>Max address. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMacAddress</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -8206,8 +7887,7 @@ Max address.</p>
 </tr>
 </table>
 </p>
-<p>
-Number of processors.</p>
+<p>Number of processors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getProcessorCount</span><span class="SyntaxCode">()</code>
 </p>
@@ -8238,24 +7918,21 @@ u32</td>
 <td class="enumeration">
 <a href="#Core_Hash_Adler32_compute">compute(const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Returns the adler32 hash value for the given buffer.</p>
+<p>Returns the adler32 hash value for the given buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Adler32_init">init(self)</a></td>
 <td class="enumeration">
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Adler32_update">update(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 </td>
 </tr>
 </table>
@@ -8270,8 +7947,7 @@ Update the hash value with <code class="incode">buffer</code> content.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the adler32 hash value for the given buffer.</p>
+<p>Returns the adler32 hash value for the given buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -8286,8 +7962,7 @@ Returns the adler32 hash value for the given buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -8302,8 +7977,7 @@ Initialize the hashing sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -8334,24 +8008,21 @@ u32</td>
 <td class="enumeration">
 <a href="#Core_Hash_Crc32_compute">compute(const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Returns the crc32 hash value for the given buffer.</p>
+<p>Returns the crc32 hash value for the given buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Crc32_init">init(self)</a></td>
 <td class="enumeration">
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Crc32_update">update(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 </td>
 </tr>
 </table>
@@ -8366,8 +8037,7 @@ Update the hash value with <code class="incode">buffer</code> content.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the crc32 hash value for the given buffer.</p>
+<p>Returns the crc32 hash value for the given buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -8382,8 +8052,7 @@ Returns the crc32 hash value for the given buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -8398,8 +8067,7 @@ Initialize the hashing sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, data: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -8475,32 +8143,28 @@ buffer</td>
 <td class="enumeration">
 <a href="#Core_Hash_Md5_compute">compute(const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Returns the md5 value for the given buffer.</p>
+<p>Returns the md5 value for the given buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Md5_final">final(self, Digest)</a></td>
 <td class="enumeration">
-<p>
-Finalize the computation.</p>
+<p>Finalize the computation. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Md5_init">init(self)</a></td>
 <td class="enumeration">
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Md5_update">update(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 </td>
 </tr>
 </table>
@@ -8515,8 +8179,7 @@ Update the hash value with <code class="incode">buffer</code> content.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the md5 value for the given buffer.</p>
+<p>Returns the md5 value for the given buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Hash</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Hash_Md5">Md5</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Digest</span><span class="SyntaxCode"></code>
 </p>
@@ -8531,8 +8194,7 @@ Returns the md5 value for the given buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Finalize the computation.</p>
+<p>Finalize the computation. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">final</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, digest: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Hash</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Hash_Md5">Md5</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Digest</span><span class="SyntaxCode">)</code>
 </p>
@@ -8547,8 +8209,7 @@ Finalize the computation.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -8563,8 +8224,7 @@ Initialize the hashing sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, data: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -8619,32 +8279,28 @@ u64</td>
 <td class="enumeration">
 <a href="#Core_Hash_Sha256_compute">compute(const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Returns the sha256 value for the given buffer.</p>
+<p>Returns the sha256 value for the given buffer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Sha256_final">final(self, Digest)</a></td>
 <td class="enumeration">
-<p>
-Finalize the computation.</p>
+<p>Finalize the computation. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Sha256_init">init(self)</a></td>
 <td class="enumeration">
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Hash_Sha256_update">update(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 </td>
 </tr>
 </table>
@@ -8659,8 +8315,7 @@ Update the hash value with <code class="incode">buffer</code> content.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the sha256 value for the given buffer.</p>
+<p>Returns the sha256 value for the given buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Hash</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Hash_Sha256">Sha256</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Digest</span><span class="SyntaxCode"></code>
 </p>
@@ -8675,8 +8330,7 @@ Returns the sha256 value for the given buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Finalize the computation.</p>
+<p>Finalize the computation. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">final</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Hash</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Hash_Sha256">Sha256</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Digest</span><span class="SyntaxCode">)</code>
 </p>
@@ -8691,8 +8345,7 @@ Finalize the computation.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the hashing sequence.</p>
+<p>Initialize the hashing sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -8707,8 +8360,7 @@ Initialize the hashing sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Update the hash value with <code class="incode">buffer</code> content.</p>
+<p>Update the hash value with <code class="incode">buffer</code> content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -8723,8 +8375,7 @@ Update the hash value with <code class="incode">buffer</code> content.</p>
 </tr>
 </table>
 </p>
-<p>
-Hash the given value and returns the corresponding u32.</p>
+<p>Hash the given value and returns the corresponding u32. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">hash32</span><span class="SyntaxCode">(value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -8797,8 +8448,7 @@ count</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of valid entries.</p>
+<p>Number of valid entries. </p>
 </td>
 </tr>
 <tr>
@@ -8807,8 +8457,7 @@ capacity</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of total entries the table can hold.</p>
+<p>Number of total entries the table can hold. </p>
 </td>
 </tr>
 <tr>
@@ -8817,8 +8466,7 @@ deleted</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of deleted entries.</p>
+<p>Number of deleted entries. </p>
 </td>
 </tr>
 </table>
@@ -8828,40 +8476,35 @@ Number of deleted entries.</p>
 <td class="enumeration">
 <a href="#Core_HashSet_add">add(self, K)</a></td>
 <td class="enumeration">
-<p>
-Add a new key.</p>
+<p>Add a new key. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashSet_add">add(self, moveref K)</a></td>
 <td class="enumeration">
-<p>
-Add a new key.</p>
+<p>Add a new key. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashSet_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Remove all elements.</p>
+<p>Remove all elements. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashSet_contains">contains(self, K)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the table contains the given key.</p>
+<p>Returns true if the table contains the given key. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashSet_emplaceInternal">emplaceInternal(self, u32, ref K)</a></td>
 <td class="enumeration">
-<p>
-Add a new key.</p>
+<p>Add a new key. </p>
 </td>
 </tr>
 <tr>
@@ -8886,16 +8529,14 @@ Add a new key.</p>
 <td class="enumeration">
 <a href="#Core_HashSet_remove">remove(self, K)</a></td>
 <td class="enumeration">
-<p>
-Remove the given key if it exists.</p>
+<p>Remove the given key if it exists. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashSet_reserve">reserve(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Reserve <code class="incode">newCapacity</code> elements in the table.</p>
+<p>Reserve <code class="incode">newCapacity</code> elements in the table. </p>
 </td>
 </tr>
 </table>
@@ -8937,13 +8578,11 @@ Reserve <code class="incode">newCapacity</code> elements in the table.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new key.</p>
+<p>Add a new key. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashSetEntry">HashSetEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Add a new key.</p>
+<p>Add a new key. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashSetEntry">HashSetEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)</code>
 </p>
@@ -8958,8 +8597,7 @@ Add a new key.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove all elements.</p>
+<p>Remove all elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -8974,8 +8612,7 @@ Remove all elements.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the table contains the given key.</p>
+<p>Returns true if the table contains the given key. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -8990,8 +8627,7 @@ Returns true if the table contains the given key.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new key.</p>
+<p>Add a new key. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceInternal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, hashVal: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, key: </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashSetEntry">HashSetEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)</code>
 </p>
@@ -9105,8 +8741,7 @@ Add a new key.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove the given key if it exists.</p>
+<p>Remove the given key if it exists. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)</code>
 </p>
@@ -9121,8 +8756,7 @@ Remove the given key if it exists.</p>
 </tr>
 </table>
 </p>
-<p>
-Reserve <code class="incode">newCapacity</code> elements in the table.</p>
+<p>Reserve <code class="incode">newCapacity</code> elements in the table. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reserve</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -9227,8 +8861,7 @@ count</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of valid entries.</p>
+<p>Number of valid entries. </p>
 </td>
 </tr>
 <tr>
@@ -9237,8 +8870,7 @@ capacity</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of total entries the table can hold.</p>
+<p>Number of total entries the table can hold. </p>
 </td>
 </tr>
 <tr>
@@ -9247,8 +8879,7 @@ deleted</td>
 <td class="tdtype">
 u64</td>
 <td class="enumeration">
-<p>
-Number of deleted entries.</p>
+<p>Number of deleted entries. </p>
 </td>
 </tr>
 </table>
@@ -9258,56 +8889,49 @@ Number of deleted entries.</p>
 <td class="enumeration">
 <a href="#Core_HashTable_add">add(self, K, V)</a></td>
 <td class="enumeration">
-<p>
-Add a new key value pair. If the key already exists, then the value will be replaced.</p>
+<p>Add a new key value pair. If the key already exists, then the value will be replaced. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashTable_add">add(self, K, moveref V)</a></td>
 <td class="enumeration">
-<p>
-Add a new key value pair. If the key already exists, then the value will be replaced.</p>
+<p>Add a new key value pair. If the key already exists, then the value will be replaced. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashTable_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Remove all elements.</p>
+<p>Remove all elements. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashTable_contains">contains(self, K)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the table contains the given key.</p>
+<p>Returns true if the table contains the given key. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashTable_emplaceInternal">emplaceInternal(self, u32, ref K, ref V)</a></td>
 <td class="enumeration">
-<p>
-Use with care !.</p>
+<p>Use with care !. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashTable_find">find(self, K)</a></td>
 <td class="enumeration">
-<p>
-Find the given key, and returns the corresponding entry.</p>
+<p>Find the given key, and returns the corresponding entry. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashTable_free">free(self)</a></td>
 <td class="enumeration">
-<p>
-Free the hashtable content.</p>
+<p>Free the hashtable content. </p>
 </td>
 </tr>
 <tr>
@@ -9326,16 +8950,14 @@ Free the hashtable content.</p>
 <td class="enumeration">
 <a href="#Core_HashTable_remove">remove(self, K)</a></td>
 <td class="enumeration">
-<p>
-Remove the given key if it exists.</p>
+<p>Remove the given key if it exists. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_HashTable_reserve">reserve(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Reserve <code class="incode">newCapacity</code> elements in the table.</p>
+<p>Reserve <code class="incode">newCapacity</code> elements in the table. </p>
 </td>
 </tr>
 </table>
@@ -9363,8 +8985,7 @@ Reserve <code class="incode">newCapacity</code> elements in the table.</p>
 <td class="enumeration">
 <a href="#Core_HashTable_opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
-<p>
-alias0 is the key, and alias1 is the value.</p>
+<p>alias0 is the key, and alias1 is the value. </p>
 </td>
 </tr>
 </table>
@@ -9379,13 +9000,11 @@ alias0 is the key, and alias1 is the value.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new key value pair. If the key already exists, then the value will be replaced.</p>
+<p>Add a new key value pair. If the key already exists, then the value will be replaced. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Add a new key value pair. If the key already exists, then the value will be replaced.</p>
+<p>Add a new key value pair. If the key already exists, then the value will be replaced. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, value: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
@@ -9400,8 +9019,7 @@ Add a new key value pair. If the key already exists, then the value will be repl
 </tr>
 </table>
 </p>
-<p>
-Remove all elements.</p>
+<p>Remove all elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -9416,8 +9034,7 @@ Remove all elements.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the table contains the given key.</p>
+<p>Returns true if the table contains the given key. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -9432,8 +9049,7 @@ Returns true if the table contains the given key.</p>
 </tr>
 </table>
 </p>
-<p>
-Use with care !.</p>
+<p>Use with care !. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceInternal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, hashVal: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, key: </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, value: </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
@@ -9448,13 +9064,11 @@ Use with care !.</p>
 </tr>
 </table>
 </p>
-<p>
-Find the given key, and returns the corresponding entry.</p>
+<p>Find the given key, and returns the corresponding entry. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">find</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Returns null if the key is not there.</p>
+<p> Returns null if the key is not there. </p>
 <p>
 <table class="item">
 <tr>
@@ -9466,8 +9080,7 @@ Find the given key, and returns the corresponding entry.</p>
 </tr>
 </table>
 </p>
-<p>
-Free the hashtable content.</p>
+<p>Free the hashtable content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -9552,8 +9165,7 @@ Free the hashtable content.</p>
 </tr>
 </table>
 </p>
-<p>
-alias0 is the key, and alias1 is the value.</p>
+<p>alias0 is the key, and alias1 is the value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -9569,8 +9181,7 @@ alias0 is the key, and alias1 is the value.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove the given key if it exists.</p>
+<p>Remove the given key if it exists. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)</code>
 </p>
@@ -9585,8 +9196,7 @@ Remove the given key if it exists.</p>
 </tr>
 </table>
 </p>
-<p>
-Reserve <code class="incode">newCapacity</code> elements in the table.</p>
+<p>Reserve <code class="incode">newCapacity</code> elements in the table. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reserve</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -9662,8 +9272,7 @@ func(*Core.ILogWriter, string)</td>
 </tr>
 </table>
 </p>
-<p>
-Represents a gamepad.</p>
+<p>Represents a gamepad. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -9704,80 +9313,70 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Reset the previous and current state.</p>
+<p>Reset the previous and current state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_getPosition">getPosition(self, GamePadButton)</a></td>
 <td class="enumeration">
-<p>
-Get the analog position of the given button.</p>
+<p>Get the analog position of the given button. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_isButtonJustPressed">isButtonJustPressed(self, GamePadButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether specified input device button has just been pressed.</p>
+<p>Determines whether specified input device button has just been pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_isButtonJustReleased">isButtonJustReleased(self, GamePadButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether specified input device button has just been released.</p>
+<p>Determines whether specified input device button has just been released. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_isButtonPressed">isButtonPressed(self, GamePadButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether specified input device button is pressed.</p>
+<p>Determines whether specified input device button is pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_isButtonReleased">isButtonReleased(self, GamePadButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether specified input device button is released (not pressed).</p>
+<p>Determines whether specified input device button is released (not pressed). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_isConnected">isConnected(u32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the corresponding <code class="incode">padIndex</code> is connected.</p>
+<p>Returns true if the corresponding <code class="incode">padIndex</code> is connected. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_setVibration">setVibration(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the vibration motor speeds.</p>
+<p>Set the vibration motor speeds. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_setVibration">setVibration(u32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the left and right vibration of the given <code class="incode">padIndex</code>.</p>
+<p>Set the left and right vibration of the given <code class="incode">padIndex</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePad_update">update(self)</a></td>
 <td class="enumeration">
-<p>
-Update the GamePad current state.</p>
+<p>Update the GamePad current state. </p>
 </td>
 </tr>
 </table>
@@ -9792,8 +9391,7 @@ Update the GamePad current state.</p>
 </tr>
 </table>
 </p>
-<p>
-Reset the previous and current state.</p>
+<p>Reset the previous and current state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -9808,8 +9406,7 @@ Reset the previous and current state.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the analog position of the given button.</p>
+<p>Get the analog position of the given button. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_GamePadButton">GamePadButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></code>
 </p>
@@ -9824,8 +9421,7 @@ Get the analog position of the given button.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether specified input device button has just been pressed.</p>
+<p>Determines whether specified input device button has just been pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonJustPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_GamePadButton">GamePadButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -9840,8 +9436,7 @@ Determines whether specified input device button has just been pressed.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether specified input device button has just been released.</p>
+<p>Determines whether specified input device button has just been released. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonJustReleased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_GamePadButton">GamePadButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -9856,8 +9451,7 @@ Determines whether specified input device button has just been released.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether specified input device button is pressed.</p>
+<p>Determines whether specified input device button is pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_GamePadButton">GamePadButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -9872,8 +9466,7 @@ Determines whether specified input device button is pressed.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether specified input device button is released (not pressed).</p>
+<p>Determines whether specified input device button is released (not pressed). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonReleased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_GamePadButton">GamePadButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -9888,8 +9481,7 @@ Determines whether specified input device button is released (not pressed).</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the corresponding <code class="incode">padIndex</code> is connected.</p>
+<p>Returns true if the corresponding <code class="incode">padIndex</code> is connected. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isConnected</span><span class="SyntaxCode">(padIndex: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -9904,13 +9496,11 @@ Returns true if the corresponding <code class="incode">padIndex</code> is connec
 </tr>
 </table>
 </p>
-<p>
-Set the vibration motor speeds.</p>
+<p>Set the vibration motor speeds. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVibration</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Set the left and right vibration of the given <code class="incode">padIndex</code>.</p>
+<p>Set the left and right vibration of the given <code class="incode">padIndex</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVibration</span><span class="SyntaxCode">(padIndex: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -9925,8 +9515,7 @@ Set the left and right vibration of the given <code class="incode">padIndex</cod
 </tr>
 </table>
 </p>
-<p>
-Update the GamePad current state.</p>
+<p>Update the GamePad current state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -9941,8 +9530,7 @@ Update the GamePad current state.</p>
 </tr>
 </table>
 </p>
-<p>
-Enumerates gamepad buttons.</p>
+<p>Enumerates gamepad buttons. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -10125,8 +9713,7 @@ DeviceNotConnected</td>
 </tr>
 </table>
 </p>
-<p>
-Represents specific information about the state of the controller, including the current state of buttons and sticks.</p>
+<p>Represents specific information about the state of the controller,  including the current state of buttons and sticks. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -10151,16 +9738,14 @@ position</td>
 <td class="enumeration">
 <a href="#Core_Input_GamePadState_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Reset state to its default value.</p>
+<p>Reset state to its default value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_GamePadState_update">update(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Compute the current state of the given pad index.</p>
+<p>Compute the current state of the given pad index. </p>
 </td>
 </tr>
 </table>
@@ -10175,8 +9760,7 @@ Compute the current state of the given pad index.</p>
 </tr>
 </table>
 </p>
-<p>
-Reset state to its default value.</p>
+<p>Reset state to its default value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -10191,8 +9775,7 @@ Reset state to its default value.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute the current state of the given pad index.</p>
+<p>Compute the current state of the given pad index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, padIndex: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -10207,8 +9790,7 @@ Compute the current state of the given pad index.</p>
 </tr>
 </table>
 </p>
-<p>
-Defines the keys on a keyboard.</p>
+<p>Defines the keys on a keyboard. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -11393,8 +10975,7 @@ CtrlShift</td>
 </tr>
 </table>
 </p>
-<p>
-Allows getting keystrokes from keyboard.</p>
+<p>Allows getting keystrokes from keyboard. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -11459,64 +11040,56 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Reset the keyboard state.</p>
+<p>Reset the keyboard state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_getPressedModifiers">getPressedModifiers(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the currently pressed key modifiers.</p>
+<p>Returns the currently pressed key modifiers. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_isKeyJustPressed">isKeyJustPressed(self, Key)</a></td>
 <td class="enumeration">
-<p>
-Determines whether given key has just been pressed.</p>
+<p>Determines whether given key has just been pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_isKeyJustReleased">isKeyJustReleased(self, Key)</a></td>
 <td class="enumeration">
-<p>
-Determines whether given key has just been released.</p>
+<p>Determines whether given key has just been released. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed(self, Key)</a></td>
 <td class="enumeration">
-<p>
-Determines whether given key is currently being pressed.</p>
+<p>Determines whether given key is currently being pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed(Key)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the given key is pressed.</p>
+<p>Returns true if the given key is pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_isKeyReleased">isKeyReleased(self, Key)</a></td>
 <td class="enumeration">
-<p>
-Determines whether given key is currently being released.</p>
+<p>Determines whether given key is currently being released. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_keyToRune">keyToRune(self, Key)</a></td>
 <td class="enumeration">
-<p>
-Try to transform the given key to the corresponding rune.</p>
+<p>Try to transform the given key to the corresponding rune. </p>
 </td>
 </tr>
 <tr>
@@ -11529,8 +11102,7 @@ Try to transform the given key to the corresponding rune.</p>
 <td class="enumeration">
 <a href="#Core_Input_Keyboard_update">update(self)</a></td>
 <td class="enumeration">
-<p>
-Compute current state of the keyboard (all keys).</p>
+<p>Compute current state of the keyboard (all keys). </p>
 </td>
 </tr>
 <tr>
@@ -11551,8 +11123,7 @@ Compute current state of the keyboard (all keys).</p>
 </tr>
 </table>
 </p>
-<p>
-Reset the keyboard state.</p>
+<p>Reset the keyboard state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -11567,8 +11138,7 @@ Reset the keyboard state.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the currently pressed key modifiers.</p>
+<p>Returns the currently pressed key modifiers. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPressedModifiers</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_KeyModifiers">KeyModifiers</a></span><span class="SyntaxCode"></code>
 </p>
@@ -11583,8 +11153,7 @@ Returns the currently pressed key modifiers.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether given key has just been pressed.</p>
+<p>Determines whether given key has just been pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isKeyJustPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -11599,8 +11168,7 @@ Determines whether given key has just been pressed.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether given key has just been released.</p>
+<p>Determines whether given key has just been released. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isKeyJustReleased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -11615,13 +11183,11 @@ Determines whether given key has just been released.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether given key is currently being pressed.</p>
+<p>Determines whether given key is currently being pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isKeyPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns true if the given key is pressed.</p>
+<p>Returns true if the given key is pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isKeyPressed</span><span class="SyntaxCode">(key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -11636,8 +11202,7 @@ Returns true if the given key is pressed.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether given key is currently being released.</p>
+<p>Determines whether given key is currently being released. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isKeyReleased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -11652,8 +11217,7 @@ Determines whether given key is currently being released.</p>
 </tr>
 </table>
 </p>
-<p>
-Try to transform the given key to the corresponding rune.</p>
+<p>Try to transform the given key to the corresponding rune. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">keyToRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">rune</span><span class="SyntaxCode"></code>
 </p>
@@ -11682,8 +11246,7 @@ Try to transform the given key to the corresponding rune.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute current state of the keyboard (all keys).</p>
+<p>Compute current state of the keyboard (all keys). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -11712,8 +11275,7 @@ Compute current state of the keyboard (all keys).</p>
 </tr>
 </table>
 </p>
-<p>
-Represents one keyboard state.</p>
+<p>Represents one keyboard state. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -11738,16 +11300,14 @@ pressed</td>
 <td class="enumeration">
 <a href="#Core_Input_KeyboardState_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Reset keyboard state.</p>
+<p>Reset keyboard state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_KeyboardState_update">update(self)</a></td>
 <td class="enumeration">
-<p>
-Compute current keyboard state.</p>
+<p>Compute current keyboard state. </p>
 </td>
 </tr>
 </table>
@@ -11762,8 +11322,7 @@ Compute current keyboard state.</p>
 </tr>
 </table>
 </p>
-<p>
-Reset keyboard state.</p>
+<p>Reset keyboard state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -11778,8 +11337,7 @@ Reset keyboard state.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute current keyboard state.</p>
+<p>Compute current keyboard state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -11815,8 +11373,7 @@ nativeState</td>
 </tr>
 </table>
 </p>
-<p>
-Allows reading position and button click information from mouse.</p>
+<p>Allows reading position and button click information from mouse. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -11857,32 +11414,28 @@ u32</td>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Reset the mouse state to its default value.</p>
+<p>Reset the mouse state to its default value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_getMove">getMove(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the move between the current position and the previous one.</p>
+<p>Returns the move between the current position and the previous one. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_getPosition">getPosition(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the mouse position.</p>
+<p>Returns the mouse position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_getPreviousPos">getPreviousPos(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the previous mouse position, before the last update.</p>
+<p>Returns the previous mouse position, before the last update. </p>
 </td>
 </tr>
 <tr>
@@ -11895,48 +11448,42 @@ Returns the previous mouse position, before the last update.</p>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_isButtonJustPressed">isButtonJustPressed(self, MouseButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether the specified mouse button has just been pressed.</p>
+<p>Determines whether the specified mouse button has just been pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_isButtonJustReleased">isButtonJustReleased(self, MouseButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether the specified mouse button has just been released.</p>
+<p>Determines whether the specified mouse button has just been released. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed(self, MouseButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether the specified mouse button is pressed.</p>
+<p>Determines whether the specified mouse button is pressed. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed(MouseButton)</a></td>
 <td class="enumeration">
-<p>
-Determins if one given mouse button is pressed or not.</p>
+<p>Determins if one given mouse button is pressed or not. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_isButtonReleased">isButtonReleased(self, MouseButton)</a></td>
 <td class="enumeration">
-<p>
-Determines whether the specified mouse button is released.</p>
+<p>Determines whether the specified mouse button is released. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_Mouse_update">update(self)</a></td>
 <td class="enumeration">
-<p>
-Compute the current state of the mouse.</p>
+<p>Compute the current state of the mouse. </p>
 </td>
 </tr>
 </table>
@@ -11951,8 +11498,7 @@ Compute the current state of the mouse.</p>
 </tr>
 </table>
 </p>
-<p>
-Reset the mouse state to its default value.</p>
+<p>Reset the mouse state to its default value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -11967,8 +11513,7 @@ Reset the mouse state to its default value.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the move between the current position and the previous one.</p>
+<p>Returns the move between the current position and the previous one. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></code>
 </p>
@@ -11983,8 +11528,7 @@ Returns the move between the current position and the previous one.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the mouse position.</p>
+<p>Returns the mouse position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></code>
 </p>
@@ -11999,8 +11543,7 @@ Returns the mouse position.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the previous mouse position, before the last update.</p>
+<p>Returns the previous mouse position, before the last update. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPreviousPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></code>
 </p>
@@ -12029,8 +11572,7 @@ Returns the previous mouse position, before the last update.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether the specified mouse button has just been pressed.</p>
+<p>Determines whether the specified mouse button has just been pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonJustPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_MouseButton">MouseButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -12045,8 +11587,7 @@ Determines whether the specified mouse button has just been pressed.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether the specified mouse button has just been released.</p>
+<p>Determines whether the specified mouse button has just been released. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonJustReleased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_MouseButton">MouseButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -12061,13 +11602,11 @@ Determines whether the specified mouse button has just been released.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether the specified mouse button is pressed.</p>
+<p>Determines whether the specified mouse button is pressed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_MouseButton">MouseButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Determins if one given mouse button is pressed or not.</p>
+<p>Determins if one given mouse button is pressed or not. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonPressed</span><span class="SyntaxCode">(button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_MouseButton">MouseButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -12082,8 +11621,7 @@ Determins if one given mouse button is pressed or not.</p>
 </tr>
 </table>
 </p>
-<p>
-Determines whether the specified mouse button is released.</p>
+<p>Determines whether the specified mouse button is released. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isButtonReleased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, button: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_MouseButton">MouseButton</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -12098,8 +11636,7 @@ Determines whether the specified mouse button is released.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute the current state of the mouse.</p>
+<p>Compute the current state of the mouse. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -12157,8 +11694,7 @@ XButton2</td>
 </tr>
 </table>
 </p>
-<p>
-Represents one mouse state.</p>
+<p>Represents one mouse state. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -12199,16 +11735,14 @@ position</td>
 <td class="enumeration">
 <a href="#Core_Input_MouseState_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Reset the state to its default value.</p>
+<p>Reset the state to its default value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Input_MouseState_update">update(self)</a></td>
 <td class="enumeration">
-<p>
-Compute the actual state of the mouse.</p>
+<p>Compute the actual state of the mouse. </p>
 </td>
 </tr>
 </table>
@@ -12223,8 +11757,7 @@ Compute the actual state of the mouse.</p>
 </tr>
 </table>
 </p>
-<p>
-Reset the state to its default value.</p>
+<p>Reset the state to its default value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -12239,8 +11772,7 @@ Reset the state to its default value.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute the actual state of the mouse.</p>
+<p>Compute the actual state of the mouse. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -12255,8 +11787,7 @@ Compute the actual state of the mouse.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a "shortcut" display name.</p>
+<p>Returns a "shortcut" display name. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyName</span><span class="SyntaxCode">(mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_KeyModifiers">KeyModifiers</a></span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -12271,8 +11802,7 @@ Returns a "shortcut" display name.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the current mouse position.</p>
+<p>Returns the current mouse position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMousePos</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></code>
 </p>
@@ -12287,8 +11817,7 @@ Returns the current mouse position.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the current mouse position.</p>
+<p>Set the current mouse position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMousePos</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -12303,8 +11832,7 @@ Set the current mouse position.</p>
 </tr>
 </table>
 </p>
-<p>
-Shoud or hide the mouse cursor.</p>
+<p>Shoud or hide the mouse cursor. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showMouseCursor</span><span class="SyntaxCode">(show: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -12488,8 +12016,7 @@ userData</td>
 </tr>
 </table>
 </p>
-<p>
-Returns number of threads in the job system.</p>
+<p>Returns number of threads in the job system. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getNumWorkers</span><span class="SyntaxCode">()</code>
 </p>
@@ -12504,8 +12031,7 @@ Returns number of threads in the job system.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true is the job system has been initialized.</p>
+<p>Returns true is the job system has been initialized. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSynchrone</span><span class="SyntaxCode">()</code>
 </p>
@@ -12520,8 +12046,7 @@ Returns true is the job system has been initialized.</p>
 </tr>
 </table>
 </p>
-<p>
-Do a for loop in parallel chunks Exposed variables: - @alias0: current loop index - @alias1: userData as passed to the macro.</p>
+<p>Do a for loop in parallel chunks  Exposed variables:  - @alias0: current loop index  - @alias1: userData as passed to the macro. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parallelFor</span><span class="SyntaxCode">(count: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stmt: code)</code>
@@ -12537,8 +12062,7 @@ Do a for loop in parallel chunks Exposed variables: - @alias0: current loop inde
 </tr>
 </table>
 </p>
-<p>
-Operate on a range in parallel chunks Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro.</p>
+<p>Operate on a range in parallel chunks  Exposed variables:  - buffer: address of the element of the range to process  - data:   userData as passed to the macro. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">parallelVisit</span><span class="SyntaxCode">(range: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, offset: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stmt: code)</code>
@@ -12554,8 +12078,7 @@ Operate on a range in parallel chunks Exposed variables: - buffer: address of th
 </tr>
 </table>
 </p>
-<p>
-Schedule a job to execute.</p>
+<p>Schedule a job to execute. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scheduleJob</span><span class="SyntaxCode">(job: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Jobs</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Jobs_Job">Job</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -12570,8 +12093,7 @@ Schedule a job to execute.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the number of worker threads. Must be done once.</p>
+<p>Set the number of worker threads. Must be done once. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setNumWorkers</span><span class="SyntaxCode">(numWorkers: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -12586,8 +12108,7 @@ Set the number of worker threads. Must be done once.</p>
 </tr>
 </table>
 </p>
-<p>
-Wait for all registered jobs to be finished.</p>
+<p>Wait for all registered jobs to be finished. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">waitDone</span><span class="SyntaxCode">()</code>
 </p>
@@ -12602,8 +12123,7 @@ Wait for all registered jobs to be finished.</p>
 </tr>
 </table>
 </p>
-<p>
-Wait for a given job to be finished.</p>
+<p>Wait for a given job to be finished. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">waitJob</span><span class="SyntaxCode">(job: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Jobs</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Jobs_Job">Job</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -12721,8 +12241,7 @@ Letter</td>
 </tr>
 </table>
 </p>
-<p>
-Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1.</p>
+<p>Compare two utf8 strings, dealing only with latin1 table  Returns -1, 0 or 1. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compare</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, dst: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, ignoreCase = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </p>
@@ -12737,13 +12256,11 @@ Compare two utf8 strings, dealing only with latin1 table Returns -1, 0 or 1.</p>
 </tr>
 </table>
 </p>
-<p>
-Compare two utf8 strings in a natural way, dealing only with latin1 table Returns -1, 0 or 1.</p>
+<p>Compare two utf8 strings in a natural way, dealing only with latin1 table  Returns -1, 0 or 1. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compareNatural</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, dst: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, ignoreCase = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </p>
-<p>
- :LICENCE This code is based on <code class="incode">natsort</code> by Martin Pool (https://github.com/sourcefrog/natsort) The original code has been modified for Swag See LICENCE.md for the corresponding licence.</p>
+<p> :LICENCE  This code is based on <code class="incode">natsort</code> by Martin Pool (https://github.com/sourcefrog/natsort)  The original code has been modified for Swag  See LICENCE.md for the corresponding licence. </p>
 <p>
 <table class="item">
 <tr>
@@ -12937,8 +12454,7 @@ Compare two utf8 strings in a natural way, dealing only with latin1 table Return
 </tr>
 </table>
 </p>
-<p>
-Make an utf8 buffer lower case, dealing only with latin1 table.</p>
+<p>Make an utf8 buffer lower case, dealing only with latin1 table. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeLower</span><span class="SyntaxCode">(buffer: [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -12953,8 +12469,7 @@ Make an utf8 buffer lower case, dealing only with latin1 table.</p>
 </tr>
 </table>
 </p>
-<p>
-Make an utf8 buffer upper case, dealing only with latin1 table.</p>
+<p>Make an utf8 buffer upper case, dealing only with latin1 table. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeUpper</span><span class="SyntaxCode">(buffer: [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -13032,48 +12547,42 @@ u64</td>
 <td class="enumeration">
 <a href="#Core_List_addBack">addBack(self, T)</a></td>
 <td class="enumeration">
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_List_addBack">addBack(self, moveref T)</a></td>
 <td class="enumeration">
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_List_addFront">addFront(self, T)</a></td>
 <td class="enumeration">
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_List_addFront">addFront(self, moveref T)</a></td>
 <td class="enumeration">
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_List_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Clear all elements.</p>
+<p>Clear all elements. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_List_insertAfter">insertAfter(self, *ListNode'(T), T)</a></td>
 <td class="enumeration">
-<p>
-Insert a node before the reference.</p>
+<p>Insert a node before the reference. </p>
 </td>
 </tr>
 <tr>
@@ -13086,8 +12595,7 @@ Insert a node before the reference.</p>
 <td class="enumeration">
 <a href="#Core_List_insertBefore">insertBefore(self, *ListNode'(T), T)</a></td>
 <td class="enumeration">
-<p>
-Insert a node before the reference.</p>
+<p>Insert a node before the reference. </p>
 </td>
 </tr>
 <tr>
@@ -13109,16 +12617,14 @@ Insert a node before the reference.</p>
 <td class="enumeration">
 <a href="#Core_List_opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit every elements of the list @alias0 is the value @alias1 is the node @alias2 is the index.</p>
+<p>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_List_opVisitBack">opVisitBack(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit every elements of the list from tail to head @alias0 is the value @alias1 is the node @alias2 is the index.</p>
+<p>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
 </td>
 </tr>
 </table>
@@ -13133,13 +12639,11 @@ Visit every elements of the list from tail to head @alias0 is the value @alias1 
 </tr>
 </table>
 </p>
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -13154,13 +12658,11 @@ Add a new element on front.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addFront</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Add a new element on front.</p>
+<p>Add a new element on front. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addFront</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -13175,8 +12677,7 @@ Add a new element on front.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear all elements.</p>
+<p>Clear all elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -13191,8 +12692,7 @@ Clear all elements.</p>
 </tr>
 </table>
 </p>
-<p>
-Insert a node before the reference.</p>
+<p>Insert a node before the reference. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertAfter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, node: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">), value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -13210,8 +12710,7 @@ Insert a node before the reference.</p>
 </tr>
 </table>
 </p>
-<p>
-Insert a node before the reference.</p>
+<p>Insert a node before the reference. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertBefore</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, node: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">), value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -13243,8 +12742,7 @@ Insert a node before the reference.</p>
 </tr>
 </table>
 </p>
-<p>
-Visit every elements of the list @alias0 is the value @alias1 is the node @alias2 is the index.</p>
+<p>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -13260,8 +12758,7 @@ Visit every elements of the list @alias0 is the value @alias1 is the node @alias
 </tr>
 </table>
 </p>
-<p>
-Visit every elements of the list from tail to head @alias0 is the value @alias1 is the node @alias2 is the index.</p>
+<p>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -13373,64 +12870,56 @@ flags</td>
 <td class="enumeration">
 <a href="#Core_Log_addWriter">addWriter(self, ILogWriter)</a></td>
 <td class="enumeration">
-<p>
-Register a new writer interface.</p>
+<p>Register a new writer interface. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Log_clearWriters">clearWriters(self)</a></td>
 <td class="enumeration">
-<p>
-Remove all writers.</p>
+<p>Remove all writers. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Log_create">create()</a></td>
 <td class="enumeration">
-<p>
-Create a new log.</p>
+<p>Create a new log. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Log_getFlags">getFlags(self)</a></td>
 <td class="enumeration">
-<p>
-Get the logger prefix.</p>
+<p>Get the logger prefix. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Log_getPrefix">getPrefix(self)</a></td>
 <td class="enumeration">
-<p>
-Get the logger prefix.</p>
+<p>Get the logger prefix. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Log_print">print(self, string, const ref SourceCodeLocation)</a></td>
 <td class="enumeration">
-<p>
-Main print function.</p>
+<p>Main print function. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Log_setFlags">setFlags(self, LogFlags)</a></td>
 <td class="enumeration">
-<p>
-Set the logger flags.</p>
+<p>Set the logger flags. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Log_setPrefix">setPrefix(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set the logger prefix.</p>
+<p>Set the logger prefix. </p>
 </td>
 </tr>
 </table>
@@ -13445,8 +12934,7 @@ Set the logger prefix.</p>
 </tr>
 </table>
 </p>
-<p>
-Register a new writer interface.</p>
+<p>Register a new writer interface. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addWriter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, writer: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ILogWriter">ILogWriter</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -13461,8 +12949,7 @@ Register a new writer interface.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove all writers.</p>
+<p>Remove all writers. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearWriters</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -13477,8 +12964,7 @@ Remove all writers.</p>
 </tr>
 </table>
 </p>
-<p>
-Create a new log.</p>
+<p>Create a new log. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Log">Log</a></span><span class="SyntaxCode"></code>
 </p>
@@ -13493,8 +12979,7 @@ Create a new log.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the logger prefix.</p>
+<p>Get the logger prefix. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_LogFlags">LogFlags</a></span><span class="SyntaxCode"></code>
 </p>
@@ -13509,8 +12994,7 @@ Get the logger prefix.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the logger prefix.</p>
+<p>Get the logger prefix. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPrefix</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -13525,8 +13009,7 @@ Get the logger prefix.</p>
 </tr>
 </table>
 </p>
-<p>
-Main print function.</p>
+<p>Main print function. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc = #callerlocation)</code>
 </p>
@@ -13541,8 +13024,7 @@ Main print function.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the logger flags.</p>
+<p>Set the logger flags. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, flags: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_LogFlags">LogFlags</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -13557,8 +13039,7 @@ Set the logger flags.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the logger prefix.</p>
+<p>Set the logger prefix. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPrefix</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, prefix: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -13602,8 +13083,7 @@ Time</td>
 <td class="tdname">
 ShortFileName</td>
 <td class="enumeration">
-<p>
-Exclusive with LongFileName.</p>
+<p>Exclusive with LongFileName. </p>
 </td>
 </tr>
 <tr>
@@ -13616,8 +13096,7 @@ LongFileName</td>
 <td class="tdname">
 Line</td>
 <td class="enumeration">
-<p>
-Exclusive with FullLoc.</p>
+<p>Exclusive with FullLoc. </p>
 </td>
 </tr>
 <tr>
@@ -14119,24 +13598,21 @@ buf</td>
 <td class="enumeration">
 <a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, NumericArray'(T, N), NumericArray'(T, N))</a></td>
 <td class="enumeration">
-<p>
-Multiply & Add.</p>
+<p>Multiply & Add. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, T, T)</a></td>
 <td class="enumeration">
-<p>
-Multiply & add.</p>
+<p>Multiply & add. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_NumericArray_set">set(self, T...)</a></td>
 <td class="enumeration">
-<p>
-Set all values.</p>
+<p>Set all values. </p>
 </td>
 </tr>
 </table>
@@ -14210,13 +13686,11 @@ Set all values.</p>
 </tr>
 </table>
 </p>
-<p>
-Multiply & Add.</p>
+<p>Multiply & Add. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mulAdd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_NumericArray">NumericArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">N</span><span class="SyntaxCode">), value2: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_NumericArray">NumericArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">N</span><span class="SyntaxCode">))</code>
 </p>
-<p>
-Multiply & add.</p>
+<p>Multiply & add. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mulAdd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value1: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, value2: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -14303,8 +13777,7 @@ Multiply & add.</p>
 </tr>
 </table>
 </p>
-<p>
-Set all values.</p>
+<p>Set all values. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, values: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">...)</code>
 </p>
@@ -14319,8 +13792,7 @@ Set all values.</p>
 </tr>
 </table>
 </p>
-<p>
-A simple Point with 2 coordinates X and Y.</p>
+<p>A simple Point with 2 coordinates X and Y. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -14345,72 +13817,63 @@ f32</td>
 <td class="enumeration">
 <a href="#Core_Math_Point_ceil">ceil(self)</a></td>
 <td class="enumeration">
-<p>
-Perform a Math.ceil operation on all the coordinates.</p>
+<p>Perform a Math.ceil operation on all the coordinates. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set Point to (0, 0).</p>
+<p>Set Point to (0, 0). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon(self, const ref Point, f32)</a></td>
 <td class="enumeration">
-<p>
-Check if two points are equal with an epsilon.</p>
+<p>Check if two points are equal with an epsilon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_isZero">isZero(self)</a></td>
 <td class="enumeration">
-<p>
-Returns <code class="incode">true</code> if the Point is null.</p>
+<p>Returns <code class="incode">true</code> if the Point is null. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Check for zero with an epsilon.</p>
+<p>Check for zero with an epsilon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_offset">offset(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Offset this Point by a given value.</p>
+<p>Offset this Point by a given value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_offset">offset(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Offset this Point by a given value.</p>
+<p>Offset this Point by a given value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_round">round(self)</a></td>
 <td class="enumeration">
-<p>
-Perform a Math.round operation on all the coordinates.</p>
+<p>Perform a Math.round operation on all the coordinates. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Point_trunc">trunc(self)</a></td>
 <td class="enumeration">
-<p>
-Perform a Math.trunc operation on all the coordinates.</p>
+<p>Perform a Math.trunc operation on all the coordinates. </p>
 </td>
 </tr>
 </table>
@@ -14470,8 +13933,7 @@ Perform a Math.trunc operation on all the coordinates.</p>
 </tr>
 </table>
 </p>
-<p>
-Perform a Math.ceil operation on all the coordinates.</p>
+<p>Perform a Math.ceil operation on all the coordinates. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ceil</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -14486,8 +13948,7 @@ Perform a Math.ceil operation on all the coordinates.</p>
 </tr>
 </table>
 </p>
-<p>
-Set Point to (0, 0).</p>
+<p>Set Point to (0, 0). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -14502,8 +13963,7 @@ Set Point to (0, 0).</p>
 </tr>
 </table>
 </p>
-<p>
-Check if two points are equal with an epsilon.</p>
+<p>Check if two points are equal with an epsilon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -14518,8 +13978,7 @@ Check if two points are equal with an epsilon.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns <code class="incode">true</code> if the Point is null.</p>
+<p>Returns <code class="incode">true</code> if the Point is null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZero</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -14534,8 +13993,7 @@ Returns <code class="incode">true</code> if the Point is null.</p>
 </tr>
 </table>
 </p>
-<p>
-Check for zero with an epsilon.</p>
+<p>Check for zero with an epsilon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -14550,13 +14008,11 @@ Check for zero with an epsilon.</p>
 </tr>
 </table>
 </p>
-<p>
-Offset this Point by a given value.</p>
+<p>Offset this Point by a given value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Offset this Point by a given value.</p>
+<p>Offset this Point by a given value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -14643,8 +14099,7 @@ Offset this Point by a given value.</p>
 </tr>
 </table>
 </p>
-<p>
-Perform a Math.round operation on all the coordinates.</p>
+<p>Perform a Math.round operation on all the coordinates. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">round</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -14659,8 +14114,7 @@ Perform a Math.round operation on all the coordinates.</p>
 </tr>
 </table>
 </p>
-<p>
-Perform a Math.trunc operation on all the coordinates.</p>
+<p>Perform a Math.trunc operation on all the coordinates. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trunc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -14675,8 +14129,7 @@ Perform a Math.trunc operation on all the coordinates.</p>
 </tr>
 </table>
 </p>
-<p>
-A simple rectangle with 4 coordinates.</p>
+<p>A simple rectangle with 4 coordinates. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -14684,8 +14137,7 @@ x</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Left position.</p>
+<p>Left position. </p>
 </td>
 </tr>
 <tr>
@@ -14694,8 +14146,7 @@ y</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Top position.</p>
+<p>Top position. </p>
 </td>
 </tr>
 <tr>
@@ -14704,8 +14155,7 @@ width</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Rectangle width.</p>
+<p>Rectangle width. </p>
 </td>
 </tr>
 <tr>
@@ -14714,8 +14164,7 @@ height</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Rectangle height.</p>
+<p>Rectangle height. </p>
 </td>
 </tr>
 </table>
@@ -14725,304 +14174,266 @@ Rectangle height.</p>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_applyPadding">applyPadding(self, const ref Vector4)</a></td>
 <td class="enumeration">
-<p>
-Add a padding (offset to each side).</p>
+<p>Add a padding (offset to each side). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_bottom">bottom(self)</a></td>
 <td class="enumeration">
-<p>
-Bottom coordinate (y + height).</p>
+<p>Bottom coordinate (y + height). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_ceil">ceil(self)</a></td>
 <td class="enumeration">
-<p>
-Perform a Math.ceil operation on all the coordinates.</p>
+<p>Perform a Math.ceil operation on all the coordinates. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_center">center(self)</a></td>
 <td class="enumeration">
-<p>
-Central point.</p>
+<p>Central point. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set rectangle to (0, 0, 0, 0).</p>
+<p>Set rectangle to (0, 0, 0, 0). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_constrainIn">constrainIn(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Constrain the rectangle to be inside another one, without changing its size (so the other rectangle must be bigger).</p>
+<p>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_contains">contains(self, const ref Point)</a></td>
 <td class="enumeration">
-<p>
-Determines if the specfied point is contained within the rectangular region.</p>
+<p>Determines if the specfied point is contained within the rectangular region. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_contains">contains(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Determines if the specfied rectangle is contained within the rectangular region.</p>
+<p>Determines if the specfied rectangle is contained within the rectangular region. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_contains">contains(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Determines if the specfied point is contained within the rectangular region.</p>
+<p>Determines if the specfied point is contained within the rectangular region. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_getUnion">getUnion(const ref Rectangle, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Creates a rectangle that represents the union between <code class="incode">a</code> and <code class="incode">b</code>.</p>
+<p>Creates a rectangle that represents the union between <code class="incode">a</code> and <code class="incode">b</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_horzCenter">horzCenter(self)</a></td>
 <td class="enumeration">
-<p>
-Horizontal center coordinate (x + width / 2).</p>
+<p>Horizontal center coordinate (x + width / 2). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_inflate">inflate(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Inflates the rectangle by the given <code class="incode">value</code>.</p>
+<p>Inflates the rectangle by the given <code class="incode">value</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_inflate">inflate(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Inflates the rectangle by the given amount in <code class="incode">x</code> and <code class="incode">y</code> directions.</p>
+<p>Inflates the rectangle by the given amount in <code class="incode">x</code> and <code class="incode">y</code> directions. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_intersect">intersect(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Intersect this rectangle with another one.</p>
+<p>Intersect this rectangle with another one. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_intersect">intersect(const ref Rectangle, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Creates a rectangle that represents the intersetion between <code class="incode">a</code> and <code class="incode">b</code>.</p>
+<p>Creates a rectangle that represents the intersetion between <code class="incode">a</code> and <code class="incode">b</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_intersectWith">intersectWith(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Determines if this rectangle intersets with <code class="incode">rect</code>.</p>
+<p>Determines if this rectangle intersets with <code class="incode">rect</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_isEmpty">isEmpty(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this instance has a surface of zero (width or height are null).</p>
+<p>Returns true if this instance has a surface of zero (width or height are null). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this instance has a surface of zero (width and height are null).</p>
+<p>Returns true if this instance has a surface of zero (width and height are null). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_isNormalized">isNormalized(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this instance has a positive or null surface (width and height greater or equal than zero).</p>
+<p>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_isZero">isZero(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this instance is null.</p>
+<p>Returns true if this instance is null. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this instance is null with an epsilon.</p>
+<p>Returns true if this instance is null with an epsilon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_moveBottom">moveBottom(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_moveLeft">moveLeft(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_moveRight">moveRight(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_moveTop">moveTop(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_offset">offset(self, const ref Point)</a></td>
 <td class="enumeration">
-<p>
-Offset the rectangle position by a given value.</p>
+<p>Offset the rectangle position by a given value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_offset">offset(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Offset the rectangle position by a given value.</p>
+<p>Offset the rectangle position by a given value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_offset">offset(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Offset the rectangle position by a x and y values.</p>
+<p>Offset the rectangle position by a x and y values. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_right">right(self)</a></td>
 <td class="enumeration">
-<p>
-Right coordinate (x + width).</p>
+<p>Right coordinate (x + width). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_round">round(self)</a></td>
 <td class="enumeration">
-<p>
-Perform a Math.round operation on all the coordinates.</p>
+<p>Perform a Math.round operation on all the coordinates. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_scale">scale(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Multiply the width and height of the rectangle by a given <code class="incode">value</code>.</p>
+<p>Multiply the width and height of the rectangle by a given <code class="incode">value</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_scale">scale(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Multiply the width by <code class="incode">x</code> and the height by <code class="incode">y</code>.</p>
+<p>Multiply the width by <code class="incode">x</code> and the height by <code class="incode">y</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_set">set(self, const ref Point, const ref Point)</a></td>
 <td class="enumeration">
-<p>
-Initialize the rectangle with two position.</p>
+<p>Initialize the rectangle with two position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_setBottom">setBottom(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Bottom coordinate (y + height).</p>
+<p>Bottom coordinate (y + height). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_setRight">setRight(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Right coordinate (x + width).</p>
+<p>Right coordinate (x + width). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_setUnion">setUnion(self, const ref Rectangle)</a></td>
 <td class="enumeration">
-<p>
-Creates a rectangle that represents the union.</p>
+<p>Creates a rectangle that represents the union. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_trunc">trunc(self)</a></td>
 <td class="enumeration">
-<p>
-Perform a Math.trunc operation on all the coordinates.</p>
+<p>Perform a Math.trunc operation on all the coordinates. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Rectangle_vertCenter">vertCenter(self)</a></td>
 <td class="enumeration">
-<p>
-Vertical center coordinate (y + height / 2).</p>
+<p>Vertical center coordinate (y + height / 2). </p>
 </td>
 </tr>
 </table>
@@ -15046,8 +14457,7 @@ Vertical center coordinate (y + height / 2).</p>
 </tr>
 </table>
 </p>
-<p>
-Add a padding (offset to each side).</p>
+<p>Add a padding (offset to each side). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyPadding</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, padding: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector4">Vector4</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -15062,8 +14472,7 @@ Add a padding (offset to each side).</p>
 </tr>
 </table>
 </p>
-<p>
-Bottom coordinate (y + height).</p>
+<p>Bottom coordinate (y + height). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bottom</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -15078,8 +14487,7 @@ Bottom coordinate (y + height).</p>
 </tr>
 </table>
 </p>
-<p>
-Perform a Math.ceil operation on all the coordinates.</p>
+<p>Perform a Math.ceil operation on all the coordinates. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ceil</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15094,8 +14502,7 @@ Perform a Math.ceil operation on all the coordinates.</p>
 </tr>
 </table>
 </p>
-<p>
-Central point.</p>
+<p>Central point. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">center</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></code>
 </p>
@@ -15110,8 +14517,7 @@ Central point.</p>
 </tr>
 </table>
 </p>
-<p>
-Set rectangle to (0, 0, 0, 0).</p>
+<p>Set rectangle to (0, 0, 0, 0). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15126,8 +14532,7 @@ Set rectangle to (0, 0, 0, 0).</p>
 </tr>
 </table>
 </p>
-<p>
-Constrain the rectangle to be inside another one, without changing its size (so the other rectangle must be bigger).</p>
+<p>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">constrainIn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -15142,18 +14547,15 @@ Constrain the rectangle to be inside another one, without changing its size (so 
 </tr>
 </table>
 </p>
-<p>
-Determines if the specfied point is contained within the rectangular region.</p>
+<p>Determines if the specfied point is contained within the rectangular region. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, pt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Determines if the specfied rectangle is contained within the rectangular region.</p>
+<p>Determines if the specfied rectangle is contained within the rectangular region. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Determines if the specfied point is contained within the rectangular region.</p>
+<p>Determines if the specfied point is contained within the rectangular region. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15168,8 +14570,7 @@ Determines if the specfied point is contained within the rectangular region.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a rectangle that represents the union between <code class="incode">a</code> and <code class="incode">b</code>.</p>
+<p>Creates a rectangle that represents the union between <code class="incode">a</code> and <code class="incode">b</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getUnion</span><span class="SyntaxCode">(a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode"></code>
 </p>
@@ -15184,8 +14585,7 @@ Creates a rectangle that represents the union between <code class="incode">a</co
 </tr>
 </table>
 </p>
-<p>
-Horizontal center coordinate (x + width / 2).</p>
+<p>Horizontal center coordinate (x + width / 2). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">horzCenter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -15200,13 +14600,11 @@ Horizontal center coordinate (x + width / 2).</p>
 </tr>
 </table>
 </p>
-<p>
-Inflates the rectangle by the given <code class="incode">value</code>.</p>
+<p>Inflates the rectangle by the given <code class="incode">value</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">inflate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Inflates the rectangle by the given amount in <code class="incode">x</code> and <code class="incode">y</code> directions.</p>
+<p>Inflates the rectangle by the given amount in <code class="incode">x</code> and <code class="incode">y</code> directions. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">inflate</span><span class="SyntaxCode">(self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15221,18 +14619,15 @@ Inflates the rectangle by the given amount in <code class="incode">x</code> and 
 </tr>
 </table>
 </p>
-<p>
-Intersect this rectangle with another one.</p>
+<p>Intersect this rectangle with another one. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">intersect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Creates a rectangle that represents the intersetion between <code class="incode">a</code> and <code class="incode">b</code>.</p>
+<p>Creates a rectangle that represents the intersetion between <code class="incode">a</code> and <code class="incode">b</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">intersect</span><span class="SyntaxCode">(a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
- If there is no intersection, Zero is returned.</p>
+<p> If there is no intersection, Zero is returned. </p>
 <p>
 <table class="item">
 <tr>
@@ -15244,8 +14639,7 @@ Creates a rectangle that represents the intersetion between <code class="incode"
 </tr>
 </table>
 </p>
-<p>
-Determines if this rectangle intersets with <code class="incode">rect</code>.</p>
+<p>Determines if this rectangle intersets with <code class="incode">rect</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">intersectWith</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15260,8 +14654,7 @@ Determines if this rectangle intersets with <code class="incode">rect</code>.</p
 </tr>
 </table>
 </p>
-<p>
-Returns true if this instance has a surface of zero (width or height are null).</p>
+<p>Returns true if this instance has a surface of zero (width or height are null). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15276,8 +14669,7 @@ Returns true if this instance has a surface of zero (width or height are null).<
 </tr>
 </table>
 </p>
-<p>
-Returns true if this instance has a surface of zero (width and height are null).</p>
+<p>Returns true if this instance has a surface of zero (width and height are null). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmptyEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15292,8 +14684,7 @@ Returns true if this instance has a surface of zero (width and height are null).
 </tr>
 </table>
 </p>
-<p>
-Returns true if this instance has a positive or null surface (width and height greater or equal than zero).</p>
+<p>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isNormalized</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15308,8 +14699,7 @@ Returns true if this instance has a positive or null surface (width and height g
 </tr>
 </table>
 </p>
-<p>
-Returns true if this instance is null.</p>
+<p>Returns true if this instance is null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZero</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15324,8 +14714,7 @@ Returns true if this instance is null.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this instance is null with an epsilon.</p>
+<p>Returns true if this instance is null with an epsilon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -15340,8 +14729,7 @@ Returns true if this instance is null with an epsilon.</p>
 </tr>
 </table>
 </p>
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveBottom</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15356,8 +14744,7 @@ Move the left coordinate, reducing the width.</p>
 </tr>
 </table>
 </p>
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15372,8 +14759,7 @@ Move the left coordinate, reducing the width.</p>
 </tr>
 </table>
 </p>
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15388,8 +14774,7 @@ Move the left coordinate, reducing the width.</p>
 </tr>
 </table>
 </p>
-<p>
-Move the left coordinate, reducing the width.</p>
+<p>Move the left coordinate, reducing the width. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveTop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15404,18 +14789,15 @@ Move the left coordinate, reducing the width.</p>
 </tr>
 </table>
 </p>
-<p>
-Offset the rectangle position by a given value.</p>
+<p>Offset the rectangle position by a given value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, offset: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Offset the rectangle position by a given value.</p>
+<p>Offset the rectangle position by a given value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, offsetXY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Offset the rectangle position by a x and y values.</p>
+<p>Offset the rectangle position by a x and y values. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, offsetX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, offsetY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15444,8 +14826,7 @@ Offset the rectangle position by a x and y values.</p>
 </tr>
 </table>
 </p>
-<p>
-Right coordinate (x + width).</p>
+<p>Right coordinate (x + width). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">right</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -15460,8 +14841,7 @@ Right coordinate (x + width).</p>
 </tr>
 </table>
 </p>
-<p>
-Perform a Math.round operation on all the coordinates.</p>
+<p>Perform a Math.round operation on all the coordinates. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">round</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15476,13 +14856,11 @@ Perform a Math.round operation on all the coordinates.</p>
 </tr>
 </table>
 </p>
-<p>
-Multiply the width and height of the rectangle by a given <code class="incode">value</code>.</p>
+<p>Multiply the width and height of the rectangle by a given <code class="incode">value</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scale</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Multiply the width by <code class="incode">x</code> and the height by <code class="incode">y</code>.</p>
+<p>Multiply the width by <code class="incode">x</code> and the height by <code class="incode">y</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scale</span><span class="SyntaxCode">(self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15497,8 +14875,7 @@ Multiply the width by <code class="incode">x</code> and the height by <code clas
 </tr>
 </table>
 </p>
-<p>
-Initialize the rectangle with two position.</p>
+<p>Initialize the rectangle with two position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, topLeft: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode">, bottomRight: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -15513,8 +14890,7 @@ Initialize the rectangle with two position.</p>
 </tr>
 </table>
 </p>
-<p>
-Bottom coordinate (y + height).</p>
+<p>Bottom coordinate (y + height). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setBottom</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15529,8 +14905,7 @@ Bottom coordinate (y + height).</p>
 </tr>
 </table>
 </p>
-<p>
-Right coordinate (x + width).</p>
+<p>Right coordinate (x + width). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -15545,8 +14920,7 @@ Right coordinate (x + width).</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a rectangle that represents the union.</p>
+<p>Creates a rectangle that represents the union. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setUnion</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -15561,8 +14935,7 @@ Creates a rectangle that represents the union.</p>
 </tr>
 </table>
 </p>
-<p>
-Perform a Math.trunc operation on all the coordinates.</p>
+<p>Perform a Math.trunc operation on all the coordinates. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trunc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15577,8 +14950,7 @@ Perform a Math.trunc operation on all the coordinates.</p>
 </tr>
 </table>
 </p>
-<p>
-Vertical center coordinate (y + height / 2).</p>
+<p>Vertical center coordinate (y + height / 2). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vertCenter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -15673,40 +15045,35 @@ f32</td>
 <td class="enumeration">
 <a href="#Core_Math_Transform2_createRotation">createRotation(f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Creates a rotation matix, with a given center of rotation.</p>
+<p>Creates a rotation matix, with a given center of rotation. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Transform2_createScale">createScale(f32, f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Creates a scale matix, with a given center.</p>
+<p>Creates a scale matix, with a given center. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Transform2_createTranslation">createTranslation(f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Creates a translation matix.</p>
+<p>Creates a translation matix. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Transform2_multiply">multiply(self, const ref Transform2)</a></td>
 <td class="enumeration">
-<p>
-Multiply two matricies.</p>
+<p>Multiply two matricies. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Transform2_setIdentity">setIdentity(self)</a></td>
 <td class="enumeration">
-<p>
-Set transform to identity.</p>
+<p>Set transform to identity. </p>
 </td>
 </tr>
 </table>
@@ -15721,8 +15088,7 @@ Set transform to identity.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a rotation matix, with a given center of rotation.</p>
+<p>Creates a rotation matix, with a given center of rotation. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createRotation</span><span class="SyntaxCode">(angle: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Transform2">Transform2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -15737,8 +15103,7 @@ Creates a rotation matix, with a given center of rotation.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a scale matix, with a given center.</p>
+<p>Creates a scale matix, with a given center. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createScale</span><span class="SyntaxCode">(scaleX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, scaleY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Transform2">Transform2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -15753,8 +15118,7 @@ Creates a scale matix, with a given center.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a translation matix.</p>
+<p>Creates a translation matix. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createTranslation</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Transform2">Transform2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -15769,8 +15133,7 @@ Creates a translation matix.</p>
 </tr>
 </table>
 </p>
-<p>
-Multiply two matricies.</p>
+<p>Multiply two matricies. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">multiply</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, matrix2: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Transform2">Transform2</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -15785,8 +15148,7 @@ Multiply two matricies.</p>
 </tr>
 </table>
 </p>
-<p>
-Set transform to identity.</p>
+<p>Set transform to identity. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIdentity</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15842,24 +15204,21 @@ s32</td>
 <td class="enumeration">
 <a href="#Core_Math_Variant_drop">drop(self)</a></td>
 <td class="enumeration">
-<p>
-Drop the variant content (if necessary).</p>
+<p>Drop the variant content (if necessary). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Variant_get">get(self)</a></td>
 <td class="enumeration">
-<p>
-Get the variant value of the given type Will assert if the current type does not match.</p>
+<p>Get the variant value of the given type  Will assert if the current type does not match. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Variant_set">set(self, TN)</a></td>
 <td class="enumeration">
-<p>
-Set the variant value.</p>
+<p>Set the variant value. </p>
 </td>
 </tr>
 </table>
@@ -15927,8 +15286,7 @@ Set the variant value.</p>
 </tr>
 </table>
 </p>
-<p>
-Drop the variant content (if necessary).</p>
+<p>Drop the variant content (if necessary). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -15943,8 +15301,7 @@ Drop the variant content (if necessary).</p>
 </tr>
 </table>
 </p>
-<p>
-Get the variant value of the given type Will assert if the current type does not match.</p>
+<p>Get the variant value of the given type  Will assert if the current type does not match. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">TN</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">get</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">TN</span><span class="SyntaxCode"></code>
 </p>
@@ -16043,8 +15400,7 @@ Get the variant value of the given type Will assert if the current type does not
 </tr>
 </table>
 </p>
-<p>
-Set the variant value.</p>
+<p>Set the variant value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">TN</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">TN</span><span class="SyntaxCode">)</code>
 </p>
@@ -16083,288 +15439,252 @@ f32</td>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_angle">angle(self, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the angle with another vector.</p>
+<p>Returns the angle with another vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_ceil">ceil(self)</a></td>
 <td class="enumeration">
-<p>
-Math.ceil.</p>
+<p>Math.ceil. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set the vector to zero.</p>
+<p>Set the vector to zero. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_cosAngle">cosAngle(self, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the cosine angle with another vector.</p>
+<p>Returns the cosine angle with another vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_cross">cross(self, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the Z signed length of the perpendicular vector.</p>
+<p>Returns the Z signed length of the perpendicular vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_cross">cross(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns the perpendicular vector in the 2D plane.</p>
+<p>Returns the perpendicular vector in the 2D plane. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_distance">distance(self, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the distance between two vectors.</p>
+<p>Returns the distance between two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_distanceSquared">distanceSquared(self, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the square distance between two vectors.</p>
+<p>Returns the square distance between two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_distanceToLine">distanceToLine(self, const ref Vector2, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the distance of the point to the given line.</p>
+<p>Returns the distance of the point to the given line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment(self, const ref Vector2, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the distance of the point to the given segment.</p>
+<p>Returns the distance of the point to the given segment. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_dot">dot(self, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the dot product between two vectors.</p>
+<p>Returns the dot product between two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_floor">floor(self)</a></td>
 <td class="enumeration">
-<p>
-Math.floor.</p>
+<p>Math.floor. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon(self, const ref Vector2, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this vector is equals to another with an epsilon.</p>
+<p>Returns true if this vector is equals to another with an epsilon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_isInEllipse">isInEllipse(self, const ref Vector2, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the point <code class="incode">pt</code> is inside an ellipse.</p>
+<p>Returns true if the point <code class="incode">pt</code> is inside an ellipse. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_isInTriangle">isInTriangle(self, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the point <code class="incode">pt</code> is inside the triangle defined with 'a, b, c'.</p>
+<p>Returns true if the point <code class="incode">pt</code> is inside the triangle defined with 'a, b, c'. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_isZero">isZero(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this vector is null.</p>
+<p>Returns true if this vector is null. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this vector is null with an epsilon.</p>
+<p>Returns true if this vector is null with an epsilon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_length">length(self)</a></td>
 <td class="enumeration">
-<p>
-Return sthe length of the vector.</p>
+<p>Return sthe length of the vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_lengthSquared">lengthSquared(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the squared length of the vector.</p>
+<p>Returns the squared length of the vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_lerp">lerp(const ref Vector2, const ref Vector2, f32)</a></td>
 <td class="enumeration">
-<p>
-Lerp one vector with another.</p>
+<p>Lerp one vector with another. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
 <td class="enumeration">
-<p>
-Compute the intersection point of two lines.</p>
+<p>Compute the intersection point of two lines. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_max">max(const ref Vector2, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_min">min(const ref Vector2, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns the minimal segment between two segments (and the minimal distance).</p>
+<p>Returns the minimal segment between two segments (and the minimal distance). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_negate">negate(self)</a></td>
 <td class="enumeration">
-<p>
-Negate the vector.</p>
+<p>Negate the vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_normalize">normalize(self)</a></td>
 <td class="enumeration">
-<p>
-Normalize this vector (set its length to 1).</p>
+<p>Normalize this vector (set its length to 1). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe(self)</a></td>
 <td class="enumeration">
-<p>
-Normalize this vector (set its length to 1) even if its length is almost null.</p>
+<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_polyContains">polyContains(const ref Array'(Vector2), const ref Vector2)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin.</p>
+<p>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_rotate">rotate(self, const ref Angle)</a></td>
 <td class="enumeration">
-<p>
-Rotate the vector by a given angle.</p>
+<p>Rotate the vector by a given angle. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_round">round(self)</a></td>
 <td class="enumeration">
-<p>
-Math.round.</p>
+<p>Math.round. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
 <td class="enumeration">
-<p>
-Compute the intersection point of two segments.</p>
+<p>Compute the intersection point of two segments. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_set">set(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set content.</p>
+<p>Set content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_setLength">setLength(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_toNormalize">toNormalize(self)</a></td>
 <td class="enumeration">
-<p>
-Returns this vector normalized.</p>
+<p>Returns this vector normalized. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe(self)</a></td>
 <td class="enumeration">
-<p>
-Returns this vector normalized even if its length is almost null.</p>
+<p>Returns this vector normalized even if its length is almost null. </p>
 </td>
 </tr>
 </table>
@@ -16424,8 +15744,7 @@ Returns this vector normalized even if its length is almost null.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the angle with another vector.</p>
+<p>Returns the angle with another vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">angle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -16440,8 +15759,7 @@ Returns the angle with another vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Math.ceil.</p>
+<p>Math.ceil. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ceil</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16456,8 +15774,7 @@ Math.ceil.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the vector to zero.</p>
+<p>Set the vector to zero. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16472,8 +15789,7 @@ Set the vector to zero.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the cosine angle with another vector.</p>
+<p>Returns the cosine angle with another vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cosAngle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -16488,18 +15804,15 @@ Returns the cosine angle with another vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the Z signed length of the perpendicular vector.</p>
+<p>Returns the Z signed length of the perpendicular vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cross</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns the perpendicular vector in the 2D plane.</p>
+<p>Returns the perpendicular vector in the 2D plane. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cross</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, axis: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
- <code class="incode">axis</code> will give the sign of the result</p>
+<p> <code class="incode">axis</code> will give the sign of the result </p>
 <p>
 <table class="item">
 <tr>
@@ -16511,8 +15824,7 @@ Returns the perpendicular vector in the 2D plane.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the distance between two vectors.</p>
+<p>Returns the distance between two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">distance</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, to: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -16527,8 +15839,7 @@ Returns the distance between two vectors.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the square distance between two vectors.</p>
+<p>Returns the square distance between two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">distanceSquared</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, to: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -16543,8 +15854,7 @@ Returns the square distance between two vectors.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the distance of the point to the given line.</p>
+<p>Returns the distance of the point to the given line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">distanceToLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -16559,8 +15869,7 @@ Returns the distance of the point to the given line.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the distance of the point to the given segment.</p>
+<p>Returns the distance of the point to the given segment. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">distanceToSegment</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -16575,8 +15884,7 @@ Returns the distance of the point to the given segment.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the dot product between two vectors.</p>
+<p>Returns the dot product between two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dot</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -16591,8 +15899,7 @@ Returns the dot product between two vectors.</p>
 </tr>
 </table>
 </p>
-<p>
-Math.floor.</p>
+<p>Math.floor. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">floor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16607,8 +15914,7 @@ Math.floor.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this vector is equals to another with an epsilon.</p>
+<p>Returns true if this vector is equals to another with an epsilon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -16623,8 +15929,7 @@ Returns true if this vector is equals to another with an epsilon.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the point <code class="incode">pt</code> is inside an ellipse.</p>
+<p>Returns true if the point <code class="incode">pt</code> is inside an ellipse. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isInEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, center: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -16639,8 +15944,7 @@ Returns true if the point <code class="incode">pt</code> is inside an ellipse.</
 </tr>
 </table>
 </p>
-<p>
-Returns true if the point <code class="incode">pt</code> is inside the triangle defined with 'a, b, c'.</p>
+<p>Returns true if the point <code class="incode">pt</code> is inside the triangle defined with 'a, b, c'. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isInTriangle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, c: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -16655,8 +15959,7 @@ Returns true if the point <code class="incode">pt</code> is inside the triangle 
 </tr>
 </table>
 </p>
-<p>
-Returns true if this vector is null.</p>
+<p>Returns true if this vector is null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZero</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -16671,8 +15974,7 @@ Returns true if this vector is null.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this vector is null with an epsilon.</p>
+<p>Returns true if this vector is null with an epsilon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -16687,8 +15989,7 @@ Returns true if this vector is null with an epsilon.</p>
 </tr>
 </table>
 </p>
-<p>
-Return sthe length of the vector.</p>
+<p>Return sthe length of the vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">length</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16703,8 +16004,7 @@ Return sthe length of the vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the squared length of the vector.</p>
+<p>Returns the squared length of the vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lengthSquared</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16719,8 +16019,7 @@ Returns the squared length of the vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Lerp one vector with another.</p>
+<p>Lerp one vector with another. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lerp</span><span class="SyntaxCode">(src: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, dst: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -16735,8 +16034,7 @@ Lerp one vector with another.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute the intersection point of two lines.</p>
+<p>Compute the intersection point of two lines. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lineLineIntersect</span><span class="SyntaxCode">(start0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, start1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, epsilon: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -16755,8 +16053,7 @@ Compute the intersection point of two lines.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">max</span><span class="SyntaxCode">(a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -16771,8 +16068,7 @@ Returns a vector which is the <code class="incode">min</code> of two vectors.</p
 </tr>
 </table>
 </p>
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">min</span><span class="SyntaxCode">(a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -16787,8 +16083,7 @@ Returns a vector which is the <code class="incode">min</code> of two vectors.</p
 </tr>
 </table>
 </p>
-<p>
-Returns the minimal segment between two segments (and the minimal distance).</p>
+<p>Returns the minimal segment between two segments (and the minimal distance). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nearestPointsSegSeg</span><span class="SyntaxCode">(p0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, p1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, q0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, q1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -16814,8 +16109,7 @@ Returns the minimal segment between two segments (and the minimal distance).</p>
 </tr>
 </table>
 </p>
-<p>
-Negate the vector.</p>
+<p>Negate the vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">negate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16830,8 +16124,7 @@ Negate the vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Normalize this vector (set its length to 1).</p>
+<p>Normalize this vector (set its length to 1). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">normalize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16846,8 +16139,7 @@ Normalize this vector (set its length to 1).</p>
 </tr>
 </table>
 </p>
-<p>
-Normalize this vector (set its length to 1) even if its length is almost null.</p>
+<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">normalizeSafe</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16934,8 +16226,7 @@ Normalize this vector (set its length to 1) even if its length is almost null.</
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin.</p>
+<p>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">polyContains</span><span class="SyntaxCode">(poly: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">), pt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -16950,8 +16241,7 @@ Returns true if the given point is inside the polygon PNPoly by W. Randolph Fran
 </tr>
 </table>
 </p>
-<p>
-Rotate the vector by a given angle.</p>
+<p>Rotate the vector by a given angle. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Angle">Angle</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -16966,8 +16256,7 @@ Rotate the vector by a given angle.</p>
 </tr>
 </table>
 </p>
-<p>
-Math.round.</p>
+<p>Math.round. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">round</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -16982,8 +16271,7 @@ Math.round.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute the intersection point of two segments.</p>
+<p>Compute the intersection point of two segments. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">segSegIntersect</span><span class="SyntaxCode">(start0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, start1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, epsilon: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -17002,8 +16290,7 @@ Compute the intersection point of two segments.</p>
 </tr>
 </table>
 </p>
-<p>
-Set content.</p>
+<p>Set content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17018,8 +16305,7 @@ Set content.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setLength</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newLength: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17034,8 +16320,7 @@ Set the vector length.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setLengthSafe</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newLength: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17050,8 +16335,7 @@ Set the vector length.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns this vector normalized.</p>
+<p>Returns this vector normalized. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toNormalize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17066,8 +16350,7 @@ Returns this vector normalized.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns this vector normalized even if its length is almost null.</p>
+<p>Returns this vector normalized even if its length is almost null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toNormalizeSafe</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17114,160 +16397,140 @@ f32</td>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set the vector to zero.</p>
+<p>Set the vector to zero. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_distance">distance(self, const ref Vector3)</a></td>
 <td class="enumeration">
-<p>
-Returns the distance between two vectors.</p>
+<p>Returns the distance between two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_distanceSquared">distanceSquared(self, const ref Vector3)</a></td>
 <td class="enumeration">
-<p>
-Returns the square distance between two vectors.</p>
+<p>Returns the square distance between two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_dot">dot(self, const ref Vector3)</a></td>
 <td class="enumeration">
-<p>
-Returns the dot product between two vectors.</p>
+<p>Returns the dot product between two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon(self, const ref Vector3, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this vector is equals to another with an epsilon.</p>
+<p>Returns true if this vector is equals to another with an epsilon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_isZero">isZero(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this vector is null.</p>
+<p>Returns true if this vector is null. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this vector is null with an epsilon.</p>
+<p>Returns true if this vector is null with an epsilon. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_length">length(self)</a></td>
 <td class="enumeration">
-<p>
-Return sthe length of the vector.</p>
+<p>Return sthe length of the vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_lengthSquared">lengthSquared(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the squared length of the vector.</p>
+<p>Returns the squared length of the vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_lerp">lerp(const ref Vector3, const ref Vector3, f32)</a></td>
 <td class="enumeration">
-<p>
-Lerp one vector with another.</p>
+<p>Lerp one vector with another. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_max">max(const ref Vector3, const ref Vector3)</a></td>
 <td class="enumeration">
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_min">min(const ref Vector3, const ref Vector3)</a></td>
 <td class="enumeration">
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_negate">negate(self)</a></td>
 <td class="enumeration">
-<p>
-Negate the vector.</p>
+<p>Negate the vector. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_normalize">normalize(self)</a></td>
 <td class="enumeration">
-<p>
-Normalize this vector (set its length to 1).</p>
+<p>Normalize this vector (set its length to 1). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe(self)</a></td>
 <td class="enumeration">
-<p>
-Normalize this vector (set its length to 1) even if its length is almost null.</p>
+<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_set">set(self, f32, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Set content.</p>
+<p>Set content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_setLength">setLength(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe(self, f32)</a></td>
 <td class="enumeration">
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_toNormalize">toNormalize(self)</a></td>
 <td class="enumeration">
-<p>
-Returns this vector normalized.</p>
+<p>Returns this vector normalized. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe(self)</a></td>
 <td class="enumeration">
-<p>
-Returns this vector normalized even if its length is almost null.</p>
+<p>Returns this vector normalized even if its length is almost null. </p>
 </td>
 </tr>
 </table>
@@ -17327,8 +16590,7 @@ Returns this vector normalized even if its length is almost null.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the vector to zero.</p>
+<p>Set the vector to zero. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17343,8 +16605,7 @@ Set the vector to zero.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the distance between two vectors.</p>
+<p>Returns the distance between two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">distance</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, to: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -17359,8 +16620,7 @@ Returns the distance between two vectors.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the square distance between two vectors.</p>
+<p>Returns the square distance between two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">distanceSquared</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, to: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -17375,8 +16635,7 @@ Returns the square distance between two vectors.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the dot product between two vectors.</p>
+<p>Returns the dot product between two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dot</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -17391,8 +16650,7 @@ Returns the dot product between two vectors.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this vector is equals to another with an epsilon.</p>
+<p>Returns true if this vector is equals to another with an epsilon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -17407,8 +16665,7 @@ Returns true if this vector is equals to another with an epsilon.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this vector is null.</p>
+<p>Returns true if this vector is null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZero</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -17423,8 +16680,7 @@ Returns true if this vector is null.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this vector is null with an epsilon.</p>
+<p>Returns true if this vector is null with an epsilon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -17439,8 +16695,7 @@ Returns true if this vector is null with an epsilon.</p>
 </tr>
 </table>
 </p>
-<p>
-Return sthe length of the vector.</p>
+<p>Return sthe length of the vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">length</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17455,8 +16710,7 @@ Return sthe length of the vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the squared length of the vector.</p>
+<p>Returns the squared length of the vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lengthSquared</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17471,8 +16725,7 @@ Returns the squared length of the vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Lerp one vector with another.</p>
+<p>Lerp one vector with another. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lerp</span><span class="SyntaxCode">(src: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">, dst: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17487,8 +16740,7 @@ Lerp one vector with another.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">max</span><span class="SyntaxCode">(a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17503,8 +16755,7 @@ Returns a vector which is the <code class="incode">min</code> of two vectors.</p
 </tr>
 </table>
 </p>
-<p>
-Returns a vector which is the <code class="incode">min</code> of two vectors.</p>
+<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">min</span><span class="SyntaxCode">(a: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">, b: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17519,8 +16770,7 @@ Returns a vector which is the <code class="incode">min</code> of two vectors.</p
 </tr>
 </table>
 </p>
-<p>
-Negate the vector.</p>
+<p>Negate the vector. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">negate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17535,8 +16785,7 @@ Negate the vector.</p>
 </tr>
 </table>
 </p>
-<p>
-Normalize this vector (set its length to 1).</p>
+<p>Normalize this vector (set its length to 1). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">normalize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17551,8 +16800,7 @@ Normalize this vector (set its length to 1).</p>
 </tr>
 </table>
 </p>
-<p>
-Normalize this vector (set its length to 1) even if its length is almost null.</p>
+<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">normalizeSafe</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17639,8 +16887,7 @@ Normalize this vector (set its length to 1) even if its length is almost null.</
 </tr>
 </table>
 </p>
-<p>
-Set content.</p>
+<p>Set content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17655,8 +16902,7 @@ Set content.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setLength</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newLength: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17671,8 +16917,7 @@ Set the vector length.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the vector length.</p>
+<p>Set the vector length. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setLengthSafe</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newLength: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </p>
@@ -17687,8 +16932,7 @@ Set the vector length.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns this vector normalized.</p>
+<p>Returns this vector normalized. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toNormalize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17703,8 +16947,7 @@ Returns this vector normalized.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns this vector normalized even if its length is almost null.</p>
+<p>Returns this vector normalized even if its length is almost null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toNormalizeSafe</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17759,16 +17002,14 @@ f32</td>
 <td class="enumeration">
 <a href="#Core_Math_Vector4_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set the vector to zero.</p>
+<p>Set the vector to zero. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Math_Vector4_lerp">lerp(const ref Vector4, const ref Vector4, f32)</a></td>
 <td class="enumeration">
-<p>
-Lerp one vector with another.</p>
+<p>Lerp one vector with another. </p>
 </td>
 </tr>
 </table>
@@ -17804,8 +17045,7 @@ Lerp one vector with another.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the vector to zero.</p>
+<p>Set the vector to zero. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -17820,8 +17060,7 @@ Set the vector to zero.</p>
 </tr>
 </table>
 </p>
-<p>
-Lerp one vector with another.</p>
+<p>Lerp one vector with another. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lerp</span><span class="SyntaxCode">(src: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector4">Vector4</a></span><span class="SyntaxCode">, dst: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector4">Vector4</a></span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector4">Vector4</a></span><span class="SyntaxCode"></code>
 </p>
@@ -17957,8 +17196,7 @@ Lerp one vector with another.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a big endian integer to current arch native format.</p>
+<p>Convert a big endian integer to current arch native format. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">bigEndianToNative</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -18032,8 +17270,7 @@ Convert a big endian integer to current arch native format.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of bits set to 1.</p>
+<p>Returns the number of bits set to 1. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countOnes</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countOnes</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
@@ -18096,8 +17333,7 @@ Returns the number of bits set to 1.</p>
 </tr>
 </table>
 </p>
-<p>
-Determin if an integer has a given byte.</p>
+<p>Determin if an integer has a given byte. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasByte</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, byte: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -18116,8 +17352,7 @@ Determin if an integer has a given byte.</p>
 </tr>
 </table>
 </p>
-<p>
-Determin if any of the bytes is zero.</p>
+<p>Determin if any of the bytes is zero. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasZeroByte</span><span class="SyntaxCode">(v: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -18195,8 +17430,7 @@ Determin if any of the bytes is zero.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of bits set to 0 from the left.</p>
+<p>Returns the number of bits set to 0 from the left. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">leadingZeros</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">leadingZeros</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
@@ -18229,8 +17463,7 @@ Returns the number of bits set to 0 from the left.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a little endian integer to current arch native format.</p>
+<p>Convert a little endian integer to current arch native format. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">littleEndianToNative</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -18290,8 +17523,7 @@ Convert a little endian integer to current arch native format.</p>
 </tr>
 </table>
 </p>
-<p>
-Make a 16 bits by repeating a given byte 0x20 =&gt; 0x2020.</p>
+<p>Make a 16 bits by repeating a given byte  0x20 =&gt; 0x2020. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeRepeat16</span><span class="SyntaxCode">(v: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode"></code>
 </p>
@@ -18306,8 +17538,7 @@ Make a 16 bits by repeating a given byte 0x20 =&gt; 0x2020.</p>
 </tr>
 </table>
 </p>
-<p>
-Make a 32 bits by repeating a given byte 0x20 =&gt; 0x20202020.</p>
+<p>Make a 32 bits by repeating a given byte  0x20 =&gt; 0x20202020. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeRepeat32</span><span class="SyntaxCode">(v: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -18322,8 +17553,7 @@ Make a 32 bits by repeating a given byte 0x20 =&gt; 0x20202020.</p>
 </tr>
 </table>
 </p>
-<p>
-Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
+<p>Make a 64 bits by repeating a given byte  0x20 =&gt; 0x20202020_20202020. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeRepeat64</span><span class="SyntaxCode">(v: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -18442,8 +17672,7 @@ Make a 64 bits by repeating a given byte 0x20 =&gt; 0x20202020_20202020.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a native arch integer to a big endian.</p>
+<p>Convert a native arch integer to a big endian. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">nativeToBigEndian</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -18473,8 +17702,7 @@ Convert a native arch integer to a big endian.</p>
 </tr>
 </table>
 </p>
-<p>
-Reverse all bits.</p>
+<p>Reverse all bits. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reverse</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reverse</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
@@ -18689,8 +17917,7 @@ Reverse all bits.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of bits set to 0 from the right.</p>
+<p>Returns the number of bits set to 0 from the right. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trailingZeros</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trailingZeros</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
@@ -18723,13 +17950,11 @@ Returns the number of bits set to 0 from the right.</p>
 </tr>
 </table>
 </p>
-<p>
-Align a pointer to the given amount.</p>
+<p>Align a pointer to the given amount. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">align</span><span class="SyntaxCode">(value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Align a value to the given amount.</p>
+<p>Align a value to the given amount. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">align</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -18744,8 +17969,7 @@ Align a value to the given amount.</p>
 </tr>
 </table>
 </p>
-<p>
-Allocate a given amount of bytes.</p>
+<p>Allocate a given amount of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)-&gt;^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </p>
@@ -18760,8 +17984,7 @@ Allocate a given amount of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Check if a given pointer is allocated.</p>
+<p>Check if a given pointer is allocated. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode">(buffer: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)</code>
 </p>
@@ -18776,8 +17999,7 @@ Check if a given pointer is allocated.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear one block of memory.</p>
+<p>Clear one block of memory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(dest: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -18792,8 +18014,7 @@ Clear one block of memory.</p>
 </tr>
 </table>
 </p>
-<p>
-Compare two blocks of memory.</p>
+<p>Compare two blocks of memory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compare</span><span class="SyntaxCode">(dest: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </p>
@@ -18808,8 +18029,7 @@ Compare two blocks of memory.</p>
 </tr>
 </table>
 </p>
-<p>
-Copy one block of memory to a given address.</p>
+<p>Copy one block of memory to a given address. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copy</span><span class="SyntaxCode">(dest: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -18824,8 +18044,7 @@ Copy one block of memory to a given address.</p>
 </tr>
 </table>
 </p>
-<p>
-Move one block of memory to a given address.</p>
+<p>Move one block of memory to a given address. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copyOver</span><span class="SyntaxCode">(dest: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -18840,18 +18059,15 @@ Move one block of memory to a given address.</p>
 </tr>
 </table>
 </p>
-<p>
-Drop and release memory of the given type.</p>
+<p>Drop and release memory of the given type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">delete</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)</code>
 </p>
-<p>
-Drop and release memory of an array of the given type.</p>
+<p>Drop and release memory of an array of the given type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">delete</span><span class="SyntaxCode">(ptr: ^</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, num: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)</code>
 </p>
-<p>
-Drop and release memory of the given type.</p>
+<p>Drop and release memory of the given type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">delete</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)</code>
 </p>
@@ -18866,8 +18082,7 @@ Drop and release memory of the given type.</p>
 </tr>
 </table>
 </p>
-<p>
-Compare two blocks of memory.</p>
+<p>Compare two blocks of memory. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">equals</span><span class="SyntaxCode">(dest: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -18882,8 +18097,7 @@ Compare two blocks of memory.</p>
 </tr>
 </table>
 </p>
-<p>
-Free the specified memory block.</p>
+<p>Free the specified memory block. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(buffer: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)</code>
 </p>
@@ -18898,8 +18112,7 @@ Free the specified memory block.</p>
 </tr>
 </table>
 </p>
-<p>
-Free all allocated memory of the given allocator if possible.</p>
+<p>Free all allocated memory of the given allocator if possible. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeAll</span><span class="SyntaxCode">(allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)</code>
 </p>
@@ -18914,8 +18127,7 @@ Free all allocated memory of the given allocator if possible.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear the temporary allocator.</p>
+<p>Clear the temporary allocator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeTemp</span><span class="SyntaxCode">()</code>
 </p>
@@ -18930,18 +18142,15 @@ Clear the temporary allocator.</p>
 </tr>
 </table>
 </p>
-<p>
-Allocate and initialize the given type.</p>
+<p>Allocate and initialize the given type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">new</span><span class="SyntaxCode">(allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Allocate and initialize an array of the given type.</p>
+<p>Allocate and initialize an array of the given type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">new</span><span class="SyntaxCode">(num: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)-&gt;^</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Allocate and initialize the given type.</p>
+<p>Allocate and initialize the given type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">new</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -18956,8 +18165,7 @@ Allocate and initialize the given type.</p>
 </tr>
 </table>
 </p>
-<p>
-Push a new allocator for the given block of code.</p>
+<p>Push a new allocator for the given block of code. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushAllocator</span><span class="SyntaxCode">(allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode">, stmt: code)</code>
@@ -18973,8 +18181,7 @@ Push a new allocator for the given block of code.</p>
 </tr>
 </table>
 </p>
-<p>
-Push the temporary allocator for the given block of code.</p>
+<p>Push the temporary allocator for the given block of code. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushTempAllocator</span><span class="SyntaxCode">(stmt: code)</code>
@@ -18990,8 +18197,7 @@ Push the temporary allocator for the given block of code.</p>
 </tr>
 </table>
 </p>
-<p>
-Reallocate/allocate a given amount of bytes.</p>
+<p>Reallocate/allocate a given amount of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">realloc</span><span class="SyntaxCode">(buffer: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, newSize: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, oldSize: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u16</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)-&gt;^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </p>
@@ -19006,8 +18212,7 @@ Reallocate/allocate a given amount of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the content of one block of memory to a specific byte value.</p>
+<p>Set the content of one block of memory to a specific byte value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(dest: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -19022,8 +18227,7 @@ Set the content of one block of memory to a specific byte value.</p>
 </tr>
 </table>
 </p>
-<p>
-Allocate a given amount of bytes in the temporary allocator.</p>
+<p>Allocate a given amount of bytes in the temporary allocator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tempAlloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, hint: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, loc = #callerlocation)-&gt;^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </p>
@@ -19038,8 +18242,7 @@ Allocate a given amount of bytes in the temporary allocator.</p>
 </tr>
 </table>
 </p>
-<p>
-Perlin.</p>
+<p>Perlin. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">perlin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, seed: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1337</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">perlin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, seed: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1337</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
@@ -19061,40 +18264,35 @@ Perlin.</p>
 <td class="enumeration">
 <a href="#Core_Parser_RegExp_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Clear content.</p>
+<p>Clear content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Parser_RegExp_compile">compile(self, string, bool)</a></td>
 <td class="enumeration">
-<p>
-Compile the expression.</p>
+<p>Compile the expression. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Parser_RegExp_grep">grep(self, string)</a></td>
 <td class="enumeration">
-<p>
-Find the first occurence in the string.</p>
+<p>Find the first occurence in the string. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Parser_RegExp_grepAll">grepAll(self, string)</a></td>
 <td class="enumeration">
-<p>
-Find all the occurences in the string.</p>
+<p>Find all the occurences in the string. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Parser_RegExp_match">match(self, string)</a></td>
 <td class="enumeration">
-<p>
-Returns true if <code class="incode">str</code> matches the regexp.</p>
+<p>Returns true if <code class="incode">str</code> matches the regexp. </p>
 </td>
 </tr>
 </table>
@@ -19109,8 +18307,7 @@ Returns true if <code class="incode">str</code> matches the regexp.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear content.</p>
+<p>Clear content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -19125,8 +18322,7 @@ Clear content.</p>
 </tr>
 </table>
 </p>
-<p>
-Compile the expression.</p>
+<p>Compile the expression. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, ignoreCase: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -19141,8 +18337,7 @@ Compile the expression.</p>
 </tr>
 </table>
 </p>
-<p>
-Find the first occurence in the string.</p>
+<p>Find the first occurence in the string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">grep</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -19157,8 +18352,7 @@ Find the first occurence in the string.</p>
 </tr>
 </table>
 </p>
-<p>
-Find all the occurences in the string.</p>
+<p>Find all the occurences in the string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">grepAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -19173,8 +18367,7 @@ Find all the occurences in the string.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if <code class="incode">str</code> matches the regexp.</p>
+<p>Returns true if <code class="incode">str</code> matches the regexp. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">match</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19189,8 +18382,7 @@ Returns true if <code class="incode">str</code> matches the regexp.</p>
 </tr>
 </table>
 </p>
-<p>
-Combine multiple paths into one, by adding a directory separator between them if necessary.</p>
+<p>Combine multiple paths into one, by adding a directory separator  between them if necessary. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">combine</span><span class="SyntaxCode">(fullnames: </span><span class="SyntaxType">string</span><span class="SyntaxCode">...)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -19205,8 +18397,7 @@ Combine multiple paths into one, by adding a directory separator between them if
 </tr>
 </table>
 </p>
-<p>
-Returns true if the two paths are equal.</p>
+<p>Returns true if the two paths are equal. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">equals</span><span class="SyntaxCode">(path1: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, path2: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19221,8 +18412,7 @@ Returns true if the two paths are equal.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform <code class="incode">fullname</code> to an absolute path.</p>
+<p>Transform <code class="incode">fullname</code> to an absolute path. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAbsolute</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -19237,8 +18427,7 @@ Transform <code class="incode">fullname</code> to an absolute path.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the directory part of the path, null if not found.</p>
+<p>Returns the directory part of the path, null if not found. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDirectoryName</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -19253,8 +18442,7 @@ Returns the directory part of the path, null if not found.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the file name extension, including the <code class="incode">.</code> character Returns null if no extension was found.</p>
+<p>Returns the file name extension, including the <code class="incode">.</code> character  Returns null if no extension was found. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getExtension</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -19269,8 +18457,7 @@ Returns the file name extension, including the <code class="incode">.</code> cha
 </tr>
 </table>
 </p>
-<p>
-Returns the file name extension, including the <code class="incode">.</code> character, in lower case Returns null if no extension was found.</p>
+<p>Returns the file name extension, including the <code class="incode">.</code> character, in lower case  Returns null if no extension was found. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getExtensionLowerCase</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -19285,8 +18472,7 @@ Returns the file name extension, including the <code class="incode">.</code> cha
 </tr>
 </table>
 </p>
-<p>
-Returns the file name part of the path, null if not found.</p>
+<p>Returns the file name part of the path, null if not found. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFileName</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -19301,8 +18487,7 @@ Returns the file name part of the path, null if not found.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the path file name, null if not found.</p>
+<p>Returns the path file name, null if not found. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFileNameWithoutExtension</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -19317,8 +18502,7 @@ Returns the path file name, null if not found.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the length of the root part of the path.</p>
+<p>Returns the length of the root part of the path. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRootLength</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -19333,8 +18517,7 @@ Returns the length of the root part of the path.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the root part of the path, null if not found.</p>
+<p>Returns the root part of the path, null if not found. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRootName</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -19349,8 +18532,7 @@ Returns the root part of the path, null if not found.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the file name contains an extension.</p>
+<p>Returns true if the file name contains an extension. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasExtension</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19365,8 +18547,7 @@ Returns true if the file name contains an extension.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given character is a directory separator.</p>
+<p>Returns true if the given character is a directory separator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isDirectorySeparator</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19381,8 +18562,7 @@ Returns true if the given character is a directory separator.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given file is of the given extension.</p>
+<p>Returns true if the given file is of the given extension. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isExtension</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, extension: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19397,8 +18577,7 @@ Returns true if the given file is of the given extension.</p>
 </tr>
 </table>
 </p>
-<p>
-Tests if the given path contains a root. A path is considered rooted if it starts with a directory separator or a drive letter and a colon.</p>
+<p>Tests if the given path contains a root. A path is considered rooted  if it starts with a directory separator or a drive letter and a colon. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isRooted</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19413,8 +18592,7 @@ Tests if the given path contains a root. A path is considered rooted if it start
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given file name is valid.</p>
+<p>Returns true if the given file name is valid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValidFileName</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19429,8 +18607,7 @@ Returns true if the given file name is valid.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given path name is valid.</p>
+<p>Returns true if the given path name is valid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValidPathName</span><span class="SyntaxCode">(fullname: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19445,8 +18622,7 @@ Returns true if the given path name is valid.</p>
 </tr>
 </table>
 </p>
-<p>
-Normalize path <code class="incode">\</code> are replaced with <code class="incode">/</code> as this is the std norm for paths.</p>
+<p>Normalize path  <code class="incode">\</code> are replaced with <code class="incode">/</code> as this is the std norm for paths. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">normalize</span><span class="SyntaxCode">(fullname: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -19484,8 +18660,7 @@ i</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-special invalid value (&gt; 4095) to force the seed on first get.</p>
+<p>special invalid value (&gt; 4095) to force the seed on first get. </p>
 </td>
 </tr>
 </table>
@@ -19728,136 +18903,119 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextBool">nextBool(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a random bool.</p>
+<p>Returns a random bool. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextF32">nextF32(self)</a></td>
 <td class="enumeration">
-<p>
-Range is [0..1[, so 1.0 will never be returned.</p>
+<p>Range is [0..1[, so 1.0 will never be returned. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextF32">nextF32(self, f32, f32)</a></td>
 <td class="enumeration">
-<p>
-Returns a float value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a float value in a given range  <code class="incode">max</code> is excluded. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextF64">nextF64(self)</a></td>
 <td class="enumeration">
-<p>
-Range is [0..1[, so 1.0 will never be returned.</p>
+<p>Range is [0..1[, so 1.0 will never be returned. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextF64">nextF64(self, f64, f64)</a></td>
 <td class="enumeration">
-<p>
-Returns a float value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a float value in a given range  <code class="incode">max</code> is excluded. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextS32">nextS32(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a signed 32 bits random value.</p>
+<p>Returns a signed 32 bits random value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextS32">nextS32(self, s32, s32)</a></td>
 <td class="enumeration">
-<p>
-Returns a signed random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextS64">nextS64(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a signed 64 bits random value.</p>
+<p>Returns a signed 64 bits random value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextS64">nextS64(self, s64, s64)</a></td>
 <td class="enumeration">
-<p>
-Returns a signed random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextU32">nextU32(self)</a></td>
 <td class="enumeration">
-<p>
-Returns an unsigned 32 bits random value.</p>
+<p>Returns an unsigned 32 bits random value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextU32">nextU32(self, u32, u32)</a></td>
 <td class="enumeration">
-<p>
-Returns an unsigned random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextU64">nextU64(self)</a></td>
 <td class="enumeration">
-<p>
-Returns an unsigned 64 bits random value.</p>
+<p>Returns an unsigned 64 bits random value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_nextU64">nextU64(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Returns an unsigned random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_seedNow">seedNow(self)</a></td>
 <td class="enumeration">
-<p>
-Seed the rng with the current time.</p>
+<p>Seed the rng with the current time. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_seedU32">seedU32(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Seed random generator with a 32 bits value.</p>
+<p>Seed random generator with a 32 bits value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_seedU64">seedU64(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Seed random generator with a 64 bits value.</p>
+<p>Seed random generator with a 64 bits value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Random_Rng_shuffle">shuffle(self, [..] V)</a></td>
 <td class="enumeration">
-<p>
-Randomly change the order of a slice.</p>
+<p>Randomly change the order of a slice. </p>
 </td>
 </tr>
 </table>
@@ -19872,8 +19030,7 @@ Randomly change the order of a slice.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a random bool.</p>
+<p>Returns a random bool. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextBool</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -19888,13 +19045,11 @@ Returns a random bool.</p>
 </tr>
 </table>
 </p>
-<p>
-Range is [0..1[, so 1.0 will never be returned.</p>
+<p>Range is [0..1[, so 1.0 will never be returned. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextF32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns a float value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a float value in a given range  <code class="incode">max</code> is excluded. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextF32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </p>
@@ -19909,13 +19064,11 @@ Returns a float value in a given range <code class="incode">max</code> is exclud
 </tr>
 </table>
 </p>
-<p>
-Range is [0..1[, so 1.0 will never be returned.</p>
+<p>Range is [0..1[, so 1.0 will never be returned. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextF64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns a float value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a float value in a given range  <code class="incode">max</code> is excluded. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextF64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
 </p>
@@ -19930,13 +19083,11 @@ Returns a float value in a given range <code class="incode">max</code> is exclud
 </tr>
 </table>
 </p>
-<p>
-Returns a signed 32 bits random value.</p>
+<p>Returns a signed 32 bits random value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextS32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns a signed random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextS32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </p>
@@ -19951,13 +19102,11 @@ Returns a signed random value in a given range <code class="incode">max</code> i
 </tr>
 </table>
 </p>
-<p>
-Returns a signed 64 bits random value.</p>
+<p>Returns a signed 64 bits random value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns a signed random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </p>
@@ -19972,13 +19121,11 @@ Returns a signed random value in a given range <code class="incode">max</code> i
 </tr>
 </table>
 </p>
-<p>
-Returns an unsigned 32 bits random value.</p>
+<p>Returns an unsigned 32 bits random value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextU32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns an unsigned random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextU32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -19993,13 +19140,11 @@ Returns an unsigned random value in a given range <code class="incode">max</code
 </tr>
 </table>
 </p>
-<p>
-Returns an unsigned 64 bits random value.</p>
+<p>Returns an unsigned 64 bits random value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns an unsigned random value in a given range <code class="incode">max</code> is excluded.</p>
+<p>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -20014,8 +19159,7 @@ Returns an unsigned random value in a given range <code class="incode">max</code
 </tr>
 </table>
 </p>
-<p>
-Seed the rng with the current time.</p>
+<p>Seed the rng with the current time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">seedNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -20030,8 +19174,7 @@ Seed the rng with the current time.</p>
 </tr>
 </table>
 </p>
-<p>
-Seed random generator with a 32 bits value.</p>
+<p>Seed random generator with a 32 bits value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">seedU32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, seed: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </p>
@@ -20046,8 +19189,7 @@ Seed random generator with a 32 bits value.</p>
 </tr>
 </table>
 </p>
-<p>
-Seed random generator with a 64 bits value.</p>
+<p>Seed random generator with a 64 bits value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">seedU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, seed: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -20062,8 +19204,7 @@ Seed random generator with a 64 bits value.</p>
 </tr>
 </table>
 </p>
-<p>
-Randomly change the order of a slice.</p>
+<p>Randomly change the order of a slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">shuffle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, slice: [..] </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
@@ -20078,8 +19219,7 @@ Randomly change the order of a slice.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the default per thread random generator.</p>
+<p>Get the default per thread random generator. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">shared</span><span class="SyntaxCode">()</code>
 </p>
@@ -20122,8 +19262,7 @@ Get the default per thread random generator.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a crc to a registered typeinfo.</p>
+<p>Convert a crc to a registered typeinfo. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">crcToType</span><span class="SyntaxCode">(crc: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></code>
 </p>
@@ -20138,13 +19277,11 @@ Convert a crc to a registered typeinfo.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the given associated <code class="incode">attribute</code> to <code class="incode">type</code> or null.</p>
+<p>Returns the given associated <code class="incode">attribute</code> to <code class="incode">type</code> or null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttribute</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns the given associated <code class="incode">attribute</code> to <code class="incode">value</code> or null.</p>
+<p>Returns the given associated <code class="incode">attribute</code> to <code class="incode">value</code> or null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttribute</span><span class="SyntaxCode">(value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode"></code>
 </p>
@@ -20159,18 +19296,15 @@ Returns the given associated <code class="incode">attribute</code> to <code clas
 </tr>
 </table>
 </p>
-<p>
-Returns the given attribute value, or null.</p>
+<p>Returns the given attribute value, or null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttributeValue</span><span class="SyntaxCode">(attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">any</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns the given attribute value, or null.</p>
+<p>Returns the given attribute value, or null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttributeValue</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">any</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns the given attribute value, or null.</p>
+<p>Returns the given attribute value, or null. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttributeValue</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">any</span><span class="SyntaxCode"></code>
 </p>
@@ -20185,13 +19319,11 @@ Returns the given attribute value, or null.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the given associated attributes to <code class="incode">type</code>.</p>
+<p>Returns the given associated attributes to <code class="incode">type</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttributes</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Returns the given associated attributes to <code class="incode">value</code>.</p>
+<p>Returns the given associated attributes to <code class="incode">value</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getAttributes</span><span class="SyntaxCode">(value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode">)</code>
 </p>
@@ -20206,8 +19338,7 @@ Returns the given associated attributes to <code class="incode">value</code>.</p
 </tr>
 </table>
 </p>
-<p>
-Returns the enum value name corresponding to the value pointed by <code class="incode">valueAddr</code> Can have multiple names if the enum is tagged with #<a href="swag.runtime.html#Swag_EnumFlags">Swag.EnumFlags</a>.</p>
+<p>Returns the enum value name corresponding to the value pointed by <code class="incode">valueAddr</code>  Can have multiple names if the enum is tagged with #<a href="swag.runtime.html#Swag_EnumFlags">Swag.EnumFlags</a>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getEnumName</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, valueAddr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, fullname = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -20222,8 +19353,7 @@ Returns the enum value name corresponding to the value pointed by <code class="i
 </tr>
 </table>
 </p>
-<p>
-Get information about a specific value in a given enum Returns null if the value does not exist.</p>
+<p>Get information about a specific value in a given enum  Returns null if the value does not exist. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getEnumValue</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode"></code>
 </p>
@@ -20238,8 +19368,7 @@ Get information about a specific value in a given enum Returns null if the value
 </tr>
 </table>
 </p>
-<p>
-Get information about a specific field in a given struct Returns null if the field does not exist.</p>
+<p>Get information about a specific field in a given struct  Returns null if the field does not exist. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getField</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode"></code>
 </p>
@@ -20254,8 +19383,7 @@ Get information about a specific field in a given struct Returns null if the fie
 </tr>
 </table>
 </p>
-<p>
-Get a field value with a given runtime type.</p>
+<p>Get a field value with a given runtime type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFieldValue</span><span class="SyntaxCode">(dest: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, src: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, hardCast: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </p>
@@ -20270,8 +19398,7 @@ Get a field value with a given runtime type.</p>
 </tr>
 </table>
 </p>
-<p>
-Get information about a specific mtd in a given struct Returns null if the mtd does not exist.</p>
+<p>Get information about a specific mtd in a given struct  Returns null if the mtd does not exist. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMethod</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode"></code>
 </p>
@@ -20286,13 +19413,11 @@ Get information about a specific mtd in a given struct Returns null if the mtd d
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given <code class="incode">type</code> has the associated <code class="incode">attribute</code>.</p>
+<p>Returns true if the given <code class="incode">type</code> has the associated <code class="incode">attribute</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasAttribute</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns true if the given <code class="incode">value</code> has the associated <code class="incode">attribute</code>.</p>
+<p>Returns true if the given <code class="incode">value</code> has the associated <code class="incode">attribute</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasAttribute</span><span class="SyntaxCode">(value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, attribute: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -20321,8 +19446,7 @@ Returns true if the given <code class="incode">value</code> has the associated <
 </tr>
 </table>
 </p>
-<p>
-Returns true if the interface <code class="incode">itf</code> is implemented in the given structure type.</p>
+<p>Returns true if the interface <code class="incode">itf</code> is implemented in the given structure type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasInterface</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, itf: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -20337,8 +19461,7 @@ Returns true if the interface <code class="incode">itf</code> is implemented in 
 </tr>
 </table>
 </p>
-<p>
-Helpers functions to know if a struct has a special function.</p>
+<p>Helpers functions to know if a struct has a special function. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasMethod</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -20633,8 +19756,7 @@ Helpers functions to know if a struct has a special function.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this is a struct of the given name.</p>
+<p>Returns true if this is a struct of the given name. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isStructOfName</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -20691,8 +19813,7 @@ Returns true if this is a struct of the given name.</p>
 </tr>
 </table>
 </p>
-<p>
-In case this is a type typealias, need to go deep inside it to find the right type.</p>
+<p>In case this is a type typealias, need to go deep inside it to find the right type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeConcreteAlias</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></code>
 </p>
@@ -20707,8 +19828,7 @@ In case this is a type typealias, need to go deep inside it to find the right ty
 </tr>
 </table>
 </p>
-<p>
-Transform an enum type to its underling real native type.</p>
+<p>Transform an enum type to its underling real native type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeConcreteEnum</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></code>
 </p>
@@ -20723,8 +19843,7 @@ Transform an enum type to its underling real native type.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the maximum sizeof a bunch of <code class="incode">typeinfo</code>.</p>
+<p>Returns the maximum sizeof a bunch of <code class="incode">typeinfo</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">maxSizeOf</span><span class="SyntaxCode">(v: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -20739,8 +19858,7 @@ Returns the maximum sizeof a bunch of <code class="incode">typeinfo</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a crc to a registered typeinfo.</p>
+<p>Convert a crc to a registered typeinfo. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nameToType</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></code>
 </p>
@@ -20755,8 +19873,7 @@ Convert a crc to a registered typeinfo.</p>
 </tr>
 </table>
 </p>
-<p>
-Make an union of flags of all types.</p>
+<p>Make an union of flags of all types. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">orFlags</span><span class="SyntaxCode">(v: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoFlags</span><span class="SyntaxCode"></code>
 </p>
@@ -20771,8 +19888,7 @@ Make an union of flags of all types.</p>
 </tr>
 </table>
 </p>
-<p>
-Used to add an element in a <code class="incode">Core.Array</code> without knowing the type of the element at compile time but knowing it at runtime (valueType).</p>
+<p>Used to add an element in a <code class="incode">Core.Array</code> without knowing the type of the element at compile time  but knowing it at runtime (valueType). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">roomInArray</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, valueType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </p>
@@ -20787,8 +19903,7 @@ Used to add an element in a <code class="incode">Core.Array</code> without knowi
 </tr>
 </table>
 </p>
-<p>
-Set a field value with a given runtime type.</p>
+<p>Set a field value with a given runtime type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFieldValue</span><span class="SyntaxCode">(dest: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, hardCast: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </p>
@@ -20803,8 +19918,7 @@ Set a field value with a given runtime type.</p>
 </tr>
 </table>
 </p>
-<p>
-Accept this other name for the field.</p>
+<p>Accept this other name for the field. </p>
 <div class="addinfos"><b>Usage</b>: struct-var multi 
 </div>
 <p class="code">
@@ -20848,16 +19962,14 @@ flags</td>
 <td class="enumeration">
 <a href="#Core_Serialization_Decoder_end">end(self)</a></td>
 <td class="enumeration">
-<p>
-Finish reading.</p>
+<p>Finish reading. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Decoder_readAll">readAll(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Read a full struct.</p>
+<p>Read a full struct. </p>
 </td>
 </tr>
 <tr>
@@ -20876,8 +19988,7 @@ Read a full struct.</p>
 <td class="enumeration">
 <a href="#Core_Serialization_Decoder_start">start(self, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Start reading.</p>
+<p>Start reading. </p>
 </td>
 </tr>
 </table>
@@ -21172,8 +20283,7 @@ Start reading.</p>
 </tr>
 </table>
 </p>
-<p>
-Finish reading.</p>
+<p>Finish reading. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21188,8 +20298,7 @@ Finish reading.</p>
 </tr>
 </table>
 </p>
-<p>
-Read a full struct.</p>
+<p>Read a full struct. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">TR</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">readAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, input: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">TR</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21232,8 +20341,7 @@ Read a full struct.</p>
 </tr>
 </table>
 </p>
-<p>
-Start reading.</p>
+<p>Start reading. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">start</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, input: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21291,8 +20399,7 @@ errorIfUnknown</td>
 <td class="tdtype">
 bool</td>
 <td class="enumeration">
-<p>
-If true, raise an error if a type cannot be saved, and just ignore if false.</p>
+<p>If true, raise an error if a type cannot be saved, and just ignore if false. </p>
 </td>
 </tr>
 </table>
@@ -21302,24 +20409,21 @@ If true, raise an error if a type cannot be saved, and just ignore if false.</p>
 <td class="enumeration">
 <a href="#Core_Serialization_Encoder_end">end(self)</a></td>
 <td class="enumeration">
-<p>
-End serialization.</p>
+<p>End serialization. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Encoder_start">start(self, *ConcatBuffer)</a></td>
 <td class="enumeration">
-<p>
-Start serialization.</p>
+<p>Start serialization. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Encoder_writeAll">writeAll(self, *ConcatBuffer, any)</a></td>
 <td class="enumeration">
-<p>
-Write a full struct.</p>
+<p>Write a full struct. </p>
 </td>
 </tr>
 <tr>
@@ -21374,8 +20478,7 @@ Write a full struct.</p>
 </tr>
 </table>
 </p>
-<p>
-End serialization.</p>
+<p>End serialization. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21418,8 +20521,7 @@ End serialization.</p>
 </tr>
 </table>
 </p>
-<p>
-Start serialization.</p>
+<p>Start serialization. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">start</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21616,8 +20718,7 @@ Start serialization.</p>
 </tr>
 </table>
 </p>
-<p>
-End serialization.</p>
+<p>End serialization. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21632,8 +20733,7 @@ End serialization.</p>
 </tr>
 </table>
 </p>
-<p>
-Start serialization.</p>
+<p>Start serialization. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">start</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21648,8 +20748,7 @@ Start serialization.</p>
 </tr>
 </table>
 </p>
-<p>
-Write a full struct.</p>
+<p>Write a full struct. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">writeAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -21692,8 +20791,7 @@ Write a full struct.</p>
 </tr>
 </table>
 </p>
-<p>
-The struct does not need versionning.</p>
+<p>The struct does not need versionning. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
@@ -22717,8 +21815,7 @@ func(*Core.Serialization.ISerialize, *void, Core.Serialization.IDecoder) throw</
 </tr>
 </table>
 </p>
-<p>
-Do not serialize a struct or a field.</p>
+<p>Do not serialize a struct or a field. </p>
 <div class="addinfos"><b>Usage</b>: struct struct-var 
 </div>
 <p class="code">
@@ -22735,8 +21832,7 @@ Do not serialize a struct or a field.</p>
 </tr>
 </table>
 </p>
-<p>
-The struct does not need versionning an can be serialized in place.</p>
+<p>The struct does not need versionning an can be serialized in place. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
@@ -23141,8 +22237,7 @@ propName</td>
 </tr>
 </table>
 </p>
-<p>
-Binary serializer with forward/backward compatibility.</p>
+<p>Binary serializer with forward/backward compatibility. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -23201,34 +22296,21 @@ bool</td>
 </td>
 </tr>
 </table>
-<p>
-    Changes that are supported from V to V+1 are :</p>
-<p>
+<p>    Changes that are supported from V to V+1 are : </p>
 <ul>
-<li> Add a new field. The new field will stay at the default value.</li>
-<li> Remove a field. It will just be ignored.</li>
-<li> Reorder of fields, as long as their name/type are the same.</li>
-<li> Rename a field with <code class="incode">Serialization.Alias</code>.</li>
+<li>Add a new field. The new field will stay at the default value.</li>
+<li>Remove a field. It will just be ignored.</li>
+<li>Reorder of fields, as long as their name/type are the same.</li>
+<li>Rename a field with <code class="incode">Serialization.Alias</code>.</li>
 </ul>
-</p>
-<p>
-    Supported type changes are :<ul>
-<li> Change the size of a static array.</li>
-<li> Convert a static array to a dynamic array, and vice versa.</li>
-<li> Conversion from integer/float/rune/bool to integer/float/rune/bool.</li>
-<li> Conversion from single value to array/Core.Array, and vice versa.</li>
-</ul>
-</p>
-<p>
-    Supported attributes are :</p>
-<p>
+<p>    Supported type changes are :     * Change the size of a static array.     * Convert a static array to a dynamic array, and vice versa.     * Conversion from integer/float/rune/bool to integer/float/rune/bool.     * Conversion from single value to array/Core.Array, and vice versa. </p>
+<p>    Supported attributes are : </p>
 <ul>
-<li> <code class="incode">Serialisation.Version</code>. If version is specified, then loading will not have versioning if versions are the same</li>
-<li> <code class="incode">Serialization.Alias</code>. To rename a field. Multiple aliases are supported.</li>
-<li> <code class="incode">Serialization.Final</code>. The struct will be loaded/saved without versioning (faster and lower serialization size)</li>
-<li> <code class="incode">Serialization.PodFinal</code>. The struct will be loaded/saved in place without versioning</li>
+<li><code class="incode">Serialisation.Version</code>. If version is specified, then loading will not have versioning if versions are the same</li>
+<li><code class="incode">Serialization.Alias</code>. To rename a field. Multiple aliases are supported.</li>
+<li><code class="incode">Serialization.Final</code>. The struct will be loaded/saved without versioning (faster and lower serialization size)</li>
+<li><code class="incode">Serialization.PodFinal</code>. The struct will be loaded/saved in place without versioning</li>
 </ul>
-</p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
@@ -23570,8 +22652,7 @@ tryForward</td>
 <td class="tdtype">
 bool</td>
 <td class="enumeration">
-<p>
-Accept to try to read a newest version, otherwise error.</p>
+<p>Accept to try to read a newest version, otherwise error. </p>
 </td>
 </tr>
 </table>
@@ -23702,24 +22783,21 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_Serialization_Serializer_beginSection">beginSection(self, SectionKind)</a></td>
 <td class="enumeration">
-<p>
-Start a new section.</p>
+<p>Start a new section. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Serializer_end">end(self)</a></td>
 <td class="enumeration">
-<p>
-End encoding/decoding.</p>
+<p>End encoding/decoding. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Serializer_endSection">endSection(self)</a></td>
 <td class="enumeration">
-<p>
-End the previous section.</p>
+<p>End the previous section. </p>
 </td>
 </tr>
 <tr>
@@ -23738,32 +22816,28 @@ End the previous section.</p>
 <td class="enumeration">
 <a href="#Core_Serialization_Serializer_serialize">serialize(self, string, *MT)</a></td>
 <td class="enumeration">
-<p>
-Serialize one value.</p>
+<p>Serialize one value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Serializer_serialize">serialize(self, string, u32, *MT)</a></td>
 <td class="enumeration">
-<p>
-Serialize one value.</p>
+<p>Serialize one value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Serializer_startRead">startRead(self, IDecoder, const [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Start decoding.</p>
+<p>Start decoding. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Serialization_Serializer_startWrite">startWrite(self, IEncoder, *ConcatBuffer)</a></td>
 <td class="enumeration">
-<p>
-Start encoding.</p>
+<p>Start encoding. </p>
 </td>
 </tr>
 </table>
@@ -23778,8 +22852,7 @@ Start encoding.</p>
 </tr>
 </table>
 </p>
-<p>
-Start a new section.</p>
+<p>Start a new section. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">beginSection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kind = </span><span class="SyntaxConstant"><a href="#Core_Serialization_SectionKind">SectionKind</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Unordered</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -23794,8 +22867,7 @@ Start a new section.</p>
 </tr>
 </table>
 </p>
-<p>
-End encoding/decoding.</p>
+<p>End encoding/decoding. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -23810,8 +22882,7 @@ End encoding/decoding.</p>
 </tr>
 </table>
 </p>
-<p>
-End the previous section.</p>
+<p>End the previous section. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">endSection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -23854,14 +22925,12 @@ End the previous section.</p>
 </tr>
 </table>
 </p>
-<p>
-Serialize one value.</p>
+<p>Serialize one value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MT</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">serialize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, res: *</span><span class="SyntaxConstant">MT</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Serialize one value.</p>
+<p>Serialize one value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MT</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">serialize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, crc32: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, res: *</span><span class="SyntaxConstant">MT</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -23876,8 +22945,7 @@ Serialize one value.</p>
 </tr>
 </table>
 </p>
-<p>
-Start decoding.</p>
+<p>Start decoding. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startRead</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, decoder: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">, input: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -23892,8 +22960,7 @@ Start decoding.</p>
 </tr>
 </table>
 </p>
-<p>
-Start encoding.</p>
+<p>Start encoding. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startWrite</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, encoder: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, output: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -23908,8 +22975,7 @@ Start encoding.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the struct version number.</p>
+<p>Set the struct version number. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
 <p class="code">
@@ -24713,8 +23779,7 @@ Version</td>
 </tr>
 </table>
 </p>
-<p>
-Determin if a type can be serialized by a simple copy.</p>
+<p>Determin if a type can be serialized by a simple copy. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isPodFinal</span><span class="SyntaxCode">(type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -24737,96 +23802,84 @@ Determin if a type can be serialized by a simple copy.</p>
 <td class="enumeration">
 <a href="#Core_Slice_contains">contains(const [..] T, V)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the given slice contains the <code class="incode">value</code>.</p>
+<p>Returns true if the given slice contains the <code class="incode">value</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_equals">equals(const [..] T, const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Returns true if two slices are equal.</p>
+<p>Returns true if two slices are equal. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_findLinear">findLinear(const [..] T, V)</a></td>
 <td class="enumeration">
-<p>
-Find <code class="incode">value</code> in a slice by performing a linear search.</p>
+<p>Find <code class="incode">value</code> in a slice by performing a linear search. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_findSorted">findSorted(const [..] T, V)</a></td>
 <td class="enumeration">
-<p>
-Find <code class="incode">value</code> in a slice by performing a binary search.</p>
+<p>Find <code class="incode">value</code> in a slice by performing a binary search. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_insertionSort">insertionSort([..] T, func(*void, T, T)->s32)</a></td>
 <td class="enumeration">
-<p>
-Insertion sort algorithm (slow).</p>
+<p>Insertion sort algorithm (slow). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_isSorted">isSorted(const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the slice is sorted.</p>
+<p>Returns true if the slice is sorted. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_isSorted">isSorted(const [..] T, func(*void, T, T)->s32)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the slice is sorted.</p>
+<p>Returns true if the slice is sorted. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_modifyInPlace">modifyInPlace([..] T, func(*T))</a></td>
 <td class="enumeration">
-<p>
-Transform the content of a slice with a given lambda.</p>
+<p>Transform the content of a slice with a given lambda. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_quickSort">quickSort([..] T, func(*void, T, T)->s32)</a></td>
 <td class="enumeration">
-<p>
-Quick sort algorithm.</p>
+<p>Quick sort algorithm. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_reverse">reverse([..] T)</a></td>
 <td class="enumeration">
-<p>
-Reverse the content of a slice.</p>
+<p>Reverse the content of a slice. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_sort">sort([..] T)</a></td>
 <td class="enumeration">
-<p>
-Sort the slice, by picking the right algorithm depending on the type and the number of elements.</p>
+<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Slice_sort">sort([..] T, func(*void, T, T)->s32)</a></td>
 <td class="enumeration">
-<p>
-Sort the slice, by picking the right algorithm depending on the type and the number of elements.</p>
+<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
 </td>
 </tr>
 </table>
@@ -24841,8 +23894,7 @@ Sort the slice, by picking the right algorithm depending on the type and the num
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given slice contains the <code class="incode">value</code>.</p>
+<p>Returns true if the given slice contains the <code class="incode">value</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -24857,8 +23909,7 @@ Returns true if the given slice contains the <code class="incode">value</code>.<
 </tr>
 </table>
 </p>
-<p>
-Returns true if two slices are equal.</p>
+<p>Returns true if two slices are equal. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">equals</span><span class="SyntaxCode">(dst: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -24873,8 +23924,7 @@ Returns true if two slices are equal.</p>
 </tr>
 </table>
 </p>
-<p>
-Find <code class="incode">value</code> in a slice by performing a linear search.</p>
+<p>Find <code class="incode">value</code> in a slice by performing a linear search. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">findLinear</span><span class="SyntaxCode">(values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)
 { 
@@ -24882,8 +23932,7 @@ Find <code class="incode">value</code> in a slice by performing a linear search.
 	success: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 }</code>
 </p>
-<p>
- O^n, but slice does not have to be sorted</p>
+<p> O^n, but slice does not have to be sorted </p>
 <p>
 <table class="item">
 <tr>
@@ -24895,8 +23944,7 @@ Find <code class="incode">value</code> in a slice by performing a linear search.
 </tr>
 </table>
 </p>
-<p>
-Find <code class="incode">value</code> in a slice by performing a binary search.</p>
+<p>Find <code class="incode">value</code> in a slice by performing a binary search. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">findSorted</span><span class="SyntaxCode">(values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)
 { 
@@ -24904,8 +23952,7 @@ Find <code class="incode">value</code> in a slice by performing a binary search.
 	success: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 }</code>
 </p>
-<p>
- The slice must be sorted in ascending order</p>
+<p> The slice must be sorted in ascending order </p>
 <p>
 <table class="item">
 <tr>
@@ -24917,8 +23964,7 @@ Find <code class="incode">value</code> in a slice by performing a binary search.
 </tr>
 </table>
 </p>
-<p>
-Insertion sort algorithm (slow).</p>
+<p>Insertion sort algorithm (slow). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">insertionSort</span><span class="SyntaxCode">(values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -24933,13 +23979,11 @@ Insertion sort algorithm (slow).</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the slice is sorted.</p>
+<p>Returns true if the slice is sorted. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">isSorted</span><span class="SyntaxCode">(values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns true if the slice is sorted.</p>
+<p>Returns true if the slice is sorted. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">isSorted</span><span class="SyntaxCode">(values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -24954,8 +23998,7 @@ Returns true if the slice is sorted.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform the content of a slice with a given lambda.</p>
+<p>Transform the content of a slice with a given lambda. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">modifyInPlace</span><span class="SyntaxCode">(values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, cb: </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">))</code>
 </p>
@@ -24970,8 +24013,7 @@ Transform the content of a slice with a given lambda.</p>
 </tr>
 </table>
 </p>
-<p>
-Quick sort algorithm.</p>
+<p>Quick sort algorithm. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">quickSort</span><span class="SyntaxCode">(values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -24986,8 +24028,7 @@ Quick sort algorithm.</p>
 </tr>
 </table>
 </p>
-<p>
-Reverse the content of a slice.</p>
+<p>Reverse the content of a slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">reverse</span><span class="SyntaxCode">(values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -25002,13 +24043,11 @@ Reverse the content of a slice.</p>
 </tr>
 </table>
 </p>
-<p>
-Sort the slice, by picking the right algorithm depending on the type and the number of elements.</p>
+<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Sort the slice, by picking the right algorithm depending on the type and the number of elements.</p>
+<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -25050,240 +24089,210 @@ u64</td>
 <td class="enumeration">
 <a href="#Core_StaticArray_add">add(self, T)</a></td>
 <td class="enumeration">
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_add">add(self, const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Append a slice to the end of this instance.</p>
+<p>Append a slice to the end of this instance. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_add">add(self, moveref T)</a></td>
 <td class="enumeration">
-<p>
-Move one element at the end of the array.</p>
+<p>Move one element at the end of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_addOnce">addOnce(self, T)</a></td>
 <td class="enumeration">
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_back">back(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a copy of the last element.</p>
+<p>Returns a copy of the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_backPtr">backPtr(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the address of the last element.</p>
+<p>Returns the address of the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set the number of elements to 0.</p>
+<p>Set the number of elements to 0. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_contains">contains(self, V)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the given <code class="incode">value</code> is in the array.</p>
+<p>Returns true if the given <code class="incode">value</code> is in the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_emplaceAddress">emplaceAddress(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements, but does not initialize them. Returns the address of the first element.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
 <td class="enumeration">
-<p>
-Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are moved at the end of the array. Order is preserved.</p>
+<p>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
 <td class="enumeration">
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_free">free(self)</a></td>
 <td class="enumeration">
-<p>
-Free the array content.</p>
+<p>Free the array content. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_front">front(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a copy of the first element.</p>
+<p>Returns a copy of the first element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_frontPtr">frontPtr(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the address of the first element.</p>
+<p>Returns the address of the first element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_insertAt">insertAt(self, u64, T)</a></td>
 <td class="enumeration">
-<p>
-Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_insertAt">insertAt(self, u64, const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
+<p>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_insertAt">insertAt(self, u64, moveref T)</a></td>
 <td class="enumeration">
-<p>
-Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_isEmpty">isEmpty(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the array is empty.</p>
+<p>Returns true if the array is empty. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_popBack">popBack(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a copy of the last element, and remove it from the array.</p>
+<p>Returns a copy of the last element, and remove it from the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_remove">remove(self, V)</a></td>
 <td class="enumeration">
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_remove">remove(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>.</p>
+<p>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_removeAt">removeAt(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove an element at <code class="incode">index</code> by replacing it with the last element.</p>
+<p>Remove an element at <code class="incode">index</code> by replacing it with the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others.</p>
+<p>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_removeBack">removeBack(self)</a></td>
 <td class="enumeration">
-<p>
-Remove the last element.</p>
+<p>Remove the last element. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_removeOrdered">removeOrdered(self, V)</a></td>
 <td class="enumeration">
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_resize">resize(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Change the number of valid elements in the array.</p>
+<p>Change the number of valid elements in the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_sort">sort(self)</a></td>
 <td class="enumeration">
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_sort">sort(self, func(*void, T, T)->s32)</a></td>
 <td class="enumeration">
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_sortReverse">sortReverse(self)</a></td>
 <td class="enumeration">
-<p>
-Sort array in reverse order (from biggest to lowest value).</p>
+<p>Sort array in reverse order (from biggest to lowest value). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_toSlice">toSlice(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a slice.</p>
+<p>Returns a slice. </p>
 </td>
 </tr>
 </table>
@@ -25293,8 +24302,7 @@ Returns a slice.</p>
 <td class="enumeration">
 <a href="#Core_StaticArray_opAffect">opAffect(self, const [..] T)</a></td>
 <td class="enumeration">
-<p>
-Initializes an Array that contains values copied from the specified array.</p>
+<p>Initializes an Array that contains values copied from the specified array. </p>
 </td>
 </tr>
 <tr>
@@ -25361,16 +24369,14 @@ Initializes an Array that contains values copied from the specified array.</p>
 <td class="enumeration">
 <a href="#Core_StaticArray_opVisit">opVisit(self, code)</a></td>
 <td class="enumeration">
-<p>
-Vist every elements of the array.</p>
+<p>Vist every elements of the array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StaticArray_opVisitBack">opVisitBack(self, code)</a></td>
 <td class="enumeration">
-<p>
-Vist every elements of the array from end to start.</p>
+<p>Vist every elements of the array from end to start. </p>
 </td>
 </tr>
 </table>
@@ -25385,18 +24391,15 @@ Vist every elements of the array from end to start.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Append a slice to the end of this instance.</p>
+<p>Append a slice to the end of this instance. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Move one element at the end of the array.</p>
+<p>Move one element at the end of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -25411,8 +24414,7 @@ Move one element at the end of the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Add a copy of one element at the end of the array.</p>
+<p>Add a copy of one element at the end of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addOnce</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -25427,8 +24429,7 @@ Add a copy of one element at the end of the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a copy of the last element.</p>
+<p>Returns a copy of the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">back</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -25443,8 +24444,7 @@ Returns a copy of the last element.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the address of the last element.</p>
+<p>Returns the address of the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">backPtr</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -25459,8 +24459,7 @@ Returns the address of the last element.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the number of elements to 0.</p>
+<p>Set the number of elements to 0. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -25475,8 +24474,7 @@ Set the number of elements to 0.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given <code class="incode">value</code> is in the array.</p>
+<p>Returns true if the given <code class="incode">value</code> is in the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -25491,8 +24489,7 @@ Returns true if the given <code class="incode">value</code> is in the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements, but does not initialize them. Returns the address of the first element.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceAddress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, num: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -25507,8 +24504,7 @@ Reserve room at the end of the array for <code class="incode">num</code> element
 </tr>
 </table>
 </p>
-<p>
-Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are moved at the end of the array. Order is preserved.</p>
+<p>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, values: [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -25523,13 +24519,11 @@ Move some values at the given index. If <code class="incode">index</code> is equ
 </tr>
 </table>
 </p>
-<p>
-Reserve room at the end of the array for <code class="incode">num</code> elements.</p>
+<p>Reserve room at the end of the array for <code class="incode">num</code> elements. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">emplaceInitAddress</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, num: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns the address of the first element</p>
+<p> Returns the address of the first element </p>
 <p>
 <table class="item">
 <tr>
@@ -25541,8 +24535,7 @@ Reserve room at the end of the array for <code class="incode">num</code> element
 </tr>
 </table>
 </p>
-<p>
-Free the array content.</p>
+<p>Free the array content. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -25557,8 +24550,7 @@ Free the array content.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a copy of the first element.</p>
+<p>Returns a copy of the first element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">front</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -25573,8 +24565,7 @@ Returns a copy of the first element.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the address of the first element.</p>
+<p>Returns the address of the first element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">frontPtr</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -25589,18 +24580,15 @@ Returns the address of the first element.</p>
 </tr>
 </table>
 </p>
-<p>
-Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the values are added at the end of the array. Order is preserved.</p>
+<p>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, values: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then the value is added at the end of the array. Order is preserved.</p>
+<p>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -25615,8 +24603,7 @@ Move a value at the given index. If <code class="incode">index</code> is equal t
 </tr>
 </table>
 </p>
-<p>
-Returns true if the array is empty.</p>
+<p>Returns true if the array is empty. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -25631,8 +24618,7 @@ Returns true if the array is empty.</p>
 </tr>
 </table>
 </p>
-<p>
-Initializes an Array that contains values copied from the specified array.</p>
+<p>Initializes an Array that contains values copied from the specified array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, arr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
@@ -25761,8 +24747,7 @@ Initializes an Array that contains values copied from the specified array.</p>
 </tr>
 </table>
 </p>
-<p>
-Vist every elements of the array.</p>
+<p>Vist every elements of the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -25778,8 +24763,7 @@ Vist every elements of the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Vist every elements of the array from end to start.</p>
+<p>Vist every elements of the array from end to start. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -25795,8 +24779,7 @@ Vist every elements of the array from end to start.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a copy of the last element, and remove it from the array.</p>
+<p>Returns a copy of the last element, and remove it from the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -25811,13 +24794,11 @@ Returns a copy of the last element, and remove it from the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>.</p>
+<p>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, num: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -25832,13 +24813,11 @@ Remove <code class="incode">num</code> elements starting at <code class="incode"
 </tr>
 </table>
 </p>
-<p>
-Remove an element at <code class="incode">index</code> by replacing it with the last element.</p>
+<p>Remove an element at <code class="incode">index</code> by replacing it with the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Order is not preserved</p>
+<p> Order is not preserved </p>
 <p>
 <table class="item">
 <tr>
@@ -25850,13 +24829,11 @@ Remove an element at <code class="incode">index</code> by replacing it with the 
 </tr>
 </table>
 </p>
-<p>
-Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others.</p>
+<p>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeAtOrdered</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, numValues: </span><span class="SyntaxType">u64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Order is preserved</p>
+<p> Order is preserved </p>
 <p>
 <table class="item">
 <tr>
@@ -25868,8 +24845,7 @@ Remove <code class="incode">numValues</code> elements at <code class="incode">in
 </tr>
 </table>
 </p>
-<p>
-Remove the last element.</p>
+<p>Remove the last element. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -25884,8 +24860,7 @@ Remove the last element.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove the given <code class="incode">value</code> If not found, does nothing.</p>
+<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">V</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">removeOrdered</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</code>
 </p>
@@ -25900,8 +24875,7 @@ Remove the given <code class="incode">value</code> If not found, does nothing.</
 </tr>
 </table>
 </p>
-<p>
-Change the number of valid elements in the array.</p>
+<p>Change the number of valid elements in the array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCount: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -25916,13 +24890,11 @@ Change the number of valid elements in the array.</p>
 </tr>
 </table>
 </p>
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
-<p>
-Sort array.</p>
+<p>Sort array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -25937,8 +24909,7 @@ Sort array.</p>
 </tr>
 </table>
 </p>
-<p>
-Sort array in reverse order (from biggest to lowest value).</p>
+<p>Sort array in reverse order (from biggest to lowest value). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sortReverse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -25953,8 +24924,7 @@ Sort array in reverse order (from biggest to lowest value).</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a slice.</p>
+<p>Returns a slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toSlice</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;[..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </p>
@@ -26010,8 +24980,7 @@ any</td>
 </tr>
 </table>
 </p>
-<p>
-Format structure to convert a float to a string.</p>
+<p>Format structure to convert a float to a string. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -26027,8 +24996,7 @@ precision</td>
 <td class="tdtype">
 s8</td>
 <td class="enumeration">
-<p>
--1 is for 'most possible precision'.</p>
+<p>-1 is for 'most possible precision'. </p>
 </td>
 </tr>
 <tr>
@@ -26054,8 +25022,7 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_StrConv_ConvertFormatFloat_setFormat">setFormat(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set some format options with a given user string.</p>
+<p>Set some format options with a given user string. </p>
 </td>
 </tr>
 </table>
@@ -26070,25 +25037,13 @@ Set some format options with a given user string.</p>
 </tr>
 </table>
 </p>
-<p>
-Set some format options with a given user string.</p>
+<p>Set some format options with a given user string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Format is:</p>
-<p style="white-space: break-spaces"> `[+][fmt][precision]`
-
- `[+]`
-      force the positive sign if number is positive
- `[fmt]` output format:
-      `e (-d.dddde±dd, a decimal exponent)`
-      `E (-d.ddddE±dd, a decimal exponent)`
-      `f (-ddd.dddd, no exponent)`
-      `g ('e' for large exponents, 'f' otherwise)`
-      `G ('E' for large exponents, 'f' otherwise)`
- `[precision]`
-      integer, precision of the fractional part</p>
+<p> Format is: </p>
+<p> <code class="incode">[+][fmt][precision]</code> </p>
+<p> <code class="incode">[+]</code>       force the positive sign if number is positive  <code class="incode">[fmt]</code> output format:       <code class="incode">e (-d.dddde±dd, a decimal exponent)</code>       <code class="incode">E (-d.ddddE±dd, a decimal exponent)</code>       <code class="incode">f (-ddd.dddd, no exponent)</code>       <code class="incode">g (<code class="incode">e</code> for large exponents, <code class="incode">f</code> otherwise)</code>       <code class="incode">G (<code class="incode">E</code> for large exponents, <code class="incode">f</code> otherwise)</code>  <code class="incode">[precision]</code>       integer, precision of the fractional part </p>
 <p>
 <table class="item">
 <tr>
@@ -26100,8 +25055,7 @@ Set some format options with a given user string.</p>
 </tr>
 </table>
 </p>
-<p>
-Format structure to convert an integer to a string.</p>
+<p>Format structure to convert an integer to a string. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -26144,16 +25098,14 @@ bool</td>
 </td>
 </tr>
 </table>
-<p>
- If <code class="incode">signed</code> is <code class="incode">true</code>, the value to convert must be stored in <code class="incode">signedValue</code>, otherwise it must be stored in <code class="incode">unsignedValue</code>.</p>
+<p> If <code class="incode">signed</code> is <code class="incode">true</code>, the value to convert must be stored in <code class="incode">signedValue</code>, otherwise it must  be stored in <code class="incode">unsignedValue</code>. </p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_ConvertFormatInt_setFormat">setFormat(self, string)</a></td>
 <td class="enumeration">
-<p>
-Set some format options with a given user string.</p>
+<p>Set some format options with a given user string. </p>
 </td>
 </tr>
 </table>
@@ -26168,23 +25120,13 @@ Set some format options with a given user string.</p>
 </tr>
 </table>
 </p>
-<p>
-Set some format options with a given user string.</p>
+<p>Set some format options with a given user string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
- Format is:</p>
-<p style="white-space: break-spaces"> `[+][B|D|X][padding][width]`
-
- `[+]`
-      force sign for positive numbers
- `[B|D|X]`
-      binary, decimal, hexadecimal
- `[padding]`
-      padding character, in ascii, mandatory before the next field
- `[width]`
-      width of the output, in characters</p>
+<p> Format is: </p>
+<p> <code class="incode">[+][B|D|X][padding][width]</code> </p>
+<p> <code class="incode">[+]</code>       force sign for positive numbers  <code class="incode">[B|D|X]</code>       binary, decimal, hexadecimal  <code class="incode">[padding]</code>       padding character, in ascii, mandatory before the next field  <code class="incode">[width]</code>       width of the output, in characters </p>
 <p>
 <table class="item">
 <tr>
@@ -26196,8 +25138,7 @@ Set some format options with a given user string.</p>
 </tr>
 </table>
 </p>
-<p>
-The format <code class="incode">fmt</code> is one of <code class="incode">e</code> (-d.dddde±dd, a decimal exponent) <code class="incode">E</code> (-d.ddddE±dd, a decimal exponent) <code class="incode">f</code> (-ddd.dddd, no exponent) <code class="incode">g</code> (<code class="incode">e</code> for large exponents, <code class="incode">f</code> otherwise) <code class="incode">G</code> (<code class="incode">E</code> for large exponents, <code class="incode">f</code> otherwise) Negative precision means "only as much as needed to be exact.".</p>
+<p>The format <code class="incode">fmt</code> is one of  <code class="incode">e</code> (-d.dddde±dd, a decimal exponent)  <code class="incode">E</code> (-d.ddddE±dd, a decimal exponent)  <code class="incode">f</code> (-ddd.dddd, no exponent)  <code class="incode">g</code> (<code class="incode">e</code> for large exponents, <code class="incode">f</code> otherwise)  <code class="incode">G</code> (<code class="incode">E</code> for large exponents, <code class="incode">f</code> otherwise)  Negative precision means "only as much as needed to be exact.". </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parse</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, val: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, fmt: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, precision: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, forceSign: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -26270,88 +25211,77 @@ buffer</td>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_appendAny">appendAny(self, any, string)</a></td>
 <td class="enumeration">
-<p>
-Append a value.</p>
+<p>Append a value. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_appendEOL">appendEOL(self)</a></td>
 <td class="enumeration">
-<p>
-Append a end of line.</p>
+<p>Append a end of line. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_appendFormat">appendFormat(self, string, ...)</a></td>
 <td class="enumeration">
-<p>
-Append a formatted string.</p>
+<p>Append a formatted string. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_appendRune">appendRune(self, rune)</a></td>
 <td class="enumeration">
-<p>
-Append a rune.</p>
+<p>Append a rune. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_appendString">appendString(self, string)</a></td>
 <td class="enumeration">
-<p>
-Append a string.</p>
+<p>Append a string. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Clear the content of the builder.</p>
+<p>Clear the content of the builder. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_count">count(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the number of characters.</p>
+<p>Returns the number of characters. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_moveToString">moveToString(self)</a></td>
 <td class="enumeration">
-<p>
-Return the content as a string by eating the content of the string builder (if possible).</p>
+<p>Return the content as a string by eating the content of the string builder (if possible). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_setBucketSize">setBucketSize(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Set sizes of buckets of the string builder.</p>
+<p>Set sizes of buckets of the string builder. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_toString">toString(self)</a></td>
 <td class="enumeration">
-<p>
-Return the content as a string.</p>
+<p>Return the content as a string. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated(self)</a></td>
 <td class="enumeration">
-<p>
-Force a ending 0.</p>
+<p>Force a ending 0. </p>
 </td>
 </tr>
 </table>
@@ -26366,8 +25296,7 @@ Force a ending 0.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a value.</p>
+<p>Append a value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">appendAny</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">any</span><span class="SyntaxCode">, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </p>
@@ -26382,8 +25311,7 @@ Append a value.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a end of line.</p>
+<p>Append a end of line. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">appendEOL</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26398,8 +25326,7 @@ Append a end of line.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a formatted string.</p>
+<p>Append a formatted string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">appendFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fmt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, values: ...)</code>
 </p>
@@ -26414,8 +25341,7 @@ Append a formatted string.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a rune.</p>
+<p>Append a rune. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">appendRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
@@ -26430,8 +25356,7 @@ Append a rune.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a string.</p>
+<p>Append a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">appendString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -26446,8 +25371,7 @@ Append a string.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear the content of the builder.</p>
+<p>Clear the content of the builder. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26462,8 +25386,7 @@ Clear the content of the builder.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of characters.</p>
+<p>Returns the number of characters. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -26478,8 +25401,7 @@ Returns the number of characters.</p>
 </tr>
 </table>
 </p>
-<p>
-Return the content as a string by eating the content of the string builder (if possible).</p>
+<p>Return the content as a string by eating the content of the string builder (if possible). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveToString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -26494,8 +25416,7 @@ Return the content as a string by eating the content of the string builder (if p
 </tr>
 </table>
 </p>
-<p>
-Set sizes of buckets of the string builder.</p>
+<p>Set sizes of buckets of the string builder. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setBucketSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -26510,8 +25431,7 @@ Set sizes of buckets of the string builder.</p>
 </tr>
 </table>
 </p>
-<p>
-Return the content as a string.</p>
+<p>Return the content as a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -26526,8 +25446,7 @@ Return the content as a string.</p>
 </tr>
 </table>
 </p>
-<p>
-Force a ending 0.</p>
+<p>Force a ending 0. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">zeroTerminated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -26542,8 +25461,7 @@ Force a ending 0.</p>
 </tr>
 </table>
 </p>
-<p>
-Templated version. Convert a value of type <code class="incode">T</code>.</p>
+<p>Templated version. Convert a value of type <code class="incode">T</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">convert</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -26558,8 +25476,7 @@ Templated version. Convert a value of type <code class="incode">T</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
+<p>Convert a value to an utf8 string, and append the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertAny</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxType">any</span><span class="SyntaxCode">, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -26574,8 +25491,7 @@ Convert a value to an utf8 string, and append the result in a ConcatBuffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a <code class="incode">bool</code> to a string, and put the result in a ConcatBuffer.</p>
+<p>Convert a <code class="incode">bool</code> to a string, and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertBool</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </p>
@@ -26590,13 +25506,11 @@ Convert a <code class="incode">bool</code> to a string, and put the result in a 
 </tr>
 </table>
 </p>
-<p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+<p>Convert a float to an utf8 string, and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertFloat</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxType">any</span><span class="SyntaxCode">, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
+<p>Convert a float to an utf8 string, and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertFloat</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, fmt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_ConvertFormatFloat">ConvertFormatFloat</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -26611,13 +25525,11 @@ Convert a float to an utf8 string, and put the result in a ConcatBuffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
+<p>Convert an integer to an utf8 string, and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertInt</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxType">any</span><span class="SyntaxCode">, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
+<p>Convert an integer to an utf8 string, and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertInt</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, fmt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_ConvertFormatInt">ConvertFormatInt</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -26632,8 +25544,7 @@ Convert an integer to an utf8 string, and put the result in a ConcatBuffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a <code class="incode">rune</code> to a string, and put the result in a ConcatBuffer.</p>
+<p>Convert a <code class="incode">rune</code> to a string, and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertRune</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
@@ -26648,8 +25559,7 @@ Convert a <code class="incode">rune</code> to a string, and put the result in a 
 </tr>
 </table>
 </p>
-<p>
-Convert a structure content to an utf8 string, and put the result in a ConcatBuffer.</p>
+<p>Convert a structure content to an utf8 string, and put the result in a ConcatBuffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">convertStruct</span><span class="SyntaxCode">(buf: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxType">any</span><span class="SyntaxCode">, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -26664,8 +25574,7 @@ Convert a structure content to an utf8 string, and put the result in a ConcatBuf
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer in binary to an unsigned integer value Returns the value and the number of bytes used to make the conversion <code class="incode">ovf</code> will be true in case of overflow.</p>
+<p>Convert an utf8 buffer in binary to an unsigned integer value  Returns the value and the number of bytes used to make the conversion  <code class="incode">ovf</code> will be true in case of overflow. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseB64</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26686,8 +25595,7 @@ Convert an utf8 buffer in binary to an unsigned integer value Returns the value 
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer to a boolean Returns the value and the number of bytes used to make the conversion.</p>
+<p>Convert an utf8 buffer to a boolean  Returns the value and the number of bytes used to make the conversion. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseBool</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26707,8 +25615,7 @@ Convert an utf8 buffer to a boolean Returns the value and the number of bytes us
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer to a floating point value Returns the value and the number of bytes used to make the conversion <code class="incode">ovf</code> will be true in case of overflow.</p>
+<p>Convert an utf8 buffer to a floating point value  Returns the value and the number of bytes used to make the conversion  <code class="incode">ovf</code> will be true in case of overflow. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseF32</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26749,8 +25656,7 @@ Convert an utf8 buffer to a floating point value Returns the value and the numbe
 </tr>
 </table>
 </p>
-<p>
-Parse an identifier name in the sens of swag (ascii).</p>
+<p>Parse an identifier name in the sens of swag (ascii). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseIdentifier</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -26765,8 +25671,7 @@ Parse an identifier name in the sens of swag (ascii).</p>
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer to a simple rune.</p>
+<p>Convert an utf8 buffer to a simple rune. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseRune</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26846,8 +25751,7 @@ Convert an utf8 buffer to a simple rune.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer to an signed integer value Returns the value and the number of bytes used to make the conversion <code class="incode">ovf</code> will be true in case of overflow.</p>
+<p>Convert an utf8 buffer to an signed integer value  Returns the value and the number of bytes used to make the conversion  <code class="incode">ovf</code> will be true in case of overflow. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseS8</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26868,8 +25772,7 @@ Convert an utf8 buffer to an signed integer value Returns the value and the numb
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but the result will not be in that case).</p>
+<p>Convert an utf8 buffer to a Core.String  String in the buffer can be quoted (but the result will not be in that case). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseString</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26949,8 +25852,7 @@ Convert an utf8 buffer to a Core.String String in the buffer can be quoted (but 
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer in decimal to an unsigned integer value Returns the value and the number of bytes used to make the conversion <code class="incode">ovf</code> will be true in case of overflow.</p>
+<p>Convert an utf8 buffer in decimal to an unsigned integer value  Returns the value and the number of bytes used to make the conversion  <code class="incode">ovf</code> will be true in case of overflow. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseU8</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26971,8 +25873,7 @@ Convert an utf8 buffer in decimal to an unsigned integer value Returns the value
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer in hexadecimal to an unsigned integer value Returns the value and the number of bytes used to make the conversion <code class="incode">ovf</code> will be true in case of overflow.</p>
+<p>Convert an utf8 buffer in hexadecimal to an unsigned integer value  Returns the value and the number of bytes used to make the conversion  <code class="incode">ovf</code> will be true in case of overflow. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parseX64</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -26993,15 +25894,12 @@ Convert an utf8 buffer in hexadecimal to an unsigned integer value Returns the v
 </tr>
 </table>
 </p>
-<p>
-This function will parse <code class="incode">buf</code> and poke the corresponding value to <code class="incode">addr</code> <code class="incode">addr</code> must point to an initialized memory location that can hold type <code class="incode">type</code>.</p>
+<p>This function will parse <code class="incode">buf</code> and poke the corresponding value to <code class="incode">addr</code>  <code class="incode">addr</code> must point to an initialized memory location that can hold type <code class="incode">type</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pokeValue</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, buf: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
-<p>
- Accepted types are : - s8,s16,s32,s64,s64,u8,u16,u32,u64,u64,rune,bool,f32,f64 - <code class="incode">Core.String</code>  literal strings are not supported as <code class="incode">buf</code> is supposed to be transient - enum           with or without <code class="incode">Swag.EnumFlags</code> attribute</p>
-<p>
- <code class="incode">buf</code> can contain multiple values separated with blanks if <code class="incode">type</code> is: - a static array of the types above - a dynamic <code class="incode">Core.Array</code> of the types above</p>
+<p> Accepted types are :  - s8,s16,s32,s64,s64,u8,u16,u32,u64,u64,rune,bool,f32,f64  - <code class="incode">Core.String</code>  literal strings are not supported as <code class="incode">buf</code> is supposed to be transient  - enum           with or without <code class="incode">Swag.EnumFlags</code> attribute </p>
+<p> <code class="incode">buf</code> can contain multiple values separated with blanks if <code class="incode">type</code> is:  - a static array of the types above  - a dynamic <code class="incode">Core.Array</code> of the types above </p>
 <p>
 <table class="item">
 <tr>
@@ -27013,8 +25911,7 @@ This function will parse <code class="incode">buf</code> and poke the correspond
 </tr>
 </table>
 </p>
-<p>
-Convert a size in a displayable format (with Kb, Mb and so on).</p>
+<p>Convert a size in a displayable format (with Kb, Mb and so on). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toDisplaySize</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -27029,8 +25926,7 @@ Convert a size in a displayable format (with Kb, Mb and so on).</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">f32</code>.</p>
+<p>Transform a string to an <code class="incode">f32</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toF32</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27045,8 +25941,7 @@ Transform a string to an <code class="incode">f32</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">f64</code>.</p>
+<p>Transform a string to an <code class="incode">f64</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toF64</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27061,8 +25956,7 @@ Transform a string to an <code class="incode">f64</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an integer or float.</p>
+<p>Transform a string to an integer or float. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">toNum</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27077,8 +25971,7 @@ Transform a string to an integer or float.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">s16</code>.</p>
+<p>Transform a string to an <code class="incode">s16</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toS16</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27093,8 +25986,7 @@ Transform a string to an <code class="incode">s16</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">s32</code>.</p>
+<p>Transform a string to an <code class="incode">s32</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toS32</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27109,8 +26001,7 @@ Transform a string to an <code class="incode">s32</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">s64</code>.</p>
+<p>Transform a string to an <code class="incode">s64</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toS64</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27125,8 +26016,7 @@ Transform a string to an <code class="incode">s64</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">s8</code>.</p>
+<p>Transform a string to an <code class="incode">s8</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toS8</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27141,8 +26031,7 @@ Transform a string to an <code class="incode">s8</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">u16</code>.</p>
+<p>Transform a string to an <code class="incode">u16</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toU16</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27157,8 +26046,7 @@ Transform a string to an <code class="incode">u16</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">u32</code>.</p>
+<p>Transform a string to an <code class="incode">u32</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toU32</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27173,8 +26061,7 @@ Transform a string to an <code class="incode">u32</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">u64</code>.</p>
+<p>Transform a string to an <code class="incode">u64</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toU64</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27189,8 +26076,7 @@ Transform a string to an <code class="incode">u64</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a string to an <code class="incode">u8</code>.</p>
+<p>Transform a string to an <code class="incode">u8</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toU8</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -27253,248 +26139,217 @@ padding</td>
 <td class="enumeration">
 <a href="#Core_String_append">append(self, rune)</a></td>
 <td class="enumeration">
-<p>
-Append a rune to the String.</p>
+<p>Append a rune to the String. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_append">append(self, string)</a></td>
 <td class="enumeration">
-<p>
-Append a string to the String.</p>
+<p>Append a string to the String. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_append">append(self, u8)</a></td>
 <td class="enumeration">
-<p>
-Append a byte to the String.</p>
+<p>Append a byte to the String. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_appendFormat">appendFormat(self, string, ...)</a></td>
 <td class="enumeration">
-<p>
-Append a formatted string.</p>
+<p>Append a formatted string. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_back">back(self)</a></td>
 <td class="enumeration">
-<p>
-Get the last byte.</p>
+<p>Get the last byte. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Set the length of the String to 0.</p>
+<p>Set the length of the String to 0. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_ensureNotNull">ensureNotNull(self)</a></td>
 <td class="enumeration">
-<p>
-Transform a null string in an empty one.</p>
+<p>Transform a null string in an empty one. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_from">from(string)</a></td>
 <td class="enumeration">
-<p>
-Convert a literal string to a String.</p>
+<p>Convert a literal string to a String. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_grow">grow(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Ensure the String is big enough to store a given amount of bytes.</p>
+<p>Ensure the String is big enough to store a given amount of bytes. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_insert">insert(self, u64, string)</a></td>
 <td class="enumeration">
-<p>
-Insert a substring at the given position.</p>
+<p>Insert a substring at the given position. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_isEmpty">isEmpty(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the String has zero length.</p>
+<p>Returns true if the String has zero length. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_isNull">isNull(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the String is null (undefined).</p>
+<p>Returns true if the String is null (undefined). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_isNullOrEmpty">isNullOrEmpty(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the String is null or empty.</p>
+<p>Returns true if the String is null or empty. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_join">join(string...)</a></td>
 <td class="enumeration">
-<p>
-Join a list of strings to make a unique one.</p>
+<p>Join a list of strings to make a unique one. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_joinWith">joinWith(string, string...)</a></td>
 <td class="enumeration">
-<p>
-Join an list of strings to make a unique one, by using a given <code class="incode">separator</code> between them.</p>
+<p>Join an list of strings to make a unique one, by using a given <code class="incode">separator</code>  between them. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_makeLower">makeLower(self, CharacterSet)</a></td>
 <td class="enumeration">
-<p>
-Convert the string inplace to lower case.</p>
+<p>Convert the string inplace to lower case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_makeUpper">makeUpper(self, CharacterSet)</a></td>
 <td class="enumeration">
-<p>
-Convert the string inplace to upper case.</p>
+<p>Convert the string inplace to upper case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_remove">remove(self, u64, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove some bytes at the given index.</p>
+<p>Remove some bytes at the given index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_removeBack">removeBack(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Remove some bytes at the end.</p>
+<p>Remove some bytes at the end. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_replace">replace(self, string, string, ComparisonType)</a></td>
 <td class="enumeration">
-<p>
-Replace all occurences of <code class="incode">what</code> with <code class="incode">by</code>.</p>
+<p>Replace all occurences of <code class="incode">what</code> with <code class="incode">by</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_reserve">reserve(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Reserve room for at least <code class="incode">newCapacity</code> bytes.</p>
+<p>Reserve room for at least <code class="incode">newCapacity</code> bytes. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_toCharArray">toCharArray(self)</a></td>
 <td class="enumeration">
-<p>
-Convert string to a 32 bits character array.</p>
+<p>Convert string to a 32 bits character array. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_toLower">toLower(self, CharacterSet)</a></td>
 <td class="enumeration">
-<p>
-Returns a new String in lower case.</p>
+<p>Returns a new String in lower case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_toLower">toLower(string, CharacterSet)</a></td>
 <td class="enumeration">
-<p>
-Returns a new String in lower case.</p>
+<p>Returns a new String in lower case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_toSlice">toSlice(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a slice type.</p>
+<p>Returns a slice type. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_toString">toString(self)</a></td>
 <td class="enumeration">
-<p>
-Returns a string type.</p>
+<p>Returns a string type. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_toUpper">toUpper(self, CharacterSet)</a></td>
 <td class="enumeration">
-<p>
-Returns a new String in upper case.</p>
+<p>Returns a new String in upper case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_toUpper">toUpper(string, CharacterSet)</a></td>
 <td class="enumeration">
-<p>
-Returns a new String in lower case.</p>
+<p>Returns a new String in lower case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_trim">trim(self)</a></td>
 <td class="enumeration">
-<p>
-Removes all leading and trailing white-space characters from the current String.</p>
+<p>Removes all leading and trailing white-space characters from the current String. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_trimEnd">trimEnd(self)</a></td>
 <td class="enumeration">
-<p>
-Remove whitespaces at the end of the String.</p>
+<p>Remove whitespaces at the end of the String. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_trimStart">trimStart(self)</a></td>
 <td class="enumeration">
-<p>
-Remove whitespaces at the start of the String.</p>
+<p>Remove whitespaces at the start of the String. </p>
 </td>
 </tr>
 </table>
@@ -27570,8 +26425,7 @@ Remove whitespaces at the start of the String.</p>
 <td class="enumeration">
 <a href="#Core_String_opIndex">opIndex(self, u64)</a></td>
 <td class="enumeration">
-<p>
-Returns the byte at the given index.</p>
+<p>Returns the byte at the given index. </p>
 </td>
 </tr>
 <tr>
@@ -27596,16 +26450,14 @@ Returns the byte at the given index.</p>
 <td class="enumeration">
 <a href="#Core_String_opVisitBytes">opVisitBytes(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit the String utf8 bytes @alias0 will contain the byte or the pointer to the byte @alias1 will contain the byte index.</p>
+<p>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_String_opVisitRunes">opVisitRunes(self, code)</a></td>
 <td class="enumeration">
-<p>
-Visit the string runes See Utf8.visitRunes for aliases.</p>
+<p>Visit the string runes  See Utf8.visitRunes for aliases. </p>
 </td>
 </tr>
 </table>
@@ -27634,18 +26486,15 @@ Visit the string runes See Utf8.visitRunes for aliases.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a rune to the String.</p>
+<p>Append a rune to the String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">append</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Append a string to the String.</p>
+<p>Append a string to the String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">append</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Append a byte to the String.</p>
+<p>Append a byte to the String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">append</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -27660,8 +26509,7 @@ Append a byte to the String.</p>
 </tr>
 </table>
 </p>
-<p>
-Append a formatted string.</p>
+<p>Append a formatted string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">appendFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, format: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, values: ...)</code>
 </p>
@@ -27676,8 +26524,7 @@ Append a formatted string.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the last byte.</p>
+<p>Get the last byte. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">back</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -27692,8 +26539,7 @@ Get the last byte.</p>
 </tr>
 </table>
 </p>
-<p>
-Set the length of the String to 0.</p>
+<p>Set the length of the String to 0. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -27708,8 +26554,7 @@ Set the length of the String to 0.</p>
 </tr>
 </table>
 </p>
-<p>
-Transform a null string in an empty one.</p>
+<p>Transform a null string in an empty one. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureNotNull</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -27724,8 +26569,7 @@ Transform a null string in an empty one.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a literal string to a String.</p>
+<p>Convert a literal string to a String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">from</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -27740,8 +26584,7 @@ Convert a literal string to a String.</p>
 </tr>
 </table>
 </p>
-<p>
-Ensure the String is big enough to store a given amount of bytes.</p>
+<p>Ensure the String is big enough to store a given amount of bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">grow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wantedCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -27756,8 +26599,7 @@ Ensure the String is big enough to store a given amount of bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Insert a substring at the given position.</p>
+<p>Insert a substring at the given position. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, byteIndex: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -27772,8 +26614,7 @@ Insert a substring at the given position.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the String has zero length.</p>
+<p>Returns true if the String has zero length. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -27788,8 +26629,7 @@ Returns true if the String has zero length.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the String is null (undefined).</p>
+<p>Returns true if the String is null (undefined). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isNull</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -27804,8 +26644,7 @@ Returns true if the String is null (undefined).</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the String is null or empty.</p>
+<p>Returns true if the String is null or empty. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isNullOrEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -27820,8 +26659,7 @@ Returns true if the String is null or empty.</p>
 </tr>
 </table>
 </p>
-<p>
-Join a list of strings to make a unique one.</p>
+<p>Join a list of strings to make a unique one. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">join</span><span class="SyntaxCode">(values: </span><span class="SyntaxType">string</span><span class="SyntaxCode">...)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -27836,8 +26674,7 @@ Join a list of strings to make a unique one.</p>
 </tr>
 </table>
 </p>
-<p>
-Join an list of strings to make a unique one, by using a given <code class="incode">separator</code> between them.</p>
+<p>Join an list of strings to make a unique one, by using a given <code class="incode">separator</code>  between them. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">joinWith</span><span class="SyntaxCode">(separator: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, values: </span><span class="SyntaxType">string</span><span class="SyntaxCode">...)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -27852,8 +26689,7 @@ Join an list of strings to make a unique one, by using a given <code class="inco
 </tr>
 </table>
 </p>
-<p>
-Convert the string inplace to lower case.</p>
+<p>Convert the string inplace to lower case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeLower</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, set = </span><span class="SyntaxConstant"><a href="#Core_CharacterSet">CharacterSet</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)</code>
 </p>
@@ -27868,8 +26704,7 @@ Convert the string inplace to lower case.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert the string inplace to upper case.</p>
+<p>Convert the string inplace to upper case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeUpper</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, set = </span><span class="SyntaxConstant"><a href="#Core_CharacterSet">CharacterSet</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)</code>
 </p>
@@ -27986,8 +26821,7 @@ Convert the string inplace to upper case.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the byte at the given index.</p>
+<p>Returns the byte at the given index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, index: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -28044,8 +26878,7 @@ Returns the byte at the given index.</p>
 </tr>
 </table>
 </p>
-<p>
-Visit the String utf8 bytes @alias0 will contain the byte or the pointer to the byte @alias1 will contain the byte index.</p>
+<p>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitBytes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -28061,8 +26894,7 @@ Visit the String utf8 bytes @alias0 will contain the byte or the pointer to the 
 </tr>
 </table>
 </p>
-<p>
-Visit the string runes See Utf8.visitRunes for aliases.</p>
+<p>Visit the string runes  See Utf8.visitRunes for aliases. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitRunes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: code)</code>
@@ -28078,8 +26910,7 @@ Visit the string runes See Utf8.visitRunes for aliases.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove some bytes at the given index.</p>
+<p>Remove some bytes at the given index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, byteIndex: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, byteCount: </span><span class="SyntaxType">u64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </p>
@@ -28094,8 +26925,7 @@ Remove some bytes at the given index.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove some bytes at the end.</p>
+<p>Remove some bytes at the end. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeBack</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, byteCount: </span><span class="SyntaxType">u64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </p>
@@ -28110,8 +26940,7 @@ Remove some bytes at the end.</p>
 </tr>
 </table>
 </p>
-<p>
-Replace all occurences of <code class="incode">what</code> with <code class="incode">by</code>.</p>
+<p>Replace all occurences of <code class="incode">what</code> with <code class="incode">by</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">replace</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, by: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, comparisonType = </span><span class="SyntaxConstant">Utf8</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)</code>
 </p>
@@ -28126,8 +26955,7 @@ Replace all occurences of <code class="incode">what</code> with <code class="inc
 </tr>
 </table>
 </p>
-<p>
-Reserve room for at least <code class="incode">newCapacity</code> bytes.</p>
+<p>Reserve room for at least <code class="incode">newCapacity</code> bytes. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reserve</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </p>
@@ -28142,8 +26970,7 @@ Reserve room for at least <code class="incode">newCapacity</code> bytes.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert string to a 32 bits character array.</p>
+<p>Convert string to a 32 bits character array. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toCharArray</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
@@ -28158,13 +26985,11 @@ Convert string to a 32 bits character array.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a new String in lower case.</p>
+<p>Returns a new String in lower case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toLower</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, set = </span><span class="SyntaxConstant"><a href="#Core_CharacterSet">CharacterSet</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns a new String in lower case.</p>
+<p>Returns a new String in lower case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toLower</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, set = </span><span class="SyntaxConstant"><a href="#Core_CharacterSet">CharacterSet</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -28179,8 +27004,7 @@ Returns a new String in lower case.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a slice type.</p>
+<p>Returns a slice type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toSlice</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;[..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </p>
@@ -28195,8 +27019,7 @@ Returns a slice type.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a string type.</p>
+<p>Returns a string type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -28211,13 +27034,11 @@ Returns a string type.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a new String in upper case.</p>
+<p>Returns a new String in upper case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toUpper</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, set = </span><span class="SyntaxConstant"><a href="#Core_CharacterSet">CharacterSet</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns a new String in lower case.</p>
+<p>Returns a new String in lower case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toUpper</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, set = </span><span class="SyntaxConstant"><a href="#Core_CharacterSet">CharacterSet</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -28232,8 +27053,7 @@ Returns a new String in lower case.</p>
 </tr>
 </table>
 </p>
-<p>
-Removes all leading and trailing white-space characters from the current String.</p>
+<p>Removes all leading and trailing white-space characters from the current String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trim</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28248,8 +27068,7 @@ Removes all leading and trailing white-space characters from the current String.
 </tr>
 </table>
 </p>
-<p>
-Remove whitespaces at the end of the String.</p>
+<p>Remove whitespaces at the end of the String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trimEnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28264,8 +27083,7 @@ Remove whitespaces at the end of the String.</p>
 </tr>
 </table>
 </p>
-<p>
-Remove whitespaces at the start of the String.</p>
+<p>Remove whitespaces at the start of the String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trimStart</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28296,56 +27114,49 @@ Win32.HANDLE</td>
 <td class="enumeration">
 <a href="#Core_Sync_Event_create">create()</a></td>
 <td class="enumeration">
-<p>
-Creates a new event.</p>
+<p>Creates a new event. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Event_init">init(self, bool, bool)</a></td>
 <td class="enumeration">
-<p>
-Initialize event.</p>
+<p>Initialize event. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Event_isValid">isValid(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the event is valid.</p>
+<p>Returns true if the event is valid. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Event_release">release(self)</a></td>
 <td class="enumeration">
-<p>
-Destroy an existing event.</p>
+<p>Destroy an existing event. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Event_reset">reset(self)</a></td>
 <td class="enumeration">
-<p>
-Reset the event state.</p>
+<p>Reset the event state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Event_signal">signal(self)</a></td>
 <td class="enumeration">
-<p>
-Signal the event.</p>
+<p>Signal the event. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Event_wait">wait(self)</a></td>
 <td class="enumeration">
-<p>
-Wait for the event to be signaled.</p>
+<p>Wait for the event to be signaled. </p>
 </td>
 </tr>
 </table>
@@ -28360,8 +27171,7 @@ Wait for the event to be signaled.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new event.</p>
+<p>Creates a new event. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Sync</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Sync_Event">Event</a></span><span class="SyntaxCode"></code>
 </p>
@@ -28376,8 +27186,7 @@ Creates a new event.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize event.</p>
+<p>Initialize event. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, manual = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, initState = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </p>
@@ -28392,8 +27201,7 @@ Initialize event.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the event is valid.</p>
+<p>Returns true if the event is valid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -28408,8 +27216,7 @@ Returns true if the event is valid.</p>
 </tr>
 </table>
 </p>
-<p>
-Destroy an existing event.</p>
+<p>Destroy an existing event. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28424,8 +27231,7 @@ Destroy an existing event.</p>
 </tr>
 </table>
 </p>
-<p>
-Reset the event state.</p>
+<p>Reset the event state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28440,8 +27246,7 @@ Reset the event state.</p>
 </tr>
 </table>
 </p>
-<p>
-Signal the event.</p>
+<p>Signal the event. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">signal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28456,8 +27261,7 @@ Signal the event.</p>
 </tr>
 </table>
 </p>
-<p>
-Wait for the event to be signaled.</p>
+<p>Wait for the event to be signaled. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wait</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28488,24 +27292,21 @@ Win32.SRWLOCK</td>
 <td class="enumeration">
 <a href="#Core_Sync_Mutex_lock">lock(self)</a></td>
 <td class="enumeration">
-<p>
-Lock mutex.</p>
+<p>Lock mutex. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Mutex_tryLock">tryLock(self)</a></td>
 <td class="enumeration">
-<p>
-Try to lock the mutex, and return <code class="incode">true</code> if it's the case.</p>
+<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_Mutex_unlock">unlock(self)</a></td>
 <td class="enumeration">
-<p>
-Unlock mutex.</p>
+<p>Unlock mutex. </p>
 </td>
 </tr>
 </table>
@@ -28520,8 +27321,7 @@ Unlock mutex.</p>
 </tr>
 </table>
 </p>
-<p>
-Lock mutex.</p>
+<p>Lock mutex. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lock</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28536,8 +27336,7 @@ Lock mutex.</p>
 </tr>
 </table>
 </p>
-<p>
-Try to lock the mutex, and return <code class="incode">true</code> if it's the case.</p>
+<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tryLock</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -28552,8 +27351,7 @@ Try to lock the mutex, and return <code class="incode">true</code> if it's the c
 </tr>
 </table>
 </p>
-<p>
-Unlock mutex.</p>
+<p>Unlock mutex. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unlock</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28590,32 +27388,28 @@ Win32.SRWLOCK</td>
 <td class="enumeration">
 <a href="#Core_Sync_RWLock_lockExclusive">lockExclusive(self)</a></td>
 <td class="enumeration">
-<p>
-Lock mutex.</p>
+<p>Lock mutex. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_RWLock_lockShared">lockShared(self)</a></td>
 <td class="enumeration">
-<p>
-Lock mutex.</p>
+<p>Lock mutex. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_RWLock_tryLockExclusive">tryLockExclusive(self)</a></td>
 <td class="enumeration">
-<p>
-Try to lock the mutex, and return <code class="incode">true</code> if it's the case.</p>
+<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_RWLock_tryLockShared">tryLockShared(self)</a></td>
 <td class="enumeration">
-<p>
-Try to lock the mutex, and return <code class="incode">true</code> if it's the case.</p>
+<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
 </td>
 </tr>
 <tr>
@@ -28628,16 +27422,14 @@ Try to lock the mutex, and return <code class="incode">true</code> if it's the c
 <td class="enumeration">
 <a href="#Core_Sync_RWLock_unlockExclusive">unlockExclusive(self)</a></td>
 <td class="enumeration">
-<p>
-Unlock mutex.</p>
+<p>Unlock mutex. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Sync_RWLock_unlockShared">unlockShared(self)</a></td>
 <td class="enumeration">
-<p>
-Unlock mutex.</p>
+<p>Unlock mutex. </p>
 </td>
 </tr>
 </table>
@@ -28666,8 +27458,7 @@ Unlock mutex.</p>
 </tr>
 </table>
 </p>
-<p>
-Lock mutex.</p>
+<p>Lock mutex. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28682,8 +27473,7 @@ Lock mutex.</p>
 </tr>
 </table>
 </p>
-<p>
-Lock mutex.</p>
+<p>Lock mutex. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lockShared</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28698,8 +27488,7 @@ Lock mutex.</p>
 </tr>
 </table>
 </p>
-<p>
-Try to lock the mutex, and return <code class="incode">true</code> if it's the case.</p>
+<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tryLockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -28714,8 +27503,7 @@ Try to lock the mutex, and return <code class="incode">true</code> if it's the c
 </tr>
 </table>
 </p>
-<p>
-Try to lock the mutex, and return <code class="incode">true</code> if it's the case.</p>
+<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tryLockShared</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -28744,8 +27532,7 @@ Try to lock the mutex, and return <code class="incode">true</code> if it's the c
 </tr>
 </table>
 </p>
-<p>
-Unlock mutex.</p>
+<p>Unlock mutex. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unlockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28760,8 +27547,7 @@ Unlock mutex.</p>
 </tr>
 </table>
 </p>
-<p>
-Unlock mutex.</p>
+<p>Unlock mutex. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unlockShared</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -28806,8 +27592,7 @@ Unlock mutex.</p>
 </tr>
 </table>
 </p>
-<p>
-Push a new execution context for the given block of code.</p>
+<p>Push a new execution context for the given block of code. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushContext</span><span class="SyntaxCode">(cxt: </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">, stmt: code)</code>
@@ -28887,72 +27672,63 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_init">init(self, func(*void, Thread), *void, ThreadPriority, s32)</a></td>
 <td class="enumeration">
-<p>
-Initialize a thread in pause state.</p>
+<p>Initialize a thread in pause state. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_isDone">isDone(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the thread has finished.</p>
+<p>Returns true if the thread has finished. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_isValid">isValid(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if the thread is valid.</p>
+<p>Returns true if the thread is valid. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd(self)</a></td>
 <td class="enumeration">
-<p>
-Force the thread to safely exist User code needs to check for <code class="incode">requestEnd</code>.</p>
+<p>Force the thread to safely exist  User code needs to check for <code class="incode">requestEnd</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_setPriority">setPriority(self, ThreadPriority)</a></td>
 <td class="enumeration">
-<p>
-Set the thread priority.</p>
+<p>Set the thread priority. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_sleep">sleep(const ref Duration)</a></td>
 <td class="enumeration">
-<p>
-Sleep the current thread for a given amount of milliseconds.</p>
+<p>Sleep the current thread for a given amount of milliseconds. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_start">start(self)</a></td>
 <td class="enumeration">
-<p>
-Resume the given thread, if it was paused.</p>
+<p>Resume the given thread, if it was paused. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_wait">wait(self)</a></td>
 <td class="enumeration">
-<p>
-Wait for the given thread to be done, and close it After that call, isValid() will return false.</p>
+<p>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Threading_Thread_yield">yield()</a></td>
 <td class="enumeration">
-<p>
-Sleep the current thread for a given amount of milliseconds.</p>
+<p>Sleep the current thread for a given amount of milliseconds. </p>
 </td>
 </tr>
 </table>
@@ -28967,8 +27743,7 @@ Sleep the current thread for a given amount of milliseconds.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize a thread in pause state.</p>
+<p>Initialize a thread in pause state. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, lambda: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Threading</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Threading_Thread">Thread</a></span><span class="SyntaxCode">), userParam: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, priority = </span><span class="SyntaxConstant"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Normal</span><span class="SyntaxCode">, tempAllocSize: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -28983,8 +27758,7 @@ Initialize a thread in pause state.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the thread has finished.</p>
+<p>Returns true if the thread has finished. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isDone</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -28999,8 +27773,7 @@ Returns true if the thread has finished.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the thread is valid.</p>
+<p>Returns true if the thread is valid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -29015,8 +27788,7 @@ Returns true if the thread is valid.</p>
 </tr>
 </table>
 </p>
-<p>
-Force the thread to safely exist User code needs to check for <code class="incode">requestEnd</code>.</p>
+<p>Force the thread to safely exist  User code needs to check for <code class="incode">requestEnd</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">safeForceEnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -29031,8 +27803,7 @@ Force the thread to safely exist User code needs to check for <code class="incod
 </tr>
 </table>
 </p>
-<p>
-Set the thread priority.</p>
+<p>Set the thread priority. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPriority</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, priority: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Threading</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -29047,8 +27818,7 @@ Set the thread priority.</p>
 </tr>
 </table>
 </p>
-<p>
-Sleep the current thread for a given amount of milliseconds.</p>
+<p>Sleep the current thread for a given amount of milliseconds. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sleep</span><span class="SyntaxCode">(ms: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Duration">Duration</a></span><span class="SyntaxCode">)</code>
 </p>
@@ -29063,8 +27833,7 @@ Sleep the current thread for a given amount of milliseconds.</p>
 </tr>
 </table>
 </p>
-<p>
-Resume the given thread, if it was paused.</p>
+<p>Resume the given thread, if it was paused. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">start</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -29079,8 +27848,7 @@ Resume the given thread, if it was paused.</p>
 </tr>
 </table>
 </p>
-<p>
-Wait for the given thread to be done, and close it After that call, isValid() will return false.</p>
+<p>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wait</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -29095,8 +27863,7 @@ Wait for the given thread to be done, and close it After that call, isValid() wi
 </tr>
 </table>
 </p>
-<p>
-Sleep the current thread for a given amount of milliseconds.</p>
+<p>Sleep the current thread for a given amount of milliseconds. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">yield</span><span class="SyntaxCode">()</code>
 </p>
@@ -29154,8 +27921,7 @@ Highest</td>
 </tr>
 </table>
 </p>
-<p>
-Wait multiple threads.</p>
+<p>Wait multiple threads. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wait</span><span class="SyntaxCode">(threads: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Threading</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Threading_Thread">Thread</a></span><span class="SyntaxCode">...)</code>
 </p>
@@ -29170,8 +27936,7 @@ Wait multiple threads.</p>
 </tr>
 </table>
 </p>
-<p>
-Represents an instant in time, typically expressed as a date and time of day.</p>
+<p>Represents an instant in time, typically expressed as a date and time of day. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -29236,64 +28001,56 @@ u16</td>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the day of week of the current date.</p>
+<p>Returns the day of week of the current date. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName(DayOfWeek)</a></td>
 <td class="enumeration">
-<p>
-Returns the day of week name.</p>
+<p>Returns the day of week name. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_isValid">isValid(self)</a></td>
 <td class="enumeration">
-<p>
-Returns true if this is a valid datatime.</p>
+<p>Returns true if this is a valid datatime. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_monthName">monthName(u16)</a></td>
 <td class="enumeration">
-<p>
-Returns the month name.</p>
+<p>Returns the month name. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_now">now()</a></td>
 <td class="enumeration">
-<p>
-Returns a DateTime containing the current date and time.</p>
+<p>Returns a DateTime containing the current date and time. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_parse">parse(string, DateTimeFormat, bool)</a></td>
 <td class="enumeration">
-<p>
-Convert a string to a DateTime with the given format.</p>
+<p>Convert a string to a DateTime with the given format. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_setNow">setNow(self)</a></td>
 <td class="enumeration">
-<p>
-Initialize the structure with the current local date and time.</p>
+<p>Initialize the structure with the current local date and time. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_DateTime_toString">toString(self, DateTimeFormat)</a></td>
 <td class="enumeration">
-<p>
-Convert to string.</p>
+<p>Convert to string. </p>
 </td>
 </tr>
 </table>
@@ -29337,8 +28094,7 @@ Convert to string.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the day of week of the current date.</p>
+<p>Returns the day of week of the current date. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dayOfWeek</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span><span class="SyntaxCode"></code>
 </p>
@@ -29353,8 +28109,7 @@ Returns the day of week of the current date.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the day of week name.</p>
+<p>Returns the day of week name. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dayOfWeekName</span><span class="SyntaxCode">(day: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -29369,8 +28124,7 @@ Returns the day of week name.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if this is a valid datatime.</p>
+<p>Returns true if this is a valid datatime. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -29385,8 +28139,7 @@ Returns true if this is a valid datatime.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the month name.</p>
+<p>Returns the month name. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">monthName</span><span class="SyntaxCode">(month: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -29401,8 +28154,7 @@ Returns the month name.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a DateTime containing the current date and time.</p>
+<p>Returns a DateTime containing the current date and time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">now</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode"></code>
 </p>
@@ -29445,8 +28197,7 @@ Returns a DateTime containing the current date and time.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a string to a DateTime with the given format.</p>
+<p>Convert a string to a DateTime with the given format. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">parse</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, fmt = </span><span class="SyntaxConstant"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode">, checkDate = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -29466,8 +28217,7 @@ Convert a string to a DateTime with the given format.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the structure with the current local date and time.</p>
+<p>Initialize the structure with the current local date and time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -29482,8 +28232,7 @@ Initialize the structure with the current local date and time.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert to string.</p>
+<p>Convert to string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fmt = </span><span class="SyntaxConstant"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
@@ -29503,32 +28252,28 @@ Convert to string.</p>
 <td class="tdname">
 DateTime</td>
 <td class="enumeration">
-<p>
-DDDD MMMM D YYYY HH:MM:SS.</p>
+<p>DDDD MMMM D YYYY HH:MM:SS. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 DateTimeMs</td>
 <td class="enumeration">
-<p>
-DDDD MMMM D YYYY HH:MM:SS.ZZZ.</p>
+<p>DDDD MMMM D YYYY HH:MM:SS.ZZZ. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 Iso</td>
 <td class="enumeration">
-<p>
-YYYY-MM-DD HH:MM:SS.</p>
+<p>YYYY-MM-DD HH:MM:SS. </p>
 </td>
 </tr>
 <tr>
 <td class="tdname">
 IsoMs</td>
 <td class="enumeration">
-<p>
-YYYY-MM-DD HH:MM:SS.ZZZ.</p>
+<p>YYYY-MM-DD HH:MM:SS.ZZZ. </p>
 </td>
 </tr>
 </table>
@@ -29598,8 +28343,7 @@ Saturday</td>
 </tr>
 </table>
 </p>
-<p>
-Represents a delay, expressed in seconds.</p>
+<p>Represents a delay, expressed in seconds. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -29607,8 +28351,7 @@ timeInSeconds</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-The duration in seconds.</p>
+<p>The duration in seconds. </p>
 </td>
 </tr>
 </table>
@@ -29618,16 +28361,14 @@ The duration in seconds.</p>
 <td class="enumeration">
 <a href="#Core_Time_Duration_fromMs">fromMs(u32)</a></td>
 <td class="enumeration">
-<p>
-Returns a duration initialized with milliseconds.</p>
+<p>Returns a duration initialized with milliseconds. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Duration_toMs">toMs(self)</a></td>
 <td class="enumeration">
-<p>
-Returns the value in milliseconds.</p>
+<p>Returns the value in milliseconds. </p>
 </td>
 </tr>
 </table>
@@ -29657,8 +28398,7 @@ Returns the value in milliseconds.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a duration initialized with milliseconds.</p>
+<p>Returns a duration initialized with milliseconds. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromMs</span><span class="SyntaxCode">(valueMs: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Duration">Duration</a></span><span class="SyntaxCode"></code>
 </p>
@@ -29701,8 +28441,7 @@ Returns a duration initialized with milliseconds.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the value in milliseconds.</p>
+<p>Returns the value in milliseconds. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toMs</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -29740,8 +28479,7 @@ dt</td>
 <td class="tdtype">
 f32</td>
 <td class="enumeration">
-<p>
-Current delta time, in seconds.</p>
+<p>Current delta time, in seconds. </p>
 </td>
 </tr>
 <tr>
@@ -29750,8 +28488,7 @@ frameCount</td>
 <td class="tdtype">
 u32</td>
 <td class="enumeration">
-<p>
-Frame counter.</p>
+<p>Frame counter. </p>
 </td>
 </tr>
 <tr>
@@ -29777,24 +28514,21 @@ bool</td>
 <td class="enumeration">
 <a href="#Core_Time_FrameTiming_pause">pause(self)</a></td>
 <td class="enumeration">
-<p>
-Pause frame timing & count.</p>
+<p>Pause frame timing & count. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_FrameTiming_unpause">unpause(self)</a></td>
 <td class="enumeration">
-<p>
-Unpause frame timing & count.</p>
+<p>Unpause frame timing & count. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_FrameTiming_update">update(self)</a></td>
 <td class="enumeration">
-<p>
-Update frame timers.</p>
+<p>Update frame timers. </p>
 </td>
 </tr>
 </table>
@@ -29809,8 +28543,7 @@ Update frame timers.</p>
 </tr>
 </table>
 </p>
-<p>
-Pause frame timing & count.</p>
+<p>Pause frame timing & count. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -29825,8 +28558,7 @@ Pause frame timing & count.</p>
 </tr>
 </table>
 </p>
-<p>
-Unpause frame timing & count.</p>
+<p>Unpause frame timing & count. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unpause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -29841,8 +28573,7 @@ Unpause frame timing & count.</p>
 </tr>
 </table>
 </p>
-<p>
-Update frame timers.</p>
+<p>Update frame timers. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -29857,8 +28588,7 @@ Update frame timers.</p>
 </tr>
 </table>
 </p>
-<p>
-Provides a set of methods and properties that you can use to accurately measure elapsed time.</p>
+<p>Provides a set of methods and properties that you can use to accurately measure elapsed time. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -29891,72 +28621,63 @@ u64</td>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds(self)</a></td>
 <td class="enumeration">
-<p>
-Gets the total elapsed time in microseconds, after a call to <code class="incode">stop</code>.</p>
+<p>Gets the total elapsed time in microseconds, after a call to <code class="incode">stop</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow(self)</a></td>
 <td class="enumeration">
-<p>
-Gets the current elapsed time in milliseconds since the start.</p>
+<p>Gets the current elapsed time in milliseconds since the start. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds(self)</a></td>
 <td class="enumeration">
-<p>
-Gets the total elapsed time in milliseconds, after a call to <code class="incode">stop</code>.</p>
+<p>Gets the total elapsed time in milliseconds, after a call to <code class="incode">stop</code>. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow(self)</a></td>
 <td class="enumeration">
-<p>
-Gets the current elapsed time in milliseconds since the start.</p>
+<p>Gets the current elapsed time in milliseconds since the start. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_reset">reset(self)</a></td>
 <td class="enumeration">
-<p>
-Stops time interval measurement and resets the elapsed time to zero.</p>
+<p>Stops time interval measurement and resets the elapsed time to zero. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_restart">restart(self)</a></td>
 <td class="enumeration">
-<p>
-Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time.</p>
+<p>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure(string)</a></td>
 <td class="enumeration">
-<p>
-Measure until the end of the scope, and print the result in the console.</p>
+<p>Measure until the end of the scope, and print the result in the console. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_start">start(self)</a></td>
 <td class="enumeration">
-<p>
-Starts, or resumes, measuring elapsed time for an interval.</p>
+<p>Starts, or resumes, measuring elapsed time for an interval. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Stopwatch_stop">stop(self)</a></td>
 <td class="enumeration">
-<p>
-Stops measuring elapsed time for an interval.</p>
+<p>Stops measuring elapsed time for an interval. </p>
 </td>
 </tr>
 </table>
@@ -29971,8 +28692,7 @@ Stops measuring elapsed time for an interval.</p>
 </tr>
 </table>
 </p>
-<p>
-Gets the total elapsed time in microseconds, after a call to <code class="incode">stop</code>.</p>
+<p>Gets the total elapsed time in microseconds, after a call to <code class="incode">stop</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">elapsedMicroseconds</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -29987,8 +28707,7 @@ Gets the total elapsed time in microseconds, after a call to <code class="incode
 </tr>
 </table>
 </p>
-<p>
-Gets the current elapsed time in milliseconds since the start.</p>
+<p>Gets the current elapsed time in milliseconds since the start. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">elapsedMicrosecondsNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -30003,8 +28722,7 @@ Gets the current elapsed time in milliseconds since the start.</p>
 </tr>
 </table>
 </p>
-<p>
-Gets the total elapsed time in milliseconds, after a call to <code class="incode">stop</code>.</p>
+<p>Gets the total elapsed time in milliseconds, after a call to <code class="incode">stop</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">elapsedMilliseconds</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -30019,8 +28737,7 @@ Gets the total elapsed time in milliseconds, after a call to <code class="incode
 </tr>
 </table>
 </p>
-<p>
-Gets the current elapsed time in milliseconds since the start.</p>
+<p>Gets the current elapsed time in milliseconds since the start. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">elapsedMillisecondsNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -30035,8 +28752,7 @@ Gets the current elapsed time in milliseconds since the start.</p>
 </tr>
 </table>
 </p>
-<p>
-Stops time interval measurement and resets the elapsed time to zero.</p>
+<p>Stops time interval measurement and resets the elapsed time to zero. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -30051,8 +28767,7 @@ Stops time interval measurement and resets the elapsed time to zero.</p>
 </tr>
 </table>
 </p>
-<p>
-Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time.</p>
+<p>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">restart</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -30067,8 +28782,7 @@ Stops time interval measurement, resets the elapsed time to zero, and starts mea
 </tr>
 </table>
 </p>
-<p>
-Measure until the end of the scope, and print the result in the console.</p>
+<p>Measure until the end of the scope, and print the result in the console. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scopeMeasure</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"stopwatch"</span><span class="SyntaxCode">)</code>
@@ -30084,8 +28798,7 @@ Measure until the end of the scope, and print the result in the console.</p>
 </tr>
 </table>
 </p>
-<p>
-Starts, or resumes, measuring elapsed time for an interval.</p>
+<p>Starts, or resumes, measuring elapsed time for an interval. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">start</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -30100,8 +28813,7 @@ Starts, or resumes, measuring elapsed time for an interval.</p>
 </tr>
 </table>
 </p>
-<p>
-Stops measuring elapsed time for an interval.</p>
+<p>Stops measuring elapsed time for an interval. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -30116,8 +28828,7 @@ Stops measuring elapsed time for an interval.</p>
 </tr>
 </table>
 </p>
-<p>
-Represents an interval of time, stored as a 64 bits integer.</p>
+<p>Represents an interval of time, stored as a 64 bits integer. </p>
 <table class="enumeration">
 <tr>
 <td class="tdname">
@@ -30134,88 +28845,77 @@ Core.Time.Ticks</td>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_addDays">addDays(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Add or remove the given amount of days to the TimeSpan.</p>
+<p>Add or remove the given amount of days to the TimeSpan. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_addHours">addHours(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Add or remove the given amount of hours to the TimeSpan.</p>
+<p>Add or remove the given amount of hours to the TimeSpan. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Add or remove the given amount of minutes to the TimeSpan.</p>
+<p>Add or remove the given amount of minutes to the TimeSpan. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_addMinutes">addMinutes(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Add or remove the given amount of minutes to the TimeSpan.</p>
+<p>Add or remove the given amount of minutes to the TimeSpan. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_addMonths">addMonths(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Add or remove the given amount of months to the TimeSpan.</p>
+<p>Add or remove the given amount of months to the TimeSpan. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_addSeconds">addSeconds(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Add or remove the given amount of minutes to the TimeSpan.</p>
+<p>Add or remove the given amount of minutes to the TimeSpan. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_addYears">addYears(self, s32)</a></td>
 <td class="enumeration">
-<p>
-Add or remove the given amount of years to the TimeSpan.</p>
+<p>Add or remove the given amount of years to the TimeSpan. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_from">from(const ref DateTime)</a></td>
 <td class="enumeration">
-<p>
-Creates a TimeSpan with the given DateTime.</p>
+<p>Creates a TimeSpan with the given DateTime. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_now">now()</a></td>
 <td class="enumeration">
-<p>
-Returns the current date and time.</p>
+<p>Returns the current date and time. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_setNow">setNow(self)</a></td>
 <td class="enumeration">
-<p>
-Initialize the TimeSpan with the current date and time.</p>
+<p>Initialize the TimeSpan with the current date and time. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_TimeSpan_toDateTime">toDateTime(self)</a></td>
 <td class="enumeration">
-<p>
-Converts a TimeSpan to a DateTime.</p>
+<p>Converts a TimeSpan to a DateTime. </p>
 </td>
 </tr>
 <tr>
@@ -30269,8 +28969,7 @@ Converts a TimeSpan to a DateTime.</p>
 </tr>
 </table>
 </p>
-<p>
-Add or remove the given amount of days to the TimeSpan.</p>
+<p>Add or remove the given amount of days to the TimeSpan. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addDays</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, days: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -30285,8 +28984,7 @@ Add or remove the given amount of days to the TimeSpan.</p>
 </tr>
 </table>
 </p>
-<p>
-Add or remove the given amount of hours to the TimeSpan.</p>
+<p>Add or remove the given amount of hours to the TimeSpan. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addHours</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, hours: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -30301,8 +28999,7 @@ Add or remove the given amount of hours to the TimeSpan.</p>
 </tr>
 </table>
 </p>
-<p>
-Add or remove the given amount of minutes to the TimeSpan.</p>
+<p>Add or remove the given amount of minutes to the TimeSpan. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addMilliSeconds</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, milliSeconds: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -30317,8 +29014,7 @@ Add or remove the given amount of minutes to the TimeSpan.</p>
 </tr>
 </table>
 </p>
-<p>
-Add or remove the given amount of minutes to the TimeSpan.</p>
+<p>Add or remove the given amount of minutes to the TimeSpan. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addMinutes</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, minutes: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -30333,8 +29029,7 @@ Add or remove the given amount of minutes to the TimeSpan.</p>
 </tr>
 </table>
 </p>
-<p>
-Add or remove the given amount of months to the TimeSpan.</p>
+<p>Add or remove the given amount of months to the TimeSpan. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addMonths</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, months: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -30349,8 +29044,7 @@ Add or remove the given amount of months to the TimeSpan.</p>
 </tr>
 </table>
 </p>
-<p>
-Add or remove the given amount of minutes to the TimeSpan.</p>
+<p>Add or remove the given amount of minutes to the TimeSpan. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeconds</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, seconds: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -30365,8 +29059,7 @@ Add or remove the given amount of minutes to the TimeSpan.</p>
 </tr>
 </table>
 </p>
-<p>
-Add or remove the given amount of years to the TimeSpan.</p>
+<p>Add or remove the given amount of years to the TimeSpan. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addYears</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, years: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </p>
@@ -30381,8 +29074,7 @@ Add or remove the given amount of years to the TimeSpan.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a TimeSpan with the given DateTime.</p>
+<p>Creates a TimeSpan with the given DateTime. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">from</span><span class="SyntaxCode">(dateTime: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_TimeSpan">TimeSpan</a></span><span class="SyntaxCode"></code>
 </p>
@@ -30397,8 +29089,7 @@ Creates a TimeSpan with the given DateTime.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the current date and time.</p>
+<p>Returns the current date and time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">now</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_TimeSpan">TimeSpan</a></span><span class="SyntaxCode"></code>
 </p>
@@ -30427,8 +29118,7 @@ Returns the current date and time.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize the TimeSpan with the current date and time.</p>
+<p>Initialize the TimeSpan with the current date and time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -30443,8 +29133,7 @@ Initialize the TimeSpan with the current date and time.</p>
 </tr>
 </table>
 </p>
-<p>
-Converts a TimeSpan to a DateTime.</p>
+<p>Converts a TimeSpan to a DateTime. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toDateTime</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode"></code>
 </p>
@@ -30561,24 +29250,21 @@ context</td>
 <td class="enumeration">
 <a href="#Core_Time_Timer_create">create(u32, func(Timer), bool)</a></td>
 <td class="enumeration">
-<p>
-Creates a new timer.</p>
+<p>Creates a new timer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Timer_init">init(self, u32, func(Timer), bool)</a></td>
 <td class="enumeration">
-<p>
-Initialize timer.</p>
+<p>Initialize timer. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_Time_Timer_release">release(self)</a></td>
 <td class="enumeration">
-<p>
-Release the timer.</p>
+<p>Release the timer. </p>
 </td>
 </tr>
 </table>
@@ -30593,8 +29279,7 @@ Release the timer.</p>
 </tr>
 </table>
 </p>
-<p>
-Creates a new timer.</p>
+<p>Creates a new timer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(elapsedTimeMs: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, lambda: </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Timer">Timer</a></span><span class="SyntaxCode">), periodic = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Timer">Timer</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -30609,8 +29294,7 @@ Creates a new timer.</p>
 </tr>
 </table>
 </p>
-<p>
-Initialize timer.</p>
+<p>Initialize timer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, elapsedTimeMs: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, lambda: </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Timer">Timer</a></span><span class="SyntaxCode">), periodic = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </p>
@@ -30625,8 +29309,7 @@ Initialize timer.</p>
 </tr>
 </table>
 </p>
-<p>
-Release the timer.</p>
+<p>Release the timer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -30641,8 +29324,7 @@ Release the timer.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a date to a 64 bits value.</p>
+<p>Convert a date to a 64 bits value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dateToTicks</span><span class="SyntaxCode">(year: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, month: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, day: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode"></code>
 </p>
@@ -30657,8 +29339,7 @@ Convert a date to a 64 bits value.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of days of the given month, for the given year.</p>
+<p>Returns the number of days of the given month, for the given year. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">daysInMonth</span><span class="SyntaxCode">(year: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, month: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode"></code>
 </p>
@@ -30673,8 +29354,7 @@ Returns the number of days of the given month, for the given year.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given year is a leap year.</p>
+<p>Returns true if the given year is a leap year. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isLeapYear</span><span class="SyntaxCode">(year: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -30689,8 +29369,7 @@ Returns true if the given year is a leap year.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the current time expressed in microseconds.</p>
+<p>Returns the current time expressed in microseconds. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nowMicroseconds</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -30705,8 +29384,7 @@ Returns the current time expressed in microseconds.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the current time expressed in milliseconds.</p>
+<p>Returns the current time expressed in milliseconds. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nowMilliseconds</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -30721,8 +29399,7 @@ Returns the current time expressed in milliseconds.</p>
 </tr>
 </table>
 </p>
-<p>
-Get current time precise value.</p>
+<p>Get current time precise value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nowPrecise</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -30737,8 +29414,7 @@ Get current time precise value.</p>
 </tr>
 </table>
 </p>
-<p>
-The frequency of the precise counter, in ticks per second.</p>
+<p>The frequency of the precise counter, in ticks per second. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">preciseFrequency</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -30753,8 +29429,7 @@ The frequency of the precise counter, in ticks per second.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a 64 bits value to a date.</p>
+<p>Convert a 64 bits value to a date. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ticksToDate</span><span class="SyntaxCode">(ticks: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -30774,8 +29449,7 @@ Convert a 64 bits value to a date.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a 64 bits tick value to a time.</p>
+<p>Convert a 64 bits tick value to a time. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ticksToTime</span><span class="SyntaxCode">(ticks: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -30796,8 +29470,7 @@ Convert a 64 bits tick value to a time.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a time to a 64 bits value.</p>
+<p>Convert a time to a 64 bits value. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">timeToTicks</span><span class="SyntaxCode">(hour: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, minute: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, second: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, millisecond: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode"></code>
 </p>
@@ -30812,8 +29485,7 @@ Convert a time to a 64 bits value.</p>
 </tr>
 </table>
 </p>
-<p>
-Eat <code class="incode">count</code> bytes, and returns the remaining string.</p>
+<p>Eat <code class="incode">count</code> bytes, and returns the remaining string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">eatCount</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, count: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -30828,8 +29500,7 @@ Eat <code class="incode">count</code> bytes, and returns the remaining string.</
 </tr>
 </table>
 </p>
-<p>
-Remove "".</p>
+<p>Remove "". </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">eatQuotes</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -30844,8 +29515,7 @@ Remove "".</p>
 </tr>
 </table>
 </p>
-<p>
-Eat all spaces, and returns the remaining string (trim left).</p>
+<p>Eat all spaces, and returns the remaining string (trim left). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">eatSpaces</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -30860,8 +29530,7 @@ Eat all spaces, and returns the remaining string (trim left).</p>
 </tr>
 </table>
 </p>
-<p>
-Returns a sub string starting at <code class="incode">startByteIndex</code> and ending with <code class="incode">delimiter</code>.</p>
+<p>Returns a sub string starting at <code class="incode">startByteIndex</code> and ending with <code class="incode">delimiter</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTo</span><span class="SyntaxCode">(src: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, delimiter: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, startByteIndex = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, includeDelimiter = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -30876,8 +29545,7 @@ Returns a sub string starting at <code class="incode">startByteIndex</code> and 
 </tr>
 </table>
 </p>
-<p>
-Returns the first substring of <code class="incode">str</code>, stopping at the first blank character.</p>
+<p>Returns the first substring of <code class="incode">str</code>, stopping at the first blank character. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getToSpace</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -30892,8 +29560,7 @@ Returns the first substring of <code class="incode">str</code>, stopping at the 
 </tr>
 </table>
 </p>
-<p>
-Returns the first substring of <code class="incode">str</code> containing only digits and letters.</p>
+<p>Returns the first substring of <code class="incode">str</code> containing only digits and letters. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getWhileAlnum</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </p>
@@ -30908,13 +29575,11 @@ Returns the first substring of <code class="incode">str</code> containing only d
 </tr>
 </table>
 </p>
-<p>
-Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <code class="incode">src</code> String is destroyed.</p>
+<p>Split string into sub strings, given an array of rune separators  Note that this returns an array of native strings, not copies.  All strings will be invalid if <code class="incode">src</code> String is destroyed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">split</span><span class="SyntaxCode">(src: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, separators: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, maxSplit: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, removeEmpty = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p>
-Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <code class="incode">src</code> is destroyed.</p>
+<p>Split string into sub strings, given a rune separator  Note that this returns an array of native strings, not copies.  All strings will be invalid if <code class="incode">src</code> is destroyed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">split</span><span class="SyntaxCode">(src: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, separator: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, maxSplit: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, removeEmpty = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -30929,8 +29594,7 @@ Split string into sub strings, given a rune separator Note that this returns an 
 </tr>
 </table>
 </p>
-<p>
-Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <code class="incode">src</code> is destroyed.</p>
+<p>Split the string into an array of lines  Note that this returns an array of native strings, not copies.  All strings will be invalid if <code class="incode">src</code> is destroyed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">splitLines</span><span class="SyntaxCode">(src: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
@@ -30961,32 +29625,28 @@ Split the string into an array of lines Note that this returns an array of nativ
 <td class="enumeration">
 <a href="#Core_UUID_clear">clear(self)</a></td>
 <td class="enumeration">
-<p>
-Clear id.</p>
+<p>Clear id. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_UUID_getRandom">getRandom()</a></td>
 <td class="enumeration">
-<p>
-Get a version 4 UUID (random).</p>
+<p>Get a version 4 UUID (random). </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_UUID_toString">toString(self)</a></td>
 <td class="enumeration">
-<p>
-Convert uuid to a string.</p>
+<p>Convert uuid to a string. </p>
 </td>
 </tr>
 <tr>
 <td class="enumeration">
 <a href="#Core_UUID_toString">toString(self, [..] u8)</a></td>
 <td class="enumeration">
-<p>
-Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
+<p>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </p>
 </td>
 </tr>
 </table>
@@ -31038,8 +29698,7 @@ Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
 </tr>
 </table>
 </p>
-<p>
-Clear id.</p>
+<p>Clear id. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
 </p>
@@ -31054,8 +29713,7 @@ Clear id.</p>
 </tr>
 </table>
 </p>
-<p>
-Get a version 4 UUID (random).</p>
+<p>Get a version 4 UUID (random). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRandom</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_UUID">UUID</a></span><span class="SyntaxCode"></code>
 </p>
@@ -31084,13 +29742,11 @@ Get a version 4 UUID (random).</p>
 </tr>
 </table>
 </p>
-<p>
-Convert uuid to a string.</p>
+<p>Convert uuid to a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
-Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
+<p>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </p>
@@ -31105,13 +29761,11 @@ Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer to a character sequence, and returns the number of valid elements in the destination buffer.</p>
+<p>Convert an utf8 buffer to a character sequence, and returns the  number of valid elements in the destination buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUtf8</span><span class="SyntaxCode">(dest: [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Convert an utf8 buffer to a character sequence.</p>
+<p>Convert an utf8 buffer to a character sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUtf8</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
@@ -31308,8 +29962,7 @@ Convert an utf8 buffer to a character sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Make a rune buffer lower case.</p>
+<p>Make a rune buffer lower case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeLower</span><span class="SyntaxCode">(buffer: [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
@@ -31324,8 +29977,7 @@ Make a rune buffer lower case.</p>
 </tr>
 </table>
 </p>
-<p>
-Make a rune buffer upper case.</p>
+<p>Make a rune buffer upper case. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">makeUpper</span><span class="SyntaxCode">(buffer: [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </p>
@@ -31382,8 +30034,7 @@ Make a rune buffer upper case.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the unicode character pointed by <code class="incode">buffer</code>, and the number of u16 to encode it Will return <code class="incode">RuneError</code> for an invalid utf16 sequence.</p>
+<p>Get the unicode character pointed by <code class="incode">buffer</code>, and the number of u16 to encode it  Will return <code class="incode">RuneError</code> for an invalid utf16 sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decodeRune</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -31402,8 +30053,7 @@ Get the unicode character pointed by <code class="incode">buffer</code>, and the
 </tr>
 </table>
 </p>
-<p>
-Convert unicode character <code class="incode">src</code> to an utf16 sequence, and returns the number of u16 that were needed to make the conversion. <code class="incode">dest</code> must be at least 2 u16 long.</p>
+<p>Convert unicode character <code class="incode">src</code> to an utf16 sequence, and returns  the number of u16 that were needed to make the conversion.  <code class="incode">dest</code> must be at least 2 u16 long. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encodeRune</span><span class="SyntaxCode">(dest: [..] </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
@@ -31418,13 +30068,11 @@ Convert unicode character <code class="incode">src</code> to an utf16 sequence, 
 </tr>
 </table>
 </p>
-<p>
-Convert a character array (32 bits unicode) to an utf16 buffer Returns the number of bytes written in the destination buffer <code class="incode">dest</code> must be at least 2 bytes long.</p>
+<p>Convert a character array (32 bits unicode) to an utf16 buffer  Returns the number of bytes written in the destination buffer  <code class="incode">dest</code> must be at least 2 bytes long. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUnicode</span><span class="SyntaxCode">(dest: [..] </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Convert a character array (32 bits unicode) to an utf16 sequence.</p>
+<p>Convert a character array (32 bits unicode) to an utf16 sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUnicode</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u16</span><span class="SyntaxCode">)</code>
 </p>
@@ -31439,13 +30087,11 @@ Convert a character array (32 bits unicode) to an utf16 sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert an utf8 buffer to a utf16 buffer, and returns the number of valid elements in the destination buffer.</p>
+<p>Convert an utf8 buffer to a utf16 buffer, and returns the  number of valid elements in the destination buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUtf8</span><span class="SyntaxCode">(dest: [..] </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Convert an utf8 buffer to an utf16 sequence.</p>
+<p>Convert an utf8 buffer to an utf16 sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUtf8</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u16</span><span class="SyntaxCode">)</code>
 </p>
@@ -31460,8 +30106,7 @@ Convert an utf8 buffer to an utf16 sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Compute the string length of a zero terminated utf16 buffer.</p>
+<p>Compute the string length of a zero terminated utf16 buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lengthZeroTerminated</span><span class="SyntaxCode">(buf: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -31476,8 +30121,7 @@ Compute the string length of a zero terminated utf16 buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert string to an utf16 array, zero terminated.</p>
+<p>Convert string to an utf16 array, zero terminated. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toZeroTerminated</span><span class="SyntaxCode">(src: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u16</span><span class="SyntaxCode">)</code>
 </p>
@@ -31529,8 +30173,7 @@ UnicodeNoCase</td>
 </tr>
 </table>
 </p>
-<p>
-Returns the byte index of the given rune index.</p>
+<p>Returns the byte index of the given rune index. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">byteIndex</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, charIndex: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -31549,8 +30192,7 @@ Returns the byte index of the given rune index.</p>
 </tr>
 </table>
 </p>
-<p>
-Compare two utf8 buffers with the given algorithm.</p>
+<p>Compare two utf8 buffers with the given algorithm. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compare</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, dst: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, comparisonType = </span><span class="SyntaxConstant"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </p>
@@ -31565,8 +30207,7 @@ Compare two utf8 buffers with the given algorithm.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if <code class="incode">src</code> contains the string <code class="incode">what</code>.</p>
+<p>Returns true if <code class="incode">src</code> contains the string <code class="incode">what</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contains</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -31581,13 +30222,11 @@ Returns true if <code class="incode">src</code> contains the string <code class=
 </tr>
 </table>
 </p>
-<p>
-Returns the number of bytes to encode the first rune of the utf8 buffer.</p>
+<p>Returns the number of bytes to encode the first rune of the utf8 buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countBytesAt</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
-<p>
- If it's an invalid encoding, returns 1.</p>
+<p> If it's an invalid encoding, returns 1. </p>
 <p>
 <table class="item">
 <tr>
@@ -31599,8 +30238,7 @@ Returns the number of bytes to encode the first rune of the utf8 buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the number of runes in an utf8 buffer.</p>
+<p>Returns the number of runes in an utf8 buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countRunes</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
@@ -31615,8 +30253,7 @@ Returns the number of runes in an utf8 buffer.</p>
 </tr>
 </table>
 </p>
-<p>
-Get the last unicode rune of the utf8 slice, and the number of bytes to encode it.</p>
+<p>Get the last unicode rune of the utf8 slice, and the number of  bytes to encode it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decodeLastRune</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -31635,8 +30272,7 @@ Get the last unicode rune of the utf8 slice, and the number of bytes to encode i
 </tr>
 </table>
 </p>
-<p>
-Get the unicode rune pointed by <code class="incode">buffer</code>, and the number of bytes to encode it.</p>
+<p>Get the unicode rune pointed by <code class="incode">buffer</code>, and the number of bytes to encode it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decodeRune</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
@@ -31644,8 +30280,7 @@ Get the unicode rune pointed by <code class="incode">buffer</code>, and the numb
 	eat: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">
 }</code>
 </p>
-<p>
- Will return <code class="incode">RuneError</code> for an invalid utf8 sequence</p>
+<p> Will return <code class="incode">RuneError</code> for an invalid utf8 sequence </p>
 <p>
 <table class="item">
 <tr>
@@ -31657,13 +30292,11 @@ Get the unicode rune pointed by <code class="incode">buffer</code>, and the numb
 </tr>
 </table>
 </p>
-<p>
-Convert rune <code class="incode">src</code> to an utf8 sequence, and returns the number of bytes that were needed to make the conversion.</p>
+<p>Convert rune <code class="incode">src</code> to an utf8 sequence, and returns  the number of bytes that were needed to make the conversion. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encodeRune</span><span class="SyntaxCode">(dest: [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </p>
-<p>
- <code class="incode">dest</code> must be at least 4 bytes long</p>
+<p> <code class="incode">dest</code> must be at least 4 bytes long </p>
 <p>
 <table class="item">
 <tr>
@@ -31675,8 +30308,7 @@ Convert rune <code class="incode">src</code> to an utf8 sequence, and returns th
 </tr>
 </table>
 </p>
-<p>
-Return true if the string ends with <code class="incode">str</code>.</p>
+<p>Return true if the string ends with <code class="incode">str</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">endsWith</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, comparisonType = </span><span class="SyntaxConstant"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -31691,8 +30323,7 @@ Return true if the string ends with <code class="incode">str</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the first rune of the slice.</p>
+<p>Returns the first rune of the slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">firstRune</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">rune</span><span class="SyntaxCode"></code>
 </p>
@@ -31707,18 +30338,15 @@ Returns the first rune of the slice.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert a rune array to an utf8 buffer.</p>
+<p>Convert a rune array to an utf8 buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUnicode</span><span class="SyntaxCode">(dest: [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Convert an unicode buffer to a String.</p>
+<p>Convert an unicode buffer to a String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUnicode</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns the number of bytes written in the destination buffer <code class="incode">dest</code> must be at least 4 bytes long</p>
+<p> Returns the number of bytes written in the destination buffer  <code class="incode">dest</code> must be at least 4 bytes long </p>
 <p>
 <table class="item">
 <tr>
@@ -31730,18 +30358,15 @@ Convert an unicode buffer to a String.</p>
 </tr>
 </table>
 </p>
-<p>
-Convert an utf16 array to an utf8 buffer.</p>
+<p>Convert an utf16 array to an utf8 buffer. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUtf16</span><span class="SyntaxCode">(dest: [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Convert an utf16 buffer to a String.</p>
+<p>Convert an utf16 buffer to a String. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fromUtf16</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns the number of bytes written in the destination buffer. <code class="incode">dest</code> must be at least 4 bytes long</p>
+<p> Returns the number of bytes written in the destination buffer.  <code class="incode">dest</code> must be at least 4 bytes long </p>
 <p>
 <table class="item">
 <tr>
@@ -31753,27 +30378,21 @@ Convert an utf16 buffer to a String.</p>
 </tr>
 </table>
 </p>
-<p>
-Find one of the runes in <code class="incode">what</code>, and returns the byte index of it.</p>
+<p>Find one of the runes in <code class="incode">what</code>, and returns the byte index of it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">indexOf</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, startByteIndex = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Find the first occurence of rune <code class="incode">what</code>, and returns the byte index of it.</p>
+<p>Find the first occurence of rune <code class="incode">what</code>, and returns the byte index of it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">indexOf</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, startByteIndex = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Find the given string, and returns the byte index of it.</p>
+<p>Find the given string, and returns the byte index of it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">indexOf</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, startByteIndex = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, comparisonType = </span><span class="SyntaxConstant"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns <code class="incode">Swag.U64.Max</code> if not found</p>
-<p>
- Returns <code class="incode">Swag.U64.Max</code> if not found</p>
-<p>
- Returns <code class="incode">Swag.U64.Max</code> if not found</p>
+<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
+<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
+<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
 <p>
 <table class="item">
 <tr>
@@ -31785,8 +30404,7 @@ Find the given string, and returns the byte index of it.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the utf8 sequence is valid.</p>
+<p>Returns true if the utf8 sequence is valid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -31801,8 +30419,7 @@ Returns true if the utf8 sequence is valid.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns true if the given unicode rune can be encoded in utf8.</p>
+<p>Returns true if the given unicode rune can be encoded in utf8. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValidRune</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -31817,27 +30434,21 @@ Returns true if the given unicode rune can be encoded in utf8.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the last index (in bytes) of a rune.</p>
+<p>Returns the last index (in bytes) of a rune. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lastIndexOf</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Find the last rune occurence of <code class="incode">what</code>, and returns the byte index of it.</p>
+<p>Find the last rune occurence of <code class="incode">what</code>, and returns the byte index of it. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lastIndexOf</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
-Returns the last index (in bytes) of a string.</p>
+<p>Returns the last index (in bytes) of a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lastIndexOf</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, comparisonType = </span><span class="SyntaxConstant"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </p>
-<p>
- Returns <code class="incode">Swag.U64.Max</code> if not found</p>
-<p>
- Returns <code class="incode">Swag.U64.Max</code> if not found</p>
-<p>
- Returns <code class="incode">Swag.U64.Max</code> if not found</p>
+<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
+<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
+<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
 <p>
 <table class="item">
 <tr>
@@ -31849,8 +30460,7 @@ Returns the last index (in bytes) of a string.</p>
 </tr>
 </table>
 </p>
-<p>
-Returns the last rune of the slice.</p>
+<p>Returns the last rune of the slice. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lastRune</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">rune</span><span class="SyntaxCode"></code>
 </p>
@@ -31865,8 +30475,7 @@ Returns the last rune of the slice.</p>
 </tr>
 </table>
 </p>
-<p>
-Return true if the string starts with <code class="incode">str</code>.</p>
+<p>Return true if the string starts with <code class="incode">str</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startsWith</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, comparisonType = </span><span class="SyntaxConstant"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </p>
@@ -31881,8 +30490,7 @@ Return true if the string starts with <code class="incode">str</code>.</p>
 </tr>
 </table>
 </p>
-<p>
-Macro to visit the unicode characters of the utf8 sequence.</p>
+<p>Macro to visit the unicode characters of the utf8 sequence. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">visitRunes</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, stmt: code)</code>
@@ -31971,8 +30579,7 @@ Macro to visit the unicode characters of the utf8 sequence.</p>
 </tr>
 </table>
 </p>
-<p>
-Swap two values.</p>
+<p>Swap two values. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">swap</span><span class="SyntaxCode">(x: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">, y: *</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </p>
