@@ -12,8 +12,6 @@ struct GenDoc
     {
         Paragraph,
         RawParagraph,
-        List,
-        Test,
         Code,
         Blockquote,
         Table,

@@ -291,6 +291,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
             }
             else
             {
+                blk.kind = UserBlockKind::Paragraph;
                 blk.lines.push_back(lines[start++]);
             }
 
