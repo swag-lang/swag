@@ -108,12 +108,12 @@ bool GenDoc::generateExamples()
         helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", name.c_str(), title.c_str());
 
         helpContent += "\n";
-        helpContent += Fmt("<h%d id=\"%s\">", titleLevel, name.c_str());
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 1, name.c_str());
         helpContent += title;
-        helpContent += Fmt("</h%d>", titleLevel);
+        helpContent += Fmt("</h%d>", titleLevel + 1);
 
         // helpToc += "<ul>\n";
-        if (!processFile(file->path, titleLevel))
+        if (!processFile(file->path, titleLevel + 1))
             return false;
         // helpToc += "</ul>\n";
     }
