@@ -11576,7 +11576,15 @@ bool</td>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
-<p> The string can have multiple lines.  Accepted markers are:  * <code class="incode">&lt;u&gt;</code> =&gt; underline  * <code class="incode">&lt;b&gt;</code> =&gt; bold  * <code class="incode">&lt;i&gt;</code> =&gt; italic  * <code class="incode">&lt;p1&gt;</code> =&gt; color palette 1  * <code class="incode">&lt;p2&gt;</code> =&gt; color palette 2  * <code class="incode">&lt;p3&gt;</code> =&gt; color palette 3 </p>
+<p> The string can have multiple lines.  Accepted markers are: </p>
+<ul>
+<li><code class="incode">&lt;u&gt;</code> =&gt; underline</li>
+<li><code class="incode">&lt;b&gt;</code> =&gt; bold</li>
+<li><code class="incode">&lt;i&gt;</code> =&gt; italic</li>
+<li><code class="incode">&lt;p1&gt;</code> =&gt; color palette 1</li>
+<li><code class="incode">&lt;p2&gt;</code> =&gt; color palette 2</li>
+<li><code class="incode">&lt;p3&gt;</code> =&gt; color palette 3</li>
+</ul>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">&lt;b&gt;this is bold&lt;b&gt; but this is normal &lt;i&gt;</span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> this is italic&lt;/i&gt;</code>
 </p>

@@ -256,7 +256,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
         UserBlock blk;
 
         // Start of a block
-        // Zap blank lines at the start of the block
+        // Zap blank lines
         for (; start < lines.size(); start++)
         {
             auto line = lines[start];
@@ -282,19 +282,19 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
             {
                 blk.kind = UserBlockKind::Table;
             }
-            else if (line.length() > 1 && line[0] == '*' && SWAG_IS_BLANK(line[1]))
+            else if (line.startsWith("* "))
             {
                 blk.kind = UserBlockKind::List;
             }
-            else if (line.length() > 1 && line[0] == '#' && SWAG_IS_BLANK(line[1]))
+            else if (line.startsWith("# "))
             {
                 blk.kind = UserBlockKind::Title1;
             }
-            else if (line.length() > 2 && line[0] == '#' && line[1] == '#' && SWAG_IS_BLANK(line[2]))
+            else if (line.startsWith("## "))
             {
                 blk.kind = UserBlockKind::Title2;
             }
-            else if (line.length() > 3 && line[0] == '#' && line[1] == '#' && line[2] == '#' && SWAG_IS_BLANK(line[3]))
+            else if (line.startsWith("### "))
             {
                 blk.kind = UserBlockKind::Title3;
             }
@@ -372,6 +372,14 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
                     mustEnd = true;
                 else if (line[0] == '|')
                     mustEnd = true;
+                else if (line.startsWith("* "))
+                    mustEnd = true;
+                else if (line.startsWith("# "))
+                    mustEnd = true;
+                else if (line.startsWith("## "))
+                    mustEnd = true;
+                else if (line.startsWith("### "))
+                    mustEnd = true;
                 else
                     blk.lines.push_back(lines[start]);
                 break;
@@ -384,7 +392,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
                 break;
 
             case UserBlockKind::List:
-                if (line.length() == 1 || line[0] != '*' || !SWAG_IS_BLANK(line[1]))
+                if (!line.startsWith("* "))
                     mustEnd = true;
                 else
                 {
@@ -471,13 +479,13 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel)
         break;
 
     case UserBlockKind::Title1:
-        helpContent += Fmt("<h%d>", titleLevel + 2);
+        helpContent += Fmt("<h%d>", titleLevel + 1);
         break;
     case UserBlockKind::Title2:
-        helpContent += Fmt("<h%d>", titleLevel + 3);
+        helpContent += Fmt("<h%d>", titleLevel + 2);
         break;
     case UserBlockKind::Title3:
-        helpContent += Fmt("<h%d>", titleLevel + 4);
+        helpContent += Fmt("<h%d>", titleLevel + 3);
         break;
     }
 
@@ -554,13 +562,13 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel)
         helpContent += "</table>\n";
         break;
     case UserBlockKind::Title1:
-        helpContent += Fmt("</h%d>\n", titleLevel + 2);
+        helpContent += Fmt("</h%d>\n", titleLevel + 1);
         break;
     case UserBlockKind::Title2:
-        helpContent += Fmt("</h%d>\n", titleLevel + 3);
+        helpContent += Fmt("</h%d>\n", titleLevel + 2);
         break;
     case UserBlockKind::Title3:
-        helpContent += Fmt("</h%d>\n", titleLevel + 4);
+        helpContent += Fmt("</h%d>\n", titleLevel + 3);
         break;
     }
 }

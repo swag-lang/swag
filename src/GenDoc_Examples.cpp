@@ -68,13 +68,13 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
 
 bool GenDoc::generateExamples()
 {
-    helpToc += "<ul>\n";
     sort(module->files.begin(), module->files.end(), [](SourceFile* a, SourceFile* b)
          { return strcmp(a->name.c_str(), b->name.c_str()) < 0; });
 
+    helpToc += "<ul>\n";
+
     // Parse all files
-    int lastTitleLevel  = 1;
-    int firstTitleLevel = lastTitleLevel;
+    int lastTitleLevel = 1;
     for (auto file : module->files)
     {
         Path path = file->name;
@@ -83,7 +83,7 @@ bool GenDoc::generateExamples()
         Utf8 name  = path.string();
         Utf8 title = name;
 
-        int titleLevel = firstTitleLevel;
+        int titleLevel = 0;
         while (title.length() > 4 && SWAG_IS_DIGIT(title[0]) && SWAG_IS_DIGIT(title[1]) && SWAG_IS_DIGIT(title[2]) && title[3] == '_')
         {
             title.remove(0, 4);
@@ -112,10 +112,10 @@ bool GenDoc::generateExamples()
         helpContent += title;
         helpContent += Fmt("</h%d>", titleLevel);
 
-        helpToc += "<ul>\n";
+        // helpToc += "<ul>\n";
         if (!processFile(file->path, titleLevel))
             return false;
-        helpToc += "</ul>\n";
+        // helpToc += "</ul>\n";
     }
 
     helpToc += "</ul>\n";

@@ -154,16 +154,16 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <table class="enumeration">
-<tr><td class="tdname"> <a href="../doc/std.core.php">std.core</a>         </td><td class="tdtype"> Main core module, the base of everything else</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.pixel.php">std.pixel</a>       </td><td class="tdtype"> A 2D painting module</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.gui.php">std.gui</a>           </td><td class="tdtype"> A user interface module (windows, widgets...)</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.ogl.php">std.ogl</a>           </td><td class="tdtype"> Opengl wrapper</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.libc.php">std.libc</a>         </td><td class="tdtype"> Libc wrapper</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.freetype.php">std.freetype</a> </td><td class="tdtype"> Freetype wrapper</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.win32.php">std.win32</a>       </td><td class="tdtype"> Win32 wrapper</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.gdi32.php">std.gdi32</a>       </td><td class="tdtype"> Gdi32 wrapper</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.xinput.php">std.xinput</a>     </td><td class="tdtype"> XInput wrapper</td></tr>
-<tr><td class="tdname"> <a href="../doc/std.audio.php">std.audio</a>       </td><td class="tdtype"> Audio module to play sounds</td></tr>
+<tr><td class="tdname"> <a href="std.core.php">std.core</a>         </td><td class="tdtype"> Main core module, the base of everything else</td></tr>
+<tr><td class="tdname"> <a href="std.pixel.php">std.pixel</a>       </td><td class="tdtype"> A 2D painting module</td></tr>
+<tr><td class="tdname"> <a href="std.gui.php">std.gui</a>           </td><td class="tdtype"> A user interface module (windows, widgets...)</td></tr>
+<tr><td class="tdname"> <a href="std.ogl.php">std.ogl</a>           </td><td class="tdtype"> Opengl wrapper</td></tr>
+<tr><td class="tdname"> <a href="std.libc.php">std.libc</a>         </td><td class="tdtype"> Libc wrapper</td></tr>
+<tr><td class="tdname"> <a href="std.freetype.php">std.freetype</a> </td><td class="tdtype"> Freetype wrapper</td></tr>
+<tr><td class="tdname"> <a href="std.win32.php">std.win32</a>       </td><td class="tdtype"> Win32 wrapper</td></tr>
+<tr><td class="tdname"> <a href="std.gdi32.php">std.gdi32</a>       </td><td class="tdtype"> Gdi32 wrapper</td></tr>
+<tr><td class="tdname"> <a href="std.xinput.php">std.xinput</a>     </td><td class="tdtype"> XInput wrapper</td></tr>
+<tr><td class="tdname"> <a href="std.audio.php">std.audio</a>       </td><td class="tdtype"> Audio module to play sounds</td></tr>
 </table>
 </div>
 </div>

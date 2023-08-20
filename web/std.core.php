@@ -22303,7 +22303,13 @@ bool</td>
 <li>Reorder of fields, as long as their name/type are the same.</li>
 <li>Rename a field with <code class="incode">Serialization.Alias</code>.</li>
 </ul>
-<p>    Supported type changes are :     * Change the size of a static array.     * Convert a static array to a dynamic array, and vice versa.     * Conversion from integer/float/rune/bool to integer/float/rune/bool.     * Conversion from single value to array/Core.Array, and vice versa. </p>
+<p>    Supported type changes are : </p>
+<ul>
+<li>Change the size of a static array.</li>
+<li>Convert a static array to a dynamic array, and vice versa.</li>
+<li>Conversion from integer/float/rune/bool to integer/float/rune/bool.</li>
+<li>Conversion from single value to array/Core.Array, and vice versa.</li>
+</ul>
 <p>    Supported attributes are : </p>
 <ul>
 <li><code class="incode">Serialisation.Version</code>. If version is specified, then loading will not have versioning if versions are the same</li>

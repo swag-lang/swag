@@ -153,9 +153,9 @@
 <div class="page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
-<h2>Contribute to the test suite </h2>
+<h1>Contribute to the test suite </h1>
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
-<h4>Create a workspace and a test module </h4>
+<h3>Create a workspace and a test module </h3>
 <p>First create a workspace with the <code class="incode">--test</code> option. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag new -w:myWorkspace --test</code>
@@ -166,7 +166,7 @@
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag test -w:myWorkspace</code>
 </p>
 <p>To force the build, add <code class="incode">--rebuild</code>. </p>
-<h4>Write tests </h4>
+<h3>Write tests </h3>
 <ul>
 <li>Tests should be small, located in different <b>small files</b>.</li>
 <li>Just write files like <code class="incode">test1.swg</code>, <code class="incode">test2.swg</code> and so on, in the <code class="incode">\src</code> sub folder of your module.</li>

@@ -153,7 +153,7 @@
 <div class="page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
-<h2>Script file </h2>
+<h1>Script file </h1>
 <p>Instead of a workspace, Swag can also be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag new -f:myScript
@@ -184,7 +184,7 @@
 </span><span class="SyntaxConstant">Hello</span><span class="SyntaxCode"> world !</code>
 </p>
 <p>You will find a bunch of small scripts in <code class="incode">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="incode">swag pendulum.swgs</code> </p>
-<h3>Dependencies </h3>
+<h2>Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">#dependencies
@@ -198,7 +198,7 @@
 <li>To locate the Swag cache folder, add <code class="incode">--verbose-path</code> to the command line.</li>
 <li>To force the build of dependencies, add <code class="incode">--rebuildall</code> to the command line.</li>
 </ul>
-<h3>More than one script file </h3>
+<h2>More than one script file </h2>
 <p>If your script is divided in more than one single file, you can add <code class="incode">#load &lt;filename&gt;</code> in the <code class="incode">#dependencies</code> block. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">#dependencies
@@ -207,7 +207,7 @@
     #load </span><span class="SyntaxString">"folder/myOtherOtherFile.swgs"</span><span class="SyntaxCode">
 }</code>
 </p>
-<h3>Debug </h3>
+<h2>Debug </h2>
 <p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <code class="incode">@breakpoint()</code> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 </div>

@@ -43,8 +43,8 @@ struct GenDoc
     void computeUserComments(UserComment& result, Vector<Utf8>& lines);
     Utf8 getFormattedText(const Utf8& user);
     void outputCode(const Utf8& code, bool makeRefs);
-    void outputUserBlock(const UserBlock& user, int titleLevel = 0);
-    void outputUserComment(const UserComment& user, int titleLevel = 0);
+    void outputUserBlock(const UserBlock& user, int titleLevel = 1);
+    void outputUserComment(const UserComment& user, int titleLevel = 1);
 
     Module*       module = nullptr;
     DocKind       docKind;
