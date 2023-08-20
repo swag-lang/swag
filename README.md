@@ -13,7 +13,7 @@ You can visit the official [Website](https://swag-lang.org/) or the [YouTube](ht
 Note that a simple `visual studio code` [extension](https://marketplace.visualstudio.com/items?itemName=swag-lang.swag) exists for syntax coloration.
 
 <p align="center">
-    <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
+    <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/syntax.png">
 </p>
 
 Here is a **screen capture software** fully written in Swag with the help of the [Swag standard modules](https://www.swag-lang.org/std.php) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
