@@ -393,7 +393,7 @@ impl Encoder
     #[Swag.Safety("", false)]
     func paeth(a, b, c: u8)->u32
     {
-        let p = cast(s16) (a + b - c)
+        let p = cast(s16) (a +,up b - c)
         let pa = Math.abs(cast(s16) (p - a))
         let pb = Math.abs(cast(s16) (p - b))
         let pc = Math.abs(cast(s16) (p - c))
