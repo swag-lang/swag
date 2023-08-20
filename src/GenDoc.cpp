@@ -294,6 +294,10 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
             {
                 blk.kind = UserBlockKind::Title2;
             }
+            else if (line.length() > 3 && line[0] == '#' && line[1] == '#' && line[2] == '#' && SWAG_IS_BLANK(line[3]))
+            {
+                blk.kind = UserBlockKind::Title3;
+            }
             else
             {
                 blk.kind = UserBlockKind::Paragraph;
@@ -310,12 +314,12 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
             continue;
         }
 
-        bool mustEnd = false;
-        for (; start < lines.size() && !mustEnd; start++)
+        for (; start < lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
 
+            bool mustEnd = false;
             switch (blk.kind)
             {
             case UserBlockKind::Title1:
@@ -326,6 +330,12 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
                 break;
             case UserBlockKind::Title2:
                 line.remove(0, 3); // ##<blank>
+                blk.lines.push_back(line);
+                mustEnd = true;
+                start++;
+                break;
+            case UserBlockKind::Title3:
+                line.remove(0, 4); // ###<blank>
                 blk.lines.push_back(line);
                 mustEnd = true;
                 start++;
@@ -399,6 +409,9 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
                 SWAG_ASSERT(false);
                 break;
             }
+
+            if (mustEnd)
+                break;
         }
 
         if (!blk.lines.empty())
@@ -416,7 +429,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
     }
 }
 
-void GenDoc::outputUserBlock(const UserBlock& user)
+void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel)
 {
     if (user.lines.empty())
         return;
@@ -458,11 +471,13 @@ void GenDoc::outputUserBlock(const UserBlock& user)
         break;
 
     case UserBlockKind::Title1:
-        helpContent += "<h2>";
+        helpContent += Fmt("<h%d>", titleLevel + 2);
         break;
-
     case UserBlockKind::Title2:
-        helpContent += "<h3>";
+        helpContent += Fmt("<h%d>", titleLevel + 3);
+        break;
+    case UserBlockKind::Title3:
+        helpContent += Fmt("<h%d>", titleLevel + 4);
         break;
     }
 
@@ -539,18 +554,21 @@ void GenDoc::outputUserBlock(const UserBlock& user)
         helpContent += "</table>\n";
         break;
     case UserBlockKind::Title1:
-        helpContent += "</h2>\n";
+        helpContent += Fmt("</h%d>\n", titleLevel + 2);
         break;
     case UserBlockKind::Title2:
-        helpContent += "</h3>\n";
+        helpContent += Fmt("</h%d>\n", titleLevel + 3);
+        break;
+    case UserBlockKind::Title3:
+        helpContent += Fmt("</h%d>\n", titleLevel + 4);
         break;
     }
 }
 
-void GenDoc::outputUserComment(const UserComment& user)
+void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
 {
     for (auto& b : user.blocks)
-        outputUserBlock(b);
+        outputUserBlock(b, titleLevel);
 }
 
 Utf8 GenDoc::getReference(const Utf8& name)

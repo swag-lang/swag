@@ -154,7 +154,7 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h2>Script file </h2>
-<p>No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
+<p>Instead of a workspace, Swag can also be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag new -f:myScript
 =&gt; script file 'myScript.</span><span class="SyntaxFunction">swgs</span><span class="SyntaxCode">' has been created

@@ -168,6 +168,7 @@
 </ul>
 <p>If LLVM has been compiled once, you can also use the <code class="incode">Swag.sln</code> workspace in the <code class="incode">build</code> subfolder. </p>
 <h3>Windows SDK </h3>
+<p>The path to the SDK version is defined in <code class="incode">vs_build_cfg.bat</code>. </p>
 <p>The Swag <b>runtime</b> contains a copy of some libraries from the SDK (<code class="incode">kernel32.lib</code>, <code class="incode">ucrt.lib</code>, <code class="incode">dbghelp.lib</code> and <code class="incode">user32.lib</code>). You will find them in <code class="incode">bin/runtime/windows-x86-64</code>. </p>
 <p>They are shipped with the compiler to avoid the necessity to install the SDK before building with Swag. That way the compiler can be used "as is". </p>
 <p>The standard modules (in <code class="incode">bin/std/modules</code>) can also have dependencies to some other libraries from the SDK. You will find those dependencies in the <code class="incode">publish</code> folder of the corresponding modules. </p>

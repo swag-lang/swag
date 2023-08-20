@@ -18,6 +18,7 @@ struct GenDoc
         List,
         Title1,
         Title2,
+        Title3,
     };
 
     struct UserBlock
@@ -42,8 +43,8 @@ struct GenDoc
     void computeUserComments(UserComment& result, Vector<Utf8>& lines);
     Utf8 getFormattedText(const Utf8& user);
     void outputCode(const Utf8& code, bool makeRefs);
-    void outputUserBlock(const UserBlock& user);
-    void outputUserComment(const UserComment& user);
+    void outputUserBlock(const UserBlock& user, int titleLevel = 0);
+    void outputUserComment(const UserComment& user, int titleLevel = 0);
 
     Module*       module = nullptr;
     DocKind       docKind;

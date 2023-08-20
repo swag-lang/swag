@@ -47,7 +47,6 @@ A workspace contains a predefined number of sub folders:
 * `modules/` contains all the modules (sub folders) of that workspace.
 * `output/` (generated) contains the result of the build (this is where the executable will be located).
 * `tests/` (optional) contains a list of test modules.
-* `examples/` (optional) contains a list of 'examples' modules.
 * `dependencies/` (generated) contains a list of external modules needed to compile the workspace.
 
 A module is also organized in a predefined way:
@@ -68,7 +67,7 @@ $ swag build -w:first
 ```
 
 You can omit the workspace name (`-w:first` or `--workspace:first`) if you call the compiler directly from the workspace folder.
-This command will compile all modules in `modules/` and `examples/`.
+This command will compile all modules in `modules/`.
 
 You can also build and run your workspace.
 
@@ -90,7 +89,6 @@ This can increase the compile time of your project, so consider excluding your S
 # Content of the Swag folder
 The Swag folder contains the compiler `swag.exe`, but also a bunch of sub folders.
 
-* `examples/` is a workspace with various code examples (mostly for testing).
 * `reference/` is a workspace which contains an overview of the language, in the form of small tests.
 * `testsuite/` is a workspace which contains all the tests to debug the compiler.
 * `runtime/` contains the compiler runtime, which is included in all user modules.

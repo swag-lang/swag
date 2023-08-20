@@ -25042,8 +25042,18 @@ bool</td>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
 <p> Format is: </p>
-<p> <code class="incode">[+][fmt][precision]</code> </p>
-<p> <code class="incode">[+]</code>       force the positive sign if number is positive  <code class="incode">[fmt]</code> output format:       <code class="incode">e (-d.dddde±dd, a decimal exponent)</code>       <code class="incode">E (-d.ddddE±dd, a decimal exponent)</code>       <code class="incode">f (-ddd.dddd, no exponent)</code>       <code class="incode">g (<code class="incode">e</code> for large exponents, <code class="incode">f</code> otherwise)</code>       <code class="incode">G (<code class="incode">E</code> for large exponents, <code class="incode">f</code> otherwise)</code>  <code class="incode">[precision]</code>       integer, precision of the fractional part </p>
+<p style="white-space: break-spaces"> `[+][fmt][precision]`
+
+ `[+]`
+      force the positive sign if number is positive
+ `[fmt]` output format:
+      `e (-d.dddde±dd, a decimal exponent)`
+      `E (-d.ddddE±dd, a decimal exponent)`
+      `f (-ddd.dddd, no exponent)`
+      `g ('e' for large exponents, 'f' otherwise)`
+      `G ('E' for large exponents, 'f' otherwise)`
+ `[precision]`
+      integer, precision of the fractional part</p>
 <p>
 <table class="item">
 <tr>
@@ -25125,8 +25135,16 @@ bool</td>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, strFormat: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
 <p> Format is: </p>
-<p> <code class="incode">[+][B|D|X][padding][width]</code> </p>
-<p> <code class="incode">[+]</code>       force sign for positive numbers  <code class="incode">[B|D|X]</code>       binary, decimal, hexadecimal  <code class="incode">[padding]</code>       padding character, in ascii, mandatory before the next field  <code class="incode">[width]</code>       width of the output, in characters </p>
+<p style="white-space: break-spaces"> `[+][B|D|X][padding][width]`
+
+ `[+]`
+      force sign for positive numbers
+ `[B|D|X]`
+      binary, decimal, hexadecimal
+ `[padding]`
+      padding character, in ascii, mandatory before the next field
+ `[width]`
+      width of the output, in characters</p>
 <p>
 <table class="item">
 <tr>

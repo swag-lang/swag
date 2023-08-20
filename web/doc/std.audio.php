@@ -230,15 +230,28 @@
 <h1>Overview</h1>
 <p><code class="incode">Std.Audio</code> is a module to decode and play sound files. </p>
 <p>Under windows, it is based on the <code class="incode">xaudio2</code> library. # How to play a sound First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
-<p>Audio.createEngine() defer Audio.destroyEngine() // Don't forget to destroy the engine when you are done </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">createEngine</span><span class="SyntaxCode">()
+</span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">destroyEngine</span><span class="SyntaxCode">() </span><span class="SyntaxComment">// Don't forget to destroy the engine when you are done</span><span class="SyntaxCode"></code>
+</p>
 <p>You then have to load a sound file. </p>
-<p>let soundFile = Audio.SoundFile.Load("mySound.wav") </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SoundFile</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">)</code>
+</p>
 <p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="incode">loadDatas</code> to false. </p>
-<p>let soundFile = Audio.SoundFile.Load("mySound.wav", loadDatas = false) </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> soundFile = </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SoundFile</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Load</span><span class="SyntaxCode">(</span><span class="SyntaxString">"mySound.wav"</span><span class="SyntaxCode">, loadDatas = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+</p>
 <p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
-<p>Voice.play(soundFile) </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Voice</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(soundFile)</code>
+</p>
 <p>To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [Voice.Play] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with. </p>
-<p>let voice = Voice.create(&soundFile) voice.setVolume(0.5) voice.play(Loop) </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> voice = </span><span class="SyntaxConstant">Voice</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(&soundFile)
+voice.</span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)
+voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Loop</span><span class="SyntaxCode">)</code>
+</p>
 <h1>Content</h1>
 <p>
 <table class="item">

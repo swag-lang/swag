@@ -8336,6 +8336,7 @@ bool</td>
 <li><code class="incode">lineSize</code> is the supposed line drawing size</li>
 <li><code class="incode">capScale</code> is the supposed LineCapStyle scale</li>
 </ul>
+<p> Returns the width and the length. </p>
 <p>
 <table class="item">
 <tr>
@@ -11391,7 +11392,11 @@ bool</td>
 </tr>
 </table>
 <p> This kind of string is a specific version of [Core.String] but specific for painting. It can contains  some special markers to change it's appearence. </p>
-<p> &lt;b&gt; this is bold&lt;b&gt;  &lt;p1&gt; this will have special color 1&lt;p1&gt;  ... </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">&lt;b&gt; this is bold&lt;b&gt;
+ &lt;p1&gt; this will have special color </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">&lt;p1&gt;
+ ...</code>
+</p>
 <p> See <a href="#Pixel_RichString_set">RichString.set</a> for a list of available markers. </p>
 <h3>Functions</h3>
 <table class="enumeration">
@@ -11572,7 +11577,9 @@ bool</td>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </p>
 <p> The string can have multiple lines.  Accepted markers are:  * <code class="incode">&lt;u&gt;</code> =&gt; underline  * <code class="incode">&lt;b&gt;</code> =&gt; bold  * <code class="incode">&lt;i&gt;</code> =&gt; italic  * <code class="incode">&lt;p1&gt;</code> =&gt; color palette 1  * <code class="incode">&lt;p2&gt;</code> =&gt; color palette 2  * <code class="incode">&lt;p3&gt;</code> =&gt; color palette 3 </p>
-<p> &lt;b&gt;this is bold&lt;b&gt; but this is normal &lt;i&gt;and this is italic&lt;/i&gt; </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">&lt;b&gt;this is bold&lt;b&gt; but this is normal &lt;i&gt;</span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> this is italic&lt;/i&gt;</code>
+</p>
 <p>
 <table class="item">
 <tr>

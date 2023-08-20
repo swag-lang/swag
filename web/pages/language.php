@@ -430,20 +430,42 @@
 <h2 id="000_introduction">Introduction</h2><p>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="libraries.php">Swag standard modules</a> (<code class="incode">Std</code>). </p>
 <p>More advanced features such as dynamic arrays, dynamic strings or hash maps can be found in the <a href="std/std.core.html">Std.Core</a> module and will not be covered in the examples to come. For now we will focus on the language itself. </p>
 <p>As <code class="incode">reference/language</code> is written as a test module, you can run it with : </p>
-<p>swag test --workspace:c:/swag-lang/swag/bin/reference swag test -w:c:/swag-lang/swag/bin/reference </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">swag test --workspace:c:/swag-lang/swag/bin/reference
+swag test -w:c:/swag-lang/swag/bin/reference</code>
+</p>
 <p>This will run all the test modules of the specified workspace (including this one). You can also omit the <code class="incode">--workspace</code> parameter (or <code class="incode">-w</code> in its short form) if you run Swag directly from the workspace folder. </p>
 <p>Note that if you want to compile and run a single module in the workspace, you can specify it with the <code class="incode">--module</code> (<code class="incode">-m</code>) parameter. </p>
-<p>swag test -w:c:/swag-lang/swag/bin/reference -m:test_language </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">swag test -w:c:/swag-lang/swag/bin/reference -m:test_language</code>
+</p>
 
 <h2 id="001_hello_mad_world">Hello mad world</h2><p>Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the <a href="libraries.php">Swag standard modules</a>. </p>
 <p><code class="incode">#main</code> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <code class="incode">#</code>). It must be defined only once for a native executable. <code class="incode">@print</code> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <code class="incode">@</code>). It is part of the <a href="std/swag.runtime.html">compiler runtime</a> which comes with the compiler. </p>
-<p>#main {     @print("Hello mad world !\n") } </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
+{
+    </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello mad world !\n"</span><span class="SyntaxCode">)
+}</code>
+</p>
 <p>Next, a version that this time uses the <code class="incode">Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module. </p>
 <p>The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple. </p>
-<p>#main {     Core.Console.print("Hello mad world !", "\n")     Core.Console.printf("%\n", "Hello mad world again !") } </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
+{
+    </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello mad world !"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"\n"</span><span class="SyntaxCode">)
+    </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(</span><span class="SyntaxString">"%\n"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"Hello mad world again !"</span><span class="SyntaxCode">)
+}</code>
+</p>
 <p>A <code class="incode">#run</code> block is executed at <b>compile time</b>, and can make Swag behaves like a kind of a <b>scripting language</b>. </p>
 <p>So in the following example, the famous message will be printed by the compiler during compilation. </p>
-<p>#run {     const Msg = "Hello mad world !\n"   // Creates a compiler constant of type <code class="incode">string</code>     Core.Console.print(Msg)             // And call <code class="incode">Console.print</code> at compile time } </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">#run
+{
+    </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Msg</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"Hello mad world !\n"</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// Creates a compiler constant of type 'string'</span><span class="SyntaxCode">
+    </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Msg</span><span class="SyntaxCode">)             </span><span class="SyntaxComment">// And call 'Console.print' at compile time</span><span class="SyntaxCode">
+}</code>
+</p>
 <p>A version that calls a <b>nested function</b> at compile time (only) to initialize the string constant to print. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Brings the 'Core' namespace into scope, to avoid repeating it again and again</span><span class="SyntaxCode">
@@ -565,25 +587,255 @@
 </span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode"></code>
 </p>
 <p>Some identifiers can also start with <code class="incode">@</code>. This indicates an <b>intrinsic</b> function which can be compile time only or also available at runtime (this depends on the intrinsic). </p>
-<p>@min() @max() @sqrt() @print() </p>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">()
+</span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">()
+</span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">()
+</span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">()</code>
+</p>
 
 <h2 id="005_keywords">Keywords</h2><p>This is the list of all keywords in the language. </p>
-<h2>Basic types </h2>
-<p>s8 s16 s32 s64 u8 u16 u32 u64 f32 f64 bool string rune any typeinfo void code cstring cvarargs </p>
-<h2>Language keywords </h2>
-<p>if else elif and or switch case default break continue fallthrough unreachable for loop while visit return defer </p>
-<p>false true null undefined retval </p>
-<p>const var let ref acast cast assume try catch throw closure func mtd attr enum struct union namespace impl public internal private interface using typealias namealias discard dref </p>
-<h2>Compiler keywords </h2>
-<p>#arch #backend #callerfunction #callerlocation #cfg #code #file #line #location #module #os #self #swagbuildnum #swagos #swagrevision #swagversion #type #up </p>
-<p>#assert #elif #else #error #global #if #import #include #load #macro #mixin #placeholder #print #validifx #validif #warning #scope </p>
-<p>#ast #drop #init #main #message #premain #run </p>
-<h2>Intrinsics libc </h2>
-<p>@abs @acos @alloc @asin @atan @atomadd @atomand @atomcmpxchg @atomor @atomxchg @atomxor @bitcountlz @bitcountnz @bitcounttz @byteswap @ceil @cos @cosh @cvaarg @cvaend @cvastart @exp @exp2 @floor @free @log @log10 @log2 @max @memcmp @memcpy @memmove @memset @muladd @min @pow @realloc @round @sin @sinh @sqrt @strcmp @strlen @tan @tanh @trunc </p>
-<h2>Other intrinsics </h2>
-<p>@index @err @errmsg @alias0 @alias1 @alias2 // and more generally @aliasN @alignof @args @assert @breakpoint @compiler @countof @dataof @dbgalloc @defined @drop @compilererror @compilerwarning @getcontext @getpinfos @gettag @hastag @init @isbytecode @isconstexpr @itftableof @kindof @location @mixin0 @mixin1 @mixin2 // and more generally @mixinN @mkany @mkcallback @mkinterface @mkslice @mkstring @decltype @modules @nameof @offsetof @panic @postcopy @postmove @print @rtflags @safety @setcontext @sizeof @spread @stringcmp @stringof @sysalloc @typecmp @typeof </p>
-<h2>Modifiers </h2>
-<p>,over ,nodrop ,bit ,move ,moveraw ,up ,unconst </p>
+<h4>Basic types </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode">
+</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
+</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
+</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
+</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
+</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
+</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
+</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
+</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
+</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
+</span><span class="SyntaxType">string</span><span class="SyntaxCode">
+</span><span class="SyntaxType">rune</span><span class="SyntaxCode">
+</span><span class="SyntaxType">any</span><span class="SyntaxCode">
+</span><span class="SyntaxType">typeinfo</span><span class="SyntaxCode">
+</span><span class="SyntaxType">void</span><span class="SyntaxCode">
+code
+</span><span class="SyntaxType">cstring</span><span class="SyntaxCode">
+cvarargs</code>
+</p>
+<h4>Language keywords </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxLogic">if</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">else</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">elif</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">and</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">or</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">switch</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">case</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">default</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">break</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">continue</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">fallthrough</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">unreachable</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">for</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">loop</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">while</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">visit</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">return</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">defer</span><span class="SyntaxCode">
+
+</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">undefined</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">retval</span><span class="SyntaxCode">
+
+</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">var</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">let</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">acast</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">assume</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">try</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">catch</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">union</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">namespace</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">public</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">internal</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">private</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">interface</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">namealias</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">discard</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"></code>
+</p>
+<h4>Compiler keywords </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">#arch
+#backend
+#callerfunction
+#callerlocation
+#cfg
+#code
+#file
+#line
+#location
+#module
+#os
+#self
+#swagbuildnum
+#swagos
+#swagrevision
+#swagversion
+</span><span class="SyntaxType">#type</span><span class="SyntaxCode">
+#up
+
+#assert
+#elif
+#else
+#error
+#global
+#if
+#import
+#include
+#load
+#macro
+#mixin
+#placeholder
+#print
+#validifx
+#validif
+#warning
+#scope
+
+#ast
+</span><span class="SyntaxCompiler">#drop</span><span class="SyntaxCode">
+</span><span class="SyntaxCompiler">#init</span><span class="SyntaxCode">
+</span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
+</span><span class="SyntaxCompiler">#message</span><span class="SyntaxCode">
+</span><span class="SyntaxCompiler">#premain</span><span class="SyntaxCode">
+#run</code>
+</p>
+<h4>Intrinsics libc </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@acos</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@alloc</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@asin</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@atan</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@byteswap</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@ceil</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@cos</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@cosh</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@cvaarg</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@cvaend</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@cvastart</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@exp</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@exp2</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@floor</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@free</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@log</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@log10</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@log2</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@memcmp</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@memcpy</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@memmove</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@memset</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@pow</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@realloc</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@round</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@sin</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@sinh</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@strcmp</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@strlen</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@tan</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@tanh</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@trunc</span><span class="SyntaxCode"></code>
+</p>
+<h4>Other intrinsics </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@index</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@err</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@errmsg</span><span class="SyntaxCode">
+@alias0
+@alias1
+@alias2 </span><span class="SyntaxComment">// and more generally @aliasN</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@alignof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@args</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@breakpoint</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@dataof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@dbgalloc</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@defined</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@drop</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@compilererror</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@compilerwarning</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@getcontext</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@getpinfos</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@gettag</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@hastag</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@init</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@isbytecode</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@isconstexpr</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@itftableof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@kindof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@location</span><span class="SyntaxCode">
+@mixin0
+@mixin1
+@mixin2 </span><span class="SyntaxComment">// and more generally @mixinN</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@mkany</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@mkcallback</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@mkinterface</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@mkslice</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@mkstring</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@decltype</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@modules</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@nameof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@offsetof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@panic</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@postcopy</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@postmove</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@rtflags</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@safety</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@setcontext</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@spread</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@stringcmp</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@stringof</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@sysalloc</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@typecmp</span><span class="SyntaxCode">
+</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode"></code>
+</p>
+<h4>Modifiers </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">,over
+,nodrop
+,bit
+,move
+,moveraw
+,up
+,unconst</code>
+</p>
 
 <h2 id="006_semicolon">Semicolon</h2><p>In Swag, there's no need to end a statement with <code class="incode">;</code> like in C/C++. Most of the time a <code class="incode">end of line</code> is enough. </p>
 <p class="code">
@@ -745,7 +997,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Type reflection </h2>
+<h4>Type reflection </h4>
+<p>Swag has <b>type reflection</b> at <b>compile time</b> and at <b>runtime</b>. We will see that later in more details. </p>
 <p>You can use <code class="incode">@decltype</code> to create a type based on an expression. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -866,7 +1119,8 @@
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(a) != </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Postfix </h2>
+<h4>Postfix </h4>
+<p>You can also <b>postfix</b> a literal number by a type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -960,7 +1214,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Character literals </h2>
+<h4>Character literals </h4>
+<p>A <i>character</i> is enclosed with <b>backticks</b>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1013,7 +1268,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(e) == </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Escape sequences </h2>
+<h4>Escape sequences </h4>
+<p>A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
 <p>An escape sequence starts with a backslash <code class="incode">\</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -1051,7 +1307,8 @@
     }
 }</code>
 </p>
-<h2>Raw string </h2>
+<h4>Raw string </h4>
+<p>A <i>raw string</i> does not transform the escape sequences inside it. </p>
 <p>A raw string starts and ends with the character <code class="incode">@</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -1089,7 +1346,8 @@
     </span><span class="SyntaxComment">// string</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Multiline string </h2>
+<h4>Multiline string </h4>
+<p>A multiline string starts and ends with <code class="incode">"""</code>. Unlike raw strings, they still evaluate escape sequences. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1120,7 +1378,8 @@
     </span><span class="SyntaxComment">// string</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>@stringof and @nameof </h2>
+<h4>@stringof and @nameof </h4>
+<p>You can use the instrinsic <code class="incode">@stringof</code> to return at compile time the result of a constant expression as a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1278,7 +1537,7 @@
 <p>So the difference between <code class="incode">let</code> and <code class="incode">const</code> is that the value of a constant should be known at compile time, where the value of a <code class="incode">let</code> can be dynamic. Other than that, both must be assigned once and only once. </p>
 
 <h2 id="015_operators">Operators</h2><p>These are all the Swag operators that can be used to manipulate variables and values. </p>
-<h2>Arithmetic operators </h2>
+<h4>Arithmetic operators </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1300,7 +1559,7 @@
     x = x % </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Bitwise operators </h2>
+<h4>Bitwise operators </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1322,7 +1581,8 @@
     x = x &gt;&gt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Assignment operators </h2>
+<h4>Assignment operators </h4>
+<p>All the arithmetic and bitwise operators have an <code class="incode">affect</code> version. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1340,7 +1600,7 @@
     x &gt;&gt;= </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Unary operators </h2>
+<h4>Unary operators </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1362,7 +1622,7 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">0b1111_1110</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Comparison operators </h2>
+<h4>Comparison operators </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1400,7 +1660,8 @@
     }
 }</code>
 </p>
-<h2>Logical operators </h2>
+<h4>Logical operators </h4>
+<p>This is <b>not</b> <code class="incode">&&</code> and <code class="incode">||</code> like in C/C++, but <code class="incode">and</code> and <code class="incode">or</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1409,8 +1670,8 @@
     a = (</span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> &gt; </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">) </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"> (</span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> &lt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Ternary operator </h2>
-<p><code class="incode">A = Expression ? B : C</code> will return <code class="incode">B</code> if the expression is true, and will return <code class="incode">C</code> if the expression is false. </p>
+<h4>Ternary operator </h4>
+<p>The ternary operator will test an expression, and will return a value depending on the result of the test. <code class="incode">A = Expression ? B : C</code> will return <code class="incode">B</code> if the expression is true, and will return <code class="incode">C</code> if the expression is false. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1423,7 +1684,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Spaceshift operator </h2>
+<h4>Spaceshift operator </h4>
+<p>Operator <code class="incode">&lt;=&gt;</code> will return -1, 0 or 1 if the expression on the left is <b>lower</b>, <b>equal</b> or <b>greater</b> than the expression on the right. The returned type is <code class="incode">s32</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt;=&gt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
 </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt;=&gt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">  </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> == </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
@@ -1452,7 +1714,8 @@
     }
 }</code>
 </p>
-<h2>Null-coalescing operator </h2>
+<h4>Null-coalescing operator </h4>
+<p>The operator <code class="incode">orelse</code> will return the left expression if it is not zero, otherwise it will return the right expression. </p>
 <p>Works with strings, pointers and structures with the <code class="incode">opData</code> special function (we'll see that later). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -1479,7 +1742,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == b)
 }</code>
 </p>
-<h2>Type promotion </h2>
+<h4>Type promotion </h4>
+<p>Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation do not have the same type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1507,10 +1771,21 @@
 }</code>
 </p>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
-<h2>Operator precedence </h2>
-<p>~ * / % + - </p>
-<p>& </p>
-<p>^ &lt;=&gt; == != &lt; &lt;= &gt; &gt;= and or </p>
+<h4>Operator precedence </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode">~
+* / %
++ -
+&gt;&gt; &lt;&lt;
+&
+|
+^
+&lt;=&gt;
+== !=
+&lt; &lt;= &gt; &gt;=
+</span><span class="SyntaxLogic">and</span><span class="SyntaxCode">
+</span><span class="SyntaxLogic">or</span><span class="SyntaxCode"></code>
+</p>
 <p>If two operators have the same precedence, the expression is evaluated from left to right. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -1529,8 +1804,8 @@
 }</code>
 </p>
 
-<h2 id="016_cast">Cast</h2><h2>Explicit cast </h2>
-<p>Use <code class="incode">cast(type)</code> to cast from one type to another. </p>
+<h2 id="016_cast">Cast</h2><h4>Explicit cast </h4>
+<p>Sometimes it can be necessary to change the type of a value. Use <code class="incode">cast(type)</code> to cast from one type to another. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 </span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -1545,7 +1820,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>acast </h2>
+<h4>acast </h4>
+<p><code class="incode">acast</code> stands for <code class="incode">automatic</code> cast. Use it to let the compiler automatically cast to the expression on the left. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1555,7 +1831,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>bitcast </h2>
+<h4>bitcast </h4>
+<p>Use <code class="incode">cast,bit</code> to convert a native type to another without converting the value. Works only if the two types are of the same size. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1566,7 +1843,8 @@
     #assert </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">,</span><span class="SyntaxFunction">bit</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxNumber">0x3f800000</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Implicit casts </h2>
+<h4>Implicit casts </h4>
+<p>Swag can sometimes cast from one type to another for you. This is an <i>implicit</i> cast. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -1803,7 +2081,7 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(strSlice[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxString">`t`</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>The slicing operator </h2>
+<h4>The slicing operator </h4>
 <p>Instead of <code class="incode">@mkslice</code>, you can slice something with the <code class="incode">..</code> operator. For example you can slice a string. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -1888,7 +2166,7 @@
 }</code>
 </p>
 
-<h2 id="022_pointers">Pointers</h2><h2>Single value pointers </h2>
+<h2 id="022_pointers">Pointers</h2><h4>Single value pointers </h4>
 <p>A pointer to a <b>single element</b> is declared with <code class="incode"><i></code>.</i> </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -1941,7 +2219,8 @@
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr2: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">        </span><span class="SyntaxComment">// Const pointer to a normal pointer</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Multiple values pointers </h2>
+<h4>Multiple values pointers </h4>
+<p>If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multiple values</b>, declare your pointer with <code class="incode">^</code> instead of <code class="incode"><i></code>.</i> </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -2224,7 +2503,7 @@
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x) != </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(y)
 }</code>
 </p>
-<h2>Tuple unpacking </h2>
+<h4>Tuple unpacking </h4>
 <p>You can unpack a tuple field by field. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -2434,7 +2713,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Enum as flags </h2>
+<h4>Enum as flags </h4>
+<p>An enum can be a set of flags if you declare it with the <code class="incode">#<a href="swag.runtime.html#Swag_EnumFlags">Swag.EnumFlags</a></code> <b>attribute</b>. Its type should be <code class="incode">u8</code>, <code class="incode">u16</code>, <code class="incode">u32</code> or <code class="incode">u64</code>. </p>
 <p>That kind of enum starts by default at 1, and not 0, and each value should be a power of 2. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -2459,7 +2739,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value & </span><span class="SyntaxConstant">MyFlags</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxConstant">MyFlags</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Enum of arrays </h2>
+<h4>Enum of arrays </h4>
+<p>You can have an enum of const static arrays. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -2475,7 +2756,8 @@
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Enum of slices </h2>
+<h4>Enum of slices </h4>
+<p>You can have an enum of const slices. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -2496,7 +2778,7 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Enum type inference </h2>
+<h4>Enum type inference </h4>
 <p>The type of the enum is not necessary in the assignement expression when declaring a variable. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -2794,7 +3076,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>break, continue </h2>
+<h4>break, continue </h4>
+<p><code class="incode">break</code> and <code class="incode">continue</code> can be used inside a loop. </p>
 <p>You can exit a loop with <code class="incode">break</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -2825,7 +3108,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">9</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Ranges </h2>
+<h4>Ranges </h4>
+<p>Loop can also be used to iterate on a <b>range</b> of signed values. </p>
 <p>Syntax is <code class="incode">lower bound..upper bound</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -2871,7 +3155,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Infinite loop </h2>
+<h4>Infinite loop </h4>
+<p>A loop without an expression but with a block is infinite. This is equivalent to <code class="incode">while true {}</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -3933,7 +4218,8 @@
     a =,nodrop,moveraw b
 }</code>
 </p>
-<h2>moveref </h2>
+<h5>moveref </h5>
+<p><code class="incode">moveref</code> can be used instead of <code class="incode">ref</code> in a function parameter to declare a <b>move semantic</b> intention. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 </span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -4489,7 +4775,7 @@
     }
 }</code>
 </p>
-<h2>Multiple return values </h2>
+<h5>Multiple return values </h5>
 <p>An <b>anonymous struct</b> can be used to return multiple values in a function. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -4578,7 +4864,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, &square) == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Anonymous functions </h2>
+<h5>Anonymous functions </h5>
+<p>You can also create <i>anonymous functions</i> (aka functions as literals). </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -5365,7 +5652,7 @@
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 #global skip</code>
 </p>
-<h2>Base </h2>
+<h4>Base </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">);
@@ -5380,7 +5667,7 @@
 </span><span class="SyntaxIntrinsic">@compilererror</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@compilerwarning</span><span class="SyntaxCode">()</code>
 </p>
-<h2>Buildin </h2>
+<h4>Buildin </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@spread</span><span class="SyntaxCode">()
@@ -5408,7 +5695,7 @@
 </span><span class="SyntaxIntrinsic">@index</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@errmsg</span><span class="SyntaxCode"></code>
 </p>
-<h2>Memory related </h2>
+<h4>Memory related </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@alloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">;
@@ -5420,7 +5707,7 @@
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memcmp</span><span class="SyntaxCode">(dst, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@strlen</span><span class="SyntaxCode">(value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">;</code>
 </p>
-<h2>Atomic operations </h2>
+<h4>Atomic operations </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">;
@@ -5477,7 +5764,7 @@
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, compareTo, exchangeWith: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, compareTo, exchangeWith: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">;</code>
 </p>
-<h2>Math </h2>
+<h4>Math </h4>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">;
@@ -5577,7 +5864,8 @@
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1, val2, val3: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">;</code>
 </p>
 
-<h2 id="121_init">Init</h2><h2>@init </h2>
+<h2 id="121_init">Init</h2><h4>@init </h4>
+<p><code class="incode">@init</code> can be used to reinitialize a variable/array to the default value. </p>
 <p>For a simple variable, the default value is 0. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -5655,7 +5943,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">].b == </span><span class="SyntaxNumber">7</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>@drop </h2>
+<h4>@drop </h4>
+<p>For a struct, <code class="incode">@init</code> will <b>not</b> call <code class="incode">opDrop</code>, so this is mostly useful to initialize a plain old data. </p>
 <p>But there is also <code class="incode">@drop</code> intrinsic, which works the same, except that it will <code class="incode">drop</code> all the content by calling <code class="incode">opDrop</code> if it is defined. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -5818,7 +6107,8 @@
 }</code>
 </p>
 
-<h3 id="132_002_validif">Validif</h3><h2>One time evaluation </h2>
+<h3 id="132_002_validif">Validif</h3><h5>One time evaluation </h5>
+<p>On a function, you can use <code class="incode">#validif</code> to check if the usage of the function is correct. </p>
 <p>If the <code class="incode">#validif</code> expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error. </p>
 <p>The <code class="incode">#validif</code> expression is evaluated <b>only once</b>, whatever the call, so it is typically used to check generic parameters. </p>
 <p class="code">
@@ -5926,7 +6216,8 @@
     </span><span class="SyntaxComment">//var v: Point's32</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Multiple evaluations </h2>
+<h5>Multiple evaluations </h5>
+<p>Instead of <code class="incode">#validif</code>, you can use <code class="incode">#validifx</code>. <code class="incode">#validifx</code> is evaluated for <b>each</b> call, so it can be used to check parameters, as long as they can be <b>evaluated at compile time</b>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -6163,7 +6454,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.y == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>For a function parameter </h2>
+<h5>For a function parameter </h5>
+<p><code class="incode">using</code> applied to a function parameter can be seen as the equivalent of the hidden <code class="incode">this</code> in C++. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -6186,7 +6478,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>For a field </h2>
+<h5>For a field </h5>
+<p><code class="incode">using</code> can also be used with a field inside a struct. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -6324,7 +6617,7 @@
 }</code>
 </p>
 
-<h2 id="164_alias">Alias</h2><h2>Type alias </h2>
+<h2 id="164_alias">Alias</h2><h4>Type alias </h4>
 <p><code class="incode">typealias</code> is used to make a shortcut to another type. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -6359,7 +6652,7 @@
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxConstant">MyType</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyType</span><span class="SyntaxCode">) </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>Name alias </h2>
+<h4>Name alias </h4>
 <p>You can alias a function name with <code class="incode">namealias</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -6499,7 +6792,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@errmsg</span><span class="SyntaxCode"> == </span><span class="SyntaxString">"error"</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>defer </h2>
+<h4>defer </h4>
+<p><code class="incode">defer</code> can have parameters like <code class="incode">defer(err)</code> or <code class="incode">defer(noerr)</code> to control if it should be executed depending on the error status. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> g_Defer = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 
@@ -6534,8 +6828,10 @@
 <blockquote>
 <p>Swag comes with four predefined configurations : <code class="incode">debug</code>, <code class="incode">fast-debug</code>, <code class="incode">fast-compile</code> and <code class="incode">release</code>. Safety checks are disabled in <code class="incode">fast-compile</code> and <code class="incode">release</code>. </p>
 </blockquote>
-<h2>overflow </h2>
-<p>#<a href="swag.runtime.html#Swag_Safety("overflow", true)">Swag.Safety("overflow", true)</a> </p>
+<h4>overflow </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("overflow", true)]</span><span class="SyntaxCode"></code>
+</p>
 <p>Swag will panic if some operators overflow and if we lose some bits during an integer conversion. </p>
 <p>Operators that can overflow are : <code class="incode">+ - * &lt;&lt; &gt;&gt;</code> and their equivalent <code class="incode">+= -= <i>= &lt;&lt;= &gt;&gt;=</code>.</i> </p>
 <p class="code">
@@ -6605,8 +6901,10 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">127</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>any </h2>
-<p>#<a href="swag.runtime.html#Swag_Safety("any", true)">Swag.Safety("any", true)</a> </p>
+<h4>any </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("any", true)]</span><span class="SyntaxCode"></code>
+</p>
 <p>Swag will panic if a bad cast from <code class="incode">any</code> is performed. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
@@ -6618,8 +6916,10 @@
     </span><span class="SyntaxComment">//@assert(z == 0)</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>boundcheck </h2>
-<p>#<a href="swag.runtime.html#Swag_Safety("boundcheck", true)">Swag.Safety("boundcheck", true)</a> </p>
+<h4>boundcheck </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("boundcheck", true)]</span><span class="SyntaxCode"></code>
+</p>
 <p>Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string... </p>
 <p>Safety for fixed size arrays. </p>
 <p class="code">
@@ -6658,8 +6958,10 @@
     </span><span class="SyntaxComment">//@assert(slice[0] == `s`)</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>math </h2>
-<p>#<a href="swag.runtime.html#Swag_Safety("math", true)">Swag.Safety("math", true)</a> </p>
+<h4>math </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("math", true)]</span><span class="SyntaxCode"></code>
+</p>
 <p>Swag will panic if some math operations are invalid. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
@@ -6686,14 +6988,20 @@
     </span><span class="SyntaxComment">//@acos(2'f32)</span><span class="SyntaxCode">
 }</code>
 </p>
-<h2>switch </h2>
-<p>#<a href="swag.runtime.html#Swag_Safety("switch", true)">Swag.Safety("switch", true)</a> </p>
+<h4>switch </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("switch", true)]</span><span class="SyntaxCode"></code>
+</p>
 <p>Swag will panic if a switch is marked with <code class="incode">#<a href="swag.runtime.html#Swag_Complete">Swag.Complete</a></code>, but the value is not covered by a <code class="incode">case</code>. </p>
-<h2>bool </h2>
-<p>#<a href="swag.runtime.html#Swag_Safety("bool", true)">Swag.Safety("bool", true)</a> </p>
+<h4>bool </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("bool", true)]</span><span class="SyntaxCode"></code>
+</p>
 <p>Swag will panic if a boolean value is not <code class="incode">true</code> (1) or <code class="incode">false</code> (0). </p>
-<h2>nan </h2>
-<p>#<a href="swag.runtime.html#Swag_Safety("nan", true)">Swag.Safety("nan", true)</a> </p>
+<h4>nan </h4>
+<p class="code">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("nan", true)]</span><span class="SyntaxCode"></code>
+</p>
 <p>Swag will panic if a floating point <code class="incode">NaN</code> is used in an operation. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">
@@ -6770,14 +7078,15 @@
 <h3 id="182_002_special_functions">Special functions</h3><p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">#global skip</code>
 </p>
-<h2>#test </h2>
-<p>All <code class="incode">#test</code> will be executed only if swag is running in test mode. </p>
+<h5>#test </h5>
+<p><code class="incode">#test</code> is a special function than can be used in the <code class="incode">tests/</code> folder of the workspace. All <code class="incode">#test</code> will be executed only if swag is running in test mode. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
 }</code>
 </p>
-<h2>#main </h2>
+<h5>#main </h5>
+<p><code class="incode">#main</code> is the program entry point. It can only be defined <b>once</b> per module, and has meaning only for an executable. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
 {
@@ -6795,21 +7104,22 @@
     }
 }</code>
 </p>
-<h2>#init </h2>
-<p>You can have as many <code class="incode">#init</code> as you want, but the execution order in the same module is undefined. </p>
+<h5>#init </h5>
+<p><code class="incode">#init</code> will be called at runtime, during the module initialization. You can have as many <code class="incode">#init</code> as you want, but the execution order in the same module is undefined. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#init</span><span class="SyntaxCode">
 {
 }</code>
 </p>
-<h2>#drop </h2>
-<p>You can have as many <code class="incode">#drop</code> as you want. The execution order in the same module is undefined, but is always the inverse order of <code class="incode">#init</code>. </p>
+<h5>#drop </h5>
+<p><code class="incode">#drop</code> will be called at runtime, when module is unloaded. You can have as many <code class="incode">#drop</code> as you want. The execution order in the same module is undefined, but is always the inverse order of <code class="incode">#init</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#drop</span><span class="SyntaxCode">
 {
 }</code>
 </p>
-<h2>#premain </h2>
+<h5>#premain </h5>
+<p><code class="incode">#premain</code> will be called after all the modules have done their <code class="incode">#init</code> code, but before the <code class="incode">#main</code> function is called. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#premain</span><span class="SyntaxCode">
 {
@@ -7110,7 +7420,7 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(ptr.sizeof == </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">f64</span><span class="SyntaxCode">))
 }</code>
 </p>
-<h2>@decltype </h2>
+<h4>@decltype </h4>
 <p><code class="incode">@decltype</code> can be used to transform a <code class="incode">typeinfo</code> to a real compiler type. This is the opposite of <code class="incode">@typeof</code> or <code class="incode">@kindof</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
@@ -7223,7 +7533,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">7</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>Struct and enums </h2>
+<h5>Struct and enums </h5>
+<p><code class="incode">#ast</code> can for example be used to generate the content of a <code class="incode">struct</code> or <code class="incode">enum</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
 {
@@ -7298,7 +7609,8 @@
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.z == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
 </p>
-<h2>For example </h2>
+<h5>For example </h5>
+<p>This is a real life example of an <code class="incode">#ast</code> usage from the <code class="incode">Std.Core</code> module. Here we generate a structure which contains all the fields of an original other structure, but where the types are forced to be <code class="incode">bool</code>. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">IsSet</span><span class="SyntaxCode">
 {
@@ -7321,7 +7633,8 @@
     }
 }</code>
 </p>
-<h2>At global scope </h2>
+<h5>At global scope </h5>
+<p><code class="incode">#ast</code> can also be called at the global scope. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">#ast
 {
@@ -7356,6 +7669,7 @@
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glUniformMatrix4x3fv</span><span class="SyntaxCode">(location: </span><span class="SyntaxConstant">GLint</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">GLsizei</span><span class="SyntaxCode">, transpose: </span><span class="SyntaxConstant">GLboolean</span><span class="SyntaxCode">, value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">GLfloat</span><span class="SyntaxCode">);
 }</code>
 </p>
+<p>The following will be used to track the functions with that specific attribute. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OneFunc</span><span class="SyntaxCode">
 {
@@ -7366,6 +7680,7 @@
 </span><span class="SyntaxAttribute">#[Compiler]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> g_Functions: </span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'</span><span class="SyntaxConstant">OneFunc</span><span class="SyntaxCode"></code>
 </p>
+<p>This <code class="incode">#message</code> will be called for each function of the <code class="incode">Ogl</code> module. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode">)
 {
@@ -7380,9 +7695,11 @@
     g_Functions.</span><span class="SyntaxFunction">add</span><span class="SyntaxCode">({msg.type, msg.name})
 }</code>
 </p>
+<p>We will generate a <code class="incode">glInitExtensions</code> global function, so we register it as a place holder. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">#placeholder glInitExtensions</code>
 </p>
+<p>This is called once all functions of the module have been typed, and this is the main code generation. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode">)
 {
@@ -7440,6 +7757,7 @@
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">swag doc -w:myWorkspaceFolder</code>
 </p>
+<p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. The rest is placed in various source files. </p>
 <p>The documentation comment needs to be placed just before a function, struct or enum. </p>
 <p class="code">
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#test</span><span class="SyntaxCode">
