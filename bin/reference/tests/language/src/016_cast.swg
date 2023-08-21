@@ -47,7 +47,9 @@ Swag can sometimes cast from one type to another for you. This is an *implicit* 
 */
 #test
 {
-    // An implicit cast is done if there's no loss of precision. In that case, you can affect different types.
+    // An implicit cast is done if there's no loss of precision.
+    // In that case, you can affect different types.
+
     let x: s16 = 1's8   // 8 bits to 16 bits, fine
     let y: s32 = 1's16  // 16 bits to 32 bits, fine
 

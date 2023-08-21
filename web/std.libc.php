@@ -1864,7 +1864,7 @@
 </table>
 </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fprintf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fprintf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </pre>
 <p>
 <table class="item">
@@ -1962,7 +1962,7 @@
 </table>
 </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fscanf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fscanf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </pre>
 <p>
 <table class="item">
@@ -3180,7 +3180,7 @@
 </table>
 </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </pre>
 <p>
 <table class="item">
@@ -3502,7 +3502,7 @@
 </table>
 </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scanf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scanf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </pre>
 <p>
 <table class="item">
@@ -3615,7 +3615,7 @@
 </table>
 </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">snprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">snprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </pre>
 <p>
 <table class="item">
@@ -3629,7 +3629,7 @@
 </table>
 </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </pre>
 <p>
 <table class="item">
@@ -3685,7 +3685,7 @@
 </table>
 </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sscanf</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sscanf</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </pre>
 <p>
 <table class="item">

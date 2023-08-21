@@ -196,7 +196,7 @@
 <p>This will also create a simple executable module <i>first</i> to print "Hello world !". </p>
 <p><i>F:/first/modules/first/src/main.swg</i> </p>
 <pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
+<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello world!\n"</span><span class="SyntaxCode">)
 }</code>

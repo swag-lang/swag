@@ -628,7 +628,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             funcNode->token.text = "__main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
-        case TokenId::CompilerFuncCompiler:
+        case TokenId::CompilerFuncMessage:
             funcNode->token.text = "__compiler" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             module->numCompilerFunctions++;

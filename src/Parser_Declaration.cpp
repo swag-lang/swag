@@ -986,7 +986,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerFuncDrop:
     case TokenId::CompilerFuncPreMain:
     case TokenId::CompilerFuncMain:
-    case TokenId::CompilerFuncCompiler:
+    case TokenId::CompilerFuncMessage:
         SWAG_CHECK(doFuncDecl(parent, result));
         break;
     case TokenId::CompilerRun:

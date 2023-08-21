@@ -449,6 +449,8 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                     result += getColor(mode, SyntaxColor::SyntaxCode);
                     break;
 
+                case TokenId::KwdCode:
+                case TokenId::KwdCVarArgs:
                 case TokenId::NativeType:
                 case TokenId::CompilerType:
                     result += getColor(mode, SyntaxColor::SyntaxType);
@@ -480,13 +482,15 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                     result += getColor(mode, SyntaxColor::SyntaxCode);
                     break;
 
-                case TokenId::CompilerFuncCompiler:
+                case TokenId::CompilerRun:
+                case TokenId::CompilerAst:
+                case TokenId::CompilerFuncMessage:
                 case TokenId::CompilerFuncDrop:
                 case TokenId::CompilerFuncInit:
                 case TokenId::CompilerFuncMain:
                 case TokenId::CompilerFuncPreMain:
                 case TokenId::CompilerFuncTest:
-                    result += getColor(mode, SyntaxColor::SyntaxCompiler);
+                    result += getColor(mode, SyntaxColor::SyntaxFunction);
                     result += identifier;
                     result += getColor(mode, SyntaxColor::SyntaxCode);
                     break;
@@ -505,6 +509,12 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
 
                     break;
                 }
+            }
+            else if (identifier[0] == '@')
+            {
+                result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
+                result += identifier;
+                result += getColor(mode, SyntaxColor::SyntaxCode);
             }
             else
             {

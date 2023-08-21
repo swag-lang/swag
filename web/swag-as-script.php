@@ -185,7 +185,7 @@
     </span><span class="SyntaxComment">// #import "core" location="swag@std"</span><span class="SyntaxCode">
 }
 
-#run
+</span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello world !\n"</span><span class="SyntaxCode">)
 }</code>

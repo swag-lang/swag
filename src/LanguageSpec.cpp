@@ -262,7 +262,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#drop", TokenId::CompilerFuncDrop);
     keywords.add("#main", TokenId::CompilerFuncMain);
     keywords.add("#premain", TokenId::CompilerFuncPreMain);
-    keywords.add("#message", TokenId::CompilerFuncCompiler);
+    keywords.add("#message", TokenId::CompilerFuncMessage);
     keywords.add("#dependencies", TokenId::CompilerDependencies);
 
     keywords.add("#include", TokenId::CompilerInclude);
