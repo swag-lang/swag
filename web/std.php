@@ -6,6 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php include('common/start-head.php'); ?><style>
 
+    .container {
+        display:        flex;
+        flex-wrap:      nowrap;
+        flex-direction: row;
+        margin:         0px auto;
+        padding:        0px;
+    }
+    .right {
+        display:    block;
+        width:      100%;
+    }
     @media(min-width: 640px) {
         .container {
             max-width: 640px;
@@ -30,18 +41,6 @@
         .container {
             max-width: 1536px;
         }
-    }
-
-    .container {
-        display:        flex;
-        flex-wrap:      nowrap;
-        flex-direction: row;
-        margin:         0px auto;
-        padding:        0px;
-    }
-    .right {
-        display:    block;
-        width:      100%;
     }
 
     body {

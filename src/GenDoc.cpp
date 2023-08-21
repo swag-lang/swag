@@ -14,6 +14,17 @@ void GenDoc::outputStyles()
     helpOutput += "<style>\n";
 
     helpOutput += "\n\
+    .container {\n\
+        display:        flex;\n\
+        flex-wrap:      nowrap;\n\
+        flex-direction: row;\n\
+        margin:         0px auto;\n\
+        padding:        0px;\n\
+    }\n\
+    .right {\n\
+        display:    block;\n\
+        width:      100%;\n\
+    }\n\
     @media(min-width: 640px) {\n\
         .container {\n\
             max-width: 640px;\n\
@@ -42,32 +53,9 @@ void GenDoc::outputStyles()
 ";
 
     // Layout
-    if (docKind == DocKind::Pages)
+    if (docKind != DocKind::Pages)
     {
         helpOutput += "\n\
-    .container {\n\
-        display:        flex;\n\
-        flex-wrap:      nowrap;\n\
-        flex-direction: row;\n\
-        margin:         0px auto;\n\
-        padding:        0px;\n\
-    }\n\
-    .right {\n\
-        display:    block;\n\
-        width:      100%;\n\
-    }\n\
-";
-    }
-    else
-    {
-        helpOutput += "\n\
-    .container {\n\
-        display:        flex;\n\
-        flex-wrap:      nowrap;\n\
-        flex-direction: row;\n\
-        margin:         0px auto;\n\
-        padding:        0px;\n\
-    }\n\
     .left {\n\
         display:    block;\n\
         overflow-y: scroll;\n\
@@ -75,9 +63,7 @@ void GenDoc::outputStyles()
         height:     100vh;\n\
     }\n\
     .right {\n\
-        display:    block;\n\
         overflow-y: scroll;\n\
-        width:      100%;\n\
         height:     100vh;\n\
     }\n\
     @media only screen and (max-width: 600px) {\n\

@@ -6,6 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php include('common/start-head.php'); ?><style>
 
+    .container {
+        display:        flex;
+        flex-wrap:      nowrap;
+        flex-direction: row;
+        margin:         0px auto;
+        padding:        0px;
+    }
+    .right {
+        display:    block;
+        width:      100%;
+    }
     @media(min-width: 640px) {
         .container {
             max-width: 640px;
@@ -32,13 +43,6 @@
         }
     }
 
-    .container {
-        display:        flex;
-        flex-wrap:      nowrap;
-        flex-direction: row;
-        margin:         0px auto;
-        padding:        0px;
-    }
     .left {
         display:    block;
         overflow-y: scroll;
@@ -46,9 +50,7 @@
         height:     100vh;
     }
     .right {
-        display:    block;
         overflow-y: scroll;
-        width:      100%;
         height:     100vh;
     }
     @media only screen and (max-width: 600px) {
