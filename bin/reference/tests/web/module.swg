@@ -11,14 +11,9 @@
 
         cfg.docKind = .Pages
         cfg.docOutputExtension = ".php"
-        /*
-        cfg.docPageHeader = """
-                            <?php include('html-start.php'); ?>
-                            <?php include('header.php'); ?>
-                            """
-        cfg.docPageFooter = """
-                            <?php include('html-end.php'); ?>
-                            """
-        */
+
+        cfg.docStartHead = @"<?php include('common/start-head.php'); ?>"@
+        cfg.docStartBody = @"<?php include('common/start-body.php'); ?>"@
+        cfg.docEndBody   = @"<?php include('common/end-body.php'); ?>"@
     }
 }

@@ -1,154 +1,156 @@
+<!DOCTYPE html>
 <html>
-<body>
 <head>
 <meta charset="UTF-8">
-</head>
-<style>
-.container {
-            display:        flex;
-            flex-wrap:      nowrap;
-            flex-direction: row;
-            height:         100%;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      650;
-            height:     100%;
-        }
-        .right {
-            display:     block;
-            overflow-y:  scroll;
-            width:       100%;
-            line-height: 1.3em;
-            height:      100%;
-        }
-        .page {
-            width:  1000;
-            margin: 0 auto;
-        }
-        blockquote {
-            background-color:   LightYellow;
-            border-left:        6px solid Orange;
-            padding:            10px;
-            width:              90%;
-        }
-        a {
-            text-decoration: none;
-            color:           DoggerBlue;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        a.src {
-            font-size:          90%;
-            color:              LightGrey;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        td.tdtype {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              auto;
-        }
-        td:last-child {
-            width:              auto;
-        }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .left h2 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
-        table.item {
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            padding:            4px;
-            font-size:          110%;
-        }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .tdname .incode {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
-        .code {
-            background-color:   #eeeeee;
-            border:             1px solid LightGrey;
-            padding:            10px;
-            width:              94%;
-            margin-left:        20px;
-        }
-    .SyntaxCode { color: #7f7f7f; }
-.SyntaxComment { color: #71a35b; }
-.SyntaxCompiler { color: #7f7f7f; }
-.SyntaxFunction { color: #ff6a00; }
-.SyntaxConstant { color: #3173cd; }
-.SyntaxIntrinsic { color: #b4b44a; }
-.SyntaxType { color: #3bc3a7; }
-.SyntaxKeyword { color: #3186cd; }
-.SyntaxLogic { color: #b040be; }
-.SyntaxNumber { color: #74a35b; }
-.SyntaxString { color: #bb6643; }
-.SyntaxAttribute { color: #7f7f7f; }
+<?php include('common/start-head.php'); ?><style>
+
+    .container {
+        display:        flex;
+        flex-wrap:      nowrap;
+        flex-direction: row;
+        height:         100%;
+        line-height:    1.3em;
+        font-family:    Segoe UI;
+    }
+    .left {
+        display:    block;
+        overflow-y: scroll;
+        width:      650px;
+        height:     100%;
+    }
+    .right {
+        display:     block;
+        overflow-y:  scroll;
+        line-height: 1.3em;
+        width:       100%;
+        height:      100%;
+    }
+    .page {
+        width:  1000px;
+        margin: 0px auto;
+    }
+    .container blockquote {
+        background-color:   LightYellow;
+        border-left:        6px solid Orange;
+        padding:            10px;
+        width:              90%;
+    }
+    .container a {
+        text-decoration: none;
+        color:           DoggerBlue;
+    }
+    .container a:hover {
+        text-decoration: underline;
+    }
+    .container a.src {
+        font-size:          90%;
+        color:              LightGrey;
+    }
+    .container table.enumeration {
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              100%;
+        font-size:          90%;
+    }
+    .container td.enumeration {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              30%;
+    }
+    .container td.tdname {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              20%;
+        background-color:   #f8f8f8;
+    }
+    .container td.tdtype {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              auto;
+    }
+    .container td:last-child {
+        width:              auto;
+    }
+    .left ul {
+        list-style-type:    none;
+        margin-left:        -20px;
+    }
+    .titletype {
+        font-weight:        normal;
+        font-size:          80%;
+    }
+    .titlelight {
+        font-weight:        normal;
+    }
+    .titlestrong {
+        font-weight:        bold;
+        font-size:          100%;
+    }
+    .left h2 {
+        background-color:   Black;
+        color:              White;
+        padding:            6px;
+    }
+    .right h1 {
+        margin-top:         50px;
+        margin-bottom:      50px;
+    }
+    .right h2 {
+        margin-top:         35px;
+    }
+    table.item {
+        background-color:   Black;
+        color:              White;
+        width:              100%;
+        margin-top:         70px;
+        margin-right:       0px;
+        padding:            4px;
+        font-size:          110%;
+    }
+    .srcref {
+        text-align:         right;
+    }
+    .incode {
+        background-color:   #eeeeee;
+        padding:            2px;
+        border: 1px dotted  #cccccc;
+    }
+    .tdname .incode {
+        background-color:   revert;
+        padding:            2px;
+        border:             revert;
+    }
+    .addinfos {
+        font-size:          90%;
+        white-space:        break-spaces;
+        overflow-wrap:      break-word;
+    }
+    .container pre {
+        background-color:   #eeeeee;
+        border:             1px solid LightGrey;
+        padding:            10px;
+        width:              94%;
+        margin-left:        20px;
+    }
+    .SyntaxCode      { color: #7f7f7f; }
+    .SyntaxComment   { color: #71a35b; }
+    .SyntaxCompiler  { color: #7f7f7f; }
+    .SyntaxFunction  { color: #ff6a00; }
+    .SyntaxConstant  { color: #3173cd; }
+    .SyntaxIntrinsic { color: #b4b44a; }
+    .SyntaxType      { color: #3bc3a7; }
+    .SyntaxKeyword   { color: #3186cd; }
+    .SyntaxLogic     { color: #b040be; }
+    .SyntaxNumber    { color: #74a35b; }
+    .SyntaxString    { color: #bb6643; }
+    .SyntaxAttribute { color: #7f7f7f; }
 </style>
-<div class="container">
+</head>
+<body>
+<?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="page">
 <blockquote>
@@ -158,7 +160,7 @@
 <h3>Under windows 10/11 </h3>
 <p>You should register the location of the swag compiler (<code class="incode">swag.exe</code>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"># </span><span class="SyntaxConstant">You</span><span class="SyntaxCode"> must replace </span><span class="SyntaxString">`f:\swag-lang\swag\bin`</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">with</span><span class="SyntaxCode"> your location of </span><span class="SyntaxString">`swag.exe`</span><span class="SyntaxCode">
 
 [</span><span class="SyntaxConstant">Environment</span><span class="SyntaxCode">]::</span><span class="SyntaxConstant">SetEnvironmentVariable</span><span class="SyntaxCode">(
@@ -166,24 +168,24 @@
    [</span><span class="SyntaxConstant">Environment</span><span class="SyntaxCode">]::</span><span class="SyntaxConstant">GetEnvironmentVariable</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Path"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"User"</span><span class="SyntaxCode">) + </span><span class="SyntaxString">";f:\swag-lang\swag\bin"</span><span class="SyntaxCode">,
    </span><span class="SyntaxString">"User"</span><span class="SyntaxCode">
 )</code>
-</p>
+</pre>
 <h1>Your first project </h1>
 <p>The compile unit of swag is a <b>workspace</b> which contains a variable number of <b>modules</b>. A module will compile to a dynamic library or an executable. </p>
 <p>To create a fresh new workspace named <i>first</i> : </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag new -w:first
 =&gt; workspace '</span><span class="SyntaxConstant">F</span><span class="SyntaxCode">:/</span><span class="SyntaxFunction">first</span><span class="SyntaxCode">' has been created
 =&gt; module '</span><span class="SyntaxFunction">first</span><span class="SyntaxCode">' has been created
 =&gt; type 'swag run -w:</span><span class="SyntaxConstant">F</span><span class="SyntaxCode">:\</span><span class="SyntaxFunction">first</span><span class="SyntaxCode">' to build </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> run that module</code>
-</p>
+</pre>
 <p>This will also create a simple executable module <i>first</i> to print "Hello world !". </p>
 <p><i>F:/first/modules/first/src/main.swg</i> </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxCompiler">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello world!\n"</span><span class="SyntaxCode">)
 }</code>
-</p>
+</pre>
 <p>A workspace contains a predefined number of sub folders: </p>
 <ul>
 <li><code class="incode">modules/</code> contains all the modules (sub folders) of that workspace.</li>
@@ -200,22 +202,22 @@
 </ul>
 <p>A module always contains a special file named <code class="incode">module.swg</code>. This file is used to configure the module, and is <b>mandatory</b>. </p>
 <h3>To compile your workspace </h3>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag build -w:first
             </span><span class="SyntaxConstant">Workspace</span><span class="SyntaxCode"> first [fast-debug-windows-x86_64]
              </span><span class="SyntaxConstant">Building</span><span class="SyntaxCode"> first
                  </span><span class="SyntaxConstant">Done</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">0.067</span><span class="SyntaxCode">s</code>
-</p>
+</pre>
 <p>You can omit the workspace name (<code class="incode">-w:first</code> or <code class="incode">--workspace:first</code>) if you call the compiler directly from the workspace folder. This command will compile all modules in <code class="incode">modules/</code>. </p>
 <p>You can also build and run your workspace. </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag run -w:first
             </span><span class="SyntaxConstant">Workspace</span><span class="SyntaxCode"> first [fast-debug-windows-x86_64]
              </span><span class="SyntaxConstant">Building</span><span class="SyntaxCode"> first
       </span><span class="SyntaxConstant">Running</span><span class="SyntaxCode"> backend first
 </span><span class="SyntaxConstant">Hello</span><span class="SyntaxCode"> world!
                  </span><span class="SyntaxConstant">Done</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">0.093</span><span class="SyntaxCode">s</code>
-</p>
+</pre>
 <h3>Note on Windows Defender realtime protection </h3>
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
 <p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> </p>
@@ -235,5 +237,5 @@
 </div>
 </div>
 </div>
-</body>
+<?php include('common/end-body.php'); ?></body>
 </html>

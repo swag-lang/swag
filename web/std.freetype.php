@@ -1,153 +1,155 @@
+<!DOCTYPE html>
 <html>
-<body>
 <head>
 <meta charset="UTF-8">
-</head>
 <style>
-.container {
-            display:        flex;
-            flex-wrap:      nowrap;
-            flex-direction: row;
-            height:         100%;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      650;
-            height:     100%;
-        }
-        .right {
-            display:     block;
-            overflow-y:  scroll;
-            width:       100%;
-            line-height: 1.3em;
-            height:      100%;
-        }
-        .page {
-            width:  1000;
-            margin: 0 auto;
-        }
-        blockquote {
-            background-color:   LightYellow;
-            border-left:        6px solid Orange;
-            padding:            10px;
-            width:              90%;
-        }
-        a {
-            text-decoration: none;
-            color:           DoggerBlue;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        a.src {
-            font-size:          90%;
-            color:              LightGrey;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        td.tdtype {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              auto;
-        }
-        td:last-child {
-            width:              auto;
-        }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .left h2 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
-        table.item {
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            padding:            4px;
-            font-size:          110%;
-        }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .tdname .incode {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
-        .code {
-            background-color:   #eeeeee;
-            border:             1px solid LightGrey;
-            padding:            10px;
-            width:              94%;
-            margin-left:        20px;
-        }
-    .SyntaxCode { color: #7f7f7f; }
-.SyntaxComment { color: #71a35b; }
-.SyntaxCompiler { color: #7f7f7f; }
-.SyntaxFunction { color: #ff6a00; }
-.SyntaxConstant { color: #3173cd; }
-.SyntaxIntrinsic { color: #b4b44a; }
-.SyntaxType { color: #3bc3a7; }
-.SyntaxKeyword { color: #3186cd; }
-.SyntaxLogic { color: #b040be; }
-.SyntaxNumber { color: #74a35b; }
-.SyntaxString { color: #bb6643; }
-.SyntaxAttribute { color: #7f7f7f; }
+
+    .container {
+        display:        flex;
+        flex-wrap:      nowrap;
+        flex-direction: row;
+        height:         100%;
+        line-height:    1.3em;
+        font-family:    Segoe UI;
+    }
+    .left {
+        display:    block;
+        overflow-y: scroll;
+        width:      650px;
+        height:     100%;
+    }
+    .right {
+        display:     block;
+        overflow-y:  scroll;
+        line-height: 1.3em;
+        width:       100%;
+        height:      100%;
+    }
+    .page {
+        width:  1000px;
+        margin: 0px auto;
+    }
+    .container blockquote {
+        background-color:   LightYellow;
+        border-left:        6px solid Orange;
+        padding:            10px;
+        width:              90%;
+    }
+    .container a {
+        text-decoration: none;
+        color:           DoggerBlue;
+    }
+    .container a:hover {
+        text-decoration: underline;
+    }
+    .container a.src {
+        font-size:          90%;
+        color:              LightGrey;
+    }
+    .container table.enumeration {
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              100%;
+        font-size:          90%;
+    }
+    .container td.enumeration {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              30%;
+    }
+    .container td.tdname {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              20%;
+        background-color:   #f8f8f8;
+    }
+    .container td.tdtype {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              auto;
+    }
+    .container td:last-child {
+        width:              auto;
+    }
+    .left ul {
+        list-style-type:    none;
+        margin-left:        -20px;
+    }
+    .titletype {
+        font-weight:        normal;
+        font-size:          80%;
+    }
+    .titlelight {
+        font-weight:        normal;
+    }
+    .titlestrong {
+        font-weight:        bold;
+        font-size:          100%;
+    }
+    .left h2 {
+        background-color:   Black;
+        color:              White;
+        padding:            6px;
+    }
+    .right h1 {
+        margin-top:         50px;
+        margin-bottom:      50px;
+    }
+    .right h2 {
+        margin-top:         35px;
+    }
+    table.item {
+        background-color:   Black;
+        color:              White;
+        width:              100%;
+        margin-top:         70px;
+        margin-right:       0px;
+        padding:            4px;
+        font-size:          110%;
+    }
+    .srcref {
+        text-align:         right;
+    }
+    .incode {
+        background-color:   #eeeeee;
+        padding:            2px;
+        border: 1px dotted  #cccccc;
+    }
+    .tdname .incode {
+        background-color:   revert;
+        padding:            2px;
+        border:             revert;
+    }
+    .addinfos {
+        font-size:          90%;
+        white-space:        break-spaces;
+        overflow-wrap:      break-word;
+    }
+    .container pre {
+        background-color:   #eeeeee;
+        border:             1px solid LightGrey;
+        padding:            10px;
+        width:              94%;
+        margin-left:        20px;
+    }
+    .SyntaxCode      { color: #7f7f7f; }
+    .SyntaxComment   { color: #71a35b; }
+    .SyntaxCompiler  { color: #7f7f7f; }
+    .SyntaxFunction  { color: #ff6a00; }
+    .SyntaxConstant  { color: #3173cd; }
+    .SyntaxIntrinsic { color: #b4b44a; }
+    .SyntaxType      { color: #3bc3a7; }
+    .SyntaxKeyword   { color: #3186cd; }
+    .SyntaxLogic     { color: #b040be; }
+    .SyntaxNumber    { color: #74a35b; }
+    .SyntaxString    { color: #bb6643; }
+    .SyntaxAttribute { color: #7f7f7f; }
 </style>
+</head>
+<body>
 <div class="container">
 <div class="left">
 <h1>Module freetype</h1>
@@ -711,9 +713,9 @@ FreeType.FT_UShort</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Done_Face</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -725,9 +727,9 @@ FreeType.FT_UShort</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Done_FreeType</span><span class="SyntaxCode">(alibrary: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1030,9 +1032,9 @@ finalizer</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Get_Char_Index</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, charcode: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_ULong</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1233,9 +1235,9 @@ FreeType.FT_Slot_Internal</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_GlyphSlot_Oblique</span><span class="SyntaxCode">(slot: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_GlyphSlot</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1367,9 +1369,9 @@ FreeType.FT_Pos</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_IMAGE_TAG</span><span class="SyntaxCode">(x1: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x2: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x3: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x4: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1381,9 +1383,9 @@ FreeType.FT_Pos</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Init_FreeType</span><span class="SyntaxCode">(alibrary: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1395,9 +1397,9 @@ FreeType.FT_Pos</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_LOAD_TARGET</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Int32</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1567,9 +1569,9 @@ FreeType.FT_Int</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Library_SetLcdFilter</span><span class="SyntaxCode">(library: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">, filter: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_LcdFilter">FT_LcdFilter</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1581,9 +1583,9 @@ FreeType.FT_Int</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Library_SetLcdFilterWeights</span><span class="SyntaxCode">(library: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">, weights: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1624,9 +1626,9 @@ FreeType.FT_ListNode</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Load_Char</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, char_code: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_ULong</span><span class="SyntaxCode">, load_flags: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Int32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1638,9 +1640,9 @@ FreeType.FT_ListNode</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Load_Glyph</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, glyph_index: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode">, load_flags: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Int32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1697,9 +1699,9 @@ FreeType.FT_Fixed</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_New_Memory_Face</span><span class="SyntaxCode">(library: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Library</span><span class="SyntaxCode">, file_base: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Byte</span><span class="SyntaxCode">, file_size: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Long</span><span class="SyntaxCode">, face_index: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Long</span><span class="SyntaxCode">, aface: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1772,9 +1774,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Decompose</span><span class="SyntaxCode">(outline: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span><span class="SyntaxCode">, func_interface: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_Outline_Funcs">FT_Outline_Funcs</a></span><span class="SyntaxCode">, user: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1786,9 +1788,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Embolden</span><span class="SyntaxCode">(outline: *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span><span class="SyntaxCode">, strength: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Pos</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1865,9 +1867,9 @@ FreeType.FT_Pos</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Transform</span><span class="SyntaxCode">(outline: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span><span class="SyntaxCode">, matrix: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_Matrix">FT_Matrix</a></span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1879,9 +1881,9 @@ FreeType.FT_Pos</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Outline_Translate</span><span class="SyntaxCode">(outline: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span><span class="SyntaxCode">, xOffset: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Pos</span><span class="SyntaxCode">, yOffset: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Pos</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1960,9 +1962,9 @@ FT_PIXEL_MODE_MAX</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Render_Glyph</span><span class="SyntaxCode">(slot: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_GlyphSlot</span><span class="SyntaxCode">, render_mode: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#FreeType_FT_Render_Mode">FT_Render_Mode</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2023,9 +2025,9 @@ FT_RENDER_MODE_MAX</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FT_Set_Pixel_Sizes</span><span class="SyntaxCode">(face: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Face</span><span class="SyntaxCode">, pixel_width: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode">, pixel_height: </span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_UInt</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>

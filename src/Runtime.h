@@ -281,8 +281,9 @@ struct BuildCfg
     SwagSlice docTitleToc;
     SwagSlice docTitleContent;
     SwagSlice docCss;
-    SwagSlice docPageHeader;
-    SwagSlice docPageFooter;
+    SwagSlice docStartHead;
+    SwagSlice docStartBody;
+    SwagSlice docEndBody;
     float     docSyntaxColorLum = 0.5f;
 };
 

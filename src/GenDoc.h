@@ -33,8 +33,7 @@ struct GenDoc
         Vector<UserBlock> blocks;
     };
 
-    void startPage();
-    void endPage();
+    void constructPage();
     Utf8 toRef(Utf8 str);
     bool generate(Module* mdl, DocKind kind);
     void outputStyles();

@@ -1,153 +1,155 @@
+<!DOCTYPE html>
 <html>
-<body>
 <head>
 <meta charset="UTF-8">
-</head>
 <style>
-.container {
-            display:        flex;
-            flex-wrap:      nowrap;
-            flex-direction: row;
-            height:         100%;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      650;
-            height:     100%;
-        }
-        .right {
-            display:     block;
-            overflow-y:  scroll;
-            width:       100%;
-            line-height: 1.3em;
-            height:      100%;
-        }
-        .page {
-            width:  1000;
-            margin: 0 auto;
-        }
-        blockquote {
-            background-color:   LightYellow;
-            border-left:        6px solid Orange;
-            padding:            10px;
-            width:              90%;
-        }
-        a {
-            text-decoration: none;
-            color:           DoggerBlue;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        a.src {
-            font-size:          90%;
-            color:              LightGrey;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        td.tdtype {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              auto;
-        }
-        td:last-child {
-            width:              auto;
-        }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .left h2 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
-        table.item {
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            padding:            4px;
-            font-size:          110%;
-        }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .tdname .incode {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
-        .code {
-            background-color:   #eeeeee;
-            border:             1px solid LightGrey;
-            padding:            10px;
-            width:              94%;
-            margin-left:        20px;
-        }
-    .SyntaxCode { color: #7f7f7f; }
-.SyntaxComment { color: #71a35b; }
-.SyntaxCompiler { color: #7f7f7f; }
-.SyntaxFunction { color: #ff6a00; }
-.SyntaxConstant { color: #3173cd; }
-.SyntaxIntrinsic { color: #b4b44a; }
-.SyntaxType { color: #3bc3a7; }
-.SyntaxKeyword { color: #3186cd; }
-.SyntaxLogic { color: #b040be; }
-.SyntaxNumber { color: #74a35b; }
-.SyntaxString { color: #bb6643; }
-.SyntaxAttribute { color: #7f7f7f; }
+
+    .container {
+        display:        flex;
+        flex-wrap:      nowrap;
+        flex-direction: row;
+        height:         100%;
+        line-height:    1.3em;
+        font-family:    Segoe UI;
+    }
+    .left {
+        display:    block;
+        overflow-y: scroll;
+        width:      650px;
+        height:     100%;
+    }
+    .right {
+        display:     block;
+        overflow-y:  scroll;
+        line-height: 1.3em;
+        width:       100%;
+        height:      100%;
+    }
+    .page {
+        width:  1000px;
+        margin: 0px auto;
+    }
+    .container blockquote {
+        background-color:   LightYellow;
+        border-left:        6px solid Orange;
+        padding:            10px;
+        width:              90%;
+    }
+    .container a {
+        text-decoration: none;
+        color:           DoggerBlue;
+    }
+    .container a:hover {
+        text-decoration: underline;
+    }
+    .container a.src {
+        font-size:          90%;
+        color:              LightGrey;
+    }
+    .container table.enumeration {
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              100%;
+        font-size:          90%;
+    }
+    .container td.enumeration {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              30%;
+    }
+    .container td.tdname {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              20%;
+        background-color:   #f8f8f8;
+    }
+    .container td.tdtype {
+        padding:            6px;
+        border:             1px solid LightGrey;
+        border-collapse:    collapse;
+        width:              auto;
+    }
+    .container td:last-child {
+        width:              auto;
+    }
+    .left ul {
+        list-style-type:    none;
+        margin-left:        -20px;
+    }
+    .titletype {
+        font-weight:        normal;
+        font-size:          80%;
+    }
+    .titlelight {
+        font-weight:        normal;
+    }
+    .titlestrong {
+        font-weight:        bold;
+        font-size:          100%;
+    }
+    .left h2 {
+        background-color:   Black;
+        color:              White;
+        padding:            6px;
+    }
+    .right h1 {
+        margin-top:         50px;
+        margin-bottom:      50px;
+    }
+    .right h2 {
+        margin-top:         35px;
+    }
+    table.item {
+        background-color:   Black;
+        color:              White;
+        width:              100%;
+        margin-top:         70px;
+        margin-right:       0px;
+        padding:            4px;
+        font-size:          110%;
+    }
+    .srcref {
+        text-align:         right;
+    }
+    .incode {
+        background-color:   #eeeeee;
+        padding:            2px;
+        border: 1px dotted  #cccccc;
+    }
+    .tdname .incode {
+        background-color:   revert;
+        padding:            2px;
+        border:             revert;
+    }
+    .addinfos {
+        font-size:          90%;
+        white-space:        break-spaces;
+        overflow-wrap:      break-word;
+    }
+    .container pre {
+        background-color:   #eeeeee;
+        border:             1px solid LightGrey;
+        padding:            10px;
+        width:              94%;
+        margin-left:        20px;
+    }
+    .SyntaxCode      { color: #7f7f7f; }
+    .SyntaxComment   { color: #71a35b; }
+    .SyntaxCompiler  { color: #7f7f7f; }
+    .SyntaxFunction  { color: #ff6a00; }
+    .SyntaxConstant  { color: #3173cd; }
+    .SyntaxIntrinsic { color: #b4b44a; }
+    .SyntaxType      { color: #3bc3a7; }
+    .SyntaxKeyword   { color: #3186cd; }
+    .SyntaxLogic     { color: #b040be; }
+    .SyntaxNumber    { color: #74a35b; }
+    .SyntaxString    { color: #bb6643; }
+    .SyntaxAttribute { color: #7f7f7f; }
 </style>
+</head>
+<body>
 <div class="container">
 <div class="left">
 <h1>Module libc</h1>
@@ -873,9 +875,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> _Exit(status: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -887,9 +889,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">abort</span><span class="SyntaxCode">()</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -901,9 +903,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">abs</span><span class="SyntaxCode">(j: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -915,9 +917,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acos</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -929,9 +931,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acosf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -943,9 +945,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acosh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -957,9 +959,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acoshf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -971,9 +973,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">acrt_iob_func</span><span class="SyntaxCode">(index: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -985,9 +987,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">aligned_alloc</span><span class="SyntaxCode">(aligment: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -999,9 +1001,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asctime</span><span class="SyntaxCode">(timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a>)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1013,9 +1015,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1027,9 +1029,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1041,9 +1043,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asinh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1055,9 +1057,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">asinhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1069,9 +1071,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1083,9 +1085,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atan2</span><span class="SyntaxCode">(y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1097,9 +1099,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atan2f</span><span class="SyntaxCode">(y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1111,9 +1113,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atanf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1125,9 +1127,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atanh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1139,9 +1141,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atanhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1153,9 +1155,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atof</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1167,9 +1169,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atoi</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1181,9 +1183,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atol</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1195,9 +1197,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">atoll</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1209,9 +1211,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bsearch</span><span class="SyntaxCode">(key: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1223,9 +1225,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">calloc</span><span class="SyntaxCode">(nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1237,9 +1239,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cbrt</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1251,9 +1253,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cbrtf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1265,9 +1267,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ceil</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1279,9 +1281,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ceilf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1293,9 +1295,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearerr</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1307,9 +1309,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clock</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.clock_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1321,9 +1323,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copysign</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1335,9 +1337,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copysignf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1349,9 +1351,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cos</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1363,9 +1365,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cosf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1377,9 +1379,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cosh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1391,9 +1393,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">coshf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1405,9 +1407,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ctime</span><span class="SyntaxCode">(timer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1419,9 +1421,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">difftime</span><span class="SyntaxCode">(time1: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t, time2: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1433,9 +1435,9 @@ u32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">div</span><span class="SyntaxCode">(numer: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, denom: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_div_t">div_t</a></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1476,9 +1478,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1490,9 +1492,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erfc</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1504,9 +1506,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erfcf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1518,9 +1520,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">erff</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1532,9 +1534,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exit</span><span class="SyntaxCode">(status: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1546,9 +1548,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exp</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1560,9 +1562,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exp2</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1574,9 +1576,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exp2f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1588,9 +1590,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1602,9 +1604,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expm1</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1616,9 +1618,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expm1f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1630,9 +1632,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fabs</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1644,9 +1646,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fabsf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1658,9 +1660,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fclose</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1672,9 +1674,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fdim</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1686,9 +1688,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fdimf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1700,9 +1702,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">feof</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1714,9 +1716,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ferror</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1728,9 +1730,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fflush</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1742,9 +1744,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgetc</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1756,9 +1758,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.fpos_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1770,9 +1772,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgets</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1784,9 +1786,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">floor</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1798,9 +1800,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">floorf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1812,9 +1814,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fma</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1826,9 +1828,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmaf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1840,9 +1842,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmax</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1854,9 +1856,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmaxf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1868,9 +1870,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1882,9 +1884,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fminf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1896,9 +1898,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmod</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1910,9 +1912,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fmodf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1924,9 +1926,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fopen</span><span class="SyntaxCode">(filename: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1938,9 +1940,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fpclassify</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1952,9 +1954,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fpclassifyf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1966,9 +1968,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fprintf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1980,9 +1982,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fputc</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -1994,9 +1996,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fread</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2008,9 +2010,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2022,9 +2024,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freopen</span><span class="SyntaxCode">(filename: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2036,9 +2038,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">frexp</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, exp: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2050,9 +2052,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">frexpf</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, exp: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2064,9 +2066,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fscanf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2078,9 +2080,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fseek</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, offset: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, whence: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2092,9 +2094,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fsetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.fpos_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2106,9 +2108,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ftell</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2120,9 +2122,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fwrite</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2134,9 +2136,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getc</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2148,9 +2150,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getchar</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2162,9 +2164,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getenv</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2176,9 +2178,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">gmtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2190,9 +2192,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hypot</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2204,9 +2206,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hypotf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2218,9 +2220,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ilogb</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2232,9 +2234,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ilogbf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2246,9 +2248,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isalnum</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2260,9 +2262,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isalpha</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2274,9 +2276,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isblank</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2288,9 +2290,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">iscntrl</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2302,9 +2304,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isdigit</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2316,10 +2318,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isfinite</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isfinite</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2331,9 +2333,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgraph</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2345,10 +2347,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2360,10 +2362,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreaterequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isgreaterequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2375,10 +2377,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2390,10 +2392,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isless</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isless</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2405,10 +2407,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessequal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2420,10 +2422,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islessgreater</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2435,9 +2437,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">islower</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2449,10 +2451,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2464,10 +2466,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnormal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isnormal</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2479,9 +2481,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isprint</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2493,9 +2495,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ispunct</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2507,9 +2509,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isspace</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2521,10 +2523,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isunordered</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isunordered</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2536,9 +2538,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isupper</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2550,9 +2552,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isxdigi</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2564,9 +2566,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">labs</span><span class="SyntaxCode">(j: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2578,9 +2580,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ldexp</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, exp: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2592,9 +2594,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ldexpf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, exp: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2606,9 +2608,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ldiv</span><span class="SyntaxCode">(numer: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, denom: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_ldiv_t">ldiv_t</a></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2649,9 +2651,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lgamma</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2663,9 +2665,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lgammaf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2677,9 +2679,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llabs</span><span class="SyntaxCode">(j: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2691,9 +2693,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lldiv</span><span class="SyntaxCode">(numer: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, denom: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_lldiv_t">lldiv_t</a></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2734,9 +2736,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llrint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2748,9 +2750,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llrintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2762,9 +2764,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llround</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2776,9 +2778,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">llroundf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2790,9 +2792,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2804,9 +2806,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2818,9 +2820,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log10</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2832,9 +2834,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log10f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2846,9 +2848,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log1p</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2860,9 +2862,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log1pf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2874,9 +2876,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log2</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2888,9 +2890,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">log2f</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2902,9 +2904,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">logb</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2916,9 +2918,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">logbf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2930,9 +2932,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">logf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2944,9 +2946,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lrint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2958,9 +2960,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lrintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2972,9 +2974,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lround</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -2986,9 +2988,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lroundf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3000,9 +3002,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">malloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3014,9 +3016,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mblen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3028,9 +3030,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbstowcs</span><span class="SyntaxCode">(pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3042,9 +3044,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbtowc</span><span class="SyntaxCode">(pwc: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3056,9 +3058,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memchr</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3070,9 +3072,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcmp</span><span class="SyntaxCode">(ptr1: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, ptr2: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3084,9 +3086,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3098,9 +3100,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memmove</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3112,9 +3114,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memset</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3126,9 +3128,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mktime</span><span class="SyntaxCode">(timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3140,9 +3142,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">modf</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, iptr: *</span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3154,9 +3156,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">modff</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, iptr: *</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3168,9 +3170,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nan</span><span class="SyntaxCode">(tagp: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3182,9 +3184,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nanf</span><span class="SyntaxCode">(tagp: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3196,9 +3198,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nearbyint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3210,9 +3212,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nearbyintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3224,9 +3226,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextafter</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3238,9 +3240,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextafterf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3252,9 +3254,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">perror</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3266,9 +3268,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pow</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3280,9 +3282,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">powf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3294,9 +3296,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3308,9 +3310,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">putc</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3322,9 +3324,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">putchar</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3336,9 +3338,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">puts</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3350,9 +3352,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">qsort</span><span class="SyntaxCode">(base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3364,9 +3366,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">quick_exit</span><span class="SyntaxCode">(status: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3378,9 +3380,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rand</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3392,9 +3394,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">realloc</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3406,9 +3408,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remainder</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3420,9 +3422,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remainderf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3434,9 +3436,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remove</span><span class="SyntaxCode">(filename: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3448,9 +3450,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remquo</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, quo: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3462,9 +3464,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">remquof</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, quo: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3476,9 +3478,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rename</span><span class="SyntaxCode">(old: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, new: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3490,9 +3492,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rewind</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3504,9 +3506,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rint</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3518,9 +3520,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rintf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3532,9 +3534,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">round</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3546,9 +3548,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">roundf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3560,9 +3562,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalbln</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3574,9 +3576,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalblnf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3588,9 +3590,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalbn</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3602,9 +3604,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scalbnf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, n: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3616,9 +3618,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scanf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3630,9 +3632,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setbuf</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, buf: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3644,9 +3646,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setvbuf</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, buf: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3658,10 +3660,10 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">signbit</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">signbit</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3673,9 +3675,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sin</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3687,9 +3689,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sinf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3701,9 +3703,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sinh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3715,9 +3717,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sinhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3729,9 +3731,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">snprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3743,9 +3745,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3757,9 +3759,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sqrt</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3771,9 +3773,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sqrtf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3785,9 +3787,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">srand</span><span class="SyntaxCode">(seed: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3799,9 +3801,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sscanf</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: cvarargs)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3813,9 +3815,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vfprintf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3827,9 +3829,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vfscanf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3841,9 +3843,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsprintf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3855,9 +3857,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsscanf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3869,9 +3871,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcat</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3883,9 +3885,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strchr</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, character: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3897,9 +3899,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3911,9 +3913,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcoll</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3925,9 +3927,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3939,9 +3941,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3953,9 +3955,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strerror</span><span class="SyntaxCode">(errnum: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">cstring</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3967,9 +3969,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strftime</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, maxsize: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3981,9 +3983,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strlen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -3995,9 +3997,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncat</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4009,9 +4011,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4023,9 +4025,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4037,9 +4039,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strpbrk</span><span class="SyntaxCode">(str1: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4051,9 +4053,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strrchr</span><span class="SyntaxCode">(str: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, character: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4065,9 +4067,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4079,9 +4081,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strstr</span><span class="SyntaxCode">(str1: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4093,9 +4095,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtod</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4107,9 +4109,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtof</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4121,9 +4123,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtok</span><span class="SyntaxCode">(str: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, delimiters: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4135,9 +4137,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtol</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4149,9 +4151,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtoll</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4163,9 +4165,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtoul</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4177,9 +4179,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strtoull</span><span class="SyntaxCode">(nptr: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, endptr: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, base: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4191,9 +4193,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strxfrm</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4205,9 +4207,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">system</span><span class="SyntaxCode">(cmd: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4219,9 +4221,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tan</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4233,9 +4235,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tanf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4247,9 +4249,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tanh</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4261,9 +4263,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tanhf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4275,9 +4277,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tgamma</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4289,9 +4291,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tgammaf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4303,9 +4305,9 @@ s64</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">time</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4402,9 +4404,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tmpfile</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4416,9 +4418,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tmpnam</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4430,9 +4432,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">tolower</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4444,9 +4446,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toupper</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4458,9 +4460,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">trunc</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4472,9 +4474,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">truncf</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4486,9 +4488,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ungetc</span><span class="SyntaxCode">(c: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4500,10 +4502,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">va_end</span><span class="SyntaxCode">(vl: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4515,10 +4517,10 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">va_start</span><span class="SyntaxCode">(vl: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">, dummy: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4530,9 +4532,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vfprintf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4544,9 +4546,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vfscanf</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4558,9 +4560,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vprintf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4572,9 +4574,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vscanf</span><span class="SyntaxCode">(format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4586,9 +4588,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsnprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4600,9 +4602,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4614,9 +4616,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsscanf</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4628,9 +4630,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wcstombs</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
-</p>
+</pre>
 <p>
 <table class="item">
 <tr>
@@ -4642,9 +4644,9 @@ s32</td>
 </tr>
 </table>
 </p>
-<p class="code">
+<pre>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wctomb</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, wc: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
-</p>
+</pre>
 </div>
 </div>
 </div>

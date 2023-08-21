@@ -12,153 +12,153 @@
 void GenDoc::outputStyles()
 {
     helpOutput += "<style>\n";
-    helpOutput +=
-        ".container {\n\
-            display:        flex;\n\
-            flex-wrap:      nowrap;\n\
-            flex-direction: row;\n\
-            height:         100%;\n\
-            line-height:    1.3em;\n\
-            font-family:    Segoe UI;\n\
-        }\n\
-        .left {\n\
-            display:    block;\n\
-            overflow-y: scroll;\n\
-            width:      650;\n\
-            height:     100%;\n\
-        }\n\
-        .right {\n\
-            display:     block;\n\
-            overflow-y:  scroll;\n\
-            width:       100%;\n\
-            line-height: 1.3em;\n\
-            height:      100%;\n\
-        }\n\
-        .page {\n\
-            width:  1000;\n\
-            margin: 0 auto;\n\
-        }\n\
-        blockquote {\n\
-            background-color:   LightYellow;\n\
-            border-left:        6px solid Orange;\n\
-            padding:            10px;\n\
-            width:              90%;\n\
-        }\n\
-        a {\n\
-            text-decoration: none;\n\
-            color:           DoggerBlue;\n\
-        }\n\
-        a:hover {\n\
-            text-decoration: underline;\n\
-        }\n\
-        a.src {\n\
-            font-size:          90%;\n\
-            color:              LightGrey;\n\
-        }\n\
-        table.enumeration {\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              100%;\n\
-            font-size:          90%;\n\
-        }\n\
-        td.enumeration {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              30%;\n\
-        }\n\
-        td.tdname {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              20%;\n\
-            background-color:   #f8f8f8;\n\
-        }\n\
-        td.tdtype {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              auto;\n\
-        }\n\
-        td:last-child {\n\
-            width:              auto;\n\
-        }\n\
-        .left ul {\n\
-            list-style-type:    none;\n\
-            margin-left:        -20px;\n\
-        }\n\
-        .titletype {\n\
-            font-weight:        normal;\n\
-            font-size:          80%;\n\
-        }\n\
-        .titlelight {\n\
-            font-weight:        normal;\n\
-        }\n\
-        .titlestrong {\n\
-            font-weight:        bold;\n\
-            font-size:          100%;\n\
-        }\n\
-        .left h2 {\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            padding:            6px;\n\
-        }\n\
-        .right h1 {\n\
-            margin-top:         50px;\n\
-            margin-bottom:      50px;\n\
-        }\n\
-        .right h2 {\n\
-            margin-top:         35px;\n\
-        }\n\
-        table.item {\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            width:              100%;\n\
-            margin-top:         70px;\n\
-            margin-right:       0px;\n\
-            padding:            4px;\n\
-            font-size:          110%;\n\
-        }\n\
-        .srcref {\n\
-            text-align:         right;\n\
-        }\n\
-        .incode {\n\
-            background-color:   #eeeeee;\n\
-            padding:            2px;\n\
-            border: 1px dotted  #cccccc;\n\
-        }\n\
-        .tdname .incode {\n\
-            background-color:   revert;\n\
-            padding:            2px;\n\
-            border:             revert;\n\
-        }\n\
-        .addinfos {\n\
-            font-size:          90%;\n\
-            white-space:        break-spaces;\n\
-            overflow-wrap:      break-word;\n\
-        }\n\
-        .code {\n\
-            background-color:   #eeeeee;\n\
-            border:             1px solid LightGrey;\n\
-            padding:            10px;\n\
-            width:              94%;\n\
-            margin-left:        20px;\n\
-        }\n\
-    ";
+    helpOutput += "\n\
+    .container {\n\
+        display:        flex;\n\
+        flex-wrap:      nowrap;\n\
+        flex-direction: row;\n\
+        height:         100%;\n\
+        line-height:    1.3em;\n\
+        font-family:    Segoe UI;\n\
+    }\n\
+    .left {\n\
+        display:    block;\n\
+        overflow-y: scroll;\n\
+        width:      650px;\n\
+        height:     100%;\n\
+    }\n\
+    .right {\n\
+        display:     block;\n\
+        overflow-y:  scroll;\n\
+        line-height: 1.3em;\n\
+        width:       100%;\n\
+        height:      100%;\n\
+    }\n\
+    .page {\n\
+        width:  1000px;\n\
+        margin: 0px auto;\n\
+    }\n\
+    .container blockquote {\n\
+        background-color:   LightYellow;\n\
+        border-left:        6px solid Orange;\n\
+        padding:            10px;\n\
+        width:              90%;\n\
+    }\n\
+    .container a {\n\
+        text-decoration: none;\n\
+        color:           DoggerBlue;\n\
+    }\n\
+    .container a:hover {\n\
+        text-decoration: underline;\n\
+    }\n\
+    .container a.src {\n\
+        font-size:          90%;\n\
+        color:              LightGrey;\n\
+    }\n\
+    .container table.enumeration {\n\
+        border:             1px solid LightGrey;\n\
+        border-collapse:    collapse;\n\
+        width:              100%;\n\
+        font-size:          90%;\n\
+    }\n\
+    .container td.enumeration {\n\
+        padding:            6px;\n\
+        border:             1px solid LightGrey;\n\
+        border-collapse:    collapse;\n\
+        width:              30%;\n\
+    }\n\
+    .container td.tdname {\n\
+        padding:            6px;\n\
+        border:             1px solid LightGrey;\n\
+        border-collapse:    collapse;\n\
+        width:              20%;\n\
+        background-color:   #f8f8f8;\n\
+    }\n\
+    .container td.tdtype {\n\
+        padding:            6px;\n\
+        border:             1px solid LightGrey;\n\
+        border-collapse:    collapse;\n\
+        width:              auto;\n\
+    }\n\
+    .container td:last-child {\n\
+        width:              auto;\n\
+    }\n\
+    .left ul {\n\
+        list-style-type:    none;\n\
+        margin-left:        -20px;\n\
+    }\n\
+    .titletype {\n\
+        font-weight:        normal;\n\
+        font-size:          80%;\n\
+    }\n\
+    .titlelight {\n\
+        font-weight:        normal;\n\
+    }\n\
+    .titlestrong {\n\
+        font-weight:        bold;\n\
+        font-size:          100%;\n\
+    }\n\
+    .left h2 {\n\
+        background-color:   Black;\n\
+        color:              White;\n\
+        padding:            6px;\n\
+    }\n\
+    .right h1 {\n\
+        margin-top:         50px;\n\
+        margin-bottom:      50px;\n\
+    }\n\
+    .right h2 {\n\
+        margin-top:         35px;\n\
+    }\n\
+    table.item {\n\
+        background-color:   Black;\n\
+        color:              White;\n\
+        width:              100%;\n\
+        margin-top:         70px;\n\
+        margin-right:       0px;\n\
+        padding:            4px;\n\
+        font-size:          110%;\n\
+    }\n\
+    .srcref {\n\
+        text-align:         right;\n\
+    }\n\
+    .incode {\n\
+        background-color:   #eeeeee;\n\
+        padding:            2px;\n\
+        border: 1px dotted  #cccccc;\n\
+    }\n\
+    .tdname .incode {\n\
+        background-color:   revert;\n\
+        padding:            2px;\n\
+        border:             revert;\n\
+    }\n\
+    .addinfos {\n\
+        font-size:          90%;\n\
+        white-space:        break-spaces;\n\
+        overflow-wrap:      break-word;\n\
+    }\n\
+    .container pre {\n\
+        background-color:   #eeeeee;\n\
+        border:             1px solid LightGrey;\n\
+        padding:            10px;\n\
+        width:              94%;\n\
+        margin-left:        20px;\n\
+    }\n\
+";
 
     float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
-    helpOutput += Fmt(".SyntaxCode { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
-    helpOutput += Fmt(".SyntaxComment { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
-    helpOutput += Fmt(".SyntaxCompiler { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
-    helpOutput += Fmt(".SyntaxFunction { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
-    helpOutput += Fmt(".SyntaxConstant { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
-    helpOutput += Fmt(".SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
-    helpOutput += Fmt(".SyntaxType { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
-    helpOutput += Fmt(".SyntaxKeyword { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
-    helpOutput += Fmt(".SyntaxLogic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
-    helpOutput += Fmt(".SyntaxNumber { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
-    helpOutput += Fmt(".SyntaxString { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
-    helpOutput += Fmt(".SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += Fmt("    .SyntaxCode      { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
+    helpOutput += Fmt("    .SyntaxComment   { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
+    helpOutput += Fmt("    .SyntaxCompiler  { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
+    helpOutput += Fmt("    .SyntaxFunction  { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
+    helpOutput += Fmt("    .SyntaxConstant  { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
+    helpOutput += Fmt("    .SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
+    helpOutput += Fmt("    .SyntaxType      { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
+    helpOutput += Fmt("    .SyntaxKeyword   { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
+    helpOutput += Fmt("    .SyntaxLogic     { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
+    helpOutput += Fmt("    .SyntaxNumber    { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
+    helpOutput += Fmt("    .SyntaxString    { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
+    helpOutput += Fmt("    .SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
 
     helpOutput += "</style>\n";
 }
@@ -182,7 +182,7 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs)
     if (repl.empty())
         return;
 
-    helpContent += "<p class=\"code\">\n";
+    helpContent += "<pre>\n";
     helpContent += "<code style=\"white-space: break-spaces\">";
 
     // Kind of a hack for now... Try to keep references, but try to keep <> also...
@@ -220,7 +220,7 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs)
 
     helpContent += repl;
     helpContent += "</code>\n";
-    helpContent += "</p>\n";
+    helpContent += "</pre>\n";
 }
 
 Utf8 GenDoc::findReference(const Utf8& name)
@@ -738,47 +738,37 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     return result;
 }
 
-void GenDoc::startPage()
+void GenDoc::constructPage()
 {
     helpOutput.clear();
-    helpContent.clear();
-    helpToc.clear();
-
-    bool userCss = false;
-    Utf8 header;
+    helpOutput += "<!DOCTYPE html>\n";
+    helpOutput += "<html>\n";
+    helpOutput += "<head>\n";
+    helpOutput += "<meta charset=\"UTF-8\">\n";
 
     if (module)
-        header = Utf8{module->buildCfg.docPageHeader};
-    if (header.empty())
     {
-        header += "<html>\n";
-        header += "<body>\n";
-        header += "<head>\n";
-        header += "<meta charset=\"UTF-8\">\n";
-
-        // Css
-        if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
-        {
-            Utf8 css{module->buildCfg.docCss};
-            header += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
-            userCss = true;
-        }
-
-        header += "</head>\n";
+        Utf8 userHead = Utf8{module->buildCfg.docStartHead};
+        helpOutput += userHead;
     }
 
-    helpOutput += header;
+    // User css ref
+    if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
+    {
+        Utf8 css{module->buildCfg.docCss};
+        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
+    }
 
-    if (!userCss)
-        outputStyles();
+    outputStyles();
+    helpOutput += "</head>\n";
+    helpOutput += "<body>\n";
 
-    helpContent += "<blockquote>\n";
-    helpContent += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    helpContent += "</blockquote>\n";
-}
+    if (module)
+    {
+        Utf8 userHead = Utf8{module->buildCfg.docStartBody};
+        helpOutput += userHead;
+    }
 
-void GenDoc::endPage()
-{
     helpOutput += "<div class=\"container\">\n";
 
     if (docKind != DocKind::Pages)
@@ -790,7 +780,12 @@ void GenDoc::endPage()
 
     helpOutput += "<div class=\"right\">\n";
     helpOutput += "<div class=\"page\">\n";
+
+    helpOutput += "<blockquote>\n";
+    helpOutput += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    helpOutput += "</blockquote>\n";
     helpOutput += helpContent;
+
     helpOutput += "</div>\n";
     helpOutput += "</div>\n";
 
@@ -798,14 +793,13 @@ void GenDoc::endPage()
 
     Utf8 footer;
     if (module)
-        footer = Utf8{module->buildCfg.docPageFooter};
-    if (footer.empty())
     {
-        footer += "</body>\n";
-        footer += "</html>\n";
+        Utf8 endBody = Utf8{module->buildCfg.docEndBody};
+        helpOutput += endBody;
     }
 
-    helpOutput += footer;
+    helpOutput += "</body>\n";
+    helpOutput += "</html>\n";
 }
 
 bool GenDoc::generate(Module* mdl, DocKind kind)
@@ -857,8 +851,6 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
         return false;
     }
 
-    startPage();
-
     // Titles
     if (!module)
     {
@@ -889,7 +881,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
         break;
     }
 
-    endPage();
+    constructPage();
 
     // Write file
     if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())

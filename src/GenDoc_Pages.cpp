@@ -26,10 +26,11 @@ bool GenDoc::generatePages()
             return false;
         }
 
-        startPage();
+        helpContent.clear();
+        helpToc.clear();
         if (!processFile(file->path, 0))
             return false;
-        endPage();
+        constructPage();
 
         // Write and close file
         if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
