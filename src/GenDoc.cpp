@@ -24,7 +24,7 @@ void GenDoc::outputStyles()
         .left {\n\
             display:    block;\n\
             overflow-y: scroll;\n\
-            width:      600px;\n\
+            width:      500px;\n\
         }\n\
         .leftpage {\n\
             margin:     10px;\n\
@@ -187,8 +187,7 @@ void GenDoc::outputStyles()
             background-color:   #eeeeee;\n\
             border:             1px solid LightGrey;\n\
             padding:            10px;\n\
-            margin-left:        20px;\n\
-            margin-right:       20px;\n\
+            margin:             20px;\n\
             white-space:        pre;\n\
             overflow-x:         auto;\n\
         }";

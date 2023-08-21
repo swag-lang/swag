@@ -16,7 +16,7 @@
         .left {
             display:    block;
             overflow-y: scroll;
-            width:      600px;
+            width:      500px;
         }
         .leftpage {
             margin:     10px;
@@ -171,8 +171,7 @@
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
-            margin-left:        20px;
-            margin-right:       20px;
+            margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
         }    .SyntaxCode      { color: #7f7f7f; }
