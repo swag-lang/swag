@@ -517,3 +517,9 @@ static const uint64_t SWAG_LAMBDA_BC_MARKER     = 1ULL << SWAG_LAMBDA_BC_MARKER_
 
 const uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
 const uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;
+
+inline void setSlice(SwagSlice& slice, const char* value)
+{
+    slice.buffer = (void*) value;
+    slice.count  = strlen(value);
+}

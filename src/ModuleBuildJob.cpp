@@ -769,7 +769,7 @@ JobResult ModuleBuildJob::execute()
             {
                 swagDocDone             = true;
                 auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
-                outputJob->module       = nullptr;
+                outputJob->module       = g_Workspace->runtimeModule;
                 outputJob->dependentJob = this;
                 outputJob->docKind      = DocKind::Api;
                 jobsToAdd.push_back(outputJob);

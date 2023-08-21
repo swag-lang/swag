@@ -808,6 +808,16 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
 {
     module  = mdl;
     docKind = kind;
+    SWAG_ASSERT(module);
+
+    // Setup runtime module documentation
+    if (module == g_Workspace->runtimeModule)
+    {
+        setSlice(module->buildCfg.docOutputName, "swag.runtime");
+        setSlice(module->buildCfg.docOutputExtension, ".php");
+        setSlice(module->buildCfg.docTitleToc, "Swag Runtime");
+        setSlice(module->buildCfg.repoPath, "https://github.com/swag-lang/swag/blob/master/bin/runtime");
+    }
 
     if (docKind == DocKind::Pages)
     {
@@ -818,29 +828,22 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
 
     // Output filename
     auto filePath = g_Workspace->targetPath;
-    if (!module)
+    Utf8 fileName{module->buildCfg.docOutputName};
+    if (fileName.empty())
     {
-        filePath.append("swag.runtime.html");
+        filePath.append(g_Workspace->workspacePath.filename().string().c_str());
+        filePath += ".";
+        filePath += module->name.c_str();
     }
     else
     {
-        Utf8 fileName{module->buildCfg.docOutputName};
-        if (fileName.empty())
-        {
-            filePath.append(g_Workspace->workspacePath.filename().string().c_str());
-            filePath += ".";
-            filePath += module->name.c_str();
-        }
-        else
-        {
-            filePath.append(fileName.c_str());
-        }
-
-        Utf8 extName{module->buildCfg.docOutputExtension};
-        if (extName.empty())
-            extName = ".html";
-        filePath += extName.c_str();
+        filePath.append(fileName.c_str());
     }
+
+    Utf8 extName{module->buildCfg.docOutputExtension};
+    if (extName.empty())
+        extName = ".html";
+    filePath += extName.c_str();
 
     fullFileName = filePath.string();
     fullFileName.makeLower();
@@ -854,22 +857,15 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
     }
 
     // Titles
-    if (!module)
-    {
-        helpToc += "<h1>Swag Runtime</h1>\n";
-    }
-    else
-    {
-        Utf8 titleToc{module->buildCfg.docTitleToc};
-        if (titleToc.empty())
-            titleToc = Fmt("Module %s", module->name.c_str());
-        helpToc += Fmt("<h1>%s</h1>\n", titleToc.c_str());
+    Utf8 titleToc{module->buildCfg.docTitleToc};
+    if (titleToc.empty())
+        titleToc = Fmt("Module %s", module->name.c_str());
+    helpToc += Fmt("<h1>%s</h1>\n", titleToc.c_str());
 
-        Utf8 titleContent{module->buildCfg.docTitleContent};
-        if (titleContent.empty())
-            titleContent = "Overview";
-        helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
-    }
+    Utf8 titleContent{module->buildCfg.docTitleContent};
+    if (titleContent.empty())
+        titleContent = "Overview";
+    helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
 
     switch (docKind)
     {

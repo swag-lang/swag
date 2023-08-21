@@ -252,14 +252,13 @@ void GenDoc::outputTitle(OneRef& c)
     if (c.nodes[0]->kind != AstNodeKind::Namespace)
     {
         helpContent += "<td class=\"srcref\">\n";
-        auto srcModule = module ? module : g_Workspace->runtimeModule;
-        if (srcModule->buildCfg.repoPath.buffer)
+        Path str = Utf8(module->buildCfg.repoPath);
+        if (!str.empty())
         {
-            Path str = Utf8((const char*) srcModule->buildCfg.repoPath.buffer, (uint32_t) srcModule->buildCfg.repoPath.count).c_str();
-            if (module)
+            if (module != g_Workspace->runtimeModule)
             {
                 Utf8 pathFile = c.nodes[0]->sourceFile->path.string();
-                pathFile.remove(0, (uint32_t) srcModule->path.string().size() + 1);
+                pathFile.remove(0, (uint32_t) module->path.string().size() + 1);
                 str.append(pathFile.c_str());
             }
             else
@@ -471,15 +470,12 @@ void GenDoc::generateToc()
 void GenDoc::generateContent()
 {
     // Output module description
-    if (module)
+    UserComment moduleComment;
+    computeUserComments(moduleComment, module->docComment);
+    if (!moduleComment.shortDesc.lines.empty())
     {
-        UserComment userComment;
-        computeUserComments(userComment, module->docComment);
-        if (!userComment.shortDesc.lines.empty())
-        {
-            outputUserBlock(userComment.shortDesc);
-            outputUserComment(userComment);
-        }
+        outputUserBlock(moduleComment.shortDesc);
+        outputUserComment(moduleComment);
     }
 
     sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
@@ -490,6 +486,7 @@ void GenDoc::generateContent()
                 return false;
             return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
+    // Output content
     helpContent += "<h1>Content</h1>\n";
 
     for (int i = 0; i < allNodes.size(); i++)
@@ -808,15 +805,10 @@ bool GenDoc::generateApi()
     concat.init();
 
     // Collect content
-    if (module)
+    if (module != g_Workspace->runtimeModule)
         collectScopes(module->scopeRoot);
     else
     {
-        static const char* p = "https://github.com/swag-lang/swag/blob/master/bin/runtime";
-
-        g_Workspace->runtimeModule->buildCfg.repoPath.buffer = (void*) p;
-        g_Workspace->runtimeModule->buildCfg.repoPath.count  = strlen(p);
-
         collectScopes(g_Workspace->runtimeModule->scopeRoot);
         collectScopes(g_Workspace->bootstrapModule->scopeRoot);
     }
@@ -826,7 +818,7 @@ bool GenDoc::generateApi()
     {
         OneRef oneRef;
 
-        if (module)
+        if (module != g_Workspace->runtimeModule)
         {
             // A namespace can be defined in multiple places, so do not add a category depending on folder,
             // as sourceFile can be irrelevant
