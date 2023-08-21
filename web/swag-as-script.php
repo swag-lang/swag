@@ -17,6 +17,10 @@
         display:    block;
         width:      100%;
     }
+    .rightpage {
+        max-width:  1024px;
+        margin:     10px auto;
+    }
     @media(min-width: 640px) {
         .container {
             max-width: 640px;
@@ -47,10 +51,6 @@
         margin:         0px;
         line-height:    1.3em;
         font-family:    Segoe UI;
-    }
-    .page {
-        max-width:  1024px;
-        margin:     8px auto;
     }
     .container blockquote {
         background-color:   LightYellow;
@@ -175,7 +175,7 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
-<div class="page">
+<div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h1>Script file </h1>

@@ -17,6 +17,10 @@
         display:    block;
         width:      100%;
     }
+    .rightpage {
+        max-width:  1024px;
+        margin:     10px auto;
+    }
     @media(min-width: 640px) {
         .container {
             max-width: 640px;
@@ -49,6 +53,9 @@
         width:      650px;
         height:     100vh;
     }
+    .leftpage {
+        margin:    10px;
+    }
     .right {
         overflow-y: scroll;
         height:     100vh;
@@ -68,10 +75,6 @@
         margin:         0px;
         line-height:    1.3em;
         font-family:    Segoe UI;
-    }
-    .page {
-        max-width:  1024px;
-        margin:     8px auto;
     }
     .container blockquote {
         background-color:   LightYellow;
@@ -196,6 +199,7 @@
 <body>
 <div class="container">
 <div class="left">
+<div class="leftpage">
 <h1>Module win32</h1>
 <h2>Structs</h2>
 <h3></h3>
@@ -1452,8 +1456,9 @@
 <li><a href="#Win32_setError">Win32.setError</a></li>
 </ul>
 </div>
+</div>
 <div class="right">
-<div class="page">
+<div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.22.0)</blockquote>
 <h1>Overview</h1>

@@ -25,6 +25,10 @@ void GenDoc::outputStyles()
         display:    block;\n\
         width:      100%;\n\
     }\n\
+    .rightpage {\n\
+        max-width:  1024px;\n\
+        margin:     10px auto;\n\
+    }\n\
     @media(min-width: 640px) {\n\
         .container {\n\
             max-width: 640px;\n\
@@ -62,6 +66,9 @@ void GenDoc::outputStyles()
         width:      650px;\n\
         height:     100vh;\n\
     }\n\
+    .leftpage {\n\
+        margin:    10px;\n\
+    }\n\
     .right {\n\
         overflow-y: scroll;\n\
         height:     100vh;\n\
@@ -84,10 +91,6 @@ void GenDoc::outputStyles()
         margin:         0px;\n\
         line-height:    1.3em;\n\
         font-family:    Segoe UI;\n\
-    }\n\
-    .page {\n\
-        max-width:  1024px;\n\
-        margin:     8px auto;\n\
     }\n\
     .container blockquote {\n\
         background-color:   LightYellow;\n\
@@ -829,12 +832,14 @@ void GenDoc::constructPage()
     if (docKind != DocKind::Pages)
     {
         helpOutput += "<div class=\"left\">\n";
+        helpOutput += "<div class=\"leftpage\">\n";
         helpOutput += helpToc;
+        helpOutput += "</div>\n";
         helpOutput += "</div>\n";
     }
 
     helpOutput += "<div class=\"right\">\n";
-    helpOutput += "<div class=\"page\">\n";
+    helpOutput += "<div class=\"rightpage\">\n";
 
     helpOutput += "<blockquote>\n";
     helpOutput += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
