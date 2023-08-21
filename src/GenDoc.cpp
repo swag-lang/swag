@@ -92,6 +92,8 @@ void GenDoc::outputStyles()
         .container blockquote {\n\
             background-color:   LightYellow;\n\
             border-left:        6px solid Orange;\n\
+            margin:             20px;\n\
+            margin-left:        50px;\n\
             margin-right:       50px;\n\
             padding:            10px;\n\
         }\n\

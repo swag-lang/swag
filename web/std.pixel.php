@@ -76,6 +76,8 @@
         .container blockquote {
             background-color:   LightYellow;
             border-left:        6px solid Orange;
+            margin:             20px;
+            margin-left:        50px;
             margin-right:       50px;
             padding:            10px;
         }
