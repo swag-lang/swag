@@ -80,9 +80,13 @@
             border-collapse:    collapse;
             width:              auto;
         }
+        .container .item td:first-child {
+            width: 33%;
+        }
         .container .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+            max-width:          33%;
         }
         .container td:last-child {
             width:              100%;

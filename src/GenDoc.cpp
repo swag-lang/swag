@@ -115,9 +115,13 @@ void GenDoc::outputStyles()
             border-collapse:    collapse;\n\
             width:              auto;\n\
         }\n\
+        .container .item td:first-child {\n\
+            width: 33%;\n\
+        }\n\
         .container .enumeration td:first-child {\n\
             background-color:   #f8f8f8;\n\
             white-space:        nowrap;\n\
+            max-width:          33%;\n\
         }\n\
         .container td:last-child {\n\
             width:              100%;\n\
