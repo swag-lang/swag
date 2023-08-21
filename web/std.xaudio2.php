@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,9 +195,9 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#XAudio2_IXAudio2">IXAudio2</a></li>
 <li><a href="#XAudio2_IXAudio2EngineCallback">IXAudio2EngineCallback</a></li>
@@ -226,14 +226,14 @@
 <li><a href="#XAudio2_XAUDIO2_VOICE_SENDS">XAUDIO2_VOICE_SENDS</a></li>
 <li><a href="#XAudio2_XAUDIO2_VOICE_STATE">XAUDIO2_VOICE_STATE</a></li>
 </ul>
-<h2>Enums</h2>
-<h3></h3>
+<h3>Enums</h3>
+<h4></h4>
 <ul>
 <li><a href="#XAudio2_AUDIO_STREAM_CATEGORY">AUDIO_STREAM_CATEGORY</a></li>
 <li><a href="#XAudio2_XAUDIO2_FILTER_TYPE">XAUDIO2_FILTER_TYPE</a></li>
 </ul>
-<h2>Constants</h2>
-<h3></h3>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#XAudio2_FORMAT_EXTENSIBLE">FORMAT_EXTENSIBLE</a></li>
 <li><a href="#XAudio2_Processor1">Processor1</a></li>
@@ -314,8 +314,8 @@
 <li><a href="#XAudio2_XAUDIO2_VOICE_NOSRC">XAUDIO2_VOICE_NOSRC</a></li>
 <li><a href="#XAudio2_XAUDIO2_VOICE_USEFILTER">XAUDIO2_VOICE_USEFILTER</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#XAudio2_X3DAudioInitialize">XAudio2.X3DAudioInitialize</a></li>
 <li><a href="#XAudio2_XAudio2Create">XAudio2.XAudio2Create</a></li>

@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,9 +195,9 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Constants</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#Ogl_GL_2D">GL_2D</a></li>
 <li><a href="#Ogl_GL_2_BYTES">GL_2_BYTES</a></li>
@@ -1496,8 +1496,8 @@
 <li><a href="#Ogl_GL_ZOOM_X">GL_ZOOM_X</a></li>
 <li><a href="#Ogl_GL_ZOOM_Y">GL_ZOOM_Y</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#Ogl_glAccum">Ogl.glAccum</a></li>
 <li><a href="#Ogl_glActiveTexture">Ogl.glActiveTexture</a></li>

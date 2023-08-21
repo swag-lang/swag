@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,9 +195,9 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#Gdi32_BITMAP">BITMAP</a></li>
 <li><a href="#Gdi32_BITMAPINFO">BITMAPINFO</a></li>
@@ -213,8 +213,8 @@
 <li><a href="#Gdi32_TEXTMETRICA">TEXTMETRICA</a></li>
 <li><a href="#Gdi32_TEXTMETRICW">TEXTMETRICW</a></li>
 </ul>
-<h2>Constants</h2>
-<h3></h3>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#Gdi32_ANSI_CHARSET">ANSI_CHARSET</a></li>
 <li><a href="#Gdi32_ANSI_FIXED_FONT">ANSI_FIXED_FONT</a></li>
@@ -337,8 +337,8 @@
 <li><a href="#Gdi32_WHITE_BRUSH">WHITE_BRUSH</a></li>
 <li><a href="#Gdi32_WHITE_PEN">WHITE_PEN</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#Gdi32_BitBlt">Gdi32.BitBlt</a></li>
 <li><a href="#Gdi32_ChoosePixelFormat">Gdi32.ChoosePixelFormat</a></li>

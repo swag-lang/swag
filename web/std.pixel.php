@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,15 +195,15 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3>image</h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4>image</h4>
 <ul>
 <li><a href="#Pixel_Image">Image</a></li>
 <li><a href="#Pixel_RenderTarget">RenderTarget</a></li>
 <li><a href="#Pixel_Texture">Texture</a></li>
 </ul>
-<h3>image/decode</h3>
+<h4>image/decode</h4>
 <ul>
 <li><a href="#Pixel_Bmp_Decoder">Bmp.Decoder</a></li>
 <li><a href="#Pixel_DecodeOptions">DecodeOptions</a></li>
@@ -213,7 +213,7 @@
 <li><a href="#Pixel_Png_Decoder">Png.Decoder</a></li>
 <li><a href="#Pixel_Tga_Decoder">Tga.Decoder</a></li>
 </ul>
-<h3>image/encode</h3>
+<h4>image/encode</h4>
 <ul>
 <li><a href="#Pixel_Bmp_Encoder">Bmp.Encoder</a></li>
 <li><a href="#Pixel_Jpg_EncodeOptions">Jpg.EncodeOptions</a></li>
@@ -222,7 +222,7 @@
 <li><a href="#Pixel_Png_Encoder">Png.Encoder</a></li>
 <li><a href="#Pixel_Tga_Encoder">Tga.Encoder</a></li>
 </ul>
-<h3>painter</h3>
+<h4>painter</h4>
 <ul>
 <li><a href="#Pixel_ColorMask">ColorMask</a></li>
 <li><a href="#Pixel_Command">Command</a></li>
@@ -233,7 +233,7 @@
 <li><a href="#Pixel_StringPainter">StringPainter</a></li>
 <li><a href="#Pixel_VertexLayout">VertexLayout</a></li>
 </ul>
-<h3>poly</h3>
+<h4>poly</h4>
 <ul>
 <li><a href="#Pixel_Poly2Tri_Edge">Edge</a></li>
 <li><a href="#Pixel_Clipper_IntPoint">IntPoint</a></li>
@@ -243,7 +243,7 @@
 <li><a href="#Pixel_Clipper_Transform">Transform</a></li>
 <li><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></li>
 </ul>
-<h3>render/ogl</h3>
+<h4>render/ogl</h4>
 <ul>
 <li><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></li>
 <li><a href="#Pixel_RenderOgl">RenderOgl</a></li>
@@ -253,7 +253,7 @@
 <li><a href="#Pixel_ShaderBlur">ShaderBlur</a></li>
 <li><a href="#Pixel_ShaderSimple">ShaderSimple</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Pixel_Font">Font</a></li>
 <li><a href="#Pixel_FontFamily">FontFamily</a></li>
@@ -265,7 +265,7 @@
 <li><a href="#Pixel_RichString">RichString</a></li>
 <li><a href="#Pixel_TypeFace">TypeFace</a></li>
 </ul>
-<h3>types</h3>
+<h4>types</h4>
 <ul>
 <li><a href="#Pixel_Brush">Brush</a></li>
 <li><a href="#Pixel_Color">Color</a></li>
@@ -274,37 +274,37 @@
 <li><a href="#Pixel_LinePathList">LinePathList</a></li>
 <li><a href="#Pixel_Pen">Pen</a></li>
 </ul>
-<h2>Interfaces</h2>
-<h3>image/decode</h3>
+<h3>Interfaces</h3>
+<h4>image/decode</h4>
 <ul>
 <li><a href="#Pixel_IImageDecoder">IImageDecoder</a></li>
 </ul>
-<h3>image/encode</h3>
+<h4>image/encode</h4>
 <ul>
 <li><a href="#Pixel_IImageEncoder">IImageEncoder</a></li>
 </ul>
-<h2>Enums</h2>
-<h3>image</h3>
+<h3>Enums</h3>
+<h4>image</h4>
 <ul>
 <li><a href="#Pixel_HatchStyle">HatchStyle</a></li>
 <li><a href="#Pixel_InterpolationMode">InterpolationMode</a></li>
 <li><a href="#Pixel_PixelFormat">PixelFormat</a></li>
 <li><a href="#Pixel_UVMode">UVMode</a></li>
 </ul>
-<h3>image/filter</h3>
+<h4>image/filter</h4>
 <ul>
 <li><a href="#Pixel_Image_ChannelMode">ChannelMode</a></li>
 <li><a href="#Pixel_Image_ChannelValueMode">ChannelValueMode</a></li>
 <li><a href="#Pixel_Image_FillHslType">FillHslType</a></li>
 <li><a href="#Pixel_Image_Kernel">Kernel</a></li>
 </ul>
-<h3>image/transform</h3>
+<h4>image/transform</h4>
 <ul>
 <li><a href="#Pixel_Image_MixMode">MixMode</a></li>
 <li><a href="#Pixel_Image_ResizeMode">ResizeMode</a></li>
 <li><a href="#Pixel_Image_TurnAngle">TurnAngle</a></li>
 </ul>
-<h3>painter</h3>
+<h4>painter</h4>
 <ul>
 <li><a href="#Pixel_BlendingMode">BlendingMode</a></li>
 <li><a href="#Pixel_ClippingMode">ClippingMode</a></li>
@@ -318,7 +318,7 @@
 <li><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></li>
 <li><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></li>
 </ul>
-<h3>poly</h3>
+<h4>poly</h4>
 <ul>
 <li><a href="#Pixel_Clipper_ClipType">ClipType</a></li>
 <li><a href="#Pixel_Clipper_InitOptions">InitOptions</a></li>
@@ -326,11 +326,11 @@
 <li><a href="#Pixel_Clipper_PolyFillType">PolyFillType</a></li>
 <li><a href="#Pixel_Clipper_PolyType">PolyType</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></li>
 </ul>
-<h3>types</h3>
+<h4>types</h4>
 <ul>
 <li><a href="#Pixel_Argb">Argb</a></li>
 <li><a href="#Pixel_BorderPos">BorderPos</a></li>
@@ -341,23 +341,23 @@
 <li><a href="#Pixel_JoinStyle">JoinStyle</a></li>
 <li><a href="#Pixel_LineCapStyle">LineCapStyle</a></li>
 </ul>
-<h2>Constants</h2>
-<h3>image/decode</h3>
+<h3>Constants</h3>
+<h4>image/decode</h4>
 <ul>
 <li><a href="#Pixel_Bmp_BI_BITFIELDS">BI_BITFIELDS</a></li>
 <li><a href="#Pixel_Bmp_BI_RGB">BI_RGB</a></li>
 <li><a href="#Pixel_Bmp_BI_RLE4">BI_RLE4</a></li>
 <li><a href="#Pixel_Bmp_BI_RLE8">BI_RLE8</a></li>
 </ul>
-<h3>painter</h3>
+<h4>painter</h4>
 <ul>
 <li><a href="#Pixel_MaxAAEdge">MaxAAEdge</a></li>
 </ul>
-<h3>poly</h3>
+<h4>poly</h4>
 <ul>
 <li><a href="#Pixel_ClipperScaleCoords">ClipperScaleCoords</a></li>
 </ul>
-<h3>render/ogl</h3>
+<h4>render/ogl</h4>
 <ul>
 <li><a href="#Pixel_InvalidRenderTargetHandle">InvalidRenderTargetHandle</a></li>
 <li><a href="#Pixel_InvalidRenderTargetSurfaceHandle">InvalidRenderTargetSurfaceHandle</a></li>
@@ -365,8 +365,8 @@
 <li><a href="#Pixel_InvalidShaderParamHandle">InvalidShaderParamHandle</a></li>
 <li><a href="#Pixel_InvalidTextureHandle">InvalidTextureHandle</a></li>
 </ul>
-<h2>Functions</h2>
-<h3>image</h3>
+<h3>Functions</h3>
+<h4>image</h4>
 <ul>
 <li><a href="#Pixel_Image_allocPixels">Image.allocPixels</a></li>
 <li><a href="#Pixel_Image_allocWorkingBuffer">Image.allocWorkingBuffer</a></li>
@@ -391,7 +391,7 @@
 <li><a href="#Pixel_Texture_getByteSize">Texture.getByteSize</a></li>
 <li><a href="#Pixel_Texture_isValid">Texture.isValid</a></li>
 </ul>
-<h3>image/decode</h3>
+<h4>image/decode</h4>
 <ul>
 <li><a href="#Pixel_Bmp_Decoder_IImageDecoder_canDecode">Bmp.Decoder.IImageDecoder.canDecode</a></li>
 <li><a href="#Pixel_Bmp_Decoder_IImageDecoder_decode">Bmp.Decoder.IImageDecoder.decode</a></li>
@@ -413,7 +413,7 @@
 <li><a href="#Pixel_Tga_Decoder_IImageDecoder_canDecode">Tga.Decoder.IImageDecoder.canDecode</a></li>
 <li><a href="#Pixel_Tga_Decoder_IImageDecoder_decode">Tga.Decoder.IImageDecoder.decode</a></li>
 </ul>
-<h3>image/encode</h3>
+<h4>image/encode</h4>
 <ul>
 <li><a href="#Pixel_Bmp_Encoder_IImageEncoder_canEncode">Bmp.Encoder.IImageEncoder.canEncode</a></li>
 <li><a href="#Pixel_Bmp_Encoder_IImageEncoder_encode">Bmp.Encoder.IImageEncoder.encode</a></li>
@@ -427,7 +427,7 @@
 <li><a href="#Pixel_Tga_Encoder_IImageEncoder_canEncode">Tga.Encoder.IImageEncoder.canEncode</a></li>
 <li><a href="#Pixel_Tga_Encoder_IImageEncoder_encode">Tga.Encoder.IImageEncoder.encode</a></li>
 </ul>
-<h3>image/filter</h3>
+<h4>image/filter</h4>
 <ul>
 <li><a href="#Pixel_Image_applyKernel">Image.applyKernel</a></li>
 <li><a href="#Pixel_Image_colorize">Image.colorize</a></li>
@@ -445,7 +445,7 @@
 <li><a href="#Pixel_Image_setChannel">Image.setChannel</a></li>
 <li><a href="#Pixel_Image_toApplyKernel">Image.toApplyKernel</a></li>
 </ul>
-<h3>image/transform</h3>
+<h4>image/transform</h4>
 <ul>
 <li><a href="#Pixel_Image_crop">Image.crop</a></li>
 <li><a href="#Pixel_Image_flip">Image.flip</a></li>
@@ -464,7 +464,7 @@
 <li><a href="#Pixel_Image_toTurn">Image.toTurn</a></li>
 <li><a href="#Pixel_Image_turn">Image.turn</a></li>
 </ul>
-<h3>painter</h3>
+<h4>painter</h4>
 <ul>
 <li><a href="#Pixel_Painter_addParams">Painter.addParams</a></li>
 <li><a href="#Pixel_Painter_begin">Painter.begin</a></li>
@@ -540,7 +540,7 @@
 <li><a href="#Pixel_StringPainter_horzAlign">StringPainter.horzAlign</a></li>
 <li><a href="#Pixel_StringPainter_vertAlign">StringPainter.vertAlign</a></li>
 </ul>
-<h3>poly</h3>
+<h4>poly</h4>
 <ul>
 <li><a href="#Pixel_Clipper_IntPoint_opEquals">IntPoint.opEquals</a></li>
 <li><a href="#Pixel_Polygon_add">Polygon.add</a></li>
@@ -559,7 +559,7 @@
 <li><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">Tesselate.startPolyLine</a></li>
 <li><a href="#Pixel_Poly2Tri_Tesselate_triangulate">Tesselate.triangulate</a></li>
 </ul>
-<h3>render/ogl</h3>
+<h4>render/ogl</h4>
 <ul>
 <li><a href="#Pixel_NativeRenderOgl_createContext">NativeRenderOgl.createContext</a></li>
 <li><a href="#Pixel_NativeRenderOgl_dropContext">NativeRenderOgl.dropContext</a></li>
@@ -594,7 +594,7 @@
 <li><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">RenderOgl.unbindRenderTargetToImage</a></li>
 <li><a href="#Pixel_RenderOgl_updateTexture">RenderOgl.updateTexture</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Pixel_Font_create">Font.create</a></li>
 <li><a href="#Pixel_Font_getGlyphDesc">Font.getGlyphDesc</a></li>
@@ -623,7 +623,7 @@
 <li><a href="#Pixel_TypeFace_release">TypeFace.release</a></li>
 <li><a href="#Pixel_TypeFace_renderGlyph">TypeFace.renderGlyph</a></li>
 </ul>
-<h3>types</h3>
+<h4>types</h4>
 <ul>
 <li><a href="#Pixel_Argb_fromName">Argb.fromName</a></li>
 <li><a href="#Pixel_Brush_createHatch">Brush.createHatch</a></li>

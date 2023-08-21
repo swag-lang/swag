@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,9 +195,9 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#FreeType_FT_BBox">FT_BBox</a></li>
 <li><a href="#FreeType_FT_Bitmap">FT_Bitmap</a></li>
@@ -217,16 +217,16 @@
 <li><a href="#FreeType_FT_SubGlyphRec">FT_SubGlyphRec</a></li>
 <li><a href="#FreeType_FT_Vector">FT_Vector</a></li>
 </ul>
-<h2>Enums</h2>
-<h3></h3>
+<h3>Enums</h3>
+<h4></h4>
 <ul>
 <li><a href="#FreeType_FT_Glyph_Format">FT_Glyph_Format</a></li>
 <li><a href="#FreeType_FT_LcdFilter">FT_LcdFilter</a></li>
 <li><a href="#FreeType_FT_Pixel_Mode">FT_Pixel_Mode</a></li>
 <li><a href="#FreeType_FT_Render_Mode">FT_Render_Mode</a></li>
 </ul>
-<h2>Constants</h2>
-<h3></h3>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#FreeType_FT_LOAD_ADVANCE_ONLY">FT_LOAD_ADVANCE_ONLY</a></li>
 <li><a href="#FreeType_FT_LOAD_BITMAP_METRICS_ONLY">FT_LOAD_BITMAP_METRICS_ONLY</a></li>
@@ -257,8 +257,8 @@
 <li><a href="#FreeType_FT_STYLE_FLAG_BOLD">FT_STYLE_FLAG_BOLD</a></li>
 <li><a href="#FreeType_FT_STYLE_FLAG_ITALIC">FT_STYLE_FLAG_ITALIC</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#FreeType_FT_Done_Face">FreeType.FT_Done_Face</a></li>
 <li><a href="#FreeType_FT_Done_FreeType">FreeType.FT_Done_FreeType</a></li>

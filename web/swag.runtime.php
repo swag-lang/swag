@@ -142,7 +142,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -197,9 +197,9 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Namespaces</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Namespaces</h3>
+<h4></h4>
 <ul>
 <li><a href="#Swag_F32">F32</a></li>
 <li><a href="#Swag_F64">F64</a></li>
@@ -213,8 +213,8 @@
 <li><a href="#Swag_U64">U64</a></li>
 <li><a href="#Swag_U8">U8</a></li>
 </ul>
-<h2>Structs</h2>
-<h3></h3>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#Swag_AllocatorRequest">AllocatorRequest</a></li>
 <li><a href="#Swag_Attribute">Attribute</a></li>
@@ -251,14 +251,14 @@
 <li><a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a></li>
 <li><a href="#Swag_TypeValue">TypeValue</a></li>
 </ul>
-<h2>Interfaces</h2>
-<h3></h3>
+<h3>Interfaces</h3>
+<h4></h4>
 <ul>
 <li><a href="#Swag_IAllocator">IAllocator</a></li>
 <li><a href="#Swag_ICompiler">ICompiler</a></li>
 </ul>
-<h2>Enums</h2>
-<h3></h3>
+<h3>Enums</h3>
+<h4></h4>
 <ul>
 <li><a href="#Swag_AllocatorMode">AllocatorMode</a></li>
 <li><a href="#Swag_AttributeUsage">AttributeUsage</a></li>
@@ -280,8 +280,8 @@
 <li><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></li>
 <li><a href="#Swag_WarnLevel">WarnLevel</a></li>
 </ul>
-<h2>Constants</h2>
-<h3></h3>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#Swag_F32_Bias">F32.Bias</a></li>
 <li><a href="#Swag_F32_ExpBits">F32.ExpBits</a></li>
@@ -330,8 +330,8 @@
 <li><a href="#Swag_U8_Max">U8.Max</a></li>
 <li><a href="#Swag_U8_Min">U8.Min</a></li>
 </ul>
-<h2>Attributes</h2>
-<h3></h3>
+<h3>Attributes</h3>
+<h4></h4>
 <ul>
 <li><a href="#Swag_Align">Align</a></li>
 <li><a href="#Swag_AttrMulti">AttrMulti</a></li>
@@ -370,8 +370,8 @@
 <li><a href="#Swag_Using">Using</a></li>
 <li><a href="#Swag_Warn">Warn</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#@abs">@abs</a></li>
 <li><a href="#@acos">@acos</a></li>

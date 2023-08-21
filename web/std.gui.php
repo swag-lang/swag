@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,9 +195,9 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#Gui_ActionContext">ActionContext</a></li>
 <li><a href="#Gui_Application">Application</a></li>
@@ -231,7 +231,7 @@
 <li><a href="#Gui_Timer">Timer</a></li>
 <li><a href="#Gui_TimerEvent">TimerEvent</a></li>
 </ul>
-<h3>composite</h3>
+<h4>composite</h4>
 <ul>
 <li><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></li>
 <li><a href="#Gui_ComboCtrl">ComboCtrl</a></li>
@@ -253,7 +253,7 @@
 <li><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></li>
 <li><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></li>
 </ul>
-<h3>dialogs</h3>
+<h4>dialogs</h4>
 <ul>
 <li><a href="#Gui_Dialog">Dialog</a></li>
 <li><a href="#Gui_EditDlg">EditDlg</a></li>
@@ -262,7 +262,7 @@
 <li><a href="#Gui_FileDlgState">FileDlgState</a></li>
 <li><a href="#Gui_MessageDlg">MessageDlg</a></li>
 </ul>
-<h3>paint</h3>
+<h4>paint</h4>
 <ul>
 <li><a href="#Gui_BlendColor">BlendColor</a></li>
 <li><a href="#Gui_Cursor">Cursor</a></li>
@@ -280,14 +280,14 @@
 <li><a href="#Gui_ThemeStyle">ThemeStyle</a></li>
 <li><a href="#Gui_ThemeStyleRef">ThemeStyleRef</a></li>
 </ul>
-<h3>property</h3>
+<h4>property</h4>
 <ul>
 <li><a href="#Gui_PropertyList">PropertyList</a></li>
 <li><a href="#Gui_PropertyListCtrl">PropertyListCtrl</a></li>
 <li><a href="#Gui_PropertyListItem">PropertyListItem</a></li>
 <li><a href="#Gui_PropertyListView">PropertyListView</a></li>
 </ul>
-<h3>richedit</h3>
+<h4>richedit</h4>
 <ul>
 <li><a href="#Gui_RichEditCtrl">RichEditCtrl</a></li>
 <li><a href="#Gui_RichEditCursor">RichEditCursor</a></li>
@@ -298,7 +298,7 @@
 <li><a href="#Gui_RichEditUndo">RichEditUndo</a></li>
 <li><a href="#Gui_RichEditView">RichEditView</a></li>
 </ul>
-<h3>widgets</h3>
+<h4>widgets</h4>
 <ul>
 <li><a href="#Gui_Button">Button</a></li>
 <li><a href="#Gui_CheckButton">CheckButton</a></li>
@@ -321,7 +321,7 @@
 <li><a href="#Gui_TabItem">TabItem</a></li>
 <li><a href="#Gui_ToggleButton">ToggleButton</a></li>
 </ul>
-<h3>wnd</h3>
+<h4>wnd</h4>
 <ul>
 <li><a href="#Gui_FrameWnd">FrameWnd</a></li>
 <li><a href="#Gui_KeyShortcut">KeyShortcut</a></li>
@@ -329,27 +329,27 @@
 <li><a href="#Gui_SurfaceWnd">SurfaceWnd</a></li>
 <li><a href="#Gui_Wnd">Wnd</a></li>
 </ul>
-<h2>Interfaces</h2>
-<h3></h3>
+<h3>Interfaces</h3>
+<h4></h4>
 <ul>
 <li><a href="#Gui_IActionUI">IActionUI</a></li>
 </ul>
-<h3>richedit</h3>
+<h4>richedit</h4>
 <ul>
 <li><a href="#Gui_IRichEditLexer">IRichEditLexer</a></li>
 </ul>
-<h3>wnd</h3>
+<h4>wnd</h4>
 <ul>
 <li><a href="#Gui_IWnd">IWnd</a></li>
 </ul>
-<h2>Enums</h2>
-<h3></h3>
+<h3>Enums</h3>
+<h4></h4>
 <ul>
 <li><a href="#Gui_EventKind">EventKind</a></li>
 <li><a href="#Gui_MovieSource">MovieSource</a></li>
 <li><a href="#Gui_SurfaceFlags">SurfaceFlags</a></li>
 </ul>
-<h3>composite</h3>
+<h4>composite</h4>
 <ul>
 <li><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></li>
 <li><a href="#Gui_EmbInfoCtrlKind">EmbInfoCtrlKind</a></li>
@@ -361,24 +361,24 @@
 <li><a href="#Gui_SplitterFlags">SplitterFlags</a></li>
 <li><a href="#Gui_StackLayoutKind">StackLayoutKind</a></li>
 </ul>
-<h3>dialogs</h3>
+<h4>dialogs</h4>
 <ul>
 <li><a href="#Gui_FileDlgMode">FileDlgMode</a></li>
 </ul>
-<h3>paint</h3>
+<h4>paint</h4>
 <ul>
 <li><a href="#Gui_CursorShape">CursorShape</a></li>
 <li><a href="#Gui_ThemeIcons24">ThemeIcons24</a></li>
 <li><a href="#Gui_ThemeIcons64">ThemeIcons64</a></li>
 </ul>
-<h3>richedit</h3>
+<h4>richedit</h4>
 <ul>
 <li><a href="#Gui_RichEditCommand">RichEditCommand</a></li>
 <li><a href="#Gui_RichEditFlags">RichEditFlags</a></li>
 <li><a href="#Gui_RichEditForm">RichEditForm</a></li>
 <li><a href="#Gui_RichEditUndoType">RichEditUndoType</a></li>
 </ul>
-<h3>widgets</h3>
+<h4>widgets</h4>
 <ul>
 <li><a href="#Gui_ButtonCheckState">ButtonCheckState</a></li>
 <li><a href="#Gui_CheckButtonFlags">CheckButtonFlags</a></li>
@@ -407,7 +407,7 @@
 <li><a href="#Gui_TabItemForm">TabItemForm</a></li>
 <li><a href="#Gui_TabViewForm">TabViewForm</a></li>
 </ul>
-<h3>wnd</h3>
+<h4>wnd</h4>
 <ul>
 <li><a href="#Gui_AnchorStyle">AnchorStyle</a></li>
 <li><a href="#Gui_BackgroundStyle">BackgroundStyle</a></li>
@@ -420,8 +420,8 @@
 <li><a href="#Gui_SizingBorder">SizingBorder</a></li>
 <li><a href="#Gui_WndFlags">WndFlags</a></li>
 </ul>
-<h2>Attributes</h2>
-<h3>property</h3>
+<h3>Attributes</h3>
+<h4>property</h4>
 <ul>
 <li><a href="#Gui_PropertyList_Category">Category</a></li>
 <li><a href="#Gui_PropertyList_Description">Description</a></li>
@@ -429,8 +429,8 @@
 <li><a href="#Gui_PropertyList_Name">Name</a></li>
 <li><a href="#Gui_PropertyList_SubCategory">SubCategory</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#Gui_Application_addTimer">Application.addTimer</a></li>
 <li><a href="#Gui_Application_createSurface">Application.createSurface</a></li>
@@ -522,7 +522,7 @@
 <li><a href="#Gui_ToolTip_hide">ToolTip.hide</a></li>
 <li><a href="#Gui_ToolTip_show">ToolTip.show</a></li>
 </ul>
-<h3>composite</h3>
+<h4>composite</h4>
 <ul>
 <li><a href="#Gui_ColorPickerCtrl_IWnd_onPaintEvent">ColorPickerCtrl.IWnd.onPaintEvent</a></li>
 <li><a href="#Gui_ColorPickerCtrl_create">ColorPickerCtrl.create</a></li>
@@ -615,7 +615,7 @@
 <li><a href="#Gui_WrapLayoutCtrl_computeLayout">WrapLayoutCtrl.computeLayout</a></li>
 <li><a href="#Gui_WrapLayoutCtrl_create">WrapLayoutCtrl.create</a></li>
 </ul>
-<h3>dialogs</h3>
+<h4>dialogs</h4>
 <ul>
 <li><a href="#Gui_Dialog_addButton">Dialog.addButton</a></li>
 <li><a href="#Gui_Dialog_createDialog">Dialog.createDialog</a></li>
@@ -644,7 +644,7 @@
 <li><a href="#Gui_MessageDlg_yesNo">MessageDlg.yesNo</a></li>
 <li><a href="#Gui_MessageDlg_yesNoCancel">MessageDlg.yesNoCancel</a></li>
 </ul>
-<h3>paint</h3>
+<h4>paint</h4>
 <ul>
 <li><a href="#Gui_BlendColor_apply">BlendColor.apply</a></li>
 <li><a href="#Gui_BlendColor_cur">BlendColor.cur</a></li>
@@ -680,7 +680,7 @@
 <li><a href="#Gui_ThemeStyle_setStyleSheetColors">ThemeStyle.setStyleSheetColors</a></li>
 <li><a href="#Gui_ThemeStyle_setStyleSheetMetrics">ThemeStyle.setStyleSheetMetrics</a></li>
 </ul>
-<h3>property</h3>
+<h4>property</h4>
 <ul>
 <li><a href="#Gui_PropertyList_addItem">PropertyList.addItem</a></li>
 <li><a href="#Gui_PropertyList_create">PropertyList.create</a></li>
@@ -689,7 +689,7 @@
 <li><a href="#Gui_PropertyListCtrl_addItem">PropertyListCtrl.addItem</a></li>
 <li><a href="#Gui_PropertyListCtrl_create">PropertyListCtrl.create</a></li>
 </ul>
-<h3>richedit</h3>
+<h4>richedit</h4>
 <ul>
 <li><a href="#Gui_RichEditLexerSwag_IRichEditLexer_compute">IRichEditLexer.compute</a></li>
 <li><a href="#Gui_RichEditLexerSwag_IRichEditLexer_insertRune">IRichEditLexer.insertRune</a></li>
@@ -769,7 +769,7 @@
 <li><a href="#Gui_RichEditCtrl_undo">RichEditCtrl.undo</a></li>
 <li><a href="#Gui_RichEditRuneStyle_opEquals">RichEditRuneStyle.opEquals</a></li>
 </ul>
-<h3>widgets</h3>
+<h4>widgets</h4>
 <ul>
 <li><a href="#Gui_CheckButton_IWnd_onMouseEvent">CheckButton.IWnd.onMouseEvent</a></li>
 <li><a href="#Gui_CheckButton_IWnd_onPaintEvent">CheckButton.IWnd.onPaintEvent</a></li>
@@ -888,7 +888,7 @@
 <li><a href="#Gui_ToggleButton_IWnd_onPaintEvent">ToggleButton.IWnd.onPaintEvent</a></li>
 <li><a href="#Gui_ToggleButton_create">ToggleButton.create</a></li>
 </ul>
-<h3>wnd</h3>
+<h4>wnd</h4>
 <ul>
 <li><a href="#Gui_FrameWnd_IWnd_onPaintEvent">FrameWnd.IWnd.onPaintEvent</a></li>
 <li><a href="#Gui_FrameWnd_IWnd_onPostPaintEvent">FrameWnd.IWnd.onPostPaintEvent</a></li>

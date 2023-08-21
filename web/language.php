@@ -142,7 +142,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -197,7 +197,7 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
+<h2>Content</h2>
 <ul>
 <li><a href="#000_introduction">Introduction</a></li>
 <li><a href="#001_hello_mad_world">Hello mad world</a></li>

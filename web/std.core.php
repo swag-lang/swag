@@ -141,7 +141,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -196,15 +196,15 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Namespaces</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Namespaces</h3>
+<h4></h4>
 <ul>
 <li><a href="#Core_CommandLine">CommandLine</a></li>
 <li><a href="#Core_Slice">Slice</a></li>
 </ul>
-<h2>Structs</h2>
-<h3>collections</h3>
+<h3>Structs</h3>
+<h4>collections</h4>
 <ul>
 <li><a href="#Core_Array">Array</a></li>
 <li><a href="#Core_ArrayPtr">ArrayPtr</a></li>
@@ -220,30 +220,30 @@
 <li><a href="#Core_ListNode">ListNode</a></li>
 <li><a href="#Core_StaticArray">StaticArray</a></li>
 </ul>
-<h3>compress</h3>
+<h4>compress</h4>
 <ul>
 <li><a href="#Core_Compress_BitStream">BitStream</a></li>
 <li><a href="#Core_Compress_Deflate">Deflate</a></li>
 <li><a href="#Core_Compress_Inflate">Inflate</a></li>
 <li><a href="#Core_Compress_ZLib">ZLib</a></li>
 </ul>
-<h3>crypto</h3>
+<h4>crypto</h4>
 <ul>
 <li><a href="#Core_Hash_Adler32">Adler32</a></li>
 <li><a href="#Core_Hash_Crc32">Crc32</a></li>
 <li><a href="#Core_Hash_Md5">Md5</a></li>
 <li><a href="#Core_Hash_Sha256">Sha256</a></li>
 </ul>
-<h3>diagnostics</h3>
+<h4>diagnostics</h4>
 <ul>
 <li><a href="#Core_Log">Log</a></li>
 </ul>
-<h3>globalization</h3>
+<h4>globalization</h4>
 <ul>
 <li><a href="#Core_Globalization_CultureInfo">CultureInfo</a></li>
 <li><a href="#Core_Globalization_NumberFormatInfo">NumberFormatInfo</a></li>
 </ul>
-<h3>input</h3>
+<h4>input</h4>
 <ul>
 <li><a href="#Core_Input_GamePad">GamePad</a></li>
 <li><a href="#Core_Input_GamePadState">GamePadState</a></li>
@@ -253,7 +253,7 @@
 <li><a href="#Core_Input_Mouse">Mouse</a></li>
 <li><a href="#Core_Input_MouseState">MouseState</a></li>
 </ul>
-<h3>io</h3>
+<h4>io</h4>
 <ul>
 <li><a href="#Core_ByteStream">ByteStream</a></li>
 <li><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></li>
@@ -263,7 +263,7 @@
 <li><a href="#Core_File_TextReader">TextReader</a></li>
 <li><a href="#Core_File_TweakFile">TweakFile</a></li>
 </ul>
-<h3>math</h3>
+<h4>math</h4>
 <ul>
 <li><a href="#Core_Math_Angle">Angle</a></li>
 <li><a href="#Core_Math_Const">Const</a></li>
@@ -279,18 +279,18 @@
 <li><a href="#Core_Math_Vector3">Vector3</a></li>
 <li><a href="#Core_Math_Vector4">Vector4</a></li>
 </ul>
-<h3>rand</h3>
+<h4>rand</h4>
 <ul>
 <li><a href="#Core_Random_CMWC4096">CMWC4096</a></li>
 <li><a href="#Core_Random_MWC">MWC</a></li>
 <li><a href="#Core_Random_Mt64">Mt64</a></li>
 <li><a href="#Core_Random_Rng">Rng</a></li>
 </ul>
-<h3>serialization</h3>
+<h4>serialization</h4>
 <ul>
 <li><a href="#Core_Serialization_Serializer">Serializer</a></li>
 </ul>
-<h3>serialization/read</h3>
+<h4>serialization/read</h4>
 <ul>
 <li><a href="#Core_Serialization_Decoder">Decoder</a></li>
 <li><a href="#Core_Serialization_Read_JSon">JSon</a></li>
@@ -298,7 +298,7 @@
 <li><a href="#Core_Serialization_Read_TagBinOptions">TagBinOptions</a></li>
 <li><a href="#Core_Serialization_Read_TagBinSection">TagBinSection</a></li>
 </ul>
-<h3>serialization/write</h3>
+<h4>serialization/write</h4>
 <ul>
 <li><a href="#Core_Serialization_Encoder">Encoder</a></li>
 <li><a href="#Core_Serialization_Write_JSon">JSon</a></li>
@@ -306,7 +306,7 @@
 <li><a href="#Core_Serialization_Write_TagBin">TagBin</a></li>
 <li><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></li>
 </ul>
-<h3>system</h3>
+<h4>system</h4>
 <ul>
 <li><a href="#Core_CommandLine_IsSet">IsSet</a></li>
 <li><a href="#Core_Env_Monitor">Monitor</a></li>
@@ -316,7 +316,7 @@
 <li><a href="#Core_Env_StartInfo">StartInfo</a></li>
 <li><a href="#Core_UUID">UUID</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></li>
 <li><a href="#Core_StrConv_ConvertFormatFloat">ConvertFormatFloat</a></li>
@@ -325,7 +325,7 @@
 <li><a href="#Core_String">String</a></li>
 <li><a href="#Core_StrConv_StringBuilder">StringBuilder</a></li>
 </ul>
-<h3>thread</h3>
+<h4>thread</h4>
 <ul>
 <li><a href="#Core_Sync_Event">Event</a></li>
 <li><a href="#Core_Jobs_ForJob">ForJob</a></li>
@@ -335,7 +335,7 @@
 <li><a href="#Core_Jobs_SliceJob">SliceJob</a></li>
 <li><a href="#Core_Threading_Thread">Thread</a></li>
 </ul>
-<h3>time</h3>
+<h4>time</h4>
 <ul>
 <li><a href="#Core_Time_DateTime">DateTime</a></li>
 <li><a href="#Core_Time_Duration">Duration</a></li>
@@ -344,45 +344,45 @@
 <li><a href="#Core_Time_TimeSpan">TimeSpan</a></li>
 <li><a href="#Core_Time_Timer">Timer</a></li>
 </ul>
-<h2>Interfaces</h2>
-<h3>crypto</h3>
+<h3>Interfaces</h3>
+<h4>crypto</h4>
 <ul>
 <li><a href="#Core_Hash_IHash32">IHash32</a></li>
 </ul>
-<h3>diagnostics</h3>
+<h4>diagnostics</h4>
 <ul>
 <li><a href="#Core_ILogWriter">ILogWriter</a></li>
 </ul>
-<h3>serialization</h3>
+<h4>serialization</h4>
 <ul>
 <li><a href="#Core_Serialization_ISerialize">ISerialize</a></li>
 </ul>
-<h3>serialization/read</h3>
+<h4>serialization/read</h4>
 <ul>
 <li><a href="#Core_Serialization_IDecoder">IDecoder</a></li>
 </ul>
-<h3>serialization/write</h3>
+<h4>serialization/write</h4>
 <ul>
 <li><a href="#Core_Serialization_IEncoder">IEncoder</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Core_StrConv_IConvert">IConvert</a></li>
 <li><a href="#Core_StrConv_IPokeValue">IPokeValue</a></li>
 </ul>
-<h2>Enums</h2>
-<h3>compress</h3>
+<h3>Enums</h3>
+<h4>compress</h4>
 <ul>
 <li><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></li>
 <li><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></li>
 <li><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></li>
 </ul>
-<h3>diagnostics</h3>
+<h4>diagnostics</h4>
 <ul>
 <li><a href="#Core_Console_Color">Color</a></li>
 <li><a href="#Core_LogFlags">LogFlags</a></li>
 </ul>
-<h3>input</h3>
+<h4>input</h4>
 <ul>
 <li><a href="#Core_Input_GamePadButton">GamePadButton</a></li>
 <li><a href="#Core_Input_GamePadError">GamePadError</a></li>
@@ -390,7 +390,7 @@
 <li><a href="#Core_Input_KeyModifiers">KeyModifiers</a></li>
 <li><a href="#Core_Input_MouseButton">MouseButton</a></li>
 </ul>
-<h3>io</h3>
+<h4>io</h4>
 <ul>
 <li><a href="#Core_File_FileAccess">FileAccess</a></li>
 <li><a href="#Core_File_FileAttributes">FileAttributes</a></li>
@@ -399,57 +399,57 @@
 <li><a href="#Core_File_SeekOrigin">SeekOrigin</a></li>
 <li><a href="#Core_File_TextEncoding">TextEncoding</a></li>
 </ul>
-<h3>serialization/read</h3>
+<h4>serialization/read</h4>
 <ul>
 <li><a href="#Core_Serialization_DecoderFlags">DecoderFlags</a></li>
 </ul>
-<h3>serialization/write</h3>
+<h4>serialization/write</h4>
 <ul>
 <li><a href="#Core_Serialization_SectionKind">SectionKind</a></li>
 <li><a href="#Core_Serialization_Write_TagBinSignatures">TagBinSignatures</a></li>
 </ul>
-<h3>system</h3>
+<h4>system</h4>
 <ul>
 <li><a href="#Core_Env_SpecialDirectory">SpecialDirectory</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Core_Latin1_CharAttribute">CharAttribute</a></li>
 <li><a href="#Core_CharacterSet">CharacterSet</a></li>
 <li><a href="#Core_Utf8_ComparisonType">ComparisonType</a></li>
 </ul>
-<h3>thread</h3>
+<h4>thread</h4>
 <ul>
 <li><a href="#Core_Jobs_JobState">JobState</a></li>
 <li><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></li>
 </ul>
-<h3>time</h3>
+<h4>time</h4>
 <ul>
 <li><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></li>
 <li><a href="#Core_Time_DayOfWeek">DayOfWeek</a></li>
 </ul>
-<h2>Constants</h2>
-<h3></h3>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#Core_ASSERT">ASSERT</a></li>
 <li><a href="#Core_BIG_ENDIAN">BIG_ENDIAN</a></li>
 <li><a href="#Core_WINDOWS">WINDOWS</a></li>
 </ul>
-<h3>io</h3>
+<h4>io</h4>
 <ul>
 <li><a href="#Core_Path_AltDirectorySeparatorChar">AltDirectorySeparatorChar</a></li>
 <li><a href="#Core_Path_DirectorySeparatorChar">DirectorySeparatorChar</a></li>
 <li><a href="#Core_Path_VolumeSeparatorChar">VolumeSeparatorChar</a></li>
 </ul>
-<h3>rand</h3>
+<h4>rand</h4>
 <ul>
 <li><a href="#Core_Random_NN">NN</a></li>
 </ul>
-<h3>system</h3>
+<h4>system</h4>
 <ul>
 <li><a href="#Core_Env_EndLine">EndLine</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Core_Latin1_CharProperties">CharProperties</a></li>
 <li><a href="#Core_Utf8_MaxRunes">MaxRunes</a></li>
@@ -466,7 +466,7 @@
 <li><a href="#Core_Utf16_RuneError">Utf16.RuneError</a></li>
 <li><a href="#Core_Utf8_RuneError">Utf8.RuneError</a></li>
 </ul>
-<h3>time</h3>
+<h4>time</h4>
 <ul>
 <li><a href="#Core_Time_DayOfWeekNames">DayOfWeekNames</a></li>
 <li><a href="#Core_Time_DaysPer100Years">DaysPer100Years</a></li>
@@ -493,8 +493,8 @@
 <li><a href="#Core_Time_TicksPerMinute">TicksPerMinute</a></li>
 <li><a href="#Core_Time_TicksPerSecond">TicksPerSecond</a></li>
 </ul>
-<h2>Attributes</h2>
-<h3>serialization</h3>
+<h3>Attributes</h3>
+<h4>serialization</h4>
 <ul>
 <li><a href="#Core_Serialization_Alias">Alias</a></li>
 <li><a href="#Core_Serialization_Final">Final</a></li>
@@ -502,16 +502,16 @@
 <li><a href="#Core_Serialization_PodFinal">PodFinal</a></li>
 <li><a href="#Core_Serialization_Version">Version</a></li>
 </ul>
-<h3>system</h3>
+<h4>system</h4>
 <ul>
 <li><a href="#Core_CommandLine_ArgParams">ArgParams</a></li>
 </ul>
-<h2>Functions</h2>
-<h3>algorithms</h3>
+<h3>Functions</h3>
+<h4>algorithms</h4>
 <ul>
 <li><a href="#Core_swap">Core.swap</a></li>
 </ul>
-<h3>collections</h3>
+<h4>collections</h4>
 <ul>
 <li><a href="#Core_Array_add">Array.add</a></li>
 <li><a href="#Core_Array_addOnce">Array.addOnce</a></li>
@@ -668,7 +668,7 @@
 <li><a href="#Core_StaticArray_sortReverse">StaticArray.sortReverse</a></li>
 <li><a href="#Core_StaticArray_toSlice">StaticArray.toSlice</a></li>
 </ul>
-<h3>compress</h3>
+<h4>compress</h4>
 <ul>
 <li><a href="#Core_Compress_BitStream_consumeBits">BitStream.consumeBits</a></li>
 <li><a href="#Core_Compress_BitStream_curPtr">BitStream.curPtr</a></li>
@@ -691,7 +691,7 @@
 <li><a href="#Core_Compress_ZLib_compress">ZLib.compress</a></li>
 <li><a href="#Core_Compress_ZLib_decompress">ZLib.decompress</a></li>
 </ul>
-<h3>crypto</h3>
+<h4>crypto</h4>
 <ul>
 <li><a href="#Core_Hash_Adler32_compute">Adler32.compute</a></li>
 <li><a href="#Core_Hash_Adler32_init">Adler32.init</a></li>
@@ -709,7 +709,7 @@
 <li><a href="#Core_Hash_Sha256_init">Sha256.init</a></li>
 <li><a href="#Core_Hash_Sha256_update">Sha256.update</a></li>
 </ul>
-<h3>diagnostics</h3>
+<h4>diagnostics</h4>
 <ul>
 <li><a href="#Core_Console_fatal">Console.fatal</a></li>
 <li><a href="#Core_Console_lock">Console.lock</a></li>
@@ -739,11 +739,11 @@
 <li><a href="#Core_Log_setFlags">Log.setFlags</a></li>
 <li><a href="#Core_Log_setPrefix">Log.setPrefix</a></li>
 </ul>
-<h3>globalization</h3>
+<h4>globalization</h4>
 <ul>
 <li><a href="#Core_Globalization_getCultureInfo">Globalization.getCultureInfo</a></li>
 </ul>
-<h3>input</h3>
+<h4>input</h4>
 <ul>
 <li><a href="#Core_Input_GamePad_clear">GamePad.clear</a></li>
 <li><a href="#Core_Input_GamePad_getPosition">GamePad.getPosition</a></li>
@@ -785,7 +785,7 @@
 <li><a href="#Core_Input_MouseState_clear">MouseState.clear</a></li>
 <li><a href="#Core_Input_MouseState_update">MouseState.update</a></li>
 </ul>
-<h3>io</h3>
+<h4>io</h4>
 <ul>
 <li><a href="#Core_ByteStream_getSeek">ByteStream.getSeek</a></li>
 <li><a href="#Core_ByteStream_isEof">ByteStream.isEof</a></li>
@@ -863,7 +863,7 @@
 <li><a href="#Core_File_TweakFile_parseFile">TweakFile.parseFile</a></li>
 <li><a href="#Core_File_TweakFile_registerFolder">TweakFile.registerFolder</a></li>
 </ul>
-<h3>math</h3>
+<h4>math</h4>
 <ul>
 <li><a href="#Core_Math_Angle_opAffect">Angle.opAffect</a></li>
 <li><a href="#Core_Math_Angle_opAffectSuffix">Angle.opAffectSuffix</a></li>
@@ -1065,7 +1065,7 @@
 <li><a href="#Core_Math_Vector4_opEquals">Vector4.opEquals</a></li>
 <li><a href="#Core_Math_Vector4_opUnary">Vector4.opUnary</a></li>
 </ul>
-<h3>memory</h3>
+<h4>memory</h4>
 <ul>
 <li><a href="#Core_Memory_align">Memory.align</a></li>
 <li><a href="#Core_Memory_alloc">Memory.alloc</a></li>
@@ -1086,7 +1086,7 @@
 <li><a href="#Core_Memory_set">Memory.set</a></li>
 <li><a href="#Core_Memory_tempAlloc">Memory.tempAlloc</a></li>
 </ul>
-<h3>rand</h3>
+<h4>rand</h4>
 <ul>
 <li><a href="#Core_Random_CMWC4096_nextU32">CMWC4096.nextU32</a></li>
 <li><a href="#Core_Random_CMWC4096_seedU32">CMWC4096.seedU32</a></li>
@@ -1108,7 +1108,7 @@
 <li><a href="#Core_Random_Rng_seedU64">Rng.seedU64</a></li>
 <li><a href="#Core_Random_Rng_shuffle">Rng.shuffle</a></li>
 </ul>
-<h3>serialization</h3>
+<h4>serialization</h4>
 <ul>
 <li><a href="#Core_Serialization_ISerialize_postSerialize">ISerialize.postSerialize</a></li>
 <li><a href="#Core_Serialization_ISerialize_read">ISerialize.read</a></li>
@@ -1125,7 +1125,7 @@
 <li><a href="#Core_Serialization_Serializer_startRead">Serializer.startRead</a></li>
 <li><a href="#Core_Serialization_Serializer_startWrite">Serializer.startWrite</a></li>
 </ul>
-<h3>serialization/read</h3>
+<h4>serialization/read</h4>
 <ul>
 <li><a href="#Core_Serialization_Decoder_IDecoder_beginField">Decoder.IDecoder.beginField</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_beginSection">Decoder.IDecoder.beginSection</a></li>
@@ -1206,7 +1206,7 @@
 <li><a href="#Core_Serialization_Read_TagBin_startRead">TagBin.startRead</a></li>
 <li><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">TagBin.toNextSequenceElement</a></li>
 </ul>
-<h3>serialization/write</h3>
+<h4>serialization/write</h4>
 <ul>
 <li><a href="#Core_Serialization_Encoder_IEncoder_beginField">Encoder.IEncoder.beginField</a></li>
 <li><a href="#Core_Serialization_Encoder_IEncoder_beginSection">Encoder.IEncoder.beginSection</a></li>
@@ -1281,7 +1281,7 @@
 <li><a href="#Core_Serialization_Write_TagBin_startWrite">TagBin.startWrite</a></li>
 <li><a href="#Core_Serialization_Write_TagBin_writeNative">TagBin.writeNative</a></li>
 </ul>
-<h3>slice</h3>
+<h4>slice</h4>
 <ul>
 <li><a href="#Core_Slice_contains">Slice.contains</a></li>
 <li><a href="#Core_Slice_equals">Slice.equals</a></li>
@@ -1294,7 +1294,7 @@
 <li><a href="#Core_Slice_reverse">Slice.reverse</a></li>
 <li><a href="#Core_Slice_sort">Slice.sort</a></li>
 </ul>
-<h3>system</h3>
+<h4>system</h4>
 <ul>
 <li><a href="#Core_CommandLine_getField">CommandLine.getField</a></li>
 <li><a href="#Core_CommandLine_isOption">CommandLine.isOption</a></li>
@@ -1371,7 +1371,7 @@
 <li><a href="#Core_UUID_toString">UUID.toString</a></li>
 <li><a href="#Core_CommandLine_parse_parse_checkNext">parse.checkNext</a></li>
 </ul>
-<h3>text</h3>
+<h4>text</h4>
 <ul>
 <li><a href="#Core_StrConv_Atod_parse">Atod.parse</a></li>
 <li><a href="#Core_StrConv_ConvertFormatFloat_setFormat">ConvertFormatFloat.setFormat</a></li>
@@ -1548,7 +1548,7 @@
 <li><a href="#Core_Utf8_startsWith">Utf8.startsWith</a></li>
 <li><a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a></li>
 </ul>
-<h3>thread</h3>
+<h4>thread</h4>
 <ul>
 <li><a href="#Core_Atomic_add">Atomic.add</a></li>
 <li><a href="#Core_Atomic_and">Atomic.and</a></li>
@@ -1596,7 +1596,7 @@
 <li><a href="#Core_Threading_Thread_yield">Thread.yield</a></li>
 <li><a href="#Core_Threading_wait">Threading.wait</a></li>
 </ul>
-<h3>time</h3>
+<h4>time</h4>
 <ul>
 <li><a href="#Core_Time_DateTime_dayOfWeek">DateTime.dayOfWeek</a></li>
 <li><a href="#Core_Time_DateTime_dayOfWeekName">DateTime.dayOfWeekName</a></li>

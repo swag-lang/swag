@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,9 +195,9 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></li>
 <li><a href="#Win32_COORD">COORD</a></li>
@@ -234,14 +234,14 @@
 <li><a href="#Win32_WNDCLASSA">WNDCLASSA</a></li>
 <li><a href="#Win32_WNDCLASSW">WNDCLASSW</a></li>
 </ul>
-<h2>Enums</h2>
-<h3></h3>
+<h3>Enums</h3>
+<h4></h4>
 <ul>
 <li><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></li>
 <li><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></li>
 </ul>
-<h2>Constants</h2>
-<h3></h3>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#Win32_BACKGROUND_BLUE">BACKGROUND_BLUE</a></li>
 <li><a href="#Win32_BACKGROUND_GREEN">BACKGROUND_GREEN</a></li>
@@ -1236,8 +1236,8 @@
 <li><a href="#Win32_WS_VISIBLE">WS_VISIBLE</a></li>
 <li><a href="#Win32_WS_VSCROLL">WS_VSCROLL</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#Win32_AcquireSRWLockExclusive">Win32.AcquireSRWLockExclusive</a></li>
 <li><a href="#Win32_AcquireSRWLockShared">Win32.AcquireSRWLockShared</a></li>

@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,9 +195,9 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#Libc_FILE">FILE</a></li>
 <li><a href="#Libc_div_t">div_t</a></li>
@@ -205,8 +205,8 @@
 <li><a href="#Libc_lldiv_t">lldiv_t</a></li>
 <li><a href="#Libc_tm">tm</a></li>
 </ul>
-<h2>Constants</h2>
-<h3></h3>
+<h3>Constants</h3>
+<h4></h4>
 <ul>
 <li><a href="#Libc_BUFSIZ">BUFSIZ</a></li>
 <li><a href="#Libc_CLOCKS_PER_SEC">CLOCKS_PER_SEC</a></li>
@@ -254,8 +254,8 @@
 <li><a href="#Libc__IOLBF">_IOLBF</a></li>
 <li><a href="#Libc__IONBF">_IONBF</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#Libc__Exit">Libc._Exit</a></li>
 <li><a href="#Libc_abort">Libc.abort</a></li>

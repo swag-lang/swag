@@ -410,11 +410,11 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
 
     if (first)
     {
-        helpToc += Fmt("<h2>%s</h2>\n", sectionName);
+        helpToc += Fmt("<h3>%s</h3>\n", sectionName);
         first = false;
     }
 
-    helpToc += Fmt("<h3>%s</h3>\n", categName);
+    helpToc += Fmt("<h4>%s</h4>\n", categName);
     helpToc += "<ul>\n";
     for (auto& t : pendingNodes)
         helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());

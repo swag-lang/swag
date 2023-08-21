@@ -155,7 +155,7 @@ void GenDoc::outputStyles()
             font-weight:        bold;\n\
             font-size:          100%;\n\
         }\n\
-        .left h2 {\n\
+        .left h3 {\n\
             background-color:   Black;\n\
             color:              White;\n\
             padding:            6px;\n\
@@ -897,7 +897,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
 
     titleToc = Utf8{module->buildCfg.docTitleToc};
     if (titleToc.empty())
-        titleToc = "Content";
+        titleToc = "Table of Contents";
     titleContent = Utf8{module->buildCfg.docTitleContent};
     if (titleContent.empty())
         titleContent = Fmt("Module %s", module->name.c_str());
@@ -940,7 +940,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
     }
 
     // Titles
-    helpToc += Fmt("<h1>%s</h1>\n", titleToc.c_str());
+    helpToc += Fmt("<h2>%s</h2>\n", titleToc.c_str());
     helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
 
     switch (docKind)

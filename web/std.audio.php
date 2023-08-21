@@ -140,7 +140,7 @@
             font-weight:        bold;
             font-size:          100%;
         }
-        .left h2 {
+        .left h3 {
             background-color:   Black;
             color:              White;
             padding:            6px;
@@ -195,40 +195,40 @@
 <div class="container">
 <div class="left">
 <div class="leftpage">
-<h1>Content</h1>
-<h2>Structs</h2>
-<h3></h3>
+<h2>Table of Contents</h2>
+<h3>Structs</h3>
+<h4></h4>
 <ul>
 <li><a href="#Audio_Bus">Bus</a></li>
 <li><a href="#Audio_Voice">Voice</a></li>
 </ul>
-<h3>codec</h3>
+<h4>codec</h4>
 <ul>
 <li><a href="#Audio_Codec">Codec</a></li>
 </ul>
-<h3>file</h3>
+<h4>file</h4>
 <ul>
 <li><a href="#Audio_SoundFile">SoundFile</a></li>
 </ul>
-<h2>Interfaces</h2>
-<h3>codec</h3>
+<h3>Interfaces</h3>
+<h4>codec</h4>
 <ul>
 <li><a href="#Audio_ICodec">ICodec</a></li>
 </ul>
-<h2>Enums</h2>
-<h3></h3>
+<h3>Enums</h3>
+<h4></h4>
 <ul>
 <li><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></li>
 <li><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></li>
 <li><a href="#Audio_VoiceState">VoiceState</a></li>
 </ul>
-<h3>file</h3>
+<h4>file</h4>
 <ul>
 <li><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></li>
 <li><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></li>
 </ul>
-<h2>Functions</h2>
-<h3></h3>
+<h3>Functions</h3>
+<h4></h4>
 <ul>
 <li><a href="#Audio_convertDBToPercent">Audio.convertDBToPercent</a></li>
 <li><a href="#Audio_convertPercentToDB">Audio.convertPercentToDB</a></li>
@@ -249,11 +249,11 @@
 <li><a href="#Audio_Voice_setVolumeDB">Voice.setVolumeDB</a></li>
 <li><a href="#Audio_Voice_stop">Voice.stop</a></li>
 </ul>
-<h3>codec</h3>
+<h4>codec</h4>
 <ul>
 <li><a href="#Audio_addCodec">Audio.addCodec</a></li>
 </ul>
-<h3>driver</h3>
+<h4>driver</h4>
 <ul>
 <li><a href="#Audio_Bus_getVolume">Bus.getVolume</a></li>
 <li><a href="#Audio_Bus_setVolume">Bus.setVolume</a></li>
@@ -262,7 +262,7 @@
 <li><a href="#Audio_Voice_setRooting">Voice.setRooting</a></li>
 <li><a href="#Audio_Voice_setVolume">Voice.setVolume</a></li>
 </ul>
-<h3>file</h3>
+<h4>file</h4>
 <ul>
 <li><a href="#Audio_SoundFile_load">SoundFile.load</a></li>
 <li><a href="#Audio_Wav_loadFile">Wav.loadFile</a></li>
