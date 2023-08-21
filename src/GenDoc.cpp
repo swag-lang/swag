@@ -806,6 +806,9 @@ void GenDoc::constructPage()
     helpOutput += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
     helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
+    if (!titleContent.empty())
+        helpOutput += Fmt("<title>%s</title>\n", titleContent.c_str());
+
     // User start of the <head> section
     Utf8 startHead = Utf8{module->buildCfg.docStartHead};
     helpOutput += startHead;
@@ -877,7 +880,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
     {
         setSlice(module->buildCfg.docOutputName, "swag.runtime");
         setSlice(module->buildCfg.docOutputExtension, ".php");
-        setSlice(module->buildCfg.docTitleToc, "Swag Runtime");
+        setSlice(module->buildCfg.docTitleContent, "Swag Runtime");
         setSlice(module->buildCfg.repoPath, "https://github.com/swag-lang/swag/blob/master/bin/runtime");
         setSlice(module->buildCfg.docStartHead, "<?php include('common/start-head.php'); ?>");
         setSlice(module->buildCfg.docEndHead, "<?php include('common/end-head.php'); ?>");
@@ -922,14 +925,14 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
     }
 
     // Titles
-    Utf8 titleToc{module->buildCfg.docTitleToc};
+    titleToc = Utf8{module->buildCfg.docTitleToc};
     if (titleToc.empty())
-        titleToc = Fmt("Module %s", module->name.c_str());
+        titleToc = "Content";
     helpToc += Fmt("<h1>%s</h1>\n", titleToc.c_str());
 
-    Utf8 titleContent{module->buildCfg.docTitleContent};
+    titleContent = Utf8{module->buildCfg.docTitleContent};
     if (titleContent.empty())
-        titleContent = "Overview";
+        titleContent = Fmt("Module %s", module->name.c_str());
     helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
 
     switch (docKind)
