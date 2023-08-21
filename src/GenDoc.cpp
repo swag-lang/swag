@@ -748,18 +748,20 @@ void GenDoc::constructPage()
 
     if (module)
     {
+        // User start of the <head> section
         Utf8 userHead = Utf8{module->buildCfg.docStartHead};
         helpOutput += userHead;
-    }
 
-    // User css ref
-    if (module && module->buildCfg.docCss.buffer && module->buildCfg.docCss.count)
-    {
+        // User css ref
         Utf8 css{module->buildCfg.docCss};
-        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
+        if (!css.empty())
+            helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
     }
 
-    outputStyles();
+    // Predefined <style> section
+    if (!module || module->buildCfg.docStyleSection)
+        outputStyles();
+
     helpOutput += "</head>\n";
     helpOutput += "<body>\n";
 

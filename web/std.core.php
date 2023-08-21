@@ -30158,7 +30158,7 @@ context</td>
 <span class="content" id="Core_Utf8_ComparisonType"><span class="titletype">enum</span> <span class="titlelight">Utf8.</span><span class="titlestrong">ComparisonType</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L638" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L634" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30214,7 +30214,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_compare"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">compare</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L647" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L643" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30229,7 +30229,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_contains"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">contains</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L524" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L520" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30330,7 +30330,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_endsWith"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">endsWith</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L602" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L598" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30345,7 +30345,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_firstRune"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">firstRune</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L613" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L609" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30400,7 +30400,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_indexOf"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">indexOf</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L466" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L464" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30417,8 +30417,6 @@ UnicodeNoCase</td>
 <code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">indexOf</span><span class="SyntaxCode">(src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, startByteIndex = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, comparisonType = </span><span class="SyntaxConstant"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </pre>
 <p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
-<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
-<p> Returns <code class="incode">Swag.U64.Max</code> if not found </p>
 <p>
 <table class="item">
 <tr>
@@ -30426,7 +30424,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_isValid"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">isValid</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L746" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L742" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30456,7 +30454,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_lastIndexOf"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">lastIndexOf</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L540" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L536" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30482,7 +30480,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_lastRune"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">lastRune</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L626" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L622" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30497,7 +30495,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_startsWith"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">startsWith</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L591" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L587" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30512,7 +30510,7 @@ UnicodeNoCase</td>
 <span class="content" id="Core_Utf8_visitRunes"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">visitRunes</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L712" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L708" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

@@ -284,6 +284,7 @@ struct BuildCfg
     SwagSlice docStartHead;
     SwagSlice docStartBody;
     SwagSlice docEndBody;
+    bool      docStyleSection   = true;
     float     docSyntaxColorLum = 0.5f;
 };
 

@@ -461,8 +461,6 @@ func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
 }
 
 // Find one of the runes in 'what', and returns the byte index of it
-//
-// Returns 'Swag.U64.Max' if not found
 func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
 {
     let length = @countof(src)
@@ -492,8 +490,6 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)-
 }
 
 // Find the given string, and returns the byte index of it
-//
-// Returns 'Swag.U64.Max' if not found
 func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, comparisonType = ComparisonType.Latin1)->u64
 {
     let length = @countof(src)

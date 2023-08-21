@@ -759,6 +759,7 @@ namespace Swag
         docStartHead:       string              // To insert at the start of a <head> section
         docStartBody:       string              // To insert add at the start of the <body> section
         docEndBody:         string              // To insert add at the end of the <body> section
+        docStyleSection     = true              // Generate a default <style> section
         docSyntaxColorLum:  f32 = 0.5           // Code syntax color luminosity between 0 and 1
     }
 
