@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module core</title>
+<title>Swag Std.Core</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <style>
 
         .container {
@@ -1661,7 +1662,7 @@
 <div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
-<h1>Module core</h1>
+<h1>Swag Std.Core</h1>
 <p>The <code class="incode">Std.core</code> module contains basic types and algorithms. </p>
 <p> It is the base of all other modules of the standard <code class="incode">Std</code> workspace. </p>
 <p> You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>

@@ -13,6 +13,8 @@
         cfg.docOutputExtension = ".php"
 
         cfg.docTitleContent = "Swag"
+        cfg.docCss = "css/style.css"
+        cfg.docIcon = "favicon.ico"
         cfg.docStartHead = @"<?php include('common/start-head.php'); ?>"@
         cfg.docStartBody = @"<?php include('common/start-body.php'); ?>"@
     }

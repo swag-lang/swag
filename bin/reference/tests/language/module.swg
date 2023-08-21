@@ -13,6 +13,8 @@
 
         cfg.docTitleToc = "Content"
         cfg.docTitleContent = "Swag language reference"
+        cfg.docCss = "css/style.css"
+        cfg.docIcon = "favicon.ico"
         cfg.docKind = .Examples
         cfg.docOutputName = "language"
         cfg.docOutputExtension = ".php"

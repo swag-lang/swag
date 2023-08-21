@@ -806,17 +806,23 @@ void GenDoc::constructPage()
     helpOutput += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
     helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
-    if (!titleContent.empty())
-        helpOutput += Fmt("<title>%s</title>\n", titleContent.c_str());
-
     // User start of the <head> section
     Utf8 startHead = Utf8{module->buildCfg.docStartHead};
     helpOutput += startHead;
 
+    // Page title
+    if (!titleContent.empty())
+        helpOutput += Fmt("<title>%s</title>\n", titleContent.c_str());
+
+    // User icon
+    Utf8 icon = Utf8{module->buildCfg.docIcon};
+    if (!icon.empty())
+        helpOutput += Fmt("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
+
     // User css ref
     Utf8 css{module->buildCfg.docCss};
     if (!css.empty())
-        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
+        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
 
     // Predefined <style> section
     if (module->buildCfg.docStyleSection)
@@ -881,6 +887,8 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
         setSlice(module->buildCfg.docOutputName, "swag.runtime");
         setSlice(module->buildCfg.docOutputExtension, ".php");
         setSlice(module->buildCfg.docTitleContent, "Swag Runtime");
+        setSlice(module->buildCfg.docCss, "css/style.css");
+        setSlice(module->buildCfg.docIcon, "favicon.ico");
         setSlice(module->buildCfg.repoPath, "https://github.com/swag-lang/swag/blob/master/bin/runtime");
         setSlice(module->buildCfg.docStartHead, "<?php include('common/start-head.php'); ?>");
         setSlice(module->buildCfg.docEndHead, "<?php include('common/end-head.php'); ?>");

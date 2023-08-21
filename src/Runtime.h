@@ -281,6 +281,7 @@ struct BuildCfg
     SwagSlice docTitleToc;
     SwagSlice docTitleContent;
     SwagSlice docCss;
+    SwagSlice docIcon;
     SwagSlice docStartHead;
     SwagSlice docEndHead;
     SwagSlice docStartBody;

@@ -19,8 +19,11 @@
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "Core"
         cfg.backendKind = .DynamicLib
-        cfg.docKind = .Api
-        cfg.docOutputExtension = ".php"
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/core"
+
+        cfg.docKind = .Api
+        cfg.docIcon = "favicon.ico"
+        cfg.docTitleContent = "Swag Std.Core"
+        cfg.docOutputExtension = ".php"
     }
 }
