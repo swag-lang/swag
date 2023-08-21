@@ -139,7 +139,7 @@ void GenDoc::outputStyles()
         }\n\
         .left ul {\n\
             list-style-type:    none;\n\
-            margin-left:        -30px;\n\
+            margin-left:        -20px;\n\
         }\n\
         .titletype {\n\
             font-weight:        normal;\n\

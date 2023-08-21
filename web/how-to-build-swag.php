@@ -98,7 +98,7 @@
         }
         .left ul {
             list-style-type:    none;
-            margin-left:        -30px;
+            margin-left:        -20px;
         }
         .titletype {
             font-weight:        normal;
