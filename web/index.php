@@ -7,16 +7,25 @@
 <?php include('common/start-head.php'); ?><style>
 
     .container {
+        display:        flex;
+        flex-wrap:      nowrap;
+        flex-direction: row;
         margin:         0px auto;
+        padding:        0px;
     }
-    .page {
-        max-width:  1024px;
-        margin:     0px auto;
+    .right {
+        display:    block;
+        width:      100%;
     }
+
     body {
         margin:         0px;
         line-height:    1.3em;
         font-family:    Segoe UI;
+    }
+    .page {
+        max-width:  1024px;
+        margin:     8px auto;
     }
     .container blockquote {
         background-color:   LightYellow;

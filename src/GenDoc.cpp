@@ -18,12 +18,17 @@ void GenDoc::outputStyles()
     {
         helpOutput += "\n\
     .container {\n\
+        display:        flex;\n\
+        flex-wrap:      nowrap;\n\
+        flex-direction: row;\n\
         margin:         0px auto;\n\
+        padding:        0px;\n\
     }\n\
-    .page {\n\
-        max-width:  1024px;\n\
-        margin:     0px auto;\n\
-    }";
+    .right {\n\
+        display:    block;\n\
+        width:      100%;\n\
+    }\n\
+";
     }
     else
     {
@@ -47,10 +52,6 @@ void GenDoc::outputStyles()
         width:      100%;\n\
         height:     100vh;\n\
     }\n\
-    .page {\n\
-        max-width:  1024px;\n\
-        margin:     8px auto;\n\
-    }\n\
     @media only screen and (max-width: 600px) {\n\
         td {\n\
             display: block;\n\
@@ -69,6 +70,10 @@ void GenDoc::outputStyles()
         margin:         0px;\n\
         line-height:    1.3em;\n\
         font-family:    Segoe UI;\n\
+    }\n\
+    .page {\n\
+        max-width:  1024px;\n\
+        margin:     8px auto;\n\
     }\n\
     .container blockquote {\n\
         background-color:   LightYellow;\n\

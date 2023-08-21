@@ -25,10 +25,6 @@
         width:      100%;
         height:     100vh;
     }
-    .page {
-        max-width:  1024px;
-        margin:     8px auto;
-    }
     @media only screen and (max-width: 600px) {
         td {
             display: block;
@@ -44,6 +40,10 @@
         margin:         0px;
         line-height:    1.3em;
         font-family:    Segoe UI;
+    }
+    .page {
+        max-width:  1024px;
+        margin:     8px auto;
     }
     .container blockquote {
         background-color:   LightYellow;
