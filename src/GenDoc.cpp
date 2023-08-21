@@ -887,6 +887,13 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
         setSlice(module->buildCfg.docStartBody, "<?php include('common/start-body.php'); ?>");
     }
 
+    titleToc = Utf8{module->buildCfg.docTitleToc};
+    if (titleToc.empty())
+        titleToc = "Content";
+    titleContent = Utf8{module->buildCfg.docTitleContent};
+    if (titleContent.empty())
+        titleContent = Fmt("Module %s", module->name.c_str());
+
     if (docKind == DocKind::Pages)
     {
         if (!generatePages())
@@ -925,14 +932,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
     }
 
     // Titles
-    titleToc = Utf8{module->buildCfg.docTitleToc};
-    if (titleToc.empty())
-        titleToc = "Content";
     helpToc += Fmt("<h1>%s</h1>\n", titleToc.c_str());
-
-    titleContent = Utf8{module->buildCfg.docTitleContent};
-    if (titleContent.empty())
-        titleContent = Fmt("Module %s", module->name.c_str());
     helpContent += Fmt("<h1>%s</h1>\n", titleContent.c_str());
 
     switch (docKind)

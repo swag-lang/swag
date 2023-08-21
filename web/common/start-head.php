@@ -1,4 +1,3 @@
-<title>Swag</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="css/style.css">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.1/dist/cdn.min.js"></script>

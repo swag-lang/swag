@@ -12,6 +12,7 @@
         cfg.docKind = .Pages
         cfg.docOutputExtension = ".php"
 
+        cfg.docTitleContent = "Swag"
         cfg.docStartHead = @"<?php include('common/start-head.php'); ?>"@
         cfg.docStartBody = @"<?php include('common/start-body.php'); ?>"@
     }
