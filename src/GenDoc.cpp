@@ -108,15 +108,24 @@ void GenDoc::outputStyles()
             font-size:          90%;\n\
             color:              LightGrey;\n\
         }\n\
+        table.item {\n\
+            border-collapse:    separate;\n\
+            background-color:   Black;\n\
+            color:              White;\n\
+            width:              100%;\n\
+            margin-top:         70px;\n\
+            margin-right:       0px;\n\
+            font-size:          110%;\n\
+        }\n\
+        .item td:first-child {\n\
+            width:              33%;\n\
+            white-space:        nowrap;\n\
+        }\n\
         table.enumeration {\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              100%;\n\
             font-size:          90%;\n\
-        }\n\
-        .item td:first-child {\n\
-            width:              33%;\n\
-            white-space:        nowrap;\n\
         }\n\
         .enumeration td {\n\
             padding:            6px;\n\
@@ -157,15 +166,6 @@ void GenDoc::outputStyles()
         }\n\
         .right h2 {\n\
             margin-top:         35px;\n\
-        }\n\
-        table.item {\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            width:              100%;\n\
-            margin-top:         70px;\n\
-            margin-right:       0px;\n\
-            padding:            4px;\n\
-            font-size:          110%;\n\
         }\n\
         .srcref {\n\
             text-align:         right;\n\
@@ -879,6 +879,9 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
         setSlice(module->buildCfg.docOutputExtension, ".php");
         setSlice(module->buildCfg.docTitleToc, "Swag Runtime");
         setSlice(module->buildCfg.repoPath, "https://github.com/swag-lang/swag/blob/master/bin/runtime");
+        setSlice(module->buildCfg.docStartHead, "<?php include('common/start-head.php'); ?>");
+        setSlice(module->buildCfg.docEndHead, "<?php include('common/end-head.php'); ?>");
+        setSlice(module->buildCfg.docStartBody, "<?php include('common/start-body.php'); ?>");
     }
 
     if (docKind == DocKind::Pages)

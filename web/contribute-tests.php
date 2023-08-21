@@ -86,15 +86,24 @@
             font-size:          90%;
             color:              LightGrey;
         }
+        table.item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
         table.enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              100%;
             font-size:          90%;
-        }
-        .item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
         }
         .enumeration td {
             padding:            6px;
@@ -135,15 +144,6 @@
         }
         .right h2 {
             margin-top:         35px;
-        }
-        table.item {
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            padding:            4px;
-            font-size:          110%;
         }
         .srcref {
             text-align:         right;

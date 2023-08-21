@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
+<?php include('common/start-head.php'); ?><style>
 
         .container {
             display:        flex;
@@ -92,15 +92,24 @@
             font-size:          90%;
             color:              LightGrey;
         }
+        table.item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
         table.enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              100%;
             font-size:          90%;
-        }
-        .item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
         }
         .enumeration td {
             padding:            6px;
@@ -142,15 +151,6 @@
         .right h2 {
             margin-top:         35px;
         }
-        table.item {
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            padding:            4px;
-            font-size:          110%;
-        }
         .srcref {
             text-align:         right;
         }
@@ -189,9 +189,9 @@
     .SyntaxString    { color: #bb6643; }
     .SyntaxAttribute { color: #7f7f7f; }
 </style>
-</head>
+<?php include('common/end-head.php'); ?></head>
 <body>
-<div class="container">
+<?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
 <div class="leftpage">
 <h1>Swag Runtime</h1>

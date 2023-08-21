@@ -12,6 +12,9 @@
     .container p,
     .container code,
     .container pre,
+    .container table,
+    .container tr,
+    .container td,
     .container a,
     .container ul,
     .container blockquote
@@ -22,5 +25,6 @@
         font-weight:     revert;
         color:           revert;
         list-style-type: revert;
+        border-spacing:  revert;
     }
 </style>
