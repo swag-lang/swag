@@ -161,12 +161,14 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .container pre {
+        .precode {
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             margin-left:        20px;
             margin-right:       20px;
+            white-space:        pre;
+            overflow-x:         auto;
         }    .SyntaxCode      { color: #7f7f7f; }
     .SyntaxComment   { color: #71a35b; }
     .SyntaxCompiler  { color: #7f7f7f; }
@@ -191,14 +193,12 @@
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
 <h3>Create a workspace and a test module </h3>
 <p>First create a workspace with the <code class="incode">--test</code> option. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag new -w:myWorkspace --test</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">$ swag new -w:myWorkspace --test</code>
+</div>
 <p>This will also create a test module <code class="incode">myWorkspace</code> located in <code class="incode">myWorkspace\tests</code>. </p>
 <p>You can then compile and run the tests with the <code class="incode">test</code> command. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">$ swag test -w:myWorkspace</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">$ swag test -w:myWorkspace</code>
+</div>
 <p>To force the build, add <code class="incode">--rebuild</code>. </p>
 <h3>Write tests </h3>
 <ul>

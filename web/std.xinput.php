@@ -167,12 +167,14 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .container pre {
+        .precode {
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             margin-left:        20px;
             margin-right:       20px;
+            white-space:        pre;
+            overflow-x:         auto;
         }    .SyntaxCode      { color: #7f7f7f; }
     .SyntaxComment   { color: #71a35b; }
     .SyntaxCompiler  { color: #7f7f7f; }
@@ -420,9 +422,8 @@
 </tr>
 </table>
 </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XInputGetState</span><span class="SyntaxCode">(dwUserIndex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, pState: *</span><span class="SyntaxConstant">XInput</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XInputGetState</span><span class="SyntaxCode">(dwUserIndex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, pState: *</span><span class="SyntaxConstant">XInput</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+</div>
 <p>
 <table class="item">
 <tr>
@@ -434,9 +435,8 @@
 </tr>
 </table>
 </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XInputSetState</span><span class="SyntaxCode">(dwUserIndex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, pVibration: *</span><span class="SyntaxConstant">XInput</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XInputSetState</span><span class="SyntaxCode">(dwUserIndex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, pVibration: *</span><span class="SyntaxConstant">XInput</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+</div>
 </div>
 </div>
 </div>

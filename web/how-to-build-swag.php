@@ -161,12 +161,14 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .container pre {
+        .precode {
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             margin-left:        20px;
             margin-right:       20px;
+            white-space:        pre;
+            overflow-x:         auto;
         }    .SyntaxCode      { color: #7f7f7f; }
     .SyntaxComment   { color: #71a35b; }
     .SyntaxCompiler  { color: #7f7f7f; }

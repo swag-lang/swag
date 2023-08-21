@@ -167,12 +167,14 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .container pre {
+        .precode {
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             margin-left:        20px;
             margin-right:       20px;
+            white-space:        pre;
+            overflow-x:         auto;
         }    .SyntaxCode      { color: #7f7f7f; }
     .SyntaxComment   { color: #71a35b; }
     .SyntaxCompiler  { color: #7f7f7f; }
@@ -303,45 +305,39 @@
 <h2 id="000_introduction">Introduction</h2><p>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="std.php">Swag standard modules</a> (<code class="incode">Std</code>). </p>
 <p>More advanced features such as dynamic arrays, dynamic strings or hash maps can be found in the <a href="std.core.php">Std.Core</a> module and will not be covered in the examples to come. For now we will focus on the language itself. </p>
 <p>As <code class="incode">reference/language</code> is written as a test module, you can run it with : </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">swag test --workspace:c:/swag-lang/swag/bin/reference
+<div class="precode"><code></span><span class="SyntaxCode">swag test --workspace:c:/swag-lang/swag/bin/reference
 swag test -w:c:/swag-lang/swag/bin/reference</code>
-</pre>
+</div>
 <p>This will run all the test modules of the specified workspace (including this one). You can also omit the <code class="incode">--workspace</code> parameter (or <code class="incode">-w</code> in its short form) if you run Swag directly from the workspace folder. </p>
 <p>Note that if you want to compile and run a single module in the workspace, you can specify it with the <code class="incode">--module</code> (<code class="incode">-m</code>) parameter. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">swag test -w:c:/swag-lang/swag/bin/reference -m:test_language</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">swag test -w:c:/swag-lang/swag/bin/reference -m:test_language</code>
+</div>
 
 <h2 id="001_hello_mad_world">Hello mad world</h2><p>Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the <a href="std.php">Swag standard modules</a>. </p>
 <p><code class="incode">#main</code> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <code class="incode">#</code>). It must be defined only once for a native executable. <code class="incode">@print</code> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <code class="incode">@</code>). It is part of the <a href="std/swag.runtime.html">compiler runtime</a> which comes with the compiler. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello mad world !\n"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Next, a version that this time uses the <code class="incode">Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module. </p>
 <p>The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello mad world !"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"\n"</span><span class="SyntaxCode">)
     </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(</span><span class="SyntaxString">"%\n"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"Hello mad world again !"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>A <code class="incode">#run</code> block is executed at <b>compile time</b>, and can make Swag behaves like a kind of a <b>scripting language</b>. </p>
 <p>So in the following example, the famous message will be printed by the compiler during compilation. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Msg</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"Hello mad world !\n"</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// Creates a compiler constant of type 'string'</span><span class="SyntaxCode">
     </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Msg</span><span class="SyntaxCode">)             </span><span class="SyntaxComment">// And call 'Console.print' at compile time</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A version that calls a <b>nested function</b> at compile time (only) to initialize the string constant to print. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Brings the 'Core' namespace into scope, to avoid repeating it again and again</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Brings the 'Core' namespace into scope, to avoid repeating it again and again</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">
 
 </span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
@@ -354,10 +350,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Msg</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">nestedFunc</span><span class="SyntaxCode">()
     </span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Msg</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Now a stupid version that generates the code to do the print thanks to <b>meta programming</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">
 
 </span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
@@ -372,10 +367,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> sb.</span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">()
     }
 }</code>
-</pre>
+</div>
 <p>And finally let's be more and more crazy. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">
 
 </span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
@@ -404,14 +398,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyConst</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>This whole piece of code is equivalent to... </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello mad world at runtime !"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="002_source_code_organization">Source code organization</h2><p>All source files in Swag have the <code class="incode">.swg</code> extension, except if you write a simple script with the <code class="incode">.swgs</code> extension. </p>
 <p>They must be encoded in <b>UTF8</b>. </p>
@@ -421,9 +414,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <p>Typically, the entire workspace is compiled. </p>
 
 <h2 id="003_comments">Comments</h2><p>Let's start with the basics. Swag support classical single-line and multi-line comments. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxComment">// Single-line comment</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Single-line comment</span><span class="SyntaxCode">
 
 /*
     </span><span class="SyntaxConstant">Multi</span><span class="SyntaxCode">-line comment on...
@@ -432,45 +423,36 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// This is a constant with the value '0' assigned to it</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> = /* </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode"> */ </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>Nested comments are supported. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-/*
+<div class="precode"><code></span><span class="SyntaxCode">/*
     /* </span><span class="SyntaxConstant">You</span><span class="SyntaxCode"> can also nest multi-line comments */
 */</code>
-</pre>
+</div>
 
 <h2 id="004_identifiers">Identifiers</h2><p>User identifiers (like variables, constants, function names...) must start with an underscore or an ascii letter. Those identifiers can then contain underscores, ascii letters and digit numbers. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> thisIsAValidIdentifier0   = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> thisIsAValidIdentifier0   = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> this_is_also_valid        = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> this_1_is_2_also__3_valid = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>But your identifiers cannot start with two underscores. This is reserved by the compiler. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxComment">// const __this_is_invalid = 0</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// const __this_is_invalid = 0</span><span class="SyntaxCode"></code>
+</div>
 <p>Note that some identifiers may start with <code class="incode">#</code>. This indicates a <b>compiler special keyword</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#assert
+<div class="precode"><code></span><span class="SyntaxCode">#assert
 </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 </span><span class="SyntaxFunction">#main</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>Some identifiers can also start with <code class="incode">@</code>. This indicates an <b>intrinsic</b> function which can be compile time only or also available at runtime (this depends on the intrinsic). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">()
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">()</code>
-</pre>
+</div>
 
 <h2 id="005_keywords">Keywords</h2><p>This is the list of all keywords in the language. </p>
 <h3>Basic types </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode">
 </span><span class="SyntaxType">s16</span><span class="SyntaxCode">
 </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 </span><span class="SyntaxType">s64</span><span class="SyntaxCode">
@@ -489,10 +471,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxType">code</span><span class="SyntaxCode">
 </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">
 </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <h3>Language keywords </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxLogic">if</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxLogic">if</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">else</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">elif</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">and</span><span class="SyntaxCode">
@@ -545,10 +526,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxKeyword">namealias</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">discard</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <h3>Compiler keywords </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#arch
+<div class="precode"><code></span><span class="SyntaxCode">#arch
 #backend
 #callerfunction
 #callerlocation
@@ -592,10 +572,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">
 </span><span class="SyntaxFunction">#premain</span><span class="SyntaxCode">
 </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <h3>Intrinsics libc </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@acos</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@alloc</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@asin</span><span class="SyntaxCode">
@@ -641,10 +620,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxIntrinsic">@tan</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@tanh</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@trunc</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <h3>Other intrinsics </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@index</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@index</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@err</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@errmsg</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@alias0</span><span class="SyntaxCode">
@@ -698,22 +676,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxIntrinsic">@sysalloc</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@typecmp</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <h3>Modifiers </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">,over
+<div class="precode"><code></span><span class="SyntaxCode">,over
 ,nodrop
 ,bit
 ,move
 ,moveraw
 ,up
 ,unconst</code>
-</pre>
+</div>
 
 <h2 id="006_semicolon">Semicolon</h2><p>In Swag, there's no need to end a statement with <code class="incode">;</code> like in C/C++. Most of the time a <code class="incode">end of line</code> is enough. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Declare two variables x and y of type s32 (signed 32 bits), and initialize them to 1.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -726,10 +701,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)     </span><span class="SyntaxComment">// Verify that x is equal to 2, and raise an error if not.</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == x)     </span><span class="SyntaxComment">// Verify that y is equal to x.</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The semicolons are not mandatory, but it's possible to use them if you want. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// You can notice that the type of x and y is not specified here. This is due to type inference (we will see that later).</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x, y = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">;
@@ -737,10 +711,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// You can also notice the short syntax to do the same operation on multiple variables at once.</span><span class="SyntaxCode">
     x, y += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">;
 }</code>
-</pre>
+</div>
 <p>Semicolons can be usefull if you want to do multiple things on the same line. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Two instructions on the same line separated with ';'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">; </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> y = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -751,12 +724,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// Two instructions on the same line separated with ';'</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">); </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="007_global_declaration_order">Global declaration order</h2><p>The order of all <b>top level</b> declarations does not matter. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxComment">// Here we declare a constant 'A' and initialize it with 'B', which is not</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Here we declare a constant 'A' and initialize it with 'B', which is not</span><span class="SyntaxCode">
 </span><span class="SyntaxComment">// yet known (neither its value or its type).</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
 </span><span class="SyntaxComment">// Declare a constant 'B' equals to 'C', still unknown at this point.</span><span class="SyntaxCode">
@@ -764,11 +735,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxComment">// Declare a constant C of type 'u64' (unsigned 64 bits integer) and assigned it to 1.</span><span class="SyntaxCode">
 </span><span class="SyntaxComment">// At this point A and B are then also defined.</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">C</span><span class="SyntaxCode">: </span><span class="SyntaxType">u64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>In this test, we call the function <code class="incode">functionDeclaredLater</code> before it is known. This is fine. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxComment">// First, call a unknown function named 'functionDeclaredLater'</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// First, call a unknown function named 'functionDeclaredLater'</span><span class="SyntaxCode">
 </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxFunction">functionDeclaredLater</span><span class="SyntaxCode">()
@@ -778,12 +747,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">functionDeclaredLater</span><span class="SyntaxCode">()
 {
 }</code>
-</pre>
+</div>
 <p>Note that the order is not relevant in the same file, but it is also irrelevant across multiple files. You can for example call a function in one file and declare it in another one. Global ordrer does not matter !. </p>
 
 <h2 id="010_basic_types">Basic types</h2><p>These are all signed integers types <code class="incode">s8</code>, <code class="incode">s16</code>, <code class="incode">s32</code> and <code class="incode">s64</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">  = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// 8 bits signed integer</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">s16</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// 16 bits signed integer</span><span class="SyntaxCode">
@@ -803,10 +771,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(c) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(d) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>These are all unsigned integers types <code class="incode">u8</code>, <code class="incode">u16</code>, <code class="incode">u32</code> and <code class="incode">u64</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">  = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">      </span><span class="SyntaxComment">// 8 bits unsigned integer</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">u16</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">      </span><span class="SyntaxComment">// 16 bits unsigned integer</span><span class="SyntaxCode">
@@ -823,10 +790,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(c) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(d) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>These are all floating point types <code class="incode">f32</code> and <code class="incode">f64</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">3.14</span><span class="SyntaxCode">       </span><span class="SyntaxComment">// 32 bits floating point value</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">f64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">3.14159</span><span class="SyntaxCode">    </span><span class="SyntaxComment">// 64 bits floating point value</span><span class="SyntaxCode">
@@ -837,10 +803,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(b) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The boolean type <code class="incode">bool</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">      </span><span class="SyntaxComment">// Stored in 1 byte</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// Stored in 1 byte</span><span class="SyntaxCode">
@@ -851,30 +816,27 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(b) == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The <code class="incode">string</code> type. Strings are <b>UTF8</b>, and are stored as two 64 bits (the pointer to the value and the string length in bytes). Note that a string literal also ends with a null byte like in C. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"string 是"</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxString">"string 是"</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode"> * </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">))
 }</code>
-</pre>
+</div>
 <p>The <code class="incode">rune</code> type is a 32 bits unicode code point. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">rune</span><span class="SyntaxCode"> = </span><span class="SyntaxString">`是`</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxString">`是`</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Type reflection </h3>
 <p>Swag has <b>type reflection</b> at <b>compile time</b> and at <b>runtime</b>. We will see that later in more details. </p>
 <p>You can use <code class="incode">@decltype</code> to create a type based on an expression. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">                   </span><span class="SyntaxComment">// 'a' is inferred to have the 's32' type</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b: </span><span class="SyntaxIntrinsic">@decltype</span><span class="SyntaxCode">(a) = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// 'b' will have the same type as 'a'</span><span class="SyntaxCode">
@@ -888,10 +850,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(b)
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Short notice that types are also values, at compile time and at runtime. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)   </span><span class="SyntaxComment">// 'x' is now a variable that contains a type</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)   </span><span class="SyntaxComment">// So it can be compared to a type</span><span class="SyntaxCode">
@@ -904,11 +865,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> y = </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="011_number_literals">Number literals</h2><p>Integers in <i>decimal</i>, <i>hexadecimal</i> or <i>binary</i> forms. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">123456</span><span class="SyntaxCode">           </span><span class="SyntaxComment">// Decimal</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0xFFFF</span><span class="SyntaxCode">           </span><span class="SyntaxComment">// Hexadecimal, with '0x'</span><span class="SyntaxCode">
@@ -917,10 +877,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(b == </span><span class="SyntaxNumber">65535</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == </span><span class="SyntaxNumber">15</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can separate the digits with the <code class="incode">_</code> character. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">123_456</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0xF_F_F_F</span><span class="SyntaxCode">
@@ -929,10 +888,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(b == </span><span class="SyntaxNumber">65_535</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == </span><span class="SyntaxNumber">15</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The default type of an hexadecimal number or a binary number is <code class="incode">u32</code> or <code class="incode">u64</code> depending on its value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// The compiler will deduce that the type of 'a' is 'u32'.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">0xFF</span><span class="SyntaxCode">
@@ -948,10 +906,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> d = </span><span class="SyntaxNumber">0b00000001_00000001_00000001_00000001_00000001</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(d) == </span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A boolean is <code class="incode">true</code> or <code class="incode">false</code>. Note again that as constants are known at compile time, we can  use <code class="incode">#assert</code> to check the values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
     #assert a == </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
@@ -960,10 +917,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert b == </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
     #assert c == </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A floating point value has the usual C/C++ form. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">)
@@ -981,21 +937,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> e = -</span><span class="SyntaxNumber">1E-1</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(e == -</span><span class="SyntaxNumber">0.1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>By default, a floating point value is <code class="incode">f32</code>, not <code class="incode">f64</code> (aka <code class="incode">double</code>) like in C/C++. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">)
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(a) != </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Postfix </h3>
 <p>You can also <b>postfix</b> a literal number by a type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Declare 'a' to be a 'f64' variable assigned to '1.5'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">'</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
@@ -1011,12 +965,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> c = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(c) == </span><span class="SyntaxType">u32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="012_string">String</h2><p>In Swag, strings are encoded in UTF8. </p>
 <p>They also can be compared. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"this is a chinese character: 是"</span><span class="SyntaxCode">
     #assert a == </span><span class="SyntaxString">"this is a chinese character: 是"</span><span class="SyntaxCode">
@@ -1024,20 +977,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> b = </span><span class="SyntaxString">"these are some cyrillic characters: ӜИ"</span><span class="SyntaxCode">
     #assert b == </span><span class="SyntaxString">"these are some cyrillic characters: ӜИ"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A rune is an unicode codepoint, and is 32 bits. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">rune</span><span class="SyntaxCode"> = </span><span class="SyntaxString">`是`</span><span class="SyntaxCode">
     #assert a == </span><span class="SyntaxString">`是`</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the <code class="incode">Std.Core</code> module will have all you need to manipulate UTF8 strings. </p>
 <p>So in that case you will retrieve a byte. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"this is a chinese character: 是"</span><span class="SyntaxCode">
 
@@ -1051,18 +1002,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> c = </span><span class="SyntaxString">"是X是"</span><span class="SyntaxCode">
     #assert c[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] != </span><span class="SyntaxString">`X`</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// False because the byte number 1 is not the character 'X'</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Multiple adjacent strings are compiled as one. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"this is "</span><span class="SyntaxCode">   </span><span class="SyntaxString">"a"</span><span class="SyntaxCode">   </span><span class="SyntaxString">" string"</span><span class="SyntaxCode">
     #assert a == </span><span class="SyntaxString">"this is a string"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can concatenate some values if the values are known at compile time. Use the <code class="incode">++</code> operator for that. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"the devil number is "</span><span class="SyntaxCode"> ++ </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
     #assert a == </span><span class="SyntaxString">"the devil number is 666"</span><span class="SyntaxCode">
@@ -1074,10 +1023,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> d = </span><span class="SyntaxString">"they are "</span><span class="SyntaxCode"> ++ </span><span class="SyntaxNumber">4</span><span class="SyntaxCode"> ++ </span><span class="SyntaxString">" apples in "</span><span class="SyntaxCode"> ++ (</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">*</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">) ++ </span><span class="SyntaxString">" baskets"</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(d == </span><span class="SyntaxString">"they are 4 apples in 4 baskets"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>A string can be <code class="incode">null</code> if not defined. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">string</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
@@ -1086,19 +1034,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     a = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Character literals </h3>
 <p>A <i>character</i> is enclosed with <b>backticks</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> char0 = </span><span class="SyntaxString">`a`</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> char1 = </span><span class="SyntaxString">`我`</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>By default, it's a lazy 32 bits integer that can be assigned to all integers (as long as it fits) and to the type <code class="incode">rune</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">   = </span><span class="SyntaxString">`a`</span><span class="SyntaxCode">
@@ -1115,10 +1061,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> d: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">  = </span><span class="SyntaxString">`我`</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>But the underlying type of a character can be forced with the use of a type postfix. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">`0`</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">48</span><span class="SyntaxCode">)
@@ -1140,12 +1085,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(e == </span><span class="SyntaxNumber">52</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(e) == </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Escape sequences </h3>
 <p>A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
 <p>An escape sequence starts with a backslash <code class="incode">\</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"this is code ascii 0x00:   \0"</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// null</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> b = </span><span class="SyntaxString">"this is code ascii 0x07:   \a"</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// bell</span><span class="SyntaxCode">
@@ -1160,10 +1104,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> k = </span><span class="SyntaxString">"this is code ascii 0x60:   \`"</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// backtick</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> l = </span><span class="SyntaxString">"this is code ascii 0x5C:   \\"</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// backslash</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>An escape sequence can also be used to specify an ascii or a unicode value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"\x26"</span><span class="SyntaxCode">        </span><span class="SyntaxComment">// 1 byte, hexadecimal, extended ascii</span><span class="SyntaxCode">
@@ -1179,50 +1122,45 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         #assert e == </span><span class="SyntaxString">`⽆`</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <h3>Raw string </h3>
 <p>A <i>raw string</i> does not transform the escape sequences inside it. </p>
 <p>A raw string starts and ends with the character <code class="incode">@</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">@"\u2F46"@</span><span class="SyntaxCode">
     #assert a != </span><span class="SyntaxString">"⽆"</span><span class="SyntaxCode">
     #assert a == </span><span class="SyntaxString">@"\u2F46"@</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>This are equivalent. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"\\hello \\world"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> b = </span><span class="SyntaxString">@"\hello \world"@</span><span class="SyntaxCode">
     #assert a == b
 }</code>
-</pre>
+</div>
 <p>A raw string can spawn on multiple lines because the line feed is now part of the string. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">@"this is
                 a
                 string
                 "@</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Every blanks <b>before</b> the ending mark <code class="incode">"@</code> will be removed from every other lines, so the string before is equivalent to :. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// this is</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// a</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// string</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Multiline string </h3>
 <p>A multiline string starts and ends with <code class="incode">"""</code>. Unlike raw strings, they still evaluate escape sequences. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">""</span><span class="SyntaxCode"></span><span class="SyntaxString">"this is
                  a
@@ -1235,10 +1173,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// a</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// string</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>In a multiline or a raw string, if you end a line with <code class="incode">\</code>, the following "eol" will <b>not</b> be part of the string. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">""</span><span class="SyntaxCode"></span><span class="SyntaxString">"\
               this is
@@ -1250,31 +1187,28 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// a</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// string</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>@stringof and @nameof </h3>
 <p>You can use the instrinsic <code class="incode">@stringof</code> to return at compile time the result of a constant expression as a string. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">X</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@stringof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">X</span><span class="SyntaxCode">) == </span><span class="SyntaxString">"1"</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@stringof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">X</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">) == </span><span class="SyntaxString">"11"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can also use <code class="incode">@nameof</code> to return the name of a variable, function etc. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">X</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@nameof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">X</span><span class="SyntaxCode">) == </span><span class="SyntaxString">"X"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="013_variables">Variables</h2><p>To declare a variable, use the <code class="incode">let</code> or <code class="incode">var</code> keyword, followed by <code class="incode">:</code> and then the type. </p>
 <p><code class="incode">let</code> is used for a variable that cannot be changed after the initial affectation. </p>
 <p><code class="incode">var</code> is used for a variable that can be changed again after the initial affectation. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Variable 'a' is of type 'u32' and its value is '1'. It cannot be changed.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -1288,28 +1222,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     c += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == </span><span class="SyntaxNumber">43</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>We have already seen that we can declare multiple variables on the same line. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a, b: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">123</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">123</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(b == </span><span class="SyntaxNumber">123</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Or. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">12</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">12</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(b == </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>If you don't assign a value, then the variable will be initialized with its default value (0). So a variable is <b>always</b> initialized. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
@@ -1320,19 +1251,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> c: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But if you really do not want the variable to be initialized, you can assign it with <code class="incode">undefined</code>. To use with care, of course, but this is sometimes necessary to avoid the initialization cost. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">undefined</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">undefined</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>We have seen that the type is optional in the declaration if it can be deduced from the assignment. </p>
 <p>These are a bunch of <b>type inferences</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">)
@@ -1346,10 +1275,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">)
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(c) == </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The same goes for multiple variables. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a, b = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
@@ -1363,12 +1291,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(c) == </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(d) == </span><span class="SyntaxType">string</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="014_const">Const</h2><p>If you use <code class="incode">const</code> instead of <code class="incode">var</code>, the value must be known by the compiler. There's no memory footprint if the type is a value or a string. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// These are constants and not variables. So they cannot be changed after the declaration.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
@@ -1377,11 +1303,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> b: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
     #assert b == </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Constants can have more than just simple types. In that case, there's a memory footprint, because those constants are stored in the data segment. But that means also you could take the address of such constants at runtime. </p>
 <p>This is our first static array. It contains <code class="incode">3</code> elements, and the type of the elements is <code class="incode">s32</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a: [</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = [</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
 
@@ -1394,10 +1319,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert a[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     #assert a[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>An example of a multidimensional array as a constant. We will detail arrays later. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">M4x4</span><span class="SyntaxCode">: [</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = [
         [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">],
@@ -1406,13 +1330,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         [</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">]
     ]
 }</code>
-</pre>
+</div>
 <p>So the difference between <code class="incode">let</code> and <code class="incode">const</code> is that the value of a constant should be known at compile time, where the value of a <code class="incode">let</code> can be dynamic. Other than that, both must be assigned once and only once. </p>
 
 <h2 id="015_operators">Operators</h2><p>These are all the Swag operators that can be used to manipulate variables and values. </p>
 <h3>Arithmetic operators </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
 
@@ -1431,10 +1354,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// Modulus</span><span class="SyntaxCode">
     x = x % </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Bitwise operators </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
 
@@ -1453,11 +1375,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// Shift bits right</span><span class="SyntaxCode">
     x = x &gt;&gt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Assignment operators </h3>
 <p>All the arithmetic and bitwise operators have an <code class="incode">affect</code> version. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
 
@@ -1472,10 +1393,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     x &lt;&lt;= </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     x &gt;&gt;= </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Unary operators </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> y = </span><span class="SyntaxNumber">0b0000_0001</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
@@ -1494,10 +1414,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">0b1111_1110</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Comparison operators </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
@@ -1532,21 +1451,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x &gt; </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <h3>Logical operators </h3>
 <p>This is <b>not</b> <code class="incode">&&</code> and <code class="incode">||</code> like in C/C++, but <code class="incode">and</code> and <code class="incode">or</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
     a = (</span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> &gt; </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">) </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> (</span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> &lt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     a = (</span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> &gt; </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">) </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"> (</span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> &lt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Ternary operator </h3>
 <p>The ternary operator will test an expression, and will return a value depending on the result of the test. <code class="incode">A = Expression ? B : C</code> will return <code class="incode">B</code> if the expression is true, and will return <code class="incode">C</code> if the expression is false. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Returns 1 because the expression 'true' is... true.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode"> ? </span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> : </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
@@ -1556,16 +1473,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> y = (x == </span><span class="SyntaxNumber">52</span><span class="SyntaxCode">) ? </span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> : </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Spaceshift operator </h3>
 <p>Operator <code class="incode">&lt;=&gt;</code> will return -1, 0 or 1 if the expression on the left is <b>lower</b>, <b>equal</b> or <b>greater</b> than the expression on the right. The returned type is <code class="incode">s32</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt;=&gt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt;=&gt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
 </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt;=&gt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">  </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> == </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
 </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &lt;=&gt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">  </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> &gt; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"></code>
-</pre>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+</div>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = -</span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode"> &lt;=&gt; </span><span class="SyntaxNumber">2.31</span><span class="SyntaxCode">
@@ -1586,12 +1501,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x3 == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <h3>Null-coalescing operator </h3>
 <p>The operator <code class="incode">orelse</code> will return the left expression if it is not zero, otherwise it will return the right expression. </p>
 <p>Works with strings, pointers and structures with the <code class="incode">opData</code> special function (we'll see that later). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"string1"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b = </span><span class="SyntaxString">"string2"</span><span class="SyntaxCode">
@@ -1604,21 +1518,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     c = a </span><span class="SyntaxLogic">orelse</span><span class="SyntaxCode"> b
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == </span><span class="SyntaxString">"string2"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Works also for basic types like integers. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> c = a </span><span class="SyntaxLogic">orelse</span><span class="SyntaxCode"> b
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c == b)
 }</code>
-</pre>
+</div>
 <h3>Type promotion </h3>
 <p>Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation do not have the same type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)  == </span><span class="SyntaxType">u8</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u16</span><span class="SyntaxCode">) == </span><span class="SyntaxType">u16</span><span class="SyntaxCode">    </span><span class="SyntaxComment">// Priority to bigger type</span><span class="SyntaxCode">
@@ -1633,20 +1545,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">s8</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u16</span><span class="SyntaxCode">) == </span><span class="SyntaxType">u16</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// Priority to bigger type also</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>This means that a 8/16 bits operation (like an addition) can more easily <b>overflow</b> if you do not take care. </p>
 <p>In that case, you can use the <code class="incode">,up</code> <b>modifier</b> on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> +,up </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) == </span><span class="SyntaxType">u32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> +,up </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">256</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// No overflow, because the operation is done in 32 bits.</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
 <h3>Operator precedence </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">~
+<div class="precode"><code></span><span class="SyntaxCode">~
 * / %
 + -
 &gt;&gt; &lt;&lt;
@@ -1658,10 +1568,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 &lt; &lt;= &gt; &gt;=
 </span><span class="SyntaxLogic">and</span><span class="SyntaxCode">
 </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>If two operators have the same precedence, the expression is evaluated from left to right. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Multiplication before addition</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">2</span><span class="SyntaxCode"> * </span><span class="SyntaxNumber">3</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
@@ -1675,13 +1584,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">((</span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> & </span><span class="SyntaxNumber">2</span><span class="SyntaxCode"> &lt;&lt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(((</span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> & </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">) &lt;&lt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="016_cast">Cast</h2><h3>Explicit cast </h3>
 <p>Sometimes it can be necessary to change the type of a value. Use <code class="incode">cast(type)</code> to cast from one type to another. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// 'x' is a float</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">
@@ -1692,22 +1599,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(y) == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>acast </h3>
 <p><code class="incode">acast</code> stands for <code class="incode">automatic</code> cast. Use it to let the compiler automatically cast to the expression on the left. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">acast</span><span class="SyntaxCode"> x    </span><span class="SyntaxComment">// cast 'x' to 's32'</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(y) == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>bitcast </h3>
 <p>Use <code class="incode">cast,bit</code> to convert a native type to another without converting the value. Works only if the two types are of the same size. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> y: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">,</span><span class="SyntaxFunction">bit</span><span class="SyntaxCode">(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">) x
@@ -1715,11 +1620,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">,</span><span class="SyntaxFunction">bit</span><span class="SyntaxCode">(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">) </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">0x3f800000</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">,</span><span class="SyntaxFunction">bit</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxNumber">0x3f800000</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Implicit casts </h3>
 <p>Swag can sometimes cast from one type to another for you. This is an <i>implicit</i> cast. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// An implicit cast is done if there's no loss of precision.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// In that case, you can affect different types.</span><span class="SyntaxCode">
@@ -1735,12 +1639,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> z1: </span><span class="SyntaxType">s8</span><span class="SyntaxCode"> = z0
     */
 }</code>
-</pre>
+</div>
 
 <h2 id="020_array">Array</h2><p>Remember that dynamic arrays are part of the <code class="incode">Std.Core</code> module. Here we are only talking about native static arrays. </p>
 <p>A static array is declared with <code class="incode">[N]</code> followed by the type, where <code class="incode">N</code> is the dimension. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">  </span><span class="SyntaxComment">// Static array of two s32</span><span class="SyntaxCode">
@@ -1748,19 +1651,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>You can get the number of elements of an array with <code class="incode">@countof</code>, and the size in bytes with <code class="incode">@sizeof</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(array) == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(array) == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode"> * </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can get the address of the array with <code class="incode">@dataof</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr0 = </span><span class="SyntaxIntrinsic">@dataof</span><span class="SyntaxCode">(array)
@@ -1773,19 +1674,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>An <b>array literal</b> has the form <code class="incode">[A, B, ...]</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxComment">// An array of four s32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(arr) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(arr) == </span><span class="SyntaxType">#type</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The size of the array can be deduced from the initialisation expression. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Here the dimension is not specified, but as the array is initialized with 2 elements, it can be deduced.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [] </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
@@ -1800,35 +1699,31 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array1[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] == </span><span class="SyntaxString">"30"</span><span class="SyntaxCode">)
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(array1) == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Like every other types, an array is initialized by default to 0. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But for speed, you can force the array to be not initialized with <code class="incode">undefined</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">100</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">undefined</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A static array (with compile time values) can be stored as a constant. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> array = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">]
     #assert array[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// Dereference is done at compile time</span><span class="SyntaxCode">
     #assert array[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>If the type of the array is not specified, the type of the <b>first</b> literal value will be used for all other members. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">f64</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">]    </span><span class="SyntaxComment">// Every values are forced to be 'f64'</span><span class="SyntaxCode">
 
@@ -1836,11 +1731,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(arr) == </span><span class="SyntaxType">#type</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(arr[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">4.0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Of course an array can have multiple dimensions. </p>
 <p>Syntax is <code class="incode">[X, Y, Z...]</code> where <code class="incode">X</code>, <code class="incode">Y</code> and <code class="incode">Z</code> are dimensions. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// Declare a 2x2 array</span><span class="SyntaxCode">
     array[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">         </span><span class="SyntaxComment">// To access it, the same syntax is used</span><span class="SyntaxCode">
@@ -1848,10 +1742,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">
     array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>But the C/C++ syntax is also accepted. You will then declare an array of array instead of an array with multiple dimensions, which in fact is the same... </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">][</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     array[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -1859,10 +1752,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">
     array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The sizes can be deduced from the initialization expression too. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array1 = [[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">], [</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">]]
@@ -1870,10 +1762,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(array) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(array1) == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can initialize a whole array variable (but <b>not a constant</b>) with one single value. Only basic types are accepted (integers, float, string, bool, rune). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// The whole array is initialized with 'true'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
@@ -1885,20 +1776,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(arr1[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(arr1[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">9</span><span class="SyntaxCode">] == </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="021_slice">Slice</h2><p>A slice is a pointer on a buffer of datas, and a <code class="incode">u64</code> to count the number of elements. Unlike a static array, its value can be changed at runtime. </p>
 <p>It is declared with <code class="incode">[..]</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: [..] </span><span class="SyntaxType">bool</span><span class="SyntaxCode">    </span><span class="SyntaxComment">// Slice of bools</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">) + </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">u64</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can initialize a slice like an array. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">50</span><span class="SyntaxCode">]
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">)
@@ -1912,10 +1801,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>At runtime, <code class="incode">@dataof</code> will return the address of the values, <code class="incode">@countof</code> the number of elements. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">50</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> count = </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(a)
@@ -1927,10 +1815,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     a = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can create a slice with your own <code class="incode">pointer</code> and <code class="incode">count</code> using <code class="incode">@mkslice</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">]
 
@@ -1945,21 +1832,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     slice[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] = </span><span class="SyntaxNumber">314</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">314</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>For a string, the slice must be <code class="incode">const</code> because a string is immutable. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> str = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> strSlice: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"> = </span><span class="SyntaxIntrinsic">@mkslice</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@dataof</span><span class="SyntaxCode">(str), </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(strSlice[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxString">`s`</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(strSlice[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxString">`t`</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>The slicing operator </h3>
 <p>Instead of <code class="incode">@mkslice</code>, you can slice something with the <code class="incode">..</code> operator. For example you can slice a string. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> str = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
 
@@ -1968,28 +1853,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(slice == </span><span class="SyntaxString">"tri"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The upper limit is <b>included</b> by default. If you want to exclude it, use <code class="incode">..&lt;</code> insteand of <code class="incode">..</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> str = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> slice = str[</span><span class="SyntaxNumber">1.</span><span class="SyntaxCode">.&lt;</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">]
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(slice == </span><span class="SyntaxString">"tr"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can omit the upper bound if you want to slice to the end. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> str = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> slice = str[</span><span class="SyntaxNumber">2.</span><span class="SyntaxCode">.]
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(slice == </span><span class="SyntaxString">"ring"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can omit the lower bound if you want to slice from the start (0). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> str = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> slice = str[..</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]        </span><span class="SyntaxComment">// Index 2 is included</span><span class="SyntaxCode">
@@ -1997,10 +1879,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> slice1 = str[..&lt;</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]      </span><span class="SyntaxComment">// Index 2 is excluded</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(slice1 == </span><span class="SyntaxString">"st"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also slice an array. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> slice = arr[</span><span class="SyntaxNumber">2.</span><span class="SyntaxCode">.</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">]
@@ -2012,10 +1893,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> slice1 = arr[..]
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(slice1) == </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(arr))
 }</code>
-</pre>
+</div>
 <p>You can slice another slice. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> slice1 = arr[</span><span class="SyntaxNumber">1.</span><span class="SyntaxCode">.</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">]
@@ -2027,10 +1907,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(slice2[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(slice2[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can transform a pointer to a slice. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = &arr[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
@@ -2039,65 +1918,58 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(slice[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(slice) == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="022_pointers">Pointers</h2><h3>Single value pointers </h3>
 <p>A pointer to a <b>single element</b> is declared with <code class="incode"><i></code>.</i> </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr1: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// This is a pointer to one single 'u8'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr2: **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">  </span><span class="SyntaxComment">// This is a pointer to one other pointer to one single 'u8'</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A pointer can be <code class="incode">null</code> (i know some of you will collapse here). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr1: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(ptr1 == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can take the address of something with <code class="incode">&</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = &arr </span><span class="SyntaxComment">// Take the address of the variable 'arr'</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(ptr) == *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can get the pointed value with <code class="incode">dref</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = </span><span class="SyntaxNumber">42</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = &arr
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"> ptr == </span><span class="SyntaxNumber">42</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Pointers can be <code class="incode">const</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> str = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> = </span><span class="SyntaxIntrinsic">@dataof</span><span class="SyntaxCode">(str)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"> ptr == </span><span class="SyntaxString">`s`</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can be weird, but is this necessary ?. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr:  *</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">        </span><span class="SyntaxComment">// Normal pointer to a const pointer</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr1: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">  </span><span class="SyntaxComment">// Const pointer to a const pointer</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr2: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> **</span><span class="SyntaxType">u8</span><span class="SyntaxCode">        </span><span class="SyntaxComment">// Const pointer to a normal pointer</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Multiple values pointers </h3>
 <p>If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multiple values</b>, declare your pointer with <code class="incode">^</code> instead of <code class="incode"><i></code>.</i> </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// `ptr` is a pointer to a memory block of `u8`.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr: ^</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
@@ -2105,20 +1977,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// Pointer arithmetic is now possible</span><span class="SyntaxCode">
     ptr = ptr - </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Taking the address of an array element enables pointer arithmetic. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: [</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr = &x[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">]
     ptr = ptr - </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(ptr) == ^</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>As pointer arithmetic is enabled, you can dereference that kind of pointer by index. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = &arr[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">]
@@ -2138,12 +2008,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(value) == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="023_references">References</h2><p>Swag has also <b>references</b>, which are pointers that behave like values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">42</span><span class="SyntaxCode">
 
@@ -2156,11 +2024,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// You can see this as a kind of an alias.</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(myRef == </span><span class="SyntaxNumber">42</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>When an affectation is done outside of an initialization, you will change the pointed value, and not the reference itself. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">42</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> myRef: </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = &x </span><span class="SyntaxComment">// Note here that the reference is no more 'const'</span><span class="SyntaxCode">
@@ -2173,12 +2039,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// Remember that 'myRef' is an alias for 'x', so 'x' has also been changed.</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">66</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But unlike C++, you can change the reference (reassign it) and not the pointed value if you want. </p>
 <p>You must then use <code class="incode">ref</code> in the affectation. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> y = </span><span class="SyntaxNumber">1000</span><span class="SyntaxCode">
@@ -2191,11 +2055,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     myRef = </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> &y
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(myRef == </span><span class="SyntaxNumber">1000</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Most of the time, you have to take the address of a variable to make a reference to it. The only exception are function parameters, if the reference is <code class="incode">const</code>. In that case, taking the address is not necessary. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// We can pass a literal because the parameter 'x' of 'toto' is 'const ref' and not just 'ref'.</span><span class="SyntaxCode">
     </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
@@ -2209,11 +2071,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = &x
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"> ptr == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>This is usefull for structs for examples, as you can directly pass a literal to a function. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode"> {x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> }  </span><span class="SyntaxComment">// Our first little struct !</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode"> {x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> }  </span><span class="SyntaxComment">// Our first little struct !</span><span class="SyntaxCode">
 
 </span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
@@ -2228,10 +2088,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(param.item0 == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(param.item1 == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Note that declaring a tuple type or a struct type is equivalent to a constant reference. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">titi1</span><span class="SyntaxCode">(param: {x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">})
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">titi1</span><span class="SyntaxCode">(param: {x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">})
 {
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(param.x == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(param.y == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
@@ -2242,12 +2101,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(param.x == </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(param.y == </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="024_any">Any</h2><p><code class="incode">any</code> is a specific type that can store every other types. <code class="incode">any</code> is <b>not a variant</b>. It's a dynamic typed reference to an existing value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">any</span><span class="SyntaxCode">
 
@@ -2265,19 +2122,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     a = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">bool</span><span class="SyntaxCode">) a == </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p><code class="incode">any</code> is in fact a pointer to the value, and a <code class="incode">typeinfo</code>. <code class="incode">@dataof</code> can be used to retrieve the pointer to the value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">any</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">) </span><span class="SyntaxIntrinsic">@dataof</span><span class="SyntaxCode">(a)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"> ptr == </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p><code class="incode">@typeof</code> will give you the type <code class="incode">any</code>, but <code class="incode">@kindof</code> will give you the real underlying type. In that case, <code class="incode">@kindof</code> is evaluted at runtime. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">any</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxType">any</span><span class="SyntaxCode">
@@ -2286,10 +2141,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     a = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@kindof</span><span class="SyntaxCode">(a) == </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can declare an array with multiple types, with <code class="incode">any</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [] </span><span class="SyntaxType">any</span><span class="SyntaxCode"> = [</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3.0</span><span class="SyntaxCode">, </span><span class="SyntaxString">"4"</span><span class="SyntaxCode">]
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@kindof</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">]) == </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
@@ -2302,10 +2156,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) array[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">3.0</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">string</span><span class="SyntaxCode">) array[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] == </span><span class="SyntaxString">"4"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>An <code class="incode">any</code> can be set to null, and tested against null. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">any</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
@@ -2318,29 +2171,26 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     x = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="025_tuple">Tuple</h2><p>A tuple is an anonymous structure, aka a struct literal. Syntax is <code class="incode">{}</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> tuple1 = {</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">}
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> tuple2 = {</span><span class="SyntaxString">"string"</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">}
 }</code>
-</pre>
+</div>
 <p>Tuple values have default names to access them, in the form of <code class="incode">itemX</code> where <code class="incode">X</code> is the field rank. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> tuple = {</span><span class="SyntaxString">"string"</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">}
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(tuple.item0 == </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(tuple.item1 == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(tuple.item2 == </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But you can specify your own names. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> tuple = {x = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">, y = </span><span class="SyntaxNumber">2.0</span><span class="SyntaxCode">}
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(tuple.x == </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)
@@ -2348,10 +2198,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(tuple.y == </span><span class="SyntaxNumber">2.0</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(tuple.item1 == </span><span class="SyntaxNumber">2.0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>When creating a tuple literal with variables, the tuple fields will take the name of the variables (except if specified). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">555</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> y = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
@@ -2361,10 +2210,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(t.y == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(t.item1 == t.y)
 }</code>
-</pre>
+</div>
 <p>Even if two tuples do not have the same field names, they can be assigned to each other if the field types are the same. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: {a: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">}
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> y: {c: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, d: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">}
@@ -2377,11 +2225,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// But note that 'x' and 'y' to not have the same type</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x) != </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(y)
 }</code>
-</pre>
+</div>
 <h3>Tuple unpacking </h3>
 <p>You can unpack a tuple field by field. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> tuple1 = {x = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">, y = </span><span class="SyntaxNumber">2.0</span><span class="SyntaxCode">}
 
@@ -2395,10 +2242,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(name == </span><span class="SyntaxString">"name"</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value == </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can ignore a tuple field by naming the variable <code class="incode">?</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> tuple1 = {x = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">, y = </span><span class="SyntaxNumber">2.0</span><span class="SyntaxCode">}
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> (x, ?) = tuple1
@@ -2406,11 +2252,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> (?, y) = tuple1
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">2.0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="030_enum">Enum</h2><p>Enums values, unlike C/C++, can end with <code class="incode">;</code> or <code class="incode">,</code> or an <code class="incode">eol</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values0</span><span class="SyntaxCode">
     {
@@ -2435,10 +2280,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values4</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values5</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> }
 }</code>
-</pre>
+</div>
 <p>By default, an enum is of type <code class="incode">s32</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> }
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> type = </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">)
@@ -2448,20 +2292,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(type.rawType == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">) == </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p><code class="incode">@kindof</code> will return the underlying type of the enum. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> }
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">) == </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@kindof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">) != </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@kindof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">) == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can specify your own type after the enum name. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values1</span><span class="SyntaxCode">: </span><span class="SyntaxType">s64</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// Forced to be 's64' instead of 's32'</span><span class="SyntaxCode">
     {
@@ -2473,10 +2315,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@kindof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Values1</span><span class="SyntaxCode">) == </span><span class="SyntaxType">s64</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Values1</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">A</span><span class="SyntaxCode">) == </span><span class="SyntaxConstant">Values1</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Enum values, if not specified, start at 0 and are increased by 1 at each new value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">
     {
@@ -2489,10 +2330,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can specify your own values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">
     {
@@ -2505,10 +2345,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>If you omit one value, it will be assigned to the previous value + 1. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">
     {
@@ -2521,10 +2360,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">11</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">12</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>For non integer types, you <b>must</b> specify the values as they cannot be deduced. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value1</span><span class="SyntaxCode">: </span><span class="SyntaxType">string</span><span class="SyntaxCode">
     {
@@ -2548,10 +2386,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxConstant">Value2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">3.14</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxConstant">Value2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p><code class="incode">@countof</code> returns the number of values of an enum. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">: </span><span class="SyntaxType">string</span><span class="SyntaxCode">
     {
@@ -2563,10 +2400,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can use the keyword <code class="incode">using</code> for an enum. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">
     {
@@ -2587,12 +2423,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Enum as flags </h3>
 <p>An enum can be a set of flags if you declare it with the <code class="incode">#<a href="swag.runtime.html#Swag_EnumFlags">Swag.EnumFlags</a></code> <b>attribute</b>. Its type should be <code class="incode">u8</code>, <code class="incode">u16</code>, <code class="incode">u32</code> or <code class="incode">u64</code>. </p>
 <p>That kind of enum starts by default at 1, and not 0, and each value should be a power of 2. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.EnumFlags]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyFlags</span><span class="SyntaxCode">: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">
@@ -2613,11 +2448,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value & </span><span class="SyntaxConstant">MyFlags</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> == </span><span class="SyntaxConstant">MyFlags</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value & </span><span class="SyntaxConstant">MyFlags</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> == </span><span class="SyntaxConstant">MyFlags</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Enum of arrays </h3>
 <p>You can have an enum of const static arrays. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     {
@@ -2630,11 +2464,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Enum of slices </h3>
 <p>You can have an enum of const slices. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode">: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     {
@@ -2652,11 +2485,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Enum type inference </h3>
 <p>The type of the enum is not necessary in the assignement expression when declaring a variable. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }
 
@@ -2668,10 +2500,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == y)
 }</code>
-</pre>
+</div>
 <p>The enum type is not necessary in a <code class="incode">case</code> expression of a <code class="incode">switch</code> block (it is deduced from the switch expression). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">A</span><span class="SyntaxCode">
@@ -2690,10 +2521,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">case</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">: </span><span class="SyntaxLogic">break</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>In an expression, and if the enum name can be deduced, you can omit it and use the <code class="incode">.Value</code> syntax. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> }
 
@@ -2704,10 +2534,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == .</span><span class="SyntaxConstant">A</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x != .</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Works also for flags. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.EnumFlags]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> }
@@ -2715,19 +2544,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> | </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">((x & .</span><span class="SyntaxConstant">A</span><span class="SyntaxCode">) </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> (x & .</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">))
 }</code>
-</pre>
+</div>
 <p>Works also (most of the time), for functions. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">(v1, v2: </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">) {}
     </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">(.</span><span class="SyntaxConstant">A</span><span class="SyntaxCode">, .</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>By type reflection, you can loop/visit all values of an enum. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> }
@@ -2749,16 +2576,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         }
     }
 }</code>
-</pre>
+</div>
 
 <h2 id="031_impl">Impl</h2><p><code class="incode">impl</code> can be used to declare some stuff in the scope of an enum. The keyword <code class="incode">self</code> represents the enum value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }</code>
+</div>
 <p>Note the <code class="incode">impl enum</code> syntax. We'll see later that <code class="incode">impl</code> is also used for structs. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isRed</span><span class="SyntaxCode">(self)       =&gt; self == </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isRedOrBlue</span><span class="SyntaxCode">(self) =&gt; self == </span><span class="SyntaxConstant">R</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"> self == </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
@@ -2777,20 +2601,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">R</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">isRedOrBlue</span><span class="SyntaxCode">())
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(!</span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">isRedOrBlue</span><span class="SyntaxCode">())
 }</code>
-</pre>
+</div>
 
 <h2 id="035_namespace">Namespace</h2><p>You can create a global scope with a namespace. All symbols inside the namespace will be in the corresponding global scope. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">namespace</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">namespace</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">a</span><span class="SyntaxCode">() =&gt; </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can also specify more than one name. Here <code class="incode">C</code> will be a namespace inside <code class="incode">B</code> which is itself inside <code class="incode">A</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">namespace</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">namespace</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">a</span><span class="SyntaxCode">() =&gt; </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
 }
@@ -2800,31 +2620,27 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">A</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">a</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">A</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">B</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">C</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">a</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also put <code class="incode">using</code> in front of the namespace to be able to access the content without scoping in the <b>current</b> file. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">namespace</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Private</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">namespace</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Private</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FileSymbol</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 }
 
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Private</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FileSymbol</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">C</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">FileSymbol</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// No need to specify 'Private' because of the 'using'</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>This is equivalent to <code class="incode">private</code>, but you don't have to specify a name, the compiler will generate it for you. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">private</span><span class="SyntaxCode"> {
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">private</span><span class="SyntaxCode"> {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OtherSymbol</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 }
 
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">D</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">OtherSymbol</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>All symbols from a Swag source file are exported to other files of the same module. So using <code class="incode">private</code> can protect from name conflicts. </p>
 
 <h2 id="050_if">If</h2><p>A basic test with <code class="incode">if</code>. Curlies are optional, and the expression doesn't need to be enclosed with <code class="incode">()</code> like in C/C++. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> a == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -2858,10 +2674,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> a == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"> a == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also at the same time declare and test one variable in an <code class="incode">if</code> expression. <code class="incode">var</code>, <code class="incode">let</code> or <code class="incode">const</code> is mandatory in that case. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This will declare a variable 'a', and test it against 0.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// 'a' is then only visible in the 'if' block, and not outside.</span><span class="SyntaxCode">
@@ -2881,22 +2696,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">else</span><span class="SyntaxCode">
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="051_loop">Loop</h2><p><code class="incode">loop</code> are used to iterate a given amount of time. </p>
 <p>The loop expression value is evaluated <b>once</b>, and must be a <b>positive value</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// Loops 10 times</span><span class="SyntaxCode">
         cpt += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The intrinsic <code class="incode">@index</code> returns the current index of the loop (starting at 0). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">
@@ -2906,10 +2719,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can name that index if you want. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt1 = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -2923,10 +2735,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt  == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt1 == cpt)
 }</code>
-</pre>
+</div>
 <p><code class="incode">loop</code> can be used on every types that accept the <code class="incode">@countof</code> intrinsic. So you can loop on a slice, an array, a string... and we'll see later, even on a struct. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> arr = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">]
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(arr) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
@@ -2936,12 +2747,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         cpt += arr[</span><span class="SyntaxIntrinsic">@index</span><span class="SyntaxCode">]
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">20</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">30</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <blockquote>
 <p><b>Warning !</b> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the <code class="incode">Std.Core</code> module. </p>
 </blockquote>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxString">"⻘"</span><span class="SyntaxCode">
@@ -2950,12 +2760,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// cpt is equal to 3 because '⻘' is encoded with 3 bytes</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>break, continue </h3>
 <p><code class="incode">break</code> and <code class="incode">continue</code> can be used inside a loop. </p>
 <p>You can exit a loop with <code class="incode">break</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> x: </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
@@ -2967,10 +2776,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can force to return to the loop evaluation with <code class="incode">continue</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> x: </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
@@ -2982,12 +2790,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">9</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Ranges </h3>
 <p>Loop can also be used to iterate on a <b>range</b> of signed values. </p>
 <p>Syntax is <code class="incode">lower bound..upper bound</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> count = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> sum = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -3000,10 +2807,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(sum == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(count == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>With a range, you can loop in reverse order. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Loop from 5 to 0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">5.</span><span class="SyntaxCode">.</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -3015,10 +2821,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 <p>You can exclude the last value with the <code class="incode">..&lt;</code> syntax. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Will loop from 1 to 2 and **not** 1 to 3</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -3029,11 +2834,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>Infinite loop </h3>
 <p>A loop without an expression but with a block is infinite. This is equivalent to <code class="incode">while true {}</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode">
     {
@@ -3041,11 +2845,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
             </span><span class="SyntaxLogic">break</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 
 <h2 id="052_visit">Visit</h2><p><code class="incode">visit</code> is used to visit all the elements of a collection. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Here we visit every bytes of the string.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// At each iteration, the byte will be stored in the variable 'value'</span><span class="SyntaxCode">
@@ -3061,10 +2864,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         }
     }
 }</code>
-</pre>
+</div>
 <p>You can name both the <b>value</b> and the loop <b>index</b>, in that order. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">visit</span><span class="SyntaxCode"> value, index: </span><span class="SyntaxString">"ABC"</span><span class="SyntaxCode">
     {
@@ -3077,10 +2879,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         }
     }
 }</code>
-</pre>
+</div>
 <p>Both names are optional. In that case, you can use <code class="incode">@alias0</code> and <code class="incode">@alias1</code>. <code class="incode">@alias0</code> for the value, and <code class="incode">@alias1</code> for the index. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">visit</span><span class="SyntaxCode"> </span><span class="SyntaxString">"ABC"</span><span class="SyntaxCode">
     {
@@ -3094,10 +2895,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         }
     }
 }</code>
-</pre>
+</div>
 <p>You can visit arrays or slices. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array = [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">]
 
@@ -3107,10 +2907,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(result == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">20</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">30</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Works also for multi dimensional arrays. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = [[</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">], [</span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">]]
 
@@ -3120,10 +2919,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(result == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">20</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">30</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can visit with a pointer to the value, and not the value itself, by adding <code class="incode">&</code> before the value name. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = [[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">], [</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">]]
 
@@ -3141,11 +2939,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">555</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(array[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">555</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="053_for">For</h2><p><code class="incode">for</code> accepts a <i>start statement</i>, an <i>expression to test</i>, and an <i>ending statement</i>. This is in fact the same as the C/C++ <code class="incode">for</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">for</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> i = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">; i &lt; </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">; i += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -3178,10 +2975,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     }
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Like <code class="incode">loop</code>, <code class="incode">visit</code> and <code class="incode">while</code>, you have access to <code class="incode">@index</code>, the <b>current loop index</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">for</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> i: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">; i &lt; </span><span class="SyntaxNumber">15</span><span class="SyntaxCode">; i += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -3193,21 +2989,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         cpt1 += </span><span class="SyntaxIntrinsic">@index</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt1 == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="054_while">While</h2><p><code class="incode">while</code> is a loop that runs <b>until the expression is false</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> i = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">while</span><span class="SyntaxCode"> i &lt; </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
         i += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(i == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also <code class="incode">break</code> and <code class="incode">continue</code> inside a <code class="incode">while</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> i = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">while</span><span class="SyntaxCode"> i &lt; </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
@@ -3219,11 +3013,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(i == </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="055_switch">Switch</h2><p><code class="incode">switch</code> works like in C/C++, except that no <code class="incode">break</code> is necessary (except if the <code class="incode">case</code> is empty). That means that there's no automatic <code class="incode">fallthrough</code> from one case to another. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">switch</span><span class="SyntaxCode"> value
@@ -3241,10 +3034,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">case</span><span class="SyntaxCode"> </span><span class="SyntaxString">`A`</span><span class="SyntaxCode">: </span><span class="SyntaxLogic">break</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>You can put multiple values on the same <code class="incode">case</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">switch</span><span class="SyntaxCode"> value
@@ -3263,10 +3055,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p><code class="incode">switch</code> works with every types that accept the <code class="incode">==</code> operator. So you can switch on strings for example. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxString">"myString"</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">switch</span><span class="SyntaxCode"> value
@@ -3276,10 +3067,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">default</span><span class="SyntaxCode">:            </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>If you want to pass from one case to another like in C/C++, use <code class="incode">fallthrough</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">switch</span><span class="SyntaxCode"> value
@@ -3292,10 +3082,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p><code class="incode">break</code> can be used to exit the current <code class="incode">case</code> statement. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">switch</span><span class="SyntaxCode"> value
@@ -3308,10 +3097,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>A <code class="incode">case</code> statement cannot be empty. Use <code class="incode">break</code> if you want to do nothing. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">switch</span><span class="SyntaxCode"> value
@@ -3321,10 +3109,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">default</span><span class="SyntaxCode">:    </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p><code class="incode">switch</code> can be marked with <code class="incode">Swag.Complete</code> to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">Red</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Green</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Blue</span><span class="SyntaxCode"> }
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> color = </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Red</span><span class="SyntaxCode">
@@ -3337,10 +3124,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">case</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Blue</span><span class="SyntaxCode">:    </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>If the switch expression is omitted, then it will behave like a serie of if/else, resolved in order. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> value1 = </span><span class="SyntaxString">"true"</span><span class="SyntaxCode">
@@ -3356,10 +3142,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>When used on an <code class="incode">any</code> variable, switch is done on the underlying variable type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">any</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"value"</span><span class="SyntaxCode">
 
@@ -3369,10 +3154,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">default</span><span class="SyntaxCode">:     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>A <code class="incode">switch</code> can also be used with a (constant) range of values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> success = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
@@ -3384,10 +3168,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(success)
 }</code>
-</pre>
+</div>
 <p>If they overlap, the first valid range will be used. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> success = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">
@@ -3399,10 +3182,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(success)
 }</code>
-</pre>
+</div>
 <p>A <code class="incode">case</code> expression doesn't need to be constant. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> test = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -3418,11 +3200,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 
 <h2 id="056_break">Break</h2><p>We have already seen than <code class="incode">break</code> is used to exit a <code class="incode">loop</code>, <code class="incode">visit</code>, <code class="incode">while</code>, <code class="incode">for</code>, <code class="incode">switch</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
         </span><span class="SyntaxLogic">break</span><span class="SyntaxCode">
@@ -3431,10 +3212,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">while</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
         </span><span class="SyntaxLogic">break</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>By default, <code class="incode">break</code> will exit the parent scope only. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
@@ -3450,10 +3230,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But you can <b>name a scope</b> with the <code class="incode">#scope</code> compiler keyword, and exit to the end of it with a <code class="incode">break</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 
@@ -3472,10 +3251,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// ...and continue execution here</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>When used with a scope, a continue is a way to go back to the start of the scope. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     #scope </span><span class="SyntaxConstant">Loop</span><span class="SyntaxCode">
@@ -3488,10 +3266,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You are not obliged to name the scope, so this can also be used (for example) as an alternative of a bunch of if/else. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     #scope
@@ -3515,10 +3292,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         }
     }
 }</code>
-</pre>
+</div>
 <p>Note that a scope can be followed by a simple statement, not always a block. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     #scope </span><span class="SyntaxConstant">Up</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
     {
@@ -3531,12 +3307,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 
 <h2 id="060_struct">Struct</h2>
 <h3 id="061_001_declaration">Declaration</h3><p>This is a <code class="incode">struct</code> declaration. <code class="incode">var</code> is not necessary for the fields. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -3551,18 +3326,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         myS:    </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>Variables can also be separated with <code class="incode">;</code> or <code class="incode">,</code>. The last one is not mandatory. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">{name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, val1: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">}
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">{x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; y, z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; val: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">; myS: </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">}
 }</code>
-</pre>
+</div>
 <p>A struct can be anonymous when declared as a variable type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> tuple: </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
     {
@@ -3585,10 +3358,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         hsl: </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">{h, s, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}
     }
 }</code>
-</pre>
+</div>
 <p>The fields of a struct can be initialized at the declaration. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -3600,10 +3372,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.x == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.y == </span><span class="SyntaxString">"454"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can initialize a struct variable in different ways. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// At fields declaration</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
@@ -3633,10 +3404,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v3.x == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v3.y == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>A struct can be affected to a constant, as long as it can be evaluated at compile time. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -3648,12 +3418,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxConstant">X</span><span class="SyntaxCode">.x == </span><span class="SyntaxNumber">50</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxConstant">X</span><span class="SyntaxCode">.y == </span><span class="SyntaxString">"value"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A function can take an argument of type <code class="incode">struct</code>. </p>
 <p>No copy is done (this is equivalent to a const reference in C++). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct3</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct3</span><span class="SyntaxCode">
 {
     x, y, z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
 }
@@ -3686,12 +3454,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// You can also name the fields, and omit some of them</span><span class="SyntaxCode">
     </span><span class="SyntaxFunction">titi</span><span class="SyntaxCode">({x = </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">, z = </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">}) </span><span class="SyntaxComment">// Here y will stay to the default value, which is 666</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h3 id="062_002_impl">Impl</h3><p>Like for an enum, <code class="incode">impl</code> is used to declare some stuff in the scope of a struct. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxAttribute">#[Swag.ExportType("methods")]</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// See later, used to export 'methods' in type reflection</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.ExportType("methods")]</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// See later, used to export 'methods' in type reflection</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">
@@ -3707,19 +3473,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// Declare a function in the scope of the struct</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">returnTrue</span><span class="SyntaxCode">() =&gt; </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>So to access the constant and the function, you have to use the <code class="incode">MyStruct</code> namespace. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">MyConst</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">returnTrue</span><span class="SyntaxCode">())
 }</code>
-</pre>
+</div>
 <p>You can have multiple <code class="incode">impl</code> blocks. The difference with a namespace is that <code class="incode">self</code> and <code class="incode">Self</code> are defined inside an <code class="incode">impl</code> block. They refere to the corresponding type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// 'self' is an alias for 'var self: Self'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">returnX</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) =&gt; x
@@ -3728,12 +3491,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// 'Self' is the corresponding type, in that case 'MyStruct'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">returnZ</span><span class="SyntaxCode">(me: </span><span class="SyntaxConstant">Self</span><span class="SyntaxCode">)   =&gt; me.z
 }</code>
-</pre>
+</div>
 <p>If you declare your function with <code class="incode">mtd</code> (method) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">using self</code>. </p>
 <p>If you declare your function with <code class="incode">mtd const</code> (method const) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">const using self</code>. Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <code class="incode">using self</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode">  </span><span class="SyntaxFunction">methodReturnX</span><span class="SyntaxCode">()          =&gt; x
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">funcReturnX</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)  =&gt; x
@@ -3748,10 +3509,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c.</span><span class="SyntaxFunction">returnY</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c.</span><span class="SyntaxFunction">returnZ</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>All functions in an <code class="incode">impl</code> block can be retrieved by reflection, as long as the struct is declared with <code class="incode">#<a href="swag.runtime.html#Swag_ExportType("methods")">Swag.ExportType("methods")</a></code> (by default, methods are not exported). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Creates a type alias named 'Lambda'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Lambda</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
@@ -3780,12 +3540,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">fnY</span><span class="SyntaxCode">(v) == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">fnZ</span><span class="SyntaxCode">(v) == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="063_003_special_functions">Special functions</h3><p>A struct can have special operations in the <code class="incode">impl</code> block. This operations are predefined, and known by the compiler.This is the way to go to <b>overload operators</b> for example. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
 {
     x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 }
@@ -3890,13 +3648,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitAnother</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">) {}
     }
 }</code>
-</pre>
+</div>
 
 <h3 id="064_004_affectation">Affectation</h3><p><code class="incode">opAffect</code> is a way of assigning to a struct with <code class="incode">=</code>. </p>
 <p>You can have more the one <code class="incode">opAffect</code> with different types. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
 {
     x, y, z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
 }
@@ -3927,11 +3683,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v1.x == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v1.y == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>If <code class="incode">opAffect</code> is supposed to initialize the full content of the struct, you can add <code class="incode">#<a href="swag.runtime.html#Swag_Complete">Swag.Complete</a></code>. This will avoid every variables to be initialized to the default values, then changed later with the <code class="incode">opAffect</code> call. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Complete]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)  { x, y, z = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">) value; }
@@ -3940,10 +3694,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxAttribute">#[Swag.Implicit]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)  { x, y = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">) value; }
 }</code>
-</pre>
+</div>
 <p>Here the variable <code class="incode">v</code> will not be initialized prior to the affectation. This is more optimal, as there's only one initialization. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> v: </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.x == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
@@ -3973,10 +3726,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// No need for an explicit cast.</span><span class="SyntaxCode">
     </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">'</span><span class="SyntaxType">u16</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>A structure can be converted to a constant by a call to <code class="incode">opAffect</code> if the function is marked with <code class="incode">Swag.ConstExpr</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">
 {
     x, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 }
@@ -3993,10 +3745,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">One</span><span class="SyntaxCode">: </span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">    </span><span class="SyntaxComment">// This will call opAffect(1.0) at compile time</span><span class="SyntaxCode">
 #assert </span><span class="SyntaxConstant">One</span><span class="SyntaxCode">.x == </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">
 #assert </span><span class="SyntaxConstant">One</span><span class="SyntaxCode">.y == </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 
-<h3 id="064_005_count">Count</h3><pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
+<h3 id="064_005_count">Count</h3><div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
 }
 
@@ -4004,10 +3755,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 {
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opCount</span><span class="SyntaxCode">() =&gt; </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can loop on a struct value if <code class="incode">opCount</code> has been defined. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> v = </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">{}
 
@@ -4021,12 +3771,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="064_006_post_copy_and_post_move">Post copy and post move</h3><p>Swag accepts copy and move semantics for structures. In this examples, we use a <code class="incode">Vector3</code> to illustrate, even if of course that kind of struct does not need a move semantic, as there's no heap involved. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector3</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector3</span><span class="SyntaxCode">
 {
     x, y, z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
 }
@@ -4092,12 +3840,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     a =,moveraw b
     a =,nodrop,moveraw b
 }</code>
-</pre>
+</div>
 <h4>moveref </h4>
 <p><code class="incode">moveref</code> can be used instead of <code class="incode">ref</code> in a function parameter to declare a <b>move semantic</b> intention. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assign</span><span class="SyntaxCode">(to: </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector3</span><span class="SyntaxCode">, from: </span><span class="SyntaxKeyword">moveref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector3</span><span class="SyntaxCode">)
@@ -4128,20 +3874,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// And as this is a move, then 'a' is now reinitialized to its default values.</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a.x == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> a.y == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> a.z == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
-<h3 id="064_007_visit">Visit</h3><pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
+<h3 id="064_007_visit">Visit</h3><div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
     y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">
     z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can visit a struct variable if a macro <code class="incode">opVisit</code> has been defined. This is the equivalent of an <b>iterator</b>. </p>
 <p><code class="incode">opVisit</code> is a macro, so it should be marked with the <code class="incode">#<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a></code> attribute. <code class="incode">opVisit</code> is also a generic function which takes a constant generic parameter of type <code class="incode">bool</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(self, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -4178,10 +3922,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         }
     }
 }</code>
-</pre>
+</div>
 <p>So now that the <code class="incode">opVisit</code> has been defined, we can <code class="incode">visit</code> it. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> myStruct = </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">{}
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -4203,10 +3946,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can have variants of <code class="incode">opVisit</code> by specifying an <b>additional name</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisitReverse</span><span class="SyntaxCode">(stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)   </span><span class="SyntaxComment">// We add 'Reverse' in the name</span><span class="SyntaxCode">
@@ -4251,11 +3993,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="067_008_offset">Offset</h3><p>You can force the layout of a field with the <code class="incode">Swag.Offset</code> attribute. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -4275,10 +4016,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// As 'y' and 'x' are sharing the same space, affecting to 'x' also affects to 'y'.</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.y == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>An example to reference a field by index. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -4294,12 +4034,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.idx[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == v.y)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.idx[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] == v.z)
 }</code>
-</pre>
+</div>
 
 <h3 id="068_009_packing">Packing</h3><p>You can also control the struct layout with two attributes: <code class="incode">#<a href="swag.runtime.html#Swag_Pack">Swag.Pack</a></code> and <code class="incode">#<a href="swag.runtime.html#Swag_Align">Swag.Align</a></code>. </p>
 <p>The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <code class="incode">#<a href="swag.runtime.html#Swag_Pack(0)">Swag.Pack(0)</a></code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -4314,10 +4053,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@offsetof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">.z) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">)     == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can <i>reduce</i> the packing of the fields with <code class="incode">#<a href="swag.runtime.html#Swag_Pack">Swag.Pack</a></code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Pack(1)]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">
@@ -4352,10 +4090,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@offsetof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct3</span><span class="SyntaxCode">.y) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct3</span><span class="SyntaxCode">)     == </span><span class="SyntaxNumber">12</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The total struct size is always a multiple of the biggest alignement of the fields. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">
     {
@@ -4366,10 +4103,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can force the struct alignement with <code class="incode">#<a href="swag.runtime.html#Swag_Align">Swag.Align</a></code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">
     {
@@ -4393,10 +4129,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@offsetof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct2</span><span class="SyntaxCode">.y) == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct2</span><span class="SyntaxCode">)     == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can also force each field to be aligned on a specific value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">
     {
@@ -4418,12 +4153,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct2</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="070_union">Union</h2><p>An union is just a struct where all fields are located at offset 0. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">union</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyUnion</span><span class="SyntaxCode">
@@ -4436,13 +4169,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.z == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 
 <h2 id="075_interface">Interface</h2><p>Interfaces are <b>virtual tables</b> (a list of function pointers) that can be associated to a struct. </p>
 <p>Unlike C++, the virtual table is not embedded with the struct. It is a separate object. You can then <i>implement</i> an interface for a given struct without changing the struct definition. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
 {
     x, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 }
@@ -4451,10 +4182,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 {
     x, y, z: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Here we declare an interface, with two functions <code class="incode">set</code> and <code class="incode">reset</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">interface</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">interface</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// The first parameter must be 'self'</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(self, val: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
@@ -4462,12 +4192,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// You can also use the 'mtd' declaration to avoid specifying the 'self' yourself</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reset</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p>You can implement an interface for any given struct with <code class="incode">impl</code> and <code class="incode">for</code>. </p>
 <p>For example here, we implement interface <code class="incode">IReset</code> for struct <code class="incode">Point2</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">for</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">for</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// You must add 'impl' to indicate that you want to implement a function of the interface.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(val: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
@@ -4487,10 +4215,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 <p>And we implement interface <code class="incode">IReset</code> also for struct <code class="incode">Point3</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">for</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point3</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">for</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point3</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(val: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)
     {
@@ -4504,10 +4231,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         x, y, z = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>We can then use these interfaces on either <code class="incode">Vector2</code> or <code class="incode">Vector3</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt2: </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt3: </span><span class="SyntaxConstant">Point3</span><span class="SyntaxCode">
@@ -4527,11 +4253,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     itf.</span><span class="SyntaxFunction">reset</span><span class="SyntaxCode">()
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt3.x == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> pt3.y == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also access, with a normal call, all functions declared in an interface implementation block for a given struct. </p>
 <p>They are located in a dedicated scope. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt2: </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt3: </span><span class="SyntaxConstant">Point3</span><span class="SyntaxCode">
@@ -4541,10 +4266,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     pt3.</span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     pt3.</span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">reset</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p>An interface is a real type, with a size equivalent to 2 pointers. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt2: </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt3: </span><span class="SyntaxConstant">Point3</span><span class="SyntaxCode">
@@ -4563,50 +4287,43 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     itf = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode">) pt3
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@dataof</span><span class="SyntaxCode">(itf) == &pt3)
 }</code>
-</pre>
+</div>
 
 <h2 id="100_function">Function</h2>
 <h3 id="101_001_declaration">Declaration</h3><p>A function declaration usually starts with the <code class="incode">func</code> keyword followed by the function name. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">()
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">()
 {
 }</code>
-</pre>
+</div>
 <p>If the function needs to return a value, you must add <code class="incode">-&gt;</code> followed by the type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto1</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto1</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The return type can be deduced in case of a simple expression, by using <code class="incode">=&gt;</code> instead of <code class="incode">-&gt;</code>. </p>
 <p>Here the return type will be deduced to be <code class="incode">s32</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + y</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + y</code>
+</div>
 <p>A short version exists, in case of a function returning nothing. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(val: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) = </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(val)</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(val: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) = </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(val)</code>
+</div>
 <p>Parameters are specified after the function name, between parenthesis. </p>
 <p>Here we declare two parameters <code class="incode">x</code> and <code class="incode">y</code> of type <code class="incode">s32</code>, and one last parameter of type <code class="incode">f32</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum1</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, unused: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum1</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, unused: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> x + y
 }</code>
-</pre>
+</div>
 <p>Parameters can have default values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum2</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, unused: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum2</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, unused: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> x + y
 }</code>
-</pre>
+</div>
 <p>The type of the parameters can be deduced if you specify a default value. </p>
 <p>Here <code class="incode">x</code> and <code class="incode">y</code> have the type <code class="incode">f32</code> because <code class="incode">0.0</code> is a 32 bits floating point literal. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum3</span><span class="SyntaxCode">(x, y = </span><span class="SyntaxNumber">0.0</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum3</span><span class="SyntaxCode">(x, y = </span><span class="SyntaxNumber">0.0</span><span class="SyntaxCode">)
 {
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x) == </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(y) == </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
@@ -4617,10 +4334,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 {
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(y) == </span><span class="SyntaxConstant">Values</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Functions can be nested inside other functions. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This are not closure but just functions in a sub scope.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sub</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x - y
@@ -4629,10 +4345,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxFunction">sub</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can name parameters, and don't have to respect parameters order in that case. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sub</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x - y
 
@@ -4649,11 +4364,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">returnMe</span><span class="SyntaxCode">(y = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <h4>Multiple return values </h4>
 <p>An <b>anonymous struct</b> can be used to return multiple values in a function. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">() -&gt; {x, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}
     {
@@ -4701,11 +4415,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="102_002_lambda">Lambda</h3><p>A lambda is just a <b>pointer to a function</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunction0</span><span class="SyntaxCode">() {}
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunction1</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x * x
@@ -4719,18 +4432,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunction1</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">ptr1</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>A lambda can be null. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> lambda: </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(lambda == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can use a lambda as a function parameter type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> callback = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, ptr: callback)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> =&gt; </span><span class="SyntaxFunction">ptr</span><span class="SyntaxCode">(value)
@@ -4738,21 +4449,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">square</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x * x
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, &square) == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h4>Anonymous functions </h4>
 <p>You can also create <i>anonymous functions</i> (aka functions as literals). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cb = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> =&gt; x * x
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">cb</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
     cb = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> =&gt; x * x * x
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">cb</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">64</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Anonymous functions can be passed as parameters to another function. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> callback = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, ptr: callback)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> =&gt; </span><span class="SyntaxFunction">ptr</span><span class="SyntaxCode">(value)
@@ -4761,10 +4470,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + x) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> { </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> x - x; }) == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The types of the parameters can be deduced. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> callback = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, ptr: callback)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> =&gt; </span><span class="SyntaxFunction">ptr</span><span class="SyntaxCode">(value)
@@ -4773,10 +4481,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x) =&gt; x + x) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toDo</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x) { </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> x - x; }) == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>When you affect a lambda to a variable, the type of parameters and the return type can also be omitted, as they will be deduced from the variable type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> fct: </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 
@@ -4786,10 +4493,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     fct = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x, y) { </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> x != y; }
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">120</span><span class="SyntaxCode">))
 }</code>
-</pre>
+</div>
 <p>Lambdas can have default parameters values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(val = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">) {
@@ -4810,13 +4516,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxFunction">x</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 
 <h3 id="103_003_closure">Closure</h3><p>Swag supports a limited set of the <code class="incode">closure</code> concept. </p>
 <p>Only a given amount of bytes of capture are possible (for now 48 bytes). That way there's never an hidden allocation. Another limitation is that you can only capture <code class="incode">simple</code> variables (no struct with <code class="incode">opDrop</code>, <code class="incode">opPostCopy</code>, <code class="incode">opPostMove</code> for example). </p>
 <p>A closure is declared like a lambda, with the captured variables between <code class="incode">|...|</code> before the function parameters. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">125</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b = </span><span class="SyntaxNumber">521</span><span class="SyntaxCode">
@@ -4830,10 +4535,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p>You can also capture by pointer with <code class="incode">&</code> (otherwise it's a copy). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">125</span><span class="SyntaxCode">
 
@@ -4849,10 +4553,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">()
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">127</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also capture by reference with <code class="incode">ref</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> a = </span><span class="SyntaxNumber">125</span><span class="SyntaxCode">
 
@@ -4868,20 +4571,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">()
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">127</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can assign a normal lambda (no capture) to a closure variable. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> fct: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 
     fct = </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(x, y) =&gt; x + y
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can capture arrays, structs, slices etc... as long as it fits in the maximum storage of <code class="incode">n</code> bytes (and as long as the struct is a pod). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">]
 
@@ -4900,10 +4601,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> result = </span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(result == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">2</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">3</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Captured variables are mutable, and part of the closure. So you can modify them. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getInc</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     {
@@ -4920,21 +4620,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">12</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">fct</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">13</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="104_004_mixin">Mixin</h3><p>A mixin is declared like a function, with the attribute <code class="incode">#<a href="swag.runtime.html#Swag_Mixin">Swag.Mixin</a></code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Mixin]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMixin</span><span class="SyntaxCode">()
     {
     }
 }</code>
-</pre>
+</div>
 <p>A mixin function is inserted in the scope of the caller. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Mixin]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMixin</span><span class="SyntaxCode">()
@@ -4947,10 +4645,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">myMixin</span><span class="SyntaxCode">()   </span><span class="SyntaxComment">// Equivalent to 'a += 1'</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>This behaves like a function, so you can add parameters. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Mixin]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMixin</span><span class="SyntaxCode">(increment: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
@@ -4963,10 +4660,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">myMixin</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)  </span><span class="SyntaxComment">// Equivalent to 'a += 2'</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>A mixin accepts parameters of type <code class="incode">code</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Mixin]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doItTwice</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -4980,10 +4676,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">doItTwice</span><span class="SyntaxCode">(#code {a += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">;})
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>When the last parameter of a mixin is of type <code class="incode">code</code>, the caller can declare that code in a statement just after the call. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Mixin]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doItTwice</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -5005,10 +4700,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">12</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can use the special name <code class="incode">@alias</code> to create a named alias for an identifier. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Mixin]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">inc10</span><span class="SyntaxCode">()
@@ -5037,10 +4731,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">setVar</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">30</span><span class="SyntaxCode">)      </span><span class="SyntaxComment">// No typealias, so name is @alias0</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@alias0</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can declare special variables named <code class="incode">@mixin?</code>. Those variables will have a unique name each time the mixin is used. So the same mixin, even if it declares local variables, can be used multiple time in the same scope. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> total: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 
@@ -5057,21 +4750,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(total == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="105_005_macro">Macro</h3><p>A macro, like a mixin, is declared like a function, but with the attribute <code class="incode">Swag.Macro</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMacro</span><span class="SyntaxCode">()
     {
     }
 }</code>
-</pre>
+</div>
 <p>Unlike a mixin, a macro has its own scope, and cannot conflict with the function it is inserted inside. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMacro</span><span class="SyntaxCode">()
@@ -5083,10 +4774,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">myMacro</span><span class="SyntaxCode">()   </span><span class="SyntaxComment">// no conflict with the 'a' declared above</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But you can force an identifier to be found <b>outside</b> of the scope of the macro with <code class="incode">#up</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMacro</span><span class="SyntaxCode">()
@@ -5099,10 +4789,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">myMacro</span><span class="SyntaxCode">()   </span><span class="SyntaxComment">// This will change the 'a' above</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Like a mixin, macro accepts <code class="incode">code</code> parameters. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMacro</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -5121,10 +4810,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can use <code class="incode">#macro</code> inside a macro to force the code after to be in the same scope of the caller. That is, no <code class="incode">#up</code> is necessary to reference variables of the caller. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myMacro</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -5148,10 +4836,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can extend the language with macros, without using pointers to functions (no lambda call cost). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">repeat</span><span class="SyntaxCode">(count: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -5175,10 +4862,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">repeat</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">) { a += index; }
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>When you need <code class="incode">break</code> in the user code to break outside of a multi loop. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">repeatSquare</span><span class="SyntaxCode">(count: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -5207,10 +4893,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(a == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>In a macro, you can use special variables named <code class="incode">@alias&lt;num&gt;</code>. Note that this is also valid for mixins. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">call</span><span class="SyntaxCode">(v: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)
@@ -5240,11 +4925,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y == </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)   </span><span class="SyntaxComment">// y is @alias1</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 
 <h3 id="105_006_variadic_parameters">Variadic parameters</h3><p>A function can take a variable number of arguments with <code class="incode">...</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, parameters: ...)
     {
@@ -5252,10 +4936,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxString">"true"</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">5.6</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>In that case, <code class="incode">parameters</code> is a slice of <code class="incode">any</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(parameters: ...)
     {
@@ -5275,10 +4958,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">, </span><span class="SyntaxString">"true"</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">5.6</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>If all variadic parameters are of the same type, you can force it. Parameters then won't be of type <code class="incode">any</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, parameters: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">...)
     {
@@ -5295,10 +4977,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxFunction">myFunction</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">30</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Variadic parameters can be passed from function to function. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode">(params: ...)
     {
@@ -5316,10 +4997,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">(</span><span class="SyntaxString">"value"</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can spread the content of an array or a slice to variadic parameters with <code class="incode">@spread</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(params: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">...)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     {
@@ -5337,22 +5017,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> res1 = </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@spread</span><span class="SyntaxCode">(arr[</span><span class="SyntaxNumber">1.</span><span class="SyntaxCode">.</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">])) </span><span class="SyntaxComment">// is equivalent to sum(2, 3)</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(res1 == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">+</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="106_007_ufcs">Ufcs</h3><p><i>ufcs</i> stands for <i>uniform function call syntax</i>. It allows every functions to be called with a <code class="incode">param.func()</code> form when the first parameter of <code class="incode">func()</code> is of the same type as <code class="incode">param</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(param: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) =&gt; param
 
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> b = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(b) == b.</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">())
 }</code>
-</pre>
+</div>
 <p>This means that in Swag, there are only <i>static</i> functions, but which can be called like <i>methods</i>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"> { x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; }
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> pt: *</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) { x, y = value; }
@@ -5367,28 +5044,24 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(&pt, </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.x == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> pt.y == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="107_008_constexpr">Constexpr</h3><p>A function marked with <code class="incode">Swag.ConstExpr</code> can be executed by the compiler if it can. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">) =&gt; x + y</code>
-</pre>
+</div>
 <p>Here <code class="incode">G</code> will be baked to 3 by the compiler. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 #assert </span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>If a function is not <code class="incode">ConstExpr</code>, you can force the compile time call with <code class="incode">#run</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mul</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">) =&gt; x * y
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mul</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">) =&gt; x * y
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G1</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mul</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">)
 #assert </span><span class="SyntaxConstant">G1</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">18</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 
 <h3 id="108_009_function_overloading">Function overloading</h3><p>Functions can have the same names as long as their parameters are different. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + y
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y, z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + y + z
@@ -5396,10 +5069,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
 #assert </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">
 #assert </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">6</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>Note that in Swag, there is no implicit cast for function parameters. So you must always specify the right type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">over</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + y
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">over</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">) =&gt; x * y
@@ -5412,12 +5084,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> res1 = </span><span class="SyntaxFunction">over</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">'</span><span class="SyntaxType">s64</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(res1 == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="109_010_discard">Discard</h3><p>By default, you must always use the returned value of a function, otherwise the compiler will generate an error. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + y
 
@@ -5428,11 +5098,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">discard</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 
 }</code>
-</pre>
+</div>
 <p>If a function authorizes the caller to not use its return value, because it's not that important, it can be marked with <code class="incode">Swag.Discardable</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Discardable]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mul</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> =&gt; x * y
@@ -5440,11 +5108,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// This is fine to ignore the return value of 'mul' (even if strange)</span><span class="SyntaxCode">
     </span><span class="SyntaxFunction">mul</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="110_011_retval">Retval</h3><p>Inside a function, you can use the <code class="incode">retval</code> type which is an alias to the function return type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     {
@@ -5455,10 +5122,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But <code class="incode">retval</code> will also make a direct reference to the caller storage, to avoid an unnecessary copy (if possible). So this is mostly a hint for the compiler, and usefull when the function returns a complexe type like a struct, a tuple or an array. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { x, y, z: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">; }
 
@@ -5479,10 +5145,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(g == </span><span class="SyntaxNumber">0.1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(b == </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>This is the preferred way (because optimal) to return a struct or an array. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">()-&gt;[</span><span class="SyntaxNumber">255</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     {
@@ -5498,14 +5163,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(arr[</span><span class="SyntaxNumber">100</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(arr[</span><span class="SyntaxNumber">254</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">254</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="111_012_foreign">Foreign</h3><p>Swag can interop with external "modules" (dlls under windows), which contain exported C functions. </p>
 <p>Put a special attribute <code class="incode">Swag.Foreign</code> before the function prototype, and specify the module name where the function is located. </p>
 <p>The module name can be a swag compiled module, or an external system module (where the location depends on the OS). </p>
 <p>In the case below, the function is located in <code class="incode">kernel32.dll</code> (under windows). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Foreign("kernel32")]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Foreign("kernel32")]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExitProcess</span><span class="SyntaxCode">(uExitCode: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">);
 
 </span><span class="SyntaxComment">// Like for other attributes, you can use a block.</span><span class="SyntaxCode">
@@ -5514,23 +5178,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExitProcess</span><span class="SyntaxCode">(uExitCode: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">);
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Sleep</span><span class="SyntaxCode">(dwMilliseconds: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">);
 }</code>
-</pre>
+</div>
 <p>Note that in the case of an external module, you will have to declare somewhere the imported library too. </p>
 <p><code class="incode">#foreignlib</code> is here to force a link to the given library (when generating executables). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#foreignlib </span><span class="SyntaxString">"kernel32"</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">#foreignlib </span><span class="SyntaxString">"kernel32"</span><span class="SyntaxCode"></code>
+</div>
 
 <h2 id="120_intrinsics">Intrinsics</h2><p>This is the list of all intrinsics. </p>
 <p>All intrinsics start with <code class="incode">@</code>, which is reserved for them. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-#global skip</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">#global skip</code>
+</div>
 <h3>Base </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">);
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">);
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@breakpoint</span><span class="SyntaxCode">();
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getcontext</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@setcontext</span><span class="SyntaxCode">(context: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode">);
@@ -5541,11 +5200,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxIntrinsic">@panic</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@compilererror</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@compilerwarning</span><span class="SyntaxCode">()</code>
-</pre>
+</div>
 <h3>Buildin </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxIntrinsic">@spread</span><span class="SyntaxCode">()
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxIntrinsic">@spread</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@init</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@drop</span><span class="SyntaxCode">()
 </span><span class="SyntaxIntrinsic">@postmove</span><span class="SyntaxCode">()
@@ -5569,11 +5226,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
 </span><span class="SyntaxIntrinsic">@index</span><span class="SyntaxCode">
 </span><span class="SyntaxIntrinsic">@errmsg</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <h3>Memory related </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@alloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">;
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@alloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@realloc</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@free</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">);
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memset</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">);
@@ -5581,11 +5236,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memmove</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">);
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memcmp</span><span class="SyntaxCode">(dst, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@strlen</span><span class="SyntaxCode">(value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">;</code>
-</pre>
+</div>
 <h3>Atomic operations </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">;
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">;
@@ -5638,11 +5291,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, compareTo, exchangeWith: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, compareTo, exchangeWith: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, compareTo, exchangeWith: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">;</code>
-</pre>
+</div>
 <h3>Math </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">;
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">;
 
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">;
@@ -5737,51 +5388,46 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1, val2, val3: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">;
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1, val2, val3: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">;</code>
-</pre>
+</div>
 
 <h2 id="121_init">Init</h2><h3>@init </h3>
 <p><code class="incode">@init</code> can be used to reinitialize a variable/array to the default value. </p>
 <p>For a simple variable, the default value is 0. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@init</span><span class="SyntaxCode">(&x)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Work also for an array, as you can specify the number of elements you want to initialize. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
     </span><span class="SyntaxIntrinsic">@init</span><span class="SyntaxCode">(&x, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)    </span><span class="SyntaxComment">// Initialize 2 elements</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also specify a <i>value</i> to initialize, instead of the default one. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@init</span><span class="SyntaxCode">(&x)(</span><span class="SyntaxNumber">3.14</span><span class="SyntaxCode">)  </span><span class="SyntaxComment">// Initialize to 3.14 instead of zero</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">3.14</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Same for an array. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = [</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
     </span><span class="SyntaxIntrinsic">@init</span><span class="SyntaxCode">(&x, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)(</span><span class="SyntaxNumber">555</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">555</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">555</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>When called on a struct, the struct will be restored to the values defined in it. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">{r = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, g = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, b = </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">}
 
@@ -5791,10 +5437,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb.g == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb.b == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>But you can also specified the values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">{r = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, g = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, b = </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">}
 
@@ -5804,10 +5449,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb.g == </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb.b == </span><span class="SyntaxNumber">7</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>And this works also for array. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">{r = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, g = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, b = </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">}
 
@@ -5817,12 +5461,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">].g == </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">].b == </span><span class="SyntaxNumber">7</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>@drop </h3>
 <p>For a struct, <code class="incode">@init</code> will <b>not</b> call <code class="incode">opDrop</code>, so this is mostly useful to initialize a plain old data. </p>
 <p>But there is also <code class="incode">@drop</code> intrinsic, which works the same, except that it will <code class="incode">drop</code> all the content by calling <code class="incode">opDrop</code> if it is defined. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">{r = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, g = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, b = </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">}
 
@@ -5836,13 +5479,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">].g == </span><span class="SyntaxNumber">6</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(rgb[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">].b == </span><span class="SyntaxNumber">7</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="130_generic">Generic</h2>
 <h3 id="131_001_declaration">Declaration</h3><p>A function can be generic by specifying some parameters after <code class="incode">func</code>. </p>
 <p>At the call site, you specify the generic parameters with <code class="incode">funcCall'(type1, type2, ...)(parameters)</code>. Note that parenthesis can be omitted if there's only one generic parameter. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxComment">// Here 'T' is a generic type.</span><span class="SyntaxCode">
@@ -5880,53 +5522,47 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">'(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">) == </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>Generic types can be deduced from parameters, so <code class="incode">func'type()</code> is not always necessary. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(val: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) =&gt; </span><span class="SyntaxNumber">2</span><span class="SyntaxCode"> * val
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">'</span><span class="SyntaxType">s32</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">)         </span><span class="SyntaxComment">// T is deduced to be s32</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">2.0</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">4.0</span><span class="SyntaxCode">)     </span><span class="SyntaxComment">// T is deduced to be f32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can also specify constants as generic parameters. </p>
 <p><code class="incode">N</code> is a constant a type <code class="incode">s32</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">N</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">() = </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">N</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">'</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p><code class="incode">const</code> can also be omitted, as an identifier followed by a type definition is considered to be a constant and not a type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">N</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">() = </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">N</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">'</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p>You can also assign a default value to the constant. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">N</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">() = </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">N</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p>You can ommit the type if you declare the constant with <code class="incode">const</code>. It will be deduced from the assignment expression. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">N</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">() = </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">N</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)
     </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p>You can mix types and constants. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxComment">// `T` is a type, `N` is a constant of type `s32`, because remember that an identifier</span><span class="SyntaxCode">
@@ -5953,10 +5589,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">'</span><span class="SyntaxType">s32</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>Like functions, a struct can also be generic. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
@@ -5980,15 +5615,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x.val) == </span><span class="SyntaxType">#type</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">10</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 
 <h3 id="132_002_validif">Validif</h3><h4>One time evaluation </h4>
 <p>On a function, you can use <code class="incode">#validif</code> to check if the usage of the function is correct. </p>
 <p>If the <code class="incode">#validif</code> expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error. </p>
 <p>The <code class="incode">#validif</code> expression is evaluated <b>only once</b>, whatever the call, so it is typically used to check generic parameters. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Here we validate the function only if the generic type is `s32` or `s64`.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">...)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">
@@ -6011,10 +5644,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxComment">// var res1 = sum'f32(1, 2)</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>You can use <code class="incode">#validif</code> to make a kind of a generic specialisation. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// s32 version</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">isNull</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
@@ -6033,10 +5665,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">isNull</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">s32</span><span class="SyntaxCode">))
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">isNull</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0.001</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">))
 }</code>
-</pre>
+</div>
 <p>Instead of a single expression, <code class="incode">#validif</code> can be followed by a block that returns a <code class="incode">bool</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">...)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">
         #validif
@@ -6052,10 +5683,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> total
     }
 }</code>
-</pre>
+</div>
 <p>By using <code class="incode">@compilererror</code>, you can then trigger your own errors at compile time if the type is incorrect. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">
         #validif
@@ -6073,10 +5703,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxComment">// var x = sum'f32(1, 2)</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p><code class="incode">#validif</code> can also be used on a generic struct. Unlike functions, if the expression failed, then you will have an error right away because there's no overload in the case of structures. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">
         #validif </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"> == </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"> == </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
@@ -6090,11 +5719,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// Error.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//var v: Point's32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h4>Multiple evaluations </h4>
 <p>Instead of <code class="incode">#validif</code>, you can use <code class="incode">#validifx</code>. <code class="incode">#validifx</code> is evaluated for <b>each</b> call, so it can be used to check parameters, as long as they can be <b>evaluated at compile time</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
         </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">div</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
@@ -6143,13 +5771,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">first</span><span class="SyntaxCode">(a) == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 
 <h3 id="133_003_constraint">Constraint</h3><p>Swag provides also a simple way of checking generic parameters, without the need of <code class="incode">#validif</code>. </p>
 <p>A type constraint can be added when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// The type constraint is a compile time function (with #[Swag.ConstExpr]) that should return a bool.</span><span class="SyntaxCode">
     </span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
@@ -6171,11 +5797,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// But the following would generate an error because the type is 'f32'.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// let res1 = sum'f32(1, 2)</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The type constraint can be any compile time expression, as long as the resulting type is <code class="incode">bool</code>. </p>
 <p>So you could do something like this. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isS32</span><span class="SyntaxCode">(t: </span><span class="SyntaxType">typeinfo</span><span class="SyntaxCode">)  =&gt; t == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
@@ -6190,10 +5815,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)  == </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">) == </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Works also for structs. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isFloat</span><span class="SyntaxCode">(t: </span><span class="SyntaxType">typeinfo</span><span class="SyntaxCode">) =&gt; t == </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">or</span><span class="SyntaxCode"> t == </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
@@ -6209,22 +5833,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// This will generate a type constraint error.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//var pt: Point's32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="160_scoping">Scoping</h2>
 <h3 id="161_001_defer">Defer</h3><p><code class="incode">defer</code> is used to call an expression when the current scope is left. It's purely compile time, so it does not evaluate until the block is left. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> v = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     v += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// defer expression will be executed here</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p><code class="incode">defer</code> can also be used with a block. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> v = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">defer</span><span class="SyntaxCode">
@@ -6236,10 +5858,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     v += </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// defer block will be executed here</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p><code class="incode">defer</code> expressions are called when leaving the corresponding scope, even with <code class="incode">return</code>, <code class="incode">break</code>, <code class="incode">continue</code> etc., and even inside a <code class="incode">loop/while/for</code> etc. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
@@ -6252,19 +5873,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p><code class="incode">defer</code> are executed in reverse order of their declaration. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)   </span><span class="SyntaxComment">// Will be executed second</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">defer</span><span class="SyntaxCode"> x *= </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">            </span><span class="SyntaxComment">// Will be executed first</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>It's typically used to unregister/destroy a resource, by putting the release code just after the creation one. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createResource</span><span class="SyntaxCode">() =&gt; </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseResource</span><span class="SyntaxCode">(resource: *</span><span class="SyntaxType">bool</span><span class="SyntaxCode">) = </span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"> resource = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
@@ -6286,11 +5905,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(!resource.</span><span class="SyntaxFunction">isResourceCreated</span><span class="SyntaxCode">())
 }</code>
-</pre>
+</div>
 
 <h3 id="162_002_using">Using</h3><p><code class="incode">using</code> brings the scope of a namespace, a struct or an enum in the current one. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">R</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
@@ -6298,10 +5916,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p><code class="incode">using</code> can also be used with a variable. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"> { x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> }
 
@@ -6314,10 +5931,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.y == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can declare a variable with <code class="incode">using</code> just before. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"> { x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; }
 
@@ -6328,11 +5944,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.y == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h4>For a function parameter </h4>
 <p><code class="incode">using</code> applied to a function parameter can be seen as the equivalent of the hidden <code class="incode">this</code> in C++. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"> { x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; }
 
@@ -6352,11 +5967,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h4>For a field </h4>
 <p><code class="incode">using</code> can also be used with a field inside a struct. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
     {
@@ -6389,12 +6003,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value.base.x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value.base.y == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h3 id="163_003_with">With</h3><p>You can use <code class="incode">with</code> to avoid repeating the same variable again and again. You can then access fields with a simple <code class="incode">.</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"> { x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; }
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"> { x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">; }
 
 </span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">
 {
@@ -6403,10 +6015,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         x, y = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p><code class="incode">with</code> on a variable. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt: </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">with</span><span class="SyntaxCode"> pt
@@ -6418,10 +6029,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.y == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Works for function calls to. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt: </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">with</span><span class="SyntaxCode"> pt
@@ -6434,10 +6044,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.y == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>Works also with a namespace. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">with</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">NameSpace</span><span class="SyntaxCode">
     {
@@ -6445,10 +6054,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         .</span><span class="SyntaxFunction">inside1</span><span class="SyntaxCode">()
     }
 }</code>
-</pre>
+</div>
 <p>Instead of an identifier name, <code class="incode">with</code> also accepts a variable declaration. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">with</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt = </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">{</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">}
     {
@@ -6469,10 +6077,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt.x == </span><span class="SyntaxNumber">10</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> pt.y == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Or an affectation statement. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt: </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">with</span><span class="SyntaxCode"> pt = </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">{</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">}
@@ -6490,12 +6097,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">inside0</span><span class="SyntaxCode">() {}
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">inside1</span><span class="SyntaxCode">() {}
 }</code>
-</pre>
+</div>
 
 <h2 id="164_alias">Alias</h2><h3>Type alias </h3>
 <p><code class="incode">typealias</code> is used to make a shortcut to another type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"> { </span><span class="SyntaxConstant">R</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">; </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">; }
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">R</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
@@ -6503,10 +6109,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// 'Color' is now equivalent to 'RGB'</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can then use the new name in place of the original type. This does not create a new type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Float32</span><span class="SyntaxCode"> = </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Float64</span><span class="SyntaxCode"> = </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
@@ -6516,37 +6121,34 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Float32</span><span class="SyntaxCode">) == </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Float64</span><span class="SyntaxCode">) == </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>But to create a new type, a <code class="incode">typealias</code> can also be marked with the <code class="incode">Swag.Strict</code> attribute. In that case, all implicit casts won't be done. Explicit cast are still possible. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Strict]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">typealias</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyType</span><span class="SyntaxCode"> = </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyType</span><span class="SyntaxCode">) != </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxConstant">MyType</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyType</span><span class="SyntaxCode">) </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>Name alias </h3>
 <p>You can alias a function name with <code class="incode">namealias</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">thisIsABigFunctionName</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x * x
     </span><span class="SyntaxKeyword">namealias</span><span class="SyntaxCode"> myFunc = thisIsABigFunctionName
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also alias variables and namespaces. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> myLongVariableName: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">namealias</span><span class="SyntaxCode"> short = myLongVariableName
     short += </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(myLongVariableName == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 
 <h2 id="170_error_management">Error management</h2><p>Swag contains a <b>very</b> simple error system used to deal with function returning errors. </p>
 <p>It will probably be changed/improved at some point. </p>
@@ -6557,8 +6159,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <blockquote>
 <p>When an error is raised by a function, the return value is always equal to the <b>default value</b>, depending on the return type. </p>
 </blockquote>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> name == </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">
     {
@@ -6569,10 +6170,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(name)
 }</code>
-</pre>
+</div>
 <p>The caller will then have to deal with the error in some way. It can <code class="incode">catch</code> it, and test (or not) its value with the <code class="incode">@errmsg</code> intrinsic. The execution will continue at the call site. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">()
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">()
 {
     </span><span class="SyntaxComment">// Dismiss the eventual error with 'catch' and continue execution</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxKeyword">catch</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxString">"fileName"</span><span class="SyntaxCode">)
@@ -6589,30 +6189,27 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// an error has been raised (returning the default value if necessary)</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt1 = </span><span class="SyntaxKeyword">trycatch</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxString">"fileName"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The caller can stop the execution with <code class="incode">try</code>, and return to its own caller with the same error raised. The function must then also be marked with <code class="incode">throw</code>. </p>
 <p>Here, the caller of <code class="incode">myFunc1</code> will have to deal with the error at its turn. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc1</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc1</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// If 'count()' raises an error, 'myFunc1' will return with the same error</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxKeyword">try</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxString">"filename"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The caller can also panic if an error is raised, with <code class="incode">assume</code>. </p>
 <blockquote>
 <p>This can be disabled in release builds (in that case the behaviour is undefined). </p>
 </blockquote>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc2</span><span class="SyntaxCode">()
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc2</span><span class="SyntaxCode">()
 {
     </span><span class="SyntaxComment">// Here the program will stop with a panic message if 'count()' throws an error</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxKeyword">assume</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxString">"filename"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Note that you can use a block instead of one single statement (this does not create a scope). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc3</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">myFunc3</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This is not really necessary, see below, but this is just to show 'try' with a block</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// instead of one single call</span><span class="SyntaxCode">
@@ -6644,10 +6241,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt7 = </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxString">"other filename"</span><span class="SyntaxCode">)
     }
 }</code>
-</pre>
+</div>
 <p>When a function is marked with <code class="incode">throw</code>, the <code class="incode">try</code> for a function call is automatic if not specified. That means that most of the time it's not necessary to specify it. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mySubFunc2</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
     {
@@ -6666,11 +6262,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">catch</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mySubFunc1</span><span class="SyntaxCode">()
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@errmsg</span><span class="SyntaxCode"> == </span><span class="SyntaxString">"error"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>defer </h3>
 <p><code class="incode">defer</code> can have parameters like <code class="incode">defer(err)</code> or <code class="incode">defer(noerr)</code> to control if it should be executed depending on the error status. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> g_Defer = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> g_Defer = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">raiseError</span><span class="SyntaxCode">() </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
 {
@@ -6696,7 +6291,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">catch</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">testDefer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(g_Defer == </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">)   </span><span class="SyntaxComment">// Will call only defer(noerr) and the normal defer</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="175_safety">Safety</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <code class="incode">#<a href="swag.runtime.html#Swag_Safety">Swag.Safety</a></code> attribute. </p>
 <p>Safety checks can also be changed for a specific build configuration (<code class="incode">--cfg:&lt;config&gt;</code>) with <code class="incode">buildCfg.safetyGuards</code>. </p>
@@ -6704,50 +6299,43 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <p>Swag comes with four predefined configurations : <code class="incode">debug</code>, <code class="incode">fast-debug</code>, <code class="incode">fast-compile</code> and <code class="incode">release</code>. Safety checks are disabled in <code class="incode">fast-compile</code> and <code class="incode">release</code>. </p>
 </blockquote>
 <h3>overflow </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("overflow", true)]</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("overflow", true)]</span><span class="SyntaxCode"></code>
+</div>
 <p>Swag will panic if some operators overflow and if we lose some bits during an integer conversion. </p>
 <p>Operators that can overflow are : <code class="incode">+ - * &lt;&lt; &gt;&gt;</code> and their equivalent <code class="incode">+= -= <i>= &lt;&lt;= &gt;&gt;=</code>.</i> </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// x += 1      // This would overflow, and panic, because we lose informations</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>But if you know what your are doing, you can use a special version of those operators, which will not panic. Add the <code class="incode">,over</code> modifier after the operation. This will disable safety checks. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
     x +=,over </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// Overflow is expected, so this will wrap around</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>You can also use <code class="incode">#<a href="swag.runtime.html#Swag_Overflow(true)">Swag.Overflow(true)</a></code> to authorize overflow on a more global scale. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Overflow(true)]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Overflow(true)]</span><span class="SyntaxCode">
 </span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
     x += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// No need for operator modifier ',over'</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>For 8 or 16 bits, you can promote an operation to 32 bits by using <code class="incode">,up</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> +,up </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">256</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x) == </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Swag will also check that a cast does not lose information. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x1 = </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
 
@@ -6763,10 +6351,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> y2 = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">,</span><span class="SyntaxFunction">over</span><span class="SyntaxCode">(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) x2
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(y2 == </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Rember that you can disable these safety checks with the corresponding attribute. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Overflow(true)]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Overflow(true)]</span><span class="SyntaxCode">
 </span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">
@@ -6775,39 +6362,33 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     x &gt;&gt;= </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// 127</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">127</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h3>any </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("any", true)]</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("any", true)]</span><span class="SyntaxCode"></code>
+</div>
 <p>Swag will panic if a bad cast from <code class="incode">any</code> is performed. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x: </span><span class="SyntaxType">any</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"1"</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> y = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">string</span><span class="SyntaxCode">) x     </span><span class="SyntaxComment">// This is valid, because this is the correct underlying type</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//var z = cast(s32) x      // This is not valid, and will panic</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//@assert(z == 0)</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>boundcheck </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("boundcheck", true)]</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("boundcheck", true)]</span><span class="SyntaxCode"></code>
+</div>
 <p>Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string... </p>
 <p>Safety for fixed size arrays. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = [</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> idx = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//@assert(x[idx] == 1)     // '10' is out of range, will panic</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Safety when indexing a slice. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> x: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = [</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> idx = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -6815,10 +6396,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     idx += </span><span class="SyntaxNumber">9</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//@assert(x[idx] == 1)      // '10' is out of range, will panic</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Safety when slicing a sized value. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = [</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">]
     </span><span class="SyntaxComment">//var slice = x[1..4]              // '4' is out of range, will panic</span><span class="SyntaxCode">
@@ -6832,25 +6412,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">//var slice = x[0..idx]            // '10' is out of range, will panic</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//@assert(slice[0] == `s`)</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>math </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("math", true)]</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("math", true)]</span><span class="SyntaxCode"></code>
+</div>
 <p>Swag will panic if some math operations are invalid. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> y = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//var z = x / y        // Division by zero, panic</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//@print(z)</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>Swag will also check for invalid arguments on some math intrinsics. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// All of this will panic if the arguments are unsupported.</span><span class="SyntaxCode">
 
@@ -6862,43 +6438,35 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">//@asin(-2'f32)</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">//@acos(2'f32)</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <h3>switch </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("switch", true)]</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("switch", true)]</span><span class="SyntaxCode"></code>
+</div>
 <p>Swag will panic if a switch is marked with <code class="incode">#<a href="swag.runtime.html#Swag_Complete">Swag.Complete</a></code>, but the value is not covered by a <code class="incode">case</code>. </p>
 <h3>bool </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("bool", true)]</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("bool", true)]</span><span class="SyntaxCode"></code>
+</div>
 <p>Swag will panic if a boolean value is not <code class="incode">true</code> (1) or <code class="incode">false</code> (0). </p>
 <h3>nan </h3>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("nan", true)]</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("nan", true)]</span><span class="SyntaxCode"></code>
+</div>
 <p>Swag will panic if a floating point <code class="incode">NaN</code> is used in an operation. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
 }</code>
-</pre>
+</div>
 
 <h2 id="180_compiler_declarations">Compiler declarations</h2>
 <h3 id="181_001_compile_time_evaluation">Compile time evaluation</h3><p><code class="incode">#assert</code> is a static assert (at compile time). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#assert </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">#assert </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode"></code>
+</div>
 <p><code class="incode">@defined(SYMBOL)</code> returns true, at compile time, if the given symbol exists in the current context. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#assert !</span><span class="SyntaxIntrinsic">@defined</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">DOES_NOT_EXISTS</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode">#assert !</span><span class="SyntaxIntrinsic">@defined</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">DOES_NOT_EXISTS</span><span class="SyntaxCode">)
 #assert </span><span class="SyntaxIntrinsic">@defined</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Global</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Global</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>A static <code class="incode">#if/#elif/#else</code>, with an expression that can be evaluated at compile time. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DEBUG</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DEBUG</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RELEASE</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 #if </span><span class="SyntaxConstant">DEBUG</span><span class="SyntaxCode">
 {
@@ -6909,10 +6477,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 #else
 {
 }</code>
-</pre>
+</div>
 <p><code class="incode">#error</code> to raise a compile time error, and <code class="incode">#warning</code> to raise a compile time warning. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#if </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode">#if </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">
 {
     #error   </span><span class="SyntaxString">"this is an error"</span><span class="SyntaxCode">
     #warning </span><span class="SyntaxString">"this is a warning"</span><span class="SyntaxCode">
@@ -6937,10 +6504,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 {
     #error </span><span class="SyntaxString">"this should not be called !"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>A more complicated <code class="incode">#assert</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">factorial</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">if</span><span class="SyntaxCode"> x == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -6948,28 +6514,24 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }
 
 #assert </span><span class="SyntaxFunction">factorial</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">24</span><span class="SyntaxCode"> </span><span class="SyntaxComment">// Evaluated at compile time</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 
-<h3 id="182_002_special_functions">Special functions</h3><pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#global skip</code>
-</pre>
+<h3 id="182_002_special_functions">Special functions</h3><div class="precode"><code></span><span class="SyntaxCode">#global skip</code>
+</div>
 <h4>#test </h4>
 <p><code class="incode">#test</code> is a special function than can be used in the <code class="incode">tests/</code> folder of the workspace. All <code class="incode">#test</code> will be executed only if swag is running in test mode. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
 }</code>
-</pre>
+</div>
 <h4>#main </h4>
 <p><code class="incode">#main</code> is the program entry point. It can only be defined <b>once</b> per module, and has meaning only for an executable. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
 }</code>
-</pre>
+</div>
 <p>Unlike the C function <code class="incode">main()</code>, there's no argument, but you can use the intrinsic <code class="incode">@args</code> to get a slice of all the parameters. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> myArgs = </span><span class="SyntaxIntrinsic">@args</span><span class="SyntaxCode">()
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> count = </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(myArgs)
@@ -6978,37 +6540,32 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         ...
     }
 }</code>
-</pre>
+</div>
 <h4>#init </h4>
 <p><code class="incode">#init</code> will be called at runtime, during the module initialization. You can have as many <code class="incode">#init</code> as you want, but the execution order in the same module is undefined. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#init</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#init</span><span class="SyntaxCode">
 {
 }</code>
-</pre>
+</div>
 <h4>#drop </h4>
 <p><code class="incode">#drop</code> will be called at runtime, when module is unloaded. You can have as many <code class="incode">#drop</code> as you want. The execution order in the same module is undefined, but is always the inverse order of <code class="incode">#init</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#drop</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#drop</span><span class="SyntaxCode">
 {
 }</code>
-</pre>
+</div>
 <h4>#premain </h4>
 <p><code class="incode">#premain</code> will be called after all the modules have done their <code class="incode">#init</code> code, but before the <code class="incode">#main</code> function is called. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#premain</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#premain</span><span class="SyntaxCode">
 {
 }</code>
-</pre>
+</div>
 
 <h3 id="183_003_run">Run</h3><p><code class="incode">#run</code> is a special function that will be called at <b>compile time</b>. </p>
 <p>It can be used to precompute some global values for example. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">: [</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">] </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">undefined</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">: [</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">] </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">undefined</span><span class="SyntaxCode"></code>
+</div>
 <p>Initialize <code class="incode">G</code> with <code class="incode">[1,2,4,8,16]</code> at compile time. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> i: </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">)
@@ -7017,11 +6574,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         value *= </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p><code class="incode">#test</code> are executed after <code class="incode">#run</code>, even at compile time (during testing). </p>
 <p>So we can test the values of <code class="incode">G</code> here. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
@@ -7029,10 +6585,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p><code class="incode">#run</code> can also be used as an expression, to call for example a function not marked with <code class="incode">#<a href="swag.runtime.html#Swag_ConstExpr">Swag.ConstExpr</a></code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SumValue</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) + </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SumValue</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) + </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
 #assert </span><span class="SyntaxConstant">SumValue</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">
 
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(values: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">...)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
@@ -7042,23 +6597,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         result += v
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> result
 }</code>
-</pre>
+</div>
 <p><code class="incode">#run</code> can also be used as an expression block. </p>
 <p>The return type is deduced from the <code class="incode">return</code> statement. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"> {
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"> {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> result: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
         result += </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> result   </span><span class="SyntaxComment">// 'Value' will be of type 'f32'</span><span class="SyntaxCode">
 }
 #assert </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">10.0</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 
 <h3 id="184_004_global">Global</h3><p>A bunch of <code class="incode">#global</code> can start a source file. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxComment">// Skip the content of the file, like this one (but must be a valid swag file)</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Skip the content of the file, like this one (but must be a valid swag file)</span><span class="SyntaxCode">
 #global skip
 
 </span><span class="SyntaxComment">// All symbols in the file will be public/internal</span><span class="SyntaxCode">
@@ -7081,16 +6633,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
 </span><span class="SyntaxComment">// Link with a given external library</span><span class="SyntaxCode">
 #foreignlib </span><span class="SyntaxString">"windows.lib"</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 
 <h3 id="185_005_var">Var</h3><p>A global variable can be tagged with <code class="incode">#<a href="swag.runtime.html#Swag_Tls">Swag.Tls</a></code> to store it in the thread local storage (one copy per thread). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Tls]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Tls]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>A local variable can be tagged with <code class="incode">#<a href="swag.runtime.html#Swag_Global">Swag.Global</a></code> to make it global (aka <code class="incode">static</code> in C/C++). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     {
@@ -7105,49 +6655,41 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>A global variable can also be marked as <code class="incode">#<a href="swag.runtime.html#Swag_Compiler">Swag.Compiler</a></code>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Compiler]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Compiler]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G2</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 
 </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxConstant">G2</span><span class="SyntaxCode"> += </span><span class="SyntaxNumber">5</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="190_attributes">Attributes</h2><p>Attributes are tags associated with functions, structures etc... </p>
 
 <h3 id="191_001_user_attributes">User attributes</h3><p>User attributes are declared like functions, but with the <code class="incode">attr</code> keyword before instead of <code class="incode">func</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttributeA</span><span class="SyntaxCode">()</code>
-</pre>
+</div>
 <p>Like functions, attributes can have parameters. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttributeB</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttributeB</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, z: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+</div>
 <p>So attributes can also have default values. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttributeBA</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">)</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttributeBA</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"string"</span><span class="SyntaxCode">)</code>
+</div>
 <p>You can define a usage before the attribute definition to restrict its usage. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function)]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function)]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttributeC</span><span class="SyntaxCode">()</code>
-</pre>
+</div>
 <p>To use an attribute, the syntax is <code class="incode">#[attribute, attribute...]</code>. It should be placed <b>before</b> the thing you want to tag. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttributeA, AttributeB(0, 0, "string")]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttributeA, AttributeB(0, 0, "string")]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">function1</span><span class="SyntaxCode">()
 {
 }</code>
-</pre>
+</div>
 <p>You can declare multiple usages. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AttributeD</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">);
 
 </span><span class="SyntaxAttribute">#[AttributeD(6)]</span><span class="SyntaxCode">
@@ -7159,21 +6701,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> struct1
 {
 }</code>
-</pre>
+</div>
 <p>Finaly, attributes can be retrieved at runtime thanks to <b>type reflection</b>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> type = </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(function2)                  </span><span class="SyntaxComment">// Get the type of the function</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(type.attributes) == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)     </span><span class="SyntaxComment">// Check that the function has one attribute associated with it</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h3 id="192_002_predefined_attributes">Predefined attributes</h3><p>This is the list of predefined attributes. </p>
 <p>All are located in the reserved <code class="incode">Swag</code> namespace. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">
-#global skip
+<div class="precode"><code></span><span class="SyntaxCode">#global skip
 
 </span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function)]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ConstExpr</span><span class="SyntaxCode">()
@@ -7250,12 +6789,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
 </span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Optim</span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
-</pre>
+</div>
 
 <h2 id="200_type_reflection">Type reflection</h2><p>In Swag, types are also values that can be inspected at compile time or at runtime. The two main intrinsics for this are <code class="incode">@typeof</code> and <code class="incode">@kindof</code>. </p>
 <p>You can get the type of an expression with <code class="incode">@typeof</code>, or just with the type itself (<b>types are also values</b>). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr1 = </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">s8</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(ptr1.name == </span><span class="SyntaxString">"s8"</span><span class="SyntaxCode">)
@@ -7273,10 +6811,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(ptr4.name == </span><span class="SyntaxString">"s64"</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(ptr4 == </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The return result of <code class="incode">@typeof</code> is a const pointer to a <code class="incode">Swag.TypeInfo</code> kind of structure. This is an typealias for the <code class="incode">typeinfo</code> type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(ptr) == </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoNative</span><span class="SyntaxCode">))
@@ -7285,28 +6822,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(ptr1) == </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoArray</span><span class="SyntaxCode">))
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(ptr1.name == </span><span class="SyntaxString">"[2] s32"</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>The <code class="incode">TypeInfo</code> structure contains a different enum value for each type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> ptr = </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(ptr.kind).fullname == </span><span class="SyntaxString">"Swag.TypeInfoKind"</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(ptr.sizeof == </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">f64</span><span class="SyntaxCode">))
 }</code>
-</pre>
+</div>
 <h3>@decltype </h3>
 <p><code class="incode">@decltype</code> can be used to transform a <code class="incode">typeinfo</code> to a real compiler type. This is the opposite of <code class="incode">@typeof</code> or <code class="incode">@kindof</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x: </span><span class="SyntaxIntrinsic">@decltype</span><span class="SyntaxCode">(</span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">))
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x) == </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p><code class="incode">@decltype</code> can evaluate a constexpr expression that returns a <code class="incode">typeinfo</code> to determine the real type. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getType</span><span class="SyntaxCode">(needAString: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">typeinfo</span><span class="SyntaxCode">
@@ -7325,12 +6859,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x1) == </span><span class="SyntaxType">string</span><span class="SyntaxCode">
     x1 = </span><span class="SyntaxString">"0"</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 
 <h2 id="210_code_inspection">Code inspection</h2><p><code class="incode">#message</code> is a special function that will be called by the compiler when something specific occurs during the build. The parameter of <code class="incode">#message</code> is a mask that tells the compiler when to call the function. </p>
 <p>With the <code class="incode">Swag.CompilerMsgMask.SemFunctions</code> flag, for example, <code class="incode">#message</code> will be called each time a function of the module <b>has been typed</b>. You can then use <code class="incode">getMessage()</code> in the <code class="incode">@compiler()</code> interface to retrieve some informations about the reason of the call. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode">)
 {
     </span><span class="SyntaxComment">// Get the interface to communicate with the compiler</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> itf = </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()
@@ -7357,46 +6890,41 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XXTestFunc1</span><span class="SyntaxCode">() {}
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XXTestFunc2</span><span class="SyntaxCode">() {}
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XXTestFunc3</span><span class="SyntaxCode">() {}</code>
-</pre>
+</div>
 <p>The compiler will call the following function after the semantic pass. So after <b>all the functions</b> of the module have been parsed. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode">)
 {
     </span><span class="SyntaxComment">// We should have found 3 functions starting with "XX"</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>This will be called for every global variables of the module. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemGlobals</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemGlobals</span><span class="SyntaxCode">)
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> itf = </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> msg = itf.</span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 <p>This will be called for every global types of the module (structs, enums, interfaces...). </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemTypes</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemTypes</span><span class="SyntaxCode">)
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> itf = </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> msg = itf.</span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">()
 }</code>
-</pre>
+</div>
 
 <h2 id="220_meta_programmation">Meta programmation</h2><p>In Swag you can construct some source code at compile time, which will then be compiled. The source code you provide in the form of a <b>string</b> must be a valid Swag program. </p>
 
 <h3 id="221_001_ast">Ast</h3><p>The most simple way to produce a string which contains the Swag code to compile is with an <code class="incode">#ast</code> block. An <code class="incode">#ast</code> block is executed at compile time and the string it returns will be compiled <b>inplace</b>. </p>
 <p>The <code class="incode">#ast</code> can be a simple expression with the string to compile. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxFunction">#ast</span><span class="SyntaxCode"> </span><span class="SyntaxString">"var x = 666"</span><span class="SyntaxCode">
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>Or it can be a block, with an explicit <code class="incode">return</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
     </span><span class="SyntaxFunction">#ast</span><span class="SyntaxCode">
@@ -7407,11 +6935,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(cpt == </span><span class="SyntaxNumber">7</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h4>Struct and enums </h4>
 <p><code class="incode">#ast</code> can for example be used to generate the content of a <code class="incode">struct</code> or <code class="incode">enum</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -7425,10 +6952,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.x == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.y == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <p>It works with generics too, and can be mixed with static declarations. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
     {
@@ -7450,10 +6976,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(v1.y) == </span><span class="SyntaxType">f64</span><span class="SyntaxCode">
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(v1.z) == </span><span class="SyntaxType">string</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p><code class="incode">#ast</code> needs to return a <i>string like</i> value, which can of course be dynamically constructed. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Compiler]</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">append</span><span class="SyntaxCode">(buf: ^</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, val: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
@@ -7483,11 +7008,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.y == </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">)
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v.z == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
-</pre>
+</div>
 <h4>For example </h4>
 <p>This is a real life example of an <code class="incode">#ast</code> usage from the <code class="incode">Std.Core</code> module. Here we generate a structure which contains all the fields of an original other structure, but where the types are forced to be <code class="incode">bool</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">IsSet</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">IsSet</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxFunction">#ast</span><span class="SyntaxCode">
     {
@@ -7507,30 +7031,26 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> str.</span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">()
     }
 }</code>
-</pre>
+</div>
 <h4>At global scope </h4>
 <p><code class="incode">#ast</code> can also be called at the global scope. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#ast</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#ast</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> value = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> </span><span class="SyntaxString">"const myGeneratedConst = "</span><span class="SyntaxCode"> ++ value
 }</code>
-</pre>
+</div>
 <p>But be aware that you must use <code class="incode">#placeholder</code> in case you are generating global symbols that can be used by something else in the code. This will tell Swag that <i>this symbol</i> will exist at some point, so please wait for it to <i>exist</i> before complaining. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#placeholder myGeneratedConst   </span><span class="SyntaxComment">// Symbol `myGeneratedConst` will be generated</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">#placeholder myGeneratedConst   </span><span class="SyntaxComment">// Symbol `myGeneratedConst` will be generated</span><span class="SyntaxCode"></code>
+</div>
 <p>Here for example, thanks to the <code class="incode">#placeholder</code>, the <code class="incode">#assert</code> will wait for the symbol <code class="incode">myGeneratedConst</code> to be replaced with its real content. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#assert myGeneratedConst == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">#assert myGeneratedConst == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode"></code>
+</div>
 
 <h3 id="222_002_compiler_interface">Compiler interface</h3><p>The other method to compile generated code is to use the function <code class="incode">compileString()</code> in the <code class="incode">@compiler()</code> interface. Of course this should be called at compile time, and mostly during a <code class="incode">#message</code> call. </p>
 <p>Here is a real life example from the <code class="incode">Std.Ogl</code> module (opengl wrapper), which uses <code class="incode">#message</code> to track functions marked with a specific <b>user attribute</b> <code class="incode">Ogl.Extension</code>, and generates some code for each function that has been found. </p>
 <p>First we declare a new specific attribute, which can then be associated with a function. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function)]</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function)]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Extension</span><span class="SyntaxCode">()
 
 </span><span class="SyntaxComment">// Here is an example of usage of that attribute.</span><span class="SyntaxCode">
@@ -7543,10 +7063,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glUniformMatrix4x2fv</span><span class="SyntaxCode">(location: </span><span class="SyntaxConstant">GLint</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">GLsizei</span><span class="SyntaxCode">, transpose: </span><span class="SyntaxConstant">GLboolean</span><span class="SyntaxCode">, value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">GLfloat</span><span class="SyntaxCode">);
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glUniformMatrix4x3fv</span><span class="SyntaxCode">(location: </span><span class="SyntaxConstant">GLint</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">GLsizei</span><span class="SyntaxCode">, transpose: </span><span class="SyntaxConstant">GLboolean</span><span class="SyntaxCode">, value: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">GLfloat</span><span class="SyntaxCode">);
 }</code>
-</pre>
+</div>
 <p>The following will be used to track the functions with that specific attribute. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OneFunc</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OneFunc</span><span class="SyntaxCode">
 {
     type: </span><span class="SyntaxType">typeinfo</span><span class="SyntaxCode">
     name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">
@@ -7554,10 +7073,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 
 </span><span class="SyntaxAttribute">#[Compiler]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> g_Functions: </span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'</span><span class="SyntaxConstant">OneFunc</span><span class="SyntaxCode"></code>
-</pre>
+</div>
 <p>This <code class="incode">#message</code> will be called for each function of the <code class="incode">Ogl</code> module. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode">)
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> itf = </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> msg = itf.</span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">()
@@ -7569,14 +7087,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// We just track all the functions with the given attribute</span><span class="SyntaxCode">
     g_Functions.</span><span class="SyntaxFunction">add</span><span class="SyntaxCode">({msg.type, msg.name})
 }</code>
-</pre>
+</div>
 <p>We will generate a <code class="incode">glInitExtensions</code> global function, so we register it as a place holder. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">#placeholder glInitExtensions</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">#placeholder glInitExtensions</code>
+</div>
 <p>This is called once all functions of the module have been typed, and this is the main code generation. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#message</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode">)
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> builderVars: </span><span class="SyntaxConstant">StringBuilder</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> builderInit: </span><span class="SyntaxConstant">StringBuilder</span><span class="SyntaxCode">
@@ -7626,16 +7142,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     str = builderInit.</span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">()
     itf.</span><span class="SyntaxFunction">compileString</span><span class="SyntaxCode">(str.</span><span class="SyntaxFunction">toString</span><span class="SyntaxCode">())
 }</code>
-</pre>
+</div>
 
 <h2 id="230_documentation">Documentation</h2><p>The Swag compiler can generate documentation for all the modules of a given workspace. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode">swag doc -w:myWorkspaceFolder</code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode">swag doc -w:myWorkspaceFolder</code>
+</div>
 <p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. The rest is placed in various source files. </p>
 <p>The documentation comment needs to be placed just before a function, struct or enum. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Everything between empty lines is considered to be a simple paragraph. Which</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// means that if you put several comments on several lines like this, they all</span><span class="SyntaxCode">
@@ -7645,11 +7159,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">//</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// This is yet another paragraph.</span><span class="SyntaxCode">
 }</code>
-</pre>
+</div>
 <p>The first paragraph is considered to be the 'short description' which can appear on specific parts of the documentation. So make it short. </p>
 <p>If the first line ends with a dot <code class="incode">.</code>, then this marks the end of the paragraph, i.e. the end of the short description. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This is the short description.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// As the previous first line ends with '.', this is another paragraph, so this should be</span><span class="SyntaxCode">
@@ -7658,10 +7171,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 <p>A paragraph that starts with <code class="incode">---</code> is a paragraph where every blanks and end of lines are respected. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// ---</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// Even...</span><span class="SyntaxCode">
@@ -7674,10 +7186,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 <p>You can create a list of bullet points with <code class="incode"><i></code>.</i> </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
  {
     </span><span class="SyntaxComment">// * This is a bullet point</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// * This is a bullet point</span><span class="SyntaxCode">
@@ -7687,10 +7198,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         r, g, b: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>You can create a quote with <code class="incode">&gt;</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This is the short description.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// &gt; This is a block quote on multiple</span><span class="SyntaxCode">
@@ -7702,10 +7212,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         r, g, b: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>You can create a table with <code class="incode">|</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// A table with 4 lines of 2 columns:</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// | 'boundcheck'   | Check out of bound access</span><span class="SyntaxCode">
@@ -7716,10 +7225,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 <p>You can create a code paragraph with three backticks. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// For example:</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// ```</span><span class="SyntaxCode">
@@ -7730,10 +7238,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 <p>For constants or enum values, the document comment is the one declared at the end of the line. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">     </span><span class="SyntaxComment">// This is a documentation comment</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">enum</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">
@@ -7741,10 +7248,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         </span><span class="SyntaxConstant">Red</span><span class="SyntaxCode">         </span><span class="SyntaxComment">// This is a documentation comment</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>Some other markdown markers (or kind of) are also supported inside paragraphs. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// `this is code` (backtick) for 'inline' code.</span><span class="SyntaxCode">
     </span><span class="SyntaxComment">// 'single_word'  (tick) for 'inline' code.</span><span class="SyntaxCode">
@@ -7757,10 +7263,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
         r, g, b: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
     }
 }</code>
-</pre>
+</div>
 <p>You can create a reference to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code>. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This is a function with a 'value' parameter.</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">one</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)
@@ -7772,10 +7277,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 <p>The attribute <code class="incode">#<a href="swag.runtime.html#Swag_NoDoc">Swag.NoDoc</a></code> can be used to avoid a given element to appear in the documentation. </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This function will be ignored when generating documentation.</span><span class="SyntaxCode">
     </span><span class="SyntaxAttribute">#[Swag.NoDoc]</span><span class="SyntaxCode">
@@ -7783,7 +7287,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     {
     }
 }</code>
-</pre>
+</div>
 </div>
 </div>
 </div>

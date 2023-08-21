@@ -167,12 +167,14 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .container pre {
+        .precode {
             background-color:   #eeeeee;
             border:             1px solid LightGrey;
             padding:            10px;
             margin-left:        20px;
             margin-right:       20px;
+            white-space:        pre;
+            overflow-x:         auto;
         }    .SyntaxCode      { color: #7f7f7f; }
     .SyntaxComment   { color: #71a35b; }
     .SyntaxCompiler  { color: #7f7f7f; }
@@ -1378,9 +1380,8 @@
 </tr>
 </table>
 </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">X3DAudioInitialize</span><span class="SyntaxCode">(speakerChannelMask: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT32</span><span class="SyntaxCode">, speedOfSound: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FLOAT32</span><span class="SyntaxCode">, instance: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">X3DAUDIO_HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">X3DAudioInitialize</span><span class="SyntaxCode">(speakerChannelMask: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT32</span><span class="SyntaxCode">, speedOfSound: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FLOAT32</span><span class="SyntaxCode">, instance: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">X3DAUDIO_HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
+</div>
 <p>
 <table class="item">
 <tr>
@@ -1783,9 +1784,8 @@
 </tr>
 </table>
 </p>
-<pre>
-<code style="white-space: break-spaces"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XAudio2Create</span><span class="SyntaxCode">(ppXAudio2: **</span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_IXAudio2">IXAudio2</a></span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT32</span><span class="SyntaxCode">, processor: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">XAUDIO2_PROCESSOR</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
-</pre>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XAudio2Create</span><span class="SyntaxCode">(ppXAudio2: **</span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_IXAudio2">IXAudio2</a></span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT32</span><span class="SyntaxCode">, processor: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">XAUDIO2_PROCESSOR</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
+</div>
 </div>
 </div>
 </div>

@@ -183,12 +183,14 @@ void GenDoc::outputStyles()
             white-space:        break-spaces;\n\
             overflow-wrap:      break-word;\n\
         }\n\
-        .container pre {\n\
+        .precode {\n\
             background-color:   #eeeeee;\n\
             border:             1px solid LightGrey;\n\
             padding:            10px;\n\
             margin-left:        20px;\n\
             margin-right:       20px;\n\
+            white-space:        pre;\n\
+            overflow-x:         auto;\n\
         }";
 
     float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
@@ -222,13 +224,21 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs)
     // Remove trailing eol
     auto repl = code;
     repl.trim();
+    while (repl.length() && repl[0] == '\n')
+    {
+        repl.remove(0, 1);
+        repl.trim();
+    }
     while (repl.length() && repl.back() == '\n')
+    {
         repl.removeBack();
+        repl.trim();
+    }
     if (repl.empty())
         return;
 
-    helpContent += "<pre>\n";
-    helpContent += "<code style=\"white-space: break-spaces\">";
+    helpContent += "<div class=\"precode\">";
+    helpContent += "<code>";
 
     // Kind of a hack for now... Try to keep references, but try to keep <> also...
     if (code.find("<a href") == -1)
@@ -265,7 +275,7 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs)
 
     helpContent += repl;
     helpContent += "</code>\n";
-    helpContent += "</pre>\n";
+    helpContent += "</div>\n";
 }
 
 Utf8 GenDoc::findReference(const Utf8& name)
