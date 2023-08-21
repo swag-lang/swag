@@ -97,7 +97,8 @@
             font-size:          90%;
         }
         .item td:first-child {
-            width: 33%;
+            width:              33%;
+            white-space:        nowrap;
         }
         .enumeration td {
             padding:            6px;

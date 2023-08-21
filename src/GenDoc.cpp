@@ -113,7 +113,8 @@ void GenDoc::outputStyles()
             font-size:          90%;\n\
         }\n\
         .item td:first-child {\n\
-            width: 33%;\n\
+            width:              33%;\n\
+            white-space:        nowrap;\n\
         }\n\
         .enumeration td {\n\
             padding:            6px;\n\
