@@ -796,35 +796,41 @@ void GenDoc::constructPage()
     helpOutput.clear();
     helpOutput += "<!DOCTYPE html>\n";
     helpOutput += "<html>\n";
+
+    // Head
+    /////////////////////////////////////
     helpOutput += "<head>\n";
     helpOutput += "<meta charset=\"UTF-8\">\n";
     helpOutput += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
     helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
-    if (module)
-    {
-        // User start of the <head> section
-        Utf8 userHead = Utf8{module->buildCfg.docStartHead};
-        helpOutput += userHead;
+    // User start of the <head> section
+    Utf8 startHead = Utf8{module->buildCfg.docStartHead};
+    helpOutput += startHead;
 
-        // User css ref
-        Utf8 css{module->buildCfg.docCss};
-        if (!css.empty())
-            helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
-    }
+    // User css ref
+    Utf8 css{module->buildCfg.docCss};
+    if (!css.empty())
+        helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\">\n", css.c_str());
 
     // Predefined <style> section
-    if (!module || module->buildCfg.docStyleSection)
+    if (module->buildCfg.docStyleSection)
         outputStyles();
 
+    // User end of the <head> section
+    Utf8 endHead = Utf8{module->buildCfg.docEndHead};
+    helpOutput += endHead;
+
     helpOutput += "</head>\n";
+
+    // Body
+    /////////////////////////////////////
+
     helpOutput += "<body>\n";
 
-    if (module)
-    {
-        Utf8 userHead = Utf8{module->buildCfg.docStartBody};
-        helpOutput += userHead;
-    }
+    // User start of the <body> section
+    Utf8 startBody = Utf8{module->buildCfg.docStartBody};
+    helpOutput += startBody;
 
     helpOutput += "<div class=\"container\">\n";
 
@@ -850,12 +856,9 @@ void GenDoc::constructPage()
 
     helpOutput += "</div>\n";
 
-    Utf8 footer;
-    if (module)
-    {
-        Utf8 endBody = Utf8{module->buildCfg.docEndBody};
-        helpOutput += endBody;
-    }
+    // User end of the <body> section
+    Utf8 endBody = Utf8{module->buildCfg.docEndBody};
+    helpOutput += endBody;
 
     helpOutput += "</body>\n";
     helpOutput += "</html>\n";

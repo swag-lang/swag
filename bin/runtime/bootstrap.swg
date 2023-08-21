@@ -756,7 +756,8 @@ namespace Swag
         docTitleToc:        string              // Title for the table of content
         docTitleContent:    string              // Title for the main document content
         docCss:             string              // The 'css' file to include in generated documentations
-        docStartHead:       string              // To insert at the start of a <head> section
+        docStartHead:       string              // To insert at the start of the <head> section
+        docEndHead:         string              // To insert at the end of the <head> section
         docStartBody:       string              // To insert add at the start of the <body> section
         docEndBody:         string              // To insert add at the end of the <body> section
         docStyleSection     = true              // Generate a default <style> section

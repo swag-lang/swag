@@ -18,6 +18,7 @@
         cfg.docOutputExtension = ".php"
 
         cfg.docStartHead = @"<?php include('common/start-head.php'); ?>"@
+        cfg.docEndHead   = @"<?php include('common/end-head.php'); ?>"@
         cfg.docStartBody = @"<?php include('common/start-body.php'); ?>"@
     }
 }

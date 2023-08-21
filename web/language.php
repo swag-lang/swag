@@ -194,7 +194,7 @@
     .SyntaxString    { color: #bb6643; }
     .SyntaxAttribute { color: #7f7f7f; }
 </style>
-</head>
+<?php include('common/end-head.php'); ?></head>
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">

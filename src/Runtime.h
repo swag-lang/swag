@@ -282,6 +282,7 @@ struct BuildCfg
     SwagSlice docTitleContent;
     SwagSlice docCss;
     SwagSlice docStartHead;
+    SwagSlice docEndHead;
     SwagSlice docStartBody;
     SwagSlice docEndBody;
     bool      docStyleSection   = true;

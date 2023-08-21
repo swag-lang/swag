@@ -16,18 +16,11 @@
     .container ul,
     .container blockquote
     {
-        margin:      revert;
-        padding:     revert;
-        font-size:   revert;
-        font-weight: revert;
-        color:       revert;
+        margin:          revert;
+        padding:         revert;
+        font-size:       revert;
+        font-weight:     revert;
+        color:           revert;
         list-style-type: revert;
-    }
-
-    @media only screen and (max-width: 600px) {
-        td {
-            display: block;
-            width: 100%;
-        }
     }
 </style>
