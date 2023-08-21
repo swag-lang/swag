@@ -59,18 +59,19 @@ void GenDoc::outputStyles()
     if (docKind != DocKind::Pages)
     {
         helpOutput += "\n\
+            .container {\n\
+                height:     100vh;\n\
+            }\n\
             .left {\n\
                 display:    block;\n\
                 overflow-y: scroll;\n\
                 width:      600px;\n\
-                height:     100vh;\n\
             }\n\
             .leftpage {\n\
-                margin:    10px;\n\
+                margin:     10px;\n\
             }\n\
             .right {\n\
                 overflow-y: scroll;\n\
-                height:     100vh;\n\
             }\n\
             @media only screen and (max-width: 600px) {\n\
                 td {\n\

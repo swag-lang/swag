@@ -46,18 +46,19 @@
                 max-width: 1536px;
             }
         }
+            .container {
+                height:     100vh;
+            }
             .left {
                 display:    block;
                 overflow-y: scroll;
                 width:      600px;
-                height:     100vh;
             }
             .leftpage {
-                margin:    10px;
+                margin:     10px;
             }
             .right {
                 overflow-y: scroll;
-                height:     100vh;
             }
             @media only screen and (max-width: 600px) {
                 td {
