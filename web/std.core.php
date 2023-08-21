@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -1683,376 +1668,234 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Core_ASSERT" class="tdname">
-ASSERT</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td id="Core_ASSERT">ASSERT</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_BIG_ENDIAN" class="tdname">
-BIG_ENDIAN</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td id="Core_BIG_ENDIAN">BIG_ENDIAN</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Env_EndLine" class="tdname">
-EndLine</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td id="Core_Env_EndLine">EndLine</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Latin1_CharProperties" class="tdname">
-CharProperties</td>
-<td class="tdtype">
-const [256] Core.Latin1.CharAttribute</td>
-<td class="enumeration">
-</td>
+<td id="Core_Latin1_CharProperties">CharProperties</td>
+<td>const [256] Core.Latin1.CharAttribute</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Path_AltDirectorySeparatorChar" class="tdname">
-AltDirectorySeparatorChar</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td id="Core_Path_AltDirectorySeparatorChar">AltDirectorySeparatorChar</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Path_DirectorySeparatorChar" class="tdname">
-DirectorySeparatorChar</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td id="Core_Path_DirectorySeparatorChar">DirectorySeparatorChar</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Path_VolumeSeparatorChar" class="tdname">
-VolumeSeparatorChar</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td id="Core_Path_VolumeSeparatorChar">VolumeSeparatorChar</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Random_NN" class="tdname">
-NN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Random_NN">NN</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorIncomplete" class="tdname">
-ParseErrorIncomplete</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td id="Core_StrConv_ParseErrorIncomplete">ParseErrorIncomplete</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorInvalid" class="tdname">
-ParseErrorInvalid</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td id="Core_StrConv_ParseErrorInvalid">ParseErrorInvalid</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorOverflow" class="tdname">
-ParseErrorOverflow</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td id="Core_StrConv_ParseErrorOverflow">ParseErrorOverflow</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_StringSmallSize" class="tdname">
-StringSmallSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_StringSmallSize">StringSmallSize</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_DayOfWeekNames" class="tdname">
-DayOfWeekNames</td>
-<td class="tdtype">
-const [7] string</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_DayOfWeekNames">DayOfWeekNames</td>
+<td>const [7] string</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer100Years" class="tdname">
-DaysPer100Years</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_DaysPer100Years">DaysPer100Years</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer400Years" class="tdname">
-DaysPer400Years</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_DaysPer400Years">DaysPer400Years</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer4Years" class="tdname">
-DaysPer4Years</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_DaysPer4Years">DaysPer4Years</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPerYear" class="tdname">
-DaysPerYear</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_DaysPerYear">DaysPerYear</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo10000" class="tdname">
-DaysTo10000</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of days from 1/1/0001 to 12/31/9999. </p>
-</td>
+<td id="Core_Time_DaysTo10000">DaysTo10000</td>
+<td>u64</td>
+<td>Number of days from 1/1/0001 to 12/31/9999. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1601" class="tdname">
-DaysTo1601</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of days from 1/1/0001 to 12/31/1600. </p>
-</td>
+<td id="Core_Time_DaysTo1601">DaysTo1601</td>
+<td>u64</td>
+<td>Number of days from 1/1/0001 to 12/31/1600. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1899" class="tdname">
-DaysTo1899</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of days from 1/1/0001 to 12/30/1899. </p>
-</td>
+<td id="Core_Time_DaysTo1899">DaysTo1899</td>
+<td>u64</td>
+<td>Number of days from 1/1/0001 to 12/30/1899. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1970" class="tdname">
-DaysTo1970</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of days from 1/1/0001 to 12/31/1969. </p>
-</td>
+<td id="Core_Time_DaysTo1970">DaysTo1970</td>
+<td>u64</td>
+<td>Number of days from 1/1/0001 to 12/31/1969. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth365" class="tdname">
-DaysToMonth365</td>
-<td class="tdtype">
-const [13] u16</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_DaysToMonth365">DaysToMonth365</td>
+<td>const [13] u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth366" class="tdname">
-DaysToMonth366</td>
-<td class="tdtype">
-const [13] u16</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_DaysToMonth366">DaysToMonth366</td>
+<td>const [13] u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMilliSeconds" class="tdname">
-MaxMilliSeconds</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MaxMilliSeconds">MaxMilliSeconds</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMillis" class="tdname">
-MaxMillis</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MaxMillis">MaxMillis</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxTicks" class="tdname">
-MaxTicks</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MaxTicks">MaxTicks</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerDay" class="tdname">
-MillisPerDay</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MillisPerDay">MillisPerDay</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerHour" class="tdname">
-MillisPerHour</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MillisPerHour">MillisPerHour</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerMinute" class="tdname">
-MillisPerMinute</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MillisPerMinute">MillisPerMinute</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerSecond" class="tdname">
-MillisPerSecond</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MillisPerSecond">MillisPerSecond</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_MonthNames" class="tdname">
-MonthNames</td>
-<td class="tdtype">
-const [12] string</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_MonthNames">MonthNames</td>
+<td>const [12] string</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerDay" class="tdname">
-TicksPerDay</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_TicksPerDay">TicksPerDay</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerHour" class="tdname">
-TicksPerHour</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_TicksPerHour">TicksPerHour</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMilliSecond" class="tdname">
-TicksPerMilliSecond</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_TicksPerMilliSecond">TicksPerMilliSecond</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMinute" class="tdname">
-TicksPerMinute</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_TicksPerMinute">TicksPerMinute</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerSecond" class="tdname">
-TicksPerSecond</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Core_Time_TicksPerSecond">TicksPerSecond</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_RuneError" class="tdname">
-RuneError</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf16_RuneError">RuneError</td>
+<td>rune</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr1" class="tdname">
-Surr1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf16_Surr1">Surr1</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr2" class="tdname">
-Surr2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf16_Surr2">Surr2</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr3" class="tdname">
-Surr3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf16_Surr3">Surr3</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_SurrSelf" class="tdname">
-SurrSelf</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf16_SurrSelf">SurrSelf</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_MaxRunes" class="tdname">
-MaxRunes</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf8_MaxRunes">MaxRunes</td>
+<td>rune</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_RuneError" class="tdname">
-RuneError</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf8_RuneError">RuneError</td>
+<td>rune</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMax" class="tdname">
-SurrogateMax</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf8_SurrogateMax">SurrogateMax</td>
+<td>rune</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMin" class="tdname">
-SurrogateMin</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
+<td id="Core_Utf8_SurrogateMin">SurrogateMin</td>
+<td>rune</td>
+<td></td>
 </tr>
 <tr>
-<td id="Core_WINDOWS" class="tdname">
-WINDOWS</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td id="Core_WINDOWS">WINDOWS</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2072,384 +1915,230 @@ bool</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-<p>Associated allocator. </p>
-</td>
+<td>allocator</td>
+<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td>Associated allocator. </td>
 </tr>
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-^T</td>
-<td class="enumeration">
-<p>Memory block of all datas. </p>
-</td>
+<td>buffer</td>
+<td>^T</td>
+<td>Memory block of all datas. </td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of valid datas. </p>
-</td>
+<td>count</td>
+<td>u64</td>
+<td>Number of valid datas. </td>
 </tr>
 <tr>
-<td class="tdname">
-capacity</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of elements that can be stored in the buffer. </p>
-</td>
+<td>capacity</td>
+<td>u64</td>
+<td>Number of elements that can be stored in the buffer. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_add">add(self, T)</a></td>
-<td class="enumeration">
-<p>Add a copy of one element at the end of the array. </p>
-</td>
+<td><a href="#Core_Array_add">add(self, T)</a></td>
+<td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_add">add(self, const [..] T)</a></td>
-<td class="enumeration">
-<p>Append a slice to the end of this instance. </p>
-</td>
+<td><a href="#Core_Array_add">add(self, const [..] T)</a></td>
+<td>Append a slice to the end of this instance. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_add">add(self, moveref T)</a></td>
-<td class="enumeration">
-<p>Move one element at the end of the array. </p>
-</td>
+<td><a href="#Core_Array_add">add(self, moveref T)</a></td>
+<td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_addOnce">addOnce(self, T)</a></td>
-<td class="enumeration">
-<p>Add a copy of one element at the end of the array. </p>
-</td>
+<td><a href="#Core_Array_addOnce">addOnce(self, T)</a></td>
+<td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_back">back(self)</a></td>
-<td class="enumeration">
-<p>Returns a copy of the last element. </p>
-</td>
+<td><a href="#Core_Array_back">back(self)</a></td>
+<td>Returns a copy of the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_backPtr">backPtr(self)</a></td>
-<td class="enumeration">
-<p>Returns the address of the last element. </p>
-</td>
+<td><a href="#Core_Array_backPtr">backPtr(self)</a></td>
+<td>Returns the address of the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set the number of elements to 0. </p>
-</td>
+<td><a href="#Core_Array_clear">clear(self)</a></td>
+<td>Set the number of elements to 0. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_contains">contains(self, V)</a></td>
-<td class="enumeration">
-<p>Returns true if the given <code class="incode">value</code> is in the array. </p>
-</td>
+<td><a href="#Core_Array_contains">contains(self, V)</a></td>
+<td>Returns true if the given <code class="incode">value</code> is in the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_createBuffer">createBuffer(u64)</a></td>
-<td class="enumeration">
-<p>Create a working buffer. </p>
-</td>
+<td><a href="#Core_Array_createBuffer">createBuffer(u64)</a></td>
+<td>Create a working buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_createTemp">createTemp()</a></td>
-<td class="enumeration">
-<p>Create a temporary array. </p>
-</td>
+<td><a href="#Core_Array_createTemp">createTemp()</a></td>
+<td>Create a temporary array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_emplaceAddress">emplaceAddress(self, u32)</a></td>
-<td class="enumeration">
-<p>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </p>
-</td>
+<td><a href="#Core_Array_emplaceAddress">emplaceAddress(self, u32)</a></td>
+<td>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
-<td class="enumeration">
-<p>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_Array_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
+<td>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
-<td class="enumeration">
-<p>Reserve room at the end of the array for <code class="incode">num</code> elements. </p>
-</td>
+<td><a href="#Core_Array_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
+<td>Reserve room at the end of the array for <code class="incode">num</code> elements. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_free">free(self)</a></td>
-<td class="enumeration">
-<p>Free the array content. </p>
-</td>
+<td><a href="#Core_Array_free">free(self)</a></td>
+<td>Free the array content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_front">front(self)</a></td>
-<td class="enumeration">
-<p>Returns a copy of the first element. </p>
-</td>
+<td><a href="#Core_Array_front">front(self)</a></td>
+<td>Returns a copy of the first element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_frontPtr">frontPtr(self)</a></td>
-<td class="enumeration">
-<p>Returns the address of the first element. </p>
-</td>
+<td><a href="#Core_Array_frontPtr">frontPtr(self)</a></td>
+<td>Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_grow">grow(self, u64)</a></td>
-<td class="enumeration">
-<p>Ensure the Array is big enough to store at least <code class="incode">newCount</code> elements  Number of valid elements does not change. </p>
-</td>
+<td><a href="#Core_Array_grow">grow(self, u64)</a></td>
+<td>Ensure the Array is big enough to store at least <code class="incode">newCount</code> elements  Number of valid elements does not change. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_insertAt">insertAt(self, u64, T)</a></td>
-<td class="enumeration">
-<p>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_Array_insertAt">insertAt(self, u64, T)</a></td>
+<td>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_insertAt">insertAt(self, u64, const [..] T)</a></td>
-<td class="enumeration">
-<p>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_Array_insertAt">insertAt(self, u64, const [..] T)</a></td>
+<td>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_insertAt">insertAt(self, u64, moveref T)</a></td>
-<td class="enumeration">
-<p>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_Array_insertAt">insertAt(self, u64, moveref T)</a></td>
+<td>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_isEmpty">isEmpty(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the array is empty. </p>
-</td>
+<td><a href="#Core_Array_isEmpty">isEmpty(self)</a></td>
+<td>Returns true if the array is empty. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_popBack">popBack(self)</a></td>
-<td class="enumeration">
-<p>Returns a copy of the last element, and remove it from the array. </p>
-</td>
+<td><a href="#Core_Array_popBack">popBack(self)</a></td>
+<td>Returns a copy of the last element, and remove it from the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_realloc">realloc(self, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_realloc">realloc(self, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_remove">remove(self, V)</a></td>
-<td class="enumeration">
-<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
-</td>
+<td><a href="#Core_Array_remove">remove(self, V)</a></td>
+<td>Remove the given <code class="incode">value</code>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_remove">remove(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </p>
-</td>
+<td><a href="#Core_Array_remove">remove(self, u64, u64)</a></td>
+<td>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_removeAt">removeAt(self, u64)</a></td>
-<td class="enumeration">
-<p>Remove an element at <code class="incode">index</code> by replacing it with the last element. </p>
-</td>
+<td><a href="#Core_Array_removeAt">removeAt(self, u64)</a></td>
+<td>Remove an element at <code class="incode">index</code> by replacing it with the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </p>
-</td>
+<td><a href="#Core_Array_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
+<td>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_removeBack">removeBack(self)</a></td>
-<td class="enumeration">
-<p>Remove the last element. </p>
-</td>
+<td><a href="#Core_Array_removeBack">removeBack(self)</a></td>
+<td>Remove the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_removeOrdered">removeOrdered(self, V)</a></td>
-<td class="enumeration">
-<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
-</td>
+<td><a href="#Core_Array_removeOrdered">removeOrdered(self, V)</a></td>
+<td>Remove the given <code class="incode">value</code>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_reserve">reserve(self, u64)</a></td>
-<td class="enumeration">
-<p>Reserve room for <code class="incode">newCapacity</code> elements without changing the array count  Number of valid elements does not change. </p>
-</td>
+<td><a href="#Core_Array_reserve">reserve(self, u64)</a></td>
+<td>Reserve room for <code class="incode">newCapacity</code> elements without changing the array count  Number of valid elements does not change. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_resize">resize(self, u64)</a></td>
-<td class="enumeration">
-<p>Change the number of valid elements in the array. </p>
-</td>
+<td><a href="#Core_Array_resize">resize(self, u64)</a></td>
+<td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_sort">sort(self)</a></td>
-<td class="enumeration">
-<p>Sort array. </p>
-</td>
+<td><a href="#Core_Array_sort">sort(self)</a></td>
+<td>Sort array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_sort">sort(self, func(*void, T, T)->s32)</a></td>
-<td class="enumeration">
-<p>Sort array. </p>
-</td>
+<td><a href="#Core_Array_sort">sort(self, func(*void, T, T)->s32)</a></td>
+<td>Sort array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_sortReverse">sortReverse(self)</a></td>
-<td class="enumeration">
-<p>Sort array in reverse order (from biggest to lowest value). </p>
-</td>
+<td><a href="#Core_Array_sortReverse">sortReverse(self)</a></td>
+<td>Sort array in reverse order (from biggest to lowest value). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_swap">swap(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Swap two elements. </p>
-</td>
+<td><a href="#Core_Array_swap">swap(self, u64, u64)</a></td>
+<td>Swap two elements. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_toSlice">toSlice(self)</a></td>
-<td class="enumeration">
-<p>Returns a slice. </p>
-</td>
+<td><a href="#Core_Array_toSlice">toSlice(self)</a></td>
+<td>Returns a slice. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opAffect">opAffect(self, const [..] T)</a></td>
-<td class="enumeration">
-<p>Initializes an Array that contains values copied from the specified array. </p>
-</td>
+<td><a href="#Core_Array_opAffect">opAffect(self, const [..] T)</a></td>
+<td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opData">opData(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opData">opData(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opIndex">opIndex(self, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opIndex">opIndex(self, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opIndex">opIndex(self, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opIndex">opIndex(self, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opIndexAffect">opIndexAffect(self, u64, T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opIndexAffect">opIndexAffect(self, u64, T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opIndexAssign">opIndexAssign(self, u64, T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opIndexAssign">opIndexAssign(self, u64, T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opPostCopy">opPostCopy(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opPostCopy">opPostCopy(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opSlice">opSlice(self, u64, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Array_opSlice">opSlice(self, u64, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-<p>Visit every elements of the array. </p>
-</td>
+<td><a href="#Core_Array_opVisit">opVisit(self, code)</a></td>
+<td>Visit every elements of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Array_opVisitBack">opVisitBack(self, code)</a></td>
-<td class="enumeration">
-<p>Visit every elements of the array from end to start. </p>
-</td>
+<td><a href="#Core_Array_opVisitBack">opVisitBack(self, code)</a></td>
+<td>Visit every elements of the array from end to start. </td>
 </tr>
 </table>
 <p>
@@ -3119,52 +2808,35 @@ u64</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-Core.Array'(*T)</td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td>Core.Array'(*T)</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_ArrayPtr_addNewPtr">addNewPtr(self)</a></td>
-<td class="enumeration">
-<p>Allocate a new pointer, and add it to the array. </p>
-</td>
+<td><a href="#Core_ArrayPtr_addNewPtr">addNewPtr(self)</a></td>
+<td>Allocate a new pointer, and add it to the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ArrayPtr_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Release content. </p>
-</td>
+<td><a href="#Core_ArrayPtr_clear">clear(self)</a></td>
+<td>Release content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ArrayPtr_deletePtr">deletePtr(self, *T)</a></td>
-<td class="enumeration">
-<p>Delete one pointer allocated here. </p>
-</td>
+<td><a href="#Core_ArrayPtr_deletePtr">deletePtr(self, *T)</a></td>
+<td>Delete one pointer allocated here. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ArrayPtr_newPtr">newPtr(self)</a></td>
-<td class="enumeration">
-<p>Allocate a new pointer by using the contextual allocator. </p>
-</td>
+<td><a href="#Core_ArrayPtr_newPtr">newPtr(self)</a></td>
+<td>Allocate a new pointer by using the contextual allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_ArrayPtr_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_ArrayPtr_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3402,153 +3074,94 @@ Core.Array'(*T)</td>
 <p>Manages a compact array of bit values, which are represented as booleans, where <code class="incode">true</code> indicates that  the bit is on (1) and <code class="incode">false</code> indicates the bit is off (0). </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-^u32</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>^u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-</td>
+<td>allocator</td>
+<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>count</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-capacity</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>capacity</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_and">and(self, const ref BitArray)</a></td>
-<td class="enumeration">
-<p>Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
-</td>
+<td><a href="#Core_BitArray_and">and(self, const ref BitArray)</a></td>
+<td>Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_get">get(self, u64)</a></td>
-<td class="enumeration">
-<p>Gets the value of the bit at a specific position. </p>
-</td>
+<td><a href="#Core_BitArray_get">get(self, u64)</a></td>
+<td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_invert">invert(self, u64)</a></td>
-<td class="enumeration">
-<p>Inverts the value of the bit at a specific position. </p>
-</td>
+<td><a href="#Core_BitArray_invert">invert(self, u64)</a></td>
+<td>Inverts the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_not">not(self)</a></td>
-<td class="enumeration">
-<p>Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>. </p>
-</td>
+<td><a href="#Core_BitArray_not">not(self)</a></td>
+<td>Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_or">or(self, const ref BitArray)</a></td>
-<td class="enumeration">
-<p>Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
-</td>
+<td><a href="#Core_BitArray_or">or(self, const ref BitArray)</a></td>
+<td>Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_reserve">reserve(self, u64)</a></td>
-<td class="enumeration">
-<p>Reserve the given amount of bits. </p>
-</td>
+<td><a href="#Core_BitArray_reserve">reserve(self, u64)</a></td>
+<td>Reserve the given amount of bits. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_reserve">reserve(self, u64, bool)</a></td>
-<td class="enumeration">
-<p>Reserve the given amount of bits and set an initial value to all bits. </p>
-</td>
+<td><a href="#Core_BitArray_reserve">reserve(self, u64, bool)</a></td>
+<td>Reserve the given amount of bits and set an initial value to all bits. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_set">set(self, u64, bool)</a></td>
-<td class="enumeration">
-<p>Sets the bit at a specific position to the specified value. </p>
-</td>
+<td><a href="#Core_BitArray_set">set(self, u64, bool)</a></td>
+<td>Sets the bit at a specific position to the specified value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_setAll">setAll(self, bool)</a></td>
-<td class="enumeration">
-<p>Sets all bits to the specified value. </p>
-</td>
+<td><a href="#Core_BitArray_setAll">setAll(self, bool)</a></td>
+<td>Sets all bits to the specified value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_xor">xor(self, const ref BitArray)</a></td>
-<td class="enumeration">
-<p>Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
-</td>
+<td><a href="#Core_BitArray_xor">xor(self, const ref BitArray)</a></td>
+<td>Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_opAffect">opAffect(self, const [..] bool)</a></td>
-<td class="enumeration">
-<p>Initializes a <code class="incode">BitArray</code> that contains bit values copied from the specified array of booleans. </p>
-</td>
+<td><a href="#Core_BitArray_opAffect">opAffect(self, const [..] bool)</a></td>
+<td>Initializes a <code class="incode">BitArray</code> that contains bit values copied from the specified array of booleans. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_BitArray_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_opEquals">opEquals(self, const ref BitArray)</a></td>
-<td class="enumeration">
-<p>Compares two arrays, and returns <code class="incode">true</code> if they are equal. </p>
-</td>
+<td><a href="#Core_BitArray_opEquals">opEquals(self, const ref BitArray)</a></td>
+<td>Compares two arrays, and returns <code class="incode">true</code> if they are equal. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_opIndex">opIndex(self, u64)</a></td>
-<td class="enumeration">
-<p>Gets the value of the bit at a specific position. </p>
-</td>
+<td><a href="#Core_BitArray_opIndex">opIndex(self, u64)</a></td>
+<td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_opIndexAffect">opIndexAffect(self, u64, bool)</a></td>
-<td class="enumeration">
-<p>Sets the value of the bit at a specific position. </p>
-</td>
+<td><a href="#Core_BitArray_opIndexAffect">opIndexAffect(self, u64, bool)</a></td>
+<td>Sets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_BitArray_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-<p>Visit all the booleans. </p>
-</td>
+<td><a href="#Core_BitArray_opVisit">opVisit(self, code)</a></td>
+<td>Visit all the booleans. </td>
 </tr>
 </table>
 <p>
@@ -3796,151 +3409,91 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-readBuffer</td>
-<td class="tdtype">
-const [..] u8</td>
-<td class="enumeration">
-</td>
+<td>readBuffer</td>
+<td>const [..] u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeBuffer</td>
-<td class="tdtype">
-*Core.Array'(u8)</td>
-<td class="enumeration">
-</td>
+<td>writeBuffer</td>
+<td>*Core.Array'(u8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-seek</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>seek</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-eof</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>eof</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_getSeek">getSeek(self)</a></td>
-<td class="enumeration">
-<p>Returns the seek value. </p>
-</td>
+<td><a href="#Core_ByteStream_getSeek">getSeek(self)</a></td>
+<td>Returns the seek value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_isEof">isEof(self)</a></td>
-<td class="enumeration">
-<p>Returns true if end has been reached. </p>
-</td>
+<td><a href="#Core_ByteStream_isEof">isEof(self)</a></td>
+<td>Returns true if end has been reached. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_length">length(self)</a></td>
-<td class="enumeration">
-<p>Returns length of associated slice. </p>
-</td>
+<td><a href="#Core_ByteStream_length">length(self)</a></td>
+<td>Returns length of associated slice. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_moveSeek">moveSeek(self, u64)</a></td>
-<td class="enumeration">
-<p>Seek to the next byte. </p>
-</td>
+<td><a href="#Core_ByteStream_moveSeek">moveSeek(self, u64)</a></td>
+<td>Seek to the next byte. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_openRead">openRead(const [..] u8)</a></td>
-<td class="enumeration">
-<p>Creates a byte stream to read from a slice. </p>
-</td>
+<td><a href="#Core_ByteStream_openRead">openRead(const [..] u8)</a></td>
+<td>Creates a byte stream to read from a slice. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_openWrite">openWrite(*Array'(u8))</a></td>
-<td class="enumeration">
-<p>Creates a byte stream to write to an array. </p>
-</td>
+<td><a href="#Core_ByteStream_openWrite">openWrite(*Array'(u8))</a></td>
+<td>Creates a byte stream to write to an array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_peekU8">peekU8(self)</a></td>
-<td class="enumeration">
-<p>Read one byte and seek. </p>
-</td>
+<td><a href="#Core_ByteStream_peekU8">peekU8(self)</a></td>
+<td>Read one byte and seek. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_readBytes">readBytes(self, *u8, u64)</a></td>
-<td class="enumeration">
-<p>Read the given amount of bytes. </p>
-</td>
+<td><a href="#Core_ByteStream_readBytes">readBytes(self, *u8, u64)</a></td>
+<td>Read the given amount of bytes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_readData">readData(self)</a></td>
-<td class="enumeration">
-<p>Get the buffer of datas to read. </p>
-</td>
+<td><a href="#Core_ByteStream_readData">readData(self)</a></td>
+<td>Get the buffer of datas to read. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_readNative">readNative(self)</a></td>
-<td class="enumeration">
-<p>Read a <code class="incode">native</code> type value. </p>
-</td>
+<td><a href="#Core_ByteStream_readNative">readNative(self)</a></td>
+<td>Read a <code class="incode">native</code> type value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_readU8">readU8(self)</a></td>
-<td class="enumeration">
-<p>Read one byte and seek. </p>
-</td>
+<td><a href="#Core_ByteStream_readU8">readU8(self)</a></td>
+<td>Read one byte and seek. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice(self)</a></td>
-<td class="enumeration">
-<p>Returns a slice of the remaing bytes to read. </p>
-</td>
+<td><a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice(self)</a></td>
+<td>Returns a slice of the remaing bytes to read. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_remainReadToString">remainReadToString(self)</a></td>
-<td class="enumeration">
-<p>Returns a string of the remaing bytes to read. </p>
-</td>
+<td><a href="#Core_ByteStream_remainReadToString">remainReadToString(self)</a></td>
+<td>Returns a string of the remaing bytes to read. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_setSeek">setSeek(self, u64)</a></td>
-<td class="enumeration">
-<p>Seek to the given position. </p>
-</td>
+<td><a href="#Core_ByteStream_setSeek">setSeek(self, u64)</a></td>
+<td>Seek to the given position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_writeBytes">writeBytes(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Write the given amount of bytes. </p>
-</td>
+<td><a href="#Core_ByteStream_writeBytes">writeBytes(self, const [..] u8)</a></td>
+<td>Write the given amount of bytes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ByteStream_writeNative">writeNative(self, T)</a></td>
-<td class="enumeration">
-<p>Write a <code class="incode">native</code> type value. </p>
-</td>
+<td><a href="#Core_ByteStream_writeNative">writeNative(self, T)</a></td>
+<td>Write a <code class="incode">native</code> type value. </td>
 </tr>
 </table>
 <p>
@@ -4196,16 +3749,12 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Latin1</td>
-<td class="enumeration">
-</td>
+<td>Latin1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Unicode</td>
-<td class="enumeration">
-</td>
+<td>Unicode</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4220,61 +3769,42 @@ Unicode</td>
 <h3>Structs</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_IsSet">IsSet</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_CommandLine_IsSet">IsSet</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_ParseOptions">ParseOptions</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_Result">Result</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_CommandLine_Result">Result</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_getField">getField(const *TypeInfoStruct, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_CommandLine_getField">getField(const *TypeInfoStruct, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_isOption">isOption(string, const ref ParseOptions)</a></td>
-<td class="enumeration">
-<p>Returns true if <code class="incode">oneArg</code> is a valid option (starting with a delimiter). </p>
-</td>
+<td><a href="#Core_CommandLine_isOption">isOption(string, const ref ParseOptions)</a></td>
+<td>Returns true if <code class="incode">oneArg</code> is a valid option (starting with a delimiter). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_parse">parse(*T, const [..] string, const ref ParseOptions)</a></td>
-<td class="enumeration">
-<p>Parse all the arguments and fill the result. </p>
-</td>
+<td><a href="#Core_CommandLine_parse">parse(*T, const [..] string, const ref ParseOptions)</a></td>
+<td>Parse all the arguments and fill the result. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_splitArguments">splitArguments(const [..] string, const ref ParseOptions)</a></td>
-<td class="enumeration">
-<p>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </p>
-</td>
+<td><a href="#Core_CommandLine_splitArguments">splitArguments(const [..] string, const ref ParseOptions)</a></td>
+<td>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </td>
 </tr>
 </table>
 <h3>Attributes</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_CommandLine_ArgParams">ArgParams</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_CommandLine_ArgParams">ArgParams</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4334,12 +3864,9 @@ Unicode</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-isSet</td>
-<td class="tdtype">
-Core.CommandLine.IsSet'(T)</td>
-<td class="enumeration">
-</td>
+<td>isSet</td>
+<td>Core.CommandLine.IsSet'(T)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4428,137 +3955,92 @@ Core.CommandLine.IsSet'(T)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-stream</td>
-<td class="tdtype">
-const [..] u8</td>
-<td class="enumeration">
-</td>
+<td>stream</td>
+<td>const [..] u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curByte</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>curByte</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-codeBuffer</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>codeBuffer</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-numBits</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>numBits</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-eof</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>eof</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_consumeBits">consumeBits(self, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_consumeBits">consumeBits(self, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_curPtr">curPtr(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_curPtr">curPtr(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_discardToNextByte">discardToNextByte(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_discardToNextByte">discardToNextByte(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_init">init(self, const [..] u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_init">init(self, const [..] u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_peek32">peek32(self, ^u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_peek32">peek32(self, ^u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_peek32Be">peek32Be(self, ^u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_peek32Be">peek32Be(self, ^u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_peekBits">peekBits(self, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_peekBits">peekBits(self, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_peekBitsNoRefill">peekBitsNoRefill(self, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_peekBitsNoRefill">peekBitsNoRefill(self, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_peekBytes">peekBytes(self, u8, ^u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_peekBytes">peekBytes(self, u8, ^u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_readBits">readBits(self, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_readBits">readBits(self, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_readBitsNoRefill">readBitsNoRefill(self, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_readBitsNoRefill">readBitsNoRefill(self, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_refill">refill(self, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_refill">refill(self, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_revert">revert(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_revert">revert(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_size">size(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_size">size(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_BitStream_startPtr">startPtr(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Compress_BitStream_startPtr">startPtr(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4785,18 +4267,12 @@ bool</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_Deflate_compress">compress(self, *Array'(u8), const [..] u8)</a></td>
-<td class="enumeration">
-<p>Compress the source buffer. </p>
-</td>
+<td><a href="#Core_Compress_Deflate_compress">compress(self, *Array'(u8), const [..] u8)</a></td>
+<td>Compress the source buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_Deflate_init">init(self, CompressionLevel, CompressionStrategy, CompressionFlags)</a></td>
-<td class="enumeration">
-<p>Initialize the compressor  Can be called multiple times. </p>
-</td>
+<td><a href="#Core_Compress_Deflate_init">init(self, CompressionLevel, CompressionStrategy, CompressionFlags)</a></td>
+<td>Initialize the compressor  Can be called multiple times. </td>
 </tr>
 </table>
 <p>
@@ -4812,22 +4288,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ComputeAdler32</td>
-<td class="enumeration">
-</td>
+<td>ComputeAdler32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4843,34 +4313,24 @@ Default</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-NoCompression</td>
-<td class="enumeration">
-</td>
+<td>NoCompression</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BestSpeed</td>
-<td class="enumeration">
-</td>
+<td>BestSpeed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BestCompression</td>
-<td class="enumeration">
-</td>
+<td>BestCompression</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UberCompression</td>
-<td class="enumeration">
-</td>
+<td>UberCompression</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4886,34 +4346,24 @@ UberCompression</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Filtered</td>
-<td class="enumeration">
-</td>
+<td>Filtered</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HuffmanOnly</td>
-<td class="enumeration">
-</td>
+<td>HuffmanOnly</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Rle</td>
-<td class="enumeration">
-</td>
+<td>Rle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Fixed</td>
-<td class="enumeration">
-</td>
+<td>Fixed</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4960,11 +4410,8 @@ Fixed</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_Inflate_decompress">decompress(self, const [..] u8, u32)</a></td>
-<td class="enumeration">
-<p>Decompress the associated stream. </p>
-</td>
+<td><a href="#Core_Compress_Inflate_decompress">decompress(self, const [..] u8, u32)</a></td>
+<td>Decompress the associated stream. </td>
 </tr>
 </table>
 <p>
@@ -4996,18 +4443,12 @@ Fixed</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_ZLib_compress">compress(self, const [..] u8, CompressionLevel)</a></td>
-<td class="enumeration">
-<p>Decompress stream. </p>
-</td>
+<td><a href="#Core_Compress_ZLib_compress">compress(self, const [..] u8, CompressionLevel)</a></td>
+<td>Decompress stream. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Compress_ZLib_decompress">decompress(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Decompress stream. </p>
-</td>
+<td><a href="#Core_Compress_ZLib_decompress">decompress(self, const [..] u8)</a></td>
+<td>Decompress stream. </td>
 </tr>
 </table>
 <p>
@@ -5054,226 +4495,138 @@ Fixed</td>
 <p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when  the buffer needs to increase its size. This is the main difference with Array. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-</td>
+<td>allocator</td>
+<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-firstBucket</td>
-<td class="tdtype">
-*Core.ConcatBufferBucket</td>
-<td class="enumeration">
-</td>
+<td>firstBucket</td>
+<td>*Core.ConcatBufferBucket</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curBucket</td>
-<td class="tdtype">
-*Core.ConcatBufferBucket</td>
-<td class="enumeration">
-</td>
+<td>curBucket</td>
+<td>*Core.ConcatBufferBucket</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastBucket</td>
-<td class="tdtype">
-*Core.ConcatBufferBucket</td>
-<td class="enumeration">
-</td>
+<td>lastBucket</td>
+<td>*Core.ConcatBufferBucket</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-currentSP</td>
-<td class="tdtype">
-^u8</td>
-<td class="enumeration">
-</td>
+<td>currentSP</td>
+<td>^u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-granularity</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>granularity</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isAtEnd</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isAtEnd</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-viewFirstBucket</td>
-<td class="tdtype">
-<a href="#Core_ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
-<td class="enumeration">
-</td>
+<td>viewFirstBucket</td>
+<td><a href="#Core_ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_addBytes">addBytes(self, const [..] u8, bool)</a></td>
-<td class="enumeration">
-<p>Append a slice of bytes to the buffer  If <code class="incode">contiguous</code> is false, the slice will be divided in chunks if necessary. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_addBytes">addBytes(self, const [..] u8, bool)</a></td>
+<td>Append a slice of bytes to the buffer  If <code class="incode">contiguous</code> is false, the slice will be divided in chunks if necessary. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_addNative">addNative(self, T)</a></td>
-<td class="enumeration">
-<p>Append one byte to the buffer. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_addNative">addNative(self, T)</a></td>
+<td>Append one byte to the buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_addStruct">addStruct(self, T)</a></td>
-<td class="enumeration">
-<p>Append the content of a struct. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_addStruct">addStruct(self, T)</a></td>
+<td>Append the content of a struct. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear the content without freing the buffers. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_clear">clear(self)</a></td>
+<td>Clear the content without freing the buffers. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_count">count(self)</a></td>
-<td class="enumeration">
-<p>Returns the number of bytes. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_count">count(self)</a></td>
+<td>Returns the number of bytes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_eatBuffer">eatBuffer(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_ConcatBuffer_eatBuffer">eatBuffer(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_getOffset">getOffset(const ref ConcatBufferSeek)</a></td>
-<td class="enumeration">
-<p>Get the linearized seek offset. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_getOffset">getOffset(const ref ConcatBufferSeek)</a></td>
+<td>Get the linearized seek offset. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_getSeek">getSeek(self)</a></td>
-<td class="enumeration">
-<p>Returns the current <code class="incode">seek</code> in the buffer. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_getSeek">getSeek(self)</a></td>
+<td>Returns the current <code class="incode">seek</code> in the buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_grow">grow(self, u64)</a></td>
-<td class="enumeration">
-<p>Be sure that there is enough room to store at least <code class="incode">numBytes</code> bytes. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_grow">grow(self, u64)</a></td>
+<td>Be sure that there is enough room to store at least <code class="incode">numBytes</code> bytes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_makeLinear">makeLinear(self)</a></td>
-<td class="enumeration">
-<p>linearize all buckets in one single big bucket. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_makeLinear">makeLinear(self)</a></td>
+<td>linearize all buckets in one single big bucket. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_moveSeek">moveSeek(self, u64)</a></td>
-<td class="enumeration">
-<p>Seek current write pointer. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_moveSeek">moveSeek(self, u64)</a></td>
+<td>Seek current write pointer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_moveToString">moveToString(self)</a></td>
-<td class="enumeration">
-<p>Move the content. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_moveToString">moveToString(self)</a></td>
+<td>Move the content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_release">release(self)</a></td>
-<td class="enumeration">
-<p>Release all allocated buffers. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_release">release(self)</a></td>
+<td>Release all allocated buffers. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_setAllocator">setAllocator(self, IAllocator)</a></td>
-<td class="enumeration">
-<p>Associate an allocator with the buffer. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_setAllocator">setAllocator(self, IAllocator)</a></td>
+<td>Associate an allocator with the buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_setBucketSize">setBucketSize(self, u64)</a></td>
-<td class="enumeration">
-<p>Set the granularity of datas when allocated new buckets. Minimum size is 4. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_setBucketSize">setBucketSize(self, u64)</a></td>
+<td>Set the granularity of datas when allocated new buckets. Minimum size is 4. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_setEndSeek">setEndSeek(self, const ref ConcatBufferSeek)</a></td>
-<td class="enumeration">
-<p>Set the end <code class="incode">seek</code>. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_setEndSeek">setEndSeek(self, const ref ConcatBufferSeek)</a></td>
+<td>Set the end <code class="incode">seek</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket(self, [..] u8)</a></td>
-<td class="enumeration">
-<p>Share <code class="incode">data</code> with the firstBucket. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket(self, [..] u8)</a></td>
+<td>Share <code class="incode">data</code> with the firstBucket. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_setSeek">setSeek(self, const ref ConcatBufferSeek)</a></td>
-<td class="enumeration">
-<p>Set the current <code class="incode">seek</code>. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_setSeek">setSeek(self, const ref ConcatBufferSeek)</a></td>
+<td>Set the current <code class="incode">seek</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_toSlice">toSlice(self)</a></td>
-<td class="enumeration">
-<p>Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>). </p>
-</td>
+<td><a href="#Core_ConcatBuffer_toSlice">toSlice(self)</a></td>
+<td>Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_toString">toString(self)</a></td>
-<td class="enumeration">
-<p>Convert buffer to a String. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_toString">toString(self)</a></td>
+<td>Convert buffer to a String. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_ConcatBuffer_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_ConcatBuffer_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-<p>Visit all valid buckets. </p>
-</td>
+<td><a href="#Core_ConcatBuffer_opVisit">opVisit(self, code)</a></td>
+<td>Visit all valid buckets. </td>
 </tr>
 </table>
 <p>
@@ -5624,44 +4977,29 @@ viewFirstBucket</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-datas</td>
-<td class="tdtype">
-^u8</td>
-<td class="enumeration">
-</td>
+<td>datas</td>
+<td>^u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-*Core.ConcatBufferBucket</td>
-<td class="enumeration">
-</td>
+<td>next</td>
+<td>*Core.ConcatBufferBucket</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>count</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-countBefore</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>countBefore</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5677,20 +5015,14 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-bucket</td>
-<td class="tdtype">
-*Core.ConcatBufferBucket</td>
-<td class="enumeration">
-</td>
+<td>bucket</td>
+<td>*Core.ConcatBufferBucket</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sp</td>
-<td class="tdtype">
-^u8</td>
-<td class="enumeration">
-</td>
+<td>sp</td>
+<td>^u8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5706,94 +5038,64 @@ sp</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Black</td>
-<td class="enumeration">
-</td>
+<td>Black</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-White</td>
-<td class="enumeration">
-</td>
+<td>White</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gray</td>
-<td class="enumeration">
-</td>
+<td>Gray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Red</td>
-<td class="enumeration">
-</td>
+<td>Red</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Blue</td>
-<td class="enumeration">
-</td>
+<td>Blue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Green</td>
-<td class="enumeration">
-</td>
+<td>Green</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Cyan</td>
-<td class="enumeration">
-</td>
+<td>Cyan</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Yellow</td>
-<td class="enumeration">
-</td>
+<td>Yellow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Magenta</td>
-<td class="enumeration">
-</td>
+<td>Magenta</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkRed</td>
-<td class="enumeration">
-</td>
+<td>DarkRed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkBlue</td>
-<td class="enumeration">
-</td>
+<td>DarkBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkGreen</td>
-<td class="enumeration">
-</td>
+<td>DarkGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkCyan</td>
-<td class="enumeration">
-</td>
+<td>DarkCyan</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkYellow</td>
-<td class="enumeration">
-</td>
+<td>DarkYellow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkMagenta</td>
-<td class="enumeration">
-</td>
+<td>DarkMagenta</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6090,60 +5392,39 @@ DarkMagenta</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-matchExtension</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>matchExtension</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-skipAttributes</td>
-<td class="tdtype">
-<a href="#Core_File_FileAttributes">Core.File.FileAttributes</a></td>
-<td class="enumeration">
-</td>
+<td>skipAttributes</td>
+<td><a href="#Core_File_FileAttributes">Core.File.FileAttributes</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-recurse</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>recurse</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wantFiles</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>wantFiles</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wantDirectories</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>wantDirectories</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wantSpecialDirectories</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>wantSpecialDirectories</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-filterLambda</td>
-<td class="tdtype">
-func(Core.File.FileInfo)->bool</td>
-<td class="enumeration">
-</td>
+<td>filterLambda</td>
+<td>func(Core.File.FileInfo)->bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6278,20 +5559,14 @@ func(Core.File.FileInfo)->bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-rect</td>
-<td class="tdtype">
-<a href="#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
-<td class="enumeration">
-</td>
+<td>rect</td>
+<td><a href="#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-work</td>
-<td class="tdtype">
-<a href="#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
-<td class="enumeration">
-</td>
+<td>work</td>
+<td><a href="#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6307,22 +5582,16 @@ work</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Core.Env.ProcessHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Core.Env.ProcessHandle</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Env_Process_waitForExit">waitForExit(self)</a></td>
-<td class="enumeration">
-<p>Wait for the process to be done. </p>
-</td>
+<td><a href="#Core_Env_Process_waitForExit">waitForExit(self)</a></td>
+<td>Wait for the process to be done. </td>
 </tr>
 </table>
 <p>
@@ -6353,70 +5622,48 @@ Core.Env.ProcessHandle</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Font</td>
-<td class="enumeration">
-</td>
+<td>Font</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UserAppData</td>
-<td class="enumeration">
-</td>
+<td>UserAppData</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UserDocuments</td>
-<td class="enumeration">
-</td>
+<td>UserDocuments</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CommonAppData</td>
-<td class="enumeration">
-</td>
+<td>CommonAppData</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Desktop</td>
-<td class="enumeration">
-</td>
+<td>Desktop</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UserPictures</td>
-<td class="enumeration">
-</td>
+<td>UserPictures</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UserVideos</td>
-<td class="enumeration">
-</td>
+<td>UserVideos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UserMusic</td>
-<td class="enumeration">
-</td>
+<td>UserMusic</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CommonPictures</td>
-<td class="enumeration">
-</td>
+<td>CommonPictures</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CommonVideos</td>
-<td class="enumeration">
-</td>
+<td>CommonVideos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CommonMusic</td>
-<td class="enumeration">
-</td>
+<td>CommonMusic</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6432,20 +5679,14 @@ CommonMusic</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fileName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>fileName</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-arguments</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>arguments</td>
+<td>string</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6585,22 +5826,16 @@ string</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Read</td>
-<td class="enumeration">
-</td>
+<td>Read</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Write</td>
-<td class="enumeration">
-</td>
+<td>Write</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ReadWrite</td>
-<td class="enumeration">
-</td>
+<td>ReadWrite</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6616,94 +5851,64 @@ ReadWrite</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ReadOnly</td>
-<td class="enumeration">
-</td>
+<td>ReadOnly</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hidden</td>
-<td class="enumeration">
-</td>
+<td>Hidden</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-System</td>
-<td class="enumeration">
-</td>
+<td>System</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Directory</td>
-<td class="enumeration">
-</td>
+<td>Directory</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Archive</td>
-<td class="enumeration">
-</td>
+<td>Archive</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Device</td>
-<td class="enumeration">
-</td>
+<td>Device</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Normal</td>
-<td class="enumeration">
-</td>
+<td>Normal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Temporary</td>
-<td class="enumeration">
-</td>
+<td>Temporary</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SparseFile</td>
-<td class="enumeration">
-</td>
+<td>SparseFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ReparsePoint</td>
-<td class="enumeration">
-</td>
+<td>ReparsePoint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Compressed</td>
-<td class="enumeration">
-</td>
+<td>Compressed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Offline</td>
-<td class="enumeration">
-</td>
+<td>Offline</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NotContentIndexed</td>
-<td class="enumeration">
-</td>
+<td>NotContentIndexed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Encrypted</td>
-<td class="enumeration">
-</td>
+<td>Encrypted</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6719,61 +5924,41 @@ Encrypted</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fullname</td>
-<td class="tdtype">
-<a href="#Core_String">Core.String</a></td>
-<td class="enumeration">
-</td>
+<td>fullname</td>
+<td><a href="#Core_String">Core.String</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-attributes</td>
-<td class="tdtype">
-<a href="#Core_File_FileAttributes">Core.File.FileAttributes</a></td>
-<td class="enumeration">
-</td>
+<td>attributes</td>
+<td><a href="#Core_File_FileAttributes">Core.File.FileAttributes</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-creationTime</td>
-<td class="tdtype">
-<a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
-<td class="enumeration">
-</td>
+<td>creationTime</td>
+<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastAccessTime</td>
-<td class="tdtype">
-<a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
-<td class="enumeration">
-</td>
+<td>lastAccessTime</td>
+<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastWriteTime</td>
-<td class="tdtype">
-<a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
-<td class="enumeration">
-</td>
+<td>lastWriteTime</td>
+<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileInfo_isDirectory">isDirectory(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_File_FileInfo_isDirectory">isDirectory(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6803,40 +5988,28 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Append</td>
-<td class="enumeration">
-</td>
+<td>Append</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Create</td>
-<td class="enumeration">
-</td>
+<td>Create</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CreateNew</td>
-<td class="enumeration">
-</td>
+<td>CreateNew</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Open</td>
-<td class="enumeration">
-</td>
+<td>Open</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OpenOrCreate</td>
-<td class="enumeration">
-</td>
+<td>OpenOrCreate</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Truncate</td>
-<td class="enumeration">
-</td>
+<td>Truncate</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6852,40 +6025,28 @@ Truncate</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Delete</td>
-<td class="enumeration">
-</td>
+<td>Delete</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Inheritable</td>
-<td class="enumeration">
-</td>
+<td>Inheritable</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Read</td>
-<td class="enumeration">
-</td>
+<td>Read</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Write</td>
-<td class="enumeration">
-</td>
+<td>Write</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ReadWrite</td>
-<td class="enumeration">
-</td>
+<td>ReadWrite</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6901,110 +6062,68 @@ ReadWrite</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-<a href="#Core_String">Core.String</a></td>
-<td class="enumeration">
-</td>
+<td>name</td>
+<td><a href="#Core_String">Core.String</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Core.File.FileHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Core.File.FileHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-canRead</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>canRead</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-canSeek</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>canSeek</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-canWrite</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>canWrite</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_close">close(self)</a></td>
-<td class="enumeration">
-<p>Close the given file stream. </p>
-</td>
+<td><a href="#Core_File_FileStream_close">close(self)</a></td>
+<td>Close the given file stream. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_getPosition">getPosition(self)</a></td>
-<td class="enumeration">
-<p>Returns the current seek position of the given file stream. </p>
-</td>
+<td><a href="#Core_File_FileStream_getPosition">getPosition(self)</a></td>
+<td>Returns the current seek position of the given file stream. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_getSize">getSize(self)</a></td>
-<td class="enumeration">
-<p>Returns the given file stream length on disk. </p>
-</td>
+<td><a href="#Core_File_FileStream_getSize">getSize(self)</a></td>
+<td>Returns the given file stream length on disk. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_isOpen">isOpen(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the stream is valid. </p>
-</td>
+<td><a href="#Core_File_FileStream_isOpen">isOpen(self)</a></td>
+<td>Returns true if the stream is valid. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_read">read(self, *void, u64)</a></td>
-<td class="enumeration">
-<p>Read from the given file stream, and returns the number of bytes. </p>
-</td>
+<td><a href="#Core_File_FileStream_read">read(self, *void, u64)</a></td>
+<td>Read from the given file stream, and returns the number of bytes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_readValue">readValue(self, *T)</a></td>
-<td class="enumeration">
-<p>Read from the given file stream, and returns <code class="incode">true</code> if all bytes have been read. </p>
-</td>
+<td><a href="#Core_File_FileStream_readValue">readValue(self, *T)</a></td>
+<td>Read from the given file stream, and returns <code class="incode">true</code> if all bytes have been read. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_setPosition">setPosition(self, SeekOrigin, u64)</a></td>
-<td class="enumeration">
-<p>Set the current seek position of the given file stream. </p>
-</td>
+<td><a href="#Core_File_FileStream_setPosition">setPosition(self, SeekOrigin, u64)</a></td>
+<td>Set the current seek position of the given file stream. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_skipPosition">skipPosition(self, u64)</a></td>
-<td class="enumeration">
-<p>Skip <code class="incode">bytes</code> from current position. </p>
-</td>
+<td><a href="#Core_File_FileStream_skipPosition">skipPosition(self, u64)</a></td>
+<td>Skip <code class="incode">bytes</code> from current position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_FileStream_write">write(self, const *void, u64)</a></td>
-<td class="enumeration">
-<p>Write to the given file stream, and returns the number of written bytes. </p>
-</td>
+<td><a href="#Core_File_FileStream_write">write(self, const *void, u64)</a></td>
+<td>Write to the given file stream, and returns the number of written bytes. </td>
 </tr>
 </table>
 <p>
@@ -7155,20 +6274,14 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-data</td>
-<td class="tdtype">
-^void</td>
-<td class="enumeration">
-</td>
+<td>data</td>
+<td>^void</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7184,22 +6297,16 @@ data</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Begin</td>
-<td class="enumeration">
-</td>
+<td>Begin</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Current</td>
-<td class="enumeration">
-</td>
+<td>Current</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-End</td>
-<td class="enumeration">
-</td>
+<td>End</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7215,16 +6322,12 @@ End</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Ascii</td>
-<td class="enumeration">
-</td>
+<td>Ascii</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Utf8</td>
-<td class="enumeration">
-</td>
+<td>Utf8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7240,83 +6343,53 @@ Utf8</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-stream</td>
-<td class="tdtype">
-<a href="#Core_File_FileStream">Core.File.FileStream</a></td>
-<td class="enumeration">
-</td>
+<td>stream</td>
+<td><a href="#Core_File_FileStream">Core.File.FileStream</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-Core.Array'(u8)</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>Core.Array'(u8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-encodingType</td>
-<td class="tdtype">
-<a href="#Core_File_TextEncoding">Core.File.TextEncoding</a></td>
-<td class="enumeration">
-</td>
+<td>encodingType</td>
+<td><a href="#Core_File_TextEncoding">Core.File.TextEncoding</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-byteSeek</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>byteSeek</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bufferSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>bufferSize</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checkPreamble</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>checkPreamble</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TextReader_close">close(self)</a></td>
-<td class="enumeration">
-<p>Close the reader. </p>
-</td>
+<td><a href="#Core_File_TextReader_close">close(self)</a></td>
+<td>Close the reader. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TextReader_open">open(self, string, TextEncoding)</a></td>
-<td class="enumeration">
-<p>Open the reader. </p>
-</td>
+<td><a href="#Core_File_TextReader_open">open(self, string, TextEncoding)</a></td>
+<td>Open the reader. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TextReader_readLine">readLine(self, ref String)</a></td>
-<td class="enumeration">
-<p>Read one line of text. </p>
-</td>
+<td><a href="#Core_File_TextReader_readLine">readLine(self, ref String)</a></td>
+<td>Read one line of text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TextReader_readToEnd">readToEnd(self)</a></td>
-<td class="enumeration">
-<p>Read from the current position to the end, and returns the corresponding  utf8 string. </p>
-</td>
+<td><a href="#Core_File_TextReader_readToEnd">readToEnd(self)</a></td>
+<td>Read from the current position to the end, and returns the corresponding  utf8 string. </td>
 </tr>
 </table>
 <p>
@@ -7393,43 +6466,28 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-folders</td>
-<td class="tdtype">
-Core.Array'(Core.File.Folder)</td>
-<td class="enumeration">
-</td>
+<td>folders</td>
+<td>Core.Array'(Core.File.Folder)</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TweakFile_parse">parse(self, const ref Array'(string))</a></td>
-<td class="enumeration">
-<p>Parse a list of lines. </p>
-</td>
+<td><a href="#Core_File_TweakFile_parse">parse(self, const ref Array'(string))</a></td>
+<td>Parse a list of lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TweakFile_parse">parse(self, string)</a></td>
-<td class="enumeration">
-<p>Parse a list of lines. </p>
-</td>
+<td><a href="#Core_File_TweakFile_parse">parse(self, string)</a></td>
+<td>Parse a list of lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TweakFile_parseFile">parseFile(self, string)</a></td>
-<td class="enumeration">
-<p>Read and parse a file. </p>
-</td>
+<td><a href="#Core_File_TweakFile_parseFile">parseFile(self, string)</a></td>
+<td>Read and parse a file. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_File_TweakFile_registerFolder">registerFolder(self, *T)</a></td>
-<td class="enumeration">
-<p>Register a new structure to be parsed. </p>
-</td>
+<td><a href="#Core_File_TweakFile_registerFolder">registerFolder(self, *T)</a></td>
+<td>Register a new structure to be parsed. </td>
 </tr>
 </table>
 <p>
@@ -7850,12 +6908,9 @@ Core.Array'(Core.File.Folder)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-numberFormat</td>
-<td class="tdtype">
-<a href="#Core_Globalization_NumberFormatInfo">Core.Globalization.NumberFormatInfo</a></td>
-<td class="enumeration">
-</td>
+<td>numberFormat</td>
+<td><a href="#Core_Globalization_NumberFormatInfo">Core.Globalization.NumberFormatInfo</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7872,28 +6927,19 @@ numberFormat</td>
 <p>Provides culture-specific information for formatting and parsing numeric values. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-negativeSign</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>negativeSign</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-positiveSign</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>positiveSign</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-decimalSeparator</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>decimalSeparator</td>
+<td>u8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7954,36 +7000,24 @@ u8</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-adler</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>adler</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Adler32_compute">compute(const [..] u8)</a></td>
-<td class="enumeration">
-<p>Returns the adler32 hash value for the given buffer. </p>
-</td>
+<td><a href="#Core_Hash_Adler32_compute">compute(const [..] u8)</a></td>
+<td>Returns the adler32 hash value for the given buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Adler32_init">init(self)</a></td>
-<td class="enumeration">
-<p>Initialize the hashing sequence. </p>
-</td>
+<td><a href="#Core_Hash_Adler32_init">init(self)</a></td>
+<td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Adler32_update">update(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Update the hash value with <code class="incode">buffer</code> content. </p>
-</td>
+<td><a href="#Core_Hash_Adler32_update">update(self, const [..] u8)</a></td>
+<td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
 <p>
@@ -8044,36 +7078,24 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-crc</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>crc</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Crc32_compute">compute(const [..] u8)</a></td>
-<td class="enumeration">
-<p>Returns the crc32 hash value for the given buffer. </p>
-</td>
+<td><a href="#Core_Hash_Crc32_compute">compute(const [..] u8)</a></td>
+<td>Returns the crc32 hash value for the given buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Crc32_init">init(self)</a></td>
-<td class="enumeration">
-<p>Initialize the hashing sequence. </p>
-</td>
+<td><a href="#Core_Hash_Crc32_init">init(self)</a></td>
+<td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Crc32_update">update(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Update the hash value with <code class="incode">buffer</code> content. </p>
-</td>
+<td><a href="#Core_Hash_Crc32_update">update(self, const [..] u8)</a></td>
+<td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
 <p>
@@ -8134,12 +7156,9 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-compute</td>
-<td class="tdtype">
-func(const *Core.Hash.IHash32)->u32</td>
-<td class="enumeration">
-</td>
+<td>compute</td>
+<td>func(const *Core.Hash.IHash32)->u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8155,67 +7174,43 @@ func(const *Core.Hash.IHash32)->u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-padding</td>
-<td class="tdtype">
-[64] u8</td>
-<td class="enumeration">
-</td>
+<td>padding</td>
+<td>[64] u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-state</td>
-<td class="tdtype">
-[4] u32</td>
-<td class="enumeration">
-</td>
+<td>state</td>
+<td>[4] u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-[2] u32</td>
-<td class="enumeration">
-</td>
+<td>count</td>
+<td>[2] u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-[64] u8</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>[64] u8</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Md5_compute">compute(const [..] u8)</a></td>
-<td class="enumeration">
-<p>Returns the md5 value for the given buffer. </p>
-</td>
+<td><a href="#Core_Hash_Md5_compute">compute(const [..] u8)</a></td>
+<td>Returns the md5 value for the given buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Md5_final">final(self, Digest)</a></td>
-<td class="enumeration">
-<p>Finalize the computation. </p>
-</td>
+<td><a href="#Core_Hash_Md5_final">final(self, Digest)</a></td>
+<td>Finalize the computation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Md5_init">init(self)</a></td>
-<td class="enumeration">
-<p>Initialize the hashing sequence. </p>
-</td>
+<td><a href="#Core_Hash_Md5_init">init(self)</a></td>
+<td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Md5_update">update(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Update the hash value with <code class="incode">buffer</code> content. </p>
-</td>
+<td><a href="#Core_Hash_Md5_update">update(self, const [..] u8)</a></td>
+<td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
 <p>
@@ -8291,67 +7286,43 @@ buffer</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-data</td>
-<td class="tdtype">
-[64] u8</td>
-<td class="enumeration">
-</td>
+<td>data</td>
+<td>[64] u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-state</td>
-<td class="tdtype">
-[8] u32</td>
-<td class="enumeration">
-</td>
+<td>state</td>
+<td>[8] u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-datalen</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>datalen</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bitlen</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>bitlen</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Sha256_compute">compute(const [..] u8)</a></td>
-<td class="enumeration">
-<p>Returns the sha256 value for the given buffer. </p>
-</td>
+<td><a href="#Core_Hash_Sha256_compute">compute(const [..] u8)</a></td>
+<td>Returns the sha256 value for the given buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Sha256_final">final(self, Digest)</a></td>
-<td class="enumeration">
-<p>Finalize the computation. </p>
-</td>
+<td><a href="#Core_Hash_Sha256_final">final(self, Digest)</a></td>
+<td>Finalize the computation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Sha256_init">init(self)</a></td>
-<td class="enumeration">
-<p>Initialize the hashing sequence. </p>
-</td>
+<td><a href="#Core_Hash_Sha256_init">init(self)</a></td>
+<td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Hash_Sha256_update">update(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Update the hash value with <code class="incode">buffer</code> content. </p>
-</td>
+<td><a href="#Core_Hash_Sha256_update">update(self, const [..] u8)</a></td>
+<td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
 <p>
@@ -8445,176 +7416,111 @@ u64</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-HASH_FREE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_FREE</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HASH_DELETED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_DELETED</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HASH_FIRST</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_FIRST</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HASH_MASK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_MASK</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-</td>
+<td>allocator</td>
+<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-table</td>
-<td class="tdtype">
-^Core.HashSetEntry'(K)</td>
-<td class="enumeration">
-</td>
+<td>table</td>
+<td>^Core.HashSetEntry'(K)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of valid entries. </p>
-</td>
+<td>count</td>
+<td>u64</td>
+<td>Number of valid entries. </td>
 </tr>
 <tr>
-<td class="tdname">
-capacity</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of total entries the table can hold. </p>
-</td>
+<td>capacity</td>
+<td>u64</td>
+<td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
-<td class="tdname">
-deleted</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of deleted entries. </p>
-</td>
+<td>deleted</td>
+<td>u64</td>
+<td>Number of deleted entries. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_add">add(self, K)</a></td>
-<td class="enumeration">
-<p>Add a new key. </p>
-</td>
+<td><a href="#Core_HashSet_add">add(self, K)</a></td>
+<td>Add a new key. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_add">add(self, moveref K)</a></td>
-<td class="enumeration">
-<p>Add a new key. </p>
-</td>
+<td><a href="#Core_HashSet_add">add(self, moveref K)</a></td>
+<td>Add a new key. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Remove all elements. </p>
-</td>
+<td><a href="#Core_HashSet_clear">clear(self)</a></td>
+<td>Remove all elements. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_contains">contains(self, K)</a></td>
-<td class="enumeration">
-<p>Returns true if the table contains the given key. </p>
-</td>
+<td><a href="#Core_HashSet_contains">contains(self, K)</a></td>
+<td>Returns true if the table contains the given key. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_emplaceInternal">emplaceInternal(self, u32, ref K)</a></td>
-<td class="enumeration">
-<p>Add a new key. </p>
-</td>
+<td><a href="#Core_HashSet_emplaceInternal">emplaceInternal(self, u32, ref K)</a></td>
+<td>Add a new key. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_free">free(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashSet_free">free(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_grow">grow(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashSet_grow">grow(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_hashKey">hashKey(K)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashSet_hashKey">hashKey(K)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_remove">remove(self, K)</a></td>
-<td class="enumeration">
-<p>Remove the given key if it exists. </p>
-</td>
+<td><a href="#Core_HashSet_remove">remove(self, K)</a></td>
+<td>Remove the given key if it exists. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_reserve">reserve(self, u64)</a></td>
-<td class="enumeration">
-<p>Reserve <code class="incode">newCapacity</code> elements in the table. </p>
-</td>
+<td><a href="#Core_HashSet_reserve">reserve(self, u64)</a></td>
+<td>Reserve <code class="incode">newCapacity</code> elements in the table. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashSet_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashSet_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_opPostCopy">opPostCopy(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashSet_opPostCopy">opPostCopy(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashSet_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashSet_opVisit">opVisit(self, code)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8826,20 +7732,14 @@ u64</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hash</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hash</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-key</td>
-<td class="tdtype">
-K</td>
-<td class="enumeration">
-</td>
+<td>key</td>
+<td>K</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8858,185 +7758,115 @@ K</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-HASH_FREE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_FREE</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HASH_DELETED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_DELETED</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HASH_FIRST</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_FIRST</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HASH_MASK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>HASH_MASK</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-</td>
+<td>allocator</td>
+<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-table</td>
-<td class="tdtype">
-^Core.HashTableEntry'(K, V)</td>
-<td class="enumeration">
-</td>
+<td>table</td>
+<td>^Core.HashTableEntry'(K, V)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of valid entries. </p>
-</td>
+<td>count</td>
+<td>u64</td>
+<td>Number of valid entries. </td>
 </tr>
 <tr>
-<td class="tdname">
-capacity</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of total entries the table can hold. </p>
-</td>
+<td>capacity</td>
+<td>u64</td>
+<td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
-<td class="tdname">
-deleted</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of deleted entries. </p>
-</td>
+<td>deleted</td>
+<td>u64</td>
+<td>Number of deleted entries. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_add">add(self, K, V)</a></td>
-<td class="enumeration">
-<p>Add a new key value pair. If the key already exists, then the value will be replaced. </p>
-</td>
+<td><a href="#Core_HashTable_add">add(self, K, V)</a></td>
+<td>Add a new key value pair. If the key already exists, then the value will be replaced. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_add">add(self, K, moveref V)</a></td>
-<td class="enumeration">
-<p>Add a new key value pair. If the key already exists, then the value will be replaced. </p>
-</td>
+<td><a href="#Core_HashTable_add">add(self, K, moveref V)</a></td>
+<td>Add a new key value pair. If the key already exists, then the value will be replaced. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Remove all elements. </p>
-</td>
+<td><a href="#Core_HashTable_clear">clear(self)</a></td>
+<td>Remove all elements. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_contains">contains(self, K)</a></td>
-<td class="enumeration">
-<p>Returns true if the table contains the given key. </p>
-</td>
+<td><a href="#Core_HashTable_contains">contains(self, K)</a></td>
+<td>Returns true if the table contains the given key. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_emplaceInternal">emplaceInternal(self, u32, ref K, ref V)</a></td>
-<td class="enumeration">
-<p>Use with care !. </p>
-</td>
+<td><a href="#Core_HashTable_emplaceInternal">emplaceInternal(self, u32, ref K, ref V)</a></td>
+<td>Use with care !. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_find">find(self, K)</a></td>
-<td class="enumeration">
-<p>Find the given key, and returns the corresponding entry. </p>
-</td>
+<td><a href="#Core_HashTable_find">find(self, K)</a></td>
+<td>Find the given key, and returns the corresponding entry. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_free">free(self)</a></td>
-<td class="enumeration">
-<p>Free the hashtable content. </p>
-</td>
+<td><a href="#Core_HashTable_free">free(self)</a></td>
+<td>Free the hashtable content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_grow">grow(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashTable_grow">grow(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_hashKey">hashKey(K)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashTable_hashKey">hashKey(K)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_remove">remove(self, K)</a></td>
-<td class="enumeration">
-<p>Remove the given key if it exists. </p>
-</td>
+<td><a href="#Core_HashTable_remove">remove(self, K)</a></td>
+<td>Remove the given key if it exists. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_reserve">reserve(self, u64)</a></td>
-<td class="enumeration">
-<p>Reserve <code class="incode">newCapacity</code> elements in the table. </p>
-</td>
+<td><a href="#Core_HashTable_reserve">reserve(self, u64)</a></td>
+<td>Reserve <code class="incode">newCapacity</code> elements in the table. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashTable_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashTable_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_opPostCopy">opPostCopy(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_HashTable_opPostCopy">opPostCopy(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_HashTable_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-<p>alias0 is the key, and alias1 is the value. </p>
-</td>
+<td><a href="#Core_HashTable_opVisit">opVisit(self, code)</a></td>
+<td>alias0 is the key, and alias1 is the value. </td>
 </tr>
 </table>
 <p>
@@ -9266,28 +8096,19 @@ u64</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hash</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hash</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-key</td>
-<td class="tdtype">
-K</td>
-<td class="enumeration">
-</td>
+<td>key</td>
+<td>K</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-value</td>
-<td class="tdtype">
-V</td>
-<td class="enumeration">
-</td>
+<td>value</td>
+<td>V</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9303,12 +8124,9 @@ V</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-print</td>
-<td class="tdtype">
-func(*Core.ILogWriter, string)</td>
-<td class="enumeration">
-</td>
+<td>print</td>
+<td>func(*Core.ILogWriter, string)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9325,109 +8143,67 @@ func(*Core.ILogWriter, string)</td>
 <p>Represents a gamepad. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-previousState</td>
-<td class="tdtype">
-<a href="#Core_Input_GamePadState">Core.Input.GamePadState</a></td>
-<td class="enumeration">
-</td>
+<td>previousState</td>
+<td><a href="#Core_Input_GamePadState">Core.Input.GamePadState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-currentState</td>
-<td class="tdtype">
-<a href="#Core_Input_GamePadState">Core.Input.GamePadState</a></td>
-<td class="enumeration">
-</td>
+<td>currentState</td>
+<td><a href="#Core_Input_GamePadState">Core.Input.GamePadState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-padIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>padIndex</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-connected</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>connected</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Reset the previous and current state. </p>
-</td>
+<td><a href="#Core_Input_GamePad_clear">clear(self)</a></td>
+<td>Reset the previous and current state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_getPosition">getPosition(self, GamePadButton)</a></td>
-<td class="enumeration">
-<p>Get the analog position of the given button. </p>
-</td>
+<td><a href="#Core_Input_GamePad_getPosition">getPosition(self, GamePadButton)</a></td>
+<td>Get the analog position of the given button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_isButtonJustPressed">isButtonJustPressed(self, GamePadButton)</a></td>
-<td class="enumeration">
-<p>Determines whether specified input device button has just been pressed. </p>
-</td>
+<td><a href="#Core_Input_GamePad_isButtonJustPressed">isButtonJustPressed(self, GamePadButton)</a></td>
+<td>Determines whether specified input device button has just been pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_isButtonJustReleased">isButtonJustReleased(self, GamePadButton)</a></td>
-<td class="enumeration">
-<p>Determines whether specified input device button has just been released. </p>
-</td>
+<td><a href="#Core_Input_GamePad_isButtonJustReleased">isButtonJustReleased(self, GamePadButton)</a></td>
+<td>Determines whether specified input device button has just been released. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_isButtonPressed">isButtonPressed(self, GamePadButton)</a></td>
-<td class="enumeration">
-<p>Determines whether specified input device button is pressed. </p>
-</td>
+<td><a href="#Core_Input_GamePad_isButtonPressed">isButtonPressed(self, GamePadButton)</a></td>
+<td>Determines whether specified input device button is pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_isButtonReleased">isButtonReleased(self, GamePadButton)</a></td>
-<td class="enumeration">
-<p>Determines whether specified input device button is released (not pressed). </p>
-</td>
+<td><a href="#Core_Input_GamePad_isButtonReleased">isButtonReleased(self, GamePadButton)</a></td>
+<td>Determines whether specified input device button is released (not pressed). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_isConnected">isConnected(u32)</a></td>
-<td class="enumeration">
-<p>Returns true if the corresponding <code class="incode">padIndex</code> is connected. </p>
-</td>
+<td><a href="#Core_Input_GamePad_isConnected">isConnected(u32)</a></td>
+<td>Returns true if the corresponding <code class="incode">padIndex</code> is connected. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_setVibration">setVibration(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the vibration motor speeds. </p>
-</td>
+<td><a href="#Core_Input_GamePad_setVibration">setVibration(self, f32, f32)</a></td>
+<td>Set the vibration motor speeds. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_setVibration">setVibration(u32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the left and right vibration of the given <code class="incode">padIndex</code>. </p>
-</td>
+<td><a href="#Core_Input_GamePad_setVibration">setVibration(u32, f32, f32)</a></td>
+<td>Set the left and right vibration of the given <code class="incode">padIndex</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePad_update">update(self)</a></td>
-<td class="enumeration">
-<p>Update the GamePad current state. </p>
-</td>
+<td><a href="#Core_Input_GamePad_update">update(self)</a></td>
+<td>Update the GamePad current state. </td>
 </tr>
 </table>
 <p>
@@ -9583,154 +8359,104 @@ bool</td>
 <p>Enumerates gamepad buttons. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-A</td>
-<td class="enumeration">
-</td>
+<td>A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-B</td>
-<td class="enumeration">
-</td>
+<td>B</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Back</td>
-<td class="enumeration">
-</td>
+<td>Back</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BigButton</td>
-<td class="enumeration">
-</td>
+<td>BigButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DPadDown</td>
-<td class="enumeration">
-</td>
+<td>DPadDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DPadLeft</td>
-<td class="enumeration">
-</td>
+<td>DPadLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DPadRight</td>
-<td class="enumeration">
-</td>
+<td>DPadRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DPadUp</td>
-<td class="enumeration">
-</td>
+<td>DPadUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftShoulder</td>
-<td class="enumeration">
-</td>
+<td>LeftShoulder</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftStick</td>
-<td class="enumeration">
-</td>
+<td>LeftStick</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftThumbstickDown</td>
-<td class="enumeration">
-</td>
+<td>LeftThumbstickDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftThumbstickLeft</td>
-<td class="enumeration">
-</td>
+<td>LeftThumbstickLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftThumbstickRight</td>
-<td class="enumeration">
-</td>
+<td>LeftThumbstickRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftThumbstickUp</td>
-<td class="enumeration">
-</td>
+<td>LeftThumbstickUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftTrigger</td>
-<td class="enumeration">
-</td>
+<td>LeftTrigger</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightShoulder</td>
-<td class="enumeration">
-</td>
+<td>RightShoulder</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightStick</td>
-<td class="enumeration">
-</td>
+<td>RightStick</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightThumbstickDown</td>
-<td class="enumeration">
-</td>
+<td>RightThumbstickDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightThumbstickLeft</td>
-<td class="enumeration">
-</td>
+<td>RightThumbstickLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightThumbstickRight</td>
-<td class="enumeration">
-</td>
+<td>RightThumbstickRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightThumbstickUp</td>
-<td class="enumeration">
-</td>
+<td>RightThumbstickUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightTrigger</td>
-<td class="enumeration">
-</td>
+<td>RightTrigger</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Start</td>
-<td class="enumeration">
-</td>
+<td>Start</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-X</td>
-<td class="enumeration">
-</td>
+<td>X</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Y</td>
-<td class="enumeration">
-</td>
+<td>Y</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9746,10 +8472,8 @@ Y</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-DeviceNotConnected</td>
-<td class="enumeration">
-</td>
+<td>DeviceNotConnected</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9766,37 +8490,25 @@ DeviceNotConnected</td>
 <p>Represents specific information about the state of the controller,  including the current state of buttons and sticks. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-pressed</td>
-<td class="tdtype">
-[25] bool</td>
-<td class="enumeration">
-</td>
+<td>pressed</td>
+<td>[25] bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-position</td>
-<td class="tdtype">
-[25] Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>position</td>
+<td>[25] Core.Math.Point</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePadState_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Reset state to its default value. </p>
-</td>
+<td><a href="#Core_Input_GamePadState_clear">clear(self)</a></td>
+<td>Reset state to its default value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_GamePadState_update">update(self, u32)</a></td>
-<td class="enumeration">
-<p>Compute the current state of the given pad index. </p>
-</td>
+<td><a href="#Core_Input_GamePadState_update">update(self, u32)</a></td>
+<td>Compute the current state of the given pad index. </td>
 </tr>
 </table>
 <p>
@@ -9843,1132 +8555,756 @@ position</td>
 <p>Defines the keys on a keyboard. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-A</td>
-<td class="enumeration">
-</td>
+<td>A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Add</td>
-<td class="enumeration">
-</td>
+<td>Add</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Apps</td>
-<td class="enumeration">
-</td>
+<td>Apps</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Attn</td>
-<td class="enumeration">
-</td>
+<td>Attn</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-B</td>
-<td class="enumeration">
-</td>
+<td>B</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Back</td>
-<td class="enumeration">
-</td>
+<td>Back</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BrowserBack</td>
-<td class="enumeration">
-</td>
+<td>BrowserBack</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BrowserFavorites</td>
-<td class="enumeration">
-</td>
+<td>BrowserFavorites</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BrowserForward</td>
-<td class="enumeration">
-</td>
+<td>BrowserForward</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BrowserHome</td>
-<td class="enumeration">
-</td>
+<td>BrowserHome</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BrowserRefresh</td>
-<td class="enumeration">
-</td>
+<td>BrowserRefresh</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BrowserSearch</td>
-<td class="enumeration">
-</td>
+<td>BrowserSearch</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BrowserStop</td>
-<td class="enumeration">
-</td>
+<td>BrowserStop</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-C</td>
-<td class="enumeration">
-</td>
+<td>C</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Cancel</td>
-<td class="enumeration">
-</td>
+<td>Cancel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Capital</td>
-<td class="enumeration">
-</td>
+<td>Capital</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CapsLock</td>
-<td class="enumeration">
-</td>
+<td>CapsLock</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Clear</td>
-<td class="enumeration">
-</td>
+<td>Clear</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Control</td>
-<td class="enumeration">
-</td>
+<td>Control</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Crsel</td>
-<td class="enumeration">
-</td>
+<td>Crsel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D</td>
-<td class="enumeration">
-</td>
+<td>D</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D0</td>
-<td class="enumeration">
-</td>
+<td>D0</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D1</td>
-<td class="enumeration">
-</td>
+<td>D1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D2</td>
-<td class="enumeration">
-</td>
+<td>D2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D3</td>
-<td class="enumeration">
-</td>
+<td>D3</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D4</td>
-<td class="enumeration">
-</td>
+<td>D4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D5</td>
-<td class="enumeration">
-</td>
+<td>D5</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D6</td>
-<td class="enumeration">
-</td>
+<td>D6</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D7</td>
-<td class="enumeration">
-</td>
+<td>D7</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D8</td>
-<td class="enumeration">
-</td>
+<td>D8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-D9</td>
-<td class="enumeration">
-</td>
+<td>D9</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Decimal</td>
-<td class="enumeration">
-</td>
+<td>Decimal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Delete</td>
-<td class="enumeration">
-</td>
+<td>Delete</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Divide</td>
-<td class="enumeration">
-</td>
+<td>Divide</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Down</td>
-<td class="enumeration">
-</td>
+<td>Down</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-E</td>
-<td class="enumeration">
-</td>
+<td>E</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-End</td>
-<td class="enumeration">
-</td>
+<td>End</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Enter</td>
-<td class="enumeration">
-</td>
+<td>Enter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EraseEof</td>
-<td class="enumeration">
-</td>
+<td>EraseEof</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Escape</td>
-<td class="enumeration">
-</td>
+<td>Escape</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Execute</td>
-<td class="enumeration">
-</td>
+<td>Execute</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Exsel</td>
-<td class="enumeration">
-</td>
+<td>Exsel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F</td>
-<td class="enumeration">
-</td>
+<td>F</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F1</td>
-<td class="enumeration">
-</td>
+<td>F1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F10</td>
-<td class="enumeration">
-</td>
+<td>F10</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F11</td>
-<td class="enumeration">
-</td>
+<td>F11</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F12</td>
-<td class="enumeration">
-</td>
+<td>F12</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F13</td>
-<td class="enumeration">
-</td>
+<td>F13</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F14</td>
-<td class="enumeration">
-</td>
+<td>F14</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F15</td>
-<td class="enumeration">
-</td>
+<td>F15</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F16</td>
-<td class="enumeration">
-</td>
+<td>F16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F17</td>
-<td class="enumeration">
-</td>
+<td>F17</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F18</td>
-<td class="enumeration">
-</td>
+<td>F18</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F19</td>
-<td class="enumeration">
-</td>
+<td>F19</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F2</td>
-<td class="enumeration">
-</td>
+<td>F2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F20</td>
-<td class="enumeration">
-</td>
+<td>F20</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F21</td>
-<td class="enumeration">
-</td>
+<td>F21</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F22</td>
-<td class="enumeration">
-</td>
+<td>F22</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F23</td>
-<td class="enumeration">
-</td>
+<td>F23</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F24</td>
-<td class="enumeration">
-</td>
+<td>F24</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F3</td>
-<td class="enumeration">
-</td>
+<td>F3</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F4</td>
-<td class="enumeration">
-</td>
+<td>F4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F5</td>
-<td class="enumeration">
-</td>
+<td>F5</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F6</td>
-<td class="enumeration">
-</td>
+<td>F6</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F7</td>
-<td class="enumeration">
-</td>
+<td>F7</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F8</td>
-<td class="enumeration">
-</td>
+<td>F8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F9</td>
-<td class="enumeration">
-</td>
+<td>F9</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FinalMode</td>
-<td class="enumeration">
-</td>
+<td>FinalMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-G</td>
-<td class="enumeration">
-</td>
+<td>G</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-H</td>
-<td class="enumeration">
-</td>
+<td>H</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HanguelMode</td>
-<td class="enumeration">
-</td>
+<td>HanguelMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HangulMode</td>
-<td class="enumeration">
-</td>
+<td>HangulMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HanjaMode</td>
-<td class="enumeration">
-</td>
+<td>HanjaMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Help</td>
-<td class="enumeration">
-</td>
+<td>Help</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Home</td>
-<td class="enumeration">
-</td>
+<td>Home</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-I</td>
-<td class="enumeration">
-</td>
+<td>I</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IMEAccept</td>
-<td class="enumeration">
-</td>
+<td>IMEAccept</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IMEAceept</td>
-<td class="enumeration">
-</td>
+<td>IMEAceept</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IMEConvert</td>
-<td class="enumeration">
-</td>
+<td>IMEConvert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IMEModeChange</td>
-<td class="enumeration">
-</td>
+<td>IMEModeChange</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IMENonConvert</td>
-<td class="enumeration">
-</td>
+<td>IMENonConvert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Insert</td>
-<td class="enumeration">
-</td>
+<td>Insert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-J</td>
-<td class="enumeration">
-</td>
+<td>J</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-JunjaMode</td>
-<td class="enumeration">
-</td>
+<td>JunjaMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-K</td>
-<td class="enumeration">
-</td>
+<td>K</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-KanaMode</td>
-<td class="enumeration">
-</td>
+<td>KanaMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-KanjiMode</td>
-<td class="enumeration">
-</td>
+<td>KanjiMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-L</td>
-<td class="enumeration">
-</td>
+<td>L</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LButton</td>
-<td class="enumeration">
-</td>
+<td>LButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LControl</td>
-<td class="enumeration">
-</td>
+<td>LControl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LMenu</td>
-<td class="enumeration">
-</td>
+<td>LMenu</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LShift</td>
-<td class="enumeration">
-</td>
+<td>LShift</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LWin</td>
-<td class="enumeration">
-</td>
+<td>LWin</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LaunchApplication1</td>
-<td class="enumeration">
-</td>
+<td>LaunchApplication1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LaunchApplication2</td>
-<td class="enumeration">
-</td>
+<td>LaunchApplication2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LaunchMail</td>
-<td class="enumeration">
-</td>
+<td>LaunchMail</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LineFeed</td>
-<td class="enumeration">
-</td>
+<td>LineFeed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-M</td>
-<td class="enumeration">
-</td>
+<td>M</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MButton</td>
-<td class="enumeration">
-</td>
+<td>MButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediaNextTrack</td>
-<td class="enumeration">
-</td>
+<td>MediaNextTrack</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediaPlayPause</td>
-<td class="enumeration">
-</td>
+<td>MediaPlayPause</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediaPreviousTrack</td>
-<td class="enumeration">
-</td>
+<td>MediaPreviousTrack</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediaStop</td>
-<td class="enumeration">
-</td>
+<td>MediaStop</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MenuCtrl</td>
-<td class="enumeration">
-</td>
+<td>MenuCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Multiply</td>
-<td class="enumeration">
-</td>
+<td>Multiply</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-N</td>
-<td class="enumeration">
-</td>
+<td>N</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Next</td>
-<td class="enumeration">
-</td>
+<td>Next</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NoName</td>
-<td class="enumeration">
-</td>
+<td>NoName</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumLock</td>
-<td class="enumeration">
-</td>
+<td>NumLock</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad0</td>
-<td class="enumeration">
-</td>
+<td>NumPad0</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad1</td>
-<td class="enumeration">
-</td>
+<td>NumPad1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad2</td>
-<td class="enumeration">
-</td>
+<td>NumPad2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad3</td>
-<td class="enumeration">
-</td>
+<td>NumPad3</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad4</td>
-<td class="enumeration">
-</td>
+<td>NumPad4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad5</td>
-<td class="enumeration">
-</td>
+<td>NumPad5</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad6</td>
-<td class="enumeration">
-</td>
+<td>NumPad6</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad7</td>
-<td class="enumeration">
-</td>
+<td>NumPad7</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad8</td>
-<td class="enumeration">
-</td>
+<td>NumPad8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NumPad9</td>
-<td class="enumeration">
-</td>
+<td>NumPad9</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-O</td>
-<td class="enumeration">
-</td>
+<td>O</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem1</td>
-<td class="enumeration">
-</td>
+<td>Oem1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem102</td>
-<td class="enumeration">
-</td>
+<td>Oem102</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem2</td>
-<td class="enumeration">
-</td>
+<td>Oem2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem3</td>
-<td class="enumeration">
-</td>
+<td>Oem3</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem4</td>
-<td class="enumeration">
-</td>
+<td>Oem4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem5</td>
-<td class="enumeration">
-</td>
+<td>Oem5</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem6</td>
-<td class="enumeration">
-</td>
+<td>Oem6</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem7</td>
-<td class="enumeration">
-</td>
+<td>Oem7</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Oem8</td>
-<td class="enumeration">
-</td>
+<td>Oem8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemBackslash</td>
-<td class="enumeration">
-</td>
+<td>OemBackslash</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemClear</td>
-<td class="enumeration">
-</td>
+<td>OemClear</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemCloseBrackets</td>
-<td class="enumeration">
-</td>
+<td>OemCloseBrackets</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemComma</td>
-<td class="enumeration">
-</td>
+<td>OemComma</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemMinus</td>
-<td class="enumeration">
-</td>
+<td>OemMinus</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemOpenBrackets</td>
-<td class="enumeration">
-</td>
+<td>OemOpenBrackets</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemPeriod</td>
-<td class="enumeration">
-</td>
+<td>OemPeriod</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemPipe</td>
-<td class="enumeration">
-</td>
+<td>OemPipe</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemPlus</td>
-<td class="enumeration">
-</td>
+<td>OemPlus</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemQuestion</td>
-<td class="enumeration">
-</td>
+<td>OemQuestion</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemQuotes</td>
-<td class="enumeration">
-</td>
+<td>OemQuotes</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemSemicolon</td>
-<td class="enumeration">
-</td>
+<td>OemSemicolon</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OemTilde</td>
-<td class="enumeration">
-</td>
+<td>OemTilde</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-P</td>
-<td class="enumeration">
-</td>
+<td>P</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Pa1</td>
-<td class="enumeration">
-</td>
+<td>Pa1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Packet</td>
-<td class="enumeration">
-</td>
+<td>Packet</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PageDown</td>
-<td class="enumeration">
-</td>
+<td>PageDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PageUp</td>
-<td class="enumeration">
-</td>
+<td>PageUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Pause</td>
-<td class="enumeration">
-</td>
+<td>Pause</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Play</td>
-<td class="enumeration">
-</td>
+<td>Play</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Print</td>
-<td class="enumeration">
-</td>
+<td>Print</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PrintScreen</td>
-<td class="enumeration">
-</td>
+<td>PrintScreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Prior</td>
-<td class="enumeration">
-</td>
+<td>Prior</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Process</td>
-<td class="enumeration">
-</td>
+<td>Process</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Q</td>
-<td class="enumeration">
-</td>
+<td>Q</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-R</td>
-<td class="enumeration">
-</td>
+<td>R</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RButton</td>
-<td class="enumeration">
-</td>
+<td>RButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RControl</td>
-<td class="enumeration">
-</td>
+<td>RControl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RMenu</td>
-<td class="enumeration">
-</td>
+<td>RMenu</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RShift</td>
-<td class="enumeration">
-</td>
+<td>RShift</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RWin</td>
-<td class="enumeration">
-</td>
+<td>RWin</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Return</td>
-<td class="enumeration">
-</td>
+<td>Return</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-S</td>
-<td class="enumeration">
-</td>
+<td>S</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Scroll</td>
-<td class="enumeration">
-</td>
+<td>Scroll</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Select</td>
-<td class="enumeration">
-</td>
+<td>Select</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectMedia</td>
-<td class="enumeration">
-</td>
+<td>SelectMedia</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Separator</td>
-<td class="enumeration">
-</td>
+<td>Separator</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Shift</td>
-<td class="enumeration">
-</td>
+<td>Shift</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sleep</td>
-<td class="enumeration">
-</td>
+<td>Sleep</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Space</td>
-<td class="enumeration">
-</td>
+<td>Space</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Subtract</td>
-<td class="enumeration">
-</td>
+<td>Subtract</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-T</td>
-<td class="enumeration">
-</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Tab</td>
-<td class="enumeration">
-</td>
+<td>Tab</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-U</td>
-<td class="enumeration">
-</td>
+<td>U</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Up</td>
-<td class="enumeration">
-</td>
+<td>Up</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-V</td>
-<td class="enumeration">
-</td>
+<td>V</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VolumeDown</td>
-<td class="enumeration">
-</td>
+<td>VolumeDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VolumeMute</td>
-<td class="enumeration">
-</td>
+<td>VolumeMute</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VolumeUp</td>
-<td class="enumeration">
-</td>
+<td>VolumeUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-W</td>
-<td class="enumeration">
-</td>
+<td>W</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-X</td>
-<td class="enumeration">
-</td>
+<td>X</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-XButton1</td>
-<td class="enumeration">
-</td>
+<td>XButton1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-XButton2</td>
-<td class="enumeration">
-</td>
+<td>XButton2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Y</td>
-<td class="enumeration">
-</td>
+<td>Y</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Z</td>
-<td class="enumeration">
-</td>
+<td>Z</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Zoom</td>
-<td class="enumeration">
-</td>
+<td>Zoom</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10984,34 +9320,24 @@ Zoom</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Shift</td>
-<td class="enumeration">
-</td>
+<td>Shift</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Control</td>
-<td class="enumeration">
-</td>
+<td>Control</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Alt</td>
-<td class="enumeration">
-</td>
+<td>Alt</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CtrlShift</td>
-<td class="enumeration">
-</td>
+<td>CtrlShift</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11028,138 +9354,86 @@ CtrlShift</td>
 <p>Allows getting keystrokes from keyboard. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-previousState</td>
-<td class="tdtype">
-<a href="#Core_Input_KeyboardState">Core.Input.KeyboardState</a></td>
-<td class="enumeration">
-</td>
+<td>previousState</td>
+<td><a href="#Core_Input_KeyboardState">Core.Input.KeyboardState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-currentState</td>
-<td class="tdtype">
-<a href="#Core_Input_KeyboardState">Core.Input.KeyboardState</a></td>
-<td class="enumeration">
-</td>
+<td>currentState</td>
+<td><a href="#Core_Input_KeyboardState">Core.Input.KeyboardState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pressedRepeat</td>
-<td class="tdtype">
-[188] bool</td>
-<td class="enumeration">
-</td>
+<td>pressedRepeat</td>
+<td>[188] bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pressedTime</td>
-<td class="tdtype">
-[188] u32</td>
-<td class="enumeration">
-</td>
+<td>pressedTime</td>
+<td>[188] u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pressedRepeatStartTimeMs</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>pressedRepeatStartTimeMs</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pressedRepeatTimeMs</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>pressedRepeatTimeMs</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-canRepeat</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>canRepeat</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Reset the keyboard state. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_clear">clear(self)</a></td>
+<td>Reset the keyboard state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_getPressedModifiers">getPressedModifiers(self)</a></td>
-<td class="enumeration">
-<p>Returns the currently pressed key modifiers. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_getPressedModifiers">getPressedModifiers(self)</a></td>
+<td>Returns the currently pressed key modifiers. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_isKeyJustPressed">isKeyJustPressed(self, Key)</a></td>
-<td class="enumeration">
-<p>Determines whether given key has just been pressed. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_isKeyJustPressed">isKeyJustPressed(self, Key)</a></td>
+<td>Determines whether given key has just been pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_isKeyJustReleased">isKeyJustReleased(self, Key)</a></td>
-<td class="enumeration">
-<p>Determines whether given key has just been released. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_isKeyJustReleased">isKeyJustReleased(self, Key)</a></td>
+<td>Determines whether given key has just been released. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed(self, Key)</a></td>
-<td class="enumeration">
-<p>Determines whether given key is currently being pressed. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed(self, Key)</a></td>
+<td>Determines whether given key is currently being pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed(Key)</a></td>
-<td class="enumeration">
-<p>Returns true if the given key is pressed. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed(Key)</a></td>
+<td>Returns true if the given key is pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_isKeyReleased">isKeyReleased(self, Key)</a></td>
-<td class="enumeration">
-<p>Determines whether given key is currently being released. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_isKeyReleased">isKeyReleased(self, Key)</a></td>
+<td>Determines whether given key is currently being released. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_keyToRune">keyToRune(self, Key)</a></td>
-<td class="enumeration">
-<p>Try to transform the given key to the corresponding rune. </p>
-</td>
+<td><a href="#Core_Input_Keyboard_keyToRune">keyToRune(self, Key)</a></td>
+<td>Try to transform the given key to the corresponding rune. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_keyToVirtualKey">keyToVirtualKey(Key)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Input_Keyboard_keyToVirtualKey">keyToVirtualKey(Key)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_update">update(self)</a></td>
-<td class="enumeration">
-<p>Compute current state of the keyboard (all keys). </p>
-</td>
+<td><a href="#Core_Input_Keyboard_update">update(self)</a></td>
+<td>Compute current state of the keyboard (all keys). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Keyboard_virtualKeyToKey">virtualKeyToKey(VirtualKey)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Input_Keyboard_virtualKeyToKey">virtualKeyToKey(VirtualKey)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11328,37 +9602,25 @@ bool</td>
 <p>Represents one keyboard state. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> native</td>
-<td class="tdtype">
-<a href="#Core_Input_KeyboardStateNative">Core.Input.KeyboardStateNative</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> native</td>
+<td><a href="#Core_Input_KeyboardStateNative">Core.Input.KeyboardStateNative</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pressed</td>
-<td class="tdtype">
-[188] bool</td>
-<td class="enumeration">
-</td>
+<td>pressed</td>
+<td>[188] bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_KeyboardState_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Reset keyboard state. </p>
-</td>
+<td><a href="#Core_Input_KeyboardState_clear">clear(self)</a></td>
+<td>Reset keyboard state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_KeyboardState_update">update(self)</a></td>
-<td class="enumeration">
-<p>Compute current keyboard state. </p>
-</td>
+<td><a href="#Core_Input_KeyboardState_update">update(self)</a></td>
+<td>Compute current keyboard state. </td>
 </tr>
 </table>
 <p>
@@ -11404,12 +9666,9 @@ pressed</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-nativeState</td>
-<td class="tdtype">
-[256] Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>nativeState</td>
+<td>[256] Win32.BYTE</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11426,115 +9685,71 @@ nativeState</td>
 <p>Allows reading position and button click information from mouse. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-previousState</td>
-<td class="tdtype">
-<a href="#Core_Input_MouseState">Core.Input.MouseState</a></td>
-<td class="enumeration">
-</td>
+<td>previousState</td>
+<td><a href="#Core_Input_MouseState">Core.Input.MouseState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-currentState</td>
-<td class="tdtype">
-<a href="#Core_Input_MouseState">Core.Input.MouseState</a></td>
-<td class="enumeration">
-</td>
+<td>currentState</td>
+<td><a href="#Core_Input_MouseState">Core.Input.MouseState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dblClk</td>
-<td class="tdtype">
-[5] bool</td>
-<td class="enumeration">
-</td>
+<td>dblClk</td>
+<td>[5] bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dblClkTimeMs</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>dblClkTimeMs</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Reset the mouse state to its default value. </p>
-</td>
+<td><a href="#Core_Input_Mouse_clear">clear(self)</a></td>
+<td>Reset the mouse state to its default value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_getMove">getMove(self)</a></td>
-<td class="enumeration">
-<p>Returns the move between the current position and the previous one. </p>
-</td>
+<td><a href="#Core_Input_Mouse_getMove">getMove(self)</a></td>
+<td>Returns the move between the current position and the previous one. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_getPosition">getPosition(self)</a></td>
-<td class="enumeration">
-<p>Returns the mouse position. </p>
-</td>
+<td><a href="#Core_Input_Mouse_getPosition">getPosition(self)</a></td>
+<td>Returns the mouse position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_getPreviousPos">getPreviousPos(self)</a></td>
-<td class="enumeration">
-<p>Returns the previous mouse position, before the last update. </p>
-</td>
+<td><a href="#Core_Input_Mouse_getPreviousPos">getPreviousPos(self)</a></td>
+<td>Returns the previous mouse position, before the last update. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_isButtonDoubleClick">isButtonDoubleClick(self, MouseButton)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Input_Mouse_isButtonDoubleClick">isButtonDoubleClick(self, MouseButton)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_isButtonJustPressed">isButtonJustPressed(self, MouseButton)</a></td>
-<td class="enumeration">
-<p>Determines whether the specified mouse button has just been pressed. </p>
-</td>
+<td><a href="#Core_Input_Mouse_isButtonJustPressed">isButtonJustPressed(self, MouseButton)</a></td>
+<td>Determines whether the specified mouse button has just been pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_isButtonJustReleased">isButtonJustReleased(self, MouseButton)</a></td>
-<td class="enumeration">
-<p>Determines whether the specified mouse button has just been released. </p>
-</td>
+<td><a href="#Core_Input_Mouse_isButtonJustReleased">isButtonJustReleased(self, MouseButton)</a></td>
+<td>Determines whether the specified mouse button has just been released. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed(self, MouseButton)</a></td>
-<td class="enumeration">
-<p>Determines whether the specified mouse button is pressed. </p>
-</td>
+<td><a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed(self, MouseButton)</a></td>
+<td>Determines whether the specified mouse button is pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed(MouseButton)</a></td>
-<td class="enumeration">
-<p>Determins if one given mouse button is pressed or not. </p>
-</td>
+<td><a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed(MouseButton)</a></td>
+<td>Determins if one given mouse button is pressed or not. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_isButtonReleased">isButtonReleased(self, MouseButton)</a></td>
-<td class="enumeration">
-<p>Determines whether the specified mouse button is released. </p>
-</td>
+<td><a href="#Core_Input_Mouse_isButtonReleased">isButtonReleased(self, MouseButton)</a></td>
+<td>Determines whether the specified mouse button is released. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_Mouse_update">update(self)</a></td>
-<td class="enumeration">
-<p>Compute the current state of the mouse. </p>
-</td>
+<td><a href="#Core_Input_Mouse_update">update(self)</a></td>
+<td>Compute the current state of the mouse. </td>
 </tr>
 </table>
 <p>
@@ -11703,34 +9918,24 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Middle</td>
-<td class="enumeration">
-</td>
+<td>Middle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-XButton1</td>
-<td class="enumeration">
-</td>
+<td>XButton1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-XButton2</td>
-<td class="enumeration">
-</td>
+<td>XButton2</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11747,53 +9952,35 @@ XButton2</td>
 <p>Represents one mouse state. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-pressed</td>
-<td class="tdtype">
-[5] bool</td>
-<td class="enumeration">
-</td>
+<td>pressed</td>
+<td>[5] bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pressedTime</td>
-<td class="tdtype">
-[5] u32</td>
-<td class="enumeration">
-</td>
+<td>pressedTime</td>
+<td>[5] u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pressedPos</td>
-<td class="tdtype">
-[5] Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>pressedPos</td>
+<td>[5] Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-position</td>
-<td class="tdtype">
-<a href="#Core_Math_Point">Core.Math.Point</a></td>
-<td class="enumeration">
-</td>
+<td>position</td>
+<td><a href="#Core_Math_Point">Core.Math.Point</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_MouseState_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Reset the state to its default value. </p>
-</td>
+<td><a href="#Core_Input_MouseState_clear">clear(self)</a></td>
+<td>Reset the state to its default value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Input_MouseState_update">update(self)</a></td>
-<td class="enumeration">
-<p>Compute the actual state of the mouse. </p>
-</td>
+<td><a href="#Core_Input_MouseState_update">update(self)</a></td>
+<td>Compute the actual state of the mouse. </td>
 </tr>
 </table>
 <p>
@@ -11899,36 +10086,24 @@ position</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Core_Jobs_Job">Core.Jobs.Job</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Core_Jobs_Job">Core.Jobs.Job</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-startIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>startIndex</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>endIndex</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData</td>
+<td>*void</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11944,36 +10119,24 @@ userData</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lambda</td>
-<td class="tdtype">
-func(*void)</td>
-<td class="enumeration">
-</td>
+<td>lambda</td>
+<td>func(*void)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-data</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>data</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-state</td>
-<td class="tdtype">
-<a href="#Core_Jobs_JobState">Core.Jobs.JobState</a></td>
-<td class="enumeration">
-</td>
+<td>state</td>
+<td><a href="#Core_Jobs_JobState">Core.Jobs.JobState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pendingIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>pendingIndex</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11989,22 +10152,16 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-InPending</td>
-<td class="enumeration">
-</td>
+<td>InPending</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Done</td>
-<td class="enumeration">
-</td>
+<td>Done</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12023,36 +10180,24 @@ Done</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Core_Jobs_Job">Core.Jobs.Job</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Core_Jobs_Job">Core.Jobs.Job</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-[..] T</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>[..] T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-offset</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>offset</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData</td>
+<td>*void</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12190,94 +10335,64 @@ userData</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Control</td>
-<td class="enumeration">
-</td>
+<td>Control</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Punctuation</td>
-<td class="enumeration">
-</td>
+<td>Punctuation</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BinDigit</td>
-<td class="enumeration">
-</td>
+<td>BinDigit</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HexDigit</td>
-<td class="enumeration">
-</td>
+<td>HexDigit</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Digit</td>
-<td class="enumeration">
-</td>
+<td>Digit</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Symbol</td>
-<td class="enumeration">
-</td>
+<td>Symbol</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Spacing</td>
-<td class="enumeration">
-</td>
+<td>Spacing</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Upper</td>
-<td class="enumeration">
-</td>
+<td>Upper</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Lower</td>
-<td class="enumeration">
-</td>
+<td>Lower</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Printable</td>
-<td class="enumeration">
-</td>
+<td>Printable</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LowerUtf8</td>
-<td class="enumeration">
-</td>
+<td>LowerUtf8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UpperUtf8</td>
-<td class="enumeration">
-</td>
+<td>UpperUtf8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Graphical</td>
-<td class="enumeration">
-</td>
+<td>Graphical</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Letter</td>
-<td class="enumeration">
-</td>
+<td>Letter</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12567,115 +10682,73 @@ Letter</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-head</td>
-<td class="tdtype">
-*Core.ListNode'(T)</td>
-<td class="enumeration">
-</td>
+<td>head</td>
+<td>*Core.ListNode'(T)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tail</td>
-<td class="tdtype">
-*Core.ListNode'(T)</td>
-<td class="enumeration">
-</td>
+<td>tail</td>
+<td>*Core.ListNode'(T)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>count</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_List_addBack">addBack(self, T)</a></td>
-<td class="enumeration">
-<p>Add a new element on front. </p>
-</td>
+<td><a href="#Core_List_addBack">addBack(self, T)</a></td>
+<td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_addBack">addBack(self, moveref T)</a></td>
-<td class="enumeration">
-<p>Add a new element on front. </p>
-</td>
+<td><a href="#Core_List_addBack">addBack(self, moveref T)</a></td>
+<td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_addFront">addFront(self, T)</a></td>
-<td class="enumeration">
-<p>Add a new element on front. </p>
-</td>
+<td><a href="#Core_List_addFront">addFront(self, T)</a></td>
+<td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_addFront">addFront(self, moveref T)</a></td>
-<td class="enumeration">
-<p>Add a new element on front. </p>
-</td>
+<td><a href="#Core_List_addFront">addFront(self, moveref T)</a></td>
+<td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear all elements. </p>
-</td>
+<td><a href="#Core_List_clear">clear(self)</a></td>
+<td>Clear all elements. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_insertAfter">insertAfter(self, *ListNode'(T), T)</a></td>
-<td class="enumeration">
-<p>Insert a node before the reference. </p>
-</td>
+<td><a href="#Core_List_insertAfter">insertAfter(self, *ListNode'(T), T)</a></td>
+<td>Insert a node before the reference. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_insertAfter">insertAfter(self, *ListNode'(T), moveref T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_List_insertAfter">insertAfter(self, *ListNode'(T), moveref T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_insertBefore">insertBefore(self, *ListNode'(T), T)</a></td>
-<td class="enumeration">
-<p>Insert a node before the reference. </p>
-</td>
+<td><a href="#Core_List_insertBefore">insertBefore(self, *ListNode'(T), T)</a></td>
+<td>Insert a node before the reference. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_insertBefore">insertBefore(self, *ListNode'(T), moveref T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_List_insertBefore">insertBefore(self, *ListNode'(T), moveref T)</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_List_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_List_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-<p>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
-</td>
+<td><a href="#Core_List_opVisit">opVisit(self, code)</a></td>
+<td>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_List_opVisitBack">opVisitBack(self, code)</a></td>
-<td class="enumeration">
-<p>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
-</td>
+<td><a href="#Core_List_opVisitBack">opVisitBack(self, code)</a></td>
+<td>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </td>
 </tr>
 </table>
 <p>
@@ -12829,28 +10902,19 @@ u64</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-prev</td>
-<td class="tdtype">
-*Core.ListNode'(T)</td>
-<td class="enumeration">
-</td>
+<td>prev</td>
+<td>*Core.ListNode'(T)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-*Core.ListNode'(T)</td>
-<td class="enumeration">
-</td>
+<td>next</td>
+<td>*Core.ListNode'(T)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-value</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>value</td>
+<td>T</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12866,111 +10930,69 @@ T</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lock</td>
-<td class="tdtype">
-<a href="#Core_Sync_Mutex">Core.Sync.Mutex</a></td>
-<td class="enumeration">
-</td>
+<td>lock</td>
+<td><a href="#Core_Sync_Mutex">Core.Sync.Mutex</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buf</td>
-<td class="tdtype">
-<a href="#Core_StrConv_StringBuilder">Core.StrConv.StringBuilder</a></td>
-<td class="enumeration">
-</td>
+<td>buf</td>
+<td><a href="#Core_StrConv_StringBuilder">Core.StrConv.StringBuilder</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dt</td>
-<td class="tdtype">
-<a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
-<td class="enumeration">
-</td>
+<td>dt</td>
+<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writers</td>
-<td class="tdtype">
-Core.Array'(Core.ILogWriter)</td>
-<td class="enumeration">
-</td>
+<td>writers</td>
+<td>Core.Array'(Core.ILogWriter)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-prefix</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>prefix</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-<a href="#Core_LogFlags">Core.LogFlags</a></td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td><a href="#Core_LogFlags">Core.LogFlags</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_addWriter">addWriter(self, ILogWriter)</a></td>
-<td class="enumeration">
-<p>Register a new writer interface. </p>
-</td>
+<td><a href="#Core_Log_addWriter">addWriter(self, ILogWriter)</a></td>
+<td>Register a new writer interface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_clearWriters">clearWriters(self)</a></td>
-<td class="enumeration">
-<p>Remove all writers. </p>
-</td>
+<td><a href="#Core_Log_clearWriters">clearWriters(self)</a></td>
+<td>Remove all writers. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_create">create()</a></td>
-<td class="enumeration">
-<p>Create a new log. </p>
-</td>
+<td><a href="#Core_Log_create">create()</a></td>
+<td>Create a new log. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_getFlags">getFlags(self)</a></td>
-<td class="enumeration">
-<p>Get the logger prefix. </p>
-</td>
+<td><a href="#Core_Log_getFlags">getFlags(self)</a></td>
+<td>Get the logger prefix. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_getPrefix">getPrefix(self)</a></td>
-<td class="enumeration">
-<p>Get the logger prefix. </p>
-</td>
+<td><a href="#Core_Log_getPrefix">getPrefix(self)</a></td>
+<td>Get the logger prefix. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_print">print(self, string, const ref SourceCodeLocation)</a></td>
-<td class="enumeration">
-<p>Main print function. </p>
-</td>
+<td><a href="#Core_Log_print">print(self, string, const ref SourceCodeLocation)</a></td>
+<td>Main print function. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_setFlags">setFlags(self, LogFlags)</a></td>
-<td class="enumeration">
-<p>Set the logger flags. </p>
-</td>
+<td><a href="#Core_Log_setFlags">setFlags(self, LogFlags)</a></td>
+<td>Set the logger flags. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Log_setPrefix">setPrefix(self, string)</a></td>
-<td class="enumeration">
-<p>Set the logger prefix. </p>
-</td>
+<td><a href="#Core_Log_setPrefix">setPrefix(self, string)</a></td>
+<td>Set the logger prefix. </td>
 </tr>
 </table>
 <p>
@@ -13106,60 +11128,40 @@ flags</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Prefix</td>
-<td class="enumeration">
-</td>
+<td>Prefix</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Date</td>
-<td class="enumeration">
-</td>
+<td>Date</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Time</td>
-<td class="enumeration">
-</td>
+<td>Time</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ShortFileName</td>
-<td class="enumeration">
-<p>Exclusive with LongFileName. </p>
-</td>
+<td>ShortFileName</td>
+<td>Exclusive with LongFileName. </td>
 </tr>
 <tr>
-<td class="tdname">
-LongFileName</td>
-<td class="enumeration">
-</td>
+<td>LongFileName</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Line</td>
-<td class="enumeration">
-<p>Exclusive with FullLoc. </p>
-</td>
+<td>Line</td>
+<td>Exclusive with FullLoc. </td>
 </tr>
 <tr>
-<td class="tdname">
-FullLoc</td>
-<td class="enumeration">
-</td>
+<td>FullLoc</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13175,36 +11177,27 @@ Default</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-rad</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>rad</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Angle_toDegrees">toDegrees(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Angle_toDegrees">toDegrees(self)</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Angle_opAffect">opAffect(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Angle_opAffect">opAffect(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Angle_opAffectSuffix">opAffectSuffix(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Angle_opAffectSuffix">opAffectSuffix(self, f32)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13265,148 +11258,94 @@ f32</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Pi</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>Pi</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-E</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>E</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TwoPi</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>TwoPi</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PiBy2</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>PiBy2</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PiBy3</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>PiBy3</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PiBy4</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>PiBy4</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PiBy6</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>PiBy6</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PiBy8</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>PiBy8</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ThreePiBy4</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>ThreePiBy4</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OneByPi</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>OneByPi</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TwoByPi</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>TwoByPi</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sqrt2</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>Sqrt2</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OneBySqrt2</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>OneBySqrt2</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Ln2</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>Ln2</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Ln10</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>Ln10</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Log2E</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>Log2E</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Log10E</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>Log10E</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Epsilon</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>Epsilon</td>
+<td>T</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13422,50 +11361,36 @@ T</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lo</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>lo</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hi</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td>hi</td>
+<td>s64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Int128_mul">mul(s64, s64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Int128_mul">mul(s64, s64)</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Int128_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Int128_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Int128_opCmp">opCmp(self, const ref Int128)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Int128_opCmp">opCmp(self, const ref Int128)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Int128_opEquals">opEquals(self, const ref Int128)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Int128_opEquals">opEquals(self, const ref Int128)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13537,21 +11462,16 @@ s64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-m</td>
-<td class="tdtype">
-[3,3] f32</td>
-<td class="enumeration">
-</td>
+<td>m</td>
+<td>[3,3] f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Matrix3x3_setIdentity">setIdentity(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Matrix3x3_setIdentity">setIdentity(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13581,21 +11501,16 @@ m</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-m</td>
-<td class="tdtype">
-[4,4] f32</td>
-<td class="enumeration">
-</td>
+<td>m</td>
+<td>[4,4] f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Matrix4x4_setIdentity">setIdentity(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Matrix4x4_setIdentity">setIdentity(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13628,87 +11543,59 @@ m</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-buf</td>
-<td class="tdtype">
-[?] T</td>
-<td class="enumeration">
-</td>
+<td>buf</td>
+<td>[?] T</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_from">from(T...)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_from">from(T...)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, NumericArray'(T, N), NumericArray'(T, N))</a></td>
-<td class="enumeration">
-<p>Multiply & Add. </p>
-</td>
+<td><a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, NumericArray'(T, N), NumericArray'(T, N))</a></td>
+<td>Multiply & Add. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, T, T)</a></td>
-<td class="enumeration">
-<p>Multiply & add. </p>
-</td>
+<td><a href="#Core_Math_NumericArray_mulAdd">mulAdd(self, T, T)</a></td>
+<td>Multiply & add. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_set">set(self, T...)</a></td>
-<td class="enumeration">
-<p>Set all values. </p>
-</td>
+<td><a href="#Core_Math_NumericArray_set">set(self, T...)</a></td>
+<td>Set all values. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_opAffect">opAffect(self, T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_opAffect">opAffect(self, T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_opAffect">opAffect(self, const [..] T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_opAffect">opAffect(self, const [..] T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_opAssign">opAssign(self, NumericArray'(T, N))</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_opAssign">opAssign(self, NumericArray'(T, N))</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_opAssign">opAssign(self, T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_opAssign">opAssign(self, T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_opBinary">opBinary(self, NumericArray'(T, N))</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_opBinary">opBinary(self, NumericArray'(T, N))</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_opEquals">opEquals(self, NumericArray'(T, N))</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_opEquals">opEquals(self, NumericArray'(T, N))</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_NumericArray_opIndex">opIndex(self, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_NumericArray_opIndex">opIndex(self, u64)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13845,131 +11732,84 @@ buf</td>
 <p>A simple Point with 2 coordinates X and Y. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_ceil">ceil(self)</a></td>
-<td class="enumeration">
-<p>Perform a Math.ceil operation on all the coordinates. </p>
-</td>
+<td><a href="#Core_Math_Point_ceil">ceil(self)</a></td>
+<td>Perform a Math.ceil operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set Point to (0, 0). </p>
-</td>
+<td><a href="#Core_Math_Point_clear">clear(self)</a></td>
+<td>Set Point to (0, 0). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon(self, const ref Point, f32)</a></td>
-<td class="enumeration">
-<p>Check if two points are equal with an epsilon. </p>
-</td>
+<td><a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon(self, const ref Point, f32)</a></td>
+<td>Check if two points are equal with an epsilon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_isZero">isZero(self)</a></td>
-<td class="enumeration">
-<p>Returns <code class="incode">true</code> if the Point is null. </p>
-</td>
+<td><a href="#Core_Math_Point_isZero">isZero(self)</a></td>
+<td>Returns <code class="incode">true</code> if the Point is null. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
-<td class="enumeration">
-<p>Check for zero with an epsilon. </p>
-</td>
+<td><a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td>Check for zero with an epsilon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_offset">offset(self, f32)</a></td>
-<td class="enumeration">
-<p>Offset this Point by a given value. </p>
-</td>
+<td><a href="#Core_Math_Point_offset">offset(self, f32)</a></td>
+<td>Offset this Point by a given value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_offset">offset(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Offset this Point by a given value. </p>
-</td>
+<td><a href="#Core_Math_Point_offset">offset(self, f32, f32)</a></td>
+<td>Offset this Point by a given value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_round">round(self)</a></td>
-<td class="enumeration">
-<p>Perform a Math.round operation on all the coordinates. </p>
-</td>
+<td><a href="#Core_Math_Point_round">round(self)</a></td>
+<td>Perform a Math.round operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_trunc">trunc(self)</a></td>
-<td class="enumeration">
-<p>Perform a Math.trunc operation on all the coordinates. </p>
-</td>
+<td><a href="#Core_Math_Point_trunc">trunc(self)</a></td>
+<td>Perform a Math.trunc operation on all the coordinates. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_opAffect">opAffect(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Point_opAffect">opAffect(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_opAssign">opAssign(self, const ref Point)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Point_opAssign">opAssign(self, const ref Point)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_opAssign">opAssign(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Point_opAssign">opAssign(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_opBinary">opBinary(self, const ref Point)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Point_opBinary">opBinary(self, const ref Point)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_opBinary">opBinary(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Point_opBinary">opBinary(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_opEquals">opEquals(self, const ref Point)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Point_opEquals">opEquals(self, const ref Point)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Point_opUnary">opUnary(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Point_opUnary">opUnary(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -14182,318 +12022,186 @@ f32</td>
 <p>A simple rectangle with 4 coordinates. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Left position. </p>
-</td>
+<td>x</td>
+<td>f32</td>
+<td>Left position. </td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Top position. </p>
-</td>
+<td>y</td>
+<td>f32</td>
+<td>Top position. </td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Rectangle width. </p>
-</td>
+<td>width</td>
+<td>f32</td>
+<td>Rectangle width. </td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Rectangle height. </p>
-</td>
+<td>height</td>
+<td>f32</td>
+<td>Rectangle height. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_applyPadding">applyPadding(self, const ref Vector4)</a></td>
-<td class="enumeration">
-<p>Add a padding (offset to each side). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_applyPadding">applyPadding(self, const ref Vector4)</a></td>
+<td>Add a padding (offset to each side). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_bottom">bottom(self)</a></td>
-<td class="enumeration">
-<p>Bottom coordinate (y + height). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_bottom">bottom(self)</a></td>
+<td>Bottom coordinate (y + height). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_ceil">ceil(self)</a></td>
-<td class="enumeration">
-<p>Perform a Math.ceil operation on all the coordinates. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_ceil">ceil(self)</a></td>
+<td>Perform a Math.ceil operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_center">center(self)</a></td>
-<td class="enumeration">
-<p>Central point. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_center">center(self)</a></td>
+<td>Central point. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set rectangle to (0, 0, 0, 0). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_clear">clear(self)</a></td>
+<td>Set rectangle to (0, 0, 0, 0). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_constrainIn">constrainIn(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_constrainIn">constrainIn(self, const ref Rectangle)</a></td>
+<td>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_contains">contains(self, const ref Point)</a></td>
-<td class="enumeration">
-<p>Determines if the specfied point is contained within the rectangular region. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_contains">contains(self, const ref Point)</a></td>
+<td>Determines if the specfied point is contained within the rectangular region. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_contains">contains(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Determines if the specfied rectangle is contained within the rectangular region. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_contains">contains(self, const ref Rectangle)</a></td>
+<td>Determines if the specfied rectangle is contained within the rectangular region. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_contains">contains(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Determines if the specfied point is contained within the rectangular region. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_contains">contains(self, f32, f32)</a></td>
+<td>Determines if the specfied point is contained within the rectangular region. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_getUnion">getUnion(const ref Rectangle, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Creates a rectangle that represents the union between <code class="incode">a</code> and <code class="incode">b</code>. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_getUnion">getUnion(const ref Rectangle, const ref Rectangle)</a></td>
+<td>Creates a rectangle that represents the union between <code class="incode">a</code> and <code class="incode">b</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_horzCenter">horzCenter(self)</a></td>
-<td class="enumeration">
-<p>Horizontal center coordinate (x + width / 2). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_horzCenter">horzCenter(self)</a></td>
+<td>Horizontal center coordinate (x + width / 2). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_inflate">inflate(self, f32)</a></td>
-<td class="enumeration">
-<p>Inflates the rectangle by the given <code class="incode">value</code>. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_inflate">inflate(self, f32)</a></td>
+<td>Inflates the rectangle by the given <code class="incode">value</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_inflate">inflate(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Inflates the rectangle by the given amount in <code class="incode">x</code> and <code class="incode">y</code> directions. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_inflate">inflate(self, f32, f32)</a></td>
+<td>Inflates the rectangle by the given amount in <code class="incode">x</code> and <code class="incode">y</code> directions. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_intersect">intersect(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Intersect this rectangle with another one. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_intersect">intersect(self, const ref Rectangle)</a></td>
+<td>Intersect this rectangle with another one. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_intersect">intersect(const ref Rectangle, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Creates a rectangle that represents the intersetion between <code class="incode">a</code> and <code class="incode">b</code>. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_intersect">intersect(const ref Rectangle, const ref Rectangle)</a></td>
+<td>Creates a rectangle that represents the intersetion between <code class="incode">a</code> and <code class="incode">b</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_intersectWith">intersectWith(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Determines if this rectangle intersets with <code class="incode">rect</code>. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_intersectWith">intersectWith(self, const ref Rectangle)</a></td>
+<td>Determines if this rectangle intersets with <code class="incode">rect</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_isEmpty">isEmpty(self)</a></td>
-<td class="enumeration">
-<p>Returns true if this instance has a surface of zero (width or height are null). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_isEmpty">isEmpty(self)</a></td>
+<td>Returns true if this instance has a surface of zero (width or height are null). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon(self, f32)</a></td>
-<td class="enumeration">
-<p>Returns true if this instance has a surface of zero (width and height are null). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon(self, f32)</a></td>
+<td>Returns true if this instance has a surface of zero (width and height are null). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_isNormalized">isNormalized(self)</a></td>
-<td class="enumeration">
-<p>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_isNormalized">isNormalized(self)</a></td>
+<td>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_isZero">isZero(self)</a></td>
-<td class="enumeration">
-<p>Returns true if this instance is null. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_isZero">isZero(self)</a></td>
+<td>Returns true if this instance is null. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
-<td class="enumeration">
-<p>Returns true if this instance is null with an epsilon. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td>Returns true if this instance is null with an epsilon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_moveBottom">moveBottom(self, f32)</a></td>
-<td class="enumeration">
-<p>Move the left coordinate, reducing the width. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_moveBottom">moveBottom(self, f32)</a></td>
+<td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_moveLeft">moveLeft(self, f32)</a></td>
-<td class="enumeration">
-<p>Move the left coordinate, reducing the width. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_moveLeft">moveLeft(self, f32)</a></td>
+<td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_moveRight">moveRight(self, f32)</a></td>
-<td class="enumeration">
-<p>Move the left coordinate, reducing the width. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_moveRight">moveRight(self, f32)</a></td>
+<td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_moveTop">moveTop(self, f32)</a></td>
-<td class="enumeration">
-<p>Move the left coordinate, reducing the width. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_moveTop">moveTop(self, f32)</a></td>
+<td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_offset">offset(self, const ref Point)</a></td>
-<td class="enumeration">
-<p>Offset the rectangle position by a given value. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_offset">offset(self, const ref Point)</a></td>
+<td>Offset the rectangle position by a given value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_offset">offset(self, f32)</a></td>
-<td class="enumeration">
-<p>Offset the rectangle position by a given value. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_offset">offset(self, f32)</a></td>
+<td>Offset the rectangle position by a given value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_offset">offset(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Offset the rectangle position by a x and y values. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_offset">offset(self, f32, f32)</a></td>
+<td>Offset the rectangle position by a x and y values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_right">right(self)</a></td>
-<td class="enumeration">
-<p>Right coordinate (x + width). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_right">right(self)</a></td>
+<td>Right coordinate (x + width). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_round">round(self)</a></td>
-<td class="enumeration">
-<p>Perform a Math.round operation on all the coordinates. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_round">round(self)</a></td>
+<td>Perform a Math.round operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_scale">scale(self, f32)</a></td>
-<td class="enumeration">
-<p>Multiply the width and height of the rectangle by a given <code class="incode">value</code>. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_scale">scale(self, f32)</a></td>
+<td>Multiply the width and height of the rectangle by a given <code class="incode">value</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_scale">scale(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Multiply the width by <code class="incode">x</code> and the height by <code class="incode">y</code>. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_scale">scale(self, f32, f32)</a></td>
+<td>Multiply the width by <code class="incode">x</code> and the height by <code class="incode">y</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_set">set(self, const ref Point, const ref Point)</a></td>
-<td class="enumeration">
-<p>Initialize the rectangle with two position. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_set">set(self, const ref Point, const ref Point)</a></td>
+<td>Initialize the rectangle with two position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_setBottom">setBottom(self, f32)</a></td>
-<td class="enumeration">
-<p>Bottom coordinate (y + height). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_setBottom">setBottom(self, f32)</a></td>
+<td>Bottom coordinate (y + height). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_setRight">setRight(self, f32)</a></td>
-<td class="enumeration">
-<p>Right coordinate (x + width). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_setRight">setRight(self, f32)</a></td>
+<td>Right coordinate (x + width). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_setUnion">setUnion(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Creates a rectangle that represents the union. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_setUnion">setUnion(self, const ref Rectangle)</a></td>
+<td>Creates a rectangle that represents the union. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_trunc">trunc(self)</a></td>
-<td class="enumeration">
-<p>Perform a Math.trunc operation on all the coordinates. </p>
-</td>
+<td><a href="#Core_Math_Rectangle_trunc">trunc(self)</a></td>
+<td>Perform a Math.trunc operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_vertCenter">vertCenter(self)</a></td>
-<td class="enumeration">
-<p>Vertical center coordinate (y + height / 2). </p>
-</td>
+<td><a href="#Core_Math_Rectangle_vertCenter">vertCenter(self)</a></td>
+<td>Vertical center coordinate (y + height / 2). </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Rectangle_opEquals">opEquals(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Rectangle_opEquals">opEquals(self, const ref Rectangle)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15017,114 +12725,72 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-m11</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>m11</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-m12</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>m12</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-m21</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>m21</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-m22</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>m22</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-m31</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>m31</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-m32</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>m32</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-m</td>
-<td class="tdtype">
-[2,2] f32</td>
-<td class="enumeration">
-</td>
+<td>m</td>
+<td>[2,2] f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tx</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>tx</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ty</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>ty</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Transform2_createRotation">createRotation(f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Creates a rotation matix, with a given center of rotation. </p>
-</td>
+<td><a href="#Core_Math_Transform2_createRotation">createRotation(f32, f32, f32)</a></td>
+<td>Creates a rotation matix, with a given center of rotation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Transform2_createScale">createScale(f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Creates a scale matix, with a given center. </p>
-</td>
+<td><a href="#Core_Math_Transform2_createScale">createScale(f32, f32, f32, f32)</a></td>
+<td>Creates a scale matix, with a given center. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Transform2_createTranslation">createTranslation(f32, f32)</a></td>
-<td class="enumeration">
-<p>Creates a translation matix. </p>
-</td>
+<td><a href="#Core_Math_Transform2_createTranslation">createTranslation(f32, f32)</a></td>
+<td>Creates a translation matix. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Transform2_multiply">multiply(self, const ref Transform2)</a></td>
-<td class="enumeration">
-<p>Multiply two matricies. </p>
-</td>
+<td><a href="#Core_Math_Transform2_multiply">multiply(self, const ref Transform2)</a></td>
+<td>Multiply two matricies. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Transform2_setIdentity">setIdentity(self)</a></td>
-<td class="enumeration">
-<p>Set transform to identity. </p>
-</td>
+<td><a href="#Core_Math_Transform2_setIdentity">setIdentity(self)</a></td>
+<td>Set transform to identity. </td>
 </tr>
 </table>
 <p>
@@ -15218,97 +12884,65 @@ f32</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-[?] u8</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>[?] u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AllFlags</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>AllFlags</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_checkValidType">checkValidType(const [..] const *TypeInfo, const *TypeInfo)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Variant_checkValidType">checkValidType(const [..] const *TypeInfo, const *TypeInfo)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_drop">drop(self)</a></td>
-<td class="enumeration">
-<p>Drop the variant content (if necessary). </p>
-</td>
+<td><a href="#Core_Math_Variant_drop">drop(self)</a></td>
+<td>Drop the variant content (if necessary). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_get">get(self)</a></td>
-<td class="enumeration">
-<p>Get the variant value of the given type  Will assert if the current type does not match. </p>
-</td>
+<td><a href="#Core_Math_Variant_get">get(self)</a></td>
+<td>Get the variant value of the given type  Will assert if the current type does not match. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_set">set(self, TN)</a></td>
-<td class="enumeration">
-<p>Set the variant value. </p>
-</td>
+<td><a href="#Core_Math_Variant_set">set(self, TN)</a></td>
+<td>Set the variant value. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_opAffect">opAffect(self, TN)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Variant_opAffect">opAffect(self, TN)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_opCmp">opCmp(self, TN)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Variant_opCmp">opCmp(self, TN)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Variant_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_opEquals">opEquals(self, TN)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Variant_opEquals">opEquals(self, TN)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_opPostCopy">opPostCopy(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Variant_opPostCopy">opPostCopy(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Variant_opPostMove">opPostMove(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Variant_opPostMove">opPostMove(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15467,320 +13101,192 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_angle">angle(self, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the angle with another vector. </p>
-</td>
+<td><a href="#Core_Math_Vector2_angle">angle(self, const ref Vector2)</a></td>
+<td>Returns the angle with another vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_ceil">ceil(self)</a></td>
-<td class="enumeration">
-<p>Math.ceil. </p>
-</td>
+<td><a href="#Core_Math_Vector2_ceil">ceil(self)</a></td>
+<td>Math.ceil. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set the vector to zero. </p>
-</td>
+<td><a href="#Core_Math_Vector2_clear">clear(self)</a></td>
+<td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_cosAngle">cosAngle(self, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the cosine angle with another vector. </p>
-</td>
+<td><a href="#Core_Math_Vector2_cosAngle">cosAngle(self, const ref Vector2)</a></td>
+<td>Returns the cosine angle with another vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_cross">cross(self, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the Z signed length of the perpendicular vector. </p>
-</td>
+<td><a href="#Core_Math_Vector2_cross">cross(self, const ref Vector2)</a></td>
+<td>Returns the Z signed length of the perpendicular vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_cross">cross(self, f32)</a></td>
-<td class="enumeration">
-<p>Returns the perpendicular vector in the 2D plane. </p>
-</td>
+<td><a href="#Core_Math_Vector2_cross">cross(self, f32)</a></td>
+<td>Returns the perpendicular vector in the 2D plane. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_distance">distance(self, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the distance between two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector2_distance">distance(self, const ref Vector2)</a></td>
+<td>Returns the distance between two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_distanceSquared">distanceSquared(self, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the square distance between two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector2_distanceSquared">distanceSquared(self, const ref Vector2)</a></td>
+<td>Returns the square distance between two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_distanceToLine">distanceToLine(self, const ref Vector2, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the distance of the point to the given line. </p>
-</td>
+<td><a href="#Core_Math_Vector2_distanceToLine">distanceToLine(self, const ref Vector2, const ref Vector2)</a></td>
+<td>Returns the distance of the point to the given line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment(self, const ref Vector2, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the distance of the point to the given segment. </p>
-</td>
+<td><a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment(self, const ref Vector2, const ref Vector2)</a></td>
+<td>Returns the distance of the point to the given segment. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_dot">dot(self, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the dot product between two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector2_dot">dot(self, const ref Vector2)</a></td>
+<td>Returns the dot product between two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_floor">floor(self)</a></td>
-<td class="enumeration">
-<p>Math.floor. </p>
-</td>
+<td><a href="#Core_Math_Vector2_floor">floor(self)</a></td>
+<td>Math.floor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon(self, const ref Vector2, f32)</a></td>
-<td class="enumeration">
-<p>Returns true if this vector is equals to another with an epsilon. </p>
-</td>
+<td><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon(self, const ref Vector2, f32)</a></td>
+<td>Returns true if this vector is equals to another with an epsilon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_isInEllipse">isInEllipse(self, const ref Vector2, f32, f32)</a></td>
-<td class="enumeration">
-<p>Returns true if the point <code class="incode">pt</code> is inside an ellipse. </p>
-</td>
+<td><a href="#Core_Math_Vector2_isInEllipse">isInEllipse(self, const ref Vector2, f32, f32)</a></td>
+<td>Returns true if the point <code class="incode">pt</code> is inside an ellipse. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_isInTriangle">isInTriangle(self, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns true if the point <code class="incode">pt</code> is inside the triangle defined with 'a, b, c'. </p>
-</td>
+<td><a href="#Core_Math_Vector2_isInTriangle">isInTriangle(self, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
+<td>Returns true if the point <code class="incode">pt</code> is inside the triangle defined with 'a, b, c'. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_isZero">isZero(self)</a></td>
-<td class="enumeration">
-<p>Returns true if this vector is null. </p>
-</td>
+<td><a href="#Core_Math_Vector2_isZero">isZero(self)</a></td>
+<td>Returns true if this vector is null. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
-<td class="enumeration">
-<p>Returns true if this vector is null with an epsilon. </p>
-</td>
+<td><a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td>Returns true if this vector is null with an epsilon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_length">length(self)</a></td>
-<td class="enumeration">
-<p>Return sthe length of the vector. </p>
-</td>
+<td><a href="#Core_Math_Vector2_length">length(self)</a></td>
+<td>Return sthe length of the vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_lengthSquared">lengthSquared(self)</a></td>
-<td class="enumeration">
-<p>Returns the squared length of the vector. </p>
-</td>
+<td><a href="#Core_Math_Vector2_lengthSquared">lengthSquared(self)</a></td>
+<td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_lerp">lerp(const ref Vector2, const ref Vector2, f32)</a></td>
-<td class="enumeration">
-<p>Lerp one vector with another. </p>
-</td>
+<td><a href="#Core_Math_Vector2_lerp">lerp(const ref Vector2, const ref Vector2, f32)</a></td>
+<td>Lerp one vector with another. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
-<td class="enumeration">
-<p>Compute the intersection point of two lines. </p>
-</td>
+<td><a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
+<td>Compute the intersection point of two lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_max">max(const ref Vector2, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector2_max">max(const ref Vector2, const ref Vector2)</a></td>
+<td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_min">min(const ref Vector2, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector2_min">min(const ref Vector2, const ref Vector2)</a></td>
+<td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns the minimal segment between two segments (and the minimal distance). </p>
-</td>
+<td><a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
+<td>Returns the minimal segment between two segments (and the minimal distance). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_negate">negate(self)</a></td>
-<td class="enumeration">
-<p>Negate the vector. </p>
-</td>
+<td><a href="#Core_Math_Vector2_negate">negate(self)</a></td>
+<td>Negate the vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_normalize">normalize(self)</a></td>
-<td class="enumeration">
-<p>Normalize this vector (set its length to 1). </p>
-</td>
+<td><a href="#Core_Math_Vector2_normalize">normalize(self)</a></td>
+<td>Normalize this vector (set its length to 1). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe(self)</a></td>
-<td class="enumeration">
-<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
-</td>
+<td><a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe(self)</a></td>
+<td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_polyContains">polyContains(const ref Array'(Vector2), const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </p>
-</td>
+<td><a href="#Core_Math_Vector2_polyContains">polyContains(const ref Array'(Vector2), const ref Vector2)</a></td>
+<td>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_rotate">rotate(self, const ref Angle)</a></td>
-<td class="enumeration">
-<p>Rotate the vector by a given angle. </p>
-</td>
+<td><a href="#Core_Math_Vector2_rotate">rotate(self, const ref Angle)</a></td>
+<td>Rotate the vector by a given angle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_round">round(self)</a></td>
-<td class="enumeration">
-<p>Math.round. </p>
-</td>
+<td><a href="#Core_Math_Vector2_round">round(self)</a></td>
+<td>Math.round. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
-<td class="enumeration">
-<p>Compute the intersection point of two segments. </p>
-</td>
+<td><a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
+<td>Compute the intersection point of two segments. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_set">set(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set content. </p>
-</td>
+<td><a href="#Core_Math_Vector2_set">set(self, f32, f32)</a></td>
+<td>Set content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_setLength">setLength(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the vector length. </p>
-</td>
+<td><a href="#Core_Math_Vector2_setLength">setLength(self, f32)</a></td>
+<td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the vector length. </p>
-</td>
+<td><a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe(self, f32)</a></td>
+<td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_toNormalize">toNormalize(self)</a></td>
-<td class="enumeration">
-<p>Returns this vector normalized. </p>
-</td>
+<td><a href="#Core_Math_Vector2_toNormalize">toNormalize(self)</a></td>
+<td>Returns this vector normalized. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe(self)</a></td>
-<td class="enumeration">
-<p>Returns this vector normalized even if its length is almost null. </p>
-</td>
+<td><a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe(self)</a></td>
+<td>Returns this vector normalized even if its length is almost null. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_opAffect">opAffect(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector2_opAffect">opAffect(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_opAssign">opAssign(self, const ref Vector2)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector2_opAssign">opAssign(self, const ref Vector2)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_opAssign">opAssign(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector2_opAssign">opAssign(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_opBinary">opBinary(self, const ref Vector2)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector2_opBinary">opBinary(self, const ref Vector2)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_opBinary">opBinary(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector2_opBinary">opBinary(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_opEquals">opEquals(self, const ref Vector2)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector2_opEquals">opEquals(self, const ref Vector2)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector2_opUnary">opUnary(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector2_opUnary">opUnary(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16417,216 +13923,133 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-z</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>z</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set the vector to zero. </p>
-</td>
+<td><a href="#Core_Math_Vector3_clear">clear(self)</a></td>
+<td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_distance">distance(self, const ref Vector3)</a></td>
-<td class="enumeration">
-<p>Returns the distance between two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector3_distance">distance(self, const ref Vector3)</a></td>
+<td>Returns the distance between two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_distanceSquared">distanceSquared(self, const ref Vector3)</a></td>
-<td class="enumeration">
-<p>Returns the square distance between two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector3_distanceSquared">distanceSquared(self, const ref Vector3)</a></td>
+<td>Returns the square distance between two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_dot">dot(self, const ref Vector3)</a></td>
-<td class="enumeration">
-<p>Returns the dot product between two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector3_dot">dot(self, const ref Vector3)</a></td>
+<td>Returns the dot product between two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon(self, const ref Vector3, f32)</a></td>
-<td class="enumeration">
-<p>Returns true if this vector is equals to another with an epsilon. </p>
-</td>
+<td><a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon(self, const ref Vector3, f32)</a></td>
+<td>Returns true if this vector is equals to another with an epsilon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_isZero">isZero(self)</a></td>
-<td class="enumeration">
-<p>Returns true if this vector is null. </p>
-</td>
+<td><a href="#Core_Math_Vector3_isZero">isZero(self)</a></td>
+<td>Returns true if this vector is null. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
-<td class="enumeration">
-<p>Returns true if this vector is null with an epsilon. </p>
-</td>
+<td><a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td>Returns true if this vector is null with an epsilon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_length">length(self)</a></td>
-<td class="enumeration">
-<p>Return sthe length of the vector. </p>
-</td>
+<td><a href="#Core_Math_Vector3_length">length(self)</a></td>
+<td>Return sthe length of the vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_lengthSquared">lengthSquared(self)</a></td>
-<td class="enumeration">
-<p>Returns the squared length of the vector. </p>
-</td>
+<td><a href="#Core_Math_Vector3_lengthSquared">lengthSquared(self)</a></td>
+<td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_lerp">lerp(const ref Vector3, const ref Vector3, f32)</a></td>
-<td class="enumeration">
-<p>Lerp one vector with another. </p>
-</td>
+<td><a href="#Core_Math_Vector3_lerp">lerp(const ref Vector3, const ref Vector3, f32)</a></td>
+<td>Lerp one vector with another. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_max">max(const ref Vector3, const ref Vector3)</a></td>
-<td class="enumeration">
-<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector3_max">max(const ref Vector3, const ref Vector3)</a></td>
+<td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_min">min(const ref Vector3, const ref Vector3)</a></td>
-<td class="enumeration">
-<p>Returns a vector which is the <code class="incode">min</code> of two vectors. </p>
-</td>
+<td><a href="#Core_Math_Vector3_min">min(const ref Vector3, const ref Vector3)</a></td>
+<td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_negate">negate(self)</a></td>
-<td class="enumeration">
-<p>Negate the vector. </p>
-</td>
+<td><a href="#Core_Math_Vector3_negate">negate(self)</a></td>
+<td>Negate the vector. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_normalize">normalize(self)</a></td>
-<td class="enumeration">
-<p>Normalize this vector (set its length to 1). </p>
-</td>
+<td><a href="#Core_Math_Vector3_normalize">normalize(self)</a></td>
+<td>Normalize this vector (set its length to 1). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe(self)</a></td>
-<td class="enumeration">
-<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
-</td>
+<td><a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe(self)</a></td>
+<td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_set">set(self, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set content. </p>
-</td>
+<td><a href="#Core_Math_Vector3_set">set(self, f32, f32, f32)</a></td>
+<td>Set content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_setLength">setLength(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the vector length. </p>
-</td>
+<td><a href="#Core_Math_Vector3_setLength">setLength(self, f32)</a></td>
+<td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the vector length. </p>
-</td>
+<td><a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe(self, f32)</a></td>
+<td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_toNormalize">toNormalize(self)</a></td>
-<td class="enumeration">
-<p>Returns this vector normalized. </p>
-</td>
+<td><a href="#Core_Math_Vector3_toNormalize">toNormalize(self)</a></td>
+<td>Returns this vector normalized. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe(self)</a></td>
-<td class="enumeration">
-<p>Returns this vector normalized even if its length is almost null. </p>
-</td>
+<td><a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe(self)</a></td>
+<td>Returns this vector normalized even if its length is almost null. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_opAffect">opAffect(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector3_opAffect">opAffect(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_opAssign">opAssign(self, const ref Vector3)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector3_opAssign">opAssign(self, const ref Vector3)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_opAssign">opAssign(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector3_opAssign">opAssign(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_opBinary">opBinary(self, const ref Vector3)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector3_opBinary">opBinary(self, const ref Vector3)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_opBinary">opBinary(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector3_opBinary">opBinary(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_opEquals">opEquals(self, const ref Vector3)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector3_opEquals">opEquals(self, const ref Vector3)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector3_opUnary">opUnary(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector3_opUnary">opUnary(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -17014,74 +14437,50 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-z</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>z</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-w</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>w</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector4_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set the vector to zero. </p>
-</td>
+<td><a href="#Core_Math_Vector4_clear">clear(self)</a></td>
+<td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector4_lerp">lerp(const ref Vector4, const ref Vector4, f32)</a></td>
-<td class="enumeration">
-<p>Lerp one vector with another. </p>
-</td>
+<td><a href="#Core_Math_Vector4_lerp">lerp(const ref Vector4, const ref Vector4, f32)</a></td>
+<td>Lerp one vector with another. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector4_opAffect">opAffect(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector4_opAffect">opAffect(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector4_opEquals">opEquals(self, const ref Vector4)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector4_opEquals">opEquals(self, const ref Vector4)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Math_Vector4_opUnary">opUnary(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Math_Vector4_opUnary">opUnary(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18311,39 +15710,24 @@ f32</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Parser_RegExp_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear content. </p>
-</td>
+<td><a href="#Core_Parser_RegExp_clear">clear(self)</a></td>
+<td>Clear content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Parser_RegExp_compile">compile(self, string, bool)</a></td>
-<td class="enumeration">
-<p>Compile the expression. </p>
-</td>
+<td><a href="#Core_Parser_RegExp_compile">compile(self, string, bool)</a></td>
+<td>Compile the expression. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Parser_RegExp_grep">grep(self, string)</a></td>
-<td class="enumeration">
-<p>Find the first occurence in the string. </p>
-</td>
+<td><a href="#Core_Parser_RegExp_grep">grep(self, string)</a></td>
+<td>Find the first occurence in the string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Parser_RegExp_grepAll">grepAll(self, string)</a></td>
-<td class="enumeration">
-<p>Find all the occurences in the string. </p>
-</td>
+<td><a href="#Core_Parser_RegExp_grepAll">grepAll(self, string)</a></td>
+<td>Find all the occurences in the string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Parser_RegExp_match">match(self, string)</a></td>
-<td class="enumeration">
-<p>Returns true if <code class="incode">str</code> matches the regexp. </p>
-</td>
+<td><a href="#Core_Parser_RegExp_match">match(self, string)</a></td>
+<td>Returns true if <code class="incode">str</code> matches the regexp. </td>
 </tr>
 </table>
 <p>
@@ -18689,44 +16073,30 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-q</td>
-<td class="tdtype">
-[4096] u32</td>
-<td class="enumeration">
-</td>
+<td>q</td>
+<td>[4096] u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-c</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>c</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-i</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>special invalid value (&gt; 4095) to force the seed on first get. </p>
-</td>
+<td>i</td>
+<td>u32</td>
+<td>special invalid value (&gt; 4095) to force the seed on first get. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_CMWC4096_nextU32">nextU32(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_CMWC4096_nextU32">nextU32(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_CMWC4096_seedU32">seedU32(self, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_CMWC4096_seedU32">seedU32(self, u32)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18770,41 +16140,29 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-w</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>w</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-z</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>z</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_MWC_nextU32">nextU32(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_MWC_nextU32">nextU32(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_MWC_seedU32">seedU32(self, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_MWC_seedU32">seedU32(self, u32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_MWC_seedU32">seedU32(self, u32, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_MWC_seedU32">seedU32(self, u32, u32)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18849,41 +16207,29 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-mt</td>
-<td class="tdtype">
-[312] u64</td>
-<td class="enumeration">
-</td>
+<td>mt</td>
+<td>[312] u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mti</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>mti</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Mt64_nextU64">nextU64(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_Mt64_nextU64">nextU64(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Mt64_seedU64">seedU64(self, const [..] u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_Mt64_seedU64">seedU64(self, const [..] u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Mt64_seedU64">seedU64(self, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Random_Mt64_seedU64">seedU64(self, u64)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18931,142 +16277,85 @@ u64</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-rng</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>rng</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-seedDone</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>seedDone</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextBool">nextBool(self)</a></td>
-<td class="enumeration">
-<p>Returns a random bool. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextBool">nextBool(self)</a></td>
+<td>Returns a random bool. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextF32">nextF32(self)</a></td>
-<td class="enumeration">
-<p>Range is [0..1[, so 1.0 will never be returned. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextF32">nextF32(self)</a></td>
+<td>Range is [0..1[, so 1.0 will never be returned. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextF32">nextF32(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Returns a float value in a given range  <code class="incode">max</code> is excluded. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextF32">nextF32(self, f32, f32)</a></td>
+<td>Returns a float value in a given range  <code class="incode">max</code> is excluded. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextF64">nextF64(self)</a></td>
-<td class="enumeration">
-<p>Range is [0..1[, so 1.0 will never be returned. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextF64">nextF64(self)</a></td>
+<td>Range is [0..1[, so 1.0 will never be returned. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextF64">nextF64(self, f64, f64)</a></td>
-<td class="enumeration">
-<p>Returns a float value in a given range  <code class="incode">max</code> is excluded. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextF64">nextF64(self, f64, f64)</a></td>
+<td>Returns a float value in a given range  <code class="incode">max</code> is excluded. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextS32">nextS32(self)</a></td>
-<td class="enumeration">
-<p>Returns a signed 32 bits random value. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextS32">nextS32(self)</a></td>
+<td>Returns a signed 32 bits random value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextS32">nextS32(self, s32, s32)</a></td>
-<td class="enumeration">
-<p>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextS32">nextS32(self, s32, s32)</a></td>
+<td>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextS64">nextS64(self)</a></td>
-<td class="enumeration">
-<p>Returns a signed 64 bits random value. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextS64">nextS64(self)</a></td>
+<td>Returns a signed 64 bits random value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextS64">nextS64(self, s64, s64)</a></td>
-<td class="enumeration">
-<p>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextS64">nextS64(self, s64, s64)</a></td>
+<td>Returns a signed random value in a given range  <code class="incode">max</code> is excluded. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextU32">nextU32(self)</a></td>
-<td class="enumeration">
-<p>Returns an unsigned 32 bits random value. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextU32">nextU32(self)</a></td>
+<td>Returns an unsigned 32 bits random value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextU32">nextU32(self, u32, u32)</a></td>
-<td class="enumeration">
-<p>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextU32">nextU32(self, u32, u32)</a></td>
+<td>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextU64">nextU64(self)</a></td>
-<td class="enumeration">
-<p>Returns an unsigned 64 bits random value. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextU64">nextU64(self)</a></td>
+<td>Returns an unsigned 64 bits random value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_nextU64">nextU64(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </p>
-</td>
+<td><a href="#Core_Random_Rng_nextU64">nextU64(self, u64, u64)</a></td>
+<td>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_seedNow">seedNow(self)</a></td>
-<td class="enumeration">
-<p>Seed the rng with the current time. </p>
-</td>
+<td><a href="#Core_Random_Rng_seedNow">seedNow(self)</a></td>
+<td>Seed the rng with the current time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_seedU32">seedU32(self, u32)</a></td>
-<td class="enumeration">
-<p>Seed random generator with a 32 bits value. </p>
-</td>
+<td><a href="#Core_Random_Rng_seedU32">seedU32(self, u32)</a></td>
+<td>Seed random generator with a 32 bits value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_seedU64">seedU64(self, u64)</a></td>
-<td class="enumeration">
-<p>Seed random generator with a 64 bits value. </p>
-</td>
+<td><a href="#Core_Random_Rng_seedU64">seedU64(self, u64)</a></td>
+<td>Seed random generator with a 64 bits value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Random_Rng_shuffle">shuffle(self, [..] V)</a></td>
-<td class="enumeration">
-<p>Randomly change the order of a slice. </p>
-</td>
+<td><a href="#Core_Random_Rng_shuffle">shuffle(self, [..] V)</a></td>
+<td>Randomly change the order of a slice. </td>
 </tr>
 </table>
 <p>
@@ -19990,56 +17279,37 @@ bool</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-serializer</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>serializer</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-<a href="#Core_Serialization_DecoderFlags">Core.Serialization.DecoderFlags</a></td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td><a href="#Core_Serialization_DecoderFlags">Core.Serialization.DecoderFlags</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Decoder_end">end(self)</a></td>
-<td class="enumeration">
-<p>Finish reading. </p>
-</td>
+<td><a href="#Core_Serialization_Decoder_end">end(self)</a></td>
+<td>Finish reading. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Decoder_readAll">readAll(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Read a full struct. </p>
-</td>
+<td><a href="#Core_Serialization_Decoder_readAll">readAll(self, const [..] u8)</a></td>
+<td>Read a full struct. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Decoder_readTypeValue">readTypeValue(self, const ref TypeValue, ^void)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Decoder_readTypeValue">readTypeValue(self, const ref TypeValue, ^void)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Decoder_readValue">readValue(self, ^void, const *TypeInfo)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Decoder_readValue">readValue(self, ^void, const *TypeInfo)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Decoder_start">start(self, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Start reading. </p>
-</td>
+<td><a href="#Core_Serialization_Decoder_start">start(self, const [..] u8)</a></td>
+<td>Start reading. </td>
 </tr>
 </table>
 <p>
@@ -20408,16 +17678,12 @@ flags</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IgnoreStructFieldError</td>
-<td class="enumeration">
-</td>
+<td>IgnoreStructFieldError</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -20436,57 +17702,37 @@ IgnoreStructFieldError</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-serializer</td>
-<td class="tdtype">
-T</td>
-<td class="enumeration">
-</td>
+<td>serializer</td>
+<td>T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-errorIfUnknown</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>If true, raise an error if a type cannot be saved, and just ignore if false. </p>
-</td>
+<td>errorIfUnknown</td>
+<td>bool</td>
+<td>If true, raise an error if a type cannot be saved, and just ignore if false. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Encoder_end">end(self)</a></td>
-<td class="enumeration">
-<p>End serialization. </p>
-</td>
+<td><a href="#Core_Serialization_Encoder_end">end(self)</a></td>
+<td>End serialization. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Encoder_start">start(self, *ConcatBuffer)</a></td>
-<td class="enumeration">
-<p>Start serialization. </p>
-</td>
+<td><a href="#Core_Serialization_Encoder_start">start(self, *ConcatBuffer)</a></td>
+<td>Start serialization. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Encoder_writeAll">writeAll(self, *ConcatBuffer, any)</a></td>
-<td class="enumeration">
-<p>Write a full struct. </p>
-</td>
+<td><a href="#Core_Serialization_Encoder_writeAll">writeAll(self, *ConcatBuffer, any)</a></td>
+<td>Write a full struct. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Encoder_writeTypeValue">writeTypeValue(self, const ref TypeValue, const ^void)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Encoder_writeTypeValue">writeTypeValue(self, const ref TypeValue, const ^void)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Encoder_writeValue">writeValue(self, const ^void, const *TypeInfo)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Encoder_writeValue">writeValue(self, const ^void, const *TypeInfo)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -20860,164 +18106,104 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-start</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder, const [..] u8) throw</td>
-<td class="enumeration">
-</td>
+<td>start</td>
+<td>func(*Core.Serialization.IDecoder, const [..] u8) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-end</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder) throw</td>
-<td class="enumeration">
-</td>
+<td>end</td>
+<td>func(*Core.Serialization.IDecoder) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-beginField</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder, Swag.TypeValue)->bool throw</td>
-<td class="enumeration">
-</td>
+<td>beginField</td>
+<td>func(*Core.Serialization.IDecoder, Swag.TypeValue)->bool throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endField</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder) throw</td>
-<td class="enumeration">
-</td>
+<td>endField</td>
+<td>func(*Core.Serialization.IDecoder) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-beginSection</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder, Core.Serialization.SectionKind) throw</td>
-<td class="enumeration">
-</td>
+<td>beginSection</td>
+<td>func(*Core.Serialization.IDecoder, Core.Serialization.SectionKind) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endSection</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder) throw</td>
-<td class="enumeration">
-</td>
+<td>endSection</td>
+<td>func(*Core.Serialization.IDecoder) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getVersion</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->u32</td>
-<td class="enumeration">
-</td>
+<td>getVersion</td>
+<td>func(*Core.Serialization.IDecoder)->u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-read</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder, *void, const *Swag.TypeInfo) throw</td>
-<td class="enumeration">
-</td>
+<td>read</td>
+<td>func(*Core.Serialization.IDecoder, *void, const *Swag.TypeInfo) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readBufferU8</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder, u64)->*u8 throw</td>
-<td class="enumeration">
-</td>
+<td>readBufferU8</td>
+<td>func(*Core.Serialization.IDecoder, u64)->*u8 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readBool</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->bool throw</td>
-<td class="enumeration">
-</td>
+<td>readBool</td>
+<td>func(*Core.Serialization.IDecoder)->bool throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readS8</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->s8 throw</td>
-<td class="enumeration">
-</td>
+<td>readS8</td>
+<td>func(*Core.Serialization.IDecoder)->s8 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readS16</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->s16 throw</td>
-<td class="enumeration">
-</td>
+<td>readS16</td>
+<td>func(*Core.Serialization.IDecoder)->s16 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readS32</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->s32 throw</td>
-<td class="enumeration">
-</td>
+<td>readS32</td>
+<td>func(*Core.Serialization.IDecoder)->s32 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readS64</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->s64 throw</td>
-<td class="enumeration">
-</td>
+<td>readS64</td>
+<td>func(*Core.Serialization.IDecoder)->s64 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readU8</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->u8 throw</td>
-<td class="enumeration">
-</td>
+<td>readU8</td>
+<td>func(*Core.Serialization.IDecoder)->u8 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readU16</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->u16 throw</td>
-<td class="enumeration">
-</td>
+<td>readU16</td>
+<td>func(*Core.Serialization.IDecoder)->u16 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readU32</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->u32 throw</td>
-<td class="enumeration">
-</td>
+<td>readU32</td>
+<td>func(*Core.Serialization.IDecoder)->u32 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readU64</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->u64 throw</td>
-<td class="enumeration">
-</td>
+<td>readU64</td>
+<td>func(*Core.Serialization.IDecoder)->u64 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readF32</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->f32 throw</td>
-<td class="enumeration">
-</td>
+<td>readF32</td>
+<td>func(*Core.Serialization.IDecoder)->f32 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readF64</td>
-<td class="tdtype">
-func(*Core.Serialization.IDecoder)->f64 throw</td>
-<td class="enumeration">
-</td>
+<td>readF64</td>
+<td>func(*Core.Serialization.IDecoder)->f64 throw</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -21313,156 +18499,99 @@ func(*Core.Serialization.IDecoder)->f64 throw</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-start</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, *Core.ConcatBuffer) throw</td>
-<td class="enumeration">
-</td>
+<td>start</td>
+<td>func(*Core.Serialization.IEncoder, *Core.ConcatBuffer) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-end</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder) throw</td>
-<td class="enumeration">
-</td>
+<td>end</td>
+<td>func(*Core.Serialization.IEncoder) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-beginField</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, Swag.TypeValue) throw</td>
-<td class="enumeration">
-</td>
+<td>beginField</td>
+<td>func(*Core.Serialization.IEncoder, Swag.TypeValue) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endField</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder) throw</td>
-<td class="enumeration">
-</td>
+<td>endField</td>
+<td>func(*Core.Serialization.IEncoder) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-beginSection</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, Core.Serialization.SectionKind) throw</td>
-<td class="enumeration">
-</td>
+<td>beginSection</td>
+<td>func(*Core.Serialization.IEncoder, Core.Serialization.SectionKind) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endSection</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder) throw</td>
-<td class="enumeration">
-</td>
+<td>endSection</td>
+<td>func(*Core.Serialization.IEncoder) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-write</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, const ^void, const *Swag.TypeInfo) throw</td>
-<td class="enumeration">
-</td>
+<td>write</td>
+<td>func(*Core.Serialization.IEncoder, const ^void, const *Swag.TypeInfo) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeBufferU8</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, const ^u8, u64) throw</td>
-<td class="enumeration">
-</td>
+<td>writeBufferU8</td>
+<td>func(*Core.Serialization.IEncoder, const ^u8, u64) throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeBool</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, bool)</td>
-<td class="enumeration">
-</td>
+<td>writeBool</td>
+<td>func(*Core.Serialization.IEncoder, bool)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeS8</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, s8)</td>
-<td class="enumeration">
-</td>
+<td>writeS8</td>
+<td>func(*Core.Serialization.IEncoder, s8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeS16</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, s16)</td>
-<td class="enumeration">
-</td>
+<td>writeS16</td>
+<td>func(*Core.Serialization.IEncoder, s16)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeS32</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, s32)</td>
-<td class="enumeration">
-</td>
+<td>writeS32</td>
+<td>func(*Core.Serialization.IEncoder, s32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeS64</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, s64)</td>
-<td class="enumeration">
-</td>
+<td>writeS64</td>
+<td>func(*Core.Serialization.IEncoder, s64)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeU8</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, u8)</td>
-<td class="enumeration">
-</td>
+<td>writeU8</td>
+<td>func(*Core.Serialization.IEncoder, u8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeU16</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, u16)</td>
-<td class="enumeration">
-</td>
+<td>writeU16</td>
+<td>func(*Core.Serialization.IEncoder, u16)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeU32</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, u32)</td>
-<td class="enumeration">
-</td>
+<td>writeU32</td>
+<td>func(*Core.Serialization.IEncoder, u32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeU64</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, u64)</td>
-<td class="enumeration">
-</td>
+<td>writeU64</td>
+<td>func(*Core.Serialization.IEncoder, u64)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeF32</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, f32)</td>
-<td class="enumeration">
-</td>
+<td>writeF32</td>
+<td>func(*Core.Serialization.IEncoder, f32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeF64</td>
-<td class="tdtype">
-func(*Core.Serialization.IEncoder, f64)</td>
-<td class="enumeration">
-</td>
+<td>writeF64</td>
+<td>func(*Core.Serialization.IEncoder, f64)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -21744,44 +18873,29 @@ func(*Core.Serialization.IEncoder, f64)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-read</td>
-<td class="tdtype">
-func(*Core.Serialization.ISerialize, Core.Serialization.IDecoder)->bool throw</td>
-<td class="enumeration">
-</td>
+<td>read</td>
+<td>func(*Core.Serialization.ISerialize, Core.Serialization.IDecoder)->bool throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-write</td>
-<td class="tdtype">
-func(*Core.Serialization.ISerialize, Core.Serialization.IEncoder)->bool throw</td>
-<td class="enumeration">
-</td>
+<td>write</td>
+<td>func(*Core.Serialization.ISerialize, Core.Serialization.IEncoder)->bool throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-readElement</td>
-<td class="tdtype">
-func(*Core.Serialization.ISerialize, Swag.TypeValue, *void, Core.Serialization.IDecoder)->bool throw</td>
-<td class="enumeration">
-</td>
+<td>readElement</td>
+<td>func(*Core.Serialization.ISerialize, Swag.TypeValue, *void, Core.Serialization.IDecoder)->bool throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-writeElement</td>
-<td class="tdtype">
-func(*Core.Serialization.ISerialize, Swag.TypeValue, const *void, Core.Serialization.IEncoder)->bool throw</td>
-<td class="enumeration">
-</td>
+<td>writeElement</td>
+<td>func(*Core.Serialization.ISerialize, Swag.TypeValue, const *void, Core.Serialization.IEncoder)->bool throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-postSerialize</td>
-<td class="tdtype">
-func(*Core.Serialization.ISerialize, *void, Core.Serialization.IDecoder) throw</td>
-<td class="enumeration">
-</td>
+<td>postSerialize</td>
+<td>func(*Core.Serialization.ISerialize, *void, Core.Serialization.IDecoder) throw</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -21901,141 +19015,95 @@ func(*Core.Serialization.ISerialize, *void, Core.Serialization.IDecoder) throw</
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-stream</td>
-<td class="tdtype">
-<a href="#Core_ByteStream">Core.ByteStream</a></td>
-<td class="enumeration">
-</td>
+<td>stream</td>
+<td><a href="#Core_ByteStream">Core.ByteStream</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-line</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>line</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-col</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>col</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-propName</td>
-<td class="tdtype">
-<a href="#Core_String">Core.String</a></td>
-<td class="enumeration">
-</td>
+<td>propName</td>
+<td><a href="#Core_String">Core.String</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_beginElement">beginElement(self, const ref TypeValue)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_beginRoot">beginRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_beginRoot">beginRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_beginSection">beginSection(self, SectionKind)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_beginSection">beginSection(self, SectionKind)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_beginSequence">beginSequence(self, const *TypeInfo, *u8, *u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_beginSequence">beginSequence(self, const *TypeInfo, *u8, *u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_beginValue">beginValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_beginValue">beginValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_endElement">endElement(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_endElement">endElement(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_endRoot">endRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_endRoot">endRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_endSection">endSection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_endSection">endSection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_endSequence">endSequence(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_endSequence">endSequence(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_endStruct">endStruct(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_endStruct">endStruct(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_endValue">endValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_endValue">endValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_getVersion">getVersion(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_getVersion">getVersion(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_readNative">readNative(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_readNative">readNative(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_startRead">startRead(self, const [..] u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_startRead">startRead(self, const [..] u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_toNextSequenceElement">toNextSequenceElement(self, *u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_toNextSequenceElement">toNextSequenceElement(self, *u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_JSon_zapBlanks">zapBlanks(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_JSon_zapBlanks">zapBlanks(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22290,60 +19358,39 @@ propName</td>
 <p>Binary serializer with forward/backward compatibility. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-stream</td>
-<td class="tdtype">
-<a href="#Core_ByteStream">Core.ByteStream</a></td>
-<td class="enumeration">
-</td>
+<td>stream</td>
+<td><a href="#Core_ByteStream">Core.ByteStream</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-options</td>
-<td class="tdtype">
-<a href="#Core_Serialization_Read_TagBinOptions">Core.Serialization.Read.TagBinOptions</a></td>
-<td class="enumeration">
-</td>
+<td>options</td>
+<td><a href="#Core_Serialization_Read_TagBinOptions">Core.Serialization.Read.TagBinOptions</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-freeSections</td>
-<td class="tdtype">
-Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
-<td class="enumeration">
-</td>
+<td>freeSections</td>
+<td>Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sections</td>
-<td class="tdtype">
-Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
-<td class="enumeration">
-</td>
+<td>sections</td>
+<td>Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-convertNextNative</td>
-<td class="tdtype">
-const *Swag.TypeInfoNative</td>
-<td class="enumeration">
-</td>
+<td>convertNextNative</td>
+<td>const *Swag.TypeInfoNative</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-convertValToArray</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>convertValToArray</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-convertArrayToVal</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>convertArrayToVal</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>    Changes that are supported from V to V+1 are : </p>
@@ -22370,100 +19417,68 @@ bool</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_beginElement">beginElement(self, const ref TypeValue)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_beginRoot">beginRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_beginRoot">beginRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_beginSection">beginSection(self, SectionKind, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_beginSection">beginSection(self, SectionKind, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_beginSequence">beginSequence(self, const *TypeInfo, *u8, *u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_beginSequence">beginSequence(self, const *TypeInfo, *u8, *u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_beginValue">beginValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_beginValue">beginValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_endElement">endElement(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_endElement">endElement(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_endRoot">endRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_endRoot">endRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_endSection">endSection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_endSection">endSection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_endSequence">endSequence(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_endSequence">endSequence(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_endStruct">endStruct(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_endStruct">endStruct(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_endValue">endValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_endValue">endValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_getVersion">getVersion(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_getVersion">getVersion(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_readNative">readNative(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_readNative">readNative(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_startRead">startRead(self, const [..] u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_startRead">startRead(self, const [..] u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">toNextSequenceElement(self, *u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">toNextSequenceElement(self, *u64)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22703,13 +19718,9 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-tryForward</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Accept to try to read a newest version, otherwise error. </p>
-</td>
+<td>tryForward</td>
+<td>bool</td>
+<td>Accept to try to read a newest version, otherwise error. </td>
 </tr>
 </table>
 <p>
@@ -22725,44 +19736,29 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-mapSeek</td>
-<td class="tdtype">
-Core.HashTable'(u32, u64)</td>
-<td class="enumeration">
-</td>
+<td>mapSeek</td>
+<td>Core.HashTable'(u32, u64)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-afterFatSeek</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>afterFatSeek</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-version</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>version</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-kind</td>
-<td class="tdtype">
-<a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a></td>
-<td class="enumeration">
-</td>
+<td>kind</td>
+<td><a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-skipFat</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>skipFat</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22778,22 +19774,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Raw</td>
-<td class="enumeration">
-</td>
+<td>Raw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Unordered</td>
-<td class="enumeration">
-</td>
+<td>Unordered</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Ordered</td>
-<td class="enumeration">
-</td>
+<td>Ordered</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22809,92 +19799,58 @@ Ordered</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-encode</td>
-<td class="tdtype">
-<a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a></td>
-<td class="enumeration">
-</td>
+<td>encode</td>
+<td><a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-decode</td>
-<td class="tdtype">
-<a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a></td>
-<td class="enumeration">
-</td>
+<td>decode</td>
+<td><a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isWrite</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isWrite</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_beginSection">beginSection(self, SectionKind)</a></td>
-<td class="enumeration">
-<p>Start a new section. </p>
-</td>
+<td><a href="#Core_Serialization_Serializer_beginSection">beginSection(self, SectionKind)</a></td>
+<td>Start a new section. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_end">end(self)</a></td>
-<td class="enumeration">
-<p>End encoding/decoding. </p>
-</td>
+<td><a href="#Core_Serialization_Serializer_end">end(self)</a></td>
+<td>End encoding/decoding. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_endSection">endSection(self)</a></td>
-<td class="enumeration">
-<p>End the previous section. </p>
-</td>
+<td><a href="#Core_Serialization_Serializer_endSection">endSection(self)</a></td>
+<td>End the previous section. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_isReading">isReading(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Serializer_isReading">isReading(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_isWriting">isWriting(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Serializer_isWriting">isWriting(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_serialize">serialize(self, string, *MT)</a></td>
-<td class="enumeration">
-<p>Serialize one value. </p>
-</td>
+<td><a href="#Core_Serialization_Serializer_serialize">serialize(self, string, *MT)</a></td>
+<td>Serialize one value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_serialize">serialize(self, string, u32, *MT)</a></td>
-<td class="enumeration">
-<p>Serialize one value. </p>
-</td>
+<td><a href="#Core_Serialization_Serializer_serialize">serialize(self, string, u32, *MT)</a></td>
+<td>Serialize one value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_startRead">startRead(self, IDecoder, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Start decoding. </p>
-</td>
+<td><a href="#Core_Serialization_Serializer_startRead">startRead(self, IDecoder, const [..] u8)</a></td>
+<td>Start decoding. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Serializer_startWrite">startWrite(self, IEncoder, *ConcatBuffer)</a></td>
-<td class="enumeration">
-<p>Start encoding. </p>
-</td>
+<td><a href="#Core_Serialization_Serializer_startWrite">startWrite(self, IEncoder, *ConcatBuffer)</a></td>
+<td>Start encoding. </td>
 </tr>
 </table>
 <p>
@@ -23050,145 +20006,97 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-options</td>
-<td class="tdtype">
-<a href="#Core_Serialization_Write_JSonOptions">Core.Serialization.Write.JSonOptions</a></td>
-<td class="enumeration">
-</td>
+<td>options</td>
+<td><a href="#Core_Serialization_Write_JSonOptions">Core.Serialization.Write.JSonOptions</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-output</td>
-<td class="tdtype">
-*Core.ConcatBuffer</td>
-<td class="enumeration">
-</td>
+<td>output</td>
+<td>*Core.ConcatBuffer</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-indent</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>indent</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fmtInt</td>
-<td class="tdtype">
-<a href="#Core_StrConv_ConvertFormatInt">Core.StrConv.ConvertFormatInt</a></td>
-<td class="enumeration">
-</td>
+<td>fmtInt</td>
+<td><a href="#Core_StrConv_ConvertFormatInt">Core.StrConv.ConvertFormatInt</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fmtFloat</td>
-<td class="tdtype">
-<a href="#Core_StrConv_ConvertFormatFloat">Core.StrConv.ConvertFormatFloat</a></td>
-<td class="enumeration">
-</td>
+<td>fmtFloat</td>
+<td><a href="#Core_StrConv_ConvertFormatFloat">Core.StrConv.ConvertFormatFloat</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastSeekValue</td>
-<td class="tdtype">
-<a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
-<td class="enumeration">
-</td>
+<td>lastSeekValue</td>
+<td><a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_beginElement">beginElement(self, const ref TypeValue)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_beginRoot">beginRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_beginRoot">beginRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_beginSection">beginSection(self, SectionKind)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_beginSection">beginSection(self, SectionKind)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_beginSequence">beginSequence(self, const *TypeInfo, const *void, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_beginSequence">beginSequence(self, const *TypeInfo, const *void, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_beginValue">beginValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_beginValue">beginValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_endElement">endElement(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_endElement">endElement(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_endRoot">endRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_endRoot">endRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_endSection">endSection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_endSection">endSection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_endSequence">endSequence(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_endSequence">endSequence(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_endStruct">endStruct(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_endStruct">endStruct(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_endValue">endValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_endValue">endValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_startWrite">startWrite(self, *ConcatBuffer)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_startWrite">startWrite(self, *ConcatBuffer)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_writeIndent">writeIndent(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_writeIndent">writeIndent(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_JSon_writeNative">writeNative(self, NT)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_JSon_writeNative">writeNative(self, NT)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -23414,20 +20322,14 @@ lastSeekValue</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-indentLevel</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>indentLevel</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-saveBlanks</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>saveBlanks</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -23443,115 +20345,78 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-output</td>
-<td class="tdtype">
-*Core.ConcatBuffer</td>
-<td class="enumeration">
-</td>
+<td>output</td>
+<td>*Core.ConcatBuffer</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-freeSections</td>
-<td class="tdtype">
-Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
-<td class="enumeration">
-</td>
+<td>freeSections</td>
+<td>Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sections</td>
-<td class="tdtype">
-Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
-<td class="enumeration">
-</td>
+<td>sections</td>
+<td>Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_beginElement">beginElement(self, const ref TypeValue)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_beginRoot">beginRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_beginRoot">beginRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_beginSection">beginSection(self, SectionKind)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_beginSection">beginSection(self, SectionKind)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_beginSequence">beginSequence(self, const *TypeInfo, const *void, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_beginSequence">beginSequence(self, const *TypeInfo, const *void, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_beginValue">beginValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_beginValue">beginValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_endElement">endElement(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_endElement">endElement(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_endRoot">endRoot(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_endRoot">endRoot(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_endSection">endSection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_endSection">endSection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_endSequence">endSequence(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_endSequence">endSequence(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_endStruct">endStruct(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_endStruct">endStruct(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_endValue">endValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_endValue">endValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_startWrite">startWrite(self, *ConcatBuffer)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_startWrite">startWrite(self, *ConcatBuffer)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Serialization_Write_TagBin_writeNative">writeNative(self, NT)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Serialization_Write_TagBin_writeNative">writeNative(self, NT)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -23763,28 +20628,19 @@ Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-startSeek</td>
-<td class="tdtype">
-<a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
-<td class="enumeration">
-</td>
+<td>startSeek</td>
+<td><a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mapSeek</td>
-<td class="tdtype">
-Core.HashTable'(u32, Core.ConcatBufferSeek)</td>
-<td class="enumeration">
-</td>
+<td>mapSeek</td>
+<td>Core.HashTable'(u32, Core.ConcatBufferSeek)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-kind</td>
-<td class="tdtype">
-<a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a></td>
-<td class="enumeration">
-</td>
+<td>kind</td>
+<td><a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -23800,28 +20656,20 @@ kind</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Root</td>
-<td class="enumeration">
-</td>
+<td>Root</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Fat</td>
-<td class="enumeration">
-</td>
+<td>Fat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sequence</td>
-<td class="enumeration">
-</td>
+<td>Sequence</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Version</td>
-<td class="enumeration">
-</td>
+<td>Version</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -23855,88 +20703,52 @@ Version</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_contains">contains(const [..] T, V)</a></td>
-<td class="enumeration">
-<p>Returns true if the given slice contains the <code class="incode">value</code>. </p>
-</td>
+<td><a href="#Core_Slice_contains">contains(const [..] T, V)</a></td>
+<td>Returns true if the given slice contains the <code class="incode">value</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_equals">equals(const [..] T, const [..] T)</a></td>
-<td class="enumeration">
-<p>Returns true if two slices are equal. </p>
-</td>
+<td><a href="#Core_Slice_equals">equals(const [..] T, const [..] T)</a></td>
+<td>Returns true if two slices are equal. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_findLinear">findLinear(const [..] T, V)</a></td>
-<td class="enumeration">
-<p>Find <code class="incode">value</code> in a slice by performing a linear search. </p>
-</td>
+<td><a href="#Core_Slice_findLinear">findLinear(const [..] T, V)</a></td>
+<td>Find <code class="incode">value</code> in a slice by performing a linear search. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_findSorted">findSorted(const [..] T, V)</a></td>
-<td class="enumeration">
-<p>Find <code class="incode">value</code> in a slice by performing a binary search. </p>
-</td>
+<td><a href="#Core_Slice_findSorted">findSorted(const [..] T, V)</a></td>
+<td>Find <code class="incode">value</code> in a slice by performing a binary search. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_insertionSort">insertionSort([..] T, func(*void, T, T)->s32)</a></td>
-<td class="enumeration">
-<p>Insertion sort algorithm (slow). </p>
-</td>
+<td><a href="#Core_Slice_insertionSort">insertionSort([..] T, func(*void, T, T)->s32)</a></td>
+<td>Insertion sort algorithm (slow). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_isSorted">isSorted(const [..] T)</a></td>
-<td class="enumeration">
-<p>Returns true if the slice is sorted. </p>
-</td>
+<td><a href="#Core_Slice_isSorted">isSorted(const [..] T)</a></td>
+<td>Returns true if the slice is sorted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_isSorted">isSorted(const [..] T, func(*void, T, T)->s32)</a></td>
-<td class="enumeration">
-<p>Returns true if the slice is sorted. </p>
-</td>
+<td><a href="#Core_Slice_isSorted">isSorted(const [..] T, func(*void, T, T)->s32)</a></td>
+<td>Returns true if the slice is sorted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_modifyInPlace">modifyInPlace([..] T, func(*T))</a></td>
-<td class="enumeration">
-<p>Transform the content of a slice with a given lambda. </p>
-</td>
+<td><a href="#Core_Slice_modifyInPlace">modifyInPlace([..] T, func(*T))</a></td>
+<td>Transform the content of a slice with a given lambda. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_quickSort">quickSort([..] T, func(*void, T, T)->s32)</a></td>
-<td class="enumeration">
-<p>Quick sort algorithm. </p>
-</td>
+<td><a href="#Core_Slice_quickSort">quickSort([..] T, func(*void, T, T)->s32)</a></td>
+<td>Quick sort algorithm. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_reverse">reverse([..] T)</a></td>
-<td class="enumeration">
-<p>Reverse the content of a slice. </p>
-</td>
+<td><a href="#Core_Slice_reverse">reverse([..] T)</a></td>
+<td>Reverse the content of a slice. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_sort">sort([..] T)</a></td>
-<td class="enumeration">
-<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
-</td>
+<td><a href="#Core_Slice_sort">sort([..] T)</a></td>
+<td>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Slice_sort">sort([..] T, func(*void, T, T)->s32)</a></td>
-<td class="enumeration">
-<p>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </p>
-</td>
+<td><a href="#Core_Slice_sort">sort([..] T, func(*void, T, T)->s32)</a></td>
+<td>Sort the slice, by picking the right algorithm depending on the type and the  number of elements. </td>
 </tr>
 </table>
 <p>
@@ -24123,317 +20935,192 @@ Version</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-[?] T</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>[?] T</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>count</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_add">add(self, T)</a></td>
-<td class="enumeration">
-<p>Add a copy of one element at the end of the array. </p>
-</td>
+<td><a href="#Core_StaticArray_add">add(self, T)</a></td>
+<td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_add">add(self, const [..] T)</a></td>
-<td class="enumeration">
-<p>Append a slice to the end of this instance. </p>
-</td>
+<td><a href="#Core_StaticArray_add">add(self, const [..] T)</a></td>
+<td>Append a slice to the end of this instance. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_add">add(self, moveref T)</a></td>
-<td class="enumeration">
-<p>Move one element at the end of the array. </p>
-</td>
+<td><a href="#Core_StaticArray_add">add(self, moveref T)</a></td>
+<td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_addOnce">addOnce(self, T)</a></td>
-<td class="enumeration">
-<p>Add a copy of one element at the end of the array. </p>
-</td>
+<td><a href="#Core_StaticArray_addOnce">addOnce(self, T)</a></td>
+<td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_back">back(self)</a></td>
-<td class="enumeration">
-<p>Returns a copy of the last element. </p>
-</td>
+<td><a href="#Core_StaticArray_back">back(self)</a></td>
+<td>Returns a copy of the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_backPtr">backPtr(self)</a></td>
-<td class="enumeration">
-<p>Returns the address of the last element. </p>
-</td>
+<td><a href="#Core_StaticArray_backPtr">backPtr(self)</a></td>
+<td>Returns the address of the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set the number of elements to 0. </p>
-</td>
+<td><a href="#Core_StaticArray_clear">clear(self)</a></td>
+<td>Set the number of elements to 0. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_contains">contains(self, V)</a></td>
-<td class="enumeration">
-<p>Returns true if the given <code class="incode">value</code> is in the array. </p>
-</td>
+<td><a href="#Core_StaticArray_contains">contains(self, V)</a></td>
+<td>Returns true if the given <code class="incode">value</code> is in the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_emplaceAddress">emplaceAddress(self, u32)</a></td>
-<td class="enumeration">
-<p>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </p>
-</td>
+<td><a href="#Core_StaticArray_emplaceAddress">emplaceAddress(self, u32)</a></td>
+<td>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
-<td class="enumeration">
-<p>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_StaticArray_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
+<td>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
-<td class="enumeration">
-<p>Reserve room at the end of the array for <code class="incode">num</code> elements. </p>
-</td>
+<td><a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
+<td>Reserve room at the end of the array for <code class="incode">num</code> elements. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_free">free(self)</a></td>
-<td class="enumeration">
-<p>Free the array content. </p>
-</td>
+<td><a href="#Core_StaticArray_free">free(self)</a></td>
+<td>Free the array content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_front">front(self)</a></td>
-<td class="enumeration">
-<p>Returns a copy of the first element. </p>
-</td>
+<td><a href="#Core_StaticArray_front">front(self)</a></td>
+<td>Returns a copy of the first element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_frontPtr">frontPtr(self)</a></td>
-<td class="enumeration">
-<p>Returns the address of the first element. </p>
-</td>
+<td><a href="#Core_StaticArray_frontPtr">frontPtr(self)</a></td>
+<td>Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_insertAt">insertAt(self, u64, T)</a></td>
-<td class="enumeration">
-<p>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_StaticArray_insertAt">insertAt(self, u64, T)</a></td>
+<td>Insert a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_insertAt">insertAt(self, u64, const [..] T)</a></td>
-<td class="enumeration">
-<p>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_StaticArray_insertAt">insertAt(self, u64, const [..] T)</a></td>
+<td>Insert some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_insertAt">insertAt(self, u64, moveref T)</a></td>
-<td class="enumeration">
-<p>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </p>
-</td>
+<td><a href="#Core_StaticArray_insertAt">insertAt(self, u64, moveref T)</a></td>
+<td>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_isEmpty">isEmpty(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the array is empty. </p>
-</td>
+<td><a href="#Core_StaticArray_isEmpty">isEmpty(self)</a></td>
+<td>Returns true if the array is empty. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_popBack">popBack(self)</a></td>
-<td class="enumeration">
-<p>Returns a copy of the last element, and remove it from the array. </p>
-</td>
+<td><a href="#Core_StaticArray_popBack">popBack(self)</a></td>
+<td>Returns a copy of the last element, and remove it from the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_remove">remove(self, V)</a></td>
-<td class="enumeration">
-<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
-</td>
+<td><a href="#Core_StaticArray_remove">remove(self, V)</a></td>
+<td>Remove the given <code class="incode">value</code>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_remove">remove(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </p>
-</td>
+<td><a href="#Core_StaticArray_remove">remove(self, u64, u64)</a></td>
+<td>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_removeAt">removeAt(self, u64)</a></td>
-<td class="enumeration">
-<p>Remove an element at <code class="incode">index</code> by replacing it with the last element. </p>
-</td>
+<td><a href="#Core_StaticArray_removeAt">removeAt(self, u64)</a></td>
+<td>Remove an element at <code class="incode">index</code> by replacing it with the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </p>
-</td>
+<td><a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
+<td>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_removeBack">removeBack(self)</a></td>
-<td class="enumeration">
-<p>Remove the last element. </p>
-</td>
+<td><a href="#Core_StaticArray_removeBack">removeBack(self)</a></td>
+<td>Remove the last element. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_removeOrdered">removeOrdered(self, V)</a></td>
-<td class="enumeration">
-<p>Remove the given <code class="incode">value</code>  If not found, does nothing. </p>
-</td>
+<td><a href="#Core_StaticArray_removeOrdered">removeOrdered(self, V)</a></td>
+<td>Remove the given <code class="incode">value</code>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_resize">resize(self, u64)</a></td>
-<td class="enumeration">
-<p>Change the number of valid elements in the array. </p>
-</td>
+<td><a href="#Core_StaticArray_resize">resize(self, u64)</a></td>
+<td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_sort">sort(self)</a></td>
-<td class="enumeration">
-<p>Sort array. </p>
-</td>
+<td><a href="#Core_StaticArray_sort">sort(self)</a></td>
+<td>Sort array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_sort">sort(self, func(*void, T, T)->s32)</a></td>
-<td class="enumeration">
-<p>Sort array. </p>
-</td>
+<td><a href="#Core_StaticArray_sort">sort(self, func(*void, T, T)->s32)</a></td>
+<td>Sort array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_sortReverse">sortReverse(self)</a></td>
-<td class="enumeration">
-<p>Sort array in reverse order (from biggest to lowest value). </p>
-</td>
+<td><a href="#Core_StaticArray_sortReverse">sortReverse(self)</a></td>
+<td>Sort array in reverse order (from biggest to lowest value). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_toSlice">toSlice(self)</a></td>
-<td class="enumeration">
-<p>Returns a slice. </p>
-</td>
+<td><a href="#Core_StaticArray_toSlice">toSlice(self)</a></td>
+<td>Returns a slice. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opAffect">opAffect(self, const [..] T)</a></td>
-<td class="enumeration">
-<p>Initializes an Array that contains values copied from the specified array. </p>
-</td>
+<td><a href="#Core_StaticArray_opAffect">opAffect(self, const [..] T)</a></td>
+<td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opData">opData(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opData">opData(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opIndex">opIndex(self, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opIndex">opIndex(self, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opIndex">opIndex(self, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opIndex">opIndex(self, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opIndexAffect">opIndexAffect(self, u64, T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opIndexAffect">opIndexAffect(self, u64, T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opIndexAssign">opIndexAssign(self, u64, T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opIndexAssign">opIndexAssign(self, u64, T)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opSlice">opSlice(self, u64, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_StaticArray_opSlice">opSlice(self, u64, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-<p>Vist every elements of the array. </p>
-</td>
+<td><a href="#Core_StaticArray_opVisit">opVisit(self, code)</a></td>
+<td>Vist every elements of the array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StaticArray_opVisitBack">opVisitBack(self, code)</a></td>
-<td class="enumeration">
-<p>Vist every elements of the array from end to start. </p>
-</td>
+<td><a href="#Core_StaticArray_opVisitBack">opVisitBack(self, code)</a></td>
+<td>Vist every elements of the array from end to start. </td>
 </tr>
 </table>
 <p>
@@ -25017,12 +21704,9 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-value</td>
-<td class="tdtype">
-any</td>
-<td class="enumeration">
-</td>
+<td>value</td>
+<td>any</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -25039,47 +21723,31 @@ any</td>
 <p>Format structure to convert a float to a string. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> val</td>
-<td class="tdtype">
-<a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> val</td>
+<td><a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-precision</td>
-<td class="tdtype">
-s8</td>
-<td class="enumeration">
-<p>-1 is for 'most possible precision'. </p>
-</td>
+<td>precision</td>
+<td>s8</td>
+<td>-1 is for 'most possible precision'. </td>
 </tr>
 <tr>
-<td class="tdname">
-fmt</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>fmt</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceSign</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceSign</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_ConvertFormatFloat_setFormat">setFormat(self, string)</a></td>
-<td class="enumeration">
-<p>Set some format options with a given user string. </p>
-</td>
+<td><a href="#Core_StrConv_ConvertFormatFloat_setFormat">setFormat(self, string)</a></td>
+<td>Set some format options with a given user string. </td>
 </tr>
 </table>
 <p>
@@ -25124,55 +21792,37 @@ bool</td>
 <p>Format structure to convert an integer to a string. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> val</td>
-<td class="tdtype">
-<a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> val</td>
+<td><a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-base</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>base</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-padding</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>padding</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceSign</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceSign</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p> If <code class="incode">signed</code> is <code class="incode">true</code>, the value to convert must be stored in <code class="incode">signedValue</code>, otherwise it must  be stored in <code class="incode">unsignedValue</code>. </p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_ConvertFormatInt_setFormat">setFormat(self, string)</a></td>
-<td class="enumeration">
-<p>Set some format options with a given user string. </p>
-</td>
+<td><a href="#Core_StrConv_ConvertFormatInt_setFormat">setFormat(self, string)</a></td>
+<td>Set some format options with a given user string. </td>
 </tr>
 </table>
 <p>
@@ -25229,12 +21879,9 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-convert</td>
-<td class="tdtype">
-func(*Core.StrConv.IConvert, *Core.ConcatBuffer, const *Core.StrConv.ConvertFormat, string)</td>
-<td class="enumeration">
-</td>
+<td>convert</td>
+<td>func(*Core.StrConv.IConvert, *Core.ConcatBuffer, const *Core.StrConv.ConvertFormat, string)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -25250,12 +21897,9 @@ func(*Core.StrConv.IConvert, *Core.ConcatBuffer, const *Core.StrConv.ConvertForm
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-poke</td>
-<td class="tdtype">
-func(*Core.StrConv.IPokeValue, string)->string throw</td>
-<td class="enumeration">
-</td>
+<td>poke</td>
+<td>func(*Core.StrConv.IPokeValue, string)->string throw</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -25271,92 +21915,56 @@ func(*Core.StrConv.IPokeValue, string)->string throw</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-<a href="#Core_ConcatBuffer">Core.ConcatBuffer</a></td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td><a href="#Core_ConcatBuffer">Core.ConcatBuffer</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_appendAny">appendAny(self, any, string)</a></td>
-<td class="enumeration">
-<p>Append a value. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_appendAny">appendAny(self, any, string)</a></td>
+<td>Append a value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_appendEOL">appendEOL(self)</a></td>
-<td class="enumeration">
-<p>Append a end of line. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_appendEOL">appendEOL(self)</a></td>
+<td>Append a end of line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_appendFormat">appendFormat(self, string, ...)</a></td>
-<td class="enumeration">
-<p>Append a formatted string. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_appendFormat">appendFormat(self, string, ...)</a></td>
+<td>Append a formatted string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_appendRune">appendRune(self, rune)</a></td>
-<td class="enumeration">
-<p>Append a rune. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_appendRune">appendRune(self, rune)</a></td>
+<td>Append a rune. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_appendString">appendString(self, string)</a></td>
-<td class="enumeration">
-<p>Append a string. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_appendString">appendString(self, string)</a></td>
+<td>Append a string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear the content of the builder. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_clear">clear(self)</a></td>
+<td>Clear the content of the builder. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_count">count(self)</a></td>
-<td class="enumeration">
-<p>Returns the number of characters. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_count">count(self)</a></td>
+<td>Returns the number of characters. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_moveToString">moveToString(self)</a></td>
-<td class="enumeration">
-<p>Return the content as a string by eating the content of the string builder (if possible). </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_moveToString">moveToString(self)</a></td>
+<td>Return the content as a string by eating the content of the string builder (if possible). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_setBucketSize">setBucketSize(self, u64)</a></td>
-<td class="enumeration">
-<p>Set sizes of buckets of the string builder. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_setBucketSize">setBucketSize(self, u64)</a></td>
+<td>Set sizes of buckets of the string builder. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_toString">toString(self)</a></td>
-<td class="enumeration">
-<p>Return the content as a string. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_toString">toString(self)</a></td>
+<td>Return the content as a string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated(self)</a></td>
-<td class="enumeration">
-<p>Force a ending 0. </p>
-</td>
+<td><a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated(self)</a></td>
+<td>Force a ending 0. </td>
 </tr>
 </table>
 <p>
@@ -26167,372 +22775,227 @@ buffer</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-^u8</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>^u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-length</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>length</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-capacity</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>capacity</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-</td>
+<td>allocator</td>
+<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-padding</td>
-<td class="tdtype">
-[16] u8</td>
-<td class="enumeration">
-</td>
+<td>padding</td>
+<td>[16] u8</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_String_append">append(self, rune)</a></td>
-<td class="enumeration">
-<p>Append a rune to the String. </p>
-</td>
+<td><a href="#Core_String_append">append(self, rune)</a></td>
+<td>Append a rune to the String. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_append">append(self, string)</a></td>
-<td class="enumeration">
-<p>Append a string to the String. </p>
-</td>
+<td><a href="#Core_String_append">append(self, string)</a></td>
+<td>Append a string to the String. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_append">append(self, u8)</a></td>
-<td class="enumeration">
-<p>Append a byte to the String. </p>
-</td>
+<td><a href="#Core_String_append">append(self, u8)</a></td>
+<td>Append a byte to the String. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_appendFormat">appendFormat(self, string, ...)</a></td>
-<td class="enumeration">
-<p>Append a formatted string. </p>
-</td>
+<td><a href="#Core_String_appendFormat">appendFormat(self, string, ...)</a></td>
+<td>Append a formatted string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_back">back(self)</a></td>
-<td class="enumeration">
-<p>Get the last byte. </p>
-</td>
+<td><a href="#Core_String_back">back(self)</a></td>
+<td>Get the last byte. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set the length of the String to 0. </p>
-</td>
+<td><a href="#Core_String_clear">clear(self)</a></td>
+<td>Set the length of the String to 0. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_ensureNotNull">ensureNotNull(self)</a></td>
-<td class="enumeration">
-<p>Transform a null string in an empty one. </p>
-</td>
+<td><a href="#Core_String_ensureNotNull">ensureNotNull(self)</a></td>
+<td>Transform a null string in an empty one. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_from">from(string)</a></td>
-<td class="enumeration">
-<p>Convert a literal string to a String. </p>
-</td>
+<td><a href="#Core_String_from">from(string)</a></td>
+<td>Convert a literal string to a String. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_grow">grow(self, u64)</a></td>
-<td class="enumeration">
-<p>Ensure the String is big enough to store a given amount of bytes. </p>
-</td>
+<td><a href="#Core_String_grow">grow(self, u64)</a></td>
+<td>Ensure the String is big enough to store a given amount of bytes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_insert">insert(self, u64, string)</a></td>
-<td class="enumeration">
-<p>Insert a substring at the given position. </p>
-</td>
+<td><a href="#Core_String_insert">insert(self, u64, string)</a></td>
+<td>Insert a substring at the given position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_isEmpty">isEmpty(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the String has zero length. </p>
-</td>
+<td><a href="#Core_String_isEmpty">isEmpty(self)</a></td>
+<td>Returns true if the String has zero length. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_isNull">isNull(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the String is null (undefined). </p>
-</td>
+<td><a href="#Core_String_isNull">isNull(self)</a></td>
+<td>Returns true if the String is null (undefined). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_isNullOrEmpty">isNullOrEmpty(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the String is null or empty. </p>
-</td>
+<td><a href="#Core_String_isNullOrEmpty">isNullOrEmpty(self)</a></td>
+<td>Returns true if the String is null or empty. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_join">join(string...)</a></td>
-<td class="enumeration">
-<p>Join a list of strings to make a unique one. </p>
-</td>
+<td><a href="#Core_String_join">join(string...)</a></td>
+<td>Join a list of strings to make a unique one. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_joinWith">joinWith(string, string...)</a></td>
-<td class="enumeration">
-<p>Join an list of strings to make a unique one, by using a given <code class="incode">separator</code>  between them. </p>
-</td>
+<td><a href="#Core_String_joinWith">joinWith(string, string...)</a></td>
+<td>Join an list of strings to make a unique one, by using a given <code class="incode">separator</code>  between them. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_makeLower">makeLower(self, CharacterSet)</a></td>
-<td class="enumeration">
-<p>Convert the string inplace to lower case. </p>
-</td>
+<td><a href="#Core_String_makeLower">makeLower(self, CharacterSet)</a></td>
+<td>Convert the string inplace to lower case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_makeUpper">makeUpper(self, CharacterSet)</a></td>
-<td class="enumeration">
-<p>Convert the string inplace to upper case. </p>
-</td>
+<td><a href="#Core_String_makeUpper">makeUpper(self, CharacterSet)</a></td>
+<td>Convert the string inplace to upper case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_remove">remove(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Remove some bytes at the given index. </p>
-</td>
+<td><a href="#Core_String_remove">remove(self, u64, u64)</a></td>
+<td>Remove some bytes at the given index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_removeBack">removeBack(self, u64)</a></td>
-<td class="enumeration">
-<p>Remove some bytes at the end. </p>
-</td>
+<td><a href="#Core_String_removeBack">removeBack(self, u64)</a></td>
+<td>Remove some bytes at the end. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_replace">replace(self, string, string, ComparisonType)</a></td>
-<td class="enumeration">
-<p>Replace all occurences of <code class="incode">what</code> with <code class="incode">by</code>. </p>
-</td>
+<td><a href="#Core_String_replace">replace(self, string, string, ComparisonType)</a></td>
+<td>Replace all occurences of <code class="incode">what</code> with <code class="incode">by</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_reserve">reserve(self, u64)</a></td>
-<td class="enumeration">
-<p>Reserve room for at least <code class="incode">newCapacity</code> bytes. </p>
-</td>
+<td><a href="#Core_String_reserve">reserve(self, u64)</a></td>
+<td>Reserve room for at least <code class="incode">newCapacity</code> bytes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_toCharArray">toCharArray(self)</a></td>
-<td class="enumeration">
-<p>Convert string to a 32 bits character array. </p>
-</td>
+<td><a href="#Core_String_toCharArray">toCharArray(self)</a></td>
+<td>Convert string to a 32 bits character array. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_toLower">toLower(self, CharacterSet)</a></td>
-<td class="enumeration">
-<p>Returns a new String in lower case. </p>
-</td>
+<td><a href="#Core_String_toLower">toLower(self, CharacterSet)</a></td>
+<td>Returns a new String in lower case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_toLower">toLower(string, CharacterSet)</a></td>
-<td class="enumeration">
-<p>Returns a new String in lower case. </p>
-</td>
+<td><a href="#Core_String_toLower">toLower(string, CharacterSet)</a></td>
+<td>Returns a new String in lower case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_toSlice">toSlice(self)</a></td>
-<td class="enumeration">
-<p>Returns a slice type. </p>
-</td>
+<td><a href="#Core_String_toSlice">toSlice(self)</a></td>
+<td>Returns a slice type. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_toString">toString(self)</a></td>
-<td class="enumeration">
-<p>Returns a string type. </p>
-</td>
+<td><a href="#Core_String_toString">toString(self)</a></td>
+<td>Returns a string type. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_toUpper">toUpper(self, CharacterSet)</a></td>
-<td class="enumeration">
-<p>Returns a new String in upper case. </p>
-</td>
+<td><a href="#Core_String_toUpper">toUpper(self, CharacterSet)</a></td>
+<td>Returns a new String in upper case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_toUpper">toUpper(string, CharacterSet)</a></td>
-<td class="enumeration">
-<p>Returns a new String in lower case. </p>
-</td>
+<td><a href="#Core_String_toUpper">toUpper(string, CharacterSet)</a></td>
+<td>Returns a new String in lower case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_trim">trim(self)</a></td>
-<td class="enumeration">
-<p>Removes all leading and trailing white-space characters from the current String. </p>
-</td>
+<td><a href="#Core_String_trim">trim(self)</a></td>
+<td>Removes all leading and trailing white-space characters from the current String. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_trimEnd">trimEnd(self)</a></td>
-<td class="enumeration">
-<p>Remove whitespaces at the end of the String. </p>
-</td>
+<td><a href="#Core_String_trimEnd">trimEnd(self)</a></td>
+<td>Remove whitespaces at the end of the String. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_trimStart">trimStart(self)</a></td>
-<td class="enumeration">
-<p>Remove whitespaces at the start of the String. </p>
-</td>
+<td><a href="#Core_String_trimStart">trimStart(self)</a></td>
+<td>Remove whitespaces at the start of the String. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opAffect">opAffect(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opAffect">opAffect(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opAssign">opAssign(self, rune)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opAssign">opAssign(self, rune)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opAssign">opAssign(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opAssign">opAssign(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opAssign">opAssign(self, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opAssign">opAssign(self, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opCast">opCast(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opCast">opCast(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opCmp">opCmp(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opCmp">opCmp(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opData">opData(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opData">opData(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opEquals">opEquals(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opEquals">opEquals(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opIndex">opIndex(self, u64)</a></td>
-<td class="enumeration">
-<p>Returns the byte at the given index. </p>
-</td>
+<td><a href="#Core_String_opIndex">opIndex(self, u64)</a></td>
+<td>Returns the byte at the given index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opIndexAffect">opIndexAffect(self, u64, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opIndexAffect">opIndexAffect(self, u64, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opIndexAssign">opIndexAssign(self, u64, u8)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opIndexAssign">opIndexAssign(self, u64, u8)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opSlice">opSlice(self, u64, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_String_opSlice">opSlice(self, u64, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opVisitBytes">opVisitBytes(self, code)</a></td>
-<td class="enumeration">
-<p>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </p>
-</td>
+<td><a href="#Core_String_opVisitBytes">opVisitBytes(self, code)</a></td>
+<td>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_String_opVisitRunes">opVisitRunes(self, code)</a></td>
-<td class="enumeration">
-<p>Visit the string runes  See Utf8.visitRunes for aliases. </p>
-</td>
+<td><a href="#Core_String_opVisitRunes">opVisitRunes(self, code)</a></td>
+<td>Visit the string runes  See Utf8.visitRunes for aliases. </td>
 </tr>
 </table>
 <p>
@@ -27174,64 +23637,40 @@ padding</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Event_create">create()</a></td>
-<td class="enumeration">
-<p>Creates a new event. </p>
-</td>
+<td><a href="#Core_Sync_Event_create">create()</a></td>
+<td>Creates a new event. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Event_init">init(self, bool, bool)</a></td>
-<td class="enumeration">
-<p>Initialize event. </p>
-</td>
+<td><a href="#Core_Sync_Event_init">init(self, bool, bool)</a></td>
+<td>Initialize event. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Event_isValid">isValid(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the event is valid. </p>
-</td>
+<td><a href="#Core_Sync_Event_isValid">isValid(self)</a></td>
+<td>Returns true if the event is valid. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Event_release">release(self)</a></td>
-<td class="enumeration">
-<p>Destroy an existing event. </p>
-</td>
+<td><a href="#Core_Sync_Event_release">release(self)</a></td>
+<td>Destroy an existing event. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Event_reset">reset(self)</a></td>
-<td class="enumeration">
-<p>Reset the event state. </p>
-</td>
+<td><a href="#Core_Sync_Event_reset">reset(self)</a></td>
+<td>Reset the event state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Event_signal">signal(self)</a></td>
-<td class="enumeration">
-<p>Signal the event. </p>
-</td>
+<td><a href="#Core_Sync_Event_signal">signal(self)</a></td>
+<td>Signal the event. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Event_wait">wait(self)</a></td>
-<td class="enumeration">
-<p>Wait for the event to be signaled. </p>
-</td>
+<td><a href="#Core_Sync_Event_wait">wait(self)</a></td>
+<td>Wait for the event to be signaled. </td>
 </tr>
 </table>
 <p>
@@ -27352,36 +23791,24 @@ Win32.HANDLE</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-v</td>
-<td class="tdtype">
-Win32.SRWLOCK</td>
-<td class="enumeration">
-</td>
+<td>v</td>
+<td>Win32.SRWLOCK</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Mutex_lock">lock(self)</a></td>
-<td class="enumeration">
-<p>Lock mutex. </p>
-</td>
+<td><a href="#Core_Sync_Mutex_lock">lock(self)</a></td>
+<td>Lock mutex. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Mutex_tryLock">tryLock(self)</a></td>
-<td class="enumeration">
-<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
-</td>
+<td><a href="#Core_Sync_Mutex_tryLock">tryLock(self)</a></td>
+<td>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_Mutex_unlock">unlock(self)</a></td>
-<td class="enumeration">
-<p>Unlock mutex. </p>
-</td>
+<td><a href="#Core_Sync_Mutex_unlock">unlock(self)</a></td>
+<td>Unlock mutex. </td>
 </tr>
 </table>
 <p>
@@ -27442,69 +23869,44 @@ Win32.SRWLOCK</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-v</td>
-<td class="tdtype">
-Win32.SRWLOCK</td>
-<td class="enumeration">
-</td>
+<td>v</td>
+<td>Win32.SRWLOCK</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_lock">lock(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Sync_RWLock_lock">lock(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_lockExclusive">lockExclusive(self)</a></td>
-<td class="enumeration">
-<p>Lock mutex. </p>
-</td>
+<td><a href="#Core_Sync_RWLock_lockExclusive">lockExclusive(self)</a></td>
+<td>Lock mutex. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_lockShared">lockShared(self)</a></td>
-<td class="enumeration">
-<p>Lock mutex. </p>
-</td>
+<td><a href="#Core_Sync_RWLock_lockShared">lockShared(self)</a></td>
+<td>Lock mutex. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_tryLockExclusive">tryLockExclusive(self)</a></td>
-<td class="enumeration">
-<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
-</td>
+<td><a href="#Core_Sync_RWLock_tryLockExclusive">tryLockExclusive(self)</a></td>
+<td>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_tryLockShared">tryLockShared(self)</a></td>
-<td class="enumeration">
-<p>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </p>
-</td>
+<td><a href="#Core_Sync_RWLock_tryLockShared">tryLockShared(self)</a></td>
+<td>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_unlock">unlock(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Sync_RWLock_unlock">unlock(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_unlockExclusive">unlockExclusive(self)</a></td>
-<td class="enumeration">
-<p>Unlock mutex. </p>
-</td>
+<td><a href="#Core_Sync_RWLock_unlockExclusive">unlockExclusive(self)</a></td>
+<td>Unlock mutex. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Sync_RWLock_unlockShared">unlockShared(self)</a></td>
-<td class="enumeration">
-<p>Unlock mutex. </p>
-</td>
+<td><a href="#Core_Sync_RWLock_unlockShared">unlockShared(self)</a></td>
+<td>Unlock mutex. </td>
 </tr>
 </table>
 <p>
@@ -27684,126 +24086,78 @@ Win32.SRWLOCK</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-userLambda</td>
-<td class="tdtype">
-closure(Core.Threading.Thread)</td>
-<td class="enumeration">
-</td>
+<td>userLambda</td>
+<td>closure(Core.Threading.Thread)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-context</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
-<td class="enumeration">
-</td>
+<td>context</td>
+<td><a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userParam</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userParam</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-priority</td>
-<td class="tdtype">
-<a href="#Core_Threading_ThreadPriority">Core.Threading.ThreadPriority</a></td>
-<td class="enumeration">
-</td>
+<td>priority</td>
+<td><a href="#Core_Threading_ThreadPriority">Core.Threading.ThreadPriority</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Core.Threading.ThreadHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Core.Threading.ThreadHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-requestEnd</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>requestEnd</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_init">init(self, func(*void, Thread), *void, ThreadPriority, s32)</a></td>
-<td class="enumeration">
-<p>Initialize a thread in pause state. </p>
-</td>
+<td><a href="#Core_Threading_Thread_init">init(self, func(*void, Thread), *void, ThreadPriority, s32)</a></td>
+<td>Initialize a thread in pause state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_isDone">isDone(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the thread has finished. </p>
-</td>
+<td><a href="#Core_Threading_Thread_isDone">isDone(self)</a></td>
+<td>Returns true if the thread has finished. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_isValid">isValid(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the thread is valid. </p>
-</td>
+<td><a href="#Core_Threading_Thread_isValid">isValid(self)</a></td>
+<td>Returns true if the thread is valid. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd(self)</a></td>
-<td class="enumeration">
-<p>Force the thread to safely exist  User code needs to check for <code class="incode">requestEnd</code>. </p>
-</td>
+<td><a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd(self)</a></td>
+<td>Force the thread to safely exist  User code needs to check for <code class="incode">requestEnd</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_setPriority">setPriority(self, ThreadPriority)</a></td>
-<td class="enumeration">
-<p>Set the thread priority. </p>
-</td>
+<td><a href="#Core_Threading_Thread_setPriority">setPriority(self, ThreadPriority)</a></td>
+<td>Set the thread priority. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_sleep">sleep(const ref Duration)</a></td>
-<td class="enumeration">
-<p>Sleep the current thread for a given amount of milliseconds. </p>
-</td>
+<td><a href="#Core_Threading_Thread_sleep">sleep(const ref Duration)</a></td>
+<td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_start">start(self)</a></td>
-<td class="enumeration">
-<p>Resume the given thread, if it was paused. </p>
-</td>
+<td><a href="#Core_Threading_Thread_start">start(self)</a></td>
+<td>Resume the given thread, if it was paused. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_wait">wait(self)</a></td>
-<td class="enumeration">
-<p>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </p>
-</td>
+<td><a href="#Core_Threading_Thread_wait">wait(self)</a></td>
+<td>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Threading_Thread_yield">yield()</a></td>
-<td class="enumeration">
-<p>Sleep the current thread for a given amount of milliseconds. </p>
-</td>
+<td><a href="#Core_Threading_Thread_yield">yield()</a></td>
+<td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 </table>
 <p>
@@ -27954,34 +24308,24 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Lowest</td>
-<td class="enumeration">
-</td>
+<td>Lowest</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BelowNormal</td>
-<td class="enumeration">
-</td>
+<td>BelowNormal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Normal</td>
-<td class="enumeration">
-</td>
+<td>Normal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AboveNormal</td>
-<td class="enumeration">
-</td>
+<td>AboveNormal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Highest</td>
-<td class="enumeration">
-</td>
+<td>Highest</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -28013,134 +24357,85 @@ Highest</td>
 <p>Represents an instant in time, typically expressed as a date and time of day. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-year</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>year</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-month</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>month</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-day</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>day</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hour</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>hour</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minute</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>minute</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-second</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>second</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-millisecond</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>millisecond</td>
+<td>u16</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek(self)</a></td>
-<td class="enumeration">
-<p>Returns the day of week of the current date. </p>
-</td>
+<td><a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek(self)</a></td>
+<td>Returns the day of week of the current date. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName(DayOfWeek)</a></td>
-<td class="enumeration">
-<p>Returns the day of week name. </p>
-</td>
+<td><a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName(DayOfWeek)</a></td>
+<td>Returns the day of week name. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_isValid">isValid(self)</a></td>
-<td class="enumeration">
-<p>Returns true if this is a valid datatime. </p>
-</td>
+<td><a href="#Core_Time_DateTime_isValid">isValid(self)</a></td>
+<td>Returns true if this is a valid datatime. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_monthName">monthName(u16)</a></td>
-<td class="enumeration">
-<p>Returns the month name. </p>
-</td>
+<td><a href="#Core_Time_DateTime_monthName">monthName(u16)</a></td>
+<td>Returns the month name. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_now">now()</a></td>
-<td class="enumeration">
-<p>Returns a DateTime containing the current date and time. </p>
-</td>
+<td><a href="#Core_Time_DateTime_now">now()</a></td>
+<td>Returns a DateTime containing the current date and time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_parse">parse(string, DateTimeFormat, bool)</a></td>
-<td class="enumeration">
-<p>Convert a string to a DateTime with the given format. </p>
-</td>
+<td><a href="#Core_Time_DateTime_parse">parse(string, DateTimeFormat, bool)</a></td>
+<td>Convert a string to a DateTime with the given format. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_setNow">setNow(self)</a></td>
-<td class="enumeration">
-<p>Initialize the structure with the current local date and time. </p>
-</td>
+<td><a href="#Core_Time_DateTime_setNow">setNow(self)</a></td>
+<td>Initialize the structure with the current local date and time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_toString">toString(self, DateTimeFormat)</a></td>
-<td class="enumeration">
-<p>Convert to string. </p>
-</td>
+<td><a href="#Core_Time_DateTime_toString">toString(self, DateTimeFormat)</a></td>
+<td>Convert to string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_opCmp">opCmp(self, const ref DateTime)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_DateTime_opCmp">opCmp(self, const ref DateTime)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_DateTime_opEquals">opEquals(self, const ref DateTime)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_DateTime_opEquals">opEquals(self, const ref DateTime)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -28323,32 +24618,20 @@ u16</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-DateTime</td>
-<td class="enumeration">
-<p>DDDD MMMM D YYYY HH:MM:SS. </p>
-</td>
+<td>DateTime</td>
+<td>DDDD MMMM D YYYY HH:MM:SS. </td>
 </tr>
 <tr>
-<td class="tdname">
-DateTimeMs</td>
-<td class="enumeration">
-<p>DDDD MMMM D YYYY HH:MM:SS.ZZZ. </p>
-</td>
+<td>DateTimeMs</td>
+<td>DDDD MMMM D YYYY HH:MM:SS.ZZZ. </td>
 </tr>
 <tr>
-<td class="tdname">
-Iso</td>
-<td class="enumeration">
-<p>YYYY-MM-DD HH:MM:SS. </p>
-</td>
+<td>Iso</td>
+<td>YYYY-MM-DD HH:MM:SS. </td>
 </tr>
 <tr>
-<td class="tdname">
-IsoMs</td>
-<td class="enumeration">
-<p>YYYY-MM-DD HH:MM:SS.ZZZ. </p>
-</td>
+<td>IsoMs</td>
+<td>YYYY-MM-DD HH:MM:SS.ZZZ. </td>
 </tr>
 </table>
 <p>
@@ -28364,46 +24647,32 @@ IsoMs</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Sunday</td>
-<td class="enumeration">
-</td>
+<td>Sunday</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Monday</td>
-<td class="enumeration">
-</td>
+<td>Monday</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Tuesday</td>
-<td class="enumeration">
-</td>
+<td>Tuesday</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Wednesday</td>
-<td class="enumeration">
-</td>
+<td>Wednesday</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Thursday</td>
-<td class="enumeration">
-</td>
+<td>Thursday</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Friday</td>
-<td class="enumeration">
-</td>
+<td>Friday</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Saturday</td>
-<td class="enumeration">
-</td>
+<td>Saturday</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -28420,45 +24689,31 @@ Saturday</td>
 <p>Represents a delay, expressed in seconds. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-timeInSeconds</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>The duration in seconds. </p>
-</td>
+<td>timeInSeconds</td>
+<td>f32</td>
+<td>The duration in seconds. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Duration_fromMs">fromMs(u32)</a></td>
-<td class="enumeration">
-<p>Returns a duration initialized with milliseconds. </p>
-</td>
+<td><a href="#Core_Time_Duration_fromMs">fromMs(u32)</a></td>
+<td>Returns a duration initialized with milliseconds. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Duration_toMs">toMs(self)</a></td>
-<td class="enumeration">
-<p>Returns the value in milliseconds. </p>
-</td>
+<td><a href="#Core_Time_Duration_toMs">toMs(self)</a></td>
+<td>Returns the value in milliseconds. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Duration_opAffect">opAffect(self, s32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_Duration_opAffect">opAffect(self, s32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Duration_opAffectSuffix">opAffectSuffix(self, s32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_Duration_opAffectSuffix">opAffectSuffix(self, s32)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -28532,78 +24787,49 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dtMin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>dtMin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dtMax</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>dtMax</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dt</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Current delta time, in seconds. </p>
-</td>
+<td>dt</td>
+<td>f32</td>
+<td>Current delta time, in seconds. </td>
 </tr>
 <tr>
-<td class="tdname">
-frameCount</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Frame counter. </p>
-</td>
+<td>frameCount</td>
+<td>u32</td>
+<td>Frame counter. </td>
 </tr>
 <tr>
-<td class="tdname">
-prevTick</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>prevTick</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paused</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>paused</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_FrameTiming_pause">pause(self)</a></td>
-<td class="enumeration">
-<p>Pause frame timing & count. </p>
-</td>
+<td><a href="#Core_Time_FrameTiming_pause">pause(self)</a></td>
+<td>Pause frame timing & count. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_FrameTiming_unpause">unpause(self)</a></td>
-<td class="enumeration">
-<p>Unpause frame timing & count. </p>
-</td>
+<td><a href="#Core_Time_FrameTiming_unpause">unpause(self)</a></td>
+<td>Unpause frame timing & count. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_FrameTiming_update">update(self)</a></td>
-<td class="enumeration">
-<p>Update frame timers. </p>
-</td>
+<td><a href="#Core_Time_FrameTiming_update">update(self)</a></td>
+<td>Update frame timers. </td>
 </tr>
 </table>
 <p>
@@ -28665,94 +24891,58 @@ bool</td>
 <p>Provides a set of methods and properties that you can use to accurately measure elapsed time. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-isStarted</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isStarted</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-startTimeStamp</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>startTimeStamp</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-elapsedTicks</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>elapsedTicks</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds(self)</a></td>
-<td class="enumeration">
-<p>Gets the total elapsed time in microseconds, after a call to <code class="incode">stop</code>. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds(self)</a></td>
+<td>Gets the total elapsed time in microseconds, after a call to <code class="incode">stop</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow(self)</a></td>
-<td class="enumeration">
-<p>Gets the current elapsed time in milliseconds since the start. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow(self)</a></td>
+<td>Gets the current elapsed time in milliseconds since the start. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds(self)</a></td>
-<td class="enumeration">
-<p>Gets the total elapsed time in milliseconds, after a call to <code class="incode">stop</code>. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds(self)</a></td>
+<td>Gets the total elapsed time in milliseconds, after a call to <code class="incode">stop</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow(self)</a></td>
-<td class="enumeration">
-<p>Gets the current elapsed time in milliseconds since the start. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow(self)</a></td>
+<td>Gets the current elapsed time in milliseconds since the start. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_reset">reset(self)</a></td>
-<td class="enumeration">
-<p>Stops time interval measurement and resets the elapsed time to zero. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_reset">reset(self)</a></td>
+<td>Stops time interval measurement and resets the elapsed time to zero. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_restart">restart(self)</a></td>
-<td class="enumeration">
-<p>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_restart">restart(self)</a></td>
+<td>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure(string)</a></td>
-<td class="enumeration">
-<p>Measure until the end of the scope, and print the result in the console. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure(string)</a></td>
+<td>Measure until the end of the scope, and print the result in the console. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_start">start(self)</a></td>
-<td class="enumeration">
-<p>Starts, or resumes, measuring elapsed time for an interval. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_start">start(self)</a></td>
+<td>Starts, or resumes, measuring elapsed time for an interval. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Stopwatch_stop">stop(self)</a></td>
-<td class="enumeration">
-<p>Stops measuring elapsed time for an interval. </p>
-</td>
+<td><a href="#Core_Time_Stopwatch_stop">stop(self)</a></td>
+<td>Stops measuring elapsed time for an interval. </td>
 </tr>
 </table>
 <p>
@@ -28905,131 +25095,83 @@ u64</td>
 <p>Represents an interval of time, stored as a 64 bits integer. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-ticks</td>
-<td class="tdtype">
-Core.Time.Ticks</td>
-<td class="enumeration">
-</td>
+<td>ticks</td>
+<td>Core.Time.Ticks</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_addDays">addDays(self, s32)</a></td>
-<td class="enumeration">
-<p>Add or remove the given amount of days to the TimeSpan. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_addDays">addDays(self, s32)</a></td>
+<td>Add or remove the given amount of days to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_addHours">addHours(self, s32)</a></td>
-<td class="enumeration">
-<p>Add or remove the given amount of hours to the TimeSpan. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_addHours">addHours(self, s32)</a></td>
+<td>Add or remove the given amount of hours to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds(self, s32)</a></td>
-<td class="enumeration">
-<p>Add or remove the given amount of minutes to the TimeSpan. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds(self, s32)</a></td>
+<td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_addMinutes">addMinutes(self, s32)</a></td>
-<td class="enumeration">
-<p>Add or remove the given amount of minutes to the TimeSpan. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_addMinutes">addMinutes(self, s32)</a></td>
+<td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_addMonths">addMonths(self, s32)</a></td>
-<td class="enumeration">
-<p>Add or remove the given amount of months to the TimeSpan. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_addMonths">addMonths(self, s32)</a></td>
+<td>Add or remove the given amount of months to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_addSeconds">addSeconds(self, s32)</a></td>
-<td class="enumeration">
-<p>Add or remove the given amount of minutes to the TimeSpan. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_addSeconds">addSeconds(self, s32)</a></td>
+<td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_addYears">addYears(self, s32)</a></td>
-<td class="enumeration">
-<p>Add or remove the given amount of years to the TimeSpan. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_addYears">addYears(self, s32)</a></td>
+<td>Add or remove the given amount of years to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_from">from(const ref DateTime)</a></td>
-<td class="enumeration">
-<p>Creates a TimeSpan with the given DateTime. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_from">from(const ref DateTime)</a></td>
+<td>Creates a TimeSpan with the given DateTime. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_now">now()</a></td>
-<td class="enumeration">
-<p>Returns the current date and time. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_now">now()</a></td>
+<td>Returns the current date and time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_setNow">setNow(self)</a></td>
-<td class="enumeration">
-<p>Initialize the TimeSpan with the current date and time. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_setNow">setNow(self)</a></td>
+<td>Initialize the TimeSpan with the current date and time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_toDateTime">toDateTime(self)</a></td>
-<td class="enumeration">
-<p>Converts a TimeSpan to a DateTime. </p>
-</td>
+<td><a href="#Core_Time_TimeSpan_toDateTime">toDateTime(self)</a></td>
+<td>Converts a TimeSpan to a DateTime. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_totalDays">totalDays(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_TimeSpan_totalDays">totalDays(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_totalHours">totalHours(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_TimeSpan_totalHours">totalHours(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_totalMilliSeconds">totalMilliSeconds(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_TimeSpan_totalMilliSeconds">totalMilliSeconds(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_totalMinutes">totalMinutes(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_TimeSpan_totalMinutes">totalMinutes(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_totalSeconds">totalSeconds(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_TimeSpan_totalSeconds">totalSeconds(self)</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_TimeSpan_opCmp">opCmp(self, const ref TimeSpan)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_Time_TimeSpan_opCmp">opCmp(self, const ref TimeSpan)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -29294,52 +25436,34 @@ Core.Time.Ticks</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-userLambda</td>
-<td class="tdtype">
-func(Core.Time.Timer)</td>
-<td class="enumeration">
-</td>
+<td>userLambda</td>
+<td>func(Core.Time.Timer)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Core.Time.TimerHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Core.Time.TimerHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-context</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
-<td class="enumeration">
-</td>
+<td>context</td>
+<td><a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Timer_create">create(u32, func(Timer), bool)</a></td>
-<td class="enumeration">
-<p>Creates a new timer. </p>
-</td>
+<td><a href="#Core_Time_Timer_create">create(u32, func(Timer), bool)</a></td>
+<td>Creates a new timer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Timer_init">init(self, u32, func(Timer), bool)</a></td>
-<td class="enumeration">
-<p>Initialize timer. </p>
-</td>
+<td><a href="#Core_Time_Timer_init">init(self, u32, func(Timer), bool)</a></td>
+<td>Initialize timer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_Time_Timer_release">release(self)</a></td>
-<td class="enumeration">
-<p>Release the timer. </p>
-</td>
+<td><a href="#Core_Time_Timer_release">release(self)</a></td>
+<td>Release the timer. </td>
 </tr>
 </table>
 <p>
@@ -29685,52 +25809,35 @@ context</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> uuid</td>
-<td class="tdtype">
-{val8: [16] u8, val64: [2] u64}</td>
-<td class="enumeration">
-</td>
+<td><b>using</b> uuid</td>
+<td>{val8: [16] u8, val64: [2] u64}</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_UUID_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear id. </p>
-</td>
+<td><a href="#Core_UUID_clear">clear(self)</a></td>
+<td>Clear id. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_UUID_getRandom">getRandom()</a></td>
-<td class="enumeration">
-<p>Get a version 4 UUID (random). </p>
-</td>
+<td><a href="#Core_UUID_getRandom">getRandom()</a></td>
+<td>Get a version 4 UUID (random). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_UUID_toString">toString(self)</a></td>
-<td class="enumeration">
-<p>Convert uuid to a string. </p>
-</td>
+<td><a href="#Core_UUID_toString">toString(self)</a></td>
+<td>Convert uuid to a string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Core_UUID_toString">toString(self, [..] u8)</a></td>
-<td class="enumeration">
-<p>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </p>
-</td>
+<td><a href="#Core_UUID_toString">toString(self, [..] u8)</a></td>
+<td>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Core_UUID_opEquals">opEquals(self, const ref UUID)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Core_UUID_opEquals">opEquals(self, const ref UUID)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -30212,28 +26319,20 @@ context</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Latin1</td>
-<td class="enumeration">
-</td>
+<td>Latin1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Latin1NoCase</td>
-<td class="enumeration">
-</td>
+<td>Latin1NoCase</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Unicode</td>
-<td class="enumeration">
-</td>
+<td>Unicode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UnicodeNoCase</td>
-<td class="enumeration">
-</td>
+<td>UnicodeNoCase</td>
+<td></td>
 </tr>
 </table>
 <p>

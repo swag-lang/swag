@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -253,116 +238,74 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_A" class="tdname">
-XINPUT_GAMEPAD_A</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_A">XINPUT_GAMEPAD_A</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_B" class="tdname">
-XINPUT_GAMEPAD_B</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_B">XINPUT_GAMEPAD_B</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_BACK" class="tdname">
-XINPUT_GAMEPAD_BACK</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_BACK">XINPUT_GAMEPAD_BACK</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="tdname">
-XINPUT_GAMEPAD_DPAD_DOWN</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN">XINPUT_GAMEPAD_DPAD_DOWN</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="tdname">
-XINPUT_GAMEPAD_DPAD_LEFT</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT">XINPUT_GAMEPAD_DPAD_LEFT</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="tdname">
-XINPUT_GAMEPAD_DPAD_RIGHT</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT">XINPUT_GAMEPAD_DPAD_RIGHT</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="tdname">
-XINPUT_GAMEPAD_DPAD_UP</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_UP">XINPUT_GAMEPAD_DPAD_UP</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="tdname">
-XINPUT_GAMEPAD_LEFT_SHOULDER</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER">XINPUT_GAMEPAD_LEFT_SHOULDER</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="tdname">
-XINPUT_GAMEPAD_LEFT_THUMB</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB">XINPUT_GAMEPAD_LEFT_THUMB</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="tdname">
-XINPUT_GAMEPAD_RIGHT_SHOULDER</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER">XINPUT_GAMEPAD_RIGHT_SHOULDER</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="tdname">
-XINPUT_GAMEPAD_RIGHT_THUMB</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB">XINPUT_GAMEPAD_RIGHT_THUMB</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_START" class="tdname">
-XINPUT_GAMEPAD_START</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_START">XINPUT_GAMEPAD_START</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_X" class="tdname">
-XINPUT_GAMEPAD_X</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_X">XINPUT_GAMEPAD_X</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_Y" class="tdname">
-XINPUT_GAMEPAD_Y</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="XInput_XINPUT_GAMEPAD_Y">XINPUT_GAMEPAD_Y</td>
+<td>u16</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -378,60 +321,39 @@ u16</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-wButtons</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wButtons</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bLeftTrigger</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>bLeftTrigger</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bRightTrigger</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>bRightTrigger</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sThumbLX</td>
-<td class="tdtype">
-Win32.SHORT</td>
-<td class="enumeration">
-</td>
+<td>sThumbLX</td>
+<td>Win32.SHORT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sThumbLY</td>
-<td class="tdtype">
-Win32.SHORT</td>
-<td class="enumeration">
-</td>
+<td>sThumbLY</td>
+<td>Win32.SHORT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sThumbRX</td>
-<td class="tdtype">
-Win32.SHORT</td>
-<td class="enumeration">
-</td>
+<td>sThumbRX</td>
+<td>Win32.SHORT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sThumbRY</td>
-<td class="tdtype">
-Win32.SHORT</td>
-<td class="enumeration">
-</td>
+<td>sThumbRY</td>
+<td>Win32.SHORT</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -447,20 +369,14 @@ Win32.SHORT</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dwPacketNumber</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwPacketNumber</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gamepad</td>
-<td class="tdtype">
-<a href="#XInput_XINPUT_GAMEPAD">XInput.XINPUT_GAMEPAD</a></td>
-<td class="enumeration">
-</td>
+<td>Gamepad</td>
+<td><a href="#XInput_XINPUT_GAMEPAD">XInput.XINPUT_GAMEPAD</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -476,20 +392,14 @@ Gamepad</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-wLeftMotorSpeed</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wLeftMotorSpeed</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wRightMotorSpeed</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wRightMotorSpeed</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>

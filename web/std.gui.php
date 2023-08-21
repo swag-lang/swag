@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -1026,20 +1011,14 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-wnd</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>wnd</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1055,34 +1034,24 @@ Gui.WndId</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-X</td>
-<td class="enumeration">
-</td>
+<td>X</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Y</td>
-<td class="enumeration">
-</td>
+<td>Y</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Width</td>
-<td class="enumeration">
-</td>
+<td>Width</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Height</td>
-<td class="enumeration">
-</td>
+<td>Height</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1098,531 +1067,327 @@ Height</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> native</td>
-<td class="tdtype">
-<a href="#Gui_ApplicationNative">Gui.ApplicationNative</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> native</td>
+<td><a href="#Gui_ApplicationNative">Gui.ApplicationNative</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigFrame</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Application))</td>
-<td class="enumeration">
-</td>
+<td>sigFrame</td>
+<td>Gui.SigArray'(closure(*Gui.Application))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-appIcon</td>
-<td class="tdtype">
-Pixel.Image</td>
-<td class="enumeration">
-</td>
+<td>appIcon</td>
+<td>Pixel.Image</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-renderer</td>
-<td class="tdtype">
-Pixel.RenderOgl</td>
-<td class="enumeration">
-</td>
+<td>renderer</td>
+<td>Pixel.RenderOgl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-theme</td>
-<td class="tdtype">
-*Gui.Theme</td>
-<td class="enumeration">
-</td>
+<td>theme</td>
+<td>*Gui.Theme</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-style</td>
-<td class="tdtype">
-<a href="#Gui_ThemeStyle">Gui.ThemeStyle</a></td>
-<td class="enumeration">
-</td>
+<td>style</td>
+<td><a href="#Gui_ThemeStyle">Gui.ThemeStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-keyb</td>
-<td class="tdtype">
-Core.Input.Keyboard</td>
-<td class="enumeration">
-</td>
+<td>keyb</td>
+<td>Core.Input.Keyboard</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mouse</td>
-<td class="tdtype">
-Core.Input.Mouse</td>
-<td class="enumeration">
-</td>
+<td>mouse</td>
+<td>Core.Input.Mouse</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mainSurface</td>
-<td class="tdtype">
-*Gui.Surface</td>
-<td class="enumeration">
-</td>
+<td>mainSurface</td>
+<td>*Gui.Surface</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-postedEvents</td>
-<td class="tdtype">
-Core.Array'(*Gui.Event)</td>
-<td class="enumeration">
-</td>
+<td>postedEvents</td>
+<td>Core.Array'(*Gui.Event)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-surfaces</td>
-<td class="tdtype">
-Core.Array'(*Gui.Surface)</td>
-<td class="enumeration">
-</td>
+<td>surfaces</td>
+<td>Core.Array'(*Gui.Surface)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-postDestroy</td>
-<td class="tdtype">
-Core.Array'(*Gui.Wnd)</td>
-<td class="enumeration">
-</td>
+<td>postDestroy</td>
+<td>Core.Array'(*Gui.Wnd)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hookEvents</td>
-<td class="tdtype">
-Core.Array'(*Gui.Wnd)</td>
-<td class="enumeration">
-</td>
+<td>hookEvents</td>
+<td>Core.Array'(*Gui.Wnd)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cursorStack</td>
-<td class="tdtype">
-Core.Array'(Gui.Cursor)</td>
-<td class="enumeration">
-</td>
+<td>cursorStack</td>
+<td>Core.Array'(Gui.Cursor)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endModalExit</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>endModalExit</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-inModalLoop</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>inModalLoop</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-quitCode</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>quitCode</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-timing</td>
-<td class="tdtype">
-Core.Time.FrameTiming</td>
-<td class="enumeration">
-</td>
+<td>timing</td>
+<td>Core.Time.FrameTiming</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mustQuit</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>mustQuit</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endModal</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>endModal</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isActivated</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isActivated</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fadeDisabledSurface</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>fadeDisabledSurface</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mutexPostedEvents</td>
-<td class="tdtype">
-Core.Sync.Mutex</td>
-<td class="enumeration">
-</td>
+<td>mutexPostedEvents</td>
+<td>Core.Sync.Mutex</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-duringTimerEvents</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>duringTimerEvents</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-timers</td>
-<td class="tdtype">
-Core.Array'(*Gui.Timer)</td>
-<td class="enumeration">
-</td>
+<td>timers</td>
+<td>Core.Array'(*Gui.Timer)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-timersToAdd</td>
-<td class="tdtype">
-Core.Array'(*Gui.Timer)</td>
-<td class="enumeration">
-</td>
+<td>timersToAdd</td>
+<td>Core.Array'(*Gui.Timer)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-timersToDelete</td>
-<td class="tdtype">
-Core.Array'(*Gui.Timer)</td>
-<td class="enumeration">
-</td>
+<td>timersToDelete</td>
+<td>Core.Array'(*Gui.Timer)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameEvents</td>
-<td class="tdtype">
-Core.Array'(*Gui.Wnd)</td>
-<td class="enumeration">
-</td>
+<td>frameEvents</td>
+<td>Core.Array'(*Gui.Wnd)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modalSurfaces</td>
-<td class="tdtype">
-Core.Array'(*Gui.Surface)</td>
-<td class="enumeration">
-</td>
+<td>modalSurfaces</td>
+<td>Core.Array'(*Gui.Surface)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toDelete</td>
-<td class="tdtype">
-Core.Array'({ptr: *void, type: const *Swag.TypeInfo})</td>
-<td class="enumeration">
-</td>
+<td>toDelete</td>
+<td>Core.Array'({ptr: *void, type: const *Swag.TypeInfo})</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mouseEnterWnd</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>mouseEnterWnd</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mouseCaptureWnd</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>mouseCaptureWnd</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-keybFocusWnd</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>keybFocusWnd</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxRunFrame</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>maxRunFrame</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-configPath</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>configPath</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotKeys</td>
-<td class="tdtype">
-Core.Array'(Gui.KeyShortcut)</td>
-<td class="enumeration">
-</td>
+<td>hotKeys</td>
+<td>Core.Array'(Gui.KeyShortcut)</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_addTimer">addTimer(self, const ref Duration, *Wnd)</a></td>
-<td class="enumeration">
-<p>Register a new timer for the given <code class="incode">target</code>. </p>
-</td>
+<td><a href="#Gui_Application_addTimer">addTimer(self, const ref Duration, *Wnd)</a></td>
+<td>Register a new timer for the given <code class="incode">target</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_createSurface">createSurface(self, s32, s32, s32, s32, SurfaceFlags, *Wnd, HookEvent)</a></td>
-<td class="enumeration">
-<p>Creates a new surface. </p>
-</td>
+<td><a href="#Gui_Application_createSurface">createSurface(self, s32, s32, s32, s32, SurfaceFlags, *Wnd, HookEvent)</a></td>
+<td>Creates a new surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_deleteTimer">deleteTimer(self, *Timer)</a></td>
-<td class="enumeration">
-<p>Delete and unregister timer. </p>
-</td>
+<td><a href="#Gui_Application_deleteTimer">deleteTimer(self, *Timer)</a></td>
+<td>Delete and unregister timer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_destroyWnd">destroyWnd(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </p>
-</td>
+<td><a href="#Gui_Application_destroyWnd">destroyWnd(self, *Wnd)</a></td>
+<td>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_doModalLoop">doModalLoop(self, *Surface, func(*void, *Application))</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_doModalLoop">doModalLoop(self, *Surface, func(*void, *Application))</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_exitModal">exitModal(self, string)</a></td>
-<td class="enumeration">
-<p>End current modal loop. </p>
-</td>
+<td><a href="#Gui_Application_exitModal">exitModal(self, string)</a></td>
+<td>End current modal loop. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getDirectoryIcon">getDirectoryIcon(self, string, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_getDirectoryIcon">getDirectoryIcon(self, string, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getDt">getDt(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_getDt">getDt(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getFileIcon">getFileIcon(self, string, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_getFileIcon">getFileIcon(self, string, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getHotKeyShortcut">getHotKeyShortcut(self, KeyModifiers, Key)</a></td>
-<td class="enumeration">
-<p>Get the id associated with a shortcut. null if none. </p>
-</td>
+<td><a href="#Gui_Application_getHotKeyShortcut">getHotKeyShortcut(self, KeyModifiers, Key)</a></td>
+<td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getHotKeyShortcutNameFor">getHotKeyShortcutNameFor(self, WndId)</a></td>
-<td class="enumeration">
-<p>Get the name associated with a given id shortcut. </p>
-</td>
+<td><a href="#Gui_Application_getHotKeyShortcutNameFor">getHotKeyShortcutNameFor(self, WndId)</a></td>
+<td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getKeyboard">getKeyboard(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_getKeyboard">getKeyboard(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getMouse">getMouse(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_getMouse">getMouse(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getMouseCapture">getMouseCapture(self)</a></td>
-<td class="enumeration">
-<p>Return the captured wnd for mouse. </p>
-</td>
+<td><a href="#Gui_Application_getMouseCapture">getMouseCapture(self)</a></td>
+<td>Return the captured wnd for mouse. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getRenderer">getRenderer(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_getRenderer">getRenderer(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_getWndAtMouse">getWndAtMouse(self)</a></td>
-<td class="enumeration">
-<p>Returns the window under the given point. </p>
-</td>
+<td><a href="#Gui_Application_getWndAtMouse">getWndAtMouse(self)</a></td>
+<td>Returns the window under the given point. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_invalidate">invalidate(self)</a></td>
-<td class="enumeration">
-<p>Force all surfaces to be painted. </p>
-</td>
+<td><a href="#Gui_Application_invalidate">invalidate(self)</a></td>
+<td>Force all surfaces to be painted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_loadState">loadState(self)</a></td>
-<td class="enumeration">
-<p>Load the application state. </p>
-</td>
+<td><a href="#Gui_Application_loadState">loadState(self)</a></td>
+<td>Load the application state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_popCursor">popCursor(self)</a></td>
-<td class="enumeration">
-<p>Pop a new mouse cursor. </p>
-</td>
+<td><a href="#Gui_Application_popCursor">popCursor(self)</a></td>
+<td>Pop a new mouse cursor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_postEvent">postEvent(self, *Event)</a></td>
-<td class="enumeration">
-<p>Post a new event (thread safe). </p>
-</td>
+<td><a href="#Gui_Application_postEvent">postEvent(self, *Event)</a></td>
+<td>Post a new event (thread safe). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_postQuitEvent">postQuitEvent(self, s32)</a></td>
-<td class="enumeration">
-<p>Ask to exit the application. </p>
-</td>
+<td><a href="#Gui_Application_postQuitEvent">postQuitEvent(self, s32)</a></td>
+<td>Ask to exit the application. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_pushCursor">pushCursor(self, const ref Cursor)</a></td>
-<td class="enumeration">
-<p>Push a new mouse cursor. </p>
-</td>
+<td><a href="#Gui_Application_pushCursor">pushCursor(self, const ref Cursor)</a></td>
+<td>Push a new mouse cursor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_registerFrameEvent">registerFrameEvent(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Register a window to receive a FrameEvent each running loop. </p>
-</td>
+<td><a href="#Gui_Application_registerFrameEvent">registerFrameEvent(self, *Wnd)</a></td>
+<td>Register a window to receive a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_registerHookEvents">registerHookEvents(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Register a window to receive hook events. </p>
-</td>
+<td><a href="#Gui_Application_registerHookEvents">registerHookEvents(self, *Wnd)</a></td>
+<td>Register a window to receive hook events. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_registerHotKey">registerHotKey(self, KeyModifiers, Key, WndId, *Wnd)</a></td>
-<td class="enumeration">
-<p>Register a global os key action. </p>
-</td>
+<td><a href="#Gui_Application_registerHotKey">registerHotKey(self, KeyModifiers, Key, WndId, *Wnd)</a></td>
+<td>Register a global os key action. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_run">run(self)</a></td>
-<td class="enumeration">
-<p>Run until exit. </p>
-</td>
+<td><a href="#Gui_Application_run">run(self)</a></td>
+<td>Run until exit. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_runFrame">runFrame(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_runFrame">runFrame(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_runSurface">runSurface(s32, s32, s32, s32, string, *Wnd, bool, bool, HookEvent, func(*Application))</a></td>
-<td class="enumeration">
-<p>Create a main surface, and run. </p>
-</td>
+<td><a href="#Gui_Application_runSurface">runSurface(s32, s32, s32, s32, string, *Wnd, bool, bool, HookEvent, func(*Application))</a></td>
+<td>Create a main surface, and run. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_saveState">saveState(self)</a></td>
-<td class="enumeration">
-<p>Save the application state. </p>
-</td>
+<td><a href="#Gui_Application_saveState">saveState(self)</a></td>
+<td>Save the application state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_sendEvent">sendEvent(self, *Event)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Application_sendEvent">sendEvent(self, *Event)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_setActivated">setActivated(self, bool)</a></td>
-<td class="enumeration">
-<p>Set activated state. </p>
-</td>
+<td><a href="#Gui_Application_setActivated">setActivated(self, bool)</a></td>
+<td>Set activated state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_setAppIcon">setAppIcon(self, const ref Image)</a></td>
-<td class="enumeration">
-<p>Associate a configuration file. </p>
-</td>
+<td><a href="#Gui_Application_setAppIcon">setAppIcon(self, const ref Image)</a></td>
+<td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_setConfigPath">setConfigPath(self, string)</a></td>
-<td class="enumeration">
-<p>Associate a configuration file. </p>
-</td>
+<td><a href="#Gui_Application_setConfigPath">setConfigPath(self, string)</a></td>
+<td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Unregister a window that receives a FrameEvent each running loop. </p>
-</td>
+<td><a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent(self, *Wnd)</a></td>
+<td>Unregister a window that receives a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Unregister a window to receive hook events. </p>
-</td>
+<td><a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents(self, *Wnd)</a></td>
+<td>Unregister a window to receive hook events. </td>
 </tr>
 </table>
 <p>
@@ -2158,52 +1923,34 @@ Core.Array'(Gui.KeyShortcut)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fileSmallIconsImage</td>
-<td class="tdtype">
-Pixel.Image</td>
-<td class="enumeration">
-</td>
+<td>fileSmallIconsImage</td>
+<td>Pixel.Image</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fileSmallIconsImageList</td>
-<td class="tdtype">
-<a href="#Gui_ImageList">Gui.ImageList</a></td>
-<td class="enumeration">
-</td>
+<td>fileSmallIconsImageList</td>
+<td><a href="#Gui_ImageList">Gui.ImageList</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mapFileSmallIcons</td>
-<td class="tdtype">
-Core.HashTable'(string, s32)</td>
-<td class="enumeration">
-</td>
+<td>mapFileSmallIcons</td>
+<td>Core.HashTable'(string, s32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fileBigIconsImage</td>
-<td class="tdtype">
-Pixel.Image</td>
-<td class="enumeration">
-</td>
+<td>fileBigIconsImage</td>
+<td>Pixel.Image</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fileBigIconsImageList</td>
-<td class="tdtype">
-<a href="#Gui_ImageList">Gui.ImageList</a></td>
-<td class="enumeration">
-</td>
+<td>fileBigIconsImageList</td>
+<td><a href="#Gui_ImageList">Gui.ImageList</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mapFileBigIcons</td>
-<td class="tdtype">
-Core.HashTable'(string, s32)</td>
-<td class="enumeration">
-</td>
+<td>mapFileBigIcons</td>
+<td>Core.HashTable'(string, s32)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2219,34 +1966,24 @@ Core.HashTable'(string, s32)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Transparent</td>
-<td class="enumeration">
-</td>
+<td>Transparent</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Window</td>
-<td class="enumeration">
-</td>
+<td>Window</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Dialog</td>
-<td class="enumeration">
-</td>
+<td>Dialog</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DialogBar</td>
-<td class="enumeration">
-</td>
+<td>DialogBar</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-View</td>
-<td class="enumeration">
-</td>
+<td>View</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2262,68 +1999,45 @@ View</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-curVec4</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>curVec4</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-startVec4</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>startVec4</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-destVec4</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>destVec4</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-factor</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>factor</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-start</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>start</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-speed</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>speed</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_BlendColor_apply">apply(self, *Wnd, const ref Color)</a></td>
-<td class="enumeration">
-<p>Apply the color lerp to reach <code class="incode">target</code>. </p>
-</td>
+<td><a href="#Gui_BlendColor_apply">apply(self, *Wnd, const ref Color)</a></td>
+<td>Apply the color lerp to reach <code class="incode">target</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_BlendColor_cur">cur(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_BlendColor_cur">cur(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2368,68 +2082,44 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icon</td>
-<td class="tdtype">
-<a href="#Gui_Icon">Gui.Icon</a></td>
-<td class="enumeration">
-</td>
+<td>icon</td>
+<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigPressed</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Button))</td>
-<td class="enumeration">
-</td>
+<td>sigPressed</td>
+<td>Gui.SigArray'(closure(*Gui.Button))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigRightPressed</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Button))</td>
-<td class="enumeration">
-</td>
+<td>sigRightPressed</td>
+<td>Gui.SigArray'(closure(*Gui.Button))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPressed</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPressed</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPressing</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPressing</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHot</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHot</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isIn</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isIn</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2445,22 +2135,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-UnChecked</td>
-<td class="enumeration">
-</td>
+<td>UnChecked</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Checked</td>
-<td class="enumeration">
-</td>
+<td>Checked</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Undefined</td>
-<td class="enumeration">
-</td>
+<td>Undefined</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2476,45 +2160,31 @@ Undefined</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> button</td>
-<td class="tdtype">
-<a href="#Gui_Button">Gui.Button</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> button</td>
+<td><a href="#Gui_Button">Gui.Button</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checked</td>
-<td class="tdtype">
-<a href="#Gui_ButtonCheckState">Gui.ButtonCheckState</a></td>
-<td class="enumeration">
-</td>
+<td>checked</td>
+<td><a href="#Gui_ButtonCheckState">Gui.ButtonCheckState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checkButtonFlags</td>
-<td class="tdtype">
-<a href="#Gui_CheckButtonFlags">Gui.CheckButtonFlags</a></td>
-<td class="enumeration">
-</td>
+<td>checkButtonFlags</td>
+<td><a href="#Gui_CheckButtonFlags">Gui.CheckButtonFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.CheckButton))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.CheckButton))</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_CheckButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_CheckButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2572,22 +2242,16 @@ Gui.SigArray'(closure(*Gui.CheckButton))</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ThreeState</td>
-<td class="enumeration">
-</td>
+<td>ThreeState</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightAlign</td>
-<td class="enumeration">
-</td>
+<td>RightAlign</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2753,169 +2417,107 @@ RightAlign</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hue</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>hue</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sat</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>sat</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lum</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>lum</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-a</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>a</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-r</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>r</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-g</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>g</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-b</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>b</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mode</td>
-<td class="tdtype">
-<a href="#Gui_ColorPickerMode">Gui.ColorPickerMode</a></td>
-<td class="enumeration">
-</td>
+<td>mode</td>
+<td><a href="#Gui_ColorPickerMode">Gui.ColorPickerMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ColorPicker))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.ColorPicker))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirty</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>dirty</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isMoving</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isMoving</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-img</td>
-<td class="tdtype">
-Pixel.Image</td>
-<td class="enumeration">
-</td>
+<td>img</td>
+<td>Pixel.Image</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-texture</td>
-<td class="tdtype">
-Pixel.Texture</td>
-<td class="enumeration">
-</td>
+<td>texture</td>
+<td>Pixel.Texture</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-xCur</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>xCur</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-yCur</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>yCur</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPicker_change">change(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Change one component, HSL or alpha. </p>
-</td>
+<td><a href="#Gui_ColorPicker_change">change(self, f32, f32, f32, f32)</a></td>
+<td>Change one component, HSL or alpha. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPicker_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ColorPicker_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPicker_getColor">getColor(self)</a></td>
-<td class="enumeration">
-<p>Returns the selected color. </p>
-</td>
+<td><a href="#Gui_ColorPicker_getColor">getColor(self)</a></td>
+<td>Returns the selected color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPicker_setColor">setColor(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Set the base color, and repaint. </p>
-</td>
+<td><a href="#Gui_ColorPicker_setColor">setColor(self, const ref Color)</a></td>
+<td>Set the base color, and repaint. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPicker_setMode">setMode(self, ColorPickerMode)</a></td>
-<td class="enumeration">
-<p>Set the color picker box mode. </p>
-</td>
+<td><a href="#Gui_ColorPicker_setMode">setMode(self, ColorPickerMode)</a></td>
+<td>Set the color picker box mode. </td>
 </tr>
 </table>
 <p>
@@ -3061,202 +2663,128 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ColorPickerCtrl))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.ColorPickerCtrl))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-oldColor</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>oldColor</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-color</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>color</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-oldColorDone</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>oldColorDone</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mode</td>
-<td class="tdtype">
-<a href="#Gui_ColorPickerViewMode">Gui.ColorPickerViewMode</a></td>
-<td class="enumeration">
-</td>
+<td>mode</td>
+<td><a href="#Gui_ColorPickerViewMode">Gui.ColorPickerViewMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-staticRes</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>staticRes</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pickBox</td>
-<td class="tdtype">
-*Gui.ColorPicker</td>
-<td class="enumeration">
-</td>
+<td>pickBox</td>
+<td>*Gui.ColorPicker</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pickBar</td>
-<td class="tdtype">
-*Gui.ColorPicker</td>
-<td class="enumeration">
-</td>
+<td>pickBar</td>
+<td>*Gui.ColorPicker</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pickAlpha</td>
-<td class="tdtype">
-*Gui.ColorPicker</td>
-<td class="enumeration">
-</td>
+<td>pickAlpha</td>
+<td>*Gui.ColorPicker</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editR</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editR</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editG</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editG</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editB</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editB</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editA</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editA</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editH</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editH</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radioH</td>
-<td class="tdtype">
-*Gui.RadioButton</td>
-<td class="enumeration">
-</td>
+<td>radioH</td>
+<td>*Gui.RadioButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radioL</td>
-<td class="tdtype">
-*Gui.RadioButton</td>
-<td class="enumeration">
-</td>
+<td>radioL</td>
+<td>*Gui.RadioButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radioS</td>
-<td class="tdtype">
-*Gui.RadioButton</td>
-<td class="enumeration">
-</td>
+<td>radioS</td>
+<td>*Gui.RadioButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radioR</td>
-<td class="tdtype">
-*Gui.RadioButton</td>
-<td class="enumeration">
-</td>
+<td>radioR</td>
+<td>*Gui.RadioButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radioG</td>
-<td class="tdtype">
-*Gui.RadioButton</td>
-<td class="enumeration">
-</td>
+<td>radioG</td>
+<td>*Gui.RadioButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radioB</td>
-<td class="tdtype">
-*Gui.RadioButton</td>
-<td class="enumeration">
-</td>
+<td>radioB</td>
+<td>*Gui.RadioButton</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPickerCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ColorPickerCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPickerCtrl_getColor">getColor(self)</a></td>
-<td class="enumeration">
-<p>Returns the selected color. </p>
-</td>
+<td><a href="#Gui_ColorPickerCtrl_getColor">getColor(self)</a></td>
+<td>Returns the selected color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPickerCtrl_setColor">setColor(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Set the selected color. </p>
-</td>
+<td><a href="#Gui_ColorPickerCtrl_setColor">setColor(self, const ref Color)</a></td>
+<td>Set the selected color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ColorPickerCtrl_setMode">setMode(self, ColorPickerViewMode)</a></td>
-<td class="enumeration">
-<p>Change the display mode. </p>
-</td>
+<td><a href="#Gui_ColorPickerCtrl_setMode">setMode(self, ColorPickerViewMode)</a></td>
+<td>Change the display mode. </td>
 </tr>
 </table>
 <p>
@@ -3345,124 +2873,84 @@ radioB</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-SaturationLightness</td>
-<td class="enumeration">
-</td>
+<td>SaturationLightness</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueSaturation</td>
-<td class="enumeration">
-</td>
+<td>HueSaturation</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueLightness</td>
-<td class="enumeration">
-</td>
+<td>HueLightness</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GreenBlue</td>
-<td class="enumeration">
-</td>
+<td>GreenBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedBlue</td>
-<td class="enumeration">
-</td>
+<td>RedBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedGreen</td>
-<td class="enumeration">
-</td>
+<td>RedGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueVert</td>
-<td class="enumeration">
-</td>
+<td>HueVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueHorz</td>
-<td class="enumeration">
-</td>
+<td>HueHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightnessVert</td>
-<td class="enumeration">
-</td>
+<td>LightnessVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightnessHorz</td>
-<td class="enumeration">
-</td>
+<td>LightnessHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SaturationVert</td>
-<td class="enumeration">
-</td>
+<td>SaturationVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SaturationHorz</td>
-<td class="enumeration">
-</td>
+<td>SaturationHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AlphaHorz</td>
-<td class="enumeration">
-</td>
+<td>AlphaHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AlphaVert</td>
-<td class="enumeration">
-</td>
+<td>AlphaVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedHorz</td>
-<td class="enumeration">
-</td>
+<td>RedHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedVert</td>
-<td class="enumeration">
-</td>
+<td>RedVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GreenHorz</td>
-<td class="enumeration">
-</td>
+<td>GreenHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GreenVert</td>
-<td class="enumeration">
-</td>
+<td>GreenVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BlueHorz</td>
-<td class="enumeration">
-</td>
+<td>BlueHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BlueVert</td>
-<td class="enumeration">
-</td>
+<td>BlueVert</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3478,40 +2966,28 @@ BlueVert</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-SaturationLightness</td>
-<td class="enumeration">
-</td>
+<td>SaturationLightness</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueSaturation</td>
-<td class="enumeration">
-</td>
+<td>HueSaturation</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueLightness</td>
-<td class="enumeration">
-</td>
+<td>HueLightness</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GreenBlue</td>
-<td class="enumeration">
-</td>
+<td>GreenBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedBlue</td>
-<td class="enumeration">
-</td>
+<td>RedBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedGreen</td>
-<td class="enumeration">
-</td>
+<td>RedGreen</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3527,152 +3003,96 @@ RedGreen</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-kind</td>
-<td class="tdtype">
-<a href="#Gui_ComboBoxKind">Gui.ComboBoxKind</a></td>
-<td class="enumeration">
-</td>
+<td>kind</td>
+<td><a href="#Gui_ComboBoxKind">Gui.ComboBoxKind</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minWidthPopup</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>minWidthPopup</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxHeightPopup</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>maxHeightPopup</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ComboBox, u32))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.ComboBox, u32))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBox</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editBox</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHot</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHot</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popup</td>
-<td class="tdtype">
-*Gui.PopupListCtrl</td>
-<td class="enumeration">
-</td>
+<td>popup</td>
+<td>*Gui.PopupListCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selectedIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>selectedIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxIconSize</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>maxIconSize</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBk</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBk</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBorder</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBorder</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniText</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniText</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ComboBox_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
-<td class="enumeration">
-<p>Add a new item. </p>
-</td>
+<td><a href="#Gui_ComboBox_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
+<td>Add a new item. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ComboBox_addSeparator">addSeparator(self)</a></td>
-<td class="enumeration">
-<p>Add a separator. </p>
-</td>
+<td><a href="#Gui_ComboBox_addSeparator">addSeparator(self)</a></td>
+<td>Add a separator. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ComboBox_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Remove all items. </p>
-</td>
+<td><a href="#Gui_ComboBox_clear">clear(self)</a></td>
+<td>Remove all items. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ComboBox_create">create(*Wnd, const ref Rectangle, WndId, ComboBoxKind)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ComboBox_create">create(*Wnd, const ref Rectangle, WndId, ComboBoxKind)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ComboBox_getSelectedItem">getSelectedItem(self)</a></td>
-<td class="enumeration">
-<p>Returns the selected item. </p>
-</td>
+<td><a href="#Gui_ComboBox_getSelectedItem">getSelectedItem(self)</a></td>
+<td>Returns the selected item. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ComboBox_selectItem">selectItem(self, u32)</a></td>
-<td class="enumeration">
-<p>Set the selected item index. </p>
-</td>
+<td><a href="#Gui_ComboBox_selectItem">selectItem(self, u32)</a></td>
+<td>Set the selected item index. </td>
 </tr>
 </table>
 <p>
@@ -3819,20 +3239,14 @@ aniText</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Item">Gui.Item</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Item">Gui.Item</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isSeparator</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isSeparator</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3848,22 +3262,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Select</td>
-<td class="enumeration">
-</td>
+<td>Select</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Edit</td>
-<td class="enumeration">
-</td>
+<td>Edit</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CheckBox</td>
-<td class="enumeration">
-</td>
+<td>CheckBox</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3879,53 +3287,36 @@ CheckBox</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-labelSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>labelSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>comboSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-combo</td>
-<td class="tdtype">
-*Gui.ComboBox</td>
-<td class="enumeration">
-</td>
+<td>combo</td>
+<td>*Gui.ComboBox</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ComboCtrl_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ComboCtrl_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3969,28 +3360,19 @@ combo</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-source</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>source</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4006,100 +3388,64 @@ source</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-source</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>source</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icon</td>
-<td class="tdtype">
-<a href="#Gui_Icon">Gui.Icon</a></td>
-<td class="enumeration">
-</td>
+<td>icon</td>
+<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>name</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-longName</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>longName</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-shortcut</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>shortcut</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toolTip</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>toolTip</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setFlags</td>
-<td class="tdtype">
-Gui.CommandStateEvent.SetFlags</td>
-<td class="enumeration">
-</td>
+<td>setFlags</td>
+<td>Gui.CommandStateEvent.SetFlags</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-disabled</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>disabled</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checked</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>checked</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hidden</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hidden</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4115,12 +3461,9 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4136,40 +3479,28 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> native</td>
-<td class="tdtype">
-<a href="#Gui_NativeCursor">Gui.NativeCursor</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> native</td>
+<td><a href="#Gui_NativeCursor">Gui.NativeCursor</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Cursor_apply">apply(const ref Cursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Cursor_apply">apply(const ref Cursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Cursor_clear">clear(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Cursor_clear">clear(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Cursor_from">from(CursorShape)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Cursor_from">from(CursorShape)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Cursor_wait">wait()</a></td>
-<td class="enumeration">
-<p>Force the wait cursor. </p>
-</td>
+<td><a href="#Gui_Cursor_wait">wait()</a></td>
+<td>Force the wait cursor. </td>
 </tr>
 </table>
 <p>
@@ -4242,76 +3573,52 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Arrow</td>
-<td class="enumeration">
-</td>
+<td>Arrow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SizeWE</td>
-<td class="enumeration">
-</td>
+<td>SizeWE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SizeNS</td>
-<td class="enumeration">
-</td>
+<td>SizeNS</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SizeNWSE</td>
-<td class="enumeration">
-</td>
+<td>SizeNWSE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SizeNESW</td>
-<td class="enumeration">
-</td>
+<td>SizeNESW</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SizeAll</td>
-<td class="enumeration">
-</td>
+<td>SizeAll</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Cross</td>
-<td class="enumeration">
-</td>
+<td>Cross</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Help</td>
-<td class="enumeration">
-</td>
+<td>Help</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hand</td>
-<td class="enumeration">
-</td>
+<td>Hand</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IBeam</td>
-<td class="enumeration">
-</td>
+<td>IBeam</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-No</td>
-<td class="enumeration">
-</td>
+<td>No</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Wait</td>
-<td class="enumeration">
-</td>
+<td>Wait</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4327,12 +3634,9 @@ Wait</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4348,73 +3652,47 @@ Wait</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wndBottom</td>
-<td class="tdtype">
-*Gui.StackLayoutCtrl</td>
-<td class="enumeration">
-</td>
+<td>wndBottom</td>
+<td>*Gui.StackLayoutCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buttons</td>
-<td class="tdtype">
-Core.Array'(*Gui.PushButton)</td>
-<td class="enumeration">
-</td>
+<td>buttons</td>
+<td>Core.Array'(*Gui.PushButton)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigPressedButton</td>
-<td class="tdtype">
-closure(*Gui.Dialog, Gui.WndId)->bool</td>
-<td class="enumeration">
-</td>
+<td>sigPressedButton</td>
+<td>closure(*Gui.Dialog, Gui.WndId)->bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Dialog_addButton">addButton(self, string, WndId, bool)</a></td>
-<td class="enumeration">
-<p>Add a button. </p>
-</td>
+<td><a href="#Gui_Dialog_addButton">addButton(self, string, WndId, bool)</a></td>
+<td>Add a button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Dialog_createDialog">createDialog(*Surface, s32, s32, string)</a></td>
-<td class="enumeration">
-<p>Creates a simple dialog box. </p>
-</td>
+<td><a href="#Gui_Dialog_createDialog">createDialog(*Surface, s32, s32, string)</a></td>
+<td>Creates a simple dialog box. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Dialog_createSurface">createSurface(self, *Surface, s32, s32, s32, s32, SurfaceFlags)</a></td>
-<td class="enumeration">
-<p>Creates an associated surface. </p>
-</td>
+<td><a href="#Gui_Dialog_createSurface">createSurface(self, *Surface, s32, s32, s32, s32, SurfaceFlags)</a></td>
+<td>Creates an associated surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Dialog_doModal">doModal(self)</a></td>
-<td class="enumeration">
-<p>Display dialog as modal, and returns the user selected window id. </p>
-</td>
+<td><a href="#Gui_Dialog_doModal">doModal(self)</a></td>
+<td>Display dialog as modal, and returns the user selected window id. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Dialog_validateId">validateId(self, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Dialog_validateId">validateId(self, WndId)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4532,40 +3810,28 @@ closure(*Gui.Dialog, Gui.WndId)->bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Center</td>
-<td class="enumeration">
-</td>
+<td>Center</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4595,306 +3861,190 @@ Center</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icon</td>
-<td class="tdtype">
-<a href="#Gui_Icon">Gui.Icon</a></td>
-<td class="enumeration">
-</td>
+<td>icon</td>
+<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-text</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>text</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-form</td>
-<td class="tdtype">
-<a href="#Gui_EditBoxForm">Gui.EditBoxForm</a></td>
-<td class="enumeration">
-</td>
+<td>form</td>
+<td><a href="#Gui_EditBoxForm">Gui.EditBoxForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBoxFlags</td>
-<td class="tdtype">
-<a href="#Gui_EditBoxFlags">Gui.EditBoxFlags</a></td>
-<td class="enumeration">
-</td>
+<td>editBoxFlags</td>
+<td><a href="#Gui_EditBoxFlags">Gui.EditBoxFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-inputMode</td>
-<td class="tdtype">
-<a href="#Gui_EditBoxInputMode">Gui.EditBoxInputMode</a></td>
-<td class="enumeration">
-</td>
+<td>inputMode</td>
+<td><a href="#Gui_EditBoxInputMode">Gui.EditBoxInputMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxLength</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>maxLength</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rightMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>rightMargin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.EditBox))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigLoseFocus</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.EditBox))</td>
-<td class="enumeration">
-</td>
+<td>sigLoseFocus</td>
+<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigEnterPressed</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.EditBox))</td>
-<td class="enumeration">
-</td>
+<td>sigEnterPressed</td>
+<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigEscapePressed</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.EditBox))</td>
-<td class="enumeration">
-</td>
+<td>sigEscapePressed</td>
+<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigCheckContent</td>
-<td class="tdtype">
-closure(*Gui.EditBox)->Gui.EditBoxCheckResult</td>
-<td class="enumeration">
-</td>
+<td>sigCheckContent</td>
+<td>closure(*Gui.EditBox)->Gui.EditBoxCheckResult</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-<b>using</b> minMax</td>
-<td class="tdtype">
-{minMaxS64: {min: s64, max: s64}, minMaxU64: {min: u64, max: u64}, minMaxF64: {min: f64, max: f64}}</td>
-<td class="enumeration">
-</td>
+<td><b>using</b> minMax</td>
+<td>{minMaxS64: {min: s64, max: s64}, minMaxU64: {min: u64, max: u64}, minMaxF64: {min: f64, max: f64}}</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBk</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBk</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBorder</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBorder</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isInvalid</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isInvalid</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHot</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHot</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isDragging</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isDragging</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selBeg</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>selBeg</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selEnd</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>selEnd</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-timerCaret</td>
-<td class="tdtype">
-*Gui.Timer</td>
-<td class="enumeration">
-</td>
+<td>timerCaret</td>
+<td>*Gui.Timer</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-visibleCaret</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>visibleCaret</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-posSelBeg</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>posSelBeg</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-posSelEnd</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>posSelEnd</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollPosX</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>scrollPosX</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-countRunes</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>countRunes</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_EditBox_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_deleteSelection">deleteSelection(self)</a></td>
-<td class="enumeration">
-<p>Delete selected text. </p>
-</td>
+<td><a href="#Gui_EditBox_deleteSelection">deleteSelection(self)</a></td>
+<td>Delete selected text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_getText">getText(self)</a></td>
-<td class="enumeration">
-<p>Get the associated text. </p>
-</td>
+<td><a href="#Gui_EditBox_getText">getText(self)</a></td>
+<td>Get the associated text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_selectAll">selectAll(self)</a></td>
-<td class="enumeration">
-<p>Select all text. </p>
-</td>
+<td><a href="#Gui_EditBox_selectAll">selectAll(self)</a></td>
+<td>Select all text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setForm">setForm(self, EditBoxForm)</a></td>
-<td class="enumeration">
-<p>Set the editbox form. </p>
-</td>
+<td><a href="#Gui_EditBox_setForm">setForm(self, EditBoxForm)</a></td>
+<td>Set the editbox form. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setInputF64">setInputF64(self, f64, f64)</a></td>
-<td class="enumeration">
-<p>Editbox will edit floating points. </p>
-</td>
+<td><a href="#Gui_EditBox_setInputF64">setInputF64(self, f64, f64)</a></td>
+<td>Editbox will edit floating points. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setInputS64">setInputS64(self, s64, s64)</a></td>
-<td class="enumeration">
-<p>Editbox will edit signed integers. </p>
-</td>
+<td><a href="#Gui_EditBox_setInputS64">setInputS64(self, s64, s64)</a></td>
+<td>Editbox will edit signed integers. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setInputU64">setInputU64(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Editbox will edit unsigned integers. </p>
-</td>
+<td><a href="#Gui_EditBox_setInputU64">setInputU64(self, u64, u64)</a></td>
+<td>Editbox will edit unsigned integers. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setNote">setNote(self, string)</a></td>
-<td class="enumeration">
-<p>Set the editbox note. </p>
-</td>
+<td><a href="#Gui_EditBox_setNote">setNote(self, string)</a></td>
+<td>Set the editbox note. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setSelection">setSelection(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Set current selection. </p>
-</td>
+<td><a href="#Gui_EditBox_setSelection">setSelection(self, u64, u64)</a></td>
+<td>Set current selection. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setText">setText(self, string)</a></td>
-<td class="enumeration">
-<p>Set the editbox content. </p>
-</td>
+<td><a href="#Gui_EditBox_setText">setText(self, string)</a></td>
+<td>Set the editbox content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditBox_setTextSilent">setTextSilent(self, string)</a></td>
-<td class="enumeration">
-<p>Set the editbox content, but do not notify change. </p>
-</td>
+<td><a href="#Gui_EditBox_setTextSilent">setTextSilent(self, string)</a></td>
+<td>Set the editbox content, but do not notify change. </td>
 </tr>
 </table>
 <p>
@@ -5159,28 +4309,20 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Incomplete</td>
-<td class="enumeration">
-</td>
+<td>Incomplete</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Valid</td>
-<td class="enumeration">
-</td>
+<td>Valid</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-InvalidDismiss</td>
-<td class="enumeration">
-</td>
+<td>InvalidDismiss</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-InvalidShow</td>
-<td class="enumeration">
-</td>
+<td>InvalidShow</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5196,28 +4338,20 @@ InvalidShow</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AutoLoseFocus</td>
-<td class="enumeration">
-</td>
+<td>AutoLoseFocus</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ReadOnly</td>
-<td class="enumeration">
-</td>
+<td>ReadOnly</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightAlign</td>
-<td class="enumeration">
-</td>
+<td>RightAlign</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5233,28 +4367,20 @@ RightAlign</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Square</td>
-<td class="enumeration">
-</td>
+<td>Square</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Flat</td>
-<td class="enumeration">
-</td>
+<td>Flat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Transparent</td>
-<td class="enumeration">
-</td>
+<td>Transparent</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5270,28 +4396,20 @@ Transparent</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-String</td>
-<td class="enumeration">
-</td>
+<td>String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-S64</td>
-<td class="enumeration">
-</td>
+<td>S64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-U64</td>
-<td class="enumeration">
-</td>
+<td>U64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F64</td>
-<td class="enumeration">
-</td>
+<td>F64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5307,54 +4425,36 @@ F64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-labelSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>labelSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>editSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>edit</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditCtrl_create">create(*Wnd, string, string, const ref Rectangle, WndId, EditBoxFlags)</a></td>
-<td class="enumeration">
-<p>Create the popup list, but do not display it. </p>
-</td>
+<td><a href="#Gui_EditCtrl_create">create(*Wnd, string, string, const ref Rectangle, WndId, EditBoxFlags)</a></td>
+<td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
 <p>
@@ -5399,74 +4499,47 @@ edit</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> dialog</td>
-<td class="tdtype">
-<a href="#Gui_Dialog">Gui.Dialog</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> dialog</td>
+<td><a href="#Gui_Dialog">Gui.Dialog</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>edit</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit</td>
-<td class="tdtype">
-*Gui.RichEditCtrl</td>
-<td class="enumeration">
-</td>
+<td>richEdit</td>
+<td>*Gui.RichEditCtrl</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditDlg_createMultiLine">createMultiLine(*Surface, s32)</a></td>
-<td class="enumeration">
-<p>Creates the message box. </p>
-</td>
+<td><a href="#Gui_EditDlg_createMultiLine">createMultiLine(*Surface, s32)</a></td>
+<td>Creates the message box. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditDlg_createSingleLine">createSingleLine(*Surface)</a></td>
-<td class="enumeration">
-<p>Creates the message box. </p>
-</td>
+<td><a href="#Gui_EditDlg_createSingleLine">createSingleLine(*Surface)</a></td>
+<td>Creates the message box. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditDlg_getText">getText(self)</a></td>
-<td class="enumeration">
-<p>Get the text. </p>
-</td>
+<td><a href="#Gui_EditDlg_getText">getText(self)</a></td>
+<td>Get the text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditDlg_setMessage">setMessage(self, string, s32)</a></td>
-<td class="enumeration">
-<p>Associate a message above the editbox. </p>
-</td>
+<td><a href="#Gui_EditDlg_setMessage">setMessage(self, string, s32)</a></td>
+<td>Associate a message above the editbox. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_EditDlg_setText">setText(self, string)</a></td>
-<td class="enumeration">
-<p>Set the text. </p>
-</td>
+<td><a href="#Gui_EditDlg_setText">setText(self, string)</a></td>
+<td>Set the text. </td>
 </tr>
 </table>
 <p>
@@ -5557,30 +4630,21 @@ richEdit</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_EmbInfoCtrl_create">create(*Wnd, string, EmbInfoCtrlKind, s32, bool)</a></td>
-<td class="enumeration">
-<p>Create the popup list, but do not display it. </p>
-</td>
+<td><a href="#Gui_EmbInfoCtrl_create">create(*Wnd, string, EmbInfoCtrlKind, s32, bool)</a></td>
+<td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
 <p>
@@ -5611,16 +4675,12 @@ label</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Critical</td>
-<td class="enumeration">
-</td>
+<td>Critical</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Information</td>
-<td class="enumeration">
-</td>
+<td>Information</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5636,51 +4696,35 @@ Information</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-kind</td>
-<td class="tdtype">
-<a href="#Gui_EventKind">Gui.EventKind</a></td>
-<td class="enumeration">
-</td>
+<td>kind</td>
+<td><a href="#Gui_EventKind">Gui.EventKind</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-target</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>target</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-accepted</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>accepted</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Event_create">create()</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Event_create">create()</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Event_create">create(EventKind)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Event_create">create(EventKind)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5711,214 +4755,144 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Create</td>
-<td class="enumeration">
-</td>
+<td>Create</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Destroy</td>
-<td class="enumeration">
-</td>
+<td>Destroy</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Resize</td>
-<td class="enumeration">
-</td>
+<td>Resize</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Move</td>
-<td class="enumeration">
-</td>
+<td>Move</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PrePaint</td>
-<td class="enumeration">
-</td>
+<td>PrePaint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Paint</td>
-<td class="enumeration">
-</td>
+<td>Paint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PostPaint</td>
-<td class="enumeration">
-</td>
+<td>PostPaint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-KeyPressed</td>
-<td class="enumeration">
-</td>
+<td>KeyPressed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-KeyReleased</td>
-<td class="enumeration">
-</td>
+<td>KeyReleased</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Rune</td>
-<td class="enumeration">
-</td>
+<td>Rune</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MouseAccept</td>
-<td class="enumeration">
-</td>
+<td>MouseAccept</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MousePressed</td>
-<td class="enumeration">
-</td>
+<td>MousePressed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MouseReleased</td>
-<td class="enumeration">
-</td>
+<td>MouseReleased</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MouseDoubleClick</td>
-<td class="enumeration">
-</td>
+<td>MouseDoubleClick</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MouseMove</td>
-<td class="enumeration">
-</td>
+<td>MouseMove</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MouseEnter</td>
-<td class="enumeration">
-</td>
+<td>MouseEnter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MouseLeave</td>
-<td class="enumeration">
-</td>
+<td>MouseLeave</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MouseWheel</td>
-<td class="enumeration">
-</td>
+<td>MouseWheel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Quit</td>
-<td class="enumeration">
-</td>
+<td>Quit</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SysCommand</td>
-<td class="enumeration">
-</td>
+<td>SysCommand</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SetTheme</td>
-<td class="enumeration">
-</td>
+<td>SetTheme</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Timer</td>
-<td class="enumeration">
-</td>
+<td>Timer</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SetFocus</td>
-<td class="enumeration">
-</td>
+<td>SetFocus</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-KillFocus</td>
-<td class="enumeration">
-</td>
+<td>KillFocus</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Command</td>
-<td class="enumeration">
-</td>
+<td>Command</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ComputeCommandState</td>
-<td class="enumeration">
-</td>
+<td>ComputeCommandState</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ApplyCommandState</td>
-<td class="enumeration">
-</td>
+<td>ApplyCommandState</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Frame</td>
-<td class="enumeration">
-</td>
+<td>Frame</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SerializeState</td>
-<td class="enumeration">
-</td>
+<td>SerializeState</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Show</td>
-<td class="enumeration">
-</td>
+<td>Show</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hide</td>
-<td class="enumeration">
-</td>
+<td>Hide</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Invalidate</td>
-<td class="enumeration">
-</td>
+<td>Invalidate</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SysUser</td>
-<td class="enumeration">
-</td>
+<td>SysUser</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Notify</td>
-<td class="enumeration">
-</td>
+<td>Notify</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5934,116 +4908,74 @@ Notify</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> dialog</td>
-<td class="tdtype">
-<a href="#Gui_Dialog">Gui.Dialog</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> dialog</td>
+<td><a href="#Gui_Dialog">Gui.Dialog</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-treeCtrl</td>
-<td class="tdtype">
-*Gui.ListCtrl</td>
-<td class="enumeration">
-</td>
+<td>treeCtrl</td>
+<td>*Gui.ListCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-treePathStr</td>
-<td class="tdtype">
-Core.Array'(Core.String)</td>
-<td class="enumeration">
-</td>
+<td>treePathStr</td>
+<td>Core.Array'(Core.String)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listCtrl</td>
-<td class="tdtype">
-*Gui.ListCtrl</td>
-<td class="enumeration">
-</td>
+<td>listCtrl</td>
+<td>*Gui.ListCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboPath</td>
-<td class="tdtype">
-*Gui.ComboBox</td>
-<td class="enumeration">
-</td>
+<td>comboPath</td>
+<td>*Gui.ComboBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboPathStr</td>
-<td class="tdtype">
-Core.Array'(Core.String)</td>
-<td class="enumeration">
-</td>
+<td>comboPathStr</td>
+<td>Core.Array'(Core.String)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editFile</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editFile</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboType</td>
-<td class="tdtype">
-*Gui.ComboBox</td>
-<td class="enumeration">
-</td>
+<td>comboType</td>
+<td>*Gui.ComboBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dlgOptions</td>
-<td class="tdtype">
-<a href="#Gui_FileDlgOptions">Gui.FileDlgOptions</a></td>
-<td class="enumeration">
-</td>
+<td>dlgOptions</td>
+<td><a href="#Gui_FileDlgOptions">Gui.FileDlgOptions</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curFolder</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>curFolder</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curList</td>
-<td class="tdtype">
-Core.Array'(Core.File.FileInfo)</td>
-<td class="enumeration">
-</td>
+<td>curList</td>
+<td>Core.Array'(Core.File.FileInfo)</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_FileDlg_create">create(*Surface, const ref FileDlgOptions)</a></td>
-<td class="enumeration">
-<p>Creates the message box. </p>
-</td>
+<td><a href="#Gui_FileDlg_create">create(*Surface, const ref FileDlgOptions)</a></td>
+<td>Creates the message box. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_FileDlg_getSelectedName">getSelectedName(self)</a></td>
-<td class="enumeration">
-<p>Get the first selection. </p>
-</td>
+<td><a href="#Gui_FileDlg_getSelectedName">getSelectedName(self)</a></td>
+<td>Get the first selection. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_FileDlg_getSelectedNames">getSelectedNames(self)</a></td>
-<td class="enumeration">
-<p>Get all selections. </p>
-</td>
+<td><a href="#Gui_FileDlg_getSelectedNames">getSelectedNames(self)</a></td>
+<td>Get all selections. </td>
 </tr>
 </table>
 <p>
@@ -6118,28 +5050,20 @@ Core.Array'(Core.File.FileInfo)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-CreateFile</td>
-<td class="enumeration">
-</td>
+<td>CreateFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectOneFile</td>
-<td class="enumeration">
-</td>
+<td>SelectOneFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectMultiFiles</td>
-<td class="enumeration">
-</td>
+<td>SelectMultiFiles</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectFolder</td>
-<td class="enumeration">
-</td>
+<td>SelectFolder</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6155,76 +5079,49 @@ SelectFolder</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-title</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>title</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnOkName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>btnOkName</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-openFolder</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>openFolder</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>editName</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-drivePane</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>drivePane</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mode</td>
-<td class="tdtype">
-<a href="#Gui_FileDlgMode">Gui.FileDlgMode</a></td>
-<td class="enumeration">
-</td>
+<td>mode</td>
+<td><a href="#Gui_FileDlgMode">Gui.FileDlgMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-filters</td>
-<td class="tdtype">
-Core.Array'({name: string, extensions: string})</td>
-<td class="enumeration">
-</td>
+<td>filters</td>
+<td>Core.Array'({name: string, extensions: string})</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-shortcuts</td>
-<td class="tdtype">
-Core.Array'({type: Core.Env.SpecialDirectory, name: string})</td>
-<td class="enumeration">
-</td>
+<td>shortcuts</td>
+<td>Core.Array'({type: Core.Env.SpecialDirectory, name: string})</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-state</td>
-<td class="tdtype">
-*Gui.FileDlgState</td>
-<td class="enumeration">
-</td>
+<td>state</td>
+<td>*Gui.FileDlgState</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6240,20 +5137,14 @@ state</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-position</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>position</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curFolder</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>curFolder</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6269,20 +5160,14 @@ Core.String</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-other</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>other</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6298,16 +5183,12 @@ other</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MousePressed</td>
-<td class="enumeration">
-</td>
+<td>MousePressed</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6323,20 +5204,14 @@ MousePressed</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-firstFrame</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>firstFrame</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6352,89 +5227,58 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-view</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>view</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameForm</td>
-<td class="tdtype">
-<a href="#Gui_FrameWndForm">Gui.FrameWndForm</a></td>
-<td class="enumeration">
-</td>
+<td>frameForm</td>
+<td><a href="#Gui_FrameWndForm">Gui.FrameWndForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameFlags</td>
-<td class="tdtype">
-<a href="#Gui_FrameWndFlags">Gui.FrameWndFlags</a></td>
-<td class="enumeration">
-</td>
+<td>frameFlags</td>
+<td><a href="#Gui_FrameWndFlags">Gui.FrameWndFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-anchor</td>
-<td class="tdtype">
-<a href="#Gui_FrameWndAnchor">Gui.FrameWndAnchor</a></td>
-<td class="enumeration">
-</td>
+<td>anchor</td>
+<td><a href="#Gui_FrameWndAnchor">Gui.FrameWndAnchor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-anchorPos</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>anchorPos</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-usedColorBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>usedColorBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_FrameWnd_createView">createView(self, HookEvent)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_FrameWnd_createView">createView(self, HookEvent)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_FrameWnd_setFrameFlags">setFrameFlags(self, FrameWndFlags, FrameWndFlags)</a></td>
-<td class="enumeration">
-<p>Set the frame wnd flags. </p>
-</td>
+<td><a href="#Gui_FrameWnd_setFrameFlags">setFrameFlags(self, FrameWndFlags, FrameWndFlags)</a></td>
+<td>Set the frame wnd flags. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_FrameWnd_setFrameForm">setFrameForm(self, FrameWndForm)</a></td>
-<td class="enumeration">
-<p>Set the frame wnd form. </p>
-</td>
+<td><a href="#Gui_FrameWnd_setFrameForm">setFrameForm(self, FrameWndForm)</a></td>
+<td>Set the frame wnd form. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_FrameWnd_setView">setView(self, *Wnd)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_FrameWnd_setView">setView(self, *Wnd)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6564,34 +5408,24 @@ Pixel.Color</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6607,28 +5441,20 @@ Bottom</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Borders</td>
-<td class="enumeration">
-</td>
+<td>Borders</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FocusBorder</td>
-<td class="enumeration">
-</td>
+<td>FocusBorder</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SmallShadow</td>
-<td class="enumeration">
-</td>
+<td>SmallShadow</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6644,22 +5470,16 @@ SmallShadow</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Transparent</td>
-<td class="enumeration">
-</td>
+<td>Transparent</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Square</td>
-<td class="enumeration">
-</td>
+<td>Square</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6675,114 +5495,72 @@ Round</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-gridLayoutFlags</td>
-<td class="tdtype">
-<a href="#Gui_GridLayoutCtrlFlags">Gui.GridLayoutCtrlFlags</a></td>
-<td class="enumeration">
-</td>
+<td>gridLayoutFlags</td>
+<td><a href="#Gui_GridLayoutCtrlFlags">Gui.GridLayoutCtrlFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-numColumns</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>numColumns</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-numRows</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>numRows</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-spacingHorz</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>spacingHorz</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-spacingVert</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>spacingVert</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-layout</td>
-<td class="tdtype">
-Core.Array'(*Gui.Wnd)</td>
-<td class="enumeration">
-</td>
+<td>layout</td>
+<td>Core.Array'(*Gui.Wnd)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colSizes</td>
-<td class="tdtype">
-Core.Array'(f32)</td>
-<td class="enumeration">
-</td>
+<td>colSizes</td>
+<td>Core.Array'(f32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rowSizes</td>
-<td class="tdtype">
-Core.Array'(f32)</td>
-<td class="enumeration">
-</td>
+<td>rowSizes</td>
+<td>Core.Array'(f32)</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_GridLayoutCtrl_computeLayout">computeLayout(self)</a></td>
-<td class="enumeration">
-<p>Recompute layout of all childs. </p>
-</td>
+<td><a href="#Gui_GridLayoutCtrl_computeLayout">computeLayout(self)</a></td>
+<td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_GridLayoutCtrl_create">create(*Wnd, s32, s32, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Create a layout control. </p>
-</td>
+<td><a href="#Gui_GridLayoutCtrl_create">create(*Wnd, s32, s32, const ref Rectangle)</a></td>
+<td>Create a layout control. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild(self, *Wnd, s32, s32, s32, s32)</a></td>
-<td class="enumeration">
-<p>Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>. </p>
-</td>
+<td><a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild(self, *Wnd, s32, s32, s32, s32)</a></td>
+<td>Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_GridLayoutCtrl_setColSize">setColSize(self, s32, f32)</a></td>
-<td class="enumeration">
-<p>Set size, in pixel, of a given column. </p>
-</td>
+<td><a href="#Gui_GridLayoutCtrl_setColSize">setColSize(self, s32, f32)</a></td>
+<td>Set size, in pixel, of a given column. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_GridLayoutCtrl_setRowSize">setRowSize(self, s32, f32)</a></td>
-<td class="enumeration">
-<p>Set size, in pixel, of a given row. </p>
-</td>
+<td><a href="#Gui_GridLayoutCtrl_setRowSize">setRowSize(self, s32, f32)</a></td>
+<td>Set size, in pixel, of a given row. </td>
 </tr>
 </table>
 <p>
@@ -6888,28 +5666,20 @@ Core.Array'(f32)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AdaptSizeToContent</td>
-<td class="enumeration">
-</td>
+<td>AdaptSizeToContent</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AdaptColWidth</td>
-<td class="enumeration">
-</td>
+<td>AdaptColWidth</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AdaptRowHeight</td>
-<td class="enumeration">
-</td>
+<td>AdaptRowHeight</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6925,187 +5695,116 @@ AdaptRowHeight</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-form</td>
-<td class="tdtype">
-<a href="#Gui_HeaderForm">Gui.HeaderForm</a></td>
-<td class="enumeration">
-</td>
+<td>form</td>
+<td><a href="#Gui_HeaderForm">Gui.HeaderForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-headerFlags</td>
-<td class="tdtype">
-<a href="#Gui_HeaderFlags">Gui.HeaderFlags</a></td>
-<td class="enumeration">
-</td>
+<td>headerFlags</td>
+<td><a href="#Gui_HeaderFlags">Gui.HeaderFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-marginItems</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>marginItems</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigLayoutChanged</td>
-<td class="tdtype">
-closure(*Gui.Header)</td>
-<td class="enumeration">
-</td>
+<td>sigLayoutChanged</td>
+<td>closure(*Gui.Header)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigClicked</td>
-<td class="tdtype">
-closure(*Gui.Header, u32)</td>
-<td class="enumeration">
-</td>
+<td>sigClicked</td>
+<td>closure(*Gui.Header, u32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hotIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotSeparator</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hotSeparator</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-moving</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>moving</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-clicked</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>clicked</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-correctMoving</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>correctMoving</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sortColumn</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>sortColumn</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sortMark</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>sortMark</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_addItem">addItem(self, string, f32, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Add a new view. </p>
-</td>
+<td><a href="#Gui_Header_addItem">addItem(self, string, f32, const ref Icon)</a></td>
+<td>Add a new view. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Header_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_getItem">getItem(self, u32)</a></td>
-<td class="enumeration">
-<p>Returns the given item, by index. </p>
-</td>
+<td><a href="#Gui_Header_getItem">getItem(self, u32)</a></td>
+<td>Returns the given item, by index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_getItemByCol">getItemByCol(self, u32)</a></td>
-<td class="enumeration">
-<p>Returns the given item, by column. </p>
-</td>
+<td><a href="#Gui_Header_getItemByCol">getItemByCol(self, u32)</a></td>
+<td>Returns the given item, by column. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_getItemPosition">getItemPosition(self, u32)</a></td>
-<td class="enumeration">
-<p>Get an item position by index. </p>
-</td>
+<td><a href="#Gui_Header_getItemPosition">getItemPosition(self, u32)</a></td>
+<td>Get an item position by index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_getItemPositionByCol">getItemPositionByCol(self, u32)</a></td>
-<td class="enumeration">
-<p>Get an item position by column. </p>
-</td>
+<td><a href="#Gui_Header_getItemPositionByCol">getItemPositionByCol(self, u32)</a></td>
+<td>Get an item position by column. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_getItemWidth">getItemWidth(self, u32)</a></td>
-<td class="enumeration">
-<p>Get an item width by index. </p>
-</td>
+<td><a href="#Gui_Header_getItemWidth">getItemWidth(self, u32)</a></td>
+<td>Get an item width by index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_getItemWidthByCol">getItemWidthByCol(self, u32)</a></td>
-<td class="enumeration">
-<p>Get an item width by column. </p>
-</td>
+<td><a href="#Gui_Header_getItemWidthByCol">getItemWidthByCol(self, u32)</a></td>
+<td>Get an item width by column. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_getTotalItemsWidth">getTotalItemsWidth(self)</a></td>
-<td class="enumeration">
-<p>Get the header total width. </p>
-</td>
+<td><a href="#Gui_Header_getTotalItemsWidth">getTotalItemsWidth(self)</a></td>
+<td>Get the header total width. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_setItemWidth">setItemWidth(self, u32, f32)</a></td>
-<td class="enumeration">
-<p>Set an item width by index. </p>
-</td>
+<td><a href="#Gui_Header_setItemWidth">setItemWidth(self, u32, f32)</a></td>
+<td>Set an item width by index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Header_setItemWidthByCol">setItemWidthByCol(self, u32, f32)</a></td>
-<td class="enumeration">
-<p>Set an item width by column. </p>
-</td>
+<td><a href="#Gui_Header_setItemWidthByCol">setItemWidthByCol(self, u32, f32)</a></td>
+<td>Set an item width by column. </td>
 </tr>
 </table>
 <p>
@@ -7327,16 +6026,12 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Clickable</td>
-<td class="enumeration">
-</td>
+<td>Clickable</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7352,22 +6047,16 @@ Clickable</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Transparent</td>
-<td class="enumeration">
-</td>
+<td>Transparent</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Flat</td>
-<td class="enumeration">
-</td>
+<td>Flat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7383,76 +6072,49 @@ Round</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-Pixel.RichString</td>
-<td class="enumeration">
-</td>
+<td>name</td>
+<td>Pixel.RichString</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icon</td>
-<td class="tdtype">
-<a href="#Gui_Icon">Gui.Icon</a></td>
-<td class="enumeration">
-</td>
+<td>icon</td>
+<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minWidth</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>minWidth</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxWidth</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>maxWidth</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sizeable</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>sizeable</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-clickable</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>clickable</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconMargin</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>iconMargin</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-column</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>column</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7468,28 +6130,19 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-accept</td>
-<td class="tdtype">
-func(*Gui.IActionUI, Gui.ActionContext)->bool</td>
-<td class="enumeration">
-</td>
+<td>accept</td>
+<td>func(*Gui.IActionUI, Gui.ActionContext)->bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-update</td>
-<td class="tdtype">
-func(*Gui.IActionUI, Gui.ActionContext, *Gui.CommandStateEvent)->bool</td>
-<td class="enumeration">
-</td>
+<td>update</td>
+<td>func(*Gui.IActionUI, Gui.ActionContext, *Gui.CommandStateEvent)->bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-execute</td>
-<td class="tdtype">
-func(*Gui.IActionUI, Gui.ActionContext)->bool</td>
-<td class="enumeration">
-</td>
+<td>execute</td>
+<td>func(*Gui.IActionUI, Gui.ActionContext)->bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7505,28 +6158,19 @@ func(*Gui.IActionUI, Gui.ActionContext)->bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-setup</td>
-<td class="tdtype">
-func(*Gui.IRichEditLexer, *Gui.RichEditCtrl)</td>
-<td class="enumeration">
-</td>
+<td>setup</td>
+<td>func(*Gui.IRichEditLexer, *Gui.RichEditCtrl)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-insertRune</td>
-<td class="tdtype">
-func(*Gui.IRichEditLexer, *Gui.RichEditCtrl, rune)->bool</td>
-<td class="enumeration">
-</td>
+<td>insertRune</td>
+<td>func(*Gui.IRichEditLexer, *Gui.RichEditCtrl, rune)->bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-compute</td>
-<td class="tdtype">
-func(*Gui.IRichEditLexer, *Gui.RichEditLine, *Gui.RichEditLine, *Gui.RichEditLine)</td>
-<td class="enumeration">
-</td>
+<td>compute</td>
+<td>func(*Gui.IRichEditLexer, *Gui.RichEditLine, *Gui.RichEditLine, *Gui.RichEditLine)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7542,180 +6186,114 @@ func(*Gui.IRichEditLexer, *Gui.RichEditLine, *Gui.RichEditLine, *Gui.RichEditLin
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-onEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.Event)</td>
-<td class="enumeration">
-</td>
+<td>onEvent</td>
+<td>func(*Gui.IWnd, *Gui.Event)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onHookEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.Event)</td>
-<td class="enumeration">
-</td>
+<td>onHookEvent</td>
+<td>func(*Gui.IWnd, *Gui.Event)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onCreateEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.CreateEvent)</td>
-<td class="enumeration">
-</td>
+<td>onCreateEvent</td>
+<td>func(*Gui.IWnd, *Gui.CreateEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onDestroyEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.DestroyEvent)</td>
-<td class="enumeration">
-</td>
+<td>onDestroyEvent</td>
+<td>func(*Gui.IWnd, *Gui.DestroyEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onStateEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.StateEvent)</td>
-<td class="enumeration">
-</td>
+<td>onStateEvent</td>
+<td>func(*Gui.IWnd, *Gui.StateEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onResizeEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.ResizeEvent)</td>
-<td class="enumeration">
-</td>
+<td>onResizeEvent</td>
+<td>func(*Gui.IWnd, *Gui.ResizeEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onPrePaintEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.PaintEvent)</td>
-<td class="enumeration">
-</td>
+<td>onPrePaintEvent</td>
+<td>func(*Gui.IWnd, *Gui.PaintEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onPaintEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.PaintEvent)</td>
-<td class="enumeration">
-</td>
+<td>onPaintEvent</td>
+<td>func(*Gui.IWnd, *Gui.PaintEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onPostPaintEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.PaintEvent)</td>
-<td class="enumeration">
-</td>
+<td>onPostPaintEvent</td>
+<td>func(*Gui.IWnd, *Gui.PaintEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onKeyEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.KeyEvent)</td>
-<td class="enumeration">
-</td>
+<td>onKeyEvent</td>
+<td>func(*Gui.IWnd, *Gui.KeyEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onMouseEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.MouseEvent)</td>
-<td class="enumeration">
-</td>
+<td>onMouseEvent</td>
+<td>func(*Gui.IWnd, *Gui.MouseEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onSysCommandEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.SysCommandEvent)</td>
-<td class="enumeration">
-</td>
+<td>onSysCommandEvent</td>
+<td>func(*Gui.IWnd, *Gui.SysCommandEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onSysUserEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.SysUserEvent)</td>
-<td class="enumeration">
-</td>
+<td>onSysUserEvent</td>
+<td>func(*Gui.IWnd, *Gui.SysUserEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onSetThemeEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.SetThemeEvent)</td>
-<td class="enumeration">
-</td>
+<td>onSetThemeEvent</td>
+<td>func(*Gui.IWnd, *Gui.SetThemeEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onTimerEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.TimerEvent)</td>
-<td class="enumeration">
-</td>
+<td>onTimerEvent</td>
+<td>func(*Gui.IWnd, *Gui.TimerEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onFocusEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.FocusEvent)</td>
-<td class="enumeration">
-</td>
+<td>onFocusEvent</td>
+<td>func(*Gui.IWnd, *Gui.FocusEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onCommandEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.CommandEvent)</td>
-<td class="enumeration">
-</td>
+<td>onCommandEvent</td>
+<td>func(*Gui.IWnd, *Gui.CommandEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onComputeStateEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.CommandStateEvent)</td>
-<td class="enumeration">
-</td>
+<td>onComputeStateEvent</td>
+<td>func(*Gui.IWnd, *Gui.CommandStateEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onApplyStateEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.CommandStateEvent)</td>
-<td class="enumeration">
-</td>
+<td>onApplyStateEvent</td>
+<td>func(*Gui.IWnd, *Gui.CommandStateEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onFrameEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.FrameEvent)</td>
-<td class="enumeration">
-</td>
+<td>onFrameEvent</td>
+<td>func(*Gui.IWnd, *Gui.FrameEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onSerializeStateEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.SerializeStateEvent)</td>
-<td class="enumeration">
-</td>
+<td>onSerializeStateEvent</td>
+<td>func(*Gui.IWnd, *Gui.SerializeStateEvent)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onNotifyEvent</td>
-<td class="tdtype">
-func(*Gui.IWnd, *Gui.NotifyEvent)</td>
-<td class="enumeration">
-</td>
+<td>onNotifyEvent</td>
+<td>func(*Gui.IWnd, *Gui.NotifyEvent)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7731,82 +6309,54 @@ func(*Gui.IWnd, *Gui.NotifyEvent)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-imageList</td>
-<td class="tdtype">
-*Gui.ImageList</td>
-<td class="enumeration">
-</td>
+<td>imageList</td>
+<td>*Gui.ImageList</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-index</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>index</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sizeX</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>sizeX</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sizeY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>sizeY</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Icon_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Set icon to invalid. </p>
-</td>
+<td><a href="#Gui_Icon_clear">clear(self)</a></td>
+<td>Set icon to invalid. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Icon_from">from(*ImageList, s32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Initialize the icon from an image list. </p>
-</td>
+<td><a href="#Gui_Icon_from">from(*ImageList, s32, f32, f32)</a></td>
+<td>Initialize the icon from an image list. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Icon_isValid">isValid(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Icon_isValid">isValid(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Icon_paint">paint(self, *Painter, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-<p>Paint icon at the given position. </p>
-</td>
+<td><a href="#Gui_Icon_paint">paint(self, *Painter, f32, f32, const ref Color)</a></td>
+<td>Paint icon at the given position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Icon_set">set(self, *ImageList, s32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Initialize the icon from an image list. </p>
-</td>
+<td><a href="#Gui_Icon_set">set(self, *ImageList, s32, f32, f32)</a></td>
+<td>Initialize the icon from an image list. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Icon_opEquals">opEquals(self, const ref Icon)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Icon_opEquals">opEquals(self, const ref Icon)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7910,89 +6460,57 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconBarFlags</td>
-<td class="tdtype">
-<a href="#Gui_IconBarFlags">Gui.IconBarFlags</a></td>
-<td class="enumeration">
-</td>
+<td>iconBarFlags</td>
+<td><a href="#Gui_IconBarFlags">Gui.IconBarFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>iconSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconPadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>iconPadding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigUpdateState</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.CommandStateEvent))</td>
-<td class="enumeration">
-</td>
+<td>sigUpdateState</td>
+<td>Gui.SigArray'(closure(*Gui.CommandStateEvent))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigCheckChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.IconButton))</td>
-<td class="enumeration">
-</td>
+<td>sigCheckChanged</td>
+<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconBar_addCheckableItem">addCheckableItem(self, const ref Icon, WndId)</a></td>
-<td class="enumeration">
-<p>Add a new checkable button. </p>
-</td>
+<td><a href="#Gui_IconBar_addCheckableItem">addCheckableItem(self, const ref Icon, WndId)</a></td>
+<td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconBar_addCheckableToggleItem">addCheckableToggleItem(self, const ref Icon, WndId)</a></td>
-<td class="enumeration">
-<p>Add a new checkable button. </p>
-</td>
+<td><a href="#Gui_IconBar_addCheckableToggleItem">addCheckableToggleItem(self, const ref Icon, WndId)</a></td>
+<td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconBar_addItem">addItem(self, const ref Icon, WndId, IconButtonFlags)</a></td>
-<td class="enumeration">
-<p>Add a new button. </p>
-</td>
+<td><a href="#Gui_IconBar_addItem">addItem(self, const ref Icon, WndId, IconButtonFlags)</a></td>
+<td>Add a new button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconBar_create">create(*Wnd, f32, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_IconBar_create">create(*Wnd, f32, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconBar_setIconBarFlags">setIconBarFlags(self, IconBarFlags, IconBarFlags)</a></td>
-<td class="enumeration">
-<p>Change bar flags. </p>
-</td>
+<td><a href="#Gui_IconBar_setIconBarFlags">setIconBarFlags(self, IconBarFlags, IconBarFlags)</a></td>
+<td>Change bar flags. </td>
 </tr>
 </table>
 <p>
@@ -8096,16 +6614,12 @@ Gui.SigArray'(closure(*Gui.IconButton))</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Vertical</td>
-<td class="enumeration">
-</td>
+<td>Vertical</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8121,131 +6635,84 @@ Vertical</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> button</td>
-<td class="tdtype">
-<a href="#Gui_Button">Gui.Button</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> button</td>
+<td><a href="#Gui_Button">Gui.Button</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-form</td>
-<td class="tdtype">
-<a href="#Gui_IconButtonForm">Gui.IconButtonForm</a></td>
-<td class="enumeration">
-</td>
+<td>form</td>
+<td><a href="#Gui_IconButtonForm">Gui.IconButtonForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconBtnFlags</td>
-<td class="tdtype">
-<a href="#Gui_IconButtonFlags">Gui.IconButtonFlags</a></td>
-<td class="enumeration">
-</td>
+<td>iconBtnFlags</td>
+<td><a href="#Gui_IconButtonFlags">Gui.IconButtonFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checkedForm</td>
-<td class="tdtype">
-<a href="#Gui_IconButtonCheckedForm">Gui.IconButtonCheckedForm</a></td>
-<td class="enumeration">
-</td>
+<td>checkedForm</td>
+<td><a href="#Gui_IconButtonCheckedForm">Gui.IconButtonCheckedForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-arrowPos</td>
-<td class="tdtype">
-<a href="#Gui_IconButtonArrowPos">Gui.IconButtonArrowPos</a></td>
-<td class="enumeration">
-</td>
+<td>arrowPos</td>
+<td><a href="#Gui_IconButtonArrowPos">Gui.IconButtonArrowPos</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-textPos</td>
-<td class="tdtype">
-<a href="#Gui_IconButtonTextPos">Gui.IconButtonTextPos</a></td>
-<td class="enumeration">
-</td>
+<td>textPos</td>
+<td><a href="#Gui_IconButtonTextPos">Gui.IconButtonTextPos</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigHidePopup</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.IconButton))</td>
-<td class="enumeration">
-</td>
+<td>sigHidePopup</td>
+<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigShowPopup</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.IconButton))</td>
-<td class="enumeration">
-</td>
+<td>sigShowPopup</td>
+<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigCheckChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.IconButton))</td>
-<td class="enumeration">
-</td>
+<td>sigCheckChanged</td>
+<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigPaintIcon</td>
-<td class="tdtype">
-closure(*Gui.IconButton, *Gui.PaintContext, Core.Math.Rectangle)</td>
-<td class="enumeration">
-</td>
+<td>sigPaintIcon</td>
+<td>closure(*Gui.IconButton, *Gui.PaintContext, Core.Math.Rectangle)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBk</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBk</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isChecked</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isChecked</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popup</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>popup</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconButton_create">create(*Wnd, const ref Icon, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_IconButton_create">create(*Wnd, const ref Icon, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconButton_setCheck">setCheck(self, bool)</a></td>
-<td class="enumeration">
-<p>Set the check state of the button (if the button is checkable). </p>
-</td>
+<td><a href="#Gui_IconButton_setCheck">setCheck(self, bool)</a></td>
+<td>Set the check state of the button (if the button is checkable). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_IconButton_setForm">setForm(self, IconButtonForm)</a></td>
-<td class="enumeration">
-<p>Set the button form. </p>
-</td>
+<td><a href="#Gui_IconButton_setForm">setForm(self, IconButtonForm)</a></td>
+<td>Set the button form. </td>
 </tr>
 </table>
 <p>
@@ -8389,46 +6856,32 @@ popup</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightUp</td>
-<td class="enumeration">
-</td>
+<td>RightUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightDown</td>
-<td class="enumeration">
-</td>
+<td>RightDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8444,40 +6897,28 @@ Bottom</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Full</td>
-<td class="enumeration">
-</td>
+<td>Full</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8493,34 +6934,24 @@ Full</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Checkable</td>
-<td class="enumeration">
-</td>
+<td>Checkable</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CheckableToggle</td>
-<td class="enumeration">
-</td>
+<td>CheckableToggle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Popup</td>
-<td class="enumeration">
-</td>
+<td>Popup</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Center</td>
-<td class="enumeration">
-</td>
+<td>Center</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8536,22 +6967,16 @@ Center</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Square</td>
-<td class="enumeration">
-</td>
+<td>Square</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RoundSquare</td>
-<td class="enumeration">
-</td>
+<td>RoundSquare</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8567,28 +6992,20 @@ RoundSquare</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8604,58 +7021,39 @@ Bottom</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-texture</td>
-<td class="tdtype">
-Pixel.Texture</td>
-<td class="enumeration">
-</td>
+<td>texture</td>
+<td>Pixel.Texture</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-totalFrames</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>totalFrames</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameSizeX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>frameSizeX</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameSizeY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>frameSizeY</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageList_countX">countX(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ImageList_countX">countX(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageList_countY">countY(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ImageList_countY">countY(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageList_set">set(self, const ref Texture, s32, s32, s32)</a></td>
-<td class="enumeration">
-<p>Initialize image list. </p>
-</td>
+<td><a href="#Gui_ImageList_set">set(self, const ref Texture, s32, s32, s32)</a></td>
+<td>Initialize image list. </td>
 </tr>
 </table>
 <p>
@@ -8714,78 +7112,50 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-movie</td>
-<td class="tdtype">
-<a href="#Gui_Movie">Gui.Movie</a></td>
-<td class="enumeration">
-</td>
+<td>movie</td>
+<td><a href="#Gui_Movie">Gui.Movie</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-textureFrame</td>
-<td class="tdtype">
-Pixel.Texture</td>
-<td class="enumeration">
-</td>
+<td>textureFrame</td>
+<td>Pixel.Texture</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageRect_clear">clear(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ImageRect_clear">clear(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageRect_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ImageRect_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageRect_setFile">setFile(self, string)</a></td>
-<td class="enumeration">
-<p>Load and set movie. </p>
-</td>
+<td><a href="#Gui_ImageRect_setFile">setFile(self, string)</a></td>
+<td>Load and set movie. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageRect_setImage">setImage(self, const ref ImageList)</a></td>
-<td class="enumeration">
-<p>Associate image. </p>
-</td>
+<td><a href="#Gui_ImageRect_setImage">setImage(self, const ref ImageList)</a></td>
+<td>Associate image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageRect_setImage">setImage(self, const ref Image)</a></td>
-<td class="enumeration">
-<p>Associate image. </p>
-</td>
+<td><a href="#Gui_ImageRect_setImage">setImage(self, const ref Image)</a></td>
+<td>Associate image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageRect_setImage">setImage(self, const ref Texture)</a></td>
-<td class="enumeration">
-<p>Associate image. </p>
-</td>
+<td><a href="#Gui_ImageRect_setImage">setImage(self, const ref Texture)</a></td>
+<td>Associate image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ImageRect_setMovie">setMovie(self, const ref ImageList)</a></td>
-<td class="enumeration">
-<p>Set movie as an image list. </p>
-</td>
+<td><a href="#Gui_ImageRect_setMovie">setMovie(self, const ref ImageList)</a></td>
+<td>Set movie as an image list. </td>
 </tr>
 </table>
 <p>
@@ -8896,44 +7266,29 @@ Pixel.Texture</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-Pixel.RichString</td>
-<td class="enumeration">
-</td>
+<td>name</td>
+<td>Pixel.RichString</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icon</td>
-<td class="tdtype">
-<a href="#Gui_Icon">Gui.Icon</a></td>
-<td class="enumeration">
-</td>
+<td>icon</td>
+<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData0</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData0</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData1</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData1</td>
+<td>*void</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8949,36 +7304,24 @@ userData1</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modifiers</td>
-<td class="tdtype">
-Core.Input.KeyModifiers</td>
-<td class="enumeration">
-</td>
+<td>modifiers</td>
+<td>Core.Input.KeyModifiers</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-key</td>
-<td class="tdtype">
-Core.Input.Key</td>
-<td class="enumeration">
-</td>
+<td>key</td>
+<td>Core.Input.Key</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-char</td>
-<td class="tdtype">
-rune</td>
-<td class="enumeration">
-</td>
+<td>char</td>
+<td>rune</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -8994,36 +7337,24 @@ rune</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-mdf</td>
-<td class="tdtype">
-Core.Input.KeyModifiers</td>
-<td class="enumeration">
-</td>
+<td>mdf</td>
+<td>Core.Input.KeyModifiers</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-key</td>
-<td class="tdtype">
-Core.Input.Key</td>
-<td class="enumeration">
-</td>
+<td>key</td>
+<td>Core.Input.Key</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-target</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>target</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9039,107 +7370,69 @@ target</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icon</td>
-<td class="tdtype">
-<a href="#Gui_Icon">Gui.Icon</a></td>
-<td class="enumeration">
-</td>
+<td>icon</td>
+<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconColor</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>iconColor</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-labelFlags</td>
-<td class="tdtype">
-<a href="#Gui_LabelFlags">Gui.LabelFlags</a></td>
-<td class="enumeration">
-</td>
+<td>labelFlags</td>
+<td><a href="#Gui_LabelFlags">Gui.LabelFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horzAlignmentIcon</td>
-<td class="tdtype">
-Pixel.StringHorzAlignment</td>
-<td class="enumeration">
-</td>
+<td>horzAlignmentIcon</td>
+<td>Pixel.StringHorzAlignment</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertAlignmentIcon</td>
-<td class="tdtype">
-Pixel.StringVertAlignment</td>
-<td class="enumeration">
-</td>
+<td>vertAlignmentIcon</td>
+<td>Pixel.StringVertAlignment</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horzAlignmentText</td>
-<td class="tdtype">
-Pixel.StringHorzAlignment</td>
-<td class="enumeration">
-</td>
+<td>horzAlignmentText</td>
+<td>Pixel.StringHorzAlignment</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertAlignmentText</td>
-<td class="tdtype">
-Pixel.StringVertAlignment</td>
-<td class="enumeration">
-</td>
+<td>vertAlignmentText</td>
+<td>Pixel.StringVertAlignment</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paddingText</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>paddingText</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paddingIcon</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>paddingIcon</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Label_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Label_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Label_getText">getText(self)</a></td>
-<td class="enumeration">
-<p>Get the text. </p>
-</td>
+<td><a href="#Gui_Label_getText">getText(self)</a></td>
+<td>Get the text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Label_setText">setText(self, string)</a></td>
-<td class="enumeration">
-<p>Change the text. </p>
-</td>
+<td><a href="#Gui_Label_setText">setText(self, string)</a></td>
+<td>Change the text. </td>
 </tr>
 </table>
 <p>
@@ -9213,28 +7506,20 @@ Core.Math.Vector4</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-WordWrap</td>
-<td class="enumeration">
-</td>
+<td>WordWrap</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightText</td>
-<td class="enumeration">
-</td>
+<td>LightText</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AutoHeight</td>
-<td class="enumeration">
-</td>
+<td>AutoHeight</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9250,462 +7535,281 @@ AutoHeight</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horizontalExtent</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>horizontalExtent</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lineHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>lineHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-indentWidth</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>indentWidth</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>iconSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconMarginFirstCol</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>iconMarginFirstCol</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listFlags</td>
-<td class="tdtype">
-<a href="#Gui_ListFlags">Gui.ListFlags</a></td>
-<td class="enumeration">
-</td>
+<td>listFlags</td>
+<td><a href="#Gui_ListFlags">Gui.ListFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selectionMode</td>
-<td class="tdtype">
-<a href="#Gui_ListSelectionMode">Gui.ListSelectionMode</a></td>
-<td class="enumeration">
-</td>
+<td>selectionMode</td>
+<td><a href="#Gui_ListSelectionMode">Gui.ListSelectionMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-leftTextMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>leftTextMargin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigSelChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ListCtrl))</td>
-<td class="enumeration">
-</td>
+<td>sigSelChanged</td>
+<td>Gui.SigArray'(closure(*Gui.ListCtrl))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigCheckChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ListCtrl))</td>
-<td class="enumeration">
-</td>
+<td>sigCheckChanged</td>
+<td>Gui.SigArray'(closure(*Gui.ListCtrl))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigRightClick</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ListCtrl, Core.Math.Point))</td>
-<td class="enumeration">
-</td>
+<td>sigRightClick</td>
+<td>Gui.SigArray'(closure(*Gui.ListCtrl, Core.Math.Point))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigLeftDoubleClick</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ListCtrl, Core.Math.Point))</td>
-<td class="enumeration">
-</td>
+<td>sigLeftDoubleClick</td>
+<td>Gui.SigArray'(closure(*Gui.ListCtrl, Core.Math.Point))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigExpand</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.ListLine))</td>
-<td class="enumeration">
-</td>
+<td>sigExpand</td>
+<td>Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.ListLine))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigCollapse</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.ListLine))</td>
-<td class="enumeration">
-</td>
+<td>sigCollapse</td>
+<td>Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.ListLine))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigKeyPressed</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.KeyEvent))</td>
-<td class="enumeration">
-</td>
+<td>sigKeyPressed</td>
+<td>Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.KeyEvent))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigVirtualFill</td>
-<td class="tdtype">
-func(*Gui.ListCtrl, *Gui.ListLine, u32)</td>
-<td class="enumeration">
-</td>
+<td>sigVirtualFill</td>
+<td>func(*Gui.ListCtrl, *Gui.ListLine, u32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigSort</td>
-<td class="tdtype">
-func(*Gui.ListLine, *Gui.ListLine, u32, bool)->s32</td>
-<td class="enumeration">
-</td>
+<td>sigSort</td>
+<td>func(*Gui.ListLine, *Gui.ListLine, u32, bool)->s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toFreeLines</td>
-<td class="tdtype">
-Core.ArrayPtr'(Gui.ListLine)</td>
-<td class="enumeration">
-</td>
+<td>toFreeLines</td>
+<td>Core.ArrayPtr'(Gui.ListLine)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lines</td>
-<td class="tdtype">
-Core.Array'(*Gui.ListLine)</td>
-<td class="enumeration">
-</td>
+<td>lines</td>
+<td>Core.Array'(*Gui.ListLine)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-idxLineToIdxList</td>
-<td class="tdtype">
-Core.HashTable'(u32, u32)</td>
-<td class="enumeration">
-</td>
+<td>idxLineToIdxList</td>
+<td>Core.HashTable'(u32, u32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selModel</td>
-<td class="tdtype">
-<a href="#Gui_SelModel">Gui.SelModel</a></td>
-<td class="enumeration">
-</td>
+<td>selModel</td>
+<td><a href="#Gui_SelModel">Gui.SelModel</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checkModel</td>
-<td class="tdtype">
-<a href="#Gui_SelModel">Gui.SelModel</a></td>
-<td class="enumeration">
-</td>
+<td>checkModel</td>
+<td><a href="#Gui_SelModel">Gui.SelModel</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-focusIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>focusIndex</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hotIndex</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollWnd</td>
-<td class="tdtype">
-*Gui.ScrollWnd</td>
-<td class="enumeration">
-</td>
+<td>scrollWnd</td>
+<td>*Gui.ScrollWnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listView</td>
-<td class="tdtype">
-*Gui.ListView</td>
-<td class="enumeration">
-</td>
+<td>listView</td>
+<td>*Gui.ListView</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-header</td>
-<td class="tdtype">
-*Gui.Header</td>
-<td class="enumeration">
-</td>
+<td>header</td>
+<td>*Gui.Header</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-virtualCount</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>virtualCount</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isVirtual</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isVirtual</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_addColumn">addColumn(self, string, f32, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Add one column in a multi columns list. </p>
-</td>
+<td><a href="#Gui_ListCtrl_addColumn">addColumn(self, string, f32, const ref Icon)</a></td>
+<td>Add one column in a multi columns list. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear all lines. </p>
-</td>
+<td><a href="#Gui_ListCtrl_clear">clear(self)</a></td>
+<td>Clear all lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_collapse">collapse(self, *ListLine)</a></td>
-<td class="enumeration">
-<p>Collapse the given line. </p>
-</td>
+<td><a href="#Gui_ListCtrl_collapse">collapse(self, *ListLine)</a></td>
+<td>Collapse the given line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_collapseAll">collapseAll(self)</a></td>
-<td class="enumeration">
-<p>Collapse all lines. </p>
-</td>
+<td><a href="#Gui_ListCtrl_collapseAll">collapseAll(self)</a></td>
+<td>Collapse all lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_computeLayout">computeLayout(self)</a></td>
-<td class="enumeration">
-<p>Compute global layout, once all lines have been added. </p>
-</td>
+<td><a href="#Gui_ListCtrl_computeLayout">computeLayout(self)</a></td>
+<td>Compute global layout, once all lines have been added. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_createLine">createLine(self, *ListLine)</a></td>
-<td class="enumeration">
-<p>Add one new line. </p>
-</td>
+<td><a href="#Gui_ListCtrl_createLine">createLine(self, *ListLine)</a></td>
+<td>Add one new line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_createLine">createLine(self, string, const ref Icon, *ListLine)</a></td>
-<td class="enumeration">
-<p>Add one line, and set first column. </p>
-</td>
+<td><a href="#Gui_ListCtrl_createLine">createLine(self, string, const ref Icon, *ListLine)</a></td>
+<td>Add one line, and set first column. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_createMultiColumns">createMultiColumns(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ListCtrl_createMultiColumns">createMultiColumns(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_createSimple">createSimple(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ListCtrl_createSimple">createSimple(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_ensureVisibleLine">ensureVisibleLine(self, u32)</a></td>
-<td class="enumeration">
-<p>Set the corresponding line visible. </p>
-</td>
+<td><a href="#Gui_ListCtrl_ensureVisibleLine">ensureVisibleLine(self, u32)</a></td>
+<td>Set the corresponding line visible. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_expand">expand(self, *ListLine)</a></td>
-<td class="enumeration">
-<p>Expand the given line. </p>
-</td>
+<td><a href="#Gui_ListCtrl_expand">expand(self, *ListLine)</a></td>
+<td>Expand the given line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getCheckedLines">getCheckedLines(self)</a></td>
-<td class="enumeration">
-<p>Get all the checked lines. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getCheckedLines">getCheckedLines(self)</a></td>
+<td>Get all the checked lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getFirstVisibleLineIndex">getFirstVisibleLineIndex(self)</a></td>
-<td class="enumeration">
-<p>Returns the first visible line index. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getFirstVisibleLineIndex">getFirstVisibleLineIndex(self)</a></td>
+<td>Returns the first visible line index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getFocusLine">getFocusLine(self)</a></td>
-<td class="enumeration">
-<p>Get the line with the keyboard focus. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getFocusLine">getFocusLine(self)</a></td>
+<td>Get the line with the keyboard focus. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getLastVisibleLineIndex">getLastVisibleLineIndex(self)</a></td>
-<td class="enumeration">
-<p>Returns the last visible line index. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getLastVisibleLineIndex">getLastVisibleLineIndex(self)</a></td>
+<td>Returns the last visible line index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getLine">getLine(self, u32)</a></td>
-<td class="enumeration">
-<p>Get a line by index. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getLine">getLine(self, u32)</a></td>
+<td>Get a line by index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getLineCount">getLineCount(self)</a></td>
-<td class="enumeration">
-<p>Returns the number of lines in the list. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getLineCount">getLineCount(self)</a></td>
+<td>Returns the number of lines in the list. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getLineHeight">getLineHeight(self)</a></td>
-<td class="enumeration">
-<p>Get the height of one line. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getLineHeight">getLineHeight(self)</a></td>
+<td>Get the height of one line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine(self)</a></td>
-<td class="enumeration">
-<p>Returns a selected line  Mostly for singlesel mode. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine(self)</a></td>
+<td>Returns a selected line  Mostly for singlesel mode. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines(self)</a></td>
-<td class="enumeration">
-<p>Get all the selected lines. </p>
-</td>
+<td><a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines(self)</a></td>
+<td>Get all the selected lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_isLineSelected">isLineSelected(self, u32)</a></td>
-<td class="enumeration">
-<p>Returns. </p>
-</td>
+<td><a href="#Gui_ListCtrl_isLineSelected">isLineSelected(self, u32)</a></td>
+<td>Returns. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_isSelectedLine">isSelectedLine(self, u32)</a></td>
-<td class="enumeration">
-<p>Returns true if the line at the given index is selected. </p>
-</td>
+<td><a href="#Gui_ListCtrl_isSelectedLine">isSelectedLine(self, u32)</a></td>
+<td>Returns true if the line at the given index is selected. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_selectLine">selectLine(self, u32, bool)</a></td>
-<td class="enumeration">
-<p>Select of unselect the given line. </p>
-</td>
+<td><a href="#Gui_ListCtrl_selectLine">selectLine(self, u32, bool)</a></td>
+<td>Select of unselect the given line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_selectLines">selectLines(self, u32, u32, bool)</a></td>
-<td class="enumeration">
-<p>Select a range of lines. </p>
-</td>
+<td><a href="#Gui_ListCtrl_selectLines">selectLines(self, u32, u32, bool)</a></td>
+<td>Select a range of lines. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_setColumnWidth">setColumnWidth(self, u32, f32)</a></td>
-<td class="enumeration">
-<p>Set the column width. </p>
-</td>
+<td><a href="#Gui_ListCtrl_setColumnWidth">setColumnWidth(self, u32, f32)</a></td>
+<td>Set the column width. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_setFocus">setFocus(self)</a></td>
-<td class="enumeration">
-<p>Set focus to the list. </p>
-</td>
+<td><a href="#Gui_ListCtrl_setFocus">setFocus(self)</a></td>
+<td>Set focus to the list. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_setVirtualCount">setVirtualCount(self, u32)</a></td>
-<td class="enumeration">
-<p>Set the number of lines in a virtual list. </p>
-</td>
+<td><a href="#Gui_ListCtrl_setVirtualCount">setVirtualCount(self, u32)</a></td>
+<td>Set the number of lines in a virtual list. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_sort">sort(self)</a></td>
-<td class="enumeration">
-<p>Sort list as before. </p>
-</td>
+<td><a href="#Gui_ListCtrl_sort">sort(self)</a></td>
+<td>Sort list as before. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_sort">sort(self, u32, bool, bool)</a></td>
-<td class="enumeration">
-<p>Sort the list by a given column  If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </p>
-</td>
+<td><a href="#Gui_ListCtrl_sort">sort(self, u32, bool, bool)</a></td>
+<td>Sort the list by a given column  If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_toggleExpand">toggleExpand(self, *ListLine)</a></td>
-<td class="enumeration">
-<p>Collapse the given line. </p>
-</td>
+<td><a href="#Gui_ListCtrl_toggleExpand">toggleExpand(self, *ListLine)</a></td>
+<td>Collapse the given line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListCtrl_unselectAll">unselectAll(self)</a></td>
-<td class="enumeration">
-<p>Unselect all lines. </p>
-</td>
+<td><a href="#Gui_ListCtrl_unselectAll">unselectAll(self)</a></td>
+<td>Unselect all lines. </td>
 </tr>
 </table>
 <p>
@@ -10162,54 +8266,36 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HideSelection</td>
-<td class="enumeration">
-</td>
+<td>HideSelection</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AlternateLines</td>
-<td class="enumeration">
-</td>
+<td>AlternateLines</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HorzLines</td>
-<td class="enumeration">
-</td>
+<td>HorzLines</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VertLines</td>
-<td class="enumeration">
-</td>
+<td>VertLines</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ForceMarginExpandMark</td>
-<td class="enumeration">
-<p>Force one margin even if no expand mark. </p>
-</td>
+<td>ForceMarginExpandMark</td>
+<td>Force one margin even if no expand mark. </td>
 </tr>
 <tr>
-<td class="tdname">
-NoMouseEmptySel</td>
-<td class="enumeration">
-<p>Click does not clear selection if not on an item. </p>
-</td>
+<td>NoMouseEmptySel</td>
+<td>Click does not clear selection if not on an item. </td>
 </tr>
 <tr>
-<td class="tdname">
-HotTrack</td>
-<td class="enumeration">
-</td>
+<td>HotTrack</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10225,44 +8311,29 @@ HotTrack</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-sortKey</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>sortKey</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colorBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>colorBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colorFg</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>colorFg</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-column</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>column</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horzAlign</td>
-<td class="tdtype">
-Pixel.StringHorzAlignment</td>
-<td class="enumeration">
-</td>
+<td>horzAlign</td>
+<td>Pixel.StringHorzAlignment</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10278,161 +8349,103 @@ Pixel.StringHorzAlignment</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-colorBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>colorBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colorFg</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>colorFg</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData0</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData0</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData1</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData1</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData2</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData2</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData3</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData3</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-leftTextMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>leftTextMargin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceExpandMark</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceExpandMark</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-canCheck</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>canCheck</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-separator</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>separator</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconMargin</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>iconMargin</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lines</td>
-<td class="tdtype">
-Core.ArrayPtr'(Gui.ListLine)</td>
-<td class="enumeration">
-</td>
+<td>lines</td>
+<td>Core.ArrayPtr'(Gui.ListLine)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-parent</td>
-<td class="tdtype">
-*Gui.ListLine</td>
-<td class="enumeration">
-</td>
+<td>parent</td>
+<td>*Gui.ListLine</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-index</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>index</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-level</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>level</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-expanded</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>expanded</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListLine_canExpand">canExpand(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ListLine_canExpand">canExpand(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListLine_getItem">getItem(self, u32)</a></td>
-<td class="enumeration">
-<p>Get an item by index. </p>
-</td>
+<td><a href="#Gui_ListLine_getItem">getItem(self, u32)</a></td>
+<td>Get an item by index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListLine_isParentOf">isParentOf(self, *ListLine)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ListLine_isParentOf">isParentOf(self, *ListLine)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ListLine_setItem">setItem(self, u32, string, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Initialize a given column item. </p>
-</td>
+<td><a href="#Gui_ListLine_setItem">setItem(self, u32, string, const ref Icon)</a></td>
+<td>Initialize a given column item. </td>
 </tr>
 </table>
 <p>
@@ -10506,22 +8519,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Single</td>
-<td class="enumeration">
-</td>
+<td>Single</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Multi</td>
-<td class="enumeration">
-</td>
+<td>Multi</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10537,28 +8544,19 @@ Multi</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-list</td>
-<td class="tdtype">
-*Gui.ListCtrl</td>
-<td class="enumeration">
-</td>
+<td>list</td>
+<td>*Gui.ListCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-discardMouseRelease</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>discardMouseRelease</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10630,193 +8628,122 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onValidateResult</td>
-<td class="tdtype">
-func(*Gui.MenuCtrl, Gui.WndId)</td>
-<td class="enumeration">
-</td>
+<td>onValidateResult</td>
+<td>func(*Gui.MenuCtrl, Gui.WndId)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onComputeItem</td>
-<td class="tdtype">
-func(*Gui.MenuCtrl, *Gui.PopupMenuItem)</td>
-<td class="enumeration">
-</td>
+<td>onComputeItem</td>
+<td>func(*Gui.MenuCtrl, *Gui.PopupMenuItem)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuCtrlFlags</td>
-<td class="tdtype">
-<a href="#Gui_MenuCtrlFlags">Gui.MenuCtrlFlags</a></td>
-<td class="enumeration">
-</td>
+<td>menuCtrlFlags</td>
+<td><a href="#Gui_MenuCtrlFlags">Gui.MenuCtrlFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paddingSel</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>paddingSel</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hotIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selectedIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>selectedIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bar</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>bar</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endModal</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>endModal</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endModalResult</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>endModalResult</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ownerMenu</td>
-<td class="tdtype">
-*Gui.MenuCtrl</td>
-<td class="enumeration">
-</td>
+<td>ownerMenu</td>
+<td>*Gui.MenuCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-subVisible</td>
-<td class="tdtype">
-*Gui.MenuCtrl</td>
-<td class="enumeration">
-</td>
+<td>subVisible</td>
+<td>*Gui.MenuCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-timer</td>
-<td class="tdtype">
-*Gui.Timer</td>
-<td class="enumeration">
-</td>
+<td>timer</td>
+<td>*Gui.Timer</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirtyLayout</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>dirtyLayout</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paintByFrame</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>paintByFrame</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_addItem">addItem(self, WndId)</a></td>
-<td class="enumeration">
-<p>Add a new item. </p>
-</td>
+<td><a href="#Gui_MenuCtrl_addItem">addItem(self, WndId)</a></td>
+<td>Add a new item. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_addItem">addItem(self, string, WndId, const ref Icon, string, bool, bool)</a></td>
-<td class="enumeration">
-<p>Add a new item. </p>
-</td>
+<td><a href="#Gui_MenuCtrl_addItem">addItem(self, string, WndId, const ref Icon, string, bool, bool)</a></td>
+<td>Add a new item. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_addPopup">addPopup(self, *MenuCtrl, WndId)</a></td>
-<td class="enumeration">
-<p>Add a new popup item. </p>
-</td>
+<td><a href="#Gui_MenuCtrl_addPopup">addPopup(self, *MenuCtrl, WndId)</a></td>
+<td>Add a new popup item. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_addPopup">addPopup(self, string, *MenuCtrl, const ref Icon, WndId)</a></td>
-<td class="enumeration">
-<p>Add a new popup item. </p>
-</td>
+<td><a href="#Gui_MenuCtrl_addPopup">addPopup(self, string, *MenuCtrl, const ref Icon, WndId)</a></td>
+<td>Add a new popup item. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_addSeparator">addSeparator(self)</a></td>
-<td class="enumeration">
-<p>Add a separator. </p>
-</td>
+<td><a href="#Gui_MenuCtrl_addSeparator">addSeparator(self)</a></td>
+<td>Add a separator. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_computeLayoutPopup">computeLayoutPopup(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_MenuCtrl_computeLayoutPopup">computeLayoutPopup(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_createBar">createBar(*Wnd, const ref Rectangle, WndId, *Wnd)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_MenuCtrl_createBar">createBar(*Wnd, const ref Rectangle, WndId, *Wnd)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_createPopup">createPopup(*Wnd, WndId, *Wnd)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_MenuCtrl_createPopup">createPopup(*Wnd, WndId, *Wnd)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_doModal">doModal(self, const ref Point, PopupPos, bool)</a></td>
-<td class="enumeration">
-<p>Make the popup menu modal  Will return the selected id. </p>
-</td>
+<td><a href="#Gui_MenuCtrl_doModal">doModal(self, const ref Point, PopupPos, bool)</a></td>
+<td>Make the popup menu modal  Will return the selected id. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MenuCtrl_updateState">updateState(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_MenuCtrl_updateState">updateState(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10998,16 +8925,12 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NoKeyShortcuts</td>
-<td class="enumeration">
-</td>
+<td>NoKeyShortcuts</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11023,101 +8946,62 @@ NoKeyShortcuts</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> dialog</td>
-<td class="tdtype">
-<a href="#Gui_Dialog">Gui.Dialog</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> dialog</td>
+<td><a href="#Gui_Dialog">Gui.Dialog</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-labelIcon</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>labelIcon</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_confirm">confirm(*Surface, string, string)</a></td>
-<td class="enumeration">
-<p>Message box to <code class="incode">confirm</code> something. </p>
-</td>
+<td><a href="#Gui_MessageDlg_confirm">confirm(*Surface, string, string)</a></td>
+<td>Message box to <code class="incode">confirm</code> something. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_create">create(*Surface, string, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Creates the message box. </p>
-</td>
+<td><a href="#Gui_MessageDlg_create">create(*Surface, string, const ref Icon)</a></td>
+<td>Creates the message box. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_doModal">doModal(self, *Surface)</a></td>
-<td class="enumeration">
-<p>Display the box, centered, and returns the id of the pressed button. </p>
-</td>
+<td><a href="#Gui_MessageDlg_doModal">doModal(self, *Surface)</a></td>
+<td>Display the box, centered, and returns the id of the pressed button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_error">error(*Surface, string, string)</a></td>
-<td class="enumeration">
-<p>Message box to show an error. </p>
-</td>
+<td><a href="#Gui_MessageDlg_error">error(*Surface, string, string)</a></td>
+<td>Message box to show an error. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_ok">ok(*Surface, string, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Message box with a <code class="incode">ok</code>. </p>
-</td>
+<td><a href="#Gui_MessageDlg_ok">ok(*Surface, string, const ref Icon)</a></td>
+<td>Message box with a <code class="incode">ok</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_okCancel">okCancel(*Surface, string, string, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button. </p>
-</td>
+<td><a href="#Gui_MessageDlg_okCancel">okCancel(*Surface, string, string, const ref Icon)</a></td>
+<td>Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_setIcon">setIcon(self, const ref Icon, const ref Color)</a></td>
-<td class="enumeration">
-<p>Set big icon. </p>
-</td>
+<td><a href="#Gui_MessageDlg_setIcon">setIcon(self, const ref Icon, const ref Color)</a></td>
+<td>Set big icon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_setIconColor">setIconColor(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Set big icon color (icon must has been set before). </p>
-</td>
+<td><a href="#Gui_MessageDlg_setIconColor">setIconColor(self, const ref Color)</a></td>
+<td>Set big icon color (icon must has been set before). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_yesNo">yesNo(*Surface, string, string, string, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </p>
-</td>
+<td><a href="#Gui_MessageDlg_yesNo">yesNo(*Surface, string, string, string, const ref Icon)</a></td>
+<td>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel(*Surface, string, string, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </p>
-</td>
+<td><a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel(*Surface, string, string, const ref Icon)</a></td>
+<td>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </td>
 </tr>
 </table>
 <p>
@@ -11283,44 +9167,29 @@ label</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-button</td>
-<td class="tdtype">
-Core.Input.MouseButton</td>
-<td class="enumeration">
-</td>
+<td>button</td>
+<td>Core.Input.MouseButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-surfacePos</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>surfacePos</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-move</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>move</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modifiers</td>
-<td class="tdtype">
-Core.Input.KeyModifiers</td>
-<td class="enumeration">
-</td>
+<td>modifiers</td>
+<td>Core.Input.KeyModifiers</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11336,20 +9205,14 @@ Core.Input.KeyModifiers</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-oldPos</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>oldPos</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11365,175 +9228,110 @@ Core.Math.Point</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-enableCache</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>enableCache</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mustLoop</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>mustLoop</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-inPause</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>inPause</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-playFreq</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>playFreq</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigFrameChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Movie))</td>
-<td class="enumeration">
-</td>
+<td>sigFrameChanged</td>
+<td>Gui.SigArray'(closure(*Gui.Movie))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-numFrames</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>numFrames</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameIndex</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>frameIndex</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frame</td>
-<td class="tdtype">
-Pixel.Image</td>
-<td class="enumeration">
-</td>
+<td>frame</td>
+<td>Pixel.Image</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-source</td>
-<td class="tdtype">
-<a href="#Gui_MovieSource">Gui.MovieSource</a></td>
-<td class="enumeration">
-</td>
+<td>source</td>
+<td><a href="#Gui_MovieSource">Gui.MovieSource</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-imgList</td>
-<td class="tdtype">
-<a href="#Gui_ImageList">Gui.ImageList</a></td>
-<td class="enumeration">
-</td>
+<td>imgList</td>
+<td><a href="#Gui_ImageList">Gui.ImageList</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-gif</td>
-<td class="tdtype">
-Pixel.Gif.Decoder</td>
-<td class="enumeration">
-</td>
+<td>gif</td>
+<td>Pixel.Gif.Decoder</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bytes</td>
-<td class="tdtype">
-Core.Array'(u8)</td>
-<td class="enumeration">
-</td>
+<td>bytes</td>
+<td>Core.Array'(u8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cacheFrames</td>
-<td class="tdtype">
-Core.Array'(Pixel.Image)</td>
-<td class="enumeration">
-</td>
+<td>cacheFrames</td>
+<td>Core.Array'(Pixel.Image)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-currentTime</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>currentTime</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirtyFrame</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>dirtyFrame</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Movie_clear">clear(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Movie_clear">clear(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Movie_isValid">isValid(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the movie has valid content. </p>
-</td>
+<td><a href="#Gui_Movie_isValid">isValid(self)</a></td>
+<td>Returns true if the movie has valid content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Movie_pause">pause(self, bool)</a></td>
-<td class="enumeration">
-<p>Set/Reset pause state. </p>
-</td>
+<td><a href="#Gui_Movie_pause">pause(self, bool)</a></td>
+<td>Set/Reset pause state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Movie_set">set(self, const ref ImageList)</a></td>
-<td class="enumeration">
-<p>Associate an image list. </p>
-</td>
+<td><a href="#Gui_Movie_set">set(self, const ref ImageList)</a></td>
+<td>Associate an image list. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Movie_set">set(self, string)</a></td>
-<td class="enumeration">
-<p>Associate a filename. </p>
-</td>
+<td><a href="#Gui_Movie_set">set(self, string)</a></td>
+<td>Associate a filename. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Movie_setFrameIndex">setFrameIndex(self, s32)</a></td>
-<td class="enumeration">
-<p>Set the current video frame. </p>
-</td>
+<td><a href="#Gui_Movie_setFrameIndex">setFrameIndex(self, s32)</a></td>
+<td>Set the current video frame. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Movie_update">update(self, f32)</a></td>
-<td class="enumeration">
-<p>Update timing and change frames. </p>
-</td>
+<td><a href="#Gui_Movie_update">update(self, f32)</a></td>
+<td>Update timing and change frames. </td>
 </tr>
 </table>
 <p>
@@ -11642,22 +9440,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SpriteSheet</td>
-<td class="enumeration">
-</td>
+<td>SpriteSheet</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gif</td>
-<td class="enumeration">
-</td>
+<td>Gif</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11673,12 +9465,9 @@ Gif</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-cursor</td>
-<td class="tdtype">
-Win32.HCURSOR</td>
-<td class="enumeration">
-</td>
+<td>cursor</td>
+<td>Win32.HCURSOR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11694,20 +9483,14 @@ Win32.HCURSOR</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hWnd</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hWnd</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastDeadChar</td>
-<td class="tdtype">
-Win32.WPARAM</td>
-<td class="enumeration">
-</td>
+<td>lastDeadChar</td>
+<td>Win32.WPARAM</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11723,28 +9506,19 @@ Win32.WPARAM</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntfyKind</td>
-<td class="tdtype">
-Gui.NotifyEvent.Kind</td>
-<td class="enumeration">
-</td>
+<td>ntfyKind</td>
+<td>Gui.NotifyEvent.Kind</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-from</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>from</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11760,28 +9534,19 @@ from</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-painter</td>
-<td class="tdtype">
-*Pixel.Painter</td>
-<td class="enumeration">
-</td>
+<td>painter</td>
+<td>*Pixel.Painter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-renderer</td>
-<td class="tdtype">
-*Pixel.RenderOgl</td>
-<td class="enumeration">
-</td>
+<td>renderer</td>
+<td>*Pixel.RenderOgl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isDisabled</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isDisabled</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11797,20 +9562,14 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bc</td>
-<td class="tdtype">
-*Gui.PaintContext</td>
-<td class="enumeration">
-</td>
+<td>bc</td>
+<td>*Gui.PaintContext</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11827,25 +9586,16 @@ bc</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_PaintImage_draw">draw(self, func(*void, *Application, *Painter))</a></td>
-<td class="enumeration">
-<p>Draw to an image by calling the closure. </p>
-</td>
+<td><a href="#Gui_PaintImage_draw">draw(self, func(*void, *Application, *Painter))</a></td>
+<td>Draw to an image by calling the closure. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PaintImage_draw">draw(s32, s32, func(*void, *Application, *Painter))</a></td>
-<td class="enumeration">
-<p>One shot paint to image. </p>
-</td>
+<td><a href="#Gui_PaintImage_draw">draw(s32, s32, func(*void, *Application, *Painter))</a></td>
+<td>One shot paint to image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PaintImage_init">init(self, s32, s32)</a></td>
-<td class="enumeration">
-<p>First init the PaintImage instance. </p>
-</td>
+<td><a href="#Gui_PaintImage_init">init(self, s32, s32)</a></td>
+<td>First init the PaintImage instance. </td>
 </tr>
 </table>
 <p>
@@ -11895,105 +9645,67 @@ bc</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selectedColor</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>selectedColor</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pal</td>
-<td class="tdtype">
-Core.Array'(Pixel.Color)</td>
-<td class="enumeration">
-</td>
+<td>pal</td>
+<td>Core.Array'(Pixel.Color)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-palPos</td>
-<td class="tdtype">
-Core.Array'(Core.Math.Rectangle)</td>
-<td class="enumeration">
-</td>
+<td>palPos</td>
+<td>Core.Array'(Core.Math.Rectangle)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-boxSize</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>boxSize</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-boxMargin</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>boxMargin</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.PalettePicker))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.PalettePicker))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotIdx</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>hotIdx</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_PalettePicker_addColor">addColor(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Add a color. </p>
-</td>
+<td><a href="#Gui_PalettePicker_addColor">addColor(self, const ref Color)</a></td>
+<td>Add a color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PalettePicker_addHueColors">addHueColors(self, s32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Add a range of changing <code class="incode">hue</code>. </p>
-</td>
+<td><a href="#Gui_PalettePicker_addHueColors">addHueColors(self, s32, f32, f32)</a></td>
+<td>Add a range of changing <code class="incode">hue</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PalettePicker_addLumColors">addLumColors(self, s32, const ref Color)</a></td>
-<td class="enumeration">
-<p>Add a range of changing <code class="incode">luminance</code>. </p>
-</td>
+<td><a href="#Gui_PalettePicker_addLumColors">addLumColors(self, s32, const ref Color)</a></td>
+<td>Add a range of changing <code class="incode">luminance</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PalettePicker_addSatColors">addSatColors(self, s32, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Add a range of changing <code class="incode">saturation</code>. </p>
-</td>
+<td><a href="#Gui_PalettePicker_addSatColors">addSatColors(self, s32, const ref Color, f32)</a></td>
+<td>Add a range of changing <code class="incode">saturation</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PalettePicker_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_PalettePicker_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12111,123 +9823,78 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-heightItem</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>heightItem</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-heightSeparator</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>heightSeparator</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minWidthPopup</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>minWidthPopup</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxHeightPopup</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>maxHeightPopup</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-simFitX</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>simFitX</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-simFitY</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>simFitY</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigSelected</td>
-<td class="tdtype">
-closure(*Gui.PopupListCtrl, u32)</td>
-<td class="enumeration">
-</td>
+<td>sigSelected</td>
+<td>closure(*Gui.PopupListCtrl, u32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selectedIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>selectedIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollWnd</td>
-<td class="tdtype">
-*Gui.ScrollWnd</td>
-<td class="enumeration">
-</td>
+<td>scrollWnd</td>
+<td>*Gui.ScrollWnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxIconSize</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>maxIconSize</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_PopupListCtrl_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
-<td class="enumeration">
-<p>Add a new item in the list. </p>
-</td>
+<td><a href="#Gui_PopupListCtrl_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
+<td>Add a new item in the list. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PopupListCtrl_addSeparator">addSeparator(self)</a></td>
-<td class="enumeration">
-<p>Add a separator. </p>
-</td>
+<td><a href="#Gui_PopupListCtrl_addSeparator">addSeparator(self)</a></td>
+<td>Add a separator. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PopupListCtrl_create">create(*Wnd)</a></td>
-<td class="enumeration">
-<p>Create the popup list, but do not display it. </p>
-</td>
+<td><a href="#Gui_PopupListCtrl_create">create(*Wnd)</a></td>
+<td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PopupListCtrl_show">show(self, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Show popup. </p>
-</td>
+<td><a href="#Gui_PopupListCtrl_show">show(self, f32, f32, f32)</a></td>
+<td>Show popup. </td>
 </tr>
 </table>
 <p>
@@ -12303,44 +9970,29 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Item">Gui.Item</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Item">Gui.Item</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isSeparator</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isSeparator</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniSel</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniSel</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniText</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniText</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniCheck</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniCheck</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12356,28 +10008,19 @@ aniCheck</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-list</td>
-<td class="tdtype">
-*Gui.PopupListCtrl</td>
-<td class="enumeration">
-</td>
+<td>list</td>
+<td>*Gui.PopupListCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hotIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12435,92 +10078,59 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-rightName</td>
-<td class="tdtype">
-Pixel.RichString</td>
-<td class="enumeration">
-</td>
+<td>rightName</td>
+<td>Pixel.RichString</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popup</td>
-<td class="tdtype">
-*Gui.MenuCtrl</td>
-<td class="enumeration">
-</td>
+<td>popup</td>
+<td>*Gui.MenuCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pos</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>pos</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-separator</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>separator</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-disabled</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>disabled</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checked</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>checked</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hidden</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hidden</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniSel</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniSel</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniText</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniText</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniRightText</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniRightText</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12536,22 +10146,16 @@ aniRightText</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-TopLeft</td>
-<td class="enumeration">
-</td>
+<td>TopLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AnchorTopCenter</td>
-<td class="enumeration">
-</td>
+<td>AnchorTopCenter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AnchorBottomCenter</td>
-<td class="enumeration">
-</td>
+<td>AnchorBottomCenter</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12567,44 +10171,30 @@ AnchorBottomCenter</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-prgBarFlags</td>
-<td class="tdtype">
-<a href="#Gui_ProgressBarFlags">Gui.ProgressBarFlags</a></td>
-<td class="enumeration">
-</td>
+<td>prgBarFlags</td>
+<td><a href="#Gui_ProgressBarFlags">Gui.ProgressBarFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-progression</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>progression</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ProgressBar_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ProgressBar_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ProgressBar_setProgression">setProgression(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the progression in [0..1] range. </p>
-</td>
+<td><a href="#Gui_ProgressBar_setProgression">setProgression(self, f32)</a></td>
+<td>Set the progression in [0..1] range. </td>
 </tr>
 </table>
 <p>
@@ -12663,16 +10253,12 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Infinite</td>
-<td class="enumeration">
-</td>
+<td>Infinite</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12688,155 +10274,98 @@ Infinite</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nameMarginBefore</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>nameMarginBefore</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nameHeight</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>nameHeight</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nameMarginAfter</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>nameMarginAfter</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-descMarginAfter</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>descMarginAfter</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-enumFlagsMarginBefore</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>enumFlagsMarginBefore</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxSizeCombo</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>maxSizeCombo</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxSizeEditValue</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>maxSizeEditValue</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.PropertyList))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.PropertyList))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-font0</td>
-<td class="tdtype">
-Pixel.FontFamily</td>
-<td class="enumeration">
-</td>
+<td>font0</td>
+<td>Pixel.FontFamily</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-font1</td>
-<td class="tdtype">
-Pixel.FontFamily</td>
-<td class="enumeration">
-</td>
+<td>font1</td>
+<td>Pixel.FontFamily</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-font2</td>
-<td class="tdtype">
-Pixel.FontFamily</td>
-<td class="enumeration">
-</td>
+<td>font2</td>
+<td>Pixel.FontFamily</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollWnd</td>
-<td class="tdtype">
-*Gui.ScrollWnd</td>
-<td class="enumeration">
-</td>
+<td>scrollWnd</td>
+<td>*Gui.ScrollWnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edView</td>
-<td class="tdtype">
-*Gui.PropertyListView</td>
-<td class="enumeration">
-</td>
+<td>edView</td>
+<td>*Gui.PropertyListView</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-categs</td>
-<td class="tdtype">
-Core.Array'({item: *Gui.PropertyListItem, lvl: s32})</td>
-<td class="enumeration">
-</td>
+<td>categs</td>
+<td>Core.Array'({item: *Gui.PropertyListItem, lvl: s32})</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_PropertyList_addItem">addItem(self, any)</a></td>
-<td class="enumeration">
-<p>Add a new struct to display. </p>
-</td>
+<td><a href="#Gui_PropertyList_addItem">addItem(self, any)</a></td>
+<td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PropertyList_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-<p>Creates a new PropertyList instance. </p>
-</td>
+<td><a href="#Gui_PropertyList_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td>Creates a new PropertyList instance. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PropertyList_refresh">refresh(self)</a></td>
-<td class="enumeration">
-<p>Refresh displayed values. </p>
-</td>
+<td><a href="#Gui_PropertyList_refresh">refresh(self)</a></td>
+<td>Refresh displayed values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PropertyList_setStringFilter">setStringFilter(self, string)</a></td>
-<td class="enumeration">
-<p>Show hidden content depending on the input filter. </p>
-</td>
+<td><a href="#Gui_PropertyList_setStringFilter">setStringFilter(self, string)</a></td>
+<td>Show hidden content depending on the input filter. </td>
 </tr>
 </table>
 <p>
@@ -12992,53 +10521,35 @@ Core.Array'({item: *Gui.PropertyListItem, lvl: s32})</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-splitter</td>
-<td class="tdtype">
-*Gui.SplitterCtrl</td>
-<td class="enumeration">
-</td>
+<td>splitter</td>
+<td>*Gui.SplitterCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-list</td>
-<td class="tdtype">
-*Gui.ListCtrl</td>
-<td class="enumeration">
-</td>
+<td>list</td>
+<td>*Gui.ListCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-prop</td>
-<td class="tdtype">
-*Gui.PropertyList</td>
-<td class="enumeration">
-</td>
+<td>prop</td>
+<td>*Gui.PropertyList</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_PropertyListCtrl_addItem">addItem(self, any)</a></td>
-<td class="enumeration">
-<p>Add a new struct to display. </p>
-</td>
+<td><a href="#Gui_PropertyListCtrl_addItem">addItem(self, any)</a></td>
+<td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_PropertyListCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-<p>Creates a new PropertyList instance. </p>
-</td>
+<td><a href="#Gui_PropertyListCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td>Creates a new PropertyList instance. </td>
 </tr>
 </table>
 <p>
@@ -13084,132 +10595,84 @@ prop</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-filter</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>filter</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-line</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>line</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ptrData</td>
-<td class="tdtype">
-*u8</td>
-<td class="enumeration">
-</td>
+<td>ptrData</td>
+<td>*u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-typeValue</td>
-<td class="tdtype">
-<a href="swag.runtime.html#Swag_TypeValue">Swag.TypeValue</a></td>
-<td class="enumeration">
-</td>
+<td>typeValue</td>
+<td><a href="swag.runtime.html#Swag_TypeValue">Swag.TypeValue</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceShow</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>forceShow</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-labelDesc</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>labelDesc</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBox</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>editBox</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checkBox</td>
-<td class="tdtype">
-*Gui.CheckButton</td>
-<td class="enumeration">
-</td>
+<td>checkBox</td>
+<td>*Gui.CheckButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox</td>
-<td class="tdtype">
-*Gui.ComboBox</td>
-<td class="enumeration">
-</td>
+<td>comboBox</td>
+<td>*Gui.ComboBox</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sliderBox</td>
-<td class="tdtype">
-*Gui.SliderCtrl</td>
-<td class="enumeration">
-</td>
+<td>sliderBox</td>
+<td>*Gui.SliderCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onResize</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.PropertyListItem))</td>
-<td class="enumeration">
-</td>
+<td>onResize</td>
+<td>Gui.SigArray'(closure(*Gui.PropertyListItem))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniFocusBk</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniFocusBk</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniFocusBorder</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniFocusBorder</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-extendFocus</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>extendFocus</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13236,53 +10699,36 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> button</td>
-<td class="tdtype">
-<a href="#Gui_Button">Gui.Button</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> button</td>
+<td><a href="#Gui_Button">Gui.Button</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-form</td>
-<td class="tdtype">
-<a href="#Gui_PushButtonForm">Gui.PushButtonForm</a></td>
-<td class="enumeration">
-</td>
+<td>form</td>
+<td><a href="#Gui_PushButtonForm">Gui.PushButtonForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBk</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBk</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBorder</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBorder</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniText</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniText</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_PushButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_PushButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13340,28 +10786,20 @@ aniText</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Normal</td>
-<td class="enumeration">
-</td>
+<td>Normal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Flat</td>
-<td class="enumeration">
-</td>
+<td>Flat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Strong</td>
-<td class="enumeration">
-</td>
+<td>Strong</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13377,20 +10815,14 @@ Strong</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-quitCode</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>quitCode</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13406,52 +10838,35 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> button</td>
-<td class="tdtype">
-<a href="#Gui_Button">Gui.Button</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> button</td>
+<td><a href="#Gui_Button">Gui.Button</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-checked</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>checked</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radioButtonFlags</td>
-<td class="tdtype">
-<a href="#Gui_RadioButtonFlags">Gui.RadioButtonFlags</a></td>
-<td class="enumeration">
-</td>
+<td>radioButtonFlags</td>
+<td><a href="#Gui_RadioButtonFlags">Gui.RadioButtonFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.RadioButton))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.RadioButton))</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_RadioButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RadioButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RadioButton_setChecked">setChecked(self, bool)</a></td>
-<td class="enumeration">
-<p>Set the checked state. </p>
-</td>
+<td><a href="#Gui_RadioButton_setChecked">setChecked(self, bool)</a></td>
+<td>Set the checked state. </td>
 </tr>
 </table>
 <p>
@@ -13524,16 +10939,12 @@ Gui.SigArray'(closure(*Gui.RadioButton))</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightAlign</td>
-<td class="enumeration">
-</td>
+<td>RightAlign</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13549,20 +10960,14 @@ RightAlign</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-oldSize</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>oldSize</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13578,278 +10983,184 @@ Core.Math.Point</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorLeft</td>
-<td class="enumeration">
-</td>
+<td>CursorLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorRight</td>
-<td class="enumeration">
-</td>
+<td>CursorRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorUp</td>
-<td class="enumeration">
-</td>
+<td>CursorUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorDown</td>
-<td class="enumeration">
-</td>
+<td>CursorDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorStartLine</td>
-<td class="enumeration">
-</td>
+<td>CursorStartLine</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorEndLine</td>
-<td class="enumeration">
-</td>
+<td>CursorEndLine</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorStartFile</td>
-<td class="enumeration">
-</td>
+<td>CursorStartFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorEndFile</td>
-<td class="enumeration">
-</td>
+<td>CursorEndFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorWordLeft</td>
-<td class="enumeration">
-</td>
+<td>CursorWordLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorWordRight</td>
-<td class="enumeration">
-</td>
+<td>CursorWordRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorPageUp</td>
-<td class="enumeration">
-</td>
+<td>CursorPageUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CursorPageDown</td>
-<td class="enumeration">
-<p>CMD_CURSOR_MATCH_PAIR. </p>
-</td>
+<td>CursorPageDown</td>
+<td>CMD_CURSOR_MATCH_PAIR. </td>
 </tr>
 <tr>
-<td class="tdname">
-ScrollLineUp</td>
-<td class="enumeration">
-</td>
+<td>ScrollLineUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ScrollLineDown</td>
-<td class="enumeration">
-</td>
+<td>ScrollLineDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DeleteLeft</td>
-<td class="enumeration">
-</td>
+<td>DeleteLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DeleteRight</td>
-<td class="enumeration">
-</td>
+<td>DeleteRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DeleteLine</td>
-<td class="enumeration">
-<p>CMD_EDIT_DELETE_LINE. </p>
-</td>
+<td>DeleteLine</td>
+<td>CMD_EDIT_DELETE_LINE. </td>
 </tr>
 <tr>
-<td class="tdname">
-EditTabulation</td>
-<td class="enumeration">
-</td>
+<td>EditTabulation</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EditBackTabulation</td>
-<td class="enumeration">
-</td>
+<td>EditBackTabulation</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DeleteWordLeft</td>
-<td class="enumeration">
-</td>
+<td>DeleteWordLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DeleteWordRight</td>
-<td class="enumeration">
-<p>CMD_EDIT_DELETE_LINE_LEFT CMD_EDIT_DELETE_LINE_RIGHT. </p>
-</td>
+<td>DeleteWordRight</td>
+<td>CMD_EDIT_DELETE_LINE_LEFT CMD_EDIT_DELETE_LINE_RIGHT. </td>
 </tr>
 <tr>
-<td class="tdname">
-ToggleOverwrite</td>
-<td class="enumeration">
-</td>
+<td>ToggleOverwrite</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ClipboardCopy</td>
-<td class="enumeration">
-</td>
+<td>ClipboardCopy</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ClipboardPaste</td>
-<td class="enumeration">
-</td>
+<td>ClipboardPaste</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ClipboardCut</td>
-<td class="enumeration">
-</td>
+<td>ClipboardCut</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Undo</td>
-<td class="enumeration">
-</td>
+<td>Undo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Redo</td>
-<td class="enumeration">
-</td>
+<td>Redo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRuneLeft</td>
-<td class="enumeration">
-</td>
+<td>SelectRuneLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRuneRight</td>
-<td class="enumeration">
-</td>
+<td>SelectRuneRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRuneUp</td>
-<td class="enumeration">
-</td>
+<td>SelectRuneUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRuneDown</td>
-<td class="enumeration">
-</td>
+<td>SelectRuneDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRectLeft</td>
-<td class="enumeration">
-</td>
+<td>SelectRectLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRectRight</td>
-<td class="enumeration">
-</td>
+<td>SelectRectRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRectUp</td>
-<td class="enumeration">
-</td>
+<td>SelectRectUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectRectDown</td>
-<td class="enumeration">
-</td>
+<td>SelectRectDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectStartLine</td>
-<td class="enumeration">
-</td>
+<td>SelectStartLine</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectEndLine</td>
-<td class="enumeration">
-</td>
+<td>SelectEndLine</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectStartFile</td>
-<td class="enumeration">
-</td>
+<td>SelectStartFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectEndFile</td>
-<td class="enumeration">
-</td>
+<td>SelectEndFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectAllFile</td>
-<td class="enumeration">
-</td>
+<td>SelectAllFile</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectWordLeft</td>
-<td class="enumeration">
-</td>
+<td>SelectWordLeft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectWordRight</td>
-<td class="enumeration">
-</td>
+<td>SelectWordRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectPageUp</td>
-<td class="enumeration">
-</td>
+<td>SelectPageUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SelectPageDown</td>
-<td class="enumeration">
-<p>CMD_SEL_HIDE_LINE CMD_MARKER_BOOKMARK_ADD CMD_MARKER_BOOKMARK_PREV CMD_MARKER_BOOKMARK_NEXT CMD_MARKER_BOOKMARK_FAST CMD_MAKE_UPPER CMD_MAKE_LOWER CMD_COMMENT_CPP CMD_UNCOMMENT_CPP. </p>
-</td>
+<td>SelectPageDown</td>
+<td>CMD_SEL_HIDE_LINE CMD_MARKER_BOOKMARK_ADD CMD_MARKER_BOOKMARK_PREV CMD_MARKER_BOOKMARK_NEXT CMD_MARKER_BOOKMARK_FAST CMD_MAKE_UPPER CMD_MAKE_LOWER CMD_COMMENT_CPP CMD_UNCOMMENT_CPP. </td>
 </tr>
 </table>
 <p>
@@ -13865,800 +11176,508 @@ SelectPageDown</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdFlags</td>
-<td class="tdtype">
-<a href="#Gui_RichEditFlags">Gui.RichEditFlags</a></td>
-<td class="enumeration">
-</td>
+<td>richEdFlags</td>
+<td><a href="#Gui_RichEditFlags">Gui.RichEditFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lineSpacing</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>lineSpacing</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-overwriteMode</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>overwriteMode</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabSize</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tabSize</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-marginLeft</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>marginLeft</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-marginRight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>marginRight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lexer</td>
-<td class="tdtype">
-<a href="#Gui_IRichEditLexer">Gui.IRichEditLexer</a></td>
-<td class="enumeration">
-</td>
+<td>lexer</td>
+<td><a href="#Gui_IRichEditLexer">Gui.IRichEditLexer</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-form</td>
-<td class="tdtype">
-<a href="#Gui_RichEditForm">Gui.RichEditForm</a></td>
-<td class="enumeration">
-</td>
+<td>form</td>
+<td><a href="#Gui_RichEditForm">Gui.RichEditForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigIsReadOnly</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*bool))</td>
-<td class="enumeration">
-</td>
+<td>sigIsReadOnly</td>
+<td>Gui.SigArray'(closure(*bool))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.RichEditCtrl))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.RichEditCtrl))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigModified</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.RichEditCtrl))</td>
-<td class="enumeration">
-</td>
+<td>sigModified</td>
+<td>Gui.SigArray'(closure(*Gui.RichEditCtrl))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bkColorModel</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>bkColorModel</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-styles</td>
-<td class="tdtype">
-[256] Gui.RichEditRuneStyle</td>
-<td class="enumeration">
-</td>
+<td>styles</td>
+<td>[256] Gui.RichEditRuneStyle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stylesSelect</td>
-<td class="tdtype">
-[2] Gui.RichEditRuneStyle</td>
-<td class="enumeration">
-</td>
+<td>stylesSelect</td>
+<td>[2] Gui.RichEditRuneStyle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cursorPos</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>cursorPos</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selBeg</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>selBeg</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lines</td>
-<td class="tdtype">
-Core.ArrayPtr'(Gui.RichEditLine)</td>
-<td class="enumeration">
-</td>
+<td>lines</td>
+<td>Core.ArrayPtr'(Gui.RichEditLine)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-freeLines</td>
-<td class="tdtype">
-Core.ArrayPtr'(Gui.RichEditLine)</td>
-<td class="enumeration">
-</td>
+<td>freeLines</td>
+<td>Core.ArrayPtr'(Gui.RichEditLine)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollWnd</td>
-<td class="tdtype">
-*Gui.ScrollWnd</td>
-<td class="enumeration">
-</td>
+<td>scrollWnd</td>
+<td>*Gui.ScrollWnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edView</td>
-<td class="tdtype">
-*Gui.RichEditView</td>
-<td class="enumeration">
-</td>
+<td>edView</td>
+<td>*Gui.RichEditView</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selRectangle</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>selRectangle</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hasSelRect</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hasSelRect</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modified</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>modified</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-recomputeScroll</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>recomputeScroll</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirtyFirstLineView</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>dirtyFirstLineView</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceCaretVisible</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceCaretVisible</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceCaretVisibleCenter</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceCaretVisibleCenter</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-undoMgr</td>
-<td class="tdtype">
-Core.ArrayPtr'(Gui.RichEditUndo)</td>
-<td class="enumeration">
-</td>
+<td>undoMgr</td>
+<td>Core.ArrayPtr'(Gui.RichEditUndo)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toUndo</td>
-<td class="tdtype">
-Core.ArrayPtr'(Gui.RichEditUndo)</td>
-<td class="enumeration">
-</td>
+<td>toUndo</td>
+<td>Core.ArrayPtr'(Gui.RichEditUndo)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mapping</td>
-<td class="tdtype">
-Core.Array'(Gui.RichEditMapping)</td>
-<td class="enumeration">
-</td>
+<td>mapping</td>
+<td>Core.Array'(Gui.RichEditMapping)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-currentUndo</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>currentUndo</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-undoCounter</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>undoCounter</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modifiedUndoMarker</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>modifiedUndoMarker</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-serialUndo</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>serialUndo</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-countVisibleLines</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>countVisibleLines</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-firstVisibleLineView</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>firstVisibleLineView</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastVisibleLineView</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>lastVisibleLineView</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-clipFormat</td>
-<td class="tdtype">
-Gui.Clipboard.Format</td>
-<td class="enumeration">
-</td>
+<td>clipFormat</td>
+<td>Gui.Clipboard.Format</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cursorPosUndo</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>cursorPosUndo</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selBegUndo</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>selBegUndo</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_addMapping">addMapping(self, Key, KeyModifiers, RichEditCommand)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_addMapping">addMapping(self, Key, KeyModifiers, RichEditCommand)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_addText">addText(self, string, RichEditStyleRef)</a></td>
-<td class="enumeration">
-<p>Append a text with a given style. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_addText">addText(self, string, RichEditStyleRef)</a></td>
+<td>Append a text with a given style. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_canRedo">canRedo(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_canRedo">canRedo(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_canUndo">canUndo(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_canUndo">canUndo(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_charPressed">charPressed(self, Key, rune, KeyModifiers)</a></td>
-<td class="enumeration">
-<p>Simulate a keyboard character pressed. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_charPressed">charPressed(self, Key, rune, KeyModifiers)</a></td>
+<td>Simulate a keyboard character pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_checkSelection">checkSelection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_checkSelection">checkSelection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear content. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_clear">clear(self)</a></td>
+<td>Clear content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_clearMapping">clearMapping(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_clearMapping">clearMapping(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_clearSelection">clearSelection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_clearSelection">clearSelection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_clearUndo">clearUndo(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_clearUndo">clearUndo(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_copyToClipboard">copyToClipboard(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_copyToClipboard">copyToClipboard(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_deleteBegLine">deleteBegLine(self, string, bool)</a></td>
-<td class="enumeration">
-<p>Delete a given text at the start of each selected line. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_deleteBegLine">deleteBegLine(self, string, bool)</a></td>
+<td>Delete a given text at the start of each selected line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_deleteLeft">deleteLeft(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_deleteLeft">deleteLeft(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_deleteLine">deleteLine(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_deleteLine">deleteLine(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_deleteRight">deleteRight(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_deleteRight">deleteRight(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_deleteSelection">deleteSelection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_deleteSelection">deleteSelection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_deleteWordLeft">deleteWordLeft(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_deleteWordLeft">deleteWordLeft(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_deleteWordRight">deleteWordRight(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_deleteWordRight">deleteWordRight(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_ensureCaretIsVisible">ensureCaretIsVisible(self, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_ensureCaretIsVisible">ensureCaretIsVisible(self, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_ensureCursorIsVisible">ensureCursorIsVisible(self, const ref RichEditCursor, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_ensureCursorIsVisible">ensureCursorIsVisible(self, const ref RichEditCursor, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_evaluateSize">evaluateSize(self)</a></td>
-<td class="enumeration">
-<p>Evaluate the rendering size. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_evaluateSize">evaluateSize(self)</a></td>
+<td>Evaluate the rendering size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_executeCommand">executeCommand(self, RichEditCommand)</a></td>
-<td class="enumeration">
-<p>Execute a command. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_executeCommand">executeCommand(self, RichEditCommand)</a></td>
+<td>Execute a command. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getBegSelection">getBegSelection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getBegSelection">getBegSelection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getCaretPos">getCaretPos(self, const ref RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getCaretPos">getCaretPos(self, const ref RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getCursorDisplayPos">getCursorDisplayPos(self, const ref RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getCursorDisplayPos">getCursorDisplayPos(self, const ref RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getCursorPosFromPoint">getCursorPosFromPoint(self, const ref Point)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getCursorPosFromPoint">getCursorPosFromPoint(self, const ref Point)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getEndSelection">getEndSelection(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getEndSelection">getEndSelection(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getMappingCommand">getMappingCommand(self, Key, KeyModifiers)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getMappingCommand">getMappingCommand(self, Key, KeyModifiers)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getRune">getRune(self, const ref RichEditCursor)</a></td>
-<td class="enumeration">
-<p>Get the rune at the given cursor pos. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_getRune">getRune(self, const ref RichEditCursor)</a></td>
+<td>Get the rune at the given cursor pos. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getRuneSize">getRuneSize(self, *RichEditLine, u64, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getRuneSize">getRuneSize(self, *RichEditLine, u64, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getSelectedText">getSelectedText(self)</a></td>
-<td class="enumeration">
-<p>Get the selected text. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_getSelectedText">getSelectedText(self)</a></td>
+<td>Get the selected text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getTabOffset">getTabOffset(self, s32, *s32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getTabOffset">getTabOffset(self, s32, *s32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getText">getText(self)</a></td>
-<td class="enumeration">
-<p>Get the full text. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_getText">getText(self)</a></td>
+<td>Get the full text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getTextAndStyles">getTextAndStyles(self)</a></td>
-<td class="enumeration">
-<p>Get the full text with the associated styles per character. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_getTextAndStyles">getTextAndStyles(self)</a></td>
+<td>Get the full text with the associated styles per character. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_getXExtent">getXExtent(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_getXExtent">getXExtent(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_insertBegLine">insertBegLine(self, string)</a></td>
-<td class="enumeration">
-<p>Insert text at the start of each selected line. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_insertBegLine">insertBegLine(self, string)</a></td>
+<td>Insert text at the start of each selected line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_insertRune">insertRune(self, rune)</a></td>
-<td class="enumeration">
-<p>Insert a rune. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_insertRune">insertRune(self, rune)</a></td>
+<td>Insert a rune. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_insertText">insertText(self, string)</a></td>
-<td class="enumeration">
-<p>Insert a text with a given style. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_insertText">insertText(self, string)</a></td>
+<td>Insert a text with a given style. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_insertText">insertText(self, string, const ref Array'(u8))</a></td>
-<td class="enumeration">
-<p>Insert a text with a style per character. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_insertText">insertText(self, string, const ref Array'(u8))</a></td>
+<td>Insert a text with a style per character. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_isReadOnly">isReadOnly(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the rich edit is read only. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_isReadOnly">isReadOnly(self)</a></td>
+<td>Returns true if the rich edit is read only. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_isSelectionEmpty">isSelectionEmpty(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_isSelectionEmpty">isSelectionEmpty(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_keyPressed">keyPressed(self, Key, KeyModifiers)</a></td>
-<td class="enumeration">
-<p>Simulate a keyboard pressed. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_keyPressed">keyPressed(self, Key, KeyModifiers)</a></td>
+<td>Simulate a keyboard pressed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_lexAll">lexAll(self)</a></td>
-<td class="enumeration">
-<p>Lex the full text. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_lexAll">lexAll(self)</a></td>
+<td>Lex the full text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorDown">moveCursorDown(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorDown">moveCursorDown(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorEndFile">moveCursorEndFile(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorEndFile">moveCursorEndFile(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorEndLine">moveCursorEndLine(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorEndLine">moveCursorEndLine(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorLeft">moveCursorLeft(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorLeft">moveCursorLeft(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorPageDown">moveCursorPageDown(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorPageDown">moveCursorPageDown(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorPageUp">moveCursorPageUp(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorPageUp">moveCursorPageUp(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorRight">moveCursorRight(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorRight">moveCursorRight(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorStartFile">moveCursorStartFile(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorStartFile">moveCursorStartFile(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorStartLine">moveCursorStartLine(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorStartLine">moveCursorStartLine(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorUp">moveCursorUp(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorUp">moveCursorUp(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorWordLeft">moveCursorWordLeft(self, *RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorWordLeft">moveCursorWordLeft(self, *RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_moveCursorWordRight">moveCursorWordRight(self, *RichEditCursor, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_moveCursorWordRight">moveCursorWordRight(self, *RichEditCursor, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_pasteFromClipboard">pasteFromClipboard(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_pasteFromClipboard">pasteFromClipboard(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_popUndo">popUndo(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_popUndo">popUndo(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_pushUndo">pushUndo(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_pushUndo">pushUndo(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_redo">redo(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_redo">redo(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_scrollLineDown">scrollLineDown(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_scrollLineDown">scrollLineDown(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_scrollLineUp">scrollLineUp(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_scrollLineUp">scrollLineUp(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_selectAll">selectAll(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_selectAll">selectAll(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_selectWord">selectWord(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_selectWord">selectWord(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setCursorPos">setCursorPos(self, const ref RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_setCursorPos">setCursorPos(self, const ref RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setDefaultMapping">setDefaultMapping(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_setDefaultMapping">setDefaultMapping(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setFocus">setFocus(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_setFocus">setFocus(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setForm">setForm(self, RichEditForm)</a></td>
-<td class="enumeration">
-<p>Set form. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_setForm">setForm(self, RichEditForm)</a></td>
+<td>Set form. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setLexer">setLexer(self, IRichEditLexer)</a></td>
-<td class="enumeration">
-<p>Associate a lexer. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_setLexer">setLexer(self, IRichEditLexer)</a></td>
+<td>Associate a lexer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setRectangularSelection">setRectangularSelection(self, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_setRectangularSelection">setRectangularSelection(self, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setRichEdFlags">setRichEdFlags(self, RichEditFlags)</a></td>
-<td class="enumeration">
-<p>Set richedit flags. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_setRichEdFlags">setRichEdFlags(self, RichEditFlags)</a></td>
+<td>Set richedit flags. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setSelection">setSelection(self, const ref RichEditCursor, const ref RichEditCursor)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_setSelection">setSelection(self, const ref RichEditCursor, const ref RichEditCursor)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_setText">setText(self, string)</a></td>
-<td class="enumeration">
-<p>Set the text content. </p>
-</td>
+<td><a href="#Gui_RichEditCtrl_setText">setText(self, string)</a></td>
+<td>Set the text content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditCtrl_undo">undo(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditCtrl_undo">undo(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15732,20 +12751,14 @@ selBegUndo</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lineIndex</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>lineIndex</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-charPosInLine</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>charPosInLine</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15761,52 +12774,36 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ReadOnly</td>
-<td class="enumeration">
-</td>
+<td>ReadOnly</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ShowFocusSel</td>
-<td class="enumeration">
-</td>
+<td>ShowFocusSel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CurLineBorder</td>
-<td class="enumeration">
-</td>
+<td>CurLineBorder</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DrawBlanks</td>
-<td class="enumeration">
-</td>
+<td>DrawBlanks</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TabToSpaces</td>
-<td class="enumeration">
-</td>
+<td>TabToSpaces</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-WordWrap</td>
-<td class="enumeration">
-</td>
+<td>WordWrap</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AutoLoseFocus</td>
-<td class="enumeration">
-</td>
+<td>AutoLoseFocus</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15822,16 +12819,12 @@ AutoLoseFocus</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-RichEditCtrl</td>
-<td class="enumeration">
-</td>
+<td>RichEditCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Edit</td>
-<td class="enumeration">
-</td>
+<td>Edit</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15847,20 +12840,14 @@ Edit</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-mapStyles</td>
-<td class="tdtype">
-[256] Gui.RichEditStyleRef</td>
-<td class="enumeration">
-</td>
+<td>mapStyles</td>
+<td>[256] Gui.RichEditStyleRef</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mapWords</td>
-<td class="tdtype">
-Core.HashTable'(string, s32)</td>
-<td class="enumeration">
-</td>
+<td>mapWords</td>
+<td>Core.HashTable'(string, s32)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15929,28 +12916,19 @@ Core.HashTable'(string, s32)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-key</td>
-<td class="tdtype">
-Core.Input.Key</td>
-<td class="enumeration">
-</td>
+<td>key</td>
+<td>Core.Input.Key</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modifiers</td>
-<td class="tdtype">
-Core.Input.KeyModifiers</td>
-<td class="enumeration">
-</td>
+<td>modifiers</td>
+<td>Core.Input.KeyModifiers</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-command</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCommand">Gui.RichEditCommand</a></td>
-<td class="enumeration">
-</td>
+<td>command</td>
+<td><a href="#Gui_RichEditCommand">Gui.RichEditCommand</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15966,45 +12944,31 @@ command</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-colBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>colBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colFg</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>colFg</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fontMode</td>
-<td class="tdtype">
-Pixel.FontFamilyStyle</td>
-<td class="enumeration">
-</td>
+<td>fontMode</td>
+<td>Pixel.FontFamilyStyle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-underline</td>
-<td class="tdtype">
-Pixel.UnderlineStyle</td>
-<td class="enumeration">
-</td>
+<td>underline</td>
+<td>Pixel.UnderlineStyle</td>
+<td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_RichEditRuneStyle_opEquals">opEquals(self, const ref RichEditRuneStyle)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_RichEditRuneStyle_opEquals">opEquals(self, const ref RichEditRuneStyle)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16034,100 +12998,64 @@ Pixel.UnderlineStyle</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-<a href="#Gui_RichEditUndoType">Gui.RichEditUndoType</a></td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td><a href="#Gui_RichEditUndoType">Gui.RichEditUndoType</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-concatChars</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>concatChars</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selBeg</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>selBeg</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cursorPos</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>cursorPos</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-runes</td>
-<td class="tdtype">
-Core.Array'(rune)</td>
-<td class="enumeration">
-</td>
+<td>runes</td>
+<td>Core.Array'(rune)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-styles</td>
-<td class="tdtype">
-Core.Array'(u8)</td>
-<td class="enumeration">
-</td>
+<td>styles</td>
+<td>Core.Array'(u8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-serial</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>serial</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hasSelRect</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hasSelRect</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-begSelectionBefore</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>begSelectionBefore</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endSelectionBefore</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>endSelectionBefore</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-begSelectionAfter</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>begSelectionAfter</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endSelectionAfter</td>
-<td class="tdtype">
-<a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
-<td class="enumeration">
-</td>
+<td>endSelectionAfter</td>
+<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16143,34 +13071,24 @@ endSelectionAfter</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Delete</td>
-<td class="enumeration">
-</td>
+<td>Delete</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Insert</td>
-<td class="enumeration">
-</td>
+<td>Insert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Selection</td>
-<td class="enumeration">
-</td>
+<td>Selection</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Show</td>
-<td class="enumeration">
-</td>
+<td>Show</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hide</td>
-<td class="enumeration">
-</td>
+<td>Hide</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16197,336 +13115,212 @@ Hide</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollIncrementV</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>scrollIncrementV</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollIncrementH</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>scrollIncrementH</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollSize</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>scrollSize</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollWndFlags</td>
-<td class="tdtype">
-<a href="#Gui_ScrollWndFlags">Gui.ScrollWndFlags</a></td>
-<td class="enumeration">
-</td>
+<td>scrollWndFlags</td>
+<td><a href="#Gui_ScrollWndFlags">Gui.ScrollWndFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigScrollPosChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ScrollWnd, Core.Math.Point, Core.Math.Point))</td>
-<td class="enumeration">
-</td>
+<td>sigScrollPosChanged</td>
+<td>Gui.SigArray'(closure(*Gui.ScrollWnd, Core.Math.Point, Core.Math.Point))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigScrollSizeChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.ScrollWnd, Core.Math.Point, Core.Math.Point))</td>
-<td class="enumeration">
-</td>
+<td>sigScrollSizeChanged</td>
+<td>Gui.SigArray'(closure(*Gui.ScrollWnd, Core.Math.Point, Core.Math.Point))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-oldMouseCapture</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>oldMouseCapture</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollSmoothPos</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>scrollSmoothPos</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollRequestPos</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>scrollRequestPos</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-smoothScroll</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>smoothScroll</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-showBarV</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>showBarV</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-needV</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>needV</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-posBoxV</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>posBoxV</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sizeBoxV</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>sizeBoxV</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHotV</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHotV</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHotBarV</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHotBarV</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPressedV</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPressedV</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-showBarH</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>showBarH</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-needH</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>needH</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-posBoxH</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>posBoxH</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sizeBoxH</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>sizeBoxH</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHotH</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHotH</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHotBarH</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHotBarH</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPressedH</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPressedH</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isMoving</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isMoving</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isGrabbing</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isGrabbing</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-correcMoving</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>correcMoving</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-offsetClientV</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>offsetClientV</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-offsetClientH</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>offsetClientH</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paddingZ</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>paddingZ</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paddingW</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>paddingW</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBkBarV</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBkBarV</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBkBarH</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBkBarH</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBoxV</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBoxV</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBoxH</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBoxH</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-grabbingPos</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>grabbingPos</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ScrollWnd_getClientScrollRect">getClientScrollRect(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ScrollWnd_getClientScrollRect">getClientScrollRect(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ScrollWnd_getScrollPos">getScrollPos(self)</a></td>
-<td class="enumeration">
-<p>Get the current scroll position. </p>
-</td>
+<td><a href="#Gui_ScrollWnd_getScrollPos">getScrollPos(self)</a></td>
+<td>Get the current scroll position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ScrollWnd_setScrollPos">setScrollPos(self, const ref Point)</a></td>
-<td class="enumeration">
-<p>Set the current scroll position. </p>
-</td>
+<td><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos(self, const ref Point)</a></td>
+<td>Set the current scroll position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ScrollWnd_setScrollPos">setScrollPos(self, f32, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos(self, f32, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ScrollWnd_setScrollSize">setScrollSize(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the scroll size (window virtual size). </p>
-</td>
+<td><a href="#Gui_ScrollWnd_setScrollSize">setScrollSize(self, f32, f32)</a></td>
+<td>Set the scroll size (window virtual size). </td>
 </tr>
 </table>
 <p>
@@ -16646,34 +13440,24 @@ Core.Math.Point</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SmallBar</td>
-<td class="enumeration">
-</td>
+<td>SmallBar</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ForceHorizontal</td>
-<td class="enumeration">
-</td>
+<td>ForceHorizontal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ForceVertical</td>
-<td class="enumeration">
-</td>
+<td>ForceVertical</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TransparentBar</td>
-<td class="enumeration">
-</td>
+<td>TransparentBar</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16689,56 +13473,39 @@ TransparentBar</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-selection</td>
-<td class="tdtype">
-Core.Array'({start: u32, end: u32})</td>
-<td class="enumeration">
-</td>
+<td>selection</td>
+<td>Core.Array'({start: u32, end: u32})</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_SelModel_getSelectedRangeIndex">getSelectedRangeIndex(self, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SelModel_getSelectedRangeIndex">getSelectedRangeIndex(self, u32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SelModel_isEmpty">isEmpty(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SelModel_isEmpty">isEmpty(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SelModel_isSelected">isSelected(self, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SelModel_isSelected">isSelected(self, u32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SelModel_select">select(self, u32, bool)</a></td>
-<td class="enumeration">
-<p>Select the given index. </p>
-</td>
+<td><a href="#Gui_SelModel_select">select(self, u32, bool)</a></td>
+<td>Select the given index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SelModel_unselectAll">unselectAll(self)</a></td>
-<td class="enumeration">
-<p>Unselect all. </p>
-</td>
+<td><a href="#Gui_SelModel_unselectAll">unselectAll(self)</a></td>
+<td>Unselect all. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_SelModel_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SelModel_opVisit">opVisit(self, code)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16841,20 +13608,14 @@ Core.Array'({start: u32, end: u32})</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ser</td>
-<td class="tdtype">
-*Core.Serialization.Serializer</td>
-<td class="enumeration">
-</td>
+<td>ser</td>
+<td>*Core.Serialization.Serializer</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16870,28 +13631,19 @@ ser</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-style</td>
-<td class="tdtype">
-*Gui.ThemeStyle</td>
-<td class="enumeration">
-</td>
+<td>style</td>
+<td>*Gui.ThemeStyle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-parent</td>
-<td class="tdtype">
-*Gui.ThemeStyle</td>
-<td class="enumeration">
-</td>
+<td>parent</td>
+<td>*Gui.ThemeStyle</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -16910,50 +13662,36 @@ parent</td>
 </pre>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-arr</td>
-<td class="tdtype">
-Core.Array'(T)</td>
-<td class="enumeration">
-</td>
+<td>arr</td>
+<td>Core.Array'(T)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-disabled</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>disabled</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_SigArray_call">call(self, ...)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SigArray_call">call(self, ...)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SigArray_disable">disable(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SigArray_disable">disable(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SigArray_enable">enable(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SigArray_enable">enable(self)</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_SigArray_opAssign">opAssign(self, T)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SigArray_opAssign">opAssign(self, T)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -17025,34 +13763,24 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -17068,241 +13796,153 @@ Bottom</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-value1</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>value1</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-value2</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>value2</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-min</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>min</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-max</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>max</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-steps</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>steps</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sliderFlags</td>
-<td class="tdtype">
-<a href="#Gui_SliderFlags">Gui.SliderFlags</a></td>
-<td class="enumeration">
-</td>
+<td>sliderFlags</td>
+<td><a href="#Gui_SliderFlags">Gui.SliderFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigStartChange</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Slider))</td>
-<td class="enumeration">
-</td>
+<td>sigStartChange</td>
+<td>Gui.SigArray'(closure(*Gui.Slider))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Slider))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.Slider))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigEndChange</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Slider))</td>
-<td class="enumeration">
-</td>
+<td>sigEndChange</td>
+<td>Gui.SigArray'(closure(*Gui.Slider))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isMoving</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isMoving</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPressed1</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPressed1</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPressed2</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPressed2</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHot1</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHot1</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHot2</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHot2</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hasValue1</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hasValue1</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hasValue2</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hasValue2</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-correcMoving</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>correcMoving</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniMark1</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniMark1</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniMark2</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniMark2</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniStep1</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniStep1</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniStep2</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniStep2</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_create">create(*Wnd, const ref Rectangle, WndId, bool, bool)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Slider_create">create(*Wnd, const ref Rectangle, WndId, bool, bool)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_getValue">getValue(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Slider_getValue">getValue(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_getValueLeft">getValueLeft(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Slider_getValueLeft">getValueLeft(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_getValueRight">getValueRight(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Slider_getValueRight">getValueRight(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_setMinMax">setMinMax(self, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values. </p>
-</td>
+<td><a href="#Gui_Slider_setMinMax">setMinMax(self, f32, f32, f32)</a></td>
+<td>Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_setRangeValues">setRangeValues(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set left and right values, for a range. </p>
-</td>
+<td><a href="#Gui_Slider_setRangeValues">setRangeValues(self, f32, f32)</a></td>
+<td>Set left and right values, for a range. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_setValue">setValue(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Slider_setValue">setValue(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_setValueLeft">setValueLeft(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the left value (in case of a range). </p>
-</td>
+<td><a href="#Gui_Slider_setValueLeft">setValueLeft(self, f32)</a></td>
+<td>Set the left value (in case of a range). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Slider_setValueRight">setValueRight(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the right value (in case of a range). </p>
-</td>
+<td><a href="#Gui_Slider_setValueRight">setValueRight(self, f32)</a></td>
+<td>Set the right value (in case of a range). </td>
 </tr>
 </table>
 <p>
@@ -17476,98 +14116,62 @@ aniStep2</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-labelSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>labelSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>editSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.SliderCtrl))</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>Gui.SigArray'(closure(*Gui.SliderCtrl))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider</td>
-<td class="tdtype">
-*Gui.Slider</td>
-<td class="enumeration">
-</td>
+<td>slider</td>
+<td>*Gui.Slider</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit</td>
-<td class="tdtype">
-*Gui.EditBox</td>
-<td class="enumeration">
-</td>
+<td>edit</td>
+<td>*Gui.EditBox</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_SliderCtrl_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-<p>Create the popup list, but do not display it. </p>
-</td>
+<td><a href="#Gui_SliderCtrl_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set a f32 range. </p>
-</td>
+<td><a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32(self, f32, f32)</a></td>
+<td>Set a f32 range. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SliderCtrl_setMinMaxS64">setMinMaxS64(self, s64, s64)</a></td>
-<td class="enumeration">
-<p>Set a f64 range. </p>
-</td>
+<td><a href="#Gui_SliderCtrl_setMinMaxS64">setMinMaxS64(self, s64, s64)</a></td>
+<td>Set a f64 range. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SliderCtrl_setMinMaxU64">setMinMaxU64(self, u64, u64)</a></td>
-<td class="enumeration">
-<p>Set a u64 range. </p>
-</td>
+<td><a href="#Gui_SliderCtrl_setMinMaxU64">setMinMaxU64(self, u64, u64)</a></td>
+<td>Set a u64 range. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SliderCtrl_setValue">setValue(self, f32)</a></td>
-<td class="enumeration">
-<p>Set the slider current value. </p>
-</td>
+<td><a href="#Gui_SliderCtrl_setValue">setValue(self, f32)</a></td>
+<td>Set the slider current value. </td>
 </tr>
 </table>
 <p>
@@ -17672,34 +14276,24 @@ edit</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Range</td>
-<td class="enumeration">
-</td>
+<td>Range</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HilightBar</td>
-<td class="enumeration">
-</td>
+<td>HilightBar</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Vertical</td>
-<td class="enumeration">
-</td>
+<td>Vertical</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Integer</td>
-<td class="enumeration">
-</td>
+<td>Integer</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -17715,82 +14309,53 @@ Integer</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> frameWnd</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> frameWnd</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-splitterFlags</td>
-<td class="tdtype">
-<a href="#Gui_SplitterFlags">Gui.SplitterFlags</a></td>
-<td class="enumeration">
-</td>
+<td>splitterFlags</td>
+<td><a href="#Gui_SplitterFlags">Gui.SplitterFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-titleSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>titleSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-correctMoving</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>correctMoving</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hotIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-moving</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>moving</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_SplitterCtrl_addPane">addPane(self, *Wnd, f32, bool)</a></td>
-<td class="enumeration">
-<p>Add a new pane. </p>
-</td>
+<td><a href="#Gui_SplitterCtrl_addPane">addPane(self, *Wnd, f32, bool)</a></td>
+<td>Add a new pane. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SplitterCtrl_create">create(*Wnd, const ref Rectangle, bool, WndId)</a></td>
-<td class="enumeration">
-<p>Creates a new SplitterCtrl instance. </p>
-</td>
+<td><a href="#Gui_SplitterCtrl_create">create(*Wnd, const ref Rectangle, bool, WndId)</a></td>
+<td>Creates a new SplitterCtrl instance. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SplitterCtrl_isVertical">isVertical(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_SplitterCtrl_isVertical">isVertical(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_SplitterCtrl_setPaneSize">setPaneSize(self, u32, f32)</a></td>
-<td class="enumeration">
-<p>Set the pane size (size of the first view). </p>
-</td>
+<td><a href="#Gui_SplitterCtrl_setPaneSize">setPaneSize(self, u32, f32)</a></td>
+<td>Set the pane size (size of the first view). </td>
 </tr>
 </table>
 <p>
@@ -17907,22 +14472,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Vertical</td>
-<td class="enumeration">
-</td>
+<td>Vertical</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HideBars</td>
-<td class="enumeration">
-</td>
+<td>HideBars</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -17938,60 +14497,39 @@ HideBars</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-view</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>view</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>minSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>maxSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label</td>
-<td class="tdtype">
-*Gui.Label</td>
-<td class="enumeration">
-</td>
+<td>label</td>
+<td>*Gui.Label</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tryPreserveSize</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>tryPreserveSize</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBar</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBar</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18007,45 +14545,30 @@ aniBar</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-layoutKind</td>
-<td class="tdtype">
-<a href="#Gui_StackLayoutKind">Gui.StackLayoutKind</a></td>
-<td class="enumeration">
-</td>
+<td>layoutKind</td>
+<td><a href="#Gui_StackLayoutKind">Gui.StackLayoutKind</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-spacing</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>spacing</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_StackLayoutCtrl_computeLayout">computeLayout(self)</a></td>
-<td class="enumeration">
-<p>Recompute layout of all childs. </p>
-</td>
+<td><a href="#Gui_StackLayoutCtrl_computeLayout">computeLayout(self)</a></td>
+<td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_StackLayoutCtrl_create">create(*Wnd, StackLayoutKind, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Create a layout control. </p>
-</td>
+<td><a href="#Gui_StackLayoutCtrl_create">create(*Wnd, StackLayoutKind, const ref Rectangle)</a></td>
+<td>Create a layout control. </td>
 </tr>
 </table>
 <p>
@@ -18105,58 +14628,40 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TopAutoSize</td>
-<td class="enumeration">
-</td>
+<td>TopAutoSize</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LeftAutoSize</td>
-<td class="enumeration">
-</td>
+<td>LeftAutoSize</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HorzCenter</td>
-<td class="enumeration">
-</td>
+<td>HorzCenter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HorzCenterVertCenter</td>
-<td class="enumeration">
-</td>
+<td>HorzCenterVertCenter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VertCenter</td>
-<td class="enumeration">
-</td>
+<td>VertCenter</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18172,12 +14677,9 @@ VertCenter</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18193,303 +14695,184 @@ VertCenter</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> native</td>
-<td class="tdtype">
-<a href="#Gui_NativeSurface">Gui.NativeSurface</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> native</td>
+<td><a href="#Gui_NativeSurface">Gui.NativeSurface</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-app</td>
-<td class="tdtype">
-*Gui.Application</td>
-<td class="enumeration">
-</td>
+<td>app</td>
+<td>*Gui.Application</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd</td>
-<td class="tdtype">
-*Gui.SurfaceWnd</td>
-<td class="enumeration">
-</td>
+<td>wnd</td>
+<td>*Gui.SurfaceWnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-painter</td>
-<td class="tdtype">
-Pixel.Painter</td>
-<td class="enumeration">
-</td>
+<td>painter</td>
+<td>Pixel.Painter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rt</td>
-<td class="tdtype">
-Pixel.RenderTarget</td>
-<td class="enumeration">
-</td>
+<td>rt</td>
+<td>Pixel.RenderTarget</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rc</td>
-<td class="tdtype">
-Pixel.RenderingContext</td>
-<td class="enumeration">
-</td>
+<td>rc</td>
+<td>Pixel.RenderingContext</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minSize</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>minSize</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxSize</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>maxSize</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-<a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a></td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td><a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirtyRect</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>dirtyRect</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colorDisabled</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>colorDisabled</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isDirty</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isDirty</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isHidden</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isHidden</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isDisabled</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isDisabled</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isMinimized</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isMinimized</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-<b>using</b> state</td>
-<td class="tdtype">
-<a href="#Gui_SurfaceState">Gui.SurfaceState</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> state</td>
+<td><a href="#Gui_SurfaceState">Gui.SurfaceState</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_bringToTop">bringToTop(self)</a></td>
-<td class="enumeration">
-<p>Bring the surface at the top of the Z order. </p>
-</td>
+<td><a href="#Gui_Surface_bringToTop">bringToTop(self)</a></td>
+<td>Bring the surface at the top of the Z order. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_center">center(self, *Surface)</a></td>
-<td class="enumeration">
-<p>Center this surface relative to <code class="incode">from</code>. </p>
-</td>
+<td><a href="#Gui_Surface_center">center(self, *Surface)</a></td>
+<td>Center this surface relative to <code class="incode">from</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_constaintToScreen">constaintToScreen(self)</a></td>
-<td class="enumeration">
-<p>Constraint a window to be inside the closest monitor. </p>
-</td>
+<td><a href="#Gui_Surface_constaintToScreen">constaintToScreen(self)</a></td>
+<td>Constraint a window to be inside the closest monitor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_create">create(*Surface, s32, s32, s32, s32, SurfaceFlags, *Surface)</a></td>
-<td class="enumeration">
-<p>Creates the surface. </p>
-</td>
+<td><a href="#Gui_Surface_create">create(*Surface, s32, s32, s32, s32, SurfaceFlags, *Surface)</a></td>
+<td>Creates the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_destroy">destroy(self)</a></td>
-<td class="enumeration">
-<p>Destroy the surface. </p>
-</td>
+<td><a href="#Gui_Surface_destroy">destroy(self)</a></td>
+<td>Destroy the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_disable">disable(self)</a></td>
-<td class="enumeration">
-<p>Enable the surface. </p>
-</td>
+<td><a href="#Gui_Surface_disable">disable(self)</a></td>
+<td>Enable the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_enable">enable(self)</a></td>
-<td class="enumeration">
-<p>Enable the surface. </p>
-</td>
+<td><a href="#Gui_Surface_enable">enable(self)</a></td>
+<td>Enable the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_getView">getView(self)</a></td>
-<td class="enumeration">
-<p>Returns inside view. </p>
-</td>
+<td><a href="#Gui_Surface_getView">getView(self)</a></td>
+<td>Returns inside view. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_hide">hide(self)</a></td>
-<td class="enumeration">
-<p>Hide the surface. </p>
-</td>
+<td><a href="#Gui_Surface_hide">hide(self)</a></td>
+<td>Hide the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_invalidate">invalidate(self)</a></td>
-<td class="enumeration">
-<p>Invalidate the full surface to be painted. </p>
-</td>
+<td><a href="#Gui_Surface_invalidate">invalidate(self)</a></td>
+<td>Invalidate the full surface to be painted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Invalidate one part of the surface to be painted. </p>
-</td>
+<td><a href="#Gui_Surface_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
+<td>Invalidate one part of the surface to be painted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_paint">paint(self)</a></td>
-<td class="enumeration">
-<p>Main surface paint function. </p>
-</td>
+<td><a href="#Gui_Surface_paint">paint(self)</a></td>
+<td>Main surface paint function. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_screenToSurface">screenToSurface(self, *Point)</a></td>
-<td class="enumeration">
-<p>Transform a point in screen space relative to the surface. </p>
-</td>
+<td><a href="#Gui_Surface_screenToSurface">screenToSurface(self, *Point)</a></td>
+<td>Transform a point in screen space relative to the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_setIcon">setIcon(self, const ref Icon)</a></td>
-<td class="enumeration">
-<p>Set the surface icon. </p>
-</td>
+<td><a href="#Gui_Surface_setIcon">setIcon(self, const ref Icon)</a></td>
+<td>Set the surface icon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_setPosition">setPosition(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Set the surface position. </p>
-</td>
+<td><a href="#Gui_Surface_setPosition">setPosition(self, const ref Rectangle)</a></td>
+<td>Set the surface position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_setSurfaceFlags">setSurfaceFlags(self, SurfaceFlags, SurfaceFlags)</a></td>
-<td class="enumeration">
-<p>Change flag surfaces. </p>
-</td>
+<td><a href="#Gui_Surface_setSurfaceFlags">setSurfaceFlags(self, SurfaceFlags, SurfaceFlags)</a></td>
+<td>Change flag surfaces. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_setTitle">setTitle(self, string)</a></td>
-<td class="enumeration">
-<p>Set the surface title. </p>
-</td>
+<td><a href="#Gui_Surface_setTitle">setTitle(self, string)</a></td>
+<td>Set the surface title. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_setView">setView(self, *Wnd)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Surface_setView">setView(self, *Wnd)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_show">show(self)</a></td>
-<td class="enumeration">
-<p>Show the surface. </p>
-</td>
+<td><a href="#Gui_Surface_show">show(self)</a></td>
+<td>Show the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_showMaximized">showMaximized(self)</a></td>
-<td class="enumeration">
-<p>Show the surface as maximized. </p>
-</td>
+<td><a href="#Gui_Surface_showMaximized">showMaximized(self)</a></td>
+<td>Show the surface as maximized. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_showMinimized">showMinimized(self)</a></td>
-<td class="enumeration">
-<p>Show the surface as minimized. </p>
-</td>
+<td><a href="#Gui_Surface_showMinimized">showMinimized(self)</a></td>
+<td>Show the surface as minimized. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_showNormal">showNormal(self)</a></td>
-<td class="enumeration">
-<p>Show the surface in its default state. </p>
-</td>
+<td><a href="#Gui_Surface_showNormal">showNormal(self)</a></td>
+<td>Show the surface in its default state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Surface_surfaceToScreen">surfaceToScreen(self, *Point)</a></td>
-<td class="enumeration">
-<p>Transform a point relative to the surface in screen space. </p>
-</td>
+<td><a href="#Gui_Surface_surfaceToScreen">surfaceToScreen(self, *Point)</a></td>
+<td>Transform a point relative to the surface in screen space. </td>
 </tr>
 </table>
 <p>
@@ -18849,70 +15232,48 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BigCaption</td>
-<td class="enumeration">
-</td>
+<td>BigCaption</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SmallCaption</td>
-<td class="enumeration">
-</td>
+<td>SmallCaption</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MinimizeBtn</td>
-<td class="enumeration">
-</td>
+<td>MinimizeBtn</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MaximizeBtn</td>
-<td class="enumeration">
-</td>
+<td>MaximizeBtn</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CloseBtn</td>
-<td class="enumeration">
-</td>
+<td>CloseBtn</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Border</td>
-<td class="enumeration">
-</td>
+<td>Border</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sizeable</td>
-<td class="enumeration">
-</td>
+<td>Sizeable</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Secondary</td>
-<td class="enumeration">
-</td>
+<td>Secondary</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TopMost</td>
-<td class="enumeration">
-</td>
+<td>TopMost</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OverlappedWindow</td>
-<td class="enumeration">
-</td>
+<td>OverlappedWindow</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18928,28 +15289,19 @@ OverlappedWindow</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-position</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>position</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-positionNotMaximized</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>positionNotMaximized</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isMaximized</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isMaximized</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -18965,68 +15317,44 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icon</td>
-<td class="tdtype">
-<a href="#Gui_Icon">Gui.Icon</a></td>
-<td class="enumeration">
-</td>
+<td>icon</td>
+<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minimizeBtn</td>
-<td class="tdtype">
-*Gui.IconButton</td>
-<td class="enumeration">
-</td>
+<td>minimizeBtn</td>
+<td>*Gui.IconButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maximizeBtn</td>
-<td class="tdtype">
-*Gui.IconButton</td>
-<td class="enumeration">
-</td>
+<td>maximizeBtn</td>
+<td>*Gui.IconButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-closeBtn</td>
-<td class="tdtype">
-*Gui.IconButton</td>
-<td class="enumeration">
-</td>
+<td>closeBtn</td>
+<td>*Gui.IconButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-movingSurface</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>movingSurface</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sizingBorder</td>
-<td class="tdtype">
-<a href="#Gui_SizingBorder">Gui.SizingBorder</a></td>
-<td class="enumeration">
-</td>
+<td>sizingBorder</td>
+<td><a href="#Gui_SizingBorder">Gui.SizingBorder</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cursorSet</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>cursorSet</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19042,20 +15370,14 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sysKind</td>
-<td class="tdtype">
-Gui.SysCommandEvent.Kind</td>
-<td class="enumeration">
-</td>
+<td>sysKind</td>
+<td>Gui.SysCommandEvent.Kind</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19071,36 +15393,24 @@ Gui.SysCommandEvent.Kind</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userMsg</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>userMsg</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-param0</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>param0</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-param1</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>param1</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19116,138 +15426,88 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-barForm</td>
-<td class="tdtype">
-<a href="#Gui_TabBarForm">Gui.TabBarForm</a></td>
-<td class="enumeration">
-</td>
+<td>barForm</td>
+<td><a href="#Gui_TabBarForm">Gui.TabBarForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-viewForm</td>
-<td class="tdtype">
-<a href="#Gui_TabViewForm">Gui.TabViewForm</a></td>
-<td class="enumeration">
-</td>
+<td>viewForm</td>
+<td><a href="#Gui_TabViewForm">Gui.TabViewForm</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-barLayout</td>
-<td class="tdtype">
-<a href="#Gui_TabBarLayout">Gui.TabBarLayout</a></td>
-<td class="enumeration">
-</td>
+<td>barLayout</td>
+<td><a href="#Gui_TabBarLayout">Gui.TabBarLayout</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigSelChanged</td>
-<td class="tdtype">
-Gui.SigArray'(closure(*Gui.Tab))</td>
-<td class="enumeration">
-</td>
+<td>sigSelChanged</td>
+<td>Gui.SigArray'(closure(*Gui.Tab))</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buttonPopup</td>
-<td class="tdtype">
-*Gui.IconButton</td>
-<td class="enumeration">
-</td>
+<td>buttonPopup</td>
+<td>*Gui.IconButton</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-views</td>
-<td class="tdtype">
-Core.ArrayPtr'(Gui.TabItem)</td>
-<td class="enumeration">
-</td>
+<td>views</td>
+<td>Core.ArrayPtr'(Gui.TabItem)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popup</td>
-<td class="tdtype">
-*Gui.PopupListCtrl</td>
-<td class="enumeration">
-</td>
+<td>popup</td>
+<td>*Gui.PopupListCtrl</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-selectedIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>selectedIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-firstVisibleIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>firstVisibleIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hotIdx</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>hotIdx</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-barHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>barHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mostRightPos</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>mostRightPos</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Tab_addItem">addItem(self, string, const ref Icon, *Wnd)</a></td>
-<td class="enumeration">
-<p>Add a new view. </p>
-</td>
+<td><a href="#Gui_Tab_addItem">addItem(self, string, const ref Icon, *Wnd)</a></td>
+<td>Add a new view. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Tab_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Tab_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Tab_select">select(self, u32)</a></td>
-<td class="enumeration">
-<p>Select one tab at the given index. </p>
-</td>
+<td><a href="#Gui_Tab_select">select(self, u32)</a></td>
+<td>Select one tab at the given index. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Tab_setForm">setForm(self, TabForm)</a></td>
-<td class="enumeration">
-<p>Set the tab form. </p>
-</td>
+<td><a href="#Gui_Tab_setForm">setForm(self, TabForm)</a></td>
+<td>Set the tab form. </td>
 </tr>
 </table>
 <p>
@@ -19378,28 +15638,20 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Transparent</td>
-<td class="enumeration">
-</td>
+<td>Transparent</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Flat</td>
-<td class="enumeration">
-</td>
+<td>Flat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FlatRound</td>
-<td class="enumeration">
-</td>
+<td>FlatRound</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19415,22 +15667,16 @@ Round</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Divide</td>
-<td class="enumeration">
-</td>
+<td>Divide</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Fixed</td>
-<td class="enumeration">
-</td>
+<td>Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Auto</td>
-<td class="enumeration">
-</td>
+<td>Auto</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19446,22 +15692,16 @@ Auto</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Flat</td>
-<td class="enumeration">
-</td>
+<td>Flat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Button</td>
-<td class="enumeration">
-</td>
+<td>Button</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19477,44 +15717,29 @@ Button</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-pos</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>pos</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-view</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>view</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniImg</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniImg</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniText</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniText</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19530,28 +15755,20 @@ aniText</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Transparent</td>
-<td class="enumeration">
-</td>
+<td>Transparent</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Flat</td>
-<td class="enumeration">
-</td>
+<td>Flat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Button</td>
-<td class="enumeration">
-</td>
+<td>Button</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19567,22 +15784,16 @@ Button</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Flat</td>
-<td class="enumeration">
-</td>
+<td>Flat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19598,97 +15809,64 @@ Round</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-intialized</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>intialized</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-res</td>
-<td class="tdtype">
-<a href="#Gui_ThemeResources">Gui.ThemeResources</a></td>
-<td class="enumeration">
-</td>
+<td>res</td>
+<td><a href="#Gui_ThemeResources">Gui.ThemeResources</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rects</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRects">Gui.ThemeImageRects</a></td>
-<td class="enumeration">
-</td>
+<td>rects</td>
+<td><a href="#Gui_ThemeImageRects">Gui.ThemeImageRects</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-metrics</td>
-<td class="tdtype">
-<a href="#Gui_ThemeMetrics">Gui.ThemeMetrics</a></td>
-<td class="enumeration">
-</td>
+<td>metrics</td>
+<td><a href="#Gui_ThemeMetrics">Gui.ThemeMetrics</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colors</td>
-<td class="tdtype">
-<a href="#Gui_ThemeColors">Gui.ThemeColors</a></td>
-<td class="enumeration">
-</td>
+<td>colors</td>
+<td><a href="#Gui_ThemeColors">Gui.ThemeColors</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_createDefaultFont">createDefaultFont(self, u32, FontFamilyStyle)</a></td>
-<td class="enumeration">
-<p>Create a default font with the given size. </p>
-</td>
+<td><a href="#Gui_Theme_createDefaultFont">createDefaultFont(self, u32, FontFamilyStyle)</a></td>
+<td>Create a default font with the given size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_createDefaultFontFS">createDefaultFontFS(self, u32, FontFamilyStyle)</a></td>
-<td class="enumeration">
-<p>Create a default font (fixed size) with the given size. </p>
-</td>
+<td><a href="#Gui_Theme_createDefaultFontFS">createDefaultFontFS(self, u32, FontFamilyStyle)</a></td>
+<td>Create a default font (fixed size) with the given size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_drawIconText">drawIconText(*Painter, const ref Rectangle, const ref Icon, *RichString, const ref RichStringFormat, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Theme_drawIconText">drawIconText(*Painter, const ref Rectangle, const ref Icon, *RichString, const ref RichStringFormat, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_drawSubRect">drawSubRect(self, *Painter, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Theme_drawSubRect">drawSubRect(self, *Painter, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_drawSubRect">drawSubRect(*Painter, const ref Texture, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Theme_drawSubRect">drawSubRect(*Painter, const ref Texture, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_getIcon24">getIcon24(self, ThemeIcons24, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Theme_getIcon24">getIcon24(self, ThemeIcons24, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_getIcon64">getIcon64(self, ThemeIcons64, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Theme_getIcon64">getIcon64(self, ThemeIcons64, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Theme_setTextColors">setTextColors(self, *RichStringFormat, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Theme_setTextColors">setTextColors(self, *RichStringFormat, const ref Color)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -19805,2356 +15983,1474 @@ colors</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Transparent</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Blue</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-LightBlue</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Disabled</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-LighterSmall</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-LighterMedium</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-LighterBig</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-LighterVeryBig</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-White</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Gray1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Gray2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Gray3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-Gray4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>Transparent</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gray5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>Blue</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gray6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>LightBlue</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gray7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>Disabled</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gray8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>LighterSmall</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richColor1</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>LighterMedium</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richColor2</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>LighterBig</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richColor3</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>LighterVeryBig</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-surfaceDisabled</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>White</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hilight</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray1</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hilightLight</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray2</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hilightDark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray3</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-disabled</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray4</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-transparent</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray5</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lighterSmall</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray6</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lighterMedium</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray7</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lighterBig</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>Gray8</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lighterVeryBig</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richColor1</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richColor2</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_Caption</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richColor3</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_CaptionNotActived</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>surfaceDisabled</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_CaptionText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>hilight</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_CaptionNotActivatedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>hilightLight</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_BtnCloseBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>hilightDark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_BtnCloseHotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>disabled</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wnd_Shadow</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>transparent</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-view_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>lighterSmall</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dlg_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>lighterMedium</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dlg_BtnBarBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>lighterBig</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_StrongText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>lighterVeryBig</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_StrongBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_StrongBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_Caption</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_CaptionNotActived</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_CaptionText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_CaptionNotActivatedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_PressedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_BtnCloseBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_PressedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_BtnCloseHotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_PressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>wnd_Shadow</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>view_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_HotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>dlg_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>dlg_BtnBarBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_StrongText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_StrongBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPush_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_StrongBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_PressedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_PressedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_PressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_PressedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_PressedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_HotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_PressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_HotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushFlat_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPush_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_PressedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_PressedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_PressedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_PressedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_PressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_PressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_HotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_HotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnPushDefault_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushFlat_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_Icon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_DisabledIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_PressedIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_PressedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_PressedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_PressedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_PressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_PressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_HotIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_HotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnPushDefault_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedDisabledIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_Icon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedDisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedPressedIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedPressedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_DisabledIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedHotIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedHotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_PressedIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_PressedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedDisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_PressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedPressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_HotIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedHotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedDisabledIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedPressedMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedDisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedHotMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedPressedIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedDisabledMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedPressedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedHotIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_TextLight</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedHotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_Text1</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_Text2</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_Text3</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedDisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedPressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_Icon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedHotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-label_DisabledIcon</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedPressedMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Mark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedHotMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedDisabledMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_PressedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_PressedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_TextLight</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_PressedMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_Text1</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_PressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_Text2</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_Text3</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_HotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_HotMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_Icon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>label_DisabledIcon</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_DisabledMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Mark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_CheckedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_PressedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_CheckedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_PressedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_CheckedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_PressedMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_CheckedMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_PressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toolTip_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toolTip_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_HotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toolTip_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_HotMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_FocusBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_HotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_DisabledMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_CheckedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_ErrorBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_CheckedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_CheckedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_FocusBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_CheckedMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_Note</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>toolTip_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>toolTip_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>toolTip_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_SelectedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_SelectedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_FocusBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_ErrorBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_HotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_TextSpecial</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_SelText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_ErrorBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_SelTextNoFocus</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_SelBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_FocusBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_SelBkNoFocus</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_Note</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_Caret</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-richEdit_CurLineBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_SelectedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_DisabledMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_SelectedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>edit_ErrorBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_TextSpecial</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffHotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_SelText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffHotMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_SelTextNoFocus</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffHotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_SelBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffPressedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_SelBkNoFocus</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffPressedMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_Caret</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OffPressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>richEdit_CurLineBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_DisabledMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnHotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnHotMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnHotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnPressedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffHotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnPressedMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffHotMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_OnPressedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffHotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkLeft</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffPressedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkMiddle</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffPressedMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkRight</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OffPressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_HilightBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_Mark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_HotMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_PressedMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnHotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_DisabledMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnHotMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnHotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_StepBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnPressedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_HilightStepBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnPressedMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_HotStepBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_OnPressedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_BkLeft</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_SelectedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_BkMiddle</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_UnSelectedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_BkRight</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_FlatSelected</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_HilightBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_FlatHot</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_Mark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_RoundSelected</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_HotMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_RoundHot</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_PressedMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_ButtonSelected</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_DisabledMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_ButtonHot</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabBar_FlatBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_StepBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabBar_RoundBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_HilightStepBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabView_FlatBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>slider_HotStepBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabView_RoundBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_SelectedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_UnSelectedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Shadow</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_FlatSelected</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Separator</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_FlatHot</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_RoundSelected</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_RoundHot</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_SelectedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_ButtonSelected</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupItem_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabItem_ButtonHot</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupItem_RightText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabBar_FlatBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupItem_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabBar_RoundBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupItem_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabView_FlatBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupItem_HotRightText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>tabView_RoundBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupItem_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Shadow</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Separator</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_Box</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>menuBar_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_HotBox</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>menuBar_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_PressedBox</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>menuBar_SelectedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupItem_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_HotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupItem_RightText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupItem_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_SelectedBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupItem_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupItem_HotRightText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupItem_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_SelectedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_Box</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_HotBox</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_SelectedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_PressedBox</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBoxItem_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBoxItem_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_HotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBoxItem_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBoxItem_CheckMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_SelectedBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBoxItem_HotCheckMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_Separator</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_SelectedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_CheckMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_HotCheckMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_SmallShadow</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBox_SelectedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBoxItem_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_PopupBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBoxItem_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_FocusBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBoxItem_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBoxItem_CheckMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>comboBoxItem_HotCheckMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupList_Separator</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_FocusBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupList_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_FocusSelectedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupList_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_SelectedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupList_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupList_CheckMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>popupList_HotCheckMark</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_SelectedText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_SmallShadow</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_Border</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_Separator</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_PopupBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_AlternateBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_FocusBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-listItem_Line</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-headerItem_DisabledText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-headerItem_HotText</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-headerItem_HotBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>frameWnd_FocusBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-headerItem_ClickedBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_FocusSelectedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-headerItem_Text</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_SelectedBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-headerItem_Separator</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-header_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-splitView_TitleBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_SelectedText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-splitView_Bar</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_Text</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-splitView_BarHot</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_Separator</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-progressBar_DisabledBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_AlternateBk</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-progressBar_DisabledBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>listItem_Line</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-progressBar_DisabledMark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>headerItem_DisabledText</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-progressBar_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_Bk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_Mark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-palPicker_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-palPicker_HotBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_Border</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_BackAlpha</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_Mark</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-imageRect_Fg</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-embInfo_CriticalBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-embInfo_InformationBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-propList_focusBk</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-propList_focusBorder</td>
-<td class="tdtype">
-Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>headerItem_HotText</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>headerItem_HotBk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>headerItem_ClickedBk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>headerItem_Text</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>headerItem_Separator</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>header_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_TitleBk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_Bar</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_BarHot</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_DisabledBorder</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_DisabledBk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_DisabledMark</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_Border</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_Bk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_Mark</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>palPicker_Border</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>palPicker_HotBorder</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_Border</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_BackAlpha</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_Mark</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>imageRect_Fg</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>embInfo_CriticalBk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>embInfo_InformationBk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>propList_focusBk</td>
+<td>Pixel.Color</td>
+<td></td>
+</tr>
+<tr>
+<td>propList_focusBorder</td>
+<td>Pixel.Color</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22170,148 +17466,100 @@ Pixel.Color</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-WndMinimize</td>
-<td class="enumeration">
-</td>
+<td>WndMinimize</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-WndMaximize</td>
-<td class="enumeration">
-</td>
+<td>WndMaximize</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-WndClose</td>
-<td class="enumeration">
-</td>
+<td>WndClose</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Search</td>
-<td class="enumeration">
-</td>
+<td>Search</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RightPopupArrow</td>
-<td class="enumeration">
-</td>
+<td>RightPopupArrow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BottomPopupArrow</td>
-<td class="enumeration">
-</td>
+<td>BottomPopupArrow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SortArrowDown</td>
-<td class="enumeration">
-</td>
+<td>SortArrowDown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SortArrowUp</td>
-<td class="enumeration">
-</td>
+<td>SortArrowUp</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SortArrowRight</td>
-<td class="enumeration">
-</td>
+<td>SortArrowRight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Picker</td>
-<td class="enumeration">
-</td>
+<td>Picker</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Play</td>
-<td class="enumeration">
-</td>
+<td>Play</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Pause</td>
-<td class="enumeration">
-</td>
+<td>Pause</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Stop</td>
-<td class="enumeration">
-</td>
+<td>Stop</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SendToBack</td>
-<td class="enumeration">
-</td>
+<td>SendToBack</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SendBackward</td>
-<td class="enumeration">
-</td>
+<td>SendBackward</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BringForward</td>
-<td class="enumeration">
-</td>
+<td>BringForward</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BringToFront</td>
-<td class="enumeration">
-</td>
+<td>BringToFront</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Plus</td>
-<td class="enumeration">
-</td>
+<td>Plus</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-More</td>
-<td class="enumeration">
-</td>
+<td>More</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Undo</td>
-<td class="enumeration">
-</td>
+<td>Undo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Redo</td>
-<td class="enumeration">
-</td>
+<td>Redo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Copy</td>
-<td class="enumeration">
-</td>
+<td>Copy</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Paste</td>
-<td class="enumeration">
-</td>
+<td>Paste</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Cut</td>
-<td class="enumeration">
-</td>
+<td>Cut</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22327,34 +17575,24 @@ Cut</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Question</td>
-<td class="enumeration">
-</td>
+<td>Question</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Warning</td>
-<td class="enumeration">
-</td>
+<td>Warning</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Critical</td>
-<td class="enumeration">
-</td>
+<td>Critical</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Information</td>
-<td class="enumeration">
-</td>
+<td>Information</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HourGlass</td>
-<td class="enumeration">
-</td>
+<td>HourGlass</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22370,28 +17608,19 @@ HourGlass</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-rect</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>rect</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-corner</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>corner</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-keepBordersRatio</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>keepBordersRatio</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -22407,844 +17636,529 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-surfaceWnd_Shadow</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-wnd_Border</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-wnd_Caption</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-wnd_CaptionSmall</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-dlg_BtnBar</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_Normal</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_NormalBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_Hot</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_HotBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_Pressed</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_PressedBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_Disabled</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_DisabledBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>surfaceWnd_Shadow</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_SquareBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>wnd_Border</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_RoundBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>wnd_Caption</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_RoundSquareBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>wnd_CaptionSmall</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedBottom</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>dlg_BtnBar</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedTop</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_Normal</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedLeft</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_NormalBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedRight</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_Hot</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_CheckedFull</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_HotBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_ArrowDown</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_Pressed</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_ArrowLeft</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_PressedBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_ArrowUp</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_Disabled</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_ArrowRight</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnPush_DisabledBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Normal</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_SquareBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_NormalBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_RoundBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Undefined</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_RoundSquareBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_UndefinedBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedBottom</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_UndefinedMark</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedTop</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Checked</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedLeft</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_CheckedBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedRight</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_CheckedMark</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_CheckedFull</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnRadio_NormalBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_ArrowDown</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnRadio_Normal</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_ArrowLeft</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnRadio_CheckedBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_ArrowUp</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnRadio_Checked</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnIcon_ArrowRight</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnRadio_CheckedMark</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Normal</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_SquareBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_NormalBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_SquareBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Undefined</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_RoundBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_UndefinedBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_RoundBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_UndefinedMark</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_FlatBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Checked</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edit_FlatBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_CheckedBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_Bk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnCheck_CheckedMark</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_Border</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnRadio_NormalBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_Mark</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnRadio_Normal</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkLeft</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnRadio_CheckedBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkMiddle</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnRadio_Checked</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkRight</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnRadio_CheckedMark</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkLeftVert</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>edit_SquareBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkMiddleVert</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>edit_SquareBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BkRightVert</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>edit_RoundBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_Mark</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>edit_RoundBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_Step</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>edit_FlatBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_FlatSelected</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>edit_FlatBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_RoundSelected</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnToggle_Bk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_RoundHot</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnToggle_Border</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_ButtonSelected</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>btnToggle_Mark</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabItem_ButtonHot</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_BkLeft</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabBar_FlatBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_BkMiddle</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabBar_FlatRoundBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_BkRight</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabBar_RoundBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_BkLeftVert</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabView_FlatBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_BkMiddleVert</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tabView_RoundBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_BkRightVert</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Shadow</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_Mark</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Bk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>slider_Step</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Border</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabItem_FlatSelected</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_HotBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabItem_RoundSelected</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_Bk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabItem_RoundHot</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_Border</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabItem_ButtonSelected</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_SelectedBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabItem_ButtonHot</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuItem_CheckedMark</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabBar_FlatBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_BkV</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabBar_FlatRoundBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_BkH</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabBar_RoundBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_BoxV</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabView_FlatBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_BoxH</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>tabView_RoundBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_Corner</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Shadow</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_SmallShadow</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Bk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_SquareBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Border</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_SquareBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuPopup_HotBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_RoundBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuBar_Bk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_RoundBorder</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuBar_Border</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorTop</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuBar_SelectedBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorTopBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>menuItem_CheckedMark</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorBottom</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>scrollBar_BkV</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorBottomBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>scrollBar_BkH</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorRight</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>scrollBar_BoxV</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorRightBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>scrollBar_BoxH</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorLeft</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>scrollBar_Corner</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorLeftBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>frameWnd_SmallShadow</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-header_FlatBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>frameWnd_SquareBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-header_RoundBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-selectionBox_Bk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-splitView_HorzBarBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-splitView_HorzBarHotBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-splitView_VertBarBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-splitView_VertBarHotBk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_Bk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_Border</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_Mark</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_RoundPick</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_SquarePick</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_Bk</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_Border</td>
-<td class="tdtype">
-<a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
-<td class="enumeration">
-</td>
+<td>frameWnd_SquareBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_RoundBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_RoundBorder</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorTop</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorTopBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorBottom</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorBottomBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorRight</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorRightBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorLeft</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorLeftBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>header_FlatBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>header_RoundBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>selectionBox_Bk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_HorzBarBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_HorzBarHotBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_VertBarBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_VertBarHotBk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_Bk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_Border</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_Mark</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_RoundPick</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_SquarePick</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_Bk</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_Border</td>
+<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -23260,652 +18174,409 @@ colorPicker_Border</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-defaultFontSize</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-defaultFixedFontSize</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-surfaceWnd_ShadowSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-wnd_BorderSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-wnd_BigCaptionCY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-wnd_SmallCaptionCY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-wnd_CaptionMarginTitle</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-tabBar_FlatHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-tabBar_RoundHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-tabBar_ButtonHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_Width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-btnPush_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>defaultFontSize</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconText_Margin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>defaultFixedFontSize</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Size</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>surfaceWnd_ShadowSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnCheck_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>wnd_BorderSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dialog_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>wnd_BigCaptionCY</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dialog_BtnPadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>wnd_SmallCaptionCY</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBox_SquarePadding</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>wnd_CaptionMarginTitle</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBox_RoundPadding</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>tabBar_FlatHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBox_FlatPadding</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>tabBar_RoundHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBox_Width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>tabBar_ButtonHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-editBox_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnPush_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_Width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnPush_Width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnToggle_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnPush_Height</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_Width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>iconText_Margin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Size</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_BoxSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnCheck_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-slider_StepSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>dialog_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>dialog_BtnPadding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_SpaceLines</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>editBox_SquarePadding</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_ShadowSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>editBox_RoundPadding</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_IconTextMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>editBox_FlatPadding</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuPopup_SeparatorHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>editBox_Width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>editBox_Height</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-menuBar_SpaceBetween</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_Width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iconBar_ButtonsPadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnToggle_Height</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_NormalSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>slider_Width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_SmallSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>slider_Height</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_BoxPadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>slider_BoxSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollBar_BoxMinSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>slider_StepSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_Width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_SpaceLines</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_RightMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_ShadowSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_IconTextMargin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboBox_IconTextMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>menuPopup_SeparatorHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>menuBar_Height</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_IconTextMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>menuBar_SpaceBetween</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-popupList_SeparatorPadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>iconBar_ButtonsPadding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_WidthArrow</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_NormalSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_HeightArrow</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_SmallSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_BoxPadding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_MarginArrow</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>scrollBar_BoxMinSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_SpacingIcon</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>comboBox_Width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_SpacingArrowH</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>comboBox_Height</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_SpacingArrowV</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>comboBox_RightMargin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_SpacingTextH</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>comboBox_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-btnIcon_SpacingTextV</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>comboBox_IconTextMargin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_SquarePadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>popupList_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_RoundPadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>popupList_IconTextMargin</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_FlatPadding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>popupList_SeparatorPadding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_SmallShadowSize</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_WidthArrow</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorWidth</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_HeightArrow</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorOverlap</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_MarginArrow</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorRoundBorderMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_SpacingIcon</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frameWnd_AnchorSquareBorderMargin</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_SpacingArrowH</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-list_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_SpacingArrowV</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-list_ExpandSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-header_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-header_Padding</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-header_Separator</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-splitView_BarSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_ClipOffset</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-progressBar_SpeedInf</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_RoundPick</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-colorPicker_SquarePick</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-label_Height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-richEdit_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td class="tdname">
-toolTip_Padding</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>btnIcon_SpacingTextH</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>btnIcon_SpacingTextV</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_SquarePadding</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_RoundPadding</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_FlatPadding</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_SmallShadowSize</td>
+<td>Core.Math.Vector4</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorWidth</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorHeight</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorOverlap</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorRoundBorderMargin</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>frameWnd_AnchorSquareBorderMargin</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>list_Padding</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>list_ExpandSize</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>header_Height</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>header_Padding</td>
+<td>Core.Math.Vector4</td>
+<td></td>
+</tr>
+<tr>
+<td>header_Separator</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>splitView_BarSize</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_Height</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_ClipOffset</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>progressBar_SpeedInf</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_RoundPick</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>colorPicker_SquarePick</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>label_Height</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>richEdit_Padding</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td>toolTip_Padding</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -23921,116 +18592,74 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-imgWidgets</td>
-<td class="tdtype">
-Pixel.Texture</td>
-<td class="enumeration">
-</td>
+<td>imgWidgets</td>
+<td>Pixel.Texture</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icons24</td>
-<td class="tdtype">
-*Gui.ImageList</td>
-<td class="enumeration">
-</td>
+<td>icons24</td>
+<td>*Gui.ImageList</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-icons64</td>
-<td class="tdtype">
-*Gui.ImageList</td>
-<td class="enumeration">
-</td>
+<td>icons64</td>
+<td>*Gui.ImageList</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-spin</td>
-<td class="tdtype">
-*Gui.ImageList</td>
-<td class="enumeration">
-</td>
+<td>spin</td>
+<td>*Gui.ImageList</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultTypeFaceR</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultTypeFaceR</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultTypeFaceB</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultTypeFaceB</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultTypeFaceI</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultTypeFaceI</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultTypeFaceBI</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultTypeFaceBI</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultFsTypeFaceR</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultFsTypeFaceR</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultFsTypeFaceB</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultFsTypeFaceB</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultFsTypeFaceI</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultFsTypeFaceI</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-defaultFsTypeFaceBI</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>defaultFsTypeFaceBI</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fontDefault</td>
-<td class="tdtype">
-Pixel.FontFamily</td>
-<td class="enumeration">
-</td>
+<td>fontDefault</td>
+<td>Pixel.FontFamily</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fontDefaultFs</td>
-<td class="tdtype">
-Pixel.FontFamily</td>
-<td class="enumeration">
-</td>
+<td>fontDefaultFs</td>
+<td>Pixel.FontFamily</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -24046,108 +18675,72 @@ Pixel.FontFamily</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-refr</td>
-<td class="tdtype">
-*Gui.ThemeStyleRef</td>
-<td class="enumeration">
-</td>
+<td>refr</td>
+<td>*Gui.ThemeStyleRef</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirty</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>dirty</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-styleSheetMetrics</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>styleSheetMetrics</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-styleSheetColors</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>styleSheetColors</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-font</td>
-<td class="tdtype">
-Pixel.FontFamily</td>
-<td class="enumeration">
-</td>
+<td>font</td>
+<td>Pixel.FontFamily</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_addStyleSheetColors">addStyleSheetColors(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_addStyleSheetColors">addStyleSheetColors(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_addStyleSheetMetrics">addStyleSheetMetrics(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_addStyleSheetMetrics">addStyleSheetMetrics(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_clearFont">clearFont(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_clearFont">clearFont(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_clearStyleSheetColors">clearStyleSheetColors(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_clearStyleSheetColors">clearStyleSheetColors(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_create">create(self, *ThemeStyle)</a></td>
-<td class="enumeration">
-<p>Create a specific style based on the parent. </p>
-</td>
+<td><a href="#Gui_ThemeStyle_create">create(self, *ThemeStyle)</a></td>
+<td>Create a specific style based on the parent. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_getFont">getFont(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_getFont">getFont(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_setFont">setFont(self, const ref FontFamily)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_setFont">setFont(self, const ref FontFamily)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_setStyleSheetColors">setStyleSheetColors(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_setStyleSheetColors">setStyleSheetColors(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_ThemeStyle_setStyleSheetMetrics">setStyleSheetMetrics(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ThemeStyle_setStyleSheetMetrics">setStyleSheetMetrics(self, string)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -24291,20 +18884,14 @@ Pixel.FontFamily</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-theme</td>
-<td class="tdtype">
-*Gui.Theme</td>
-<td class="enumeration">
-</td>
+<td>theme</td>
+<td>*Gui.Theme</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>count</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -24320,45 +18907,31 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-timeMs</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>timeMs</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-target</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>target</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stopwatch</td>
-<td class="tdtype">
-Core.Time.Stopwatch</td>
-<td class="enumeration">
-</td>
+<td>stopwatch</td>
+<td>Core.Time.Stopwatch</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toDelete</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>toDelete</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Timer_restart">restart(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Timer_restart">restart(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -24388,20 +18961,14 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Gui_Event">Gui.Event</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Gui_Event">Gui.Event</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-timer</td>
-<td class="tdtype">
-*Gui.Timer</td>
-<td class="enumeration">
-</td>
+<td>timer</td>
+<td>*Gui.Timer</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -24417,61 +18984,41 @@ timer</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> button</td>
-<td class="tdtype">
-<a href="#Gui_Button">Gui.Button</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> button</td>
+<td><a href="#Gui_Button">Gui.Button</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isToggled</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isToggled</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sigChanged</td>
-<td class="tdtype">
-func(*Gui.ToggleButton)</td>
-<td class="enumeration">
-</td>
+<td>sigChanged</td>
+<td>func(*Gui.ToggleButton)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBk</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBk</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniBorder</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniBorder</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aniMark</td>
-<td class="tdtype">
-<a href="#Gui_BlendColor">Gui.BlendColor</a></td>
-<td class="enumeration">
-</td>
+<td>aniMark</td>
+<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_ToggleButton_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_ToggleButton_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -24559,773 +19106,477 @@ aniMark</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-itf</td>
-<td class="tdtype">
-<a href="#Gui_IWnd">Gui.IWnd</a></td>
-<td class="enumeration">
-</td>
+<td>itf</td>
+<td><a href="#Gui_IWnd">Gui.IWnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-surface</td>
-<td class="tdtype">
-*Gui.Surface</td>
-<td class="enumeration">
-</td>
+<td>surface</td>
+<td>*Gui.Surface</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-style</td>
-<td class="tdtype">
-<a href="#Gui_ThemeStyle">Gui.ThemeStyle</a></td>
-<td class="enumeration">
-</td>
+<td>style</td>
+<td><a href="#Gui_ThemeStyle">Gui.ThemeStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wndFlags</td>
-<td class="tdtype">
-<a href="#Gui_WndFlags">Gui.WndFlags</a></td>
-<td class="enumeration">
-</td>
+<td>wndFlags</td>
+<td><a href="#Gui_WndFlags">Gui.WndFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userData</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>userData</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-position</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>position</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-minSize</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>minSize</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxSize</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>maxSize</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-scrollPos</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>scrollPos</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-invalidatePadding</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>invalidatePadding</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-parent</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>parent</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-owner</td>
-<td class="tdtype">
-*Gui.Wnd</td>
-<td class="enumeration">
-</td>
+<td>owner</td>
+<td>*Gui.Wnd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-childs</td>
-<td class="tdtype">
-Core.Array'(*Gui.Wnd)</td>
-<td class="enumeration">
-</td>
+<td>childs</td>
+<td>Core.Array'(*Gui.Wnd)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-Pixel.RichString</td>
-<td class="enumeration">
-</td>
+<td>name</td>
+<td>Pixel.RichString</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-Gui.WndId</td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td>Gui.WndId</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cursor</td>
-<td class="tdtype">
-<a href="#Gui_Cursor">Gui.Cursor</a></td>
-<td class="enumeration">
-</td>
+<td>cursor</td>
+<td><a href="#Gui_Cursor">Gui.Cursor</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-toolTip</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>toolTip</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-keyShortcuts</td>
-<td class="tdtype">
-Core.Array'(Gui.KeyShortcut)</td>
-<td class="enumeration">
-</td>
+<td>keyShortcuts</td>
+<td>Core.Array'(Gui.KeyShortcut)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-actions</td>
-<td class="tdtype">
-Core.Array'(Gui.IActionUI)</td>
-<td class="enumeration">
-</td>
+<td>actions</td>
+<td>Core.Array'(Gui.IActionUI)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-margin</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>margin</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-padding</td>
-<td class="tdtype">
-Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>padding</td>
+<td>Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dockStyle</td>
-<td class="tdtype">
-<a href="#Gui_DockStyle">Gui.DockStyle</a></td>
-<td class="enumeration">
-</td>
+<td>dockStyle</td>
+<td><a href="#Gui_DockStyle">Gui.DockStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-anchorStyle</td>
-<td class="tdtype">
-<a href="#Gui_AnchorStyle">Gui.AnchorStyle</a></td>
-<td class="enumeration">
-</td>
+<td>anchorStyle</td>
+<td><a href="#Gui_AnchorStyle">Gui.AnchorStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-focusStrategy</td>
-<td class="tdtype">
-<a href="#Gui_FocusStategy">Gui.FocusStategy</a></td>
-<td class="enumeration">
-</td>
+<td>focusStrategy</td>
+<td><a href="#Gui_FocusStategy">Gui.FocusStategy</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-backgroundStyle</td>
-<td class="tdtype">
-<a href="#Gui_BackgroundStyle">Gui.BackgroundStyle</a></td>
-<td class="enumeration">
-</td>
+<td>backgroundStyle</td>
+<td><a href="#Gui_BackgroundStyle">Gui.BackgroundStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isAllocated</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isAllocated</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPendingDestroy</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPendingDestroy</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-createEventDone</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>createEventDone</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hookOnEvent</td>
-<td class="tdtype">
-Gui.HookEvent</td>
-<td class="enumeration">
-</td>
+<td>hookOnEvent</td>
+<td>Gui.HookEvent</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_applyLayout">applyLayout(self)</a></td>
-<td class="enumeration">
-<p>Apply the current layout (childs constraints). </p>
-</td>
+<td><a href="#Gui_Wnd_applyLayout">applyLayout(self)</a></td>
+<td>Apply the current layout (childs constraints). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_applyLayout">applyLayout(self, const ref Point)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_applyLayout">applyLayout(self, const ref Point)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_bringToFront">bringToFront(self)</a></td>
-<td class="enumeration">
-<p>Force the window to be the first painted (before all siblings). </p>
-</td>
+<td><a href="#Gui_Wnd_bringToFront">bringToFront(self)</a></td>
+<td>Force the window to be the first painted (before all siblings). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_bringToTop">bringToTop(self)</a></td>
-<td class="enumeration">
-<p>Force the window to be the last painted (on top of siblings). </p>
-</td>
+<td><a href="#Gui_Wnd_bringToTop">bringToTop(self)</a></td>
+<td>Force the window to be the last painted (on top of siblings). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_captureMouse">captureMouse(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_captureMouse">captureMouse(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_computeStyle">computeStyle(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_computeStyle">computeStyle(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_create">create(*Wnd, WndId, HookEvent)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_create">create(*Wnd, WndId, HookEvent)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_create">create(*Wnd, const ref Rectangle, WndId, HookEvent)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_create">create(*Wnd, const ref Rectangle, WndId, HookEvent)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_create">create(*Wnd, string, const ref Rectangle, WndId, HookEvent)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_create">create(*Wnd, string, const ref Rectangle, WndId, HookEvent)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_destroy">destroy(self)</a></td>
-<td class="enumeration">
-<p>Destroy the window. </p>
-</td>
+<td><a href="#Gui_Wnd_destroy">destroy(self)</a></td>
+<td>Destroy the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_destroyNow">destroyNow(self)</a></td>
-<td class="enumeration">
-<p>Destroy the window. </p>
-</td>
+<td><a href="#Gui_Wnd_destroyNow">destroyNow(self)</a></td>
+<td>Destroy the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_disable">disable(self)</a></td>
-<td class="enumeration">
-<p>Disable the window. </p>
-</td>
+<td><a href="#Gui_Wnd_disable">disable(self)</a></td>
+<td>Disable the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_enable">enable(self, bool)</a></td>
-<td class="enumeration">
-<p>Enable/Disable the window. </p>
-</td>
+<td><a href="#Gui_Wnd_enable">enable(self, bool)</a></td>
+<td>Enable/Disable the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_fitPosInParent">fitPosInParent(self, f32, f32, bool, bool)</a></td>
-<td class="enumeration">
-<p>Be sure rect is fully inside the parent rectangle (if possible). </p>
-</td>
+<td><a href="#Gui_Wnd_fitPosInParent">fitPosInParent(self, f32, f32, bool, bool)</a></td>
+<td>Be sure rect is fully inside the parent rectangle (if possible). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getApp">getApp(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getApp">getApp(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getChildById">getChildById(self, string)</a></td>
-<td class="enumeration">
-<p>Retrieve the child with the given id. </p>
-</td>
+<td><a href="#Gui_Wnd_getChildById">getChildById(self, string)</a></td>
+<td>Retrieve the child with the given id. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getClientRect">getClientRect(self)</a></td>
-<td class="enumeration">
-<p>Returns the client area. </p>
-</td>
+<td><a href="#Gui_Wnd_getClientRect">getClientRect(self)</a></td>
+<td>Returns the client area. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding(self)</a></td>
-<td class="enumeration">
-<p>Returns the client area, with <code class="incode">padding</code> applied. </p>
-</td>
+<td><a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding(self)</a></td>
+<td>Returns the client area, with <code class="incode">padding</code> applied. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getFocus">getFocus(self)</a></td>
-<td class="enumeration">
-<p>Get the window with the keyboard focus. </p>
-</td>
+<td><a href="#Gui_Wnd_getFocus">getFocus(self)</a></td>
+<td>Get the window with the keyboard focus. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getFont">getFont(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getFont">getFont(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getKeyShortcut">getKeyShortcut(self, KeyModifiers, Key)</a></td>
-<td class="enumeration">
-<p>Get the id associated with a shortcut. null if none. </p>
-</td>
+<td><a href="#Gui_Wnd_getKeyShortcut">getKeyShortcut(self, KeyModifiers, Key)</a></td>
+<td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getKeyShortcutNameFor">getKeyShortcutNameFor(self, WndId)</a></td>
-<td class="enumeration">
-<p>Get the name associated with a given id shortcut. </p>
-</td>
+<td><a href="#Gui_Wnd_getKeyShortcutNameFor">getKeyShortcutNameFor(self, WndId)</a></td>
+<td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getMouseCapture">getMouseCapture(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getMouseCapture">getMouseCapture(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getOwner">getOwner(self)</a></td>
-<td class="enumeration">
-<p>Get the owner of the window. </p>
-</td>
+<td><a href="#Gui_Wnd_getOwner">getOwner(self)</a></td>
+<td>Get the owner of the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getParentById">getParentById(self, string)</a></td>
-<td class="enumeration">
-<p>Retrieve the parent with the given id. </p>
-</td>
+<td><a href="#Gui_Wnd_getParentById">getParentById(self, string)</a></td>
+<td>Retrieve the parent with the given id. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getRectIn">getRectIn(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Get the wnd position relative to a given parent. </p>
-</td>
+<td><a href="#Gui_Wnd_getRectIn">getRectIn(self, *Wnd)</a></td>
+<td>Get the wnd position relative to a given parent. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getSurfaceRect">getSurfaceRect(self)</a></td>
-<td class="enumeration">
-<p>Get the wnd position in the surface. </p>
-</td>
+<td><a href="#Gui_Wnd_getSurfaceRect">getSurfaceRect(self)</a></td>
+<td>Get the wnd position in the surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getTheme">getTheme(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getTheme">getTheme(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getThemeColors">getThemeColors(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getThemeColors">getThemeColors(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getThemeMetrics">getThemeMetrics(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getThemeMetrics">getThemeMetrics(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getThemeRects">getThemeRects(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getThemeRects">getThemeRects(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getTiming">getTiming(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getTiming">getTiming(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getTopView">getTopView(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getTopView">getTopView(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getTopWnd">getTopWnd(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_getTopWnd">getTopWnd(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_getWndAt">getWndAt(self, f32, f32, bool, bool)</a></td>
-<td class="enumeration">
-<p>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </p>
-</td>
+<td><a href="#Gui_Wnd_getWndAt">getWndAt(self, f32, f32, bool, bool)</a></td>
+<td>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_hasFocus">hasFocus(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the window has the keyboard focus. </p>
-</td>
+<td><a href="#Gui_Wnd_hasFocus">hasFocus(self)</a></td>
+<td>Returns true if the window has the keyboard focus. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_hide">hide(self)</a></td>
-<td class="enumeration">
-<p>Hide the window. </p>
-</td>
+<td><a href="#Gui_Wnd_hide">hide(self)</a></td>
+<td>Hide the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_invalidate">invalidate(self)</a></td>
-<td class="enumeration">
-<p>Force the window to be repainted. </p>
-</td>
+<td><a href="#Gui_Wnd_invalidate">invalidate(self)</a></td>
+<td>Force the window to be repainted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Force o local position to be repainted. </p>
-</td>
+<td><a href="#Gui_Wnd_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
+<td>Force o local position to be repainted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_isEnabled">isEnabled(self)</a></td>
-<td class="enumeration">
-<p>Returns true if window, and all its parents, are enabled. </p>
-</td>
+<td><a href="#Gui_Wnd_isEnabled">isEnabled(self)</a></td>
+<td>Returns true if window, and all its parents, are enabled. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_isParentOf">isParentOf(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>. </p>
-</td>
+<td><a href="#Gui_Wnd_isParentOf">isParentOf(self, *Wnd)</a></td>
+<td>Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_isVisible">isVisible(self, bool)</a></td>
-<td class="enumeration">
-<p>Returns true if window, and all its parents, are visible. </p>
-</td>
+<td><a href="#Gui_Wnd_isVisible">isVisible(self, bool)</a></td>
+<td>Returns true if window, and all its parents, are visible. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_isVisibleState">isVisibleState(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_isVisibleState">isVisibleState(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Point)</a></td>
-<td class="enumeration">
-<p>Convert a local coordinate to a surface coordinate. </p>
-</td>
+<td><a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Point)</a></td>
+<td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Convert a local coordinate to a surface coordinate. </p>
-</td>
+<td><a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Rectangle)</a></td>
+<td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_move">move(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Move the wnd. </p>
-</td>
+<td><a href="#Gui_Wnd_move">move(self, f32, f32)</a></td>
+<td>Move the wnd. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_notifyEvent">notifyEvent(self, Kind)</a></td>
-<td class="enumeration">
-<p>Send a notification event. </p>
-</td>
+<td><a href="#Gui_Wnd_notifyEvent">notifyEvent(self, Kind)</a></td>
+<td>Send a notification event. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent(self, Kind)</a></td>
-<td class="enumeration">
-<p>Send a notification event. </p>
-</td>
+<td><a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent(self, Kind)</a></td>
+<td>Send a notification event. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_paint">paint(self, *PaintContext)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_paint">paint(self, *PaintContext)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_postCommandEvent">postCommandEvent(self, WndId)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_postCommandEvent">postCommandEvent(self, WndId)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_postEvent">postEvent(self, *Event)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_postEvent">postEvent(self, *Event)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_postInvalidateEvent">postInvalidateEvent(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_postInvalidateEvent">postInvalidateEvent(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_postQuitEvent">postQuitEvent(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_postQuitEvent">postQuitEvent(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_postResizeEvent">postResizeEvent(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_postResizeEvent">postResizeEvent(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_processEvent">processEvent(self, *Event)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_processEvent">processEvent(self, *Event)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_registerAction">registerAction(self)</a></td>
-<td class="enumeration">
-<p>Register one new action. </p>
-</td>
+<td><a href="#Gui_Wnd_registerAction">registerAction(self)</a></td>
+<td>Register one new action. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_registerKeyShortcut">registerKeyShortcut(self, KeyModifiers, Key, WndId)</a></td>
-<td class="enumeration">
-<p>Register a keyboard shortcut. </p>
-</td>
+<td><a href="#Gui_Wnd_registerKeyShortcut">registerKeyShortcut(self, KeyModifiers, Key, WndId)</a></td>
+<td>Register a keyboard shortcut. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_releaseMouse">releaseMouse(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_releaseMouse">releaseMouse(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_resize">resize(self, f32, f32, bool)</a></td>
-<td class="enumeration">
-<p>Resize the wnd. </p>
-</td>
+<td><a href="#Gui_Wnd_resize">resize(self, f32, f32, bool)</a></td>
+<td>Resize the wnd. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_screenToSurface">screenToSurface(self, const ref Point)</a></td>
-<td class="enumeration">
-<p>Convert a screen coordinate to a surface coordinate (relative to my surface). </p>
-</td>
+<td><a href="#Gui_Wnd_screenToSurface">screenToSurface(self, const ref Point)</a></td>
+<td>Convert a screen coordinate to a surface coordinate (relative to my surface). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_sendCommandEvent">sendCommandEvent(self, WndId)</a></td>
-<td class="enumeration">
-<p>Send the command event with the given id to the window. </p>
-</td>
+<td><a href="#Gui_Wnd_sendCommandEvent">sendCommandEvent(self, WndId)</a></td>
+<td>Send the command event with the given id to the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_sendComputeCommandStateEvent">sendComputeCommandStateEvent(self, WndId)</a></td>
-<td class="enumeration">
-<p>Send the command state event with the given id to the window. </p>
-</td>
+<td><a href="#Gui_Wnd_sendComputeCommandStateEvent">sendComputeCommandStateEvent(self, WndId)</a></td>
+<td>Send the command state event with the given id to the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_sendCreateEvent">sendCreateEvent(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_sendCreateEvent">sendCreateEvent(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_sendEvent">sendEvent(self, *Event)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_sendEvent">sendEvent(self, *Event)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_sendResizeEvent">sendResizeEvent(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_sendResizeEvent">sendResizeEvent(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_sendStateEvent">sendStateEvent(self, EventKind)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_sendStateEvent">sendStateEvent(self, EventKind)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_serializeState">serializeState(self, *Serializer)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_serializeState">serializeState(self, *Serializer)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setAllMargins">setAllMargins(self, const ref Vector4)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_setAllMargins">setAllMargins(self, const ref Vector4)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setAllMargins">setAllMargins(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_setAllMargins">setAllMargins(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setAllPaddings">setAllPaddings(self, const ref Vector4)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_setAllPaddings">setAllPaddings(self, const ref Vector4)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setAllPaddings">setAllPaddings(self, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Gui_Wnd_setAllPaddings">setAllPaddings(self, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setFocus">setFocus(self)</a></td>
-<td class="enumeration">
-<p>Set the keyboard focus. </p>
-</td>
+<td><a href="#Gui_Wnd_setFocus">setFocus(self)</a></td>
+<td>Set the keyboard focus. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setMargin">setMargin(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
-</td>
+<td><a href="#Gui_Wnd_setMargin">setMargin(self, f32, f32, f32, f32)</a></td>
+<td>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setPadding">setPadding(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
-</td>
+<td><a href="#Gui_Wnd_setPadding">setPadding(self, f32, f32, f32, f32)</a></td>
+<td>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setParent">setParent(self, *Wnd)</a></td>
-<td class="enumeration">
-<p>Set window parent. </p>
-</td>
+<td><a href="#Gui_Wnd_setParent">setParent(self, *Wnd)</a></td>
+<td>Set window parent. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setPosition">setPosition(self, const ref Rectangle, bool)</a></td>
-<td class="enumeration">
-<p>Move and size the wnd. </p>
-</td>
+<td><a href="#Gui_Wnd_setPosition">setPosition(self, const ref Rectangle, bool)</a></td>
+<td>Move and size the wnd. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_setPosition">setPosition(self, f32, f32, f32, f32, bool)</a></td>
-<td class="enumeration">
-<p>Move and size the wnd. </p>
-</td>
+<td><a href="#Gui_Wnd_setPosition">setPosition(self, f32, f32, f32, f32, bool)</a></td>
+<td>Move and size the wnd. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_show">show(self, bool)</a></td>
-<td class="enumeration">
-<p>Show the window. </p>
-</td>
+<td><a href="#Gui_Wnd_show">show(self, bool)</a></td>
+<td>Show the window. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_surfaceToLocal">surfaceToLocal(self, const ref Point)</a></td>
-<td class="enumeration">
-<p>Convert a surface coordinate to a local coordinate (relative to me). </p>
-</td>
+<td><a href="#Gui_Wnd_surfaceToLocal">surfaceToLocal(self, const ref Point)</a></td>
+<td>Convert a surface coordinate to a local coordinate (relative to me). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_Wnd_updateCommandState">updateCommandState(self)</a></td>
-<td class="enumeration">
-<p>Main function to update command state of various windows/widgets. </p>
-</td>
+<td><a href="#Gui_Wnd_updateCommandState">updateCommandState(self)</a></td>
+<td>Main function to update command state of various windows/widgets. </td>
 </tr>
 </table>
 <p>
@@ -26733,52 +20984,36 @@ Gui.HookEvent</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NoScroll</td>
-<td class="enumeration">
-</td>
+<td>NoScroll</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ClipChildren</td>
-<td class="enumeration">
-</td>
+<td>ClipChildren</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Disabled</td>
-<td class="enumeration">
-</td>
+<td>Disabled</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hidden</td>
-<td class="enumeration">
-</td>
+<td>Hidden</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PreChildsPaint</td>
-<td class="enumeration">
-</td>
+<td>PreChildsPaint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PostChildsPaint</td>
-<td class="enumeration">
-</td>
+<td>PostChildsPaint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TopMost</td>
-<td class="enumeration">
-</td>
+<td>TopMost</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -26794,61 +21029,40 @@ TopMost</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> wnd</td>
-<td class="tdtype">
-<a href="#Gui_Wnd">Gui.Wnd</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> wnd</td>
+<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-spacing</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>spacing</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wrapWidth</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>wrapWidth</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wrapHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>wrapHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-resultHeight</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>resultHeight</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Gui_WrapLayoutCtrl_computeLayout">computeLayout(self)</a></td>
-<td class="enumeration">
-<p>Recompute layout of all childs. </p>
-</td>
+<td><a href="#Gui_WrapLayoutCtrl_computeLayout">computeLayout(self)</a></td>
+<td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Gui_WrapLayoutCtrl_create">create(*Wnd, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Create a layout control. </p>
-</td>
+<td><a href="#Gui_WrapLayoutCtrl_create">create(*Wnd, const ref Rectangle)</a></td>
+<td>Create a layout control. </td>
 </tr>
 </table>
 <p>

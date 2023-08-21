@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -541,364 +526,229 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Libc_BUFSIZ" class="tdname">
-BUFSIZ</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_BUFSIZ">BUFSIZ</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_CLOCKS_PER_SEC" class="tdname">
-CLOCKS_PER_SEC</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_CLOCKS_PER_SEC">CLOCKS_PER_SEC</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_EOF" class="tdname">
-EOF</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_EOF">EOF</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_FAILURE" class="tdname">
-EXIT_FAILURE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_EXIT_FAILURE">EXIT_FAILURE</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_SUCCESS" class="tdname">
-EXIT_SUCCESS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_EXIT_SUCCESS">EXIT_SUCCESS</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FILENAME_MAX" class="tdname">
-FILENAME_MAX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FILENAME_MAX">FILENAME_MAX</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FOPEN_MAX" class="tdname">
-FOPEN_MAX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FOPEN_MAX">FOPEN_MAX</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGB0" class="tdname">
-FP_ILOGB0</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FP_ILOGB0">FP_ILOGB0</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGBNAN" class="tdname">
-FP_ILOGBNAN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FP_ILOGBNAN">FP_ILOGBNAN</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FP_INFINITE" class="tdname">
-FP_INFINITE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FP_INFINITE">FP_INFINITE</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NAN" class="tdname">
-FP_NAN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FP_NAN">FP_NAN</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NORMAL" class="tdname">
-FP_NORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FP_NORMAL">FP_NORMAL</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FP_SUBNORMAL" class="tdname">
-FP_SUBNORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FP_SUBNORMAL">FP_SUBNORMAL</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ZERO" class="tdname">
-FP_ZERO</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_FP_ZERO">FP_ZERO</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_ForeignLib" class="tdname">
-ForeignLib</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td id="Libc_ForeignLib">ForeignLib</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VAL" class="tdname">
-HUGE_VAL</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_HUGE_VAL">HUGE_VAL</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VALF" class="tdname">
-HUGE_VALF</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_HUGE_VALF">HUGE_VALF</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INFINITY" class="tdname">
-INFINITY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INFINITY">INFINITY</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MAX" class="tdname">
-INT16_MAX</td>
-<td class="tdtype">
-s16</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT16_MAX">INT16_MAX</td>
+<td>s16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MIN" class="tdname">
-INT16_MIN</td>
-<td class="tdtype">
-s16</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT16_MIN">INT16_MIN</td>
+<td>s16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MAX" class="tdname">
-INT32_MAX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT32_MAX">INT32_MAX</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MIN" class="tdname">
-INT32_MIN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT32_MIN">INT32_MIN</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MAX" class="tdname">
-INT64_MAX</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT64_MAX">INT64_MAX</td>
+<td>s64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MIN" class="tdname">
-INT64_MIN</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT64_MIN">INT64_MIN</td>
+<td>s64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MAX" class="tdname">
-INT8_MAX</td>
-<td class="tdtype">
-s8</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT8_MAX">INT8_MAX</td>
+<td>s8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MIN" class="tdname">
-INT8_MIN</td>
-<td class="tdtype">
-s8</td>
-<td class="enumeration">
-</td>
+<td id="Libc_INT8_MIN">INT8_MIN</td>
+<td>s8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_L_tmpnam" class="tdname">
-L_tmpnam</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_L_tmpnam">L_tmpnam</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERREXCEPT" class="tdname">
-MATH_ERREXCEPT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_MATH_ERREXCEPT">MATH_ERREXCEPT</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERRNO" class="tdname">
-MATH_ERRNO</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_MATH_ERRNO">MATH_ERRNO</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_NAN" class="tdname">
-NAN</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_NAN">NAN</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MAX" class="tdname">
-PTRDIFF_MAX</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_PTRDIFF_MAX">PTRDIFF_MAX</td>
+<td>s64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MIN" class="tdname">
-PTRDIFF_MIN</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_PTRDIFF_MIN">PTRDIFF_MIN</td>
+<td>s64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_CUR" class="tdname">
-SEEK_CUR</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_SEEK_CUR">SEEK_CUR</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_END" class="tdname">
-SEEK_END</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_SEEK_END">SEEK_END</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_SET" class="tdname">
-SEEK_SET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_SEEK_SET">SEEK_SET</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_SIZE_MAX" class="tdname">
-SIZE_MAX</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_SIZE_MAX">SIZE_MAX</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_TIME_UTC" class="tdname">
-TIME_UTC</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_TIME_UTC">TIME_UTC</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_TMP_MAX" class="tdname">
-TMP_MAX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_TMP_MAX">TMP_MAX</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_UINT16_MAX" class="tdname">
-UINT16_MAX</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="Libc_UINT16_MAX">UINT16_MAX</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_UINT32_MAX" class="tdname">
-UINT32_MAX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Libc_UINT32_MAX">UINT32_MAX</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_UINT64_MAX" class="tdname">
-UINT64_MAX</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Libc_UINT64_MAX">UINT64_MAX</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc_UINT8_MAX" class="tdname">
-UINT8_MAX</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td id="Libc_UINT8_MAX">UINT8_MAX</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc__IOFBF" class="tdname">
-_IOFBF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Libc__IOFBF">_IOFBF</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc__IOLBF" class="tdname">
-_IOLBF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Libc__IOLBF">_IOLBF</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Libc__IONBF" class="tdname">
-_IONBF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Libc__IONBF">_IONBF</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1499,20 +1349,14 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-quot</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>quot</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rem</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>rem</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2672,20 +2516,14 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-quot</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>quot</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rem</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>rem</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2757,20 +2595,14 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-quot</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td>quot</td>
+<td>s64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rem</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td>rem</td>
+<td>s64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4369,76 +4201,49 @@ s64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-tm_sec</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_sec</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_min</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_min</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_hour</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_hour</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_mday</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_mday</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_mon</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_mon</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_year</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_year</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_wday</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_wday</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_yday</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_yday</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tm_isdst</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>tm_isdst</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>

@@ -74,27 +74,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -177,16 +168,16 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
 <table class="enumeration">
-<tr><td class="tdname"> <a href="std.core.php">std.core</a>         </td><td class="tdtype"> Main core module, the base of everything else</td></tr>
-<tr><td class="tdname"> <a href="std.pixel.php">std.pixel</a>       </td><td class="tdtype"> A 2D painting module</td></tr>
-<tr><td class="tdname"> <a href="std.gui.php">std.gui</a>           </td><td class="tdtype"> A user interface module (windows, widgets...)</td></tr>
-<tr><td class="tdname"> <a href="std.ogl.php">std.ogl</a>           </td><td class="tdtype"> Opengl wrapper</td></tr>
-<tr><td class="tdname"> <a href="std.libc.php">std.libc</a>         </td><td class="tdtype"> Libc wrapper</td></tr>
-<tr><td class="tdname"> <a href="std.freetype.php">std.freetype</a> </td><td class="tdtype"> Freetype wrapper</td></tr>
-<tr><td class="tdname"> <a href="std.win32.php">std.win32</a>       </td><td class="tdtype"> Win32 wrapper</td></tr>
-<tr><td class="tdname"> <a href="std.gdi32.php">std.gdi32</a>       </td><td class="tdtype"> Gdi32 wrapper</td></tr>
-<tr><td class="tdname"> <a href="std.xinput.php">std.xinput</a>     </td><td class="tdtype"> XInput wrapper</td></tr>
-<tr><td class="tdname"> <a href="std.audio.php">std.audio</a>       </td><td class="tdtype"> Audio module to play sounds</td></tr>
+<tr><td> <a href="std.core.php">std.core</a>         </td><td> Main core module, the base of everything else</td></tr>
+<tr><td> <a href="std.pixel.php">std.pixel</a>       </td><td> A 2D painting module</td></tr>
+<tr><td> <a href="std.gui.php">std.gui</a>           </td><td> A user interface module (windows, widgets...)</td></tr>
+<tr><td> <a href="std.ogl.php">std.ogl</a>           </td><td> Opengl wrapper</td></tr>
+<tr><td> <a href="std.libc.php">std.libc</a>         </td><td> Libc wrapper</td></tr>
+<tr><td> <a href="std.freetype.php">std.freetype</a> </td><td> Freetype wrapper</td></tr>
+<tr><td> <a href="std.win32.php">std.win32</a>       </td><td> Win32 wrapper</td></tr>
+<tr><td> <a href="std.gdi32.php">std.gdi32</a>       </td><td> Gdi32 wrapper</td></tr>
+<tr><td> <a href="std.xinput.php">std.xinput</a>     </td><td> XInput wrapper</td></tr>
+<tr><td> <a href="std.audio.php">std.audio</a>       </td><td> Audio module to play sounds</td></tr>
 </table>
 </div>
 </div>

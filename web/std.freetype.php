@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -305,228 +290,144 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="FreeType_FT_LOAD_ADVANCE_ONLY" class="tdname">
-FT_LOAD_ADVANCE_ONLY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_ADVANCE_ONLY">FT_LOAD_ADVANCE_ONLY</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_BITMAP_METRICS_ONLY" class="tdname">
-FT_LOAD_BITMAP_METRICS_ONLY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_BITMAP_METRICS_ONLY">FT_LOAD_BITMAP_METRICS_ONLY</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_COLOR" class="tdname">
-FT_LOAD_COLOR</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_COLOR">FT_LOAD_COLOR</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_COMPUTE_METRICS" class="tdname">
-FT_LOAD_COMPUTE_METRICS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_COMPUTE_METRICS">FT_LOAD_COMPUTE_METRICS</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_CROP_BITMAP" class="tdname">
-FT_LOAD_CROP_BITMAP</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_CROP_BITMAP">FT_LOAD_CROP_BITMAP</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_DEFAULT" class="tdname">
-FT_LOAD_DEFAULT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_DEFAULT">FT_LOAD_DEFAULT</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_FORCE_AUTOHINT" class="tdname">
-FT_LOAD_FORCE_AUTOHINT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_FORCE_AUTOHINT">FT_LOAD_FORCE_AUTOHINT</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH" class="tdname">
-FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH">FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_IGNORE_TRANSFORM" class="tdname">
-FT_LOAD_IGNORE_TRANSFORM</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_IGNORE_TRANSFORM">FT_LOAD_IGNORE_TRANSFORM</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_LINEAR_DESIGN" class="tdname">
-FT_LOAD_LINEAR_DESIGN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_LINEAR_DESIGN">FT_LOAD_LINEAR_DESIGN</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_MONOCHROME" class="tdname">
-FT_LOAD_MONOCHROME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_MONOCHROME">FT_LOAD_MONOCHROME</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_AUTOHINT" class="tdname">
-FT_LOAD_NO_AUTOHINT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_NO_AUTOHINT">FT_LOAD_NO_AUTOHINT</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_BITMAP" class="tdname">
-FT_LOAD_NO_BITMAP</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_NO_BITMAP">FT_LOAD_NO_BITMAP</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_HINTING" class="tdname">
-FT_LOAD_NO_HINTING</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_NO_HINTING">FT_LOAD_NO_HINTING</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_RECURSE" class="tdname">
-FT_LOAD_NO_RECURSE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_NO_RECURSE">FT_LOAD_NO_RECURSE</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_SCALE" class="tdname">
-FT_LOAD_NO_SCALE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_NO_SCALE">FT_LOAD_NO_SCALE</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_PEDANTIC" class="tdname">
-FT_LOAD_PEDANTIC</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_PEDANTIC">FT_LOAD_PEDANTIC</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_RENDER" class="tdname">
-FT_LOAD_RENDER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_RENDER">FT_LOAD_RENDER</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_SBITS_ONLY" class="tdname">
-FT_LOAD_SBITS_ONLY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_SBITS_ONLY">FT_LOAD_SBITS_ONLY</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_LCD" class="tdname">
-FT_LOAD_TARGET_LCD</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_TARGET_LCD">FT_LOAD_TARGET_LCD</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_LCD_V" class="tdname">
-FT_LOAD_TARGET_LCD_V</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_TARGET_LCD_V">FT_LOAD_TARGET_LCD_V</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_LIGHT" class="tdname">
-FT_LOAD_TARGET_LIGHT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_TARGET_LIGHT">FT_LOAD_TARGET_LIGHT</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_MONO" class="tdname">
-FT_LOAD_TARGET_MONO</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_TARGET_MONO">FT_LOAD_TARGET_MONO</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_NORMAL" class="tdname">
-FT_LOAD_TARGET_NORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_TARGET_NORMAL">FT_LOAD_TARGET_NORMAL</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_VERTICAL_LAYOUT" class="tdname">
-FT_LOAD_VERTICAL_LAYOUT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_LOAD_VERTICAL_LAYOUT">FT_LOAD_VERTICAL_LAYOUT</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_MAX_MODULES" class="tdname">
-FT_MAX_MODULES</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_MAX_MODULES">FT_MAX_MODULES</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_STYLE_FLAG_BOLD" class="tdname">
-FT_STYLE_FLAG_BOLD</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_STYLE_FLAG_BOLD">FT_STYLE_FLAG_BOLD</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_STYLE_FLAG_ITALIC" class="tdname">
-FT_STYLE_FLAG_ITALIC</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="FreeType_FT_STYLE_FLAG_ITALIC">FT_STYLE_FLAG_ITALIC</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -542,36 +443,24 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-xMin</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>xMin</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-yMin</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>yMin</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-xMax</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>xMax</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-yMax</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>yMax</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -587,68 +476,44 @@ FreeType.FT_Pos</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-rows</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>rows</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pitch</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>pitch</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-^u8</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>^u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-num_grays</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>num_grays</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pixel_mode</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>pixel_mode</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-palette_mode</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>palette_mode</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-palette</td>
-<td class="tdtype">
-^void</td>
-<td class="enumeration">
-</td>
+<td>palette</td>
+<td>^void</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -664,44 +529,29 @@ palette</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-x_ppem</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>x_ppem</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y_ppem</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>y_ppem</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -717,37 +567,24 @@ FreeType.FT_Pos</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-face</td>
-<td class="tdtype">
-FreeType.FT_Face</td>
-<td class="enumeration">
-</td>
+<td>face</td>
+<td>FreeType.FT_Face</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-encoding</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>FT_Encoding. </p>
-</td>
+<td>encoding</td>
+<td>u32</td>
+<td>FT_Encoding. </td>
 </tr>
 <tr>
-<td class="tdname">
-platform_id</td>
-<td class="tdtype">
-FreeType.FT_UShort</td>
-<td class="enumeration">
-</td>
+<td>platform_id</td>
+<td>FreeType.FT_UShort</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-encoding_id</td>
-<td class="tdtype">
-FreeType.FT_UShort</td>
-<td class="enumeration">
-</td>
+<td>encoding_id</td>
+<td>FreeType.FT_UShort</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -791,252 +628,159 @@ FreeType.FT_UShort</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-num_faces</td>
-<td class="tdtype">
-FreeType.FT_Long</td>
-<td class="enumeration">
-</td>
+<td>num_faces</td>
+<td>FreeType.FT_Long</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-face_index</td>
-<td class="tdtype">
-FreeType.FT_Long</td>
-<td class="enumeration">
-</td>
+<td>face_index</td>
+<td>FreeType.FT_Long</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-face_flags</td>
-<td class="tdtype">
-FreeType.FT_Long</td>
-<td class="enumeration">
-</td>
+<td>face_flags</td>
+<td>FreeType.FT_Long</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-style_flags</td>
-<td class="tdtype">
-FreeType.FT_Long</td>
-<td class="enumeration">
-</td>
+<td>style_flags</td>
+<td>FreeType.FT_Long</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-num_glyphs</td>
-<td class="tdtype">
-FreeType.FT_Long</td>
-<td class="enumeration">
-</td>
+<td>num_glyphs</td>
+<td>FreeType.FT_Long</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-family_name</td>
-<td class="tdtype">
-^FreeType.FT_String</td>
-<td class="enumeration">
-</td>
+<td>family_name</td>
+<td>^FreeType.FT_String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-style_name</td>
-<td class="tdtype">
-^FreeType.FT_String</td>
-<td class="enumeration">
-</td>
+<td>style_name</td>
+<td>^FreeType.FT_String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-num_fixed_sizes</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>num_fixed_sizes</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-available_sizes</td>
-<td class="tdtype">
-^FreeType.FT_Bitmap_Size</td>
-<td class="enumeration">
-</td>
+<td>available_sizes</td>
+<td>^FreeType.FT_Bitmap_Size</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-num_charmaps</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>num_charmaps</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-charmaps</td>
-<td class="tdtype">
-^FreeType.FT_CharMap</td>
-<td class="enumeration">
-</td>
+<td>charmaps</td>
+<td>^FreeType.FT_CharMap</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-generic</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
-<td class="enumeration">
-</td>
+<td>generic</td>
+<td><a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bbox</td>
-<td class="tdtype">
-<a href="#FreeType_FT_BBox">FreeType.FT_BBox</a></td>
-<td class="enumeration">
-</td>
+<td>bbox</td>
+<td><a href="#FreeType_FT_BBox">FreeType.FT_BBox</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-units_per_EM</td>
-<td class="tdtype">
-FreeType.FT_UShort</td>
-<td class="enumeration">
-</td>
+<td>units_per_EM</td>
+<td>FreeType.FT_UShort</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ascender</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>ascender</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-descender</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>descender</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-max_advance_width</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>max_advance_width</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-max_advance_height</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>max_advance_height</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-underline_position</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>underline_position</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-underline_thickness</td>
-<td class="tdtype">
-FreeType.FT_Short</td>
-<td class="enumeration">
-</td>
+<td>underline_thickness</td>
+<td>FreeType.FT_Short</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-glyph</td>
-<td class="tdtype">
-FreeType.FT_GlyphSlot</td>
-<td class="enumeration">
-</td>
+<td>glyph</td>
+<td>FreeType.FT_GlyphSlot</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-FreeType.FT_Size</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>FreeType.FT_Size</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-charmap</td>
-<td class="tdtype">
-FreeType.FT_CharMap</td>
-<td class="enumeration">
-</td>
+<td>charmap</td>
+<td>FreeType.FT_CharMap</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-driver</td>
-<td class="tdtype">
-FreeType.FT_Driver</td>
-<td class="enumeration">
-</td>
+<td>driver</td>
+<td>FreeType.FT_Driver</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-memory</td>
-<td class="tdtype">
-FreeType.FT_Memory</td>
-<td class="enumeration">
-</td>
+<td>memory</td>
+<td>FreeType.FT_Memory</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stream</td>
-<td class="tdtype">
-FreeType.FT_Stream</td>
-<td class="enumeration">
-</td>
+<td>stream</td>
+<td>FreeType.FT_Stream</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sizes_list</td>
-<td class="tdtype">
-<a href="#FreeType_FT_ListRec">FreeType.FT_ListRec</a></td>
-<td class="enumeration">
-</td>
+<td>sizes_list</td>
+<td><a href="#FreeType_FT_ListRec">FreeType.FT_ListRec</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-autohint</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
-<td class="enumeration">
-</td>
+<td>autohint</td>
+<td><a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-extensions</td>
-<td class="tdtype">
-^void</td>
-<td class="enumeration">
-</td>
+<td>extensions</td>
+<td>^void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-finternal</td>
-<td class="tdtype">
-FreeType.FT_Face_Internal</td>
-<td class="enumeration">
-</td>
+<td>finternal</td>
+<td>FreeType.FT_Face_Internal</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1052,21 +796,14 @@ FreeType.FT_Face_Internal</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-data</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>data</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-finalizer</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>FT_Generic_Finalizer. </p>
-</td>
+<td>finalizer</td>
+<td>*void</td>
+<td>FT_Generic_Finalizer. </td>
 </tr>
 </table>
 <p>
@@ -1096,180 +833,114 @@ finalizer</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-library</td>
-<td class="tdtype">
-FreeType.FT_Library</td>
-<td class="enumeration">
-</td>
+<td>library</td>
+<td>FreeType.FT_Library</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-face</td>
-<td class="tdtype">
-FreeType.FT_Face</td>
-<td class="enumeration">
-</td>
+<td>face</td>
+<td>FreeType.FT_Face</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-FreeType.FT_GlyphSlot</td>
-<td class="enumeration">
-</td>
+<td>next</td>
+<td>FreeType.FT_GlyphSlot</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-glyph_index</td>
-<td class="tdtype">
-FreeType.FT_UInt</td>
-<td class="enumeration">
-</td>
+<td>glyph_index</td>
+<td>FreeType.FT_UInt</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-generic</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
-<td class="enumeration">
-</td>
+<td>generic</td>
+<td><a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-metrics</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Glyph_Metrics">FreeType.FT_Glyph_Metrics</a></td>
-<td class="enumeration">
-</td>
+<td>metrics</td>
+<td><a href="#FreeType_FT_Glyph_Metrics">FreeType.FT_Glyph_Metrics</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-linearHoriAdvance</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>linearHoriAdvance</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-linearVertAdvance</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>linearVertAdvance</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-advance</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Vector">FreeType.FT_Vector</a></td>
-<td class="enumeration">
-</td>
+<td>advance</td>
+<td><a href="#FreeType_FT_Vector">FreeType.FT_Vector</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-format</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Glyph_Format">FreeType.FT_Glyph_Format</a></td>
-<td class="enumeration">
-</td>
+<td>format</td>
+<td><a href="#FreeType_FT_Glyph_Format">FreeType.FT_Glyph_Format</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bitmap</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Bitmap">FreeType.FT_Bitmap</a></td>
-<td class="enumeration">
-</td>
+<td>bitmap</td>
+<td><a href="#FreeType_FT_Bitmap">FreeType.FT_Bitmap</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bitmap_left</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>bitmap_left</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bitmap_top</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>bitmap_top</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-outline</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Outline">FreeType.FT_Outline</a></td>
-<td class="enumeration">
-</td>
+<td>outline</td>
+<td><a href="#FreeType_FT_Outline">FreeType.FT_Outline</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-num_subglyphs</td>
-<td class="tdtype">
-FreeType.FT_UInt</td>
-<td class="enumeration">
-</td>
+<td>num_subglyphs</td>
+<td>FreeType.FT_UInt</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-subglyphs</td>
-<td class="tdtype">
-FreeType.FT_SubGlyph</td>
-<td class="enumeration">
-</td>
+<td>subglyphs</td>
+<td>FreeType.FT_SubGlyph</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-control_data</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>control_data</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-control_len</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>control_len</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lsb_delta</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>lsb_delta</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rsb_delta</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>rsb_delta</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-other</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>other</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-finternal</td>
-<td class="tdtype">
-FreeType.FT_Slot_Internal</td>
-<td class="enumeration">
-</td>
+<td>finternal</td>
+<td>FreeType.FT_Slot_Internal</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1299,34 +970,24 @@ FreeType.FT_Slot_Internal</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-FT_GLYPH_FORMAT_NONE</td>
-<td class="enumeration">
-</td>
+<td>FT_GLYPH_FORMAT_NONE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_GLYPH_FORMAT_COMPOSITE</td>
-<td class="enumeration">
-</td>
+<td>FT_GLYPH_FORMAT_COMPOSITE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_GLYPH_FORMAT_BITMAP</td>
-<td class="enumeration">
-</td>
+<td>FT_GLYPH_FORMAT_BITMAP</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_GLYPH_FORMAT_OUTLINE</td>
-<td class="enumeration">
-</td>
+<td>FT_GLYPH_FORMAT_OUTLINE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_GLYPH_FORMAT_POLTTER</td>
-<td class="enumeration">
-</td>
+<td>FT_GLYPH_FORMAT_POLTTER</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1342,68 +1003,44 @@ FT_GLYPH_FORMAT_POLTTER</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horiBearingX</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>horiBearingX</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horiBearingY</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>horiBearingY</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horiAdvance</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>horiAdvance</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertBearingX</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>vertBearingX</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertBearingY</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>vertBearingY</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertAdvance</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>vertAdvance</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1461,40 +1098,28 @@ FreeType.FT_Pos</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-FT_LCD_FILTER_NONE</td>
-<td class="enumeration">
-</td>
+<td>FT_LCD_FILTER_NONE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_LCD_FILTER_DEFAULT</td>
-<td class="enumeration">
-</td>
+<td>FT_LCD_FILTER_DEFAULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_LCD_FILTER_LIGHT</td>
-<td class="enumeration">
-</td>
+<td>FT_LCD_FILTER_LIGHT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_LCD_FILTER_LEGACY1</td>
-<td class="enumeration">
-</td>
+<td>FT_LCD_FILTER_LEGACY1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_LCD_FILTER_LEGACY</td>
-<td class="enumeration">
-</td>
+<td>FT_LCD_FILTER_LEGACY</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_LCD_FILTER_MAX</td>
-<td class="enumeration">
-</td>
+<td>FT_LCD_FILTER_MAX</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1510,100 +1135,64 @@ FT_LCD_FILTER_MAX</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-memory</td>
-<td class="tdtype">
-FreeType.FT_Memory</td>
-<td class="enumeration">
-</td>
+<td>memory</td>
+<td>FreeType.FT_Memory</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-version_major</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>version_major</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-version_minor</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>version_minor</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-version_patch</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>version_patch</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-num_modules</td>
-<td class="tdtype">
-FreeType.FT_UInt</td>
-<td class="enumeration">
-</td>
+<td>num_modules</td>
+<td>FreeType.FT_UInt</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modules</td>
-<td class="tdtype">
-[32] FreeType.FT_Module</td>
-<td class="enumeration">
-</td>
+<td>modules</td>
+<td>[32] FreeType.FT_Module</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-renderers</td>
-<td class="tdtype">
-<a href="#FreeType_FT_ListRec">FreeType.FT_ListRec</a></td>
-<td class="enumeration">
-</td>
+<td>renderers</td>
+<td><a href="#FreeType_FT_ListRec">FreeType.FT_ListRec</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cur_renderer</td>
-<td class="tdtype">
-FreeType.FT_Renderer</td>
-<td class="enumeration">
-</td>
+<td>cur_renderer</td>
+<td>FreeType.FT_Renderer</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-auto_hinter</td>
-<td class="tdtype">
-FreeType.FT_Module</td>
-<td class="enumeration">
-</td>
+<td>auto_hinter</td>
+<td>FreeType.FT_Module</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-debug_hooks</td>
-<td class="tdtype">
-[4] FreeType.FT_DebugHook_Func</td>
-<td class="enumeration">
-</td>
+<td>debug_hooks</td>
+<td>[4] FreeType.FT_DebugHook_Func</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lcd_geometry</td>
-<td class="tdtype">
-[3] FreeType.FT_Vector</td>
-<td class="enumeration">
-</td>
+<td>lcd_geometry</td>
+<td>[3] FreeType.FT_Vector</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-refcount</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>refcount</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1647,20 +1236,14 @@ FreeType.FT_Int</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-head</td>
-<td class="tdtype">
-FreeType.FT_ListNode</td>
-<td class="enumeration">
-</td>
+<td>head</td>
+<td>FreeType.FT_ListNode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tail</td>
-<td class="tdtype">
-FreeType.FT_ListNode</td>
-<td class="enumeration">
-</td>
+<td>tail</td>
+<td>FreeType.FT_ListNode</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1704,36 +1287,24 @@ FreeType.FT_ListNode</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-xx</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>xx</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-xy</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>xy</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-yx</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>yx</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-yy</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>yy</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1763,52 +1334,34 @@ FreeType.FT_Fixed</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-n_contours</td>
-<td class="tdtype">
-s16</td>
-<td class="enumeration">
-</td>
+<td>n_contours</td>
+<td>s16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-n_points</td>
-<td class="tdtype">
-s16</td>
-<td class="enumeration">
-</td>
+<td>n_points</td>
+<td>s16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-points</td>
-<td class="tdtype">
-^FreeType.FT_Vector</td>
-<td class="enumeration">
-</td>
+<td>points</td>
+<td>^FreeType.FT_Vector</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tags</td>
-<td class="tdtype">
-^u8</td>
-<td class="enumeration">
-</td>
+<td>tags</td>
+<td>^u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-contours</td>
-<td class="tdtype">
-^s16</td>
-<td class="enumeration">
-</td>
+<td>contours</td>
+<td>^s16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1852,56 +1405,34 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-move_to</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>FT_Outline_MoveToFunc. </p>
-</td>
+<td>move_to</td>
+<td>*void</td>
+<td>FT_Outline_MoveToFunc. </td>
 </tr>
 <tr>
-<td class="tdname">
-line_to</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>FT_Outline_LineToFunc. </p>
-</td>
+<td>line_to</td>
+<td>*void</td>
+<td>FT_Outline_LineToFunc. </td>
 </tr>
 <tr>
-<td class="tdname">
-conic_to</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>FT_Outline_ConicToFunc. </p>
-</td>
+<td>conic_to</td>
+<td>*void</td>
+<td>FT_Outline_ConicToFunc. </td>
 </tr>
 <tr>
-<td class="tdname">
-cubic_to</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>FT_Outline_CubicToFunc. </p>
-</td>
+<td>cubic_to</td>
+<td>*void</td>
+<td>FT_Outline_CubicToFunc. </td>
 </tr>
 <tr>
-<td class="tdname">
-shift</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>shift</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-delta</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>delta</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1945,58 +1476,40 @@ FreeType.FT_Pos</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_NONE</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_NONE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_MONO</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_MONO</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_GRAY</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_GRAY</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_GRAY2</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_GRAY2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_GRAY4</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_GRAY4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_LCD</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_LCD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_LCD_V</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_LCD_V</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_BGRA</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_BGRA</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_PIXEL_MODE_MAX</td>
-<td class="enumeration">
-</td>
+<td>FT_PIXEL_MODE_MAX</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2026,40 +1539,28 @@ FT_PIXEL_MODE_MAX</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-FT_RENDER_MODE_NORMAL</td>
-<td class="enumeration">
-</td>
+<td>FT_RENDER_MODE_NORMAL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_RENDER_MODE_LIGHT</td>
-<td class="enumeration">
-</td>
+<td>FT_RENDER_MODE_LIGHT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_RENDER_MODE_MONO</td>
-<td class="enumeration">
-</td>
+<td>FT_RENDER_MODE_MONO</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_RENDER_MODE_LCD</td>
-<td class="enumeration">
-</td>
+<td>FT_RENDER_MODE_LCD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_RENDER_MODE_LCD_V</td>
-<td class="enumeration">
-</td>
+<td>FT_RENDER_MODE_LCD_V</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FT_RENDER_MODE_MAX</td>
-<td class="enumeration">
-</td>
+<td>FT_RENDER_MODE_MAX</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2089,36 +1590,24 @@ FT_RENDER_MODE_MAX</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-face</td>
-<td class="tdtype">
-FreeType.FT_Face</td>
-<td class="enumeration">
-</td>
+<td>face</td>
+<td>FreeType.FT_Face</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-generic</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
-<td class="enumeration">
-</td>
+<td>generic</td>
+<td><a href="#FreeType_FT_Generic">FreeType.FT_Generic</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-metrics</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Size_Metrics">FreeType.FT_Size_Metrics</a></td>
-<td class="enumeration">
-</td>
+<td>metrics</td>
+<td><a href="#FreeType_FT_Size_Metrics">FreeType.FT_Size_Metrics</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sinternal</td>
-<td class="tdtype">
-FreeType.FT_Size_Internal</td>
-<td class="enumeration">
-</td>
+<td>sinternal</td>
+<td>FreeType.FT_Size_Internal</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2134,68 +1623,44 @@ FreeType.FT_Size_Internal</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x_ppem</td>
-<td class="tdtype">
-FreeType.FT_UShort</td>
-<td class="enumeration">
-</td>
+<td>x_ppem</td>
+<td>FreeType.FT_UShort</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y_ppem</td>
-<td class="tdtype">
-FreeType.FT_UShort</td>
-<td class="enumeration">
-</td>
+<td>y_ppem</td>
+<td>FreeType.FT_UShort</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-x_scale</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>x_scale</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y_scale</td>
-<td class="tdtype">
-FreeType.FT_Fixed</td>
-<td class="enumeration">
-</td>
+<td>y_scale</td>
+<td>FreeType.FT_Fixed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ascender</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>ascender</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-descender</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>descender</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-max_advance</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>max_advance</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2211,44 +1676,29 @@ FreeType.FT_Pos</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-index</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>index</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-FreeType.FT_UShort</td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td>FreeType.FT_UShort</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-arg1</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>arg1</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-arg2</td>
-<td class="tdtype">
-FreeType.FT_Int</td>
-<td class="enumeration">
-</td>
+<td>arg2</td>
+<td>FreeType.FT_Int</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-transform</td>
-<td class="tdtype">
-<a href="#FreeType_FT_Matrix">FreeType.FT_Matrix</a></td>
-<td class="enumeration">
-</td>
+<td>transform</td>
+<td><a href="#FreeType_FT_Matrix">FreeType.FT_Matrix</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2264,20 +1714,14 @@ transform</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-FreeType.FT_Pos</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>FreeType.FT_Pos</td>
+<td></td>
 </tr>
 </table>
 </div>

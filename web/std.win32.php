@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -1477,8017 +1462,4964 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Win32_BACKGROUND_BLUE" class="tdname">
-BACKGROUND_BLUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_BACKGROUND_GREEN" class="tdname">
-BACKGROUND_GREEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_BACKGROUND_INTENSITY" class="tdname">
-BACKGROUND_INTENSITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_BACKGROUND_MASK" class="tdname">
-BACKGROUND_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_BACKGROUND_RED" class="tdname">
-BACKGROUND_RED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_BITMAP" class="tdname">
-CF_BITMAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_DIB" class="tdname">
-CF_DIB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_DIBV5" class="tdname">
-CF_DIBV5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_DIF" class="tdname">
-CF_DIF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_ENHMETAFILE" class="tdname">
-CF_ENHMETAFILE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_HDROP" class="tdname">
-CF_HDROP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_LOCALE" class="tdname">
-CF_LOCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_METAFILEPICT" class="tdname">
-CF_METAFILEPICT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Win32_BACKGROUND_BLUE">BACKGROUND_BLUE</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Win32_CF_OEMTEXT" class="tdname">
-CF_OEMTEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Win32_BACKGROUND_GREEN">BACKGROUND_GREEN</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Win32_CF_PALETTE" class="tdname">
-CF_PALETTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Win32_BACKGROUND_INTENSITY">BACKGROUND_INTENSITY</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Win32_CF_PENDATA" class="tdname">
-CF_PENDATA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Win32_BACKGROUND_MASK">BACKGROUND_MASK</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Win32_CF_RIFF" class="tdname">
-CF_RIFF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
+<td id="Win32_BACKGROUND_RED">BACKGROUND_RED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_BITMAP">CF_BITMAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_DIB">CF_DIB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_DIBV5">CF_DIBV5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_DIF">CF_DIF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_ENHMETAFILE">CF_ENHMETAFILE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_HDROP">CF_HDROP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_LOCALE">CF_LOCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_METAFILEPICT">CF_METAFILEPICT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_OEMTEXT">CF_OEMTEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_PALETTE">CF_PALETTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_PENDATA">CF_PENDATA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_RIFF">CF_RIFF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_SYLK">CF_SYLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_TEXT">CF_TEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_TIFF">CF_TIFF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_UNICODETEXT">CF_UNICODETEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CF_WAVE">CF_WAVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CONSOLE_TEXTMODE_BUFFER">CONSOLE_TEXTMODE_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CREATE_ALWAYS">CREATE_ALWAYS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CREATE_NEW">CREATE_NEW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CREATE_SUSPENDED">CREATE_SUSPENDED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_ADMINTOOLS">CSIDL_ADMINTOOLS</td>
+<td>u32</td>
+<td>&lt;user name&gt;\Start Menu\Programs\Administrative Tools. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_ALTSTARTUP">CSIDL_ALTSTARTUP</td>
+<td>u32</td>
+<td>non localized startup. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_APPDATA">CSIDL_APPDATA</td>
+<td>u32</td>
+<td>&lt;user name&gt;\Application Data. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_BITBUCKET">CSIDL_BITBUCKET</td>
+<td>u32</td>
+<td>&lt;desktop&gt;\Recycle Bin. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_CDBURN_AREA">CSIDL_CDBURN_AREA</td>
+<td>u32</td>
+<td>USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_ADMINTOOLS">CSIDL_COMMON_ADMINTOOLS</td>
+<td>u32</td>
+<td>All Users\Start Menu\Programs\Administrative Tools. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_ALTSTARTUP">CSIDL_COMMON_ALTSTARTUP</td>
+<td>u32</td>
+<td>non localized common startup. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_APPDATA">CSIDL_COMMON_APPDATA</td>
+<td>u32</td>
+<td>All Users\Application Data. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_DESKTOPDIRECTORY">CSIDL_COMMON_DESKTOPDIRECTORY</td>
+<td>u32</td>
+<td>All Users\Desktop. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_DOCUMENTS">CSIDL_COMMON_DOCUMENTS</td>
+<td>u32</td>
+<td>All Users\Documents. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_FAVORITES">CSIDL_COMMON_FAVORITES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_MUSIC">CSIDL_COMMON_MUSIC</td>
+<td>u32</td>
+<td>All Users\My Music. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_OEM_LINKS">CSIDL_COMMON_OEM_LINKS</td>
+<td>u32</td>
+<td>Links to All Users OEM specific apps. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_PICTURES">CSIDL_COMMON_PICTURES</td>
+<td>u32</td>
+<td>All Users\My Pictures. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_PROGRAMS">CSIDL_COMMON_PROGRAMS</td>
+<td>u32</td>
+<td>All Users\Start Menu\Programs. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_STARTMENU">CSIDL_COMMON_STARTMENU</td>
+<td>u32</td>
+<td>All Users\Start Menu. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_STARTUP">CSIDL_COMMON_STARTUP</td>
+<td>u32</td>
+<td>All Users\Startup. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_TEMPLATES">CSIDL_COMMON_TEMPLATES</td>
+<td>u32</td>
+<td>All Users\Templates. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMMON_VIDEO">CSIDL_COMMON_VIDEO</td>
+<td>u32</td>
+<td>All Users\My Video. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COMPUTERSNEARME">CSIDL_COMPUTERSNEARME</td>
+<td>u32</td>
+<td>Computers Near Me (computered from Workgroup membership). </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_CONNECTIONS">CSIDL_CONNECTIONS</td>
+<td>u32</td>
+<td>Network and Dial-up Connections. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_CONTROLS">CSIDL_CONTROLS</td>
+<td>u32</td>
+<td>My Computer\Control Panel. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_COOKIES">CSIDL_COOKIES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_DESKTOP">CSIDL_DESKTOP</td>
+<td>u32</td>
+<td>&lt;desktop&gt;. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_DESKTOPDIRECTORY">CSIDL_DESKTOPDIRECTORY</td>
+<td>u32</td>
+<td>&lt;user name&gt;\Desktop. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_DRIVES">CSIDL_DRIVES</td>
+<td>u32</td>
+<td>My Computer. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FAVORITES">CSIDL_FAVORITES</td>
+<td>u32</td>
+<td>&lt;user name&gt;\Favorites. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FLAG_CREATE">CSIDL_FLAG_CREATE</td>
+<td>u32</td>
+<td>combine with CSIDL_ value to force folder creation in SHGetFolderPath(). </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FLAG_DONT_UNEXPAND">CSIDL_FLAG_DONT_UNEXPAND</td>
+<td>u32</td>
+<td>combine with CSIDL_ value to avoid unexpanding environment variables. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FLAG_DONT_VERIFY">CSIDL_FLAG_DONT_VERIFY</td>
+<td>u32</td>
+<td>combine with CSIDL_ value to return an unverified folder path. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FLAG_MASK">CSIDL_FLAG_MASK</td>
+<td>u32</td>
+<td>mask for all possible flag values. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FLAG_NO_ALIAS">CSIDL_FLAG_NO_ALIAS</td>
+<td>u32</td>
+<td>combine with CSIDL_ value to insure non-typealias versions of the pidl. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FLAG_PER_USER_INIT">CSIDL_FLAG_PER_USER_INIT</td>
+<td>u32</td>
+<td>combine with CSIDL_ value to indicate per-user init (eg. upgrade). </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_FONTS">CSIDL_FONTS</td>
+<td>u32</td>
+<td>windows\fonts. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_HISTORY">CSIDL_HISTORY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_INTERNET">CSIDL_INTERNET</td>
+<td>u32</td>
+<td>Internet Explorer (icon on desktop). </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_INTERNET_CACHE">CSIDL_INTERNET_CACHE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_LOCAL_APPDATA">CSIDL_LOCAL_APPDATA</td>
+<td>u32</td>
+<td>&lt;user name&gt;\Local Settings\Applicaiton Data (non roaming). </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_MYDOCUMENTS">CSIDL_MYDOCUMENTS</td>
+<td>u32</td>
+<td>Personal was just a silly name for My Documents. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_MYMUSIC">CSIDL_MYMUSIC</td>
+<td>u32</td>
+<td>"My Music" folder. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_MYPICTURES">CSIDL_MYPICTURES</td>
+<td>u32</td>
+<td>C:\Program Files\My Pictures. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_MYVIDEO">CSIDL_MYVIDEO</td>
+<td>u32</td>
+<td>"My Videos" folder. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_NETHOOD">CSIDL_NETHOOD</td>
+<td>u32</td>
+<td>&lt;user name&gt;\nethood. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_NETWORK">CSIDL_NETWORK</td>
+<td>u32</td>
+<td>Network Neighborhood (My Network Places). </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PERSONAL">CSIDL_PERSONAL</td>
+<td>u32</td>
+<td>My Documents. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PRINTERS">CSIDL_PRINTERS</td>
+<td>u32</td>
+<td>My Computer\Printers. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PRINTHOOD">CSIDL_PRINTHOOD</td>
+<td>u32</td>
+<td>&lt;user name&gt;\PrintHood. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PROFILE">CSIDL_PROFILE</td>
+<td>u32</td>
+<td>USERPROFILE. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PROGRAMS">CSIDL_PROGRAMS</td>
+<td>u32</td>
+<td>Start Menu\Programs. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PROGRAM_FILES">CSIDL_PROGRAM_FILES</td>
+<td>u32</td>
+<td>C:\Program Files. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PROGRAM_FILESX86">CSIDL_PROGRAM_FILESX86</td>
+<td>u32</td>
+<td>x86 C:\Program Files on RISC. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PROGRAM_FILES_COMMON">CSIDL_PROGRAM_FILES_COMMON</td>
+<td>u32</td>
+<td>C:\Program Files\Common. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_PROGRAM_FILES_COMMONX86">CSIDL_PROGRAM_FILES_COMMONX86</td>
+<td>u32</td>
+<td>x86 Program Files\Common on RISC. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_RECENT">CSIDL_RECENT</td>
+<td>u32</td>
+<td>&lt;user name&gt;\Recent. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_RESOURCES">CSIDL_RESOURCES</td>
+<td>u32</td>
+<td>Resource Direcotry. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_RESOURCES_LOCALIZED">CSIDL_RESOURCES_LOCALIZED</td>
+<td>u32</td>
+<td>Localized Resource Direcotry. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_SENDTO">CSIDL_SENDTO</td>
+<td>u32</td>
+<td>&lt;user name&gt;\SendTo. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_STARTMENU">CSIDL_STARTMENU</td>
+<td>u32</td>
+<td>&lt;user name&gt;\Start Menu. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_STARTUP">CSIDL_STARTUP</td>
+<td>u32</td>
+<td>Start Menu\Programs\Startup. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_SYSTEM">CSIDL_SYSTEM</td>
+<td>u32</td>
+<td>GetSystemDirectory(). </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_SYSTEMX86">CSIDL_SYSTEMX86</td>
+<td>u32</td>
+<td>x86 system directory on RISC. </td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_TEMPLATES">CSIDL_TEMPLATES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CSIDL_WINDOWS">CSIDL_WINDOWS</td>
+<td>u32</td>
+<td>GetWindowsDirectory(). </td>
+</tr>
+<tr>
+<td id="Win32_CS_BYTEALIGNCLIENT">CS_BYTEALIGNCLIENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_BYTEALIGNWINDOW">CS_BYTEALIGNWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_CLASSDC">CS_CLASSDC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_DBLCLKS">CS_DBLCLKS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_DROPSHADOW">CS_DROPSHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_GLOBALCLASS">CS_GLOBALCLASS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_HREDRAW">CS_HREDRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_IME">CS_IME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_NOCLOSE">CS_NOCLOSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_OWNDC">CS_OWNDC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_PARENTDC">CS_PARENTDC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_SAVEBITS">CS_SAVEBITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CS_VREDRAW">CS_VREDRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CWP_ALL">CWP_ALL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CWP_SKIPDISABLED">CWP_SKIPDISABLED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CWP_SKIPINVISIBLE">CWP_SKIPINVISIBLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CWP_SKIPTRANSPARENT">CWP_SKIPTRANSPARENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CW_USEDEFAULT">CW_USEDEFAULT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_DEFAULT_MINIMUM_ENTITIES">DEFAULT_MINIMUM_ENTITIES</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_DM_POINTERHITTEST">DM_POINTERHITTEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_ERROR_DEVICE_NOT_CONNECTED">ERROR_DEVICE_NOT_CONNECTED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_ERROR_FILE_NOT_FOUND">ERROR_FILE_NOT_FOUND</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_ERROR_IO_PENDING">ERROR_IO_PENDING</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_ERROR_NO_MORE_FILES">ERROR_NO_MORE_FILES</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_ERROR_SUCCESS">ERROR_SUCCESS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FALSE">FALSE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_ARCHIVE">FILE_ATTRIBUTE_ARCHIVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_COMPRESSED">FILE_ATTRIBUTE_COMPRESSED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_DEVICE">FILE_ATTRIBUTE_DEVICE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_DIRECTORY">FILE_ATTRIBUTE_DIRECTORY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_EA">FILE_ATTRIBUTE_EA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_ENCRYPTED">FILE_ATTRIBUTE_ENCRYPTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_HIDDEN">FILE_ATTRIBUTE_HIDDEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_INTEGRITY_STREAM">FILE_ATTRIBUTE_INTEGRITY_STREAM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_NORMAL">FILE_ATTRIBUTE_NORMAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_NOT_CONTENT_INDEXED">FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_NO_SCRUB_DATA">FILE_ATTRIBUTE_NO_SCRUB_DATA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_OFFLINE">FILE_ATTRIBUTE_OFFLINE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_PINNED">FILE_ATTRIBUTE_PINNED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_READONLY">FILE_ATTRIBUTE_READONLY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS">FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_OPEN">FILE_ATTRIBUTE_RECALL_ON_OPEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_REPARSE_POINT">FILE_ATTRIBUTE_REPARSE_POINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_SPARSE_FILE">FILE_ATTRIBUTE_SPARSE_FILE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_SYSTEM">FILE_ATTRIBUTE_SYSTEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_TEMPORARY">FILE_ATTRIBUTE_TEMPORARY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_UNPINNED">FILE_ATTRIBUTE_UNPINNED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_ATTRIBUTE_VIRTUAL">FILE_ATTRIBUTE_VIRTUAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_BEGIN">FILE_BEGIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_CURRENT">FILE_CURRENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_END">FILE_END</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_READ_ATTRIBUTES">FILE_READ_ATTRIBUTES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_SHARE_DELETE">FILE_SHARE_DELETE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_SHARE_READ">FILE_SHARE_READ</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_SHARE_WRITE">FILE_SHARE_WRITE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FILE_WRITE_ATTRIBUTES">FILE_WRITE_ATTRIBUTES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FOREGROUND_BLUE">FOREGROUND_BLUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FOREGROUND_GREEN">FOREGROUND_GREEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FOREGROUND_INTENSITY">FOREGROUND_INTENSITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FOREGROUND_MASK">FOREGROUND_MASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FOREGROUND_RED">FOREGROUND_RED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FORMAT_MESSAGE_ALLOCATE_BUFFER">FORMAT_MESSAGE_ALLOCATE_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FORMAT_MESSAGE_ARGUMENT_ARRAY">FORMAT_MESSAGE_ARGUMENT_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FORMAT_MESSAGE_FROM_HMODULE">FORMAT_MESSAGE_FROM_HMODULE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FORMAT_MESSAGE_FROM_STRING">FORMAT_MESSAGE_FROM_STRING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FORMAT_MESSAGE_FROM_SYSTEM">FORMAT_MESSAGE_FROM_SYSTEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FORMAT_MESSAGE_IGNORE_INSERTS">FORMAT_MESSAGE_IGNORE_INSERTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_FORMAT_MESSAGE_MAX_WIDTH_MASK">FORMAT_MESSAGE_MAX_WIDTH_MASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GENERIC_ALL">GENERIC_ALL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GENERIC_EXECUTE">GENERIC_EXECUTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GENERIC_READ">GENERIC_READ</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GENERIC_WRITE">GENERIC_WRITE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_DDESHARE">GMEM_DDESHARE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_DISCARDABLE">GMEM_DISCARDABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_FIXED">GMEM_FIXED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_INVALID_HANDLE">GMEM_INVALID_HANDLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_LOWER">GMEM_LOWER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_MODIFY">GMEM_MODIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_MOVEABLE">GMEM_MOVEABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_NOCOMPACT">GMEM_NOCOMPACT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_NODISCARD">GMEM_NODISCARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_NOTIFY">GMEM_NOTIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_NOT_BANKED">GMEM_NOT_BANKED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_SHARE">GMEM_SHARE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_VALID_FLAGS">GMEM_VALID_FLAGS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GMEM_ZEROINIT">GMEM_ZEROINIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GWLP_HINSTANCE">GWLP_HINSTANCE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GWLP_HWNDPARENT">GWLP_HWNDPARENT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GWLP_ID">GWLP_ID</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GWLP_USERDATA">GWLP_USERDATA</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GWLP_WNDPROC">GWLP_WNDPROC</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_CHILD">GW_CHILD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_ENABLEDPOPUP">GW_ENABLEDPOPUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_HWNDFIRST">GW_HWNDFIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_HWNDLAST">GW_HWNDLAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_HWNDNEXT">GW_HWNDNEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_HWNDPREV">GW_HWNDPREV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_MAX">GW_MAX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_GW_OWNER">GW_OWNER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HWND_BOTTOM">HWND_BOTTOM</td>
+<td>Win32.HWND</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HWND_NOTOPMOST">HWND_NOTOPMOST</td>
+<td>Win32.HWND</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HWND_TOP">HWND_TOP</td>
+<td>Win32.HWND</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HWND_TOPMOST">HWND_TOPMOST</td>
+<td>Win32.HWND</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDABORT">IDABORT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDCANCEL">IDCANCEL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDCLOSE">IDCLOSE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDCONTINUE">IDCONTINUE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_APPSTARTING">IDC_APPSTARTING</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_ARROW">IDC_ARROW</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_CROSS">IDC_CROSS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_HAND">IDC_HAND</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_HELP">IDC_HELP</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_IBEAM">IDC_IBEAM</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_ICON">IDC_ICON</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_NO">IDC_NO</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_PERSON">IDC_PERSON</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_PIN">IDC_PIN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_SIZE">IDC_SIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_SIZEALL">IDC_SIZEALL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_SIZENESW">IDC_SIZENESW</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_SIZENS">IDC_SIZENS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_SIZENWSE">IDC_SIZENWSE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_SIZEWE">IDC_SIZEWE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_UPARROW">IDC_UPARROW</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDC_WAIT">IDC_WAIT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDHELP">IDHELP</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDIGNORE">IDIGNORE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDNO">IDNO</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDOK">IDOK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDRETRY">IDRETRY</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDTIMEOUT">IDTIMEOUT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDTRYAGAIN">IDTRYAGAIN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IDYES">IDYES</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_INFINITE">INFINITE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_INVALID_FILE_ATTRIBUTES">INVALID_FILE_ATTRIBUTES</td>
+<td>Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_INVALID_FILE_SIZE">INVALID_FILE_SIZE</td>
+<td>Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_INVALID_HANDLE_VALUE">INVALID_HANDLE_VALUE</td>
+<td>Win32.HANDLE</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_INVALID_SET_FILE_POINTER">INVALID_SET_FILE_POINTER</td>
+<td>Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LANG_ENGLISH">LANG_ENGLISH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LWA_ALPHA">LWA_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LWA_COLORKEY">LWA_COLORKEY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAPVK_VK_TO_CHAR">MAPVK_VK_TO_CHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAPVK_VK_TO_VSC">MAPVK_VK_TO_VSC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAPVK_VK_TO_VSC_EX">MAPVK_VK_TO_VSC_EX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAPVK_VSC_TO_VK">MAPVK_VSC_TO_VK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAPVK_VSC_TO_VK_EX">MAPVK_VSC_TO_VK_EX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAXIMUM_WAIT_OBJECTS">MAXIMUM_WAIT_OBJECTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_ADAPTER_ADDRESS_LENGTH">MAX_ADAPTER_ADDRESS_LENGTH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_ADAPTER_DESCRIPTION_LENGTH">MAX_ADAPTER_DESCRIPTION_LENGTH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_ADAPTER_NAME_LENGTH">MAX_ADAPTER_NAME_LENGTH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_DHCPV6_DUID_LENGTH">MAX_DHCPV6_DUID_LENGTH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_DNS_SUFFIX_STRING_LENGTH">MAX_DNS_SUFFIX_STRING_LENGTH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_DOMAIN_NAME_LEN">MAX_DOMAIN_NAME_LEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_HOSTNAME_LEN">MAX_HOSTNAME_LEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_PATH">MAX_PATH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MAX_SCOPE_ID_LEN">MAX_SCOPE_ID_LEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ABORTRETRYIGNORE">MB_ABORTRETRYIGNORE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_APPLMODAL">MB_APPLMODAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_CANCELTRYCONTINUE">MB_CANCELTRYCONTINUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_DEFAULT_DESKTOP_ONLY">MB_DEFAULT_DESKTOP_ONLY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_DEFBUTTON1">MB_DEFBUTTON1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_DEFBUTTON2">MB_DEFBUTTON2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_DEFBUTTON3">MB_DEFBUTTON3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_DEFBUTTON4">MB_DEFBUTTON4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_HELP">MB_HELP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONASTERISK">MB_ICONASTERISK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONERROR">MB_ICONERROR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONEXCLAMATION">MB_ICONEXCLAMATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONHAND">MB_ICONHAND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONINFORMATION">MB_ICONINFORMATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONQUESTION">MB_ICONQUESTION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONSTOP">MB_ICONSTOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_ICONWARNING">MB_ICONWARNING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_NOFOCUS">MB_NOFOCUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_OK">MB_OK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_OKCANCEL">MB_OKCANCEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_RETRYCANCEL">MB_RETRYCANCEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_RIGHT">MB_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_RTLREADING">MB_RTLREADING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_SETFOREGROUND">MB_SETFOREGROUND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_SYSTEMMODAL">MB_SYSTEMMODAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_TASKMODAL">MB_TASKMODAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_TOPMOST">MB_TOPMOST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_USERICON">MB_USERICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_YESNO">MB_YESNO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MB_YESNOCANCEL">MB_YESNOCANCEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MN_GETHMENU">MN_GETHMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MOD_ALT">MOD_ALT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MOD_CONTROL">MOD_CONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MOD_NOREPEAT">MOD_NOREPEAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MOD_SHIFT">MOD_SHIFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MOD_WIN">MOD_WIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MONITOR_DEFAULTTONEAREST">MONITOR_DEFAULTTONEAREST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MONITOR_DEFAULTTONULL">MONITOR_DEFAULTTONULL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_MONITOR_DEFAULTTOPRIMARY">MONITOR_DEFAULTTOPRIMARY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_GUID">NIF_GUID</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_ICON">NIF_ICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_INFO">NIF_INFO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_MESSAGE">NIF_MESSAGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_REALTIME">NIF_REALTIME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_SHOWTIP">NIF_SHOWTIP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_STATE">NIF_STATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIF_TIP">NIF_TIP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIM_ADD">NIM_ADD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIM_DELETE">NIM_DELETE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIM_MODIFY">NIM_MODIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIM_SETFOCUS">NIM_SETFOCUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_NIM_SETVERSION">NIM_SETVERSION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_OPEN_ALWAYS">OPEN_ALWAYS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_OPEN_EXISTING">OPEN_EXISTING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_PM_NOREMOVE">PM_NOREMOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_PM_NOYIELD">PM_NOYIELD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_PM_REMOVE">PM_REMOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_ARRANGE">SC_ARRANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_CLOSE">SC_CLOSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_CONTEXTHELP">SC_CONTEXTHELP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_DEFAULT">SC_DEFAULT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_HOTKEY">SC_HOTKEY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_HSCROLL">SC_HSCROLL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_KEYMENU">SC_KEYMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_MAXIMIZE">SC_MAXIMIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_MINIMIZE">SC_MINIMIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_MONITORPOWER">SC_MONITORPOWER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_MOUSEMENU">SC_MOUSEMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_MOVE">SC_MOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_NEXTWINDOW">SC_NEXTWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_PREVWINDOW">SC_PREVWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_RESTORE">SC_RESTORE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_SCREENSAVE">SC_SCREENSAVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_SEPARATOR">SC_SEPARATOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_SIZE">SC_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_TASKLIST">SC_TASKLIST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SC_VSCROLL">SC_VSCROLL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_ADDOVERLAYS">SHGFI_ADDOVERLAYS</td>
+<td>u32</td>
+<td>apply the appropriate overlays. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_ATTRIBUTES">SHGFI_ATTRIBUTES</td>
+<td>u32</td>
+<td>get attributes. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_ATTR_SPECIFIED">SHGFI_ATTR_SPECIFIED</td>
+<td>u32</td>
+<td>get only specified attributes. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_DISPLAYNAME">SHGFI_DISPLAYNAME</td>
+<td>u32</td>
+<td>get display name. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_EXETYPE">SHGFI_EXETYPE</td>
+<td>u32</td>
+<td>return exe type. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_ICON">SHGFI_ICON</td>
+<td>u32</td>
+<td>get icon. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_ICONLOCATION">SHGFI_ICONLOCATION</td>
+<td>u32</td>
+<td>get icon location. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_LARGEICON">SHGFI_LARGEICON</td>
+<td>u32</td>
+<td>get large icon. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_LINKOVERLAY">SHGFI_LINKOVERLAY</td>
+<td>u32</td>
+<td>put a link overlay on icon. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_OPENICON">SHGFI_OPENICON</td>
+<td>u32</td>
+<td>get open icon. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_OVERLAYINDEX">SHGFI_OVERLAYINDEX</td>
+<td>u32</td>
+<td>Get the index of the overlay. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_PIDL">SHGFI_PIDL</td>
+<td>u32</td>
+<td>pszPath is a pidl. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_SELECTED">SHGFI_SELECTED</td>
+<td>u32</td>
+<td>show icon in selected state. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_SHELLICONSIZE">SHGFI_SHELLICONSIZE</td>
+<td>u32</td>
+<td>get shell size icon. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_SMALLICON">SHGFI_SMALLICON</td>
+<td>u32</td>
+<td>get small icon. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_SYSICONINDEX">SHGFI_SYSICONINDEX</td>
+<td>u32</td>
+<td>get system icon index. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_TYPENAME">SHGFI_TYPENAME</td>
+<td>u32</td>
+<td>get type name. </td>
+</tr>
+<tr>
+<td id="Win32_SHGFI_USEFILEATTRIBUTES">SHGFI_USEFILEATTRIBUTES</td>
+<td>u32</td>
+<td>use passed dwFileAttribute. </td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_ICON">SHGSI_ICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_ICONLOCATION">SHGSI_ICONLOCATION</td>
+<td>s32</td>
+<td>you always get the icon location. </td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_LARGEICON">SHGSI_LARGEICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_LINKOVERLAY">SHGSI_LINKOVERLAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_SELECTED">SHGSI_SELECTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_SHELLICONSIZE">SHGSI_SHELLICONSIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_SMALLICON">SHGSI_SMALLICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHGSI_SYSICONINDEX">SHGSI_SYSICONINDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_ARRANGE">SM_ARRANGE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CARETBLINKINGENABLED">SM_CARETBLINKINGENABLED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CLEANBOOT">SM_CLEANBOOT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CMETRICS">SM_CMETRICS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CMONITORS">SM_CMONITORS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CMOUSEBUTTONS">SM_CMOUSEBUTTONS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CONVERTIBLESLATEMODE">SM_CONVERTIBLESLATEMODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXBORDER">SM_CXBORDER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXCURSOR">SM_CXCURSOR</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXDLGFRAME">SM_CXDLGFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXDOUBLECLK">SM_CXDOUBLECLK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXDRAG">SM_CXDRAG</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXEDGE">SM_CXEDGE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXFIXEDFRAME">SM_CXFIXEDFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXFOCUSBORDER">SM_CXFOCUSBORDER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXFRAME">SM_CXFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXFULLSCREEN">SM_CXFULLSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXHSCROLL">SM_CXHSCROLL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXHTHUMB">SM_CXHTHUMB</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXICON">SM_CXICON</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXICONSPACING">SM_CXICONSPACING</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMAXIMIZED">SM_CXMAXIMIZED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMAXTRACK">SM_CXMAXTRACK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMENUCHECK">SM_CXMENUCHECK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMENUSIZE">SM_CXMENUSIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMIN">SM_CXMIN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMINIMIZED">SM_CXMINIMIZED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMINSPACING">SM_CXMINSPACING</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXMINTRACK">SM_CXMINTRACK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXPADDEDBORDER">SM_CXPADDEDBORDER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXSCREEN">SM_CXSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXSIZE">SM_CXSIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXSIZEFRAME">SM_CXSIZEFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXSMICON">SM_CXSMICON</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXSMSIZE">SM_CXSMSIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXVIRTUALSCREEN">SM_CXVIRTUALSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CXVSCROLL">SM_CXVSCROLL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYBORDER">SM_CYBORDER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYCAPTION">SM_CYCAPTION</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYCURSOR">SM_CYCURSOR</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYDLGFRAME">SM_CYDLGFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYDOUBLECLK">SM_CYDOUBLECLK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYDRAG">SM_CYDRAG</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYEDGE">SM_CYEDGE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYFIXEDFRAME">SM_CYFIXEDFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYFOCUSBORDER">SM_CYFOCUSBORDER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYFRAME">SM_CYFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYFULLSCREEN">SM_CYFULLSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYHSCROLL">SM_CYHSCROLL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYICON">SM_CYICON</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYICONSPACING">SM_CYICONSPACING</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYKANJIWINDOW">SM_CYKANJIWINDOW</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMAXIMIZED">SM_CYMAXIMIZED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMAXTRACK">SM_CYMAXTRACK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMENU">SM_CYMENU</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMENUCHECK">SM_CYMENUCHECK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMENUSIZE">SM_CYMENUSIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMIN">SM_CYMIN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMINIMIZED">SM_CYMINIMIZED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMINSPACING">SM_CYMINSPACING</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYMINTRACK">SM_CYMINTRACK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYSCREEN">SM_CYSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYSIZE">SM_CYSIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYSIZEFRAME">SM_CYSIZEFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYSMCAPTION">SM_CYSMCAPTION</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYSMICON">SM_CYSMICON</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYSMSIZE">SM_CYSMSIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYVIRTUALSCREEN">SM_CYVIRTUALSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYVSCROLL">SM_CYVSCROLL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_CYVTHUMB">SM_CYVTHUMB</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_DBCSENABLED">SM_DBCSENABLED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_DEBUG">SM_DEBUG</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_DIGITIZER">SM_DIGITIZER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_IMMENABLED">SM_IMMENABLED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_MAXIMUMTOUCHES">SM_MAXIMUMTOUCHES</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_MEDIACENTER">SM_MEDIACENTER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_MENUDROPALIGNMENT">SM_MENUDROPALIGNMENT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_MIDEASTENABLED">SM_MIDEASTENABLED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_MOUSEHORIZONTALWHEELPRESENT">SM_MOUSEHORIZONTALWHEELPRESENT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_MOUSEPRESENT">SM_MOUSEPRESENT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_MOUSEWHEELPRESENT">SM_MOUSEWHEELPRESENT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_NETWORK">SM_NETWORK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_PENWINDOWS">SM_PENWINDOWS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_REMOTECONTROL">SM_REMOTECONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_REMOTESESSION">SM_REMOTESESSION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_RESERVED1">SM_RESERVED1</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_RESERVED2">SM_RESERVED2</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_RESERVED3">SM_RESERVED3</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_RESERVED4">SM_RESERVED4</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SAMEDISPLAYFORMAT">SM_SAMEDISPLAYFORMAT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SECURE">SM_SECURE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SERVERR2">SM_SERVERR2</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SHOWSOUNDS">SM_SHOWSOUNDS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SHUTTINGDOWN">SM_SHUTTINGDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SLOWMACHINE">SM_SLOWMACHINE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_STARTER">SM_STARTER</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SWAPBUTTON">SM_SWAPBUTTON</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_SYSTEMDOCKED">SM_SYSTEMDOCKED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_TABLETPC">SM_TABLETPC</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_XVIRTUALSCREEN">SM_XVIRTUALSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SM_YVIRTUALSCREEN">SM_YVIRTUALSCREEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SRWLOCK_INIT">SRWLOCK_INIT</td>
+<td>Win32.SRWLOCK</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_STD_INPUT_HANDLE">STD_INPUT_HANDLE</td>
+<td>Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_STD_OUTPUT_HANDLE">STD_OUTPUT_HANDLE</td>
+<td>Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SUBLANG_DEFAULT">SUBLANG_DEFAULT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_ASYNCWINDOWPOS">SWP_ASYNCWINDOWPOS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_DEFERERASE">SWP_DEFERERASE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_DRAWFRAME">SWP_DRAWFRAME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_FRAMECHANGED">SWP_FRAMECHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_HIDEWINDOW">SWP_HIDEWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOACTIVATE">SWP_NOACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOCOPYBITS">SWP_NOCOPYBITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOMOVE">SWP_NOMOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOOWNERZORDER">SWP_NOOWNERZORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOREDRAW">SWP_NOREDRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOREPOSITION">SWP_NOREPOSITION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOSENDCHANGING">SWP_NOSENDCHANGING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOSIZE">SWP_NOSIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_NOZORDER">SWP_NOZORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SWP_SHOWWINDOW">SWP_SHOWWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_FORCEMINIMIZE">SW_FORCEMINIMIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_HIDE">SW_HIDE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_MAX">SW_MAX</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_MAXIMIZE">SW_MAXIMIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_MINIMIZE">SW_MINIMIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_NORMAL">SW_NORMAL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_RESTORE">SW_RESTORE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOW">SW_SHOW</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOWDEFAULT">SW_SHOWDEFAULT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOWMAXIMIZED">SW_SHOWMAXIMIZED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOWMINIMIZED">SW_SHOWMINIMIZED</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOWMINNOACTIVE">SW_SHOWMINNOACTIVE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOWNA">SW_SHOWNA</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOWNOACTIVATE">SW_SHOWNOACTIVATE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SW_SHOWNORMAL">SW_SHOWNORMAL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_S_OK">S_OK</td>
+<td>Win32.HRESULT</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_THREAD_PRIORITY_ABOVE_NORMAL">THREAD_PRIORITY_ABOVE_NORMAL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_THREAD_PRIORITY_BELOW_NORMAL">THREAD_PRIORITY_BELOW_NORMAL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_THREAD_PRIORITY_HIGHEST">THREAD_PRIORITY_HIGHEST</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_THREAD_PRIORITY_LOWEST">THREAD_PRIORITY_LOWEST</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_THREAD_PRIORITY_NORMAL">THREAD_PRIORITY_NORMAL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_TRUE">TRUE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_TRUNCATE_EXISTING">TRUNCATE_EXISTING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ACCEPT">VK_ACCEPT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ADD">VK_ADD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_APPS">VK_APPS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ATTN">VK_ATTN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BACK">VK_BACK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BROWSER_BACK">VK_BROWSER_BACK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BROWSER_FAVORITES">VK_BROWSER_FAVORITES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BROWSER_FORWARD">VK_BROWSER_FORWARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BROWSER_HOME">VK_BROWSER_HOME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BROWSER_REFRESH">VK_BROWSER_REFRESH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BROWSER_SEARCH">VK_BROWSER_SEARCH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_BROWSER_STOP">VK_BROWSER_STOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_CANCEL">VK_CANCEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_CAPITAL">VK_CAPITAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_CLEAR">VK_CLEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_CONTROL">VK_CONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_CONVERT">VK_CONVERT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_CRSEL">VK_CRSEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_DECIMAL">VK_DECIMAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_DELETE">VK_DELETE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_DIVIDE">VK_DIVIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_DOWN">VK_DOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_END">VK_END</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_EREOF">VK_EREOF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ESCAPE">VK_ESCAPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_EXECUTE">VK_EXECUTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_EXSEL">VK_EXSEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F1">VK_F1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F10">VK_F10</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F11">VK_F11</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F12">VK_F12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F13">VK_F13</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F14">VK_F14</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F15">VK_F15</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F16">VK_F16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F17">VK_F17</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F18">VK_F18</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F19">VK_F19</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F2">VK_F2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F20">VK_F20</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F21">VK_F21</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F22">VK_F22</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F23">VK_F23</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F24">VK_F24</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F3">VK_F3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F4">VK_F4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F5">VK_F5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F6">VK_F6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F7">VK_F7</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F8">VK_F8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_F9">VK_F9</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_FINAL">VK_FINAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_A">VK_GAMEPAD_A</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_B">VK_GAMEPAD_B</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_DPAD_DOWN">VK_GAMEPAD_DPAD_DOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_DPAD_LEFT">VK_GAMEPAD_DPAD_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_DPAD_RIGHT">VK_GAMEPAD_DPAD_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_DPAD_UP">VK_GAMEPAD_DPAD_UP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_LEFT_SHOULDER">VK_GAMEPAD_LEFT_SHOULDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON">VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_DOWN">VK_GAMEPAD_LEFT_THUMBSTICK_DOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_LEFT">VK_GAMEPAD_LEFT_THUMBSTICK_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT">VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_UP">VK_GAMEPAD_LEFT_THUMBSTICK_UP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_LEFT_TRIGGER">VK_GAMEPAD_LEFT_TRIGGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_MENU">VK_GAMEPAD_MENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_RIGHT_SHOULDER">VK_GAMEPAD_RIGHT_SHOULDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON">VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN">VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT">VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT">VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_UP">VK_GAMEPAD_RIGHT_THUMBSTICK_UP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_RIGHT_TRIGGER">VK_GAMEPAD_RIGHT_TRIGGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_VIEW">VK_GAMEPAD_VIEW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_X">VK_GAMEPAD_X</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_GAMEPAD_Y">VK_GAMEPAD_Y</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_HANGEUL">VK_HANGEUL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_HANGUL">VK_HANGUL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_HANJA">VK_HANJA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_HELP">VK_HELP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_HOME">VK_HOME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ICO_00">VK_ICO_00</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ICO_CLEAR">VK_ICO_CLEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ICO_HELP">VK_ICO_HELP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_INSERT">VK_INSERT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_JUNJA">VK_JUNJA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_KANA">VK_KANA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_KANJI">VK_KANJI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LAUNCH_APP1">VK_LAUNCH_APP1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LAUNCH_APP2">VK_LAUNCH_APP2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LAUNCH_MAIL">VK_LAUNCH_MAIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LAUNCH_MEDIA_SELECT">VK_LAUNCH_MEDIA_SELECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LBUTTON">VK_LBUTTON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LCONTROL">VK_LCONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LEFT">VK_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LMENU">VK_LMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LSHIFT">VK_LSHIFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_LWIN">VK_LWIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MBUTTON">VK_MBUTTON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MEDIA_NEXT_TRACK">VK_MEDIA_NEXT_TRACK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MEDIA_PLAY_PAUSE">VK_MEDIA_PLAY_PAUSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MEDIA_PREV_TRACK">VK_MEDIA_PREV_TRACK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MEDIA_STOP">VK_MEDIA_STOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MENU">VK_MENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MODECHANGE">VK_MODECHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_MULTIPLY">VK_MULTIPLY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_ACCEPT">VK_NAVIGATION_ACCEPT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_CANCEL">VK_NAVIGATION_CANCEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_DOWN">VK_NAVIGATION_DOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_LEFT">VK_NAVIGATION_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_MENU">VK_NAVIGATION_MENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_RIGHT">VK_NAVIGATION_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_UP">VK_NAVIGATION_UP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NAVIGATION_VIEW">VK_NAVIGATION_VIEW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NEXT">VK_NEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NONAME">VK_NONAME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NONCONVERT">VK_NONCONVERT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMLOCK">VK_NUMLOCK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD0">VK_NUMPAD0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD1">VK_NUMPAD1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD2">VK_NUMPAD2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD3">VK_NUMPAD3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD4">VK_NUMPAD4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD5">VK_NUMPAD5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD6">VK_NUMPAD6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD7">VK_NUMPAD7</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD8">VK_NUMPAD8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_NUMPAD9">VK_NUMPAD9</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_1">VK_OEM_1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_102">VK_OEM_102</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_2">VK_OEM_2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_3">VK_OEM_3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_4">VK_OEM_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_5">VK_OEM_5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_6">VK_OEM_6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_7">VK_OEM_7</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_8">VK_OEM_8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_ATTN">VK_OEM_ATTN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_AUTO">VK_OEM_AUTO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_AX">VK_OEM_AX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_BACKTAB">VK_OEM_BACKTAB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_CLEAR">VK_OEM_CLEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_COMMA">VK_OEM_COMMA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_COPY">VK_OEM_COPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_CUSEL">VK_OEM_CUSEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_ENLW">VK_OEM_ENLW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_FINISH">VK_OEM_FINISH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_FJ_JISHO">VK_OEM_FJ_JISHO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_FJ_LOYA">VK_OEM_FJ_LOYA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_FJ_MASSHOU">VK_OEM_FJ_MASSHOU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_FJ_ROYA">VK_OEM_FJ_ROYA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_FJ_TOUROKU">VK_OEM_FJ_TOUROKU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_JUMP">VK_OEM_JUMP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_MINUS">VK_OEM_MINUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_NEC_EQUAL">VK_OEM_NEC_EQUAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_PA1">VK_OEM_PA1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_PA2">VK_OEM_PA2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_PA3">VK_OEM_PA3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_PERIOD">VK_OEM_PERIOD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_PLUS">VK_OEM_PLUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_RESET">VK_OEM_RESET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_OEM_WSCTRL">VK_OEM_WSCTRL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_PA1">VK_PA1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_PACKET">VK_PACKET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_PAUSE">VK_PAUSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_PLAY">VK_PLAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_PRINT">VK_PRINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_PRIOR">VK_PRIOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_PROCESSKEY">VK_PROCESSKEY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_RBUTTON">VK_RBUTTON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_RCONTROL">VK_RCONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_RETURN">VK_RETURN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_RIGHT">VK_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_RMENU">VK_RMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_RSHIFT">VK_RSHIFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_RWIN">VK_RWIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SCROLL">VK_SCROLL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SELECT">VK_SELECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SEPARATOR">VK_SEPARATOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SHIFT">VK_SHIFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SLEEP">VK_SLEEP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SNAPSHOT">VK_SNAPSHOT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SPACE">VK_SPACE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_SUBTRACT">VK_SUBTRACT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_TAB">VK_TAB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_UP">VK_UP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_VOLUME_DOWN">VK_VOLUME_DOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_VOLUME_MUTE">VK_VOLUME_MUTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_VOLUME_UP">VK_VOLUME_UP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_XBUTTON1">VK_XBUTTON1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_XBUTTON2">VK_XBUTTON2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_VK_ZOOM">VK_ZOOM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WAIT_ABANDONED">WAIT_ABANDONED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WAIT_FAILED">WAIT_FAILED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WAIT_OBJECT_0">WAIT_OBJECT_0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WAIT_TIMEOUT">WAIT_TIMEOUT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WA_ACTIVE">WA_ACTIVE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WA_CLICKACTIVE">WA_CLICKACTIVE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WA_INACTIVE">WA_INACTIVE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WHEEL_DELTA">WHEEL_DELTA</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ACTIVATE">WM_ACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ACTIVATEAPP">WM_ACTIVATEAPP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_AFXFIRST">WM_AFXFIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_AFXLAST">WM_AFXLAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_APP">WM_APP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_APPCOMMAND">WM_APPCOMMAND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ASKCBFORMATNAME">WM_ASKCBFORMATNAME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CANCELJOURNAL">WM_CANCELJOURNAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CANCELMODE">WM_CANCELMODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CAPTURECHANGED">WM_CAPTURECHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CHANGECBCHAIN">WM_CHANGECBCHAIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CHANGEUISTATE">WM_CHANGEUISTATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CHAR">WM_CHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CHARTOITEM">WM_CHARTOITEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CHILDACTIVATE">WM_CHILDACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CLEAR">WM_CLEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CLIPBOARDUPDATE">WM_CLIPBOARDUPDATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CLOSE">WM_CLOSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_COMMAND">WM_COMMAND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_COMMNOTIFY">WM_COMMNOTIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_COMPACTING">WM_COMPACTING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_COMPAREITEM">WM_COMPAREITEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CONTEXTMENU">WM_CONTEXTMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_COPY">WM_COPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_COPYDATA">WM_COPYDATA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CREATE">WM_CREATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CTLCOLORBTN">WM_CTLCOLORBTN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CTLCOLORDLG">WM_CTLCOLORDLG</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CTLCOLOREDIT">WM_CTLCOLOREDIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CTLCOLORLISTBOX">WM_CTLCOLORLISTBOX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CTLCOLORMSGBOX">WM_CTLCOLORMSGBOX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CTLCOLORSCROLLBAR">WM_CTLCOLORSCROLLBAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CTLCOLORSTATIC">WM_CTLCOLORSTATIC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_CUT">WM_CUT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DEADCHAR">WM_DEADCHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DELETEITEM">WM_DELETEITEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DESTROY">WM_DESTROY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DESTROYCLIPBOARD">WM_DESTROYCLIPBOARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DEVICECHANGE">WM_DEVICECHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DEVMODECHANGE">WM_DEVMODECHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DISPLAYCHANGE">WM_DISPLAYCHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DPICHANGED">WM_DPICHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DPICHANGED_AFTERPARENT">WM_DPICHANGED_AFTERPARENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DPICHANGED_BEFOREPARENT">WM_DPICHANGED_BEFOREPARENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DRAWCLIPBOARD">WM_DRAWCLIPBOARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DRAWITEM">WM_DRAWITEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DROPFILES">WM_DROPFILES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DWMCOLORIZATIONCOLORCHANGED">WM_DWMCOLORIZATIONCOLORCHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DWMCOMPOSITIONCHANGED">WM_DWMCOMPOSITIONCHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DWMNCRENDERINGCHANGED">WM_DWMNCRENDERINGCHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DWMSENDICONICLIVEPREVIEWBITMAP">WM_DWMSENDICONICLIVEPREVIEWBITMAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DWMSENDICONICTHUMBNAIL">WM_DWMSENDICONICTHUMBNAIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_DWMWINDOWMAXIMIZEDCHANGE">WM_DWMWINDOWMAXIMIZEDCHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ENABLE">WM_ENABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ENTERIDLE">WM_ENTERIDLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ENTERMENULOOP">WM_ENTERMENULOOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ENTERSIZEMOVE">WM_ENTERSIZEMOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ERASEBKGND">WM_ERASEBKGND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_EXITMENULOOP">WM_EXITMENULOOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_EXITSIZEMOVE">WM_EXITSIZEMOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_FONTCHANGE">WM_FONTCHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GESTURE">WM_GESTURE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GESTURENOTIFY">WM_GESTURENOTIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETDLGCODE">WM_GETDLGCODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETDPISCALEDSIZE">WM_GETDPISCALEDSIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETFONT">WM_GETFONT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETHOTKEY">WM_GETHOTKEY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETICON">WM_GETICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETMINMAXINFO">WM_GETMINMAXINFO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETOBJECT">WM_GETOBJECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETTEXT">WM_GETTEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETTEXTLENGTH">WM_GETTEXTLENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_GETTITLEBARINFOEX">WM_GETTITLEBARINFOEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_HANDHELDFIRST">WM_HANDHELDFIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_HANDHELDLAST">WM_HANDHELDLAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_HELP">WM_HELP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_HOTKEY">WM_HOTKEY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_HSCROLL">WM_HSCROLL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_HSCROLLCLIPBOARD">WM_HSCROLLCLIPBOARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_ICONERASEBKGND">WM_ICONERASEBKGND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_CHAR">WM_IME_CHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_COMPOSITION">WM_IME_COMPOSITION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_COMPOSITIONFULL">WM_IME_COMPOSITIONFULL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_CONTROL">WM_IME_CONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_ENDCOMPOSITION">WM_IME_ENDCOMPOSITION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_KEYDOWN">WM_IME_KEYDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_KEYLAST">WM_IME_KEYLAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_KEYUP">WM_IME_KEYUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_NOTIFY">WM_IME_NOTIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_REQUEST">WM_IME_REQUEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_SELECT">WM_IME_SELECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_SETCONTEXT">WM_IME_SETCONTEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_IME_STARTCOMPOSITION">WM_IME_STARTCOMPOSITION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_INITDIALOG">WM_INITDIALOG</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_INITMENU">WM_INITMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_INITMENUPOPUP">WM_INITMENUPOPUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_INPUT">WM_INPUT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_INPUTLANGCHANGE">WM_INPUTLANGCHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_INPUTLANGCHANGEREQUEST">WM_INPUTLANGCHANGEREQUEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_INPUT_DEVICE_CHANGE">WM_INPUT_DEVICE_CHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_KEYDOWN">WM_KEYDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_KEYFIRST">WM_KEYFIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_KEYLAST">WM_KEYLAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_KEYUP">WM_KEYUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_KILLFOCUS">WM_KILLFOCUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_LBUTTONDBLCLK">WM_LBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_LBUTTONDOWN">WM_LBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_LBUTTONUP">WM_LBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MBUTTONDBLCLK">WM_MBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MBUTTONDOWN">WM_MBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MBUTTONUP">WM_MBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDIACTIVATE">WM_MDIACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDICASCADE">WM_MDICASCADE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDICREATE">WM_MDICREATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDIDESTROY">WM_MDIDESTROY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDIGETACTIVE">WM_MDIGETACTIVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDIICONARRANGE">WM_MDIICONARRANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDIMAXIMIZE">WM_MDIMAXIMIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDINEXT">WM_MDINEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDIREFRESHMENU">WM_MDIREFRESHMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDIRESTORE">WM_MDIRESTORE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDISETMENU">WM_MDISETMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MDITILE">WM_MDITILE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MEASUREITEM">WM_MEASUREITEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MENUCHAR">WM_MENUCHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MENUCOMMAND">WM_MENUCOMMAND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MENUDRAG">WM_MENUDRAG</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MENUGETOBJECT">WM_MENUGETOBJECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MENURBUTTONUP">WM_MENURBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MENUSELECT">WM_MENUSELECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSEACTIVATE">WM_MOUSEACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSEFIRST">WM_MOUSEFIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSEHOVER">WM_MOUSEHOVER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSEHWHEEL">WM_MOUSEHWHEEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSELAST">WM_MOUSELAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSELEAVE">WM_MOUSELEAVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSEMOVE">WM_MOUSEMOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOUSEWHEEL">WM_MOUSEWHEEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOVE">WM_MOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_MOVING">WM_MOVING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCACTIVATE">WM_NCACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCCALCSIZE">WM_NCCALCSIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCCREATE">WM_NCCREATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCDESTROY">WM_NCDESTROY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCHITTEST">WM_NCHITTEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCLBUTTONDBLCLK">WM_NCLBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCLBUTTONDOWN">WM_NCLBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCLBUTTONUP">WM_NCLBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCMBUTTONDBLCLK">WM_NCMBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCMBUTTONDOWN">WM_NCMBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCMBUTTONUP">WM_NCMBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCMOUSEHOVER">WM_NCMOUSEHOVER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCMOUSELEAVE">WM_NCMOUSELEAVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCMOUSEMOVE">WM_NCMOUSEMOVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCPAINT">WM_NCPAINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCPOINTERDOWN">WM_NCPOINTERDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCPOINTERUP">WM_NCPOINTERUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCPOINTERUPDATE">WM_NCPOINTERUPDATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCRBUTTONDBLCLK">WM_NCRBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCRBUTTONDOWN">WM_NCRBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCRBUTTONUP">WM_NCRBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCXBUTTONDBLCLK">WM_NCXBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCXBUTTONDOWN">WM_NCXBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NCXBUTTONUP">WM_NCXBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NEXTDLGCTL">WM_NEXTDLGCTL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NEXTMENU">WM_NEXTMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NOTIFY">WM_NOTIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_NOTIFYFORMAT">WM_NOTIFYFORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PAINT">WM_PAINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PAINTCLIPBOARD">WM_PAINTCLIPBOARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PAINTICON">WM_PAINTICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PALETTECHANGED">WM_PALETTECHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PALETTEISCHANGING">WM_PALETTEISCHANGING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PARENTNOTIFY">WM_PARENTNOTIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PASTE">WM_PASTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PENWINFIRST">WM_PENWINFIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PENWINLAST">WM_PENWINLAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERACTIVATE">WM_POINTERACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERCAPTURECHANGED">WM_POINTERCAPTURECHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERDEVICECHANGE">WM_POINTERDEVICECHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERDEVICEINRANGE">WM_POINTERDEVICEINRANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERDEVICEOUTOFRANGE">WM_POINTERDEVICEOUTOFRANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERDOWN">WM_POINTERDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERENTER">WM_POINTERENTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERHWHEEL">WM_POINTERHWHEEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERLEAVE">WM_POINTERLEAVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERROUTEDAWAY">WM_POINTERROUTEDAWAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERROUTEDRELEASED">WM_POINTERROUTEDRELEASED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERROUTEDTO">WM_POINTERROUTEDTO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERUP">WM_POINTERUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERUPDATE">WM_POINTERUPDATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POINTERWHEEL">WM_POINTERWHEEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POWER">WM_POWER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_POWERBROADCAST">WM_POWERBROADCAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PRINT">WM_PRINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_PRINTCLIENT">WM_PRINTCLIENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_QUERYDRAGICON">WM_QUERYDRAGICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_QUERYNEWPALETTE">WM_QUERYNEWPALETTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_QUERYUISTATE">WM_QUERYUISTATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_QUEUESYNC">WM_QUEUESYNC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_QUIT">WM_QUIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_RBUTTONDBLCLK">WM_RBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_RBUTTONDOWN">WM_RBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_RBUTTONUP">WM_RBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_RENDERALLFORMATS">WM_RENDERALLFORMATS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_RENDERFORMAT">WM_RENDERFORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETCURSOR">WM_SETCURSOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETFOCUS">WM_SETFOCUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETFONT">WM_SETFONT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETHOTKEY">WM_SETHOTKEY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETICON">WM_SETICON</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETREDRAW">WM_SETREDRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETTEXT">WM_SETTEXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SETTINGCHANGE">WM_SETTINGCHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SHOWWINDOW">WM_SHOWWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SIZE">WM_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SIZECLIPBOARD">WM_SIZECLIPBOARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SIZING">WM_SIZING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SPOOLERSTATUS">WM_SPOOLERSTATUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_STYLECHANGED">WM_STYLECHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_STYLECHANGING">WM_STYLECHANGING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SYNCPAINT">WM_SYNCPAINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SYSCHAR">WM_SYSCHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SYSCOLORCHANGE">WM_SYSCOLORCHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SYSCOMMAND">WM_SYSCOMMAND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SYSDEADCHAR">WM_SYSDEADCHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SYSKEYDOWN">WM_SYSKEYDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_SYSKEYUP">WM_SYSKEYUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_TABLET_FIRST">WM_TABLET_FIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_TABLET_LAST">WM_TABLET_LAST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_TCARD">WM_TCARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_THEMECHANGED">WM_THEMECHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_TIMECHANGE">WM_TIMECHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_TIMER">WM_TIMER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_TOUCH">WM_TOUCH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_TOUCHHITTESTING">WM_TOUCHHITTESTING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_UNDO">WM_UNDO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_UNICHAR">WM_UNICHAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_UNINITMENUPOPUP">WM_UNINITMENUPOPUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_UPDATEUISTATE">WM_UPDATEUISTATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_USER">WM_USER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_USERCHANGED">WM_USERCHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_VKEYTOITEM">WM_VKEYTOITEM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_VSCROLL">WM_VSCROLL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_VSCROLLCLIPBOARD">WM_VSCROLLCLIPBOARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_WINDOWPOSCHANGED">WM_WINDOWPOSCHANGED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_WINDOWPOSCHANGING">WM_WINDOWPOSCHANGING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_WININICHANGE">WM_WININICHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_WTSSESSION_CHANGE">WM_WTSSESSION_CHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_XBUTTONDBLCLK">WM_XBUTTONDBLCLK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_XBUTTONDOWN">WM_XBUTTONDOWN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WM_XBUTTONUP">WM_XBUTTONUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_BORDER">WS_BORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_CAPTION">WS_CAPTION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_CHILD">WS_CHILD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_CLIPCHILDREN">WS_CLIPCHILDREN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_CLIPSIBLINGS">WS_CLIPSIBLINGS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_DISABLED">WS_DISABLED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_DLGFRAME">WS_DLGFRAME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_ACCEPTFILES">WS_EX_ACCEPTFILES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_APPWINDOW">WS_EX_APPWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_CLIENTEDGE">WS_EX_CLIENTEDGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_COMPOSITED">WS_EX_COMPOSITED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_CONTEXTHELP">WS_EX_CONTEXTHELP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_CONTROLPARENT">WS_EX_CONTROLPARENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_DLGMODALFRAME">WS_EX_DLGMODALFRAME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_LAYERED">WS_EX_LAYERED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_LAYOUTRTL">WS_EX_LAYOUTRTL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_LEFT">WS_EX_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_LEFTSCROLLBAR">WS_EX_LEFTSCROLLBAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_LTRREADING">WS_EX_LTRREADING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_MDICHILD">WS_EX_MDICHILD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_NOACTIVATE">WS_EX_NOACTIVATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_NOINHERITLAYOUT">WS_EX_NOINHERITLAYOUT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_NOPARENTNOTIFY">WS_EX_NOPARENTNOTIFY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_NOREDIRECTIONBITMAP">WS_EX_NOREDIRECTIONBITMAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_OVERLAPPEDWINDOW">WS_EX_OVERLAPPEDWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_PALETTEWINDOW">WS_EX_PALETTEWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_RIGHT">WS_EX_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_RIGHTSCROLLBAR">WS_EX_RIGHTSCROLLBAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_RTLREADING">WS_EX_RTLREADING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_STATICEDGE">WS_EX_STATICEDGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_TOOLWINDOW">WS_EX_TOOLWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_TOPMOST">WS_EX_TOPMOST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_TRANSPARENT">WS_EX_TRANSPARENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_EX_WINDOWEDGE">WS_EX_WINDOWEDGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_GROUP">WS_GROUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_HSCROLL">WS_HSCROLL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_MAXIMIZE">WS_MAXIMIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_MAXIMIZEBOX">WS_MAXIMIZEBOX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_MINIMIZE">WS_MINIMIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_MINIMIZEBOX">WS_MINIMIZEBOX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_OVERLAPPED">WS_OVERLAPPED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_OVERLAPPEDWINDOW">WS_OVERLAPPEDWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_POPUP">WS_POPUP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_POPUPWINDOW">WS_POPUPWINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_SYSMENU">WS_SYSMENU</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_TABSTOP">WS_TABSTOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_THICKFRAME">WS_THICKFRAME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WS_VISIBLE">WS_VISIBLE</td>
+<td>u32</td>
+<td></td>
+</tr>
 <tr>
-<td id="Win32_CF_SYLK" class="tdname">
-CF_SYLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_TEXT" class="tdname">
-CF_TEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_TIFF" class="tdname">
-CF_TIFF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_UNICODETEXT" class="tdname">
-CF_UNICODETEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CF_WAVE" class="tdname">
-CF_WAVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CONSOLE_TEXTMODE_BUFFER" class="tdname">
-CONSOLE_TEXTMODE_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CREATE_ALWAYS" class="tdname">
-CREATE_ALWAYS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CREATE_NEW" class="tdname">
-CREATE_NEW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CREATE_SUSPENDED" class="tdname">
-CREATE_SUSPENDED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_ADMINTOOLS" class="tdname">
-CSIDL_ADMINTOOLS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\Start Menu\Programs\Administrative Tools. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_ALTSTARTUP" class="tdname">
-CSIDL_ALTSTARTUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>non localized startup. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_APPDATA" class="tdname">
-CSIDL_APPDATA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\Application Data. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_BITBUCKET" class="tdname">
-CSIDL_BITBUCKET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;desktop&gt;\Recycle Bin. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_CDBURN_AREA" class="tdname">
-CSIDL_CDBURN_AREA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_ADMINTOOLS" class="tdname">
-CSIDL_COMMON_ADMINTOOLS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Start Menu\Programs\Administrative Tools. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_ALTSTARTUP" class="tdname">
-CSIDL_COMMON_ALTSTARTUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>non localized common startup. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_APPDATA" class="tdname">
-CSIDL_COMMON_APPDATA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Application Data. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_DESKTOPDIRECTORY" class="tdname">
-CSIDL_COMMON_DESKTOPDIRECTORY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Desktop. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_DOCUMENTS" class="tdname">
-CSIDL_COMMON_DOCUMENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Documents. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_FAVORITES" class="tdname">
-CSIDL_COMMON_FAVORITES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_MUSIC" class="tdname">
-CSIDL_COMMON_MUSIC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\My Music. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_OEM_LINKS" class="tdname">
-CSIDL_COMMON_OEM_LINKS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Links to All Users OEM specific apps. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_PICTURES" class="tdname">
-CSIDL_COMMON_PICTURES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\My Pictures. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_PROGRAMS" class="tdname">
-CSIDL_COMMON_PROGRAMS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Start Menu\Programs. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_STARTMENU" class="tdname">
-CSIDL_COMMON_STARTMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Start Menu. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_STARTUP" class="tdname">
-CSIDL_COMMON_STARTUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Startup. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_TEMPLATES" class="tdname">
-CSIDL_COMMON_TEMPLATES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\Templates. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMMON_VIDEO" class="tdname">
-CSIDL_COMMON_VIDEO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>All Users\My Video. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COMPUTERSNEARME" class="tdname">
-CSIDL_COMPUTERSNEARME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Computers Near Me (computered from Workgroup membership). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_CONNECTIONS" class="tdname">
-CSIDL_CONNECTIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Network and Dial-up Connections. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_CONTROLS" class="tdname">
-CSIDL_CONTROLS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>My Computer\Control Panel. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_COOKIES" class="tdname">
-CSIDL_COOKIES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_DESKTOP" class="tdname">
-CSIDL_DESKTOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;desktop&gt;. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_DESKTOPDIRECTORY" class="tdname">
-CSIDL_DESKTOPDIRECTORY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\Desktop. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_DRIVES" class="tdname">
-CSIDL_DRIVES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>My Computer. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FAVORITES" class="tdname">
-CSIDL_FAVORITES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\Favorites. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FLAG_CREATE" class="tdname">
-CSIDL_FLAG_CREATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>combine with CSIDL_ value to force folder creation in SHGetFolderPath(). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FLAG_DONT_UNEXPAND" class="tdname">
-CSIDL_FLAG_DONT_UNEXPAND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>combine with CSIDL_ value to avoid unexpanding environment variables. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FLAG_DONT_VERIFY" class="tdname">
-CSIDL_FLAG_DONT_VERIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>combine with CSIDL_ value to return an unverified folder path. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FLAG_MASK" class="tdname">
-CSIDL_FLAG_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>mask for all possible flag values. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FLAG_NO_ALIAS" class="tdname">
-CSIDL_FLAG_NO_ALIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>combine with CSIDL_ value to insure non-typealias versions of the pidl. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FLAG_PER_USER_INIT" class="tdname">
-CSIDL_FLAG_PER_USER_INIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>combine with CSIDL_ value to indicate per-user init (eg. upgrade). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_FONTS" class="tdname">
-CSIDL_FONTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>windows\fonts. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_HISTORY" class="tdname">
-CSIDL_HISTORY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_INTERNET" class="tdname">
-CSIDL_INTERNET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Internet Explorer (icon on desktop). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_INTERNET_CACHE" class="tdname">
-CSIDL_INTERNET_CACHE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_LOCAL_APPDATA" class="tdname">
-CSIDL_LOCAL_APPDATA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\Local Settings\Applicaiton Data (non roaming). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_MYDOCUMENTS" class="tdname">
-CSIDL_MYDOCUMENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Personal was just a silly name for My Documents. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_MYMUSIC" class="tdname">
-CSIDL_MYMUSIC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>"My Music" folder. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_MYPICTURES" class="tdname">
-CSIDL_MYPICTURES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>C:\Program Files\My Pictures. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_MYVIDEO" class="tdname">
-CSIDL_MYVIDEO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>"My Videos" folder. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_NETHOOD" class="tdname">
-CSIDL_NETHOOD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\nethood. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_NETWORK" class="tdname">
-CSIDL_NETWORK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Network Neighborhood (My Network Places). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PERSONAL" class="tdname">
-CSIDL_PERSONAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>My Documents. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PRINTERS" class="tdname">
-CSIDL_PRINTERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>My Computer\Printers. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PRINTHOOD" class="tdname">
-CSIDL_PRINTHOOD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\PrintHood. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PROFILE" class="tdname">
-CSIDL_PROFILE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>USERPROFILE. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PROGRAMS" class="tdname">
-CSIDL_PROGRAMS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Start Menu\Programs. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PROGRAM_FILES" class="tdname">
-CSIDL_PROGRAM_FILES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>C:\Program Files. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PROGRAM_FILESX86" class="tdname">
-CSIDL_PROGRAM_FILESX86</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>x86 C:\Program Files on RISC. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PROGRAM_FILES_COMMON" class="tdname">
-CSIDL_PROGRAM_FILES_COMMON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>C:\Program Files\Common. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_PROGRAM_FILES_COMMONX86" class="tdname">
-CSIDL_PROGRAM_FILES_COMMONX86</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>x86 Program Files\Common on RISC. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_RECENT" class="tdname">
-CSIDL_RECENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\Recent. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_RESOURCES" class="tdname">
-CSIDL_RESOURCES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Resource Direcotry. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_RESOURCES_LOCALIZED" class="tdname">
-CSIDL_RESOURCES_LOCALIZED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Localized Resource Direcotry. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_SENDTO" class="tdname">
-CSIDL_SENDTO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\SendTo. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_STARTMENU" class="tdname">
-CSIDL_STARTMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>&lt;user name&gt;\Start Menu. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_STARTUP" class="tdname">
-CSIDL_STARTUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Start Menu\Programs\Startup. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_SYSTEM" class="tdname">
-CSIDL_SYSTEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>GetSystemDirectory(). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_SYSTEMX86" class="tdname">
-CSIDL_SYSTEMX86</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>x86 system directory on RISC. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_TEMPLATES" class="tdname">
-CSIDL_TEMPLATES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CSIDL_WINDOWS" class="tdname">
-CSIDL_WINDOWS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>GetWindowsDirectory(). </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_BYTEALIGNCLIENT" class="tdname">
-CS_BYTEALIGNCLIENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_BYTEALIGNWINDOW" class="tdname">
-CS_BYTEALIGNWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_CLASSDC" class="tdname">
-CS_CLASSDC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_DBLCLKS" class="tdname">
-CS_DBLCLKS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_DROPSHADOW" class="tdname">
-CS_DROPSHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_GLOBALCLASS" class="tdname">
-CS_GLOBALCLASS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_HREDRAW" class="tdname">
-CS_HREDRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_IME" class="tdname">
-CS_IME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_NOCLOSE" class="tdname">
-CS_NOCLOSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_OWNDC" class="tdname">
-CS_OWNDC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_PARENTDC" class="tdname">
-CS_PARENTDC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_SAVEBITS" class="tdname">
-CS_SAVEBITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CS_VREDRAW" class="tdname">
-CS_VREDRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CWP_ALL" class="tdname">
-CWP_ALL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CWP_SKIPDISABLED" class="tdname">
-CWP_SKIPDISABLED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CWP_SKIPINVISIBLE" class="tdname">
-CWP_SKIPINVISIBLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CWP_SKIPTRANSPARENT" class="tdname">
-CWP_SKIPTRANSPARENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_CW_USEDEFAULT" class="tdname">
-CW_USEDEFAULT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_DEFAULT_MINIMUM_ENTITIES" class="tdname">
-DEFAULT_MINIMUM_ENTITIES</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_DM_POINTERHITTEST" class="tdname">
-DM_POINTERHITTEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_ERROR_DEVICE_NOT_CONNECTED" class="tdname">
-ERROR_DEVICE_NOT_CONNECTED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_ERROR_FILE_NOT_FOUND" class="tdname">
-ERROR_FILE_NOT_FOUND</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_ERROR_IO_PENDING" class="tdname">
-ERROR_IO_PENDING</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_ERROR_NO_MORE_FILES" class="tdname">
-ERROR_NO_MORE_FILES</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_ERROR_SUCCESS" class="tdname">
-ERROR_SUCCESS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FALSE" class="tdname">
-FALSE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_ARCHIVE" class="tdname">
-FILE_ATTRIBUTE_ARCHIVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_COMPRESSED" class="tdname">
-FILE_ATTRIBUTE_COMPRESSED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_DEVICE" class="tdname">
-FILE_ATTRIBUTE_DEVICE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_DIRECTORY" class="tdname">
-FILE_ATTRIBUTE_DIRECTORY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_EA" class="tdname">
-FILE_ATTRIBUTE_EA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_ENCRYPTED" class="tdname">
-FILE_ATTRIBUTE_ENCRYPTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_HIDDEN" class="tdname">
-FILE_ATTRIBUTE_HIDDEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_INTEGRITY_STREAM" class="tdname">
-FILE_ATTRIBUTE_INTEGRITY_STREAM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_NORMAL" class="tdname">
-FILE_ATTRIBUTE_NORMAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_NOT_CONTENT_INDEXED" class="tdname">
-FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_NO_SCRUB_DATA" class="tdname">
-FILE_ATTRIBUTE_NO_SCRUB_DATA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_OFFLINE" class="tdname">
-FILE_ATTRIBUTE_OFFLINE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_PINNED" class="tdname">
-FILE_ATTRIBUTE_PINNED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_READONLY" class="tdname">
-FILE_ATTRIBUTE_READONLY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS" class="tdname">
-FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_OPEN" class="tdname">
-FILE_ATTRIBUTE_RECALL_ON_OPEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_REPARSE_POINT" class="tdname">
-FILE_ATTRIBUTE_REPARSE_POINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_SPARSE_FILE" class="tdname">
-FILE_ATTRIBUTE_SPARSE_FILE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_SYSTEM" class="tdname">
-FILE_ATTRIBUTE_SYSTEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_TEMPORARY" class="tdname">
-FILE_ATTRIBUTE_TEMPORARY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_UNPINNED" class="tdname">
-FILE_ATTRIBUTE_UNPINNED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_ATTRIBUTE_VIRTUAL" class="tdname">
-FILE_ATTRIBUTE_VIRTUAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_BEGIN" class="tdname">
-FILE_BEGIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_CURRENT" class="tdname">
-FILE_CURRENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_END" class="tdname">
-FILE_END</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_READ_ATTRIBUTES" class="tdname">
-FILE_READ_ATTRIBUTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_SHARE_DELETE" class="tdname">
-FILE_SHARE_DELETE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_SHARE_READ" class="tdname">
-FILE_SHARE_READ</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_SHARE_WRITE" class="tdname">
-FILE_SHARE_WRITE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FILE_WRITE_ATTRIBUTES" class="tdname">
-FILE_WRITE_ATTRIBUTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FOREGROUND_BLUE" class="tdname">
-FOREGROUND_BLUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FOREGROUND_GREEN" class="tdname">
-FOREGROUND_GREEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FOREGROUND_INTENSITY" class="tdname">
-FOREGROUND_INTENSITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FOREGROUND_MASK" class="tdname">
-FOREGROUND_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FOREGROUND_RED" class="tdname">
-FOREGROUND_RED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FORMAT_MESSAGE_ALLOCATE_BUFFER" class="tdname">
-FORMAT_MESSAGE_ALLOCATE_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FORMAT_MESSAGE_ARGUMENT_ARRAY" class="tdname">
-FORMAT_MESSAGE_ARGUMENT_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_HMODULE" class="tdname">
-FORMAT_MESSAGE_FROM_HMODULE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_STRING" class="tdname">
-FORMAT_MESSAGE_FROM_STRING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_SYSTEM" class="tdname">
-FORMAT_MESSAGE_FROM_SYSTEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FORMAT_MESSAGE_IGNORE_INSERTS" class="tdname">
-FORMAT_MESSAGE_IGNORE_INSERTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_FORMAT_MESSAGE_MAX_WIDTH_MASK" class="tdname">
-FORMAT_MESSAGE_MAX_WIDTH_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GENERIC_ALL" class="tdname">
-GENERIC_ALL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GENERIC_EXECUTE" class="tdname">
-GENERIC_EXECUTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GENERIC_READ" class="tdname">
-GENERIC_READ</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GENERIC_WRITE" class="tdname">
-GENERIC_WRITE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_DDESHARE" class="tdname">
-GMEM_DDESHARE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_DISCARDABLE" class="tdname">
-GMEM_DISCARDABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_FIXED" class="tdname">
-GMEM_FIXED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_INVALID_HANDLE" class="tdname">
-GMEM_INVALID_HANDLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_LOWER" class="tdname">
-GMEM_LOWER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_MODIFY" class="tdname">
-GMEM_MODIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_MOVEABLE" class="tdname">
-GMEM_MOVEABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_NOCOMPACT" class="tdname">
-GMEM_NOCOMPACT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_NODISCARD" class="tdname">
-GMEM_NODISCARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_NOTIFY" class="tdname">
-GMEM_NOTIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_NOT_BANKED" class="tdname">
-GMEM_NOT_BANKED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_SHARE" class="tdname">
-GMEM_SHARE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_VALID_FLAGS" class="tdname">
-GMEM_VALID_FLAGS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GMEM_ZEROINIT" class="tdname">
-GMEM_ZEROINIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GWLP_HINSTANCE" class="tdname">
-GWLP_HINSTANCE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GWLP_HWNDPARENT" class="tdname">
-GWLP_HWNDPARENT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GWLP_ID" class="tdname">
-GWLP_ID</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GWLP_USERDATA" class="tdname">
-GWLP_USERDATA</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GWLP_WNDPROC" class="tdname">
-GWLP_WNDPROC</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_CHILD" class="tdname">
-GW_CHILD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_ENABLEDPOPUP" class="tdname">
-GW_ENABLEDPOPUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_HWNDFIRST" class="tdname">
-GW_HWNDFIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_HWNDLAST" class="tdname">
-GW_HWNDLAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_HWNDNEXT" class="tdname">
-GW_HWNDNEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_HWNDPREV" class="tdname">
-GW_HWNDPREV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_MAX" class="tdname">
-GW_MAX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_GW_OWNER" class="tdname">
-GW_OWNER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_HWND_BOTTOM" class="tdname">
-HWND_BOTTOM</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_HWND_NOTOPMOST" class="tdname">
-HWND_NOTOPMOST</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_HWND_TOP" class="tdname">
-HWND_TOP</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_HWND_TOPMOST" class="tdname">
-HWND_TOPMOST</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDABORT" class="tdname">
-IDABORT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDCANCEL" class="tdname">
-IDCANCEL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDCLOSE" class="tdname">
-IDCLOSE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDCONTINUE" class="tdname">
-IDCONTINUE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_APPSTARTING" class="tdname">
-IDC_APPSTARTING</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_ARROW" class="tdname">
-IDC_ARROW</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_CROSS" class="tdname">
-IDC_CROSS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_HAND" class="tdname">
-IDC_HAND</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_HELP" class="tdname">
-IDC_HELP</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_IBEAM" class="tdname">
-IDC_IBEAM</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_ICON" class="tdname">
-IDC_ICON</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_NO" class="tdname">
-IDC_NO</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_PERSON" class="tdname">
-IDC_PERSON</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_PIN" class="tdname">
-IDC_PIN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_SIZE" class="tdname">
-IDC_SIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_SIZEALL" class="tdname">
-IDC_SIZEALL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_SIZENESW" class="tdname">
-IDC_SIZENESW</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_SIZENS" class="tdname">
-IDC_SIZENS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_SIZENWSE" class="tdname">
-IDC_SIZENWSE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_SIZEWE" class="tdname">
-IDC_SIZEWE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_UPARROW" class="tdname">
-IDC_UPARROW</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDC_WAIT" class="tdname">
-IDC_WAIT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDHELP" class="tdname">
-IDHELP</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDIGNORE" class="tdname">
-IDIGNORE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDNO" class="tdname">
-IDNO</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDOK" class="tdname">
-IDOK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDRETRY" class="tdname">
-IDRETRY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDTIMEOUT" class="tdname">
-IDTIMEOUT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDTRYAGAIN" class="tdname">
-IDTRYAGAIN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_IDYES" class="tdname">
-IDYES</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_INFINITE" class="tdname">
-INFINITE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_INVALID_FILE_ATTRIBUTES" class="tdname">
-INVALID_FILE_ATTRIBUTES</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_INVALID_FILE_SIZE" class="tdname">
-INVALID_FILE_SIZE</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_INVALID_HANDLE_VALUE" class="tdname">
-INVALID_HANDLE_VALUE</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_INVALID_SET_FILE_POINTER" class="tdname">
-INVALID_SET_FILE_POINTER</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_LANG_ENGLISH" class="tdname">
-LANG_ENGLISH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_LWA_ALPHA" class="tdname">
-LWA_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_LWA_COLORKEY" class="tdname">
-LWA_COLORKEY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAPVK_VK_TO_CHAR" class="tdname">
-MAPVK_VK_TO_CHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAPVK_VK_TO_VSC" class="tdname">
-MAPVK_VK_TO_VSC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAPVK_VK_TO_VSC_EX" class="tdname">
-MAPVK_VK_TO_VSC_EX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAPVK_VSC_TO_VK" class="tdname">
-MAPVK_VSC_TO_VK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAPVK_VSC_TO_VK_EX" class="tdname">
-MAPVK_VSC_TO_VK_EX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAXIMUM_WAIT_OBJECTS" class="tdname">
-MAXIMUM_WAIT_OBJECTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_ADAPTER_ADDRESS_LENGTH" class="tdname">
-MAX_ADAPTER_ADDRESS_LENGTH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_ADAPTER_DESCRIPTION_LENGTH" class="tdname">
-MAX_ADAPTER_DESCRIPTION_LENGTH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_ADAPTER_NAME_LENGTH" class="tdname">
-MAX_ADAPTER_NAME_LENGTH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_DHCPV6_DUID_LENGTH" class="tdname">
-MAX_DHCPV6_DUID_LENGTH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_DNS_SUFFIX_STRING_LENGTH" class="tdname">
-MAX_DNS_SUFFIX_STRING_LENGTH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_DOMAIN_NAME_LEN" class="tdname">
-MAX_DOMAIN_NAME_LEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_HOSTNAME_LEN" class="tdname">
-MAX_HOSTNAME_LEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_PATH" class="tdname">
-MAX_PATH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MAX_SCOPE_ID_LEN" class="tdname">
-MAX_SCOPE_ID_LEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ABORTRETRYIGNORE" class="tdname">
-MB_ABORTRETRYIGNORE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_APPLMODAL" class="tdname">
-MB_APPLMODAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_CANCELTRYCONTINUE" class="tdname">
-MB_CANCELTRYCONTINUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_DEFAULT_DESKTOP_ONLY" class="tdname">
-MB_DEFAULT_DESKTOP_ONLY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_DEFBUTTON1" class="tdname">
-MB_DEFBUTTON1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_DEFBUTTON2" class="tdname">
-MB_DEFBUTTON2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_DEFBUTTON3" class="tdname">
-MB_DEFBUTTON3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_DEFBUTTON4" class="tdname">
-MB_DEFBUTTON4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_HELP" class="tdname">
-MB_HELP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONASTERISK" class="tdname">
-MB_ICONASTERISK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONERROR" class="tdname">
-MB_ICONERROR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONEXCLAMATION" class="tdname">
-MB_ICONEXCLAMATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONHAND" class="tdname">
-MB_ICONHAND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONINFORMATION" class="tdname">
-MB_ICONINFORMATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONQUESTION" class="tdname">
-MB_ICONQUESTION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONSTOP" class="tdname">
-MB_ICONSTOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_ICONWARNING" class="tdname">
-MB_ICONWARNING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_NOFOCUS" class="tdname">
-MB_NOFOCUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_OK" class="tdname">
-MB_OK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_OKCANCEL" class="tdname">
-MB_OKCANCEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_RETRYCANCEL" class="tdname">
-MB_RETRYCANCEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_RIGHT" class="tdname">
-MB_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_RTLREADING" class="tdname">
-MB_RTLREADING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_SETFOREGROUND" class="tdname">
-MB_SETFOREGROUND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_SYSTEMMODAL" class="tdname">
-MB_SYSTEMMODAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_TASKMODAL" class="tdname">
-MB_TASKMODAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_TOPMOST" class="tdname">
-MB_TOPMOST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_USERICON" class="tdname">
-MB_USERICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_YESNO" class="tdname">
-MB_YESNO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MB_YESNOCANCEL" class="tdname">
-MB_YESNOCANCEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MN_GETHMENU" class="tdname">
-MN_GETHMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MOD_ALT" class="tdname">
-MOD_ALT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MOD_CONTROL" class="tdname">
-MOD_CONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MOD_NOREPEAT" class="tdname">
-MOD_NOREPEAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MOD_SHIFT" class="tdname">
-MOD_SHIFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MOD_WIN" class="tdname">
-MOD_WIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MONITOR_DEFAULTTONEAREST" class="tdname">
-MONITOR_DEFAULTTONEAREST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MONITOR_DEFAULTTONULL" class="tdname">
-MONITOR_DEFAULTTONULL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_MONITOR_DEFAULTTOPRIMARY" class="tdname">
-MONITOR_DEFAULTTOPRIMARY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_GUID" class="tdname">
-NIF_GUID</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_ICON" class="tdname">
-NIF_ICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_INFO" class="tdname">
-NIF_INFO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_MESSAGE" class="tdname">
-NIF_MESSAGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_REALTIME" class="tdname">
-NIF_REALTIME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_SHOWTIP" class="tdname">
-NIF_SHOWTIP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_STATE" class="tdname">
-NIF_STATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIF_TIP" class="tdname">
-NIF_TIP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIM_ADD" class="tdname">
-NIM_ADD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIM_DELETE" class="tdname">
-NIM_DELETE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIM_MODIFY" class="tdname">
-NIM_MODIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIM_SETFOCUS" class="tdname">
-NIM_SETFOCUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_NIM_SETVERSION" class="tdname">
-NIM_SETVERSION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_OPEN_ALWAYS" class="tdname">
-OPEN_ALWAYS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_OPEN_EXISTING" class="tdname">
-OPEN_EXISTING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_PM_NOREMOVE" class="tdname">
-PM_NOREMOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_PM_NOYIELD" class="tdname">
-PM_NOYIELD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_PM_REMOVE" class="tdname">
-PM_REMOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_ARRANGE" class="tdname">
-SC_ARRANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_CLOSE" class="tdname">
-SC_CLOSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_CONTEXTHELP" class="tdname">
-SC_CONTEXTHELP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_DEFAULT" class="tdname">
-SC_DEFAULT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_HOTKEY" class="tdname">
-SC_HOTKEY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_HSCROLL" class="tdname">
-SC_HSCROLL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_KEYMENU" class="tdname">
-SC_KEYMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_MAXIMIZE" class="tdname">
-SC_MAXIMIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_MINIMIZE" class="tdname">
-SC_MINIMIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_MONITORPOWER" class="tdname">
-SC_MONITORPOWER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_MOUSEMENU" class="tdname">
-SC_MOUSEMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_MOVE" class="tdname">
-SC_MOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_NEXTWINDOW" class="tdname">
-SC_NEXTWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_PREVWINDOW" class="tdname">
-SC_PREVWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_RESTORE" class="tdname">
-SC_RESTORE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_SCREENSAVE" class="tdname">
-SC_SCREENSAVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_SEPARATOR" class="tdname">
-SC_SEPARATOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_SIZE" class="tdname">
-SC_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_TASKLIST" class="tdname">
-SC_TASKLIST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SC_VSCROLL" class="tdname">
-SC_VSCROLL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_ADDOVERLAYS" class="tdname">
-SHGFI_ADDOVERLAYS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>apply the appropriate overlays. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_ATTRIBUTES" class="tdname">
-SHGFI_ATTRIBUTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get attributes. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_ATTR_SPECIFIED" class="tdname">
-SHGFI_ATTR_SPECIFIED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get only specified attributes. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_DISPLAYNAME" class="tdname">
-SHGFI_DISPLAYNAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get display name. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_EXETYPE" class="tdname">
-SHGFI_EXETYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>return exe type. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_ICON" class="tdname">
-SHGFI_ICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get icon. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_ICONLOCATION" class="tdname">
-SHGFI_ICONLOCATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get icon location. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_LARGEICON" class="tdname">
-SHGFI_LARGEICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get large icon. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_LINKOVERLAY" class="tdname">
-SHGFI_LINKOVERLAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>put a link overlay on icon. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_OPENICON" class="tdname">
-SHGFI_OPENICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get open icon. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_OVERLAYINDEX" class="tdname">
-SHGFI_OVERLAYINDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Get the index of the overlay. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_PIDL" class="tdname">
-SHGFI_PIDL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>pszPath is a pidl. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_SELECTED" class="tdname">
-SHGFI_SELECTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>show icon in selected state. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_SHELLICONSIZE" class="tdname">
-SHGFI_SHELLICONSIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get shell size icon. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_SMALLICON" class="tdname">
-SHGFI_SMALLICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get small icon. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_SYSICONINDEX" class="tdname">
-SHGFI_SYSICONINDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get system icon index. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_TYPENAME" class="tdname">
-SHGFI_TYPENAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>get type name. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGFI_USEFILEATTRIBUTES" class="tdname">
-SHGFI_USEFILEATTRIBUTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>use passed dwFileAttribute. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_ICON" class="tdname">
-SHGSI_ICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_ICONLOCATION" class="tdname">
-SHGSI_ICONLOCATION</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>you always get the icon location. </p>
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_LARGEICON" class="tdname">
-SHGSI_LARGEICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_LINKOVERLAY" class="tdname">
-SHGSI_LINKOVERLAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_SELECTED" class="tdname">
-SHGSI_SELECTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_SHELLICONSIZE" class="tdname">
-SHGSI_SHELLICONSIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_SMALLICON" class="tdname">
-SHGSI_SMALLICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SHGSI_SYSICONINDEX" class="tdname">
-SHGSI_SYSICONINDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_ARRANGE" class="tdname">
-SM_ARRANGE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CARETBLINKINGENABLED" class="tdname">
-SM_CARETBLINKINGENABLED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CLEANBOOT" class="tdname">
-SM_CLEANBOOT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CMETRICS" class="tdname">
-SM_CMETRICS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CMONITORS" class="tdname">
-SM_CMONITORS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CMOUSEBUTTONS" class="tdname">
-SM_CMOUSEBUTTONS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CONVERTIBLESLATEMODE" class="tdname">
-SM_CONVERTIBLESLATEMODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXBORDER" class="tdname">
-SM_CXBORDER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXCURSOR" class="tdname">
-SM_CXCURSOR</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXDLGFRAME" class="tdname">
-SM_CXDLGFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXDOUBLECLK" class="tdname">
-SM_CXDOUBLECLK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXDRAG" class="tdname">
-SM_CXDRAG</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXEDGE" class="tdname">
-SM_CXEDGE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXFIXEDFRAME" class="tdname">
-SM_CXFIXEDFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXFOCUSBORDER" class="tdname">
-SM_CXFOCUSBORDER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXFRAME" class="tdname">
-SM_CXFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXFULLSCREEN" class="tdname">
-SM_CXFULLSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXHSCROLL" class="tdname">
-SM_CXHSCROLL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXHTHUMB" class="tdname">
-SM_CXHTHUMB</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXICON" class="tdname">
-SM_CXICON</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXICONSPACING" class="tdname">
-SM_CXICONSPACING</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMAXIMIZED" class="tdname">
-SM_CXMAXIMIZED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMAXTRACK" class="tdname">
-SM_CXMAXTRACK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMENUCHECK" class="tdname">
-SM_CXMENUCHECK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMENUSIZE" class="tdname">
-SM_CXMENUSIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMIN" class="tdname">
-SM_CXMIN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMINIMIZED" class="tdname">
-SM_CXMINIMIZED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMINSPACING" class="tdname">
-SM_CXMINSPACING</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXMINTRACK" class="tdname">
-SM_CXMINTRACK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXPADDEDBORDER" class="tdname">
-SM_CXPADDEDBORDER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXSCREEN" class="tdname">
-SM_CXSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXSIZE" class="tdname">
-SM_CXSIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXSIZEFRAME" class="tdname">
-SM_CXSIZEFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXSMICON" class="tdname">
-SM_CXSMICON</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXSMSIZE" class="tdname">
-SM_CXSMSIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXVIRTUALSCREEN" class="tdname">
-SM_CXVIRTUALSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CXVSCROLL" class="tdname">
-SM_CXVSCROLL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYBORDER" class="tdname">
-SM_CYBORDER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYCAPTION" class="tdname">
-SM_CYCAPTION</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYCURSOR" class="tdname">
-SM_CYCURSOR</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYDLGFRAME" class="tdname">
-SM_CYDLGFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYDOUBLECLK" class="tdname">
-SM_CYDOUBLECLK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYDRAG" class="tdname">
-SM_CYDRAG</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYEDGE" class="tdname">
-SM_CYEDGE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYFIXEDFRAME" class="tdname">
-SM_CYFIXEDFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYFOCUSBORDER" class="tdname">
-SM_CYFOCUSBORDER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYFRAME" class="tdname">
-SM_CYFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYFULLSCREEN" class="tdname">
-SM_CYFULLSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYHSCROLL" class="tdname">
-SM_CYHSCROLL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYICON" class="tdname">
-SM_CYICON</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYICONSPACING" class="tdname">
-SM_CYICONSPACING</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYKANJIWINDOW" class="tdname">
-SM_CYKANJIWINDOW</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMAXIMIZED" class="tdname">
-SM_CYMAXIMIZED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMAXTRACK" class="tdname">
-SM_CYMAXTRACK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMENU" class="tdname">
-SM_CYMENU</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMENUCHECK" class="tdname">
-SM_CYMENUCHECK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMENUSIZE" class="tdname">
-SM_CYMENUSIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMIN" class="tdname">
-SM_CYMIN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMINIMIZED" class="tdname">
-SM_CYMINIMIZED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMINSPACING" class="tdname">
-SM_CYMINSPACING</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYMINTRACK" class="tdname">
-SM_CYMINTRACK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYSCREEN" class="tdname">
-SM_CYSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYSIZE" class="tdname">
-SM_CYSIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYSIZEFRAME" class="tdname">
-SM_CYSIZEFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYSMCAPTION" class="tdname">
-SM_CYSMCAPTION</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYSMICON" class="tdname">
-SM_CYSMICON</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYSMSIZE" class="tdname">
-SM_CYSMSIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYVIRTUALSCREEN" class="tdname">
-SM_CYVIRTUALSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYVSCROLL" class="tdname">
-SM_CYVSCROLL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_CYVTHUMB" class="tdname">
-SM_CYVTHUMB</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_DBCSENABLED" class="tdname">
-SM_DBCSENABLED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_DEBUG" class="tdname">
-SM_DEBUG</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_DIGITIZER" class="tdname">
-SM_DIGITIZER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_IMMENABLED" class="tdname">
-SM_IMMENABLED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_MAXIMUMTOUCHES" class="tdname">
-SM_MAXIMUMTOUCHES</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_MEDIACENTER" class="tdname">
-SM_MEDIACENTER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_MENUDROPALIGNMENT" class="tdname">
-SM_MENUDROPALIGNMENT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_MIDEASTENABLED" class="tdname">
-SM_MIDEASTENABLED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_MOUSEHORIZONTALWHEELPRESENT" class="tdname">
-SM_MOUSEHORIZONTALWHEELPRESENT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_MOUSEPRESENT" class="tdname">
-SM_MOUSEPRESENT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_MOUSEWHEELPRESENT" class="tdname">
-SM_MOUSEWHEELPRESENT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_NETWORK" class="tdname">
-SM_NETWORK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_PENWINDOWS" class="tdname">
-SM_PENWINDOWS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_REMOTECONTROL" class="tdname">
-SM_REMOTECONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_REMOTESESSION" class="tdname">
-SM_REMOTESESSION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_RESERVED1" class="tdname">
-SM_RESERVED1</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_RESERVED2" class="tdname">
-SM_RESERVED2</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_RESERVED3" class="tdname">
-SM_RESERVED3</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_RESERVED4" class="tdname">
-SM_RESERVED4</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SAMEDISPLAYFORMAT" class="tdname">
-SM_SAMEDISPLAYFORMAT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SECURE" class="tdname">
-SM_SECURE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SERVERR2" class="tdname">
-SM_SERVERR2</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SHOWSOUNDS" class="tdname">
-SM_SHOWSOUNDS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SHUTTINGDOWN" class="tdname">
-SM_SHUTTINGDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SLOWMACHINE" class="tdname">
-SM_SLOWMACHINE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_STARTER" class="tdname">
-SM_STARTER</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SWAPBUTTON" class="tdname">
-SM_SWAPBUTTON</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_SYSTEMDOCKED" class="tdname">
-SM_SYSTEMDOCKED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_TABLETPC" class="tdname">
-SM_TABLETPC</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_XVIRTUALSCREEN" class="tdname">
-SM_XVIRTUALSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SM_YVIRTUALSCREEN" class="tdname">
-SM_YVIRTUALSCREEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SRWLOCK_INIT" class="tdname">
-SRWLOCK_INIT</td>
-<td class="tdtype">
-Win32.SRWLOCK</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_STD_INPUT_HANDLE" class="tdname">
-STD_INPUT_HANDLE</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_STD_OUTPUT_HANDLE" class="tdname">
-STD_OUTPUT_HANDLE</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SUBLANG_DEFAULT" class="tdname">
-SUBLANG_DEFAULT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_ASYNCWINDOWPOS" class="tdname">
-SWP_ASYNCWINDOWPOS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_DEFERERASE" class="tdname">
-SWP_DEFERERASE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_DRAWFRAME" class="tdname">
-SWP_DRAWFRAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_FRAMECHANGED" class="tdname">
-SWP_FRAMECHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_HIDEWINDOW" class="tdname">
-SWP_HIDEWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOACTIVATE" class="tdname">
-SWP_NOACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOCOPYBITS" class="tdname">
-SWP_NOCOPYBITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOMOVE" class="tdname">
-SWP_NOMOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOOWNERZORDER" class="tdname">
-SWP_NOOWNERZORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOREDRAW" class="tdname">
-SWP_NOREDRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOREPOSITION" class="tdname">
-SWP_NOREPOSITION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOSENDCHANGING" class="tdname">
-SWP_NOSENDCHANGING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOSIZE" class="tdname">
-SWP_NOSIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_NOZORDER" class="tdname">
-SWP_NOZORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SWP_SHOWWINDOW" class="tdname">
-SWP_SHOWWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_FORCEMINIMIZE" class="tdname">
-SW_FORCEMINIMIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_HIDE" class="tdname">
-SW_HIDE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_MAX" class="tdname">
-SW_MAX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_MAXIMIZE" class="tdname">
-SW_MAXIMIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_MINIMIZE" class="tdname">
-SW_MINIMIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_NORMAL" class="tdname">
-SW_NORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_RESTORE" class="tdname">
-SW_RESTORE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOW" class="tdname">
-SW_SHOW</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOWDEFAULT" class="tdname">
-SW_SHOWDEFAULT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOWMAXIMIZED" class="tdname">
-SW_SHOWMAXIMIZED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOWMINIMIZED" class="tdname">
-SW_SHOWMINIMIZED</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOWMINNOACTIVE" class="tdname">
-SW_SHOWMINNOACTIVE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOWNA" class="tdname">
-SW_SHOWNA</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOWNOACTIVATE" class="tdname">
-SW_SHOWNOACTIVATE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_SW_SHOWNORMAL" class="tdname">
-SW_SHOWNORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_S_OK" class="tdname">
-S_OK</td>
-<td class="tdtype">
-Win32.HRESULT</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_THREAD_PRIORITY_ABOVE_NORMAL" class="tdname">
-THREAD_PRIORITY_ABOVE_NORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_THREAD_PRIORITY_BELOW_NORMAL" class="tdname">
-THREAD_PRIORITY_BELOW_NORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_THREAD_PRIORITY_HIGHEST" class="tdname">
-THREAD_PRIORITY_HIGHEST</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_THREAD_PRIORITY_LOWEST" class="tdname">
-THREAD_PRIORITY_LOWEST</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_THREAD_PRIORITY_NORMAL" class="tdname">
-THREAD_PRIORITY_NORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_TRUE" class="tdname">
-TRUE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_TRUNCATE_EXISTING" class="tdname">
-TRUNCATE_EXISTING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ACCEPT" class="tdname">
-VK_ACCEPT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ADD" class="tdname">
-VK_ADD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_APPS" class="tdname">
-VK_APPS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ATTN" class="tdname">
-VK_ATTN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BACK" class="tdname">
-VK_BACK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BROWSER_BACK" class="tdname">
-VK_BROWSER_BACK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BROWSER_FAVORITES" class="tdname">
-VK_BROWSER_FAVORITES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BROWSER_FORWARD" class="tdname">
-VK_BROWSER_FORWARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BROWSER_HOME" class="tdname">
-VK_BROWSER_HOME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BROWSER_REFRESH" class="tdname">
-VK_BROWSER_REFRESH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BROWSER_SEARCH" class="tdname">
-VK_BROWSER_SEARCH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_BROWSER_STOP" class="tdname">
-VK_BROWSER_STOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_CANCEL" class="tdname">
-VK_CANCEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_CAPITAL" class="tdname">
-VK_CAPITAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_CLEAR" class="tdname">
-VK_CLEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_CONTROL" class="tdname">
-VK_CONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_CONVERT" class="tdname">
-VK_CONVERT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_CRSEL" class="tdname">
-VK_CRSEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_DECIMAL" class="tdname">
-VK_DECIMAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_DELETE" class="tdname">
-VK_DELETE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_DIVIDE" class="tdname">
-VK_DIVIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_DOWN" class="tdname">
-VK_DOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_END" class="tdname">
-VK_END</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_EREOF" class="tdname">
-VK_EREOF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ESCAPE" class="tdname">
-VK_ESCAPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_EXECUTE" class="tdname">
-VK_EXECUTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_EXSEL" class="tdname">
-VK_EXSEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F1" class="tdname">
-VK_F1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F10" class="tdname">
-VK_F10</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F11" class="tdname">
-VK_F11</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F12" class="tdname">
-VK_F12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F13" class="tdname">
-VK_F13</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F14" class="tdname">
-VK_F14</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F15" class="tdname">
-VK_F15</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F16" class="tdname">
-VK_F16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F17" class="tdname">
-VK_F17</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F18" class="tdname">
-VK_F18</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F19" class="tdname">
-VK_F19</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F2" class="tdname">
-VK_F2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F20" class="tdname">
-VK_F20</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F21" class="tdname">
-VK_F21</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F22" class="tdname">
-VK_F22</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F23" class="tdname">
-VK_F23</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F24" class="tdname">
-VK_F24</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F3" class="tdname">
-VK_F3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F4" class="tdname">
-VK_F4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F5" class="tdname">
-VK_F5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F6" class="tdname">
-VK_F6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F7" class="tdname">
-VK_F7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F8" class="tdname">
-VK_F8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_F9" class="tdname">
-VK_F9</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_FINAL" class="tdname">
-VK_FINAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_A" class="tdname">
-VK_GAMEPAD_A</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_B" class="tdname">
-VK_GAMEPAD_B</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_DPAD_DOWN" class="tdname">
-VK_GAMEPAD_DPAD_DOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_DPAD_LEFT" class="tdname">
-VK_GAMEPAD_DPAD_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_DPAD_RIGHT" class="tdname">
-VK_GAMEPAD_DPAD_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_DPAD_UP" class="tdname">
-VK_GAMEPAD_DPAD_UP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_LEFT_SHOULDER" class="tdname">
-VK_GAMEPAD_LEFT_SHOULDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON" class="tdname">
-VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_DOWN" class="tdname">
-VK_GAMEPAD_LEFT_THUMBSTICK_DOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_LEFT" class="tdname">
-VK_GAMEPAD_LEFT_THUMBSTICK_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT" class="tdname">
-VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_UP" class="tdname">
-VK_GAMEPAD_LEFT_THUMBSTICK_UP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_LEFT_TRIGGER" class="tdname">
-VK_GAMEPAD_LEFT_TRIGGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_MENU" class="tdname">
-VK_GAMEPAD_MENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_SHOULDER" class="tdname">
-VK_GAMEPAD_RIGHT_SHOULDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON" class="tdname">
-VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN" class="tdname">
-VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT" class="tdname">
-VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT" class="tdname">
-VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_UP" class="tdname">
-VK_GAMEPAD_RIGHT_THUMBSTICK_UP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_TRIGGER" class="tdname">
-VK_GAMEPAD_RIGHT_TRIGGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_VIEW" class="tdname">
-VK_GAMEPAD_VIEW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_X" class="tdname">
-VK_GAMEPAD_X</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_GAMEPAD_Y" class="tdname">
-VK_GAMEPAD_Y</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_HANGEUL" class="tdname">
-VK_HANGEUL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_HANGUL" class="tdname">
-VK_HANGUL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_HANJA" class="tdname">
-VK_HANJA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_HELP" class="tdname">
-VK_HELP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_HOME" class="tdname">
-VK_HOME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ICO_00" class="tdname">
-VK_ICO_00</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ICO_CLEAR" class="tdname">
-VK_ICO_CLEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ICO_HELP" class="tdname">
-VK_ICO_HELP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_INSERT" class="tdname">
-VK_INSERT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_JUNJA" class="tdname">
-VK_JUNJA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_KANA" class="tdname">
-VK_KANA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_KANJI" class="tdname">
-VK_KANJI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LAUNCH_APP1" class="tdname">
-VK_LAUNCH_APP1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LAUNCH_APP2" class="tdname">
-VK_LAUNCH_APP2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LAUNCH_MAIL" class="tdname">
-VK_LAUNCH_MAIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LAUNCH_MEDIA_SELECT" class="tdname">
-VK_LAUNCH_MEDIA_SELECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LBUTTON" class="tdname">
-VK_LBUTTON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LCONTROL" class="tdname">
-VK_LCONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LEFT" class="tdname">
-VK_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LMENU" class="tdname">
-VK_LMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LSHIFT" class="tdname">
-VK_LSHIFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_LWIN" class="tdname">
-VK_LWIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MBUTTON" class="tdname">
-VK_MBUTTON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MEDIA_NEXT_TRACK" class="tdname">
-VK_MEDIA_NEXT_TRACK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MEDIA_PLAY_PAUSE" class="tdname">
-VK_MEDIA_PLAY_PAUSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MEDIA_PREV_TRACK" class="tdname">
-VK_MEDIA_PREV_TRACK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MEDIA_STOP" class="tdname">
-VK_MEDIA_STOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MENU" class="tdname">
-VK_MENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MODECHANGE" class="tdname">
-VK_MODECHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_MULTIPLY" class="tdname">
-VK_MULTIPLY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_ACCEPT" class="tdname">
-VK_NAVIGATION_ACCEPT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_CANCEL" class="tdname">
-VK_NAVIGATION_CANCEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_DOWN" class="tdname">
-VK_NAVIGATION_DOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_LEFT" class="tdname">
-VK_NAVIGATION_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_MENU" class="tdname">
-VK_NAVIGATION_MENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_RIGHT" class="tdname">
-VK_NAVIGATION_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_UP" class="tdname">
-VK_NAVIGATION_UP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NAVIGATION_VIEW" class="tdname">
-VK_NAVIGATION_VIEW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NEXT" class="tdname">
-VK_NEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NONAME" class="tdname">
-VK_NONAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NONCONVERT" class="tdname">
-VK_NONCONVERT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMLOCK" class="tdname">
-VK_NUMLOCK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD0" class="tdname">
-VK_NUMPAD0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD1" class="tdname">
-VK_NUMPAD1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD2" class="tdname">
-VK_NUMPAD2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD3" class="tdname">
-VK_NUMPAD3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD4" class="tdname">
-VK_NUMPAD4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD5" class="tdname">
-VK_NUMPAD5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD6" class="tdname">
-VK_NUMPAD6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD7" class="tdname">
-VK_NUMPAD7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD8" class="tdname">
-VK_NUMPAD8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_NUMPAD9" class="tdname">
-VK_NUMPAD9</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_1" class="tdname">
-VK_OEM_1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_102" class="tdname">
-VK_OEM_102</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_2" class="tdname">
-VK_OEM_2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_3" class="tdname">
-VK_OEM_3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_4" class="tdname">
-VK_OEM_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_5" class="tdname">
-VK_OEM_5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_6" class="tdname">
-VK_OEM_6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_7" class="tdname">
-VK_OEM_7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_8" class="tdname">
-VK_OEM_8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_ATTN" class="tdname">
-VK_OEM_ATTN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_AUTO" class="tdname">
-VK_OEM_AUTO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_AX" class="tdname">
-VK_OEM_AX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_BACKTAB" class="tdname">
-VK_OEM_BACKTAB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_CLEAR" class="tdname">
-VK_OEM_CLEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_COMMA" class="tdname">
-VK_OEM_COMMA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_COPY" class="tdname">
-VK_OEM_COPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_CUSEL" class="tdname">
-VK_OEM_CUSEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_ENLW" class="tdname">
-VK_OEM_ENLW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_FINISH" class="tdname">
-VK_OEM_FINISH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_FJ_JISHO" class="tdname">
-VK_OEM_FJ_JISHO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_FJ_LOYA" class="tdname">
-VK_OEM_FJ_LOYA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_FJ_MASSHOU" class="tdname">
-VK_OEM_FJ_MASSHOU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_FJ_ROYA" class="tdname">
-VK_OEM_FJ_ROYA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_FJ_TOUROKU" class="tdname">
-VK_OEM_FJ_TOUROKU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_JUMP" class="tdname">
-VK_OEM_JUMP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_MINUS" class="tdname">
-VK_OEM_MINUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_NEC_EQUAL" class="tdname">
-VK_OEM_NEC_EQUAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_PA1" class="tdname">
-VK_OEM_PA1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_PA2" class="tdname">
-VK_OEM_PA2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_PA3" class="tdname">
-VK_OEM_PA3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_PERIOD" class="tdname">
-VK_OEM_PERIOD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_PLUS" class="tdname">
-VK_OEM_PLUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_RESET" class="tdname">
-VK_OEM_RESET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_OEM_WSCTRL" class="tdname">
-VK_OEM_WSCTRL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_PA1" class="tdname">
-VK_PA1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_PACKET" class="tdname">
-VK_PACKET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_PAUSE" class="tdname">
-VK_PAUSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_PLAY" class="tdname">
-VK_PLAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_PRINT" class="tdname">
-VK_PRINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_PRIOR" class="tdname">
-VK_PRIOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_PROCESSKEY" class="tdname">
-VK_PROCESSKEY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_RBUTTON" class="tdname">
-VK_RBUTTON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_RCONTROL" class="tdname">
-VK_RCONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_RETURN" class="tdname">
-VK_RETURN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_RIGHT" class="tdname">
-VK_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_RMENU" class="tdname">
-VK_RMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_RSHIFT" class="tdname">
-VK_RSHIFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_RWIN" class="tdname">
-VK_RWIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SCROLL" class="tdname">
-VK_SCROLL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SELECT" class="tdname">
-VK_SELECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SEPARATOR" class="tdname">
-VK_SEPARATOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SHIFT" class="tdname">
-VK_SHIFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SLEEP" class="tdname">
-VK_SLEEP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SNAPSHOT" class="tdname">
-VK_SNAPSHOT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SPACE" class="tdname">
-VK_SPACE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_SUBTRACT" class="tdname">
-VK_SUBTRACT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_TAB" class="tdname">
-VK_TAB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_UP" class="tdname">
-VK_UP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_VOLUME_DOWN" class="tdname">
-VK_VOLUME_DOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_VOLUME_MUTE" class="tdname">
-VK_VOLUME_MUTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_VOLUME_UP" class="tdname">
-VK_VOLUME_UP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_XBUTTON1" class="tdname">
-VK_XBUTTON1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_XBUTTON2" class="tdname">
-VK_XBUTTON2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_VK_ZOOM" class="tdname">
-VK_ZOOM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WAIT_ABANDONED" class="tdname">
-WAIT_ABANDONED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WAIT_FAILED" class="tdname">
-WAIT_FAILED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WAIT_OBJECT_0" class="tdname">
-WAIT_OBJECT_0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WAIT_TIMEOUT" class="tdname">
-WAIT_TIMEOUT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WA_ACTIVE" class="tdname">
-WA_ACTIVE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WA_CLICKACTIVE" class="tdname">
-WA_CLICKACTIVE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WA_INACTIVE" class="tdname">
-WA_INACTIVE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WHEEL_DELTA" class="tdname">
-WHEEL_DELTA</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ACTIVATE" class="tdname">
-WM_ACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ACTIVATEAPP" class="tdname">
-WM_ACTIVATEAPP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_AFXFIRST" class="tdname">
-WM_AFXFIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_AFXLAST" class="tdname">
-WM_AFXLAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_APP" class="tdname">
-WM_APP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_APPCOMMAND" class="tdname">
-WM_APPCOMMAND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ASKCBFORMATNAME" class="tdname">
-WM_ASKCBFORMATNAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CANCELJOURNAL" class="tdname">
-WM_CANCELJOURNAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CANCELMODE" class="tdname">
-WM_CANCELMODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CAPTURECHANGED" class="tdname">
-WM_CAPTURECHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CHANGECBCHAIN" class="tdname">
-WM_CHANGECBCHAIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CHANGEUISTATE" class="tdname">
-WM_CHANGEUISTATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CHAR" class="tdname">
-WM_CHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CHARTOITEM" class="tdname">
-WM_CHARTOITEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CHILDACTIVATE" class="tdname">
-WM_CHILDACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CLEAR" class="tdname">
-WM_CLEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CLIPBOARDUPDATE" class="tdname">
-WM_CLIPBOARDUPDATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CLOSE" class="tdname">
-WM_CLOSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_COMMAND" class="tdname">
-WM_COMMAND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_COMMNOTIFY" class="tdname">
-WM_COMMNOTIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_COMPACTING" class="tdname">
-WM_COMPACTING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_COMPAREITEM" class="tdname">
-WM_COMPAREITEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CONTEXTMENU" class="tdname">
-WM_CONTEXTMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_COPY" class="tdname">
-WM_COPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_COPYDATA" class="tdname">
-WM_COPYDATA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CREATE" class="tdname">
-WM_CREATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CTLCOLORBTN" class="tdname">
-WM_CTLCOLORBTN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CTLCOLORDLG" class="tdname">
-WM_CTLCOLORDLG</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CTLCOLOREDIT" class="tdname">
-WM_CTLCOLOREDIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CTLCOLORLISTBOX" class="tdname">
-WM_CTLCOLORLISTBOX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CTLCOLORMSGBOX" class="tdname">
-WM_CTLCOLORMSGBOX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CTLCOLORSCROLLBAR" class="tdname">
-WM_CTLCOLORSCROLLBAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CTLCOLORSTATIC" class="tdname">
-WM_CTLCOLORSTATIC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_CUT" class="tdname">
-WM_CUT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DEADCHAR" class="tdname">
-WM_DEADCHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DELETEITEM" class="tdname">
-WM_DELETEITEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DESTROY" class="tdname">
-WM_DESTROY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DESTROYCLIPBOARD" class="tdname">
-WM_DESTROYCLIPBOARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DEVICECHANGE" class="tdname">
-WM_DEVICECHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DEVMODECHANGE" class="tdname">
-WM_DEVMODECHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DISPLAYCHANGE" class="tdname">
-WM_DISPLAYCHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DPICHANGED" class="tdname">
-WM_DPICHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DPICHANGED_AFTERPARENT" class="tdname">
-WM_DPICHANGED_AFTERPARENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DPICHANGED_BEFOREPARENT" class="tdname">
-WM_DPICHANGED_BEFOREPARENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DRAWCLIPBOARD" class="tdname">
-WM_DRAWCLIPBOARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DRAWITEM" class="tdname">
-WM_DRAWITEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DROPFILES" class="tdname">
-WM_DROPFILES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DWMCOLORIZATIONCOLORCHANGED" class="tdname">
-WM_DWMCOLORIZATIONCOLORCHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DWMCOMPOSITIONCHANGED" class="tdname">
-WM_DWMCOMPOSITIONCHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DWMNCRENDERINGCHANGED" class="tdname">
-WM_DWMNCRENDERINGCHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DWMSENDICONICLIVEPREVIEWBITMAP" class="tdname">
-WM_DWMSENDICONICLIVEPREVIEWBITMAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DWMSENDICONICTHUMBNAIL" class="tdname">
-WM_DWMSENDICONICTHUMBNAIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_DWMWINDOWMAXIMIZEDCHANGE" class="tdname">
-WM_DWMWINDOWMAXIMIZEDCHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ENABLE" class="tdname">
-WM_ENABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ENTERIDLE" class="tdname">
-WM_ENTERIDLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ENTERMENULOOP" class="tdname">
-WM_ENTERMENULOOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ENTERSIZEMOVE" class="tdname">
-WM_ENTERSIZEMOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ERASEBKGND" class="tdname">
-WM_ERASEBKGND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_EXITMENULOOP" class="tdname">
-WM_EXITMENULOOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_EXITSIZEMOVE" class="tdname">
-WM_EXITSIZEMOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_FONTCHANGE" class="tdname">
-WM_FONTCHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GESTURE" class="tdname">
-WM_GESTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GESTURENOTIFY" class="tdname">
-WM_GESTURENOTIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETDLGCODE" class="tdname">
-WM_GETDLGCODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETDPISCALEDSIZE" class="tdname">
-WM_GETDPISCALEDSIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETFONT" class="tdname">
-WM_GETFONT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETHOTKEY" class="tdname">
-WM_GETHOTKEY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETICON" class="tdname">
-WM_GETICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETMINMAXINFO" class="tdname">
-WM_GETMINMAXINFO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETOBJECT" class="tdname">
-WM_GETOBJECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETTEXT" class="tdname">
-WM_GETTEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETTEXTLENGTH" class="tdname">
-WM_GETTEXTLENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_GETTITLEBARINFOEX" class="tdname">
-WM_GETTITLEBARINFOEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_HANDHELDFIRST" class="tdname">
-WM_HANDHELDFIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_HANDHELDLAST" class="tdname">
-WM_HANDHELDLAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_HELP" class="tdname">
-WM_HELP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_HOTKEY" class="tdname">
-WM_HOTKEY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_HSCROLL" class="tdname">
-WM_HSCROLL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_HSCROLLCLIPBOARD" class="tdname">
-WM_HSCROLLCLIPBOARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_ICONERASEBKGND" class="tdname">
-WM_ICONERASEBKGND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_CHAR" class="tdname">
-WM_IME_CHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_COMPOSITION" class="tdname">
-WM_IME_COMPOSITION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_COMPOSITIONFULL" class="tdname">
-WM_IME_COMPOSITIONFULL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_CONTROL" class="tdname">
-WM_IME_CONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_ENDCOMPOSITION" class="tdname">
-WM_IME_ENDCOMPOSITION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_KEYDOWN" class="tdname">
-WM_IME_KEYDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_KEYLAST" class="tdname">
-WM_IME_KEYLAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_KEYUP" class="tdname">
-WM_IME_KEYUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_NOTIFY" class="tdname">
-WM_IME_NOTIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_REQUEST" class="tdname">
-WM_IME_REQUEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_SELECT" class="tdname">
-WM_IME_SELECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_SETCONTEXT" class="tdname">
-WM_IME_SETCONTEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_IME_STARTCOMPOSITION" class="tdname">
-WM_IME_STARTCOMPOSITION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_INITDIALOG" class="tdname">
-WM_INITDIALOG</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_INITMENU" class="tdname">
-WM_INITMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_INITMENUPOPUP" class="tdname">
-WM_INITMENUPOPUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_INPUT" class="tdname">
-WM_INPUT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_INPUTLANGCHANGE" class="tdname">
-WM_INPUTLANGCHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_INPUTLANGCHANGEREQUEST" class="tdname">
-WM_INPUTLANGCHANGEREQUEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_INPUT_DEVICE_CHANGE" class="tdname">
-WM_INPUT_DEVICE_CHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_KEYDOWN" class="tdname">
-WM_KEYDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_KEYFIRST" class="tdname">
-WM_KEYFIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_KEYLAST" class="tdname">
-WM_KEYLAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_KEYUP" class="tdname">
-WM_KEYUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_KILLFOCUS" class="tdname">
-WM_KILLFOCUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_LBUTTONDBLCLK" class="tdname">
-WM_LBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_LBUTTONDOWN" class="tdname">
-WM_LBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_LBUTTONUP" class="tdname">
-WM_LBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MBUTTONDBLCLK" class="tdname">
-WM_MBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MBUTTONDOWN" class="tdname">
-WM_MBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MBUTTONUP" class="tdname">
-WM_MBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDIACTIVATE" class="tdname">
-WM_MDIACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDICASCADE" class="tdname">
-WM_MDICASCADE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDICREATE" class="tdname">
-WM_MDICREATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDIDESTROY" class="tdname">
-WM_MDIDESTROY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDIGETACTIVE" class="tdname">
-WM_MDIGETACTIVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDIICONARRANGE" class="tdname">
-WM_MDIICONARRANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDIMAXIMIZE" class="tdname">
-WM_MDIMAXIMIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDINEXT" class="tdname">
-WM_MDINEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDIREFRESHMENU" class="tdname">
-WM_MDIREFRESHMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDIRESTORE" class="tdname">
-WM_MDIRESTORE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDISETMENU" class="tdname">
-WM_MDISETMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MDITILE" class="tdname">
-WM_MDITILE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MEASUREITEM" class="tdname">
-WM_MEASUREITEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MENUCHAR" class="tdname">
-WM_MENUCHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MENUCOMMAND" class="tdname">
-WM_MENUCOMMAND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MENUDRAG" class="tdname">
-WM_MENUDRAG</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MENUGETOBJECT" class="tdname">
-WM_MENUGETOBJECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MENURBUTTONUP" class="tdname">
-WM_MENURBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MENUSELECT" class="tdname">
-WM_MENUSELECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSEACTIVATE" class="tdname">
-WM_MOUSEACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSEFIRST" class="tdname">
-WM_MOUSEFIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSEHOVER" class="tdname">
-WM_MOUSEHOVER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSEHWHEEL" class="tdname">
-WM_MOUSEHWHEEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSELAST" class="tdname">
-WM_MOUSELAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSELEAVE" class="tdname">
-WM_MOUSELEAVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSEMOVE" class="tdname">
-WM_MOUSEMOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOUSEWHEEL" class="tdname">
-WM_MOUSEWHEEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOVE" class="tdname">
-WM_MOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_MOVING" class="tdname">
-WM_MOVING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCACTIVATE" class="tdname">
-WM_NCACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCCALCSIZE" class="tdname">
-WM_NCCALCSIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCCREATE" class="tdname">
-WM_NCCREATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCDESTROY" class="tdname">
-WM_NCDESTROY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCHITTEST" class="tdname">
-WM_NCHITTEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCLBUTTONDBLCLK" class="tdname">
-WM_NCLBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCLBUTTONDOWN" class="tdname">
-WM_NCLBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCLBUTTONUP" class="tdname">
-WM_NCLBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCMBUTTONDBLCLK" class="tdname">
-WM_NCMBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCMBUTTONDOWN" class="tdname">
-WM_NCMBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCMBUTTONUP" class="tdname">
-WM_NCMBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCMOUSEHOVER" class="tdname">
-WM_NCMOUSEHOVER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCMOUSELEAVE" class="tdname">
-WM_NCMOUSELEAVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCMOUSEMOVE" class="tdname">
-WM_NCMOUSEMOVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCPAINT" class="tdname">
-WM_NCPAINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCPOINTERDOWN" class="tdname">
-WM_NCPOINTERDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCPOINTERUP" class="tdname">
-WM_NCPOINTERUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCPOINTERUPDATE" class="tdname">
-WM_NCPOINTERUPDATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCRBUTTONDBLCLK" class="tdname">
-WM_NCRBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCRBUTTONDOWN" class="tdname">
-WM_NCRBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCRBUTTONUP" class="tdname">
-WM_NCRBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCXBUTTONDBLCLK" class="tdname">
-WM_NCXBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCXBUTTONDOWN" class="tdname">
-WM_NCXBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NCXBUTTONUP" class="tdname">
-WM_NCXBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NEXTDLGCTL" class="tdname">
-WM_NEXTDLGCTL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NEXTMENU" class="tdname">
-WM_NEXTMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NOTIFY" class="tdname">
-WM_NOTIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_NOTIFYFORMAT" class="tdname">
-WM_NOTIFYFORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PAINT" class="tdname">
-WM_PAINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PAINTCLIPBOARD" class="tdname">
-WM_PAINTCLIPBOARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PAINTICON" class="tdname">
-WM_PAINTICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PALETTECHANGED" class="tdname">
-WM_PALETTECHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PALETTEISCHANGING" class="tdname">
-WM_PALETTEISCHANGING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PARENTNOTIFY" class="tdname">
-WM_PARENTNOTIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PASTE" class="tdname">
-WM_PASTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PENWINFIRST" class="tdname">
-WM_PENWINFIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PENWINLAST" class="tdname">
-WM_PENWINLAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERACTIVATE" class="tdname">
-WM_POINTERACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERCAPTURECHANGED" class="tdname">
-WM_POINTERCAPTURECHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERDEVICECHANGE" class="tdname">
-WM_POINTERDEVICECHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERDEVICEINRANGE" class="tdname">
-WM_POINTERDEVICEINRANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERDEVICEOUTOFRANGE" class="tdname">
-WM_POINTERDEVICEOUTOFRANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERDOWN" class="tdname">
-WM_POINTERDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERENTER" class="tdname">
-WM_POINTERENTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERHWHEEL" class="tdname">
-WM_POINTERHWHEEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERLEAVE" class="tdname">
-WM_POINTERLEAVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERROUTEDAWAY" class="tdname">
-WM_POINTERROUTEDAWAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERROUTEDRELEASED" class="tdname">
-WM_POINTERROUTEDRELEASED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERROUTEDTO" class="tdname">
-WM_POINTERROUTEDTO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERUP" class="tdname">
-WM_POINTERUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERUPDATE" class="tdname">
-WM_POINTERUPDATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POINTERWHEEL" class="tdname">
-WM_POINTERWHEEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POWER" class="tdname">
-WM_POWER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_POWERBROADCAST" class="tdname">
-WM_POWERBROADCAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PRINT" class="tdname">
-WM_PRINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_PRINTCLIENT" class="tdname">
-WM_PRINTCLIENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_QUERYDRAGICON" class="tdname">
-WM_QUERYDRAGICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_QUERYNEWPALETTE" class="tdname">
-WM_QUERYNEWPALETTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_QUERYUISTATE" class="tdname">
-WM_QUERYUISTATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_QUEUESYNC" class="tdname">
-WM_QUEUESYNC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_QUIT" class="tdname">
-WM_QUIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_RBUTTONDBLCLK" class="tdname">
-WM_RBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_RBUTTONDOWN" class="tdname">
-WM_RBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_RBUTTONUP" class="tdname">
-WM_RBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_RENDERALLFORMATS" class="tdname">
-WM_RENDERALLFORMATS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_RENDERFORMAT" class="tdname">
-WM_RENDERFORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETCURSOR" class="tdname">
-WM_SETCURSOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETFOCUS" class="tdname">
-WM_SETFOCUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETFONT" class="tdname">
-WM_SETFONT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETHOTKEY" class="tdname">
-WM_SETHOTKEY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETICON" class="tdname">
-WM_SETICON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETREDRAW" class="tdname">
-WM_SETREDRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETTEXT" class="tdname">
-WM_SETTEXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SETTINGCHANGE" class="tdname">
-WM_SETTINGCHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SHOWWINDOW" class="tdname">
-WM_SHOWWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SIZE" class="tdname">
-WM_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SIZECLIPBOARD" class="tdname">
-WM_SIZECLIPBOARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SIZING" class="tdname">
-WM_SIZING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SPOOLERSTATUS" class="tdname">
-WM_SPOOLERSTATUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_STYLECHANGED" class="tdname">
-WM_STYLECHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_STYLECHANGING" class="tdname">
-WM_STYLECHANGING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SYNCPAINT" class="tdname">
-WM_SYNCPAINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SYSCHAR" class="tdname">
-WM_SYSCHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SYSCOLORCHANGE" class="tdname">
-WM_SYSCOLORCHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SYSCOMMAND" class="tdname">
-WM_SYSCOMMAND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SYSDEADCHAR" class="tdname">
-WM_SYSDEADCHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SYSKEYDOWN" class="tdname">
-WM_SYSKEYDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_SYSKEYUP" class="tdname">
-WM_SYSKEYUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_TABLET_FIRST" class="tdname">
-WM_TABLET_FIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_TABLET_LAST" class="tdname">
-WM_TABLET_LAST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_TCARD" class="tdname">
-WM_TCARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_THEMECHANGED" class="tdname">
-WM_THEMECHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_TIMECHANGE" class="tdname">
-WM_TIMECHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_TIMER" class="tdname">
-WM_TIMER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_TOUCH" class="tdname">
-WM_TOUCH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_TOUCHHITTESTING" class="tdname">
-WM_TOUCHHITTESTING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_UNDO" class="tdname">
-WM_UNDO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_UNICHAR" class="tdname">
-WM_UNICHAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_UNINITMENUPOPUP" class="tdname">
-WM_UNINITMENUPOPUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_UPDATEUISTATE" class="tdname">
-WM_UPDATEUISTATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_USER" class="tdname">
-WM_USER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_USERCHANGED" class="tdname">
-WM_USERCHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_VKEYTOITEM" class="tdname">
-WM_VKEYTOITEM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_VSCROLL" class="tdname">
-WM_VSCROLL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_VSCROLLCLIPBOARD" class="tdname">
-WM_VSCROLLCLIPBOARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_WINDOWPOSCHANGED" class="tdname">
-WM_WINDOWPOSCHANGED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_WINDOWPOSCHANGING" class="tdname">
-WM_WINDOWPOSCHANGING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_WININICHANGE" class="tdname">
-WM_WININICHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_WTSSESSION_CHANGE" class="tdname">
-WM_WTSSESSION_CHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_XBUTTONDBLCLK" class="tdname">
-WM_XBUTTONDBLCLK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_XBUTTONDOWN" class="tdname">
-WM_XBUTTONDOWN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WM_XBUTTONUP" class="tdname">
-WM_XBUTTONUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_BORDER" class="tdname">
-WS_BORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_CAPTION" class="tdname">
-WS_CAPTION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_CHILD" class="tdname">
-WS_CHILD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_CLIPCHILDREN" class="tdname">
-WS_CLIPCHILDREN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_CLIPSIBLINGS" class="tdname">
-WS_CLIPSIBLINGS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_DISABLED" class="tdname">
-WS_DISABLED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_DLGFRAME" class="tdname">
-WS_DLGFRAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_ACCEPTFILES" class="tdname">
-WS_EX_ACCEPTFILES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_APPWINDOW" class="tdname">
-WS_EX_APPWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_CLIENTEDGE" class="tdname">
-WS_EX_CLIENTEDGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_COMPOSITED" class="tdname">
-WS_EX_COMPOSITED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_CONTEXTHELP" class="tdname">
-WS_EX_CONTEXTHELP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_CONTROLPARENT" class="tdname">
-WS_EX_CONTROLPARENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_DLGMODALFRAME" class="tdname">
-WS_EX_DLGMODALFRAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_LAYERED" class="tdname">
-WS_EX_LAYERED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_LAYOUTRTL" class="tdname">
-WS_EX_LAYOUTRTL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_LEFT" class="tdname">
-WS_EX_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_LEFTSCROLLBAR" class="tdname">
-WS_EX_LEFTSCROLLBAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_LTRREADING" class="tdname">
-WS_EX_LTRREADING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_MDICHILD" class="tdname">
-WS_EX_MDICHILD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_NOACTIVATE" class="tdname">
-WS_EX_NOACTIVATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_NOINHERITLAYOUT" class="tdname">
-WS_EX_NOINHERITLAYOUT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_NOPARENTNOTIFY" class="tdname">
-WS_EX_NOPARENTNOTIFY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_NOREDIRECTIONBITMAP" class="tdname">
-WS_EX_NOREDIRECTIONBITMAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_OVERLAPPEDWINDOW" class="tdname">
-WS_EX_OVERLAPPEDWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_PALETTEWINDOW" class="tdname">
-WS_EX_PALETTEWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_RIGHT" class="tdname">
-WS_EX_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_RIGHTSCROLLBAR" class="tdname">
-WS_EX_RIGHTSCROLLBAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_RTLREADING" class="tdname">
-WS_EX_RTLREADING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_STATICEDGE" class="tdname">
-WS_EX_STATICEDGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_TOOLWINDOW" class="tdname">
-WS_EX_TOOLWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_TOPMOST" class="tdname">
-WS_EX_TOPMOST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_TRANSPARENT" class="tdname">
-WS_EX_TRANSPARENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_EX_WINDOWEDGE" class="tdname">
-WS_EX_WINDOWEDGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_GROUP" class="tdname">
-WS_GROUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_HSCROLL" class="tdname">
-WS_HSCROLL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_MAXIMIZE" class="tdname">
-WS_MAXIMIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_MAXIMIZEBOX" class="tdname">
-WS_MAXIMIZEBOX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_MINIMIZE" class="tdname">
-WS_MINIMIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_MINIMIZEBOX" class="tdname">
-WS_MINIMIZEBOX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_OVERLAPPED" class="tdname">
-WS_OVERLAPPED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_OVERLAPPEDWINDOW" class="tdname">
-WS_OVERLAPPEDWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_POPUP" class="tdname">
-WS_POPUP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_POPUPWINDOW" class="tdname">
-WS_POPUPWINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_SYSMENU" class="tdname">
-WS_SYSMENU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_TABSTOP" class="tdname">
-WS_TABSTOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_THICKFRAME" class="tdname">
-WS_THICKFRAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_VISIBLE" class="tdname">
-WS_VISIBLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Win32_WS_VSCROLL" class="tdname">
-WS_VSCROLL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Win32_WS_VSCROLL">WS_VSCROLL</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9559,44 +6491,29 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dwSize</td>
-<td class="tdtype">
-<a href="#Win32_COORD">Win32.COORD</a></td>
-<td class="enumeration">
-</td>
+<td>dwSize</td>
+<td><a href="#Win32_COORD">Win32.COORD</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwCursorPosition</td>
-<td class="tdtype">
-<a href="#Win32_COORD">Win32.COORD</a></td>
-<td class="enumeration">
-</td>
+<td>dwCursorPosition</td>
+<td><a href="#Win32_COORD">Win32.COORD</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wAttributes</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wAttributes</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-srWindow</td>
-<td class="tdtype">
-<a href="#Win32_SMALL_RECT">Win32.SMALL_RECT</a></td>
-<td class="enumeration">
-</td>
+<td>srWindow</td>
+<td><a href="#Win32_SMALL_RECT">Win32.SMALL_RECT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwMaximumWindowSize</td>
-<td class="tdtype">
-<a href="#Win32_COORD">Win32.COORD</a></td>
-<td class="enumeration">
-</td>
+<td>dwMaximumWindowSize</td>
+<td><a href="#Win32_COORD">Win32.COORD</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9612,20 +6529,14 @@ dwMaximumWindowSize</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9641,100 +6552,64 @@ Win32.WORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lpCreateParams</td>
-<td class="tdtype">
-Win32.LPVOID</td>
-<td class="enumeration">
-</td>
+<td>lpCreateParams</td>
+<td>Win32.LPVOID</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hInstance</td>
-<td class="tdtype">
-Win32.HINSTANCE</td>
-<td class="enumeration">
-</td>
+<td>hInstance</td>
+<td>Win32.HINSTANCE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hMenu</td>
-<td class="tdtype">
-Win32.HMENU</td>
-<td class="enumeration">
-</td>
+<td>hMenu</td>
+<td>Win32.HMENU</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hwndParent</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hwndParent</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cy</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cy</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cx</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cx</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-style</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>style</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszName</td>
-<td class="tdtype">
-Win32.LPCSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszName</td>
+<td>Win32.LPCSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszClass</td>
-<td class="tdtype">
-Win32.LPCSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszClass</td>
+<td>Win32.LPCSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwExStyle</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwExStyle</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9750,100 +6625,64 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lpCreateParams</td>
-<td class="tdtype">
-Win32.LPVOID</td>
-<td class="enumeration">
-</td>
+<td>lpCreateParams</td>
+<td>Win32.LPVOID</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hInstance</td>
-<td class="tdtype">
-Win32.HINSTANCE</td>
-<td class="enumeration">
-</td>
+<td>hInstance</td>
+<td>Win32.HINSTANCE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hMenu</td>
-<td class="tdtype">
-Win32.HMENU</td>
-<td class="enumeration">
-</td>
+<td>hMenu</td>
+<td>Win32.HMENU</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hwndParent</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hwndParent</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cy</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cy</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cx</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cx</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-style</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>style</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszName</td>
-<td class="tdtype">
-Win32.LPCWSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszName</td>
+<td>Win32.LPCWSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszClass</td>
-<td class="tdtype">
-Win32.LPCWSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszClass</td>
+<td>Win32.LPCWSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwExStyle</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwExStyle</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10489,20 +7328,14 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dwLowDateTime</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwLowDateTime</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwHighDateTime</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwHighDateTime</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10742,16 +7575,12 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-GetFileExInfoStandard</td>
-<td class="enumeration">
-</td>
+<td>GetFileExInfoStandard</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GetFileExMaxInfoLevel</td>
-<td class="enumeration">
-</td>
+<td>GetFileExMaxInfoLevel</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10809,36 +7638,24 @@ GetFileExMaxInfoLevel</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Data1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>Data1</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Data2</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>Data2</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Data3</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>Data3</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Data4</td>
-<td class="tdtype">
-[8] u8</td>
-<td class="enumeration">
-</td>
+<td>Data4</td>
+<td>[8] u8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11596,44 +8413,29 @@ Data4</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fIcon</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>fIcon</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-xHotspot</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>xHotspot</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-yHotspot</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>yHotspot</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hbmMask</td>
-<td class="tdtype">
-Win32.HBITMAP</td>
-<td class="enumeration">
-</td>
+<td>hbmMask</td>
+<td>Win32.HBITMAP</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hbmColor</td>
-<td class="tdtype">
-Win32.HBITMAP</td>
-<td class="enumeration">
-</td>
+<td>hbmColor</td>
+<td>Win32.HBITMAP</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11649,148 +8451,94 @@ Win32.HBITMAP</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-*Win32.IP_ADAPTER_INFO</td>
-<td class="enumeration">
-</td>
+<td>next</td>
+<td>*Win32.IP_ADAPTER_INFO</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-comboIndex</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>comboIndex</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-adapterName</td>
-<td class="tdtype">
-[260] u8</td>
-<td class="enumeration">
-</td>
+<td>adapterName</td>
+<td>[260] u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-description</td>
-<td class="tdtype">
-[132] u8</td>
-<td class="enumeration">
-</td>
+<td>description</td>
+<td>[132] u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-addressLength</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>addressLength</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-address</td>
-<td class="tdtype">
-[8] Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>address</td>
+<td>[8] Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-index</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>index</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dhcpEnabled</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>dhcpEnabled</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-currentIpAddress</td>
-<td class="tdtype">
-*Win32.IP_ADDR_STRING</td>
-<td class="enumeration">
-</td>
+<td>currentIpAddress</td>
+<td>*Win32.IP_ADDR_STRING</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ipAddressList</td>
-<td class="tdtype">
-<a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
-<td class="enumeration">
-</td>
+<td>ipAddressList</td>
+<td><a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-gatewayList</td>
-<td class="tdtype">
-<a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
-<td class="enumeration">
-</td>
+<td>gatewayList</td>
+<td><a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dhcpServer</td>
-<td class="tdtype">
-<a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
-<td class="enumeration">
-</td>
+<td>dhcpServer</td>
+<td><a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-haveWins</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>haveWins</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-primaryWinsServer</td>
-<td class="tdtype">
-<a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
-<td class="enumeration">
-</td>
+<td>primaryWinsServer</td>
+<td><a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-secondaryWinsServer</td>
-<td class="tdtype">
-<a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
-<td class="enumeration">
-</td>
+<td>secondaryWinsServer</td>
+<td><a href="#Win32_IP_ADDR_STRING">Win32.IP_ADDR_STRING</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-leaseObtained</td>
-<td class="tdtype">
-Win32.time_t</td>
-<td class="enumeration">
-</td>
+<td>leaseObtained</td>
+<td>Win32.time_t</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-leaseExpires</td>
-<td class="tdtype">
-Win32.time_t</td>
-<td class="enumeration">
-</td>
+<td>leaseExpires</td>
+<td>Win32.time_t</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11806,12 +8554,9 @@ Win32.time_t</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-str</td>
-<td class="tdtype">
-[16] u8</td>
-<td class="enumeration">
-</td>
+<td>str</td>
+<td>[16] u8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11827,36 +8572,24 @@ str</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-*Win32.IP_ADDR_STRING</td>
-<td class="enumeration">
-</td>
+<td>next</td>
+<td>*Win32.IP_ADDR_STRING</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ipAddress</td>
-<td class="tdtype">
-<a href="#Win32_IP_ADDRESS_STRING">Win32.IP_ADDRESS_STRING</a></td>
-<td class="enumeration">
-</td>
+<td>ipAddress</td>
+<td><a href="#Win32_IP_ADDRESS_STRING">Win32.IP_ADDRESS_STRING</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ipMask</td>
-<td class="tdtype">
-<a href="#Win32_IP_ADDRESS_STRING">Win32.IP_ADDRESS_STRING</a></td>
-<td class="enumeration">
-</td>
+<td>ipMask</td>
+<td><a href="#Win32_IP_ADDRESS_STRING">Win32.IP_ADDRESS_STRING</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-context</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>context</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12040,44 +8773,29 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-ptReserved</td>
-<td class="tdtype">
-<a href="#Win32_POINT">Win32.POINT</a></td>
-<td class="enumeration">
-</td>
+<td>ptReserved</td>
+<td><a href="#Win32_POINT">Win32.POINT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ptMaxSize</td>
-<td class="tdtype">
-<a href="#Win32_POINT">Win32.POINT</a></td>
-<td class="enumeration">
-</td>
+<td>ptMaxSize</td>
+<td><a href="#Win32_POINT">Win32.POINT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ptMaxPosition</td>
-<td class="tdtype">
-<a href="#Win32_POINT">Win32.POINT</a></td>
-<td class="enumeration">
-</td>
+<td>ptMaxPosition</td>
+<td><a href="#Win32_POINT">Win32.POINT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ptMinTrackSize</td>
-<td class="tdtype">
-<a href="#Win32_POINT">Win32.POINT</a></td>
-<td class="enumeration">
-</td>
+<td>ptMinTrackSize</td>
+<td><a href="#Win32_POINT">Win32.POINT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ptMaxTrackSize</td>
-<td class="tdtype">
-<a href="#Win32_POINT">Win32.POINT</a></td>
-<td class="enumeration">
-</td>
+<td>ptMaxTrackSize</td>
+<td><a href="#Win32_POINT">Win32.POINT</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12093,36 +8811,24 @@ ptMaxTrackSize</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-cbSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>cbSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rcMonitor</td>
-<td class="tdtype">
-<a href="#Win32_RECT">Win32.RECT</a></td>
-<td class="enumeration">
-</td>
+<td>rcMonitor</td>
+<td><a href="#Win32_RECT">Win32.RECT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rcWork</td>
-<td class="tdtype">
-<a href="#Win32_RECT">Win32.RECT</a></td>
-<td class="enumeration">
-</td>
+<td>rcWork</td>
+<td><a href="#Win32_RECT">Win32.RECT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12138,60 +8844,39 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hwnd</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hwnd</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-message</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>message</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wParam</td>
-<td class="tdtype">
-Win32.WPARAM</td>
-<td class="enumeration">
-</td>
+<td>wParam</td>
+<td>Win32.WPARAM</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lParam</td>
-<td class="tdtype">
-Win32.LPARAM</td>
-<td class="enumeration">
-</td>
+<td>lParam</td>
+<td>Win32.LPARAM</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-time</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>time</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pt</td>
-<td class="tdtype">
-<a href="#Win32_POINT">Win32.POINT</a></td>
-<td class="enumeration">
-</td>
+<td>pt</td>
+<td><a href="#Win32_POINT">Win32.POINT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lPrivate</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>lPrivate</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12305,124 +8990,79 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-cbSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>cbSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hWnd</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hWnd</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uID</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>uID</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uFlags</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>uFlags</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uCallbackMessage</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>uCallbackMessage</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szTip</td>
-<td class="tdtype">
-[128] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>szTip</td>
+<td>[128] Win32.CHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwState</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwState</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwStateMask</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwStateMask</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szInfo</td>
-<td class="tdtype">
-[256] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>szInfo</td>
+<td>[256] Win32.CHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-<b>using</b> DUMMYUNIONNAME</td>
-<td class="tdtype">
-{uTimeout: Win32.UINT, uVersion: Win32.UINT}</td>
-<td class="enumeration">
-</td>
+<td><b>using</b> DUMMYUNIONNAME</td>
+<td>{uTimeout: Win32.UINT, uVersion: Win32.UINT}</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szInfoTitle</td>
-<td class="tdtype">
-[64] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>szInfoTitle</td>
+<td>[64] Win32.CHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwInfoFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwInfoFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-guidItem</td>
-<td class="tdtype">
-<a href="#Win32_GUID">Win32.GUID</a></td>
-<td class="enumeration">
-</td>
+<td>guidItem</td>
+<td><a href="#Win32_GUID">Win32.GUID</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hBalloonIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hBalloonIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12438,124 +9078,79 @@ Win32.HICON</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-cbSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>cbSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hWnd</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hWnd</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uID</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>uID</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uFlags</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>uFlags</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uCallbackMessage</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>uCallbackMessage</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szTip</td>
-<td class="tdtype">
-[128] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>szTip</td>
+<td>[128] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwState</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwState</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwStateMask</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwStateMask</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szInfo</td>
-<td class="tdtype">
-[256] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>szInfo</td>
+<td>[256] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-<b>using</b> DUMMYUNIONNAME</td>
-<td class="tdtype">
-{uTimeout: Win32.UINT, uVersion: Win32.UINT}</td>
-<td class="enumeration">
-</td>
+<td><b>using</b> DUMMYUNIONNAME</td>
+<td>{uTimeout: Win32.UINT, uVersion: Win32.UINT}</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szInfoTitle</td>
-<td class="tdtype">
-[64] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>szInfoTitle</td>
+<td>[64] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwInfoFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwInfoFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-guidItem</td>
-<td class="tdtype">
-<a href="#Win32_GUID">Win32.GUID</a></td>
-<td class="enumeration">
-</td>
+<td>guidItem</td>
+<td><a href="#Win32_GUID">Win32.GUID</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hBalloonIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hBalloonIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12613,52 +9208,34 @@ Win32.HICON</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hdc</td>
-<td class="tdtype">
-Win32.HDC</td>
-<td class="enumeration">
-</td>
+<td>hdc</td>
+<td>Win32.HDC</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fErase</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>fErase</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rcPaint</td>
-<td class="tdtype">
-<a href="#Win32_RECT">Win32.RECT</a></td>
-<td class="enumeration">
-</td>
+<td>rcPaint</td>
+<td><a href="#Win32_RECT">Win32.RECT</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fRestore</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>fRestore</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fIncUpdate</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>fIncUpdate</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rgbReserved</td>
-<td class="tdtype">
-[32] Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>rgbReserved</td>
+<td>[32] Win32.BYTE</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12674,20 +9251,14 @@ rgbReserved</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12703,36 +9274,24 @@ Win32.LONG</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hProcess</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hProcess</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hThread</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hThread</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwProcessId</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwProcessId</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwThreadId</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwThreadId</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12846,36 +9405,24 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-left</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>left</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-top</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>top</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-right</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>right</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bottom</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>bottom</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13073,28 +9620,19 @@ Win32.LONG</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-nLength</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nLength</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpSecurityDescriptor</td>
-<td class="tdtype">
-Win32.LPVOID</td>
-<td class="enumeration">
-</td>
+<td>lpSecurityDescriptor</td>
+<td>Win32.LPVOID</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bInheritHandle</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>bInheritHandle</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13110,44 +9648,29 @@ Win32.BOOL</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iIcon</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>iIcon</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwAttributes</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwAttributes</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szDisplayName</td>
-<td class="tdtype">
-[260] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>szDisplayName</td>
+<td>[260] Win32.CHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szTypeName</td>
-<td class="tdtype">
-[80] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>szTypeName</td>
+<td>[80] Win32.CHAR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13163,44 +9686,29 @@ szTypeName</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iIcon</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>iIcon</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwAttributes</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwAttributes</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szDisplayName</td>
-<td class="tdtype">
-[260] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>szDisplayName</td>
+<td>[260] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szTypeName</td>
-<td class="tdtype">
-[80] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>szTypeName</td>
+<td>[80] Win32.WCHAR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13286,661 +9794,380 @@ szTypeName</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-SIID_DOCNOASSOC</td>
-<td class="enumeration">
-<p>document (blank page) no associated program. </p>
-</td>
+<td>SIID_DOCNOASSOC</td>
+<td>document (blank page) no associated program. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DOCASSOC</td>
-<td class="enumeration">
-<p>document with an associated program. </p>
-</td>
+<td>SIID_DOCASSOC</td>
+<td>document with an associated program. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_APPLICATION</td>
-<td class="enumeration">
-<p>generic application with no custom icon. </p>
-</td>
+<td>SIID_APPLICATION</td>
+<td>generic application with no custom icon. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_FOLDER</td>
-<td class="enumeration">
-<p>folder (closed). </p>
-</td>
+<td>SIID_FOLDER</td>
+<td>folder (closed). </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_FOLDEROPEN</td>
-<td class="enumeration">
-<p>folder (open). </p>
-</td>
+<td>SIID_FOLDEROPEN</td>
+<td>folder (open). </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVE525</td>
-<td class="enumeration">
-<p>5.25" floppy disk drive. </p>
-</td>
+<td>SIID_DRIVE525</td>
+<td>5.25" floppy disk drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVE35</td>
-<td class="enumeration">
-<p>3.5" floppy disk drive. </p>
-</td>
+<td>SIID_DRIVE35</td>
+<td>3.5" floppy disk drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVEREMOVE</td>
-<td class="enumeration">
-<p>removable drive. </p>
-</td>
+<td>SIID_DRIVEREMOVE</td>
+<td>removable drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVEFIXED</td>
-<td class="enumeration">
-<p>fixed (hard disk) drive. </p>
-</td>
+<td>SIID_DRIVEFIXED</td>
+<td>fixed (hard disk) drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVENET</td>
-<td class="enumeration">
-<p>network drive. </p>
-</td>
+<td>SIID_DRIVENET</td>
+<td>network drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVENETDISABLED</td>
-<td class="enumeration">
-<p>disconnected network drive. </p>
-</td>
+<td>SIID_DRIVENETDISABLED</td>
+<td>disconnected network drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVECD</td>
-<td class="enumeration">
-<p>CD drive. </p>
-</td>
+<td>SIID_DRIVECD</td>
+<td>CD drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVERAM</td>
-<td class="enumeration">
-<p>RAM disk drive. </p>
-</td>
+<td>SIID_DRIVERAM</td>
+<td>RAM disk drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_WORLD</td>
-<td class="enumeration">
-<p>entire network. </p>
-</td>
+<td>SIID_WORLD</td>
+<td>entire network. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_SERVER</td>
-<td class="enumeration">
-<p>a computer on the network. </p>
-</td>
+<td>SIID_SERVER</td>
+<td>a computer on the network. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_PRINTER</td>
-<td class="enumeration">
-<p>printer. </p>
-</td>
+<td>SIID_PRINTER</td>
+<td>printer. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MYNETWORK</td>
-<td class="enumeration">
-<p>My network places. </p>
-</td>
+<td>SIID_MYNETWORK</td>
+<td>My network places. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_FIND</td>
-<td class="enumeration">
-<p>Find. </p>
-</td>
+<td>SIID_FIND</td>
+<td>Find. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_HELP</td>
-<td class="enumeration">
-<p>Help. </p>
-</td>
+<td>SIID_HELP</td>
+<td>Help. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_SHARE</td>
-<td class="enumeration">
-<p>overlay for shared items. </p>
-</td>
+<td>SIID_SHARE</td>
+<td>overlay for shared items. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_LINK</td>
-<td class="enumeration">
-<p>overlay for shortcuts to items. </p>
-</td>
+<td>SIID_LINK</td>
+<td>overlay for shortcuts to items. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_SLOWFILE</td>
-<td class="enumeration">
-<p>overlay for slow items. </p>
-</td>
+<td>SIID_SLOWFILE</td>
+<td>overlay for slow items. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_RECYCLER</td>
-<td class="enumeration">
-<p>empty recycle bin. </p>
-</td>
+<td>SIID_RECYCLER</td>
+<td>empty recycle bin. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_RECYCLERFULL</td>
-<td class="enumeration">
-<p>full recycle bin. </p>
-</td>
+<td>SIID_RECYCLERFULL</td>
+<td>full recycle bin. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIACDAUDIO</td>
-<td class="enumeration">
-<p>Audio CD Media. </p>
-</td>
+<td>SIID_MEDIACDAUDIO</td>
+<td>Audio CD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_LOCK</td>
-<td class="enumeration">
-<p>Security lock. </p>
-</td>
+<td>SIID_LOCK</td>
+<td>Security lock. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_AUTOLIST</td>
-<td class="enumeration">
-<p>AutoList. </p>
-</td>
+<td>SIID_AUTOLIST</td>
+<td>AutoList. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_PRINTERNET</td>
-<td class="enumeration">
-<p>Network printer. </p>
-</td>
+<td>SIID_PRINTERNET</td>
+<td>Network printer. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_SERVERSHARE</td>
-<td class="enumeration">
-<p>Server share. </p>
-</td>
+<td>SIID_SERVERSHARE</td>
+<td>Server share. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_PRINTERFAX</td>
-<td class="enumeration">
-<p>Fax printer. </p>
-</td>
+<td>SIID_PRINTERFAX</td>
+<td>Fax printer. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_PRINTERFAXNET</td>
-<td class="enumeration">
-<p>Networked Fax Printer. </p>
-</td>
+<td>SIID_PRINTERFAXNET</td>
+<td>Networked Fax Printer. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_PRINTERFILE</td>
-<td class="enumeration">
-<p>Print to File. </p>
-</td>
+<td>SIID_PRINTERFILE</td>
+<td>Print to File. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_STACK</td>
-<td class="enumeration">
-<p>Stack. </p>
-</td>
+<td>SIID_STACK</td>
+<td>Stack. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIASVCD</td>
-<td class="enumeration">
-<p>SVCD Media. </p>
-</td>
+<td>SIID_MEDIASVCD</td>
+<td>SVCD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_STUFFEDFOLDER</td>
-<td class="enumeration">
-<p>Folder containing other items. </p>
-</td>
+<td>SIID_STUFFEDFOLDER</td>
+<td>Folder containing other items. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVEUNKNOWN</td>
-<td class="enumeration">
-<p>Unknown drive. </p>
-</td>
+<td>SIID_DRIVEUNKNOWN</td>
+<td>Unknown drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVEDVD</td>
-<td class="enumeration">
-<p>DVD Drive. </p>
-</td>
+<td>SIID_DRIVEDVD</td>
+<td>DVD Drive. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIADVD</td>
-<td class="enumeration">
-<p>DVD Media. </p>
-</td>
+<td>SIID_MEDIADVD</td>
+<td>DVD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIADVDRAM</td>
-<td class="enumeration">
-<p>DVD-RAM Media. </p>
-</td>
+<td>SIID_MEDIADVDRAM</td>
+<td>DVD-RAM Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIADVDRW</td>
-<td class="enumeration">
-<p>DVD-RW Media. </p>
-</td>
+<td>SIID_MEDIADVDRW</td>
+<td>DVD-RW Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIADVDR</td>
-<td class="enumeration">
-<p>DVD-R Media. </p>
-</td>
+<td>SIID_MEDIADVDR</td>
+<td>DVD-R Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIADVDROM</td>
-<td class="enumeration">
-<p>DVD-ROM Media. </p>
-</td>
+<td>SIID_MEDIADVDROM</td>
+<td>DVD-ROM Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIACDAUDIOPLUS</td>
-<td class="enumeration">
-<p>CD+ (Enhanced CD) Media. </p>
-</td>
+<td>SIID_MEDIACDAUDIOPLUS</td>
+<td>CD+ (Enhanced CD) Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIACDRW</td>
-<td class="enumeration">
-<p>CD-RW Media. </p>
-</td>
+<td>SIID_MEDIACDRW</td>
+<td>CD-RW Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIACDR</td>
-<td class="enumeration">
-<p>CD-R Media. </p>
-</td>
+<td>SIID_MEDIACDR</td>
+<td>CD-R Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIACDBURN</td>
-<td class="enumeration">
-<p>Burning CD. </p>
-</td>
+<td>SIID_MEDIACDBURN</td>
+<td>Burning CD. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIABLANKCD</td>
-<td class="enumeration">
-<p>Blank CD Media. </p>
-</td>
+<td>SIID_MEDIABLANKCD</td>
+<td>Blank CD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIACDROM</td>
-<td class="enumeration">
-<p>CD-ROM Media. </p>
-</td>
+<td>SIID_MEDIACDROM</td>
+<td>CD-ROM Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_AUDIOFILES</td>
-<td class="enumeration">
-<p>Audio files. </p>
-</td>
+<td>SIID_AUDIOFILES</td>
+<td>Audio files. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_IMAGEFILES</td>
-<td class="enumeration">
-<p>Image files. </p>
-</td>
+<td>SIID_IMAGEFILES</td>
+<td>Image files. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_VIDEOFILES</td>
-<td class="enumeration">
-<p>Video files. </p>
-</td>
+<td>SIID_VIDEOFILES</td>
+<td>Video files. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MIXEDFILES</td>
-<td class="enumeration">
-<p>Mixed files. </p>
-</td>
+<td>SIID_MIXEDFILES</td>
+<td>Mixed files. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_FOLDERBACK</td>
-<td class="enumeration">
-<p>Folder back. </p>
-</td>
+<td>SIID_FOLDERBACK</td>
+<td>Folder back. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_FOLDERFRONT</td>
-<td class="enumeration">
-<p>Folder front. </p>
-</td>
+<td>SIID_FOLDERFRONT</td>
+<td>Folder front. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_SHIELD</td>
-<td class="enumeration">
-<p>Security shield. Use for UAC prompts only. </p>
-</td>
+<td>SIID_SHIELD</td>
+<td>Security shield. Use for UAC prompts only. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_WARNING</td>
-<td class="enumeration">
-<p>Warning. </p>
-</td>
+<td>SIID_WARNING</td>
+<td>Warning. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_INFO</td>
-<td class="enumeration">
-<p>Informational. </p>
-</td>
+<td>SIID_INFO</td>
+<td>Informational. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_ERROR</td>
-<td class="enumeration">
-<p>Error. </p>
-</td>
+<td>SIID_ERROR</td>
+<td>Error. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_KEY</td>
-<td class="enumeration">
-<p>Key / Secure. </p>
-</td>
+<td>SIID_KEY</td>
+<td>Key / Secure. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_SOFTWARE</td>
-<td class="enumeration">
-<p>Software. </p>
-</td>
+<td>SIID_SOFTWARE</td>
+<td>Software. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_RENAME</td>
-<td class="enumeration">
-<p>Rename. </p>
-</td>
+<td>SIID_RENAME</td>
+<td>Rename. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DELETE</td>
-<td class="enumeration">
-<p>Delete. </p>
-</td>
+<td>SIID_DELETE</td>
+<td>Delete. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAAUDIODVD</td>
-<td class="enumeration">
-<p>Audio DVD Media. </p>
-</td>
+<td>SIID_MEDIAAUDIODVD</td>
+<td>Audio DVD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAMOVIEDVD</td>
-<td class="enumeration">
-<p>Movie DVD Media. </p>
-</td>
+<td>SIID_MEDIAMOVIEDVD</td>
+<td>Movie DVD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAENHANCEDCD</td>
-<td class="enumeration">
-<p>Enhanced CD Media. </p>
-</td>
+<td>SIID_MEDIAENHANCEDCD</td>
+<td>Enhanced CD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAENHANCEDDVD</td>
-<td class="enumeration">
-<p>Enhanced DVD Media. </p>
-</td>
+<td>SIID_MEDIAENHANCEDDVD</td>
+<td>Enhanced DVD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAHDDVD</td>
-<td class="enumeration">
-<p>HD-DVD Media. </p>
-</td>
+<td>SIID_MEDIAHDDVD</td>
+<td>HD-DVD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIABLURAY</td>
-<td class="enumeration">
-<p>BluRay Media. </p>
-</td>
+<td>SIID_MEDIABLURAY</td>
+<td>BluRay Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAVCD</td>
-<td class="enumeration">
-<p>VCD Media. </p>
-</td>
+<td>SIID_MEDIAVCD</td>
+<td>VCD Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIADVDPLUSR</td>
-<td class="enumeration">
-<p>DVD+R Media. </p>
-</td>
+<td>SIID_MEDIADVDPLUSR</td>
+<td>DVD+R Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIADVDPLUSRW</td>
-<td class="enumeration">
-<p>DVD+RW Media. </p>
-</td>
+<td>SIID_MEDIADVDPLUSRW</td>
+<td>DVD+RW Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DESKTOPPC</td>
-<td class="enumeration">
-<p>desktop computer. </p>
-</td>
+<td>SIID_DESKTOPPC</td>
+<td>desktop computer. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MOBILEPC</td>
-<td class="enumeration">
-<p>mobile computer (laptop/notebook). </p>
-</td>
+<td>SIID_MOBILEPC</td>
+<td>mobile computer (laptop/notebook). </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_USERS</td>
-<td class="enumeration">
-<p>users. </p>
-</td>
+<td>SIID_USERS</td>
+<td>users. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIASMARTMEDIA</td>
-<td class="enumeration">
-<p>Smart Media. </p>
-</td>
+<td>SIID_MEDIASMARTMEDIA</td>
+<td>Smart Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIACOMPACTFLASH</td>
-<td class="enumeration">
-<p>Compact Flash. </p>
-</td>
+<td>SIID_MEDIACOMPACTFLASH</td>
+<td>Compact Flash. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DEVICECELLPHONE</td>
-<td class="enumeration">
-<p>Cell phone. </p>
-</td>
+<td>SIID_DEVICECELLPHONE</td>
+<td>Cell phone. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DEVICECAMERA</td>
-<td class="enumeration">
-<p>Camera. </p>
-</td>
+<td>SIID_DEVICECAMERA</td>
+<td>Camera. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DEVICEVIDEOCAMERA</td>
-<td class="enumeration">
-<p>Video camera. </p>
-</td>
+<td>SIID_DEVICEVIDEOCAMERA</td>
+<td>Video camera. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DEVICEAUDIOPLAYER</td>
-<td class="enumeration">
-<p>Audio player. </p>
-</td>
+<td>SIID_DEVICEAUDIOPLAYER</td>
+<td>Audio player. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_NETWORKCONNECT</td>
-<td class="enumeration">
-<p>Connect to network. </p>
-</td>
+<td>SIID_NETWORKCONNECT</td>
+<td>Connect to network. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_INTERNET</td>
-<td class="enumeration">
-<p>Internet. </p>
-</td>
+<td>SIID_INTERNET</td>
+<td>Internet. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_ZIPFILE</td>
-<td class="enumeration">
-<p>ZIP file. </p>
-</td>
+<td>SIID_ZIPFILE</td>
+<td>ZIP file. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_SETTINGS</td>
-<td class="enumeration">
-<p>Settings  107-131 are internal Vista RTM icons  132-159 for SP1 icons. </p>
-</td>
+<td>SIID_SETTINGS</td>
+<td>Settings  107-131 are internal Vista RTM icons  132-159 for SP1 icons. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVEHDDVD</td>
-<td class="enumeration">
-<p>HDDVD Drive (all types). </p>
-</td>
+<td>SIID_DRIVEHDDVD</td>
+<td>HDDVD Drive (all types). </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_DRIVEBD</td>
-<td class="enumeration">
-<p>BluRay Drive (all types). </p>
-</td>
+<td>SIID_DRIVEBD</td>
+<td>BluRay Drive (all types). </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAHDDVDROM</td>
-<td class="enumeration">
-<p>HDDVD-ROM Media. </p>
-</td>
+<td>SIID_MEDIAHDDVDROM</td>
+<td>HDDVD-ROM Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAHDDVDR</td>
-<td class="enumeration">
-<p>HDDVD-R Media. </p>
-</td>
+<td>SIID_MEDIAHDDVDR</td>
+<td>HDDVD-R Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIAHDDVDRAM</td>
-<td class="enumeration">
-<p>HDDVD-RAM Media. </p>
-</td>
+<td>SIID_MEDIAHDDVDRAM</td>
+<td>HDDVD-RAM Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIABDROM</td>
-<td class="enumeration">
-<p>BluRay ROM Media. </p>
-</td>
+<td>SIID_MEDIABDROM</td>
+<td>BluRay ROM Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIABDR</td>
-<td class="enumeration">
-<p>BluRay R Media. </p>
-</td>
+<td>SIID_MEDIABDR</td>
+<td>BluRay R Media. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MEDIABDRE</td>
-<td class="enumeration">
-<p>BluRay RE Media (Rewriable and RAM). </p>
-</td>
+<td>SIID_MEDIABDRE</td>
+<td>BluRay RE Media (Rewriable and RAM). </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_CLUSTEREDDRIVE</td>
-<td class="enumeration">
-<p>Clustered disk  160+ are for Windows 7 icons. </p>
-</td>
+<td>SIID_CLUSTEREDDRIVE</td>
+<td>Clustered disk  160+ are for Windows 7 icons. </td>
 </tr>
 <tr>
-<td class="tdname">
-SIID_MAX_ICONS</td>
-<td class="enumeration">
-</td>
+<td>SIID_MAX_ICONS</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -13956,44 +10183,29 @@ SIID_MAX_ICONS</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-cbSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>cbSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iSysImageIndex</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>iSysImageIndex</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iIcon</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>iIcon</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-szPath</td>
-<td class="tdtype">
-[260] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>szPath</td>
+<td>[260] Win32.WCHAR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -14009,36 +10221,24 @@ szPath</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-left</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>left</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-top</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>top</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-right</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>right</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bottom</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>bottom</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -14054,148 +10254,94 @@ Win32.WORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-cb</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>cb</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpReserved</td>
-<td class="tdtype">
-Win32.LPSTR</td>
-<td class="enumeration">
-</td>
+<td>lpReserved</td>
+<td>Win32.LPSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpDesktop</td>
-<td class="tdtype">
-Win32.LPSTR</td>
-<td class="enumeration">
-</td>
+<td>lpDesktop</td>
+<td>Win32.LPSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpTitle</td>
-<td class="tdtype">
-Win32.LPSTR</td>
-<td class="enumeration">
-</td>
+<td>lpTitle</td>
+<td>Win32.LPSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwX</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwX</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwY</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwY</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwXSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwXSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwYSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwYSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwXCountChars</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwXCountChars</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwYCountChars</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwYCountChars</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFillAttribute</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFillAttribute</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wShowWindow</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wShowWindow</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cbReserved2</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>cbReserved2</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpReserved2</td>
-<td class="tdtype">
-Win32.LPBYTE</td>
-<td class="enumeration">
-</td>
+<td>lpReserved2</td>
+<td>Win32.LPBYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hStdInput</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hStdInput</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hStdOutput</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hStdOutput</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hStdError</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hStdError</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -14211,148 +10357,94 @@ Win32.HANDLE</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-cb</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>cb</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpReserved</td>
-<td class="tdtype">
-Win32.LPWSTR</td>
-<td class="enumeration">
-</td>
+<td>lpReserved</td>
+<td>Win32.LPWSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpDesktop</td>
-<td class="tdtype">
-Win32.LPWSTR</td>
-<td class="enumeration">
-</td>
+<td>lpDesktop</td>
+<td>Win32.LPWSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpTitle</td>
-<td class="tdtype">
-Win32.LPWSTR</td>
-<td class="enumeration">
-</td>
+<td>lpTitle</td>
+<td>Win32.LPWSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwX</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwX</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwY</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwY</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwXSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwXSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwYSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwYSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwXCountChars</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwXCountChars</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwYCountChars</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwYCountChars</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFillAttribute</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFillAttribute</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wShowWindow</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wShowWindow</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cbReserved2</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>cbReserved2</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpReserved2</td>
-<td class="tdtype">
-Win32.LPBYTE</td>
-<td class="enumeration">
-</td>
+<td>lpReserved2</td>
+<td>Win32.LPBYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hStdInput</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hStdInput</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hStdOutput</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hStdOutput</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hStdError</td>
-<td class="tdtype">
-Win32.HANDLE</td>
-<td class="enumeration">
-</td>
+<td>hStdError</td>
+<td>Win32.HANDLE</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -14368,68 +10460,44 @@ Win32.HANDLE</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-wYear</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wYear</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wMonth</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wMonth</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wDayOfWeek</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wDayOfWeek</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wDay</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wDay</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wHour</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wHour</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wMinute</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wMinute</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wSecond</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wSecond</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wMilliseconds</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wMilliseconds</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -14445,85 +10513,54 @@ Win32.WORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dwOemId</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>Must be updated to an union. </p>
-</td>
+<td>dwOemId</td>
+<td>Win32.DWORD</td>
+<td>Must be updated to an union. </td>
 </tr>
 <tr>
-<td class="tdname">
-dwPageSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwPageSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpMinimumApplicationAddress</td>
-<td class="tdtype">
-Win32.LPVOID</td>
-<td class="enumeration">
-</td>
+<td>lpMinimumApplicationAddress</td>
+<td>Win32.LPVOID</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpMaximumApplicationAddress</td>
-<td class="tdtype">
-Win32.LPVOID</td>
-<td class="enumeration">
-</td>
+<td>lpMaximumApplicationAddress</td>
+<td>Win32.LPVOID</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwActiveProcessorMask</td>
-<td class="tdtype">
-Win32.DWORD_PTR</td>
-<td class="enumeration">
-</td>
+<td>dwActiveProcessorMask</td>
+<td>Win32.DWORD_PTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwNumberOfProcessors</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwNumberOfProcessors</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwProcessorType</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwProcessorType</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwAllocationGranularity</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwAllocationGranularity</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wProcessorLevel</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wProcessorLevel</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wProcessorRevision</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wProcessorRevision</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15029,52 +11066,34 @@ Win32.WORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dwFileAttributes</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFileAttributes</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftCreationTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftCreationTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftLastAccessTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftLastAccessTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftLastWriteTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftLastWriteTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nFileSizeHigh</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nFileSizeHigh</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nFileSizeLow</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nFileSizeLow</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15090,108 +11109,69 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dwFileAttributes</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFileAttributes</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftCreationTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftCreationTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftLastAccessTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftLastAccessTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftLastWriteTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftLastWriteTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nFileSizeHigh</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nFileSizeHigh</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nFileSizeLow</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nFileSizeLow</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwReserved0</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwReserved0</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwReserved1</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwReserved1</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cFileName</td>
-<td class="tdtype">
-[260] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>cFileName</td>
+<td>[260] Win32.CHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAlternateFileName</td>
-<td class="tdtype">
-[14] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>cAlternateFileName</td>
+<td>[14] Win32.CHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFileType</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFileType</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwCreatorType</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwCreatorType</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wFinderFlags</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wFinderFlags</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15207,108 +11187,69 @@ Win32.WORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-dwFileAttributes</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFileAttributes</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftCreationTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftCreationTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftLastAccessTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftLastAccessTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ftLastWriteTime</td>
-<td class="tdtype">
-<a href="#Win32_FILETIME">Win32.FILETIME</a></td>
-<td class="enumeration">
-</td>
+<td>ftLastWriteTime</td>
+<td><a href="#Win32_FILETIME">Win32.FILETIME</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nFileSizeHigh</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nFileSizeHigh</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nFileSizeLow</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nFileSizeLow</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwReserved0</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwReserved0</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwReserved1</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwReserved1</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cFileName</td>
-<td class="tdtype">
-[260] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>cFileName</td>
+<td>[260] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAlternateFileName</td>
-<td class="tdtype">
-[14] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>cAlternateFileName</td>
+<td>[14] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFileType</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFileType</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwCreatorType</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwCreatorType</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wFinderFlags</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wFinderFlags</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15324,60 +11265,39 @@ Win32.WORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hwnd</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hwnd</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hwndInsertAfter</td>
-<td class="tdtype">
-Win32.HWND</td>
-<td class="enumeration">
-</td>
+<td>hwndInsertAfter</td>
+<td>Win32.HWND</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cx</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cx</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cy</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cy</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15393,84 +11313,54 @@ Win32.UINT</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-style</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>style</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpfnWndProc</td>
-<td class="tdtype">
-const *void</td>
-<td class="enumeration">
-</td>
+<td>lpfnWndProc</td>
+<td>const *void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cbClsExtra</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cbClsExtra</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cbWndExtra</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cbWndExtra</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hInstance</td>
-<td class="tdtype">
-Win32.HINSTANCE</td>
-<td class="enumeration">
-</td>
+<td>hInstance</td>
+<td>Win32.HINSTANCE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hCursor</td>
-<td class="tdtype">
-Win32.HCURSOR</td>
-<td class="enumeration">
-</td>
+<td>hCursor</td>
+<td>Win32.HCURSOR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hbrBackground</td>
-<td class="tdtype">
-Win32.HBRUSH</td>
-<td class="enumeration">
-</td>
+<td>hbrBackground</td>
+<td>Win32.HBRUSH</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszMenuName</td>
-<td class="tdtype">
-Win32.LPCSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszMenuName</td>
+<td>Win32.LPCSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszClassName</td>
-<td class="tdtype">
-Win32.LPCSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszClassName</td>
+<td>Win32.LPCSTR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -15486,84 +11376,54 @@ Win32.LPCSTR</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-style</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>style</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpfnWndProc</td>
-<td class="tdtype">
-const *void</td>
-<td class="enumeration">
-</td>
+<td>lpfnWndProc</td>
+<td>const *void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cbClsExtra</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cbClsExtra</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cbWndExtra</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>cbWndExtra</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hInstance</td>
-<td class="tdtype">
-Win32.HINSTANCE</td>
-<td class="enumeration">
-</td>
+<td>hInstance</td>
+<td>Win32.HINSTANCE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hIcon</td>
-<td class="tdtype">
-Win32.HICON</td>
-<td class="enumeration">
-</td>
+<td>hIcon</td>
+<td>Win32.HICON</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hCursor</td>
-<td class="tdtype">
-Win32.HCURSOR</td>
-<td class="enumeration">
-</td>
+<td>hCursor</td>
+<td>Win32.HCURSOR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hbrBackground</td>
-<td class="tdtype">
-Win32.HBRUSH</td>
-<td class="enumeration">
-</td>
+<td>hbrBackground</td>
+<td>Win32.HBRUSH</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszMenuName</td>
-<td class="tdtype">
-Win32.LPCWSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszMenuName</td>
+<td>Win32.LPCWSTR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lpszClassName</td>
-<td class="tdtype">
-Win32.LPCWSTR</td>
-<td class="enumeration">
-</td>
+<td>lpszClassName</td>
+<td>Win32.LPCWSTR</td>
+<td></td>
 </tr>
 </table>
 <p>

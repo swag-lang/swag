@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -319,58 +304,37 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <p>Represents a bus. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Audio.BusHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Audio.BusHandle</td>
+<td></td>
 </tr>
 </table>
 <p> A <a href="#Audio_Voice">Voice</a> can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted. </p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Audio_Bus_create">create(u32, *Bus)</a></td>
-<td class="enumeration">
-<p>Creates an audio bus. </p>
-</td>
+<td><a href="#Audio_Bus_create">create(u32, *Bus)</a></td>
+<td>Creates an audio bus. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Bus_destroy">destroy(self)</a></td>
-<td class="enumeration">
-<p>Destroy the bus (immediatly). </p>
-</td>
+<td><a href="#Audio_Bus_destroy">destroy(self)</a></td>
+<td>Destroy the bus (immediatly). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Bus_getVolume">getVolume(self)</a></td>
-<td class="enumeration">
-<p>Returns the actual volume. </p>
-</td>
+<td><a href="#Audio_Bus_getVolume">getVolume(self)</a></td>
+<td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Bus_getVolumeDB">getVolumeDB(self)</a></td>
-<td class="enumeration">
-<p>Returns the actual volume, in DB. </p>
-</td>
+<td><a href="#Audio_Bus_getVolumeDB">getVolumeDB(self)</a></td>
+<td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Bus_setVolume">setVolume(self, f32, u32)</a></td>
-<td class="enumeration">
-<p>Set the playing bus volume between [0..1]. </p>
-</td>
+<td><a href="#Audio_Bus_setVolume">setVolume(self, f32, u32)</a></td>
+<td>Set the playing bus volume between [0..1]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Bus_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
-<td class="enumeration">
-<p>Set the playing bus volume in DB. </p>
-</td>
+<td><a href="#Audio_Bus_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
+<td>Set the playing bus volume in DB. </td>
 </tr>
 </table>
 <p>
@@ -478,31 +442,19 @@ Audio.BusHandle</td>
 <p>Base struct for all codec instances. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-srcEncoding</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
-<td class="enumeration">
-<p>The original encoding. </p>
-</td>
+<td>srcEncoding</td>
+<td><a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td>The original encoding. </td>
 </tr>
 <tr>
-<td class="tdname">
-dstEncoding</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
-<td class="enumeration">
-<p>The requested encoding. </p>
-</td>
+<td>dstEncoding</td>
+<td><a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td>The requested encoding. </td>
 </tr>
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfoStruct</td>
-<td class="enumeration">
-<p>The real type of the codec. </p>
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfoStruct</td>
+<td>The real type of the codec. </td>
 </tr>
 </table>
 <p>
@@ -519,36 +471,24 @@ const *Swag.TypeInfoStruct</td>
 <p>Interface to describe a codec. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-canEncode</td>
-<td class="tdtype">
-func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
-<td class="enumeration">
-</td>
+<td>canEncode</td>
+<td>func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-canDecode</td>
-<td class="tdtype">
-func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
-<td class="enumeration">
-</td>
+<td>canDecode</td>
+<td>func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-init</td>
-<td class="tdtype">
-func(*Audio.ICodec, ^void, u64)->u64 throw</td>
-<td class="enumeration">
-</td>
+<td>init</td>
+<td>func(*Audio.ICodec, ^void, u64)->u64 throw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-decode</td>
-<td class="tdtype">
-func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</td>
-<td class="enumeration">
-</td>
+<td>decode</td>
+<td>func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -565,131 +505,77 @@ func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</td>
 <p>Represents a sound file. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fullname</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>fullname</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-datas</td>
-<td class="tdtype">
-Core.Array'(u8)</td>
-<td class="enumeration">
-<p>Prefetched datas (in encoding format). </p>
-</td>
+<td>datas</td>
+<td>Core.Array'(u8)</td>
+<td>Prefetched datas (in encoding format). </td>
 </tr>
 <tr>
-<td class="tdname">
-sampleCount</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Total number of samples. </p>
-</td>
+<td>sampleCount</td>
+<td>u64</td>
+<td>Total number of samples. </td>
 </tr>
 <tr>
-<td class="tdname">
-dataSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Total size, in bytes, of datas. </p>
-</td>
+<td>dataSize</td>
+<td>u64</td>
+<td>Total size, in bytes, of datas. </td>
 </tr>
 <tr>
-<td class="tdname">
-dataSeek</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>The position in the file where the datas are stored. </p>
-</td>
+<td>dataSeek</td>
+<td>u64</td>
+<td>The position in the file where the datas are stored. </td>
 </tr>
 <tr>
-<td class="tdname">
-encoding</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
-<td class="enumeration">
-<p>Encoding type of the datas. </p>
-</td>
+<td>encoding</td>
+<td><a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td>Encoding type of the datas. </td>
 </tr>
 <tr>
-<td class="tdname">
-validity</td>
-<td class="tdtype">
-<a href="#Audio_SoundFileValidityMask">Audio.SoundFileValidityMask</a></td>
-<td class="enumeration">
-<p>What informations in this struct are valid. </p>
-</td>
+<td>validity</td>
+<td><a href="#Audio_SoundFileValidityMask">Audio.SoundFileValidityMask</a></td>
+<td>What informations in this struct are valid. </td>
 </tr>
 <tr>
-<td class="tdname">
-frequency</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Sound frequency. </p>
-</td>
+<td>frequency</td>
+<td>u32</td>
+<td>Sound frequency. </td>
 </tr>
 <tr>
-<td class="tdname">
-channelCount</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Number of channels (2 for stereo...). </p>
-</td>
+<td>channelCount</td>
+<td>u32</td>
+<td>Number of channels (2 for stereo...). </td>
 </tr>
 <tr>
-<td class="tdname">
-channelMask</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Identifier of the channels. </p>
-</td>
+<td>channelMask</td>
+<td>u32</td>
+<td>Identifier of the channels. </td>
 </tr>
 <tr>
-<td class="tdname">
-bitsPerSample</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Number of bits per sample in the datas. </p>
-</td>
+<td>bitsPerSample</td>
+<td>u32</td>
+<td>Number of bits per sample in the datas. </td>
 </tr>
 <tr>
-<td class="tdname">
-duration</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Duration, in seconds, of the sound. </p>
-</td>
+<td>duration</td>
+<td>f32</td>
+<td>Duration, in seconds, of the sound. </td>
 </tr>
 <tr>
-<td class="tdname">
-validBitsPerSample</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-<p>Number of valid bits per sample (&lt;= bitsPerSample). </p>
-</td>
+<td>validBitsPerSample</td>
+<td>u16</td>
+<td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
 <p> The <code class="incode">SoundFile</code> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Audio_SoundFile_load">load(string, bool, bool)</a></td>
-<td class="enumeration">
-<p>Load a <code class="incode">SoundFile</code> from disk. </p>
-</td>
+<td><a href="#Audio_SoundFile_load">load(string, bool, bool)</a></td>
+<td>Load a <code class="incode">SoundFile</code> from disk. </td>
 </tr>
 </table>
 <p>
@@ -722,45 +608,28 @@ u16</td>
 <p>SoundFile internal format. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Unknown</td>
-<td class="enumeration">
-</td>
+<td>Unknown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Pcm8</td>
-<td class="enumeration">
-<p>Pcm, uncompressed, 8 bits per sample. </p>
-</td>
+<td>Pcm8</td>
+<td>Pcm, uncompressed, 8 bits per sample. </td>
 </tr>
 <tr>
-<td class="tdname">
-Pcm16</td>
-<td class="enumeration">
-<p>Pcm, uncompressed, 16 bits per sample. </p>
-</td>
+<td>Pcm16</td>
+<td>Pcm, uncompressed, 16 bits per sample. </td>
 </tr>
 <tr>
-<td class="tdname">
-Pcm24</td>
-<td class="enumeration">
-<p>Pcm, uncompressed, 24 bits per sample. </p>
-</td>
+<td>Pcm24</td>
+<td>Pcm, uncompressed, 24 bits per sample. </td>
 </tr>
 <tr>
-<td class="tdname">
-Pcm32</td>
-<td class="enumeration">
-<p>Pcm, uncompressed, 32 bits per sample. </p>
-</td>
+<td>Pcm32</td>
+<td>Pcm, uncompressed, 32 bits per sample. </td>
 </tr>
 <tr>
-<td class="tdname">
-Float32</td>
-<td class="enumeration">
-<p>Pcm, uncompressed, float 32 bits per sample. </p>
-</td>
+<td>Float32</td>
+<td>Pcm, uncompressed, float 32 bits per sample. </td>
 </tr>
 </table>
 <p>
@@ -777,70 +646,48 @@ Float32</td>
 <p>Determins which informations in the <a href="#Audio_SoundFile">SoundFile</a> struct are valid. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Format</td>
-<td class="enumeration">
-</td>
+<td>Format</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Frequency</td>
-<td class="enumeration">
-</td>
+<td>Frequency</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ChannelCount</td>
-<td class="enumeration">
-</td>
+<td>ChannelCount</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ChannelMask</td>
-<td class="enumeration">
-</td>
+<td>ChannelMask</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BitsPerSample</td>
-<td class="enumeration">
-</td>
+<td>BitsPerSample</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Duration</td>
-<td class="enumeration">
-</td>
+<td>Duration</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SampleCount</td>
-<td class="enumeration">
-</td>
+<td>SampleCount</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ValidBitsPerSample</td>
-<td class="enumeration">
-</td>
+<td>ValidBitsPerSample</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Data</td>
-<td class="enumeration">
-</td>
+<td>Data</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MetaData</td>
-<td class="enumeration">
-</td>
+<td>MetaData</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -858,95 +705,56 @@ MetaData</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_create">create(*SoundFile, VoiceCreateFlags)</a></td>
-<td class="enumeration">
-<p>Creates a new voice for a given sound file. </p>
-</td>
+<td><a href="#Audio_Voice_create">create(*SoundFile, VoiceCreateFlags)</a></td>
+<td>Creates a new voice for a given sound file. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_destroy">destroy(self)</a></td>
-<td class="enumeration">
-<p>Destroy the voice. </p>
-</td>
+<td><a href="#Audio_Voice_destroy">destroy(self)</a></td>
+<td>Destroy the voice. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_getVolume">getVolume(self)</a></td>
-<td class="enumeration">
-<p>Returns the actual volume. </p>
-</td>
+<td><a href="#Audio_Voice_getVolume">getVolume(self)</a></td>
+<td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_getVolumeDB">getVolumeDB(self)</a></td>
-<td class="enumeration">
-<p>Returns the actual volume, in DB. </p>
-</td>
+<td><a href="#Audio_Voice_getVolumeDB">getVolumeDB(self)</a></td>
+<td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_isPlaying">isPlaying(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the voice is currently playing. </p>
-</td>
+<td><a href="#Audio_Voice_isPlaying">isPlaying(self)</a></td>
+<td>Returns true if the voice is currently playing. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_pause">pause(self)</a></td>
-<td class="enumeration">
-<p>Pause the playing voice. </p>
-</td>
+<td><a href="#Audio_Voice_pause">pause(self)</a></td>
+<td>Pause the playing voice. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_play">play(*SoundFile, VoiceCreateFlags, VoicePlayFlags)</a></td>
-<td class="enumeration">
-<p>Creates a voice and plays it. </p>
-</td>
+<td><a href="#Audio_Voice_play">play(*SoundFile, VoiceCreateFlags, VoicePlayFlags)</a></td>
+<td>Creates a voice and plays it. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_play">play(self, VoicePlayFlags)</a></td>
-<td class="enumeration">
-<p>Plays a voice. </p>
-</td>
+<td><a href="#Audio_Voice_play">play(self, VoicePlayFlags)</a></td>
+<td>Plays a voice. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_setFrequencyRatio">setFrequencyRatio(self, f32, u32)</a></td>
-<td class="enumeration">
-<p>Set the playing pitch. </p>
-</td>
+<td><a href="#Audio_Voice_setFrequencyRatio">setFrequencyRatio(self, f32, u32)</a></td>
+<td>Set the playing pitch. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_setRooting">setRooting(self, const [..] const *Bus)</a></td>
-<td class="enumeration">
-<p>Root a voice to a given list of buses. </p>
-</td>
+<td><a href="#Audio_Voice_setRooting">setRooting(self, const [..] const *Bus)</a></td>
+<td>Root a voice to a given list of buses. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_setVolume">setVolume(self, f32, u32)</a></td>
-<td class="enumeration">
-<p>Set the playing voice volume between [0..1]. </p>
-</td>
+<td><a href="#Audio_Voice_setVolume">setVolume(self, f32, u32)</a></td>
+<td>Set the playing voice volume between [0..1]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
-<td class="enumeration">
-<p>Set the playing voice volume. </p>
-</td>
+<td><a href="#Audio_Voice_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
+<td>Set the playing voice volume. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Audio_Voice_stop">stop(self)</a></td>
-<td class="enumeration">
-<p>Stop the playing voice. </p>
-</td>
+<td><a href="#Audio_Voice_stop">stop(self)</a></td>
+<td>Stop the playing voice. </td>
 </tr>
 </table>
 <p>
@@ -1151,28 +959,20 @@ MetaData</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AcceptPitch</td>
-<td class="enumeration">
-</td>
+<td>AcceptPitch</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AcceptFilters</td>
-<td class="enumeration">
-</td>
+<td>AcceptFilters</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1188,30 +988,20 @@ Default</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Loop</td>
-<td class="enumeration">
-<p>Play in loops. </p>
-</td>
+<td>Loop</td>
+<td>Play in loops. </td>
 </tr>
 <tr>
-<td class="tdname">
-DestroyOnStop</td>
-<td class="enumeration">
-<p>Destroy the voice once the sound has been played. </p>
-</td>
+<td>DestroyOnStop</td>
+<td>Destroy the voice once the sound has been played. </td>
 </tr>
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1227,28 +1017,20 @@ Default</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PlayedOnce</td>
-<td class="enumeration">
-</td>
+<td>PlayedOnce</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Playing</td>
-<td class="enumeration">
-</td>
+<td>Playing</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PendingDestroy</td>
-<td class="enumeration">
-</td>
+<td>PendingDestroy</td>
+<td></td>
 </tr>
 </table>
 <p>

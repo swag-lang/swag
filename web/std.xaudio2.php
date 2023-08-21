@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -346,670 +331,394 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="XAudio2_FORMAT_EXTENSIBLE" class="tdname">
-FORMAT_EXTENSIBLE</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor1" class="tdname">
-Processor1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor10" class="tdname">
-Processor10</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor11" class="tdname">
-Processor11</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor12" class="tdname">
-Processor12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor13" class="tdname">
-Processor13</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor14" class="tdname">
-Processor14</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor15" class="tdname">
-Processor15</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor16" class="tdname">
-Processor16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor17" class="tdname">
-Processor17</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor18" class="tdname">
-Processor18</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor19" class="tdname">
-Processor19</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor2" class="tdname">
-Processor2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_FORMAT_EXTENSIBLE">FORMAT_EXTENSIBLE</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor20" class="tdname">
-Processor20</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor1">Processor1</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor21" class="tdname">
-Processor21</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor10">Processor10</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor22" class="tdname">
-Processor22</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor11">Processor11</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor23" class="tdname">
-Processor23</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor12">Processor12</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor24" class="tdname">
-Processor24</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor13">Processor13</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor25" class="tdname">
-Processor25</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor14">Processor14</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor26" class="tdname">
-Processor26</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor15">Processor15</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor27" class="tdname">
-Processor27</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor16">Processor16</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor28" class="tdname">
-Processor28</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor17">Processor17</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor29" class="tdname">
-Processor29</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor18">Processor18</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor3" class="tdname">
-Processor3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor19">Processor19</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor30" class="tdname">
-Processor30</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor2">Processor2</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor31" class="tdname">
-Processor31</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="XAudio2_Processor20">Processor20</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor32" class="tdname">
-Processor32</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
+<td id="XAudio2_Processor21">Processor21</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor22">Processor22</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor23">Processor23</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor24">Processor24</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor25">Processor25</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor26">Processor26</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor27">Processor27</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor28">Processor28</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor29">Processor29</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor3">Processor3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor30">Processor30</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor31">Processor31</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor32">Processor32</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor4">Processor4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor5">Processor5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor6">Processor6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor7">Processor7</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor8">Processor8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_Processor9">Processor9</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_X3DAUDIO_HANDLE_BYTESIZE">X3DAUDIO_HANDLE_BYTESIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_X3DAUDIO_SPEED_OF_SOUND">X3DAUDIO_SPEED_OF_SOUND</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_1024_QUANTUM">XAUDIO2_1024_QUANTUM</td>
+<td>u32</td>
+<td>Used in XAudio2Create to specify nondefault processing quantum of 21.33 ms (1024 samples at 48KHz). </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_COMMIT_ALL">XAUDIO2_COMMIT_ALL</td>
+<td>s32</td>
+<td>Used in IXAudio2::CommitChanges. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_COMMIT_NOW">XAUDIO2_COMMIT_NOW</td>
+<td>s32</td>
+<td>Numeric values with special meanings Used as an OperationSet argument. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_DEBUG_ENGINE">XAUDIO2_DEBUG_ENGINE</td>
+<td>u32</td>
+<td>Used in XAudio2Create. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_DEFAULT_CHANNELS">XAUDIO2_DEFAULT_CHANNELS</td>
+<td>s32</td>
+<td>Used in CreateMasteringVoice. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_DEFAULT_FREQ_RATIO">XAUDIO2_DEFAULT_FREQ_RATIO</td>
+<td>f32</td>
+<td>Default MaxFrequencyRatio argument. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_DEFAULT_SAMPLERATE">XAUDIO2_DEFAULT_SAMPLERATE</td>
+<td>s32</td>
+<td>Used in CreateMasteringVoice. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_END_OF_STREAM">XAUDIO2_END_OF_STREAM</td>
+<td>u32</td>
+<td>Used in XAUDIO2_BUFFER.Flags. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_INVALID_OPSET">XAUDIO2_INVALID_OPSET</td>
+<td>u32</td>
+<td>Not allowed for OperationSet arguments. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_API_CALLS">XAUDIO2_LOG_API_CALLS</td>
+<td>u32</td>
+<td>Public API function entries and exits. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_DETAIL">XAUDIO2_LOG_DETAIL</td>
+<td>u32</td>
+<td>More detailed chit-chat. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_ERRORS">XAUDIO2_LOG_ERRORS</td>
+<td>u32</td>
+<td>Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS and all the other settings are zero. For handled errors with serious effects. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_FUNC_CALLS">XAUDIO2_LOG_FUNC_CALLS</td>
+<td>u32</td>
+<td>Internal function entries and exits. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_INFO">XAUDIO2_LOG_INFO</td>
+<td>u32</td>
+<td>Informational chit-chat (e.g. state changes). </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_LOCKS">XAUDIO2_LOG_LOCKS</td>
+<td>u32</td>
+<td>Usage of critical sections and mutexes. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_MEMORY">XAUDIO2_LOG_MEMORY</td>
+<td>u32</td>
+<td>Memory heap usage information. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_STREAMING">XAUDIO2_LOG_STREAMING</td>
+<td>u32</td>
+<td>Audio streaming information. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_TIMING">XAUDIO2_LOG_TIMING</td>
+<td>u32</td>
+<td>Delays detected and other timing data. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOG_WARNINGS">XAUDIO2_LOG_WARNINGS</td>
+<td>u32</td>
+<td>For handled errors that may be recoverable. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_LOOP_INFINITE">XAUDIO2_LOOP_INFINITE</td>
+<td>s32</td>
+<td>Used in XAUDIO2_BUFFER.LoopCount. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_AUDIO_CHANNELS">XAUDIO2_MAX_AUDIO_CHANNELS</td>
+<td>s32</td>
+<td>Maximum channels in an audio stream. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_BUFFERS_SYSTEM">XAUDIO2_MAX_BUFFERS_SYSTEM</td>
+<td>s32</td>
+<td>Maximum buffers allowed for system threads (Xbox 360 only). </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_BUFFER_BYTES">XAUDIO2_MAX_BUFFER_BYTES</td>
+<td>u32</td>
+<td>Maximum bytes allowed in a source buffer. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_FILTER_FREQUENCY">XAUDIO2_MAX_FILTER_FREQUENCY</td>
+<td>f32</td>
+<td>Maximum XAUDIO2_FILTER_PARAMETERS.Frequency. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_FILTER_ONEOVERQ">XAUDIO2_MAX_FILTER_ONEOVERQ</td>
+<td>f32</td>
+<td>Maximum XAUDIO2_FILTER_PARAMETERS.OneOverQ. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_FREQ_RATIO">XAUDIO2_MAX_FREQ_RATIO</td>
+<td>f32</td>
+<td>Maximum MaxFrequencyRatio argument. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_INSTANCES">XAUDIO2_MAX_INSTANCES</td>
+<td>s32</td>
+<td>Maximum simultaneous XAudio2 objects on Xbox 360. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_LOOP_COUNT">XAUDIO2_MAX_LOOP_COUNT</td>
+<td>s32</td>
+<td>Maximum non-infinite XAUDIO2_BUFFER.LoopCount. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_QUEUED_BUFFERS">XAUDIO2_MAX_QUEUED_BUFFERS</td>
+<td>s32</td>
+<td>Maximum buffers allowed in a voice queue. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_SAMPLE_RATE">XAUDIO2_MAX_SAMPLE_RATE</td>
+<td>s32</td>
+<td>Maximum audio sample rate supported. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MAX_VOLUME_LEVEL">XAUDIO2_MAX_VOLUME_LEVEL</td>
+<td>f32</td>
+<td>Maximum acceptable volume level (2^24). </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MIN_FREQ_RATIO">XAUDIO2_MIN_FREQ_RATIO</td>
+<td>f32</td>
+<td>Minimum SetFrequencyRatio argument. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_MIN_SAMPLE_RATE">XAUDIO2_MIN_SAMPLE_RATE</td>
+<td>s32</td>
+<td>Minimum audio sample rate supported. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_NO_LOOP_REGION">XAUDIO2_NO_LOOP_REGION</td>
+<td>s32</td>
+<td>Used in XAUDIO2_BUFFER.LoopCount. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT">XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT</td>
+<td>u32</td>
+<td>Used in CreateMasteringVoice to create a virtual audio client. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_PLAY_TAILS">XAUDIO2_PLAY_TAILS</td>
+<td>u32</td>
+<td>Used in IXAudio2SourceVoice::Stop. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_SEND_USEFILTER">XAUDIO2_SEND_USEFILTER</td>
+<td>u32</td>
+<td>Used in XAUDIO2_SEND_DESCRIPTOR.Flags. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_STOP_ENGINE_WHEN_IDLE">XAUDIO2_STOP_ENGINE_WHEN_IDLE</td>
+<td>u32</td>
+<td>Used in XAudio2Create to force the engine to Stop when no source voices are Started, and Start when a voice is Started. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_VOICE_NOPITCH">XAUDIO2_VOICE_NOPITCH</td>
+<td>u32</td>
+<td>Used in IXAudio2::CreateSourceVoice. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_VOICE_NOSAMPLESPLAYED">XAUDIO2_VOICE_NOSAMPLESPLAYED</td>
+<td>u32</td>
+<td>Used in IXAudio2SourceVoice::GetState. </td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_VOICE_NOSRC">XAUDIO2_VOICE_NOSRC</td>
+<td>u32</td>
+<td>Used in IXAudio2::CreateSourceVoice. </td>
+</tr>
 <tr>
-<td id="XAudio2_Processor4" class="tdname">
-Processor4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor5" class="tdname">
-Processor5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor6" class="tdname">
-Processor6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor7" class="tdname">
-Processor7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor8" class="tdname">
-Processor8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_Processor9" class="tdname">
-Processor9</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_X3DAUDIO_HANDLE_BYTESIZE" class="tdname">
-X3DAUDIO_HANDLE_BYTESIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_X3DAUDIO_SPEED_OF_SOUND" class="tdname">
-X3DAUDIO_SPEED_OF_SOUND</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_1024_QUANTUM" class="tdname">
-XAUDIO2_1024_QUANTUM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in XAudio2Create to specify nondefault processing quantum of 21.33 ms (1024 samples at 48KHz). </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_ANY_PROCESSOR" class="tdname">
-XAUDIO2_ANY_PROCESSOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_COMMIT_ALL" class="tdname">
-XAUDIO2_COMMIT_ALL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Used in IXAudio2::CommitChanges. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_COMMIT_NOW" class="tdname">
-XAUDIO2_COMMIT_NOW</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Numeric values with special meanings Used as an OperationSet argument. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_DEBUG_ENGINE" class="tdname">
-XAUDIO2_DEBUG_ENGINE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in XAudio2Create. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_DEFAULT_CHANNELS" class="tdname">
-XAUDIO2_DEFAULT_CHANNELS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Used in CreateMasteringVoice. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_DEFAULT_FREQ_RATIO" class="tdname">
-XAUDIO2_DEFAULT_FREQ_RATIO</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Default MaxFrequencyRatio argument. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_DEFAULT_SAMPLERATE" class="tdname">
-XAUDIO2_DEFAULT_SAMPLERATE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Used in CreateMasteringVoice. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_END_OF_STREAM" class="tdname">
-XAUDIO2_END_OF_STREAM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in XAUDIO2_BUFFER.Flags. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_INVALID_OPSET" class="tdname">
-XAUDIO2_INVALID_OPSET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Not allowed for OperationSet arguments. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_API_CALLS" class="tdname">
-XAUDIO2_LOG_API_CALLS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Public API function entries and exits. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_DETAIL" class="tdname">
-XAUDIO2_LOG_DETAIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>More detailed chit-chat. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_ERRORS" class="tdname">
-XAUDIO2_LOG_ERRORS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS and all the other settings are zero. For handled errors with serious effects. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_FUNC_CALLS" class="tdname">
-XAUDIO2_LOG_FUNC_CALLS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Internal function entries and exits. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_INFO" class="tdname">
-XAUDIO2_LOG_INFO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Informational chit-chat (e.g. state changes). </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_LOCKS" class="tdname">
-XAUDIO2_LOG_LOCKS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Usage of critical sections and mutexes. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_MEMORY" class="tdname">
-XAUDIO2_LOG_MEMORY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Memory heap usage information. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_STREAMING" class="tdname">
-XAUDIO2_LOG_STREAMING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Audio streaming information. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_TIMING" class="tdname">
-XAUDIO2_LOG_TIMING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Delays detected and other timing data. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOG_WARNINGS" class="tdname">
-XAUDIO2_LOG_WARNINGS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>For handled errors that may be recoverable. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_LOOP_INFINITE" class="tdname">
-XAUDIO2_LOOP_INFINITE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Used in XAUDIO2_BUFFER.LoopCount. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_AUDIO_CHANNELS" class="tdname">
-XAUDIO2_MAX_AUDIO_CHANNELS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum channels in an audio stream. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_BUFFERS_SYSTEM" class="tdname">
-XAUDIO2_MAX_BUFFERS_SYSTEM</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum buffers allowed for system threads (Xbox 360 only). </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_BUFFER_BYTES" class="tdname">
-XAUDIO2_MAX_BUFFER_BYTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Maximum bytes allowed in a source buffer. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_FILTER_FREQUENCY" class="tdname">
-XAUDIO2_MAX_FILTER_FREQUENCY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Maximum XAUDIO2_FILTER_PARAMETERS.Frequency. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_FILTER_ONEOVERQ" class="tdname">
-XAUDIO2_MAX_FILTER_ONEOVERQ</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Maximum XAUDIO2_FILTER_PARAMETERS.OneOverQ. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_FREQ_RATIO" class="tdname">
-XAUDIO2_MAX_FREQ_RATIO</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Maximum MaxFrequencyRatio argument. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_INSTANCES" class="tdname">
-XAUDIO2_MAX_INSTANCES</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum simultaneous XAudio2 objects on Xbox 360. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_LOOP_COUNT" class="tdname">
-XAUDIO2_MAX_LOOP_COUNT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum non-infinite XAUDIO2_BUFFER.LoopCount. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_QUEUED_BUFFERS" class="tdname">
-XAUDIO2_MAX_QUEUED_BUFFERS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum buffers allowed in a voice queue. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_SAMPLE_RATE" class="tdname">
-XAUDIO2_MAX_SAMPLE_RATE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum audio sample rate supported. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MAX_VOLUME_LEVEL" class="tdname">
-XAUDIO2_MAX_VOLUME_LEVEL</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Maximum acceptable volume level (2^24). </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MIN_FREQ_RATIO" class="tdname">
-XAUDIO2_MIN_FREQ_RATIO</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Minimum SetFrequencyRatio argument. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_MIN_SAMPLE_RATE" class="tdname">
-XAUDIO2_MIN_SAMPLE_RATE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Minimum audio sample rate supported. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_NO_LOOP_REGION" class="tdname">
-XAUDIO2_NO_LOOP_REGION</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Used in XAUDIO2_BUFFER.LoopCount. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT" class="tdname">
-XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in CreateMasteringVoice to create a virtual audio client. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_PLAY_TAILS" class="tdname">
-XAUDIO2_PLAY_TAILS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in IXAudio2SourceVoice::Stop. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_SEND_USEFILTER" class="tdname">
-XAUDIO2_SEND_USEFILTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in XAUDIO2_SEND_DESCRIPTOR.Flags. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_STOP_ENGINE_WHEN_IDLE" class="tdname">
-XAUDIO2_STOP_ENGINE_WHEN_IDLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in XAudio2Create to force the engine to Stop when no source voices are Started, and Start when a voice is Started. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_VOICE_NOPITCH" class="tdname">
-XAUDIO2_VOICE_NOPITCH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in IXAudio2::CreateSourceVoice. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_VOICE_NOSAMPLESPLAYED" class="tdname">
-XAUDIO2_VOICE_NOSAMPLESPLAYED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in IXAudio2SourceVoice::GetState. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_VOICE_NOSRC" class="tdname">
-XAUDIO2_VOICE_NOSRC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in IXAudio2::CreateSourceVoice. </p>
-</td>
-</tr>
-<tr>
-<td id="XAudio2_XAUDIO2_VOICE_USEFILTER" class="tdname">
-XAUDIO2_VOICE_USEFILTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Used in IXAudio2::CreateSource/SubmixVoice. </p>
-</td>
+<td id="XAudio2_XAUDIO2_VOICE_USEFILTER">XAUDIO2_VOICE_USEFILTER</td>
+<td>u32</td>
+<td>Used in IXAudio2::CreateSource/SubmixVoice. </td>
 </tr>
 </table>
 <p>
@@ -1025,76 +734,52 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-AudioCategory_Other</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_Other</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_ForegroundOnlyMedia</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_ForegroundOnlyMedia</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_BackgroundCapableMedia</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_BackgroundCapableMedia</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_Communications</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_Communications</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_Alerts</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_Alerts</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_SoundEffects</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_SoundEffects</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_GameEffects</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_GameEffects</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_GameMedia</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_GameMedia</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_GameChat</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_GameChat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_Speech</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_Speech</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_Movie</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_Movie</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AudioCategory_Media</td>
-<td class="enumeration">
-</td>
+<td>AudioCategory_Media</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1110,12 +795,9 @@ AudioCategory_Media</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-vtbl</td>
-<td class="tdtype">
-*XAudio2.IXAudio2Itf</td>
-<td class="enumeration">
-</td>
+<td>vtbl</td>
+<td>*XAudio2.IXAudio2Itf</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1131,12 +813,9 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-vtbl</td>
-<td class="tdtype">
-*XAudio2.IXAudio2EngineCallbackItf</td>
-<td class="enumeration">
-</td>
+<td>vtbl</td>
+<td>*XAudio2.IXAudio2EngineCallbackItf</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1152,28 +831,19 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-onProcessingPassStart</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2EngineCallback)</td>
-<td class="enumeration">
-</td>
+<td>onProcessingPassStart</td>
+<td>func(*XAudio2.IXAudio2EngineCallback)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onProcessingPassEnd</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2EngineCallback)</td>
-<td class="enumeration">
-</td>
+<td>onProcessingPassEnd</td>
+<td>func(*XAudio2.IXAudio2EngineCallback)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onCriticalError</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2EngineCallback, Win32.HRESULT)</td>
-<td class="enumeration">
-</td>
+<td>onCriticalError</td>
+<td>func(*XAudio2.IXAudio2EngineCallback, Win32.HRESULT)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1189,108 +859,69 @@ func(*XAudio2.IXAudio2EngineCallback, Win32.HRESULT)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-queryInterface</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>queryInterface</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-addRef</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2)->Win32.ULONG</td>
-<td class="enumeration">
-</td>
+<td>addRef</td>
+<td>func(*XAudio2.IXAudio2)->Win32.ULONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-release</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2)->Win32.ULONG</td>
-<td class="enumeration">
-</td>
+<td>release</td>
+<td>func(*XAudio2.IXAudio2)->Win32.ULONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-registerForCallbacks</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, *XAudio2.IXAudio2EngineCallback)</td>
-<td class="enumeration">
-</td>
+<td>registerForCallbacks</td>
+<td>func(*XAudio2.IXAudio2, *XAudio2.IXAudio2EngineCallback)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-unregisterForCallbacks</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, *XAudio2.IXAudio2EngineCallback)</td>
-<td class="enumeration">
-</td>
+<td>unregisterForCallbacks</td>
+<td>func(*XAudio2.IXAudio2, *XAudio2.IXAudio2EngineCallback)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-createSourceVoice</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, **XAudio2.IXAudio2SourceVoice, const *XAudio2.WAVEFORMATEX, XAudio2.UINT32, f32, *XAudio2.IXAudio2VoiceCallback, const *XAudio2.XAUDIO2_VOICE_SENDS, const *XAudio2.XAUDIO2_EFFECT_CHAIN)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>createSourceVoice</td>
+<td>func(*XAudio2.IXAudio2, **XAudio2.IXAudio2SourceVoice, const *XAudio2.WAVEFORMATEX, XAudio2.UINT32, f32, *XAudio2.IXAudio2VoiceCallback, const *XAudio2.XAUDIO2_VOICE_SENDS, const *XAudio2.XAUDIO2_EFFECT_CHAIN)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-createSubmixVoice</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, **XAudio2.IXAudio2SubmixVoice, XAudio2.UINT32, XAudio2.UINT32, XAudio2.UINT32, XAudio2.UINT32, const *XAudio2.XAUDIO2_VOICE_SENDS, const *XAudio2.XAUDIO2_EFFECT_CHAIN)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>createSubmixVoice</td>
+<td>func(*XAudio2.IXAudio2, **XAudio2.IXAudio2SubmixVoice, XAudio2.UINT32, XAudio2.UINT32, XAudio2.UINT32, XAudio2.UINT32, const *XAudio2.XAUDIO2_VOICE_SENDS, const *XAudio2.XAUDIO2_EFFECT_CHAIN)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-createMasteringVoice</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, **XAudio2.IXAudio2MasteringVoice, XAudio2.UINT32, XAudio2.UINT32, XAudio2.UINT32, Win32.LPCWSTR, *XAudio2.XAUDIO2_EFFECT_CHAIN, XAudio2.AUDIO_STREAM_CATEGORY)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>createMasteringVoice</td>
+<td>func(*XAudio2.IXAudio2, **XAudio2.IXAudio2MasteringVoice, XAudio2.UINT32, XAudio2.UINT32, XAudio2.UINT32, Win32.LPCWSTR, *XAudio2.XAUDIO2_EFFECT_CHAIN, XAudio2.AUDIO_STREAM_CATEGORY)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-startEngine</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>startEngine</td>
+<td>func(*XAudio2.IXAudio2)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stopEngine</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2)</td>
-<td class="enumeration">
-</td>
+<td>stopEngine</td>
+<td>func(*XAudio2.IXAudio2)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-commitChanges</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>commitChanges</td>
+<td>func(*XAudio2.IXAudio2, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getPerformanceData</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, *XAudio2.XAUDIO2_PERFORMANCE_DATA)</td>
-<td class="enumeration">
-</td>
+<td>getPerformanceData</td>
+<td>func(*XAudio2.IXAudio2, *XAudio2.XAUDIO2_PERFORMANCE_DATA)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setDebugConfiguration</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2, const *XAudio2.XAUDIO2_DEBUG_CONFIGURATION, *void)</td>
-<td class="enumeration">
-</td>
+<td>setDebugConfiguration</td>
+<td>func(*XAudio2.IXAudio2, const *XAudio2.XAUDIO2_DEBUG_CONFIGURATION, *void)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1306,12 +937,9 @@ func(*XAudio2.IXAudio2, const *XAudio2.XAUDIO2_DEBUG_CONFIGURATION, *void)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-vtbl</td>
-<td class="tdtype">
-*XAudio2.IXAudio2MasteringVoiceItf</td>
-<td class="enumeration">
-</td>
+<td>vtbl</td>
+<td>*XAudio2.IXAudio2MasteringVoiceItf</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1327,20 +955,14 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> voice</td>
-<td class="tdtype">
-<a href="#XAudio2_IXAudio2VoiceItf">XAudio2.IXAudio2VoiceItf</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> voice</td>
+<td><a href="#XAudio2_IXAudio2VoiceItf">XAudio2.IXAudio2VoiceItf</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getChannelMask</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2MasteringVoice, *Win32.DWORD)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>getChannelMask</td>
+<td>func(*XAudio2.IXAudio2MasteringVoice, *Win32.DWORD)->Win32.HRESULT</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1356,12 +978,9 @@ func(*XAudio2.IXAudio2MasteringVoice, *Win32.DWORD)->Win32.HRESULT</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-vtbl</td>
-<td class="tdtype">
-*XAudio2.IXAudio2SourceVoiceItf</td>
-<td class="enumeration">
-</td>
+<td>vtbl</td>
+<td>*XAudio2.IXAudio2SourceVoiceItf</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1377,92 +996,59 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> voice</td>
-<td class="tdtype">
-<a href="#XAudio2_IXAudio2VoiceItf">XAudio2.IXAudio2VoiceItf</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> voice</td>
+<td><a href="#XAudio2_IXAudio2VoiceItf">XAudio2.IXAudio2VoiceItf</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-start</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>start</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stop</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>stop</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-submitSourceBuffer</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, const *XAudio2.XAUDIO2_BUFFER, const *XAudio2.XAUDIO2_BUFFER_WMA)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>submitSourceBuffer</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, const *XAudio2.XAUDIO2_BUFFER, const *XAudio2.XAUDIO2_BUFFER_WMA)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-glushSourceBuffers</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>glushSourceBuffers</td>
+<td>func(*XAudio2.IXAudio2SourceVoice)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-discontinuity</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>discontinuity</td>
+<td>func(*XAudio2.IXAudio2SourceVoice)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-exitLoop</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>exitLoop</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getState</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, *XAudio2.XAUDIO2_VOICE_STATE, XAudio2.UINT32)</td>
-<td class="enumeration">
-</td>
+<td>getState</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, *XAudio2.XAUDIO2_VOICE_STATE, XAudio2.UINT32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setFrequencyRatio</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, f32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setFrequencyRatio</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, f32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getFrequencyRatio</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, *f32)</td>
-<td class="enumeration">
-</td>
+<td>getFrequencyRatio</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, *f32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setSourceSampleRate</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setSourceSampleRate</td>
+<td>func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1478,12 +1064,9 @@ func(*XAudio2.IXAudio2SourceVoice, XAudio2.UINT32)->Win32.HRESULT</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-vtbl</td>
-<td class="tdtype">
-*XAudio2.IXAudio2SubmixVoiceItf</td>
-<td class="enumeration">
-</td>
+<td>vtbl</td>
+<td>*XAudio2.IXAudio2SubmixVoiceItf</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1499,12 +1082,9 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> voice</td>
-<td class="tdtype">
-<a href="#XAudio2_IXAudio2VoiceItf">XAudio2.IXAudio2VoiceItf</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> voice</td>
+<td><a href="#XAudio2_IXAudio2VoiceItf">XAudio2.IXAudio2VoiceItf</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1520,12 +1100,9 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-vtbl</td>
-<td class="tdtype">
-*XAudio2.IXAudio2VoiceItf</td>
-<td class="enumeration">
-</td>
+<td>vtbl</td>
+<td>*XAudio2.IXAudio2VoiceItf</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1541,12 +1118,9 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-vtbl</td>
-<td class="tdtype">
-*XAudio2.IXAudio2VoiceCallbackItf</td>
-<td class="enumeration">
-</td>
+<td>vtbl</td>
+<td>*XAudio2.IXAudio2VoiceCallbackItf</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1562,60 +1136,39 @@ vtbl</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-onVoiceProcessingPassStart</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2VoiceCallback, XAudio2.UINT32)</td>
-<td class="enumeration">
-</td>
+<td>onVoiceProcessingPassStart</td>
+<td>func(*XAudio2.IXAudio2VoiceCallback, XAudio2.UINT32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onVoiceProcessingPassEnd</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2VoiceCallback)</td>
-<td class="enumeration">
-</td>
+<td>onVoiceProcessingPassEnd</td>
+<td>func(*XAudio2.IXAudio2VoiceCallback)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onStreamEnd</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2VoiceCallback)</td>
-<td class="enumeration">
-</td>
+<td>onStreamEnd</td>
+<td>func(*XAudio2.IXAudio2VoiceCallback)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onBufferStart</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2VoiceCallback, *void)</td>
-<td class="enumeration">
-</td>
+<td>onBufferStart</td>
+<td>func(*XAudio2.IXAudio2VoiceCallback, *void)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onBufferEnd</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2VoiceCallback, *void)</td>
-<td class="enumeration">
-</td>
+<td>onBufferEnd</td>
+<td>func(*XAudio2.IXAudio2VoiceCallback, *void)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onLoopEnd</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2VoiceCallback, *void)</td>
-<td class="enumeration">
-</td>
+<td>onLoopEnd</td>
+<td>func(*XAudio2.IXAudio2VoiceCallback, *void)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-onVoiceError</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2VoiceCallback, *void, Win32.HRESULT)</td>
-<td class="enumeration">
-</td>
+<td>onVoiceError</td>
+<td>func(*XAudio2.IXAudio2VoiceCallback, *void, Win32.HRESULT)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1631,156 +1184,99 @@ func(*XAudio2.IXAudio2VoiceCallback, *void, Win32.HRESULT)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-getVoiceDetails</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, *XAudio2.XAUDIO2_VOICE_DETAILS)</td>
-<td class="enumeration">
-</td>
+<td>getVoiceDetails</td>
+<td>func(*XAudio2.IXAudio2Voice, *XAudio2.XAUDIO2_VOICE_DETAILS)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setOutputVoices</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_VOICE_SENDS)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setOutputVoices</td>
+<td>func(*XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_VOICE_SENDS)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setEffectChain</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_EFFECT_CHAIN)</td>
-<td class="enumeration">
-</td>
+<td>setEffectChain</td>
+<td>func(*XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_EFFECT_CHAIN)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-enableEffect</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>enableEffect</td>
+<td>func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-disableEffect</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>disableEffect</td>
+<td>func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getEffectState</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, *Win32.BOOL)</td>
-<td class="enumeration">
-</td>
+<td>getEffectState</td>
+<td>func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, *Win32.BOOL)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setEffectParameters</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, const *void, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setEffectParameters</td>
+<td>func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, const *void, XAudio2.UINT32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getEffectParameters</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, *void, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>getEffectParameters</td>
+<td>func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, *void, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setFilterParameters</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_FILTER_PARAMETERS, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setFilterParameters</td>
+<td>func(*XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_FILTER_PARAMETERS, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getFilterParameters</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, *XAudio2.XAUDIO2_FILTER_PARAMETERS)</td>
-<td class="enumeration">
-</td>
+<td>getFilterParameters</td>
+<td>func(*XAudio2.IXAudio2Voice, *XAudio2.XAUDIO2_FILTER_PARAMETERS)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setOutputFilterParameters</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_FILTER_PARAMETERS, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setOutputFilterParameters</td>
+<td>func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, const *XAudio2.XAUDIO2_FILTER_PARAMETERS, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getOutputFilterParameters</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, *XAudio2.XAUDIO2_FILTER_PARAMETERS)</td>
-<td class="enumeration">
-</td>
+<td>getOutputFilterParameters</td>
+<td>func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, *XAudio2.XAUDIO2_FILTER_PARAMETERS)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setVolume</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, f32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setVolume</td>
+<td>func(*XAudio2.IXAudio2Voice, f32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getVolume</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, *f32)</td>
-<td class="enumeration">
-</td>
+<td>getVolume</td>
+<td>func(*XAudio2.IXAudio2Voice, *f32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setChannelVolumes</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, const *f32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setChannelVolumes</td>
+<td>func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, const *f32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getChannelVolumes</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, *f32)</td>
-<td class="enumeration">
-</td>
+<td>getChannelVolumes</td>
+<td>func(*XAudio2.IXAudio2Voice, XAudio2.UINT32, *f32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-setOutputMatrix</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32, const *f32, XAudio2.UINT32)->Win32.HRESULT</td>
-<td class="enumeration">
-</td>
+<td>setOutputMatrix</td>
+<td>func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32, const *f32, XAudio2.UINT32)->Win32.HRESULT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-getOutputMatrix</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32, *f32)</td>
-<td class="enumeration">
-</td>
+<td>getOutputMatrix</td>
+<td>func(*XAudio2.IXAudio2Voice, *XAudio2.IXAudio2Voice, XAudio2.UINT32, XAudio2.UINT32, *f32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-destroyVoice</td>
-<td class="tdtype">
-func(*XAudio2.IXAudio2Voice)</td>
-<td class="enumeration">
-</td>
+<td>destroyVoice</td>
+<td>func(*XAudio2.IXAudio2Voice)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1796,60 +1292,39 @@ func(*XAudio2.IXAudio2Voice)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-wFormatTag</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wFormatTag</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nChannels</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>nChannels</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nSamplesPerSec</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nSamplesPerSec</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nAvgBytesPerSec</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>nAvgBytesPerSec</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nBlockAlign</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>nBlockAlign</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-wBitsPerSample</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>wBitsPerSample</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cbSize</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>cbSize</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1865,36 +1340,24 @@ Win32.WORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-format</td>
-<td class="tdtype">
-<a href="#XAudio2_WAVEFORMATEX">XAudio2.WAVEFORMATEX</a></td>
-<td class="enumeration">
-</td>
+<td>format</td>
+<td><a href="#XAudio2_WAVEFORMATEX">XAudio2.WAVEFORMATEX</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-samples</td>
-<td class="tdtype">
-{wValidBitsPerSample: Win32.WORD, wSamplesPerBlock: Win32.WORD, wReserved: Win32.WORD}</td>
-<td class="enumeration">
-</td>
+<td>samples</td>
+<td>{wValidBitsPerSample: Win32.WORD, wSamplesPerBlock: Win32.WORD, wReserved: Win32.WORD}</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwChannelMask</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwChannelMask</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-subFormat</td>
-<td class="tdtype">
-Win32.GUID</td>
-<td class="enumeration">
-</td>
+<td>subFormat</td>
+<td>Win32.GUID</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1924,85 +1387,49 @@ Win32.GUID</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-<p>Either 0 or XAUDIO2_END_OF_STREAM. </p>
-</td>
+<td>flags</td>
+<td>XAudio2.UINT32</td>
+<td>Either 0 or XAUDIO2_END_OF_STREAM. </td>
 </tr>
 <tr>
-<td class="tdname">
-audioBytes</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-<p>Size of the audio data buffer in bytes. </p>
-</td>
+<td>audioBytes</td>
+<td>XAudio2.UINT32</td>
+<td>Size of the audio data buffer in bytes. </td>
 </tr>
 <tr>
-<td class="tdname">
-pAudioData</td>
-<td class="tdtype">
-const *Win32.BYTE</td>
-<td class="enumeration">
-<p>Pointer to the audio data buffer. </p>
-</td>
+<td>pAudioData</td>
+<td>const *Win32.BYTE</td>
+<td>Pointer to the audio data buffer. </td>
 </tr>
 <tr>
-<td class="tdname">
-playBegin</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-<p>First sample in this buffer to be played. </p>
-</td>
+<td>playBegin</td>
+<td>XAudio2.UINT32</td>
+<td>First sample in this buffer to be played. </td>
 </tr>
 <tr>
-<td class="tdname">
-playLength</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-<p>Length of the region to be played in samples, or 0 to play the whole buffer. </p>
-</td>
+<td>playLength</td>
+<td>XAudio2.UINT32</td>
+<td>Length of the region to be played in samples, or 0 to play the whole buffer. </td>
 </tr>
 <tr>
-<td class="tdname">
-loopBegin</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-<p>First sample of the region to be looped. </p>
-</td>
+<td>loopBegin</td>
+<td>XAudio2.UINT32</td>
+<td>First sample of the region to be looped. </td>
 </tr>
 <tr>
-<td class="tdname">
-loopLength</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-<p>Length of the desired loop region in samples, or 0 to loop the entire buffer. </p>
-</td>
+<td>loopLength</td>
+<td>XAudio2.UINT32</td>
+<td>Length of the desired loop region in samples, or 0 to loop the entire buffer. </td>
 </tr>
 <tr>
-<td class="tdname">
-loopCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-<p>Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever. </p>
-</td>
+<td>loopCount</td>
+<td>XAudio2.UINT32</td>
+<td>Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever. </td>
 </tr>
 <tr>
-<td class="tdname">
-pContext</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>Context value to be passed back in callbacks. </p>
-</td>
+<td>pContext</td>
+<td>*void</td>
+<td>Context value to be passed back in callbacks. </td>
 </tr>
 </table>
 <p>
@@ -2018,20 +1445,14 @@ pContext</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-pDecodedPacketCumulativeBytes</td>
-<td class="tdtype">
-const *XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>pDecodedPacketCumulativeBytes</td>
+<td>const *XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PacketCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>PacketCount</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2047,52 +1468,34 @@ XAudio2.UINT32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-traceMask</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>traceMask</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-breakMask</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>breakMask</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-logThreadID</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>logThreadID</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-logFileline</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>logFileline</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-logFunctionName</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>logFunctionName</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-logTiming</td>
-<td class="tdtype">
-Win32.BOOL</td>
-<td class="enumeration">
-</td>
+<td>logTiming</td>
+<td>Win32.BOOL</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2119,28 +1522,19 @@ Win32.BOOL</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-<a href="#XAudio2_XAUDIO2_FILTER_TYPE">XAudio2.XAUDIO2_FILTER_TYPE</a></td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td><a href="#XAudio2_XAUDIO2_FILTER_TYPE">XAudio2.XAUDIO2_FILTER_TYPE</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-frequency</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>frequency</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-oneOverQ</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>oneOverQ</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2157,45 +1551,28 @@ f32</td>
 <p>Used in XAUDIO2_FILTER_PARAMETERS below. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-LowPassFilter</td>
-<td class="enumeration">
-</td>
+<td>LowPassFilter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BandPassFilter</td>
-<td class="enumeration">
-<p>Attenuates frequencies above the cutoff frequency (state-variable filter). </p>
-</td>
+<td>BandPassFilter</td>
+<td>Attenuates frequencies above the cutoff frequency (state-variable filter). </td>
 </tr>
 <tr>
-<td class="tdname">
-HighPassFilter</td>
-<td class="enumeration">
-<p>Attenuates frequencies outside a given range      (state-variable filter). </p>
-</td>
+<td>HighPassFilter</td>
+<td>Attenuates frequencies outside a given range      (state-variable filter). </td>
 </tr>
 <tr>
-<td class="tdname">
-NotchFilter</td>
-<td class="enumeration">
-<p>Attenuates frequencies below the cutoff frequency (state-variable filter). </p>
-</td>
+<td>NotchFilter</td>
+<td>Attenuates frequencies below the cutoff frequency (state-variable filter). </td>
 </tr>
 <tr>
-<td class="tdname">
-LowPassOnePoleFilter</td>
-<td class="enumeration">
-<p>Attenuates frequencies inside a given range       (state-variable filter). </p>
-</td>
+<td>LowPassOnePoleFilter</td>
+<td>Attenuates frequencies inside a given range       (state-variable filter). </td>
 </tr>
 <tr>
-<td class="tdname">
-HighPassOnePoleFilter</td>
-<td class="enumeration">
-<p>Attenuates frequencies above the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect)  Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect). </p>
-</td>
+<td>HighPassOnePoleFilter</td>
+<td>Attenuates frequencies above the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect)  Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect). </td>
 </tr>
 </table>
 <p>
@@ -2211,116 +1588,74 @@ HighPassOnePoleFilter</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-AudioCyclesSinceLastQuery</td>
-<td class="tdtype">
-XAudio2.UINT64</td>
-<td class="enumeration">
-</td>
+<td>AudioCyclesSinceLastQuery</td>
+<td>XAudio2.UINT64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TotalCyclesSinceLastQuery</td>
-<td class="tdtype">
-XAudio2.UINT64</td>
-<td class="enumeration">
-</td>
+<td>TotalCyclesSinceLastQuery</td>
+<td>XAudio2.UINT64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MinimumCyclesPerQuantum</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>MinimumCyclesPerQuantum</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MaximumCyclesPerQuantum</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>MaximumCyclesPerQuantum</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MemoryUsageInBytes</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>MemoryUsageInBytes</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CurrentLatencyInSamples</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>CurrentLatencyInSamples</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GlitchesSinceEngineStarted</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>GlitchesSinceEngineStarted</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ActiveSourceVoiceCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>ActiveSourceVoiceCount</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-TotalSourceVoiceCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>TotalSourceVoiceCount</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ActiveSubmixVoiceCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>ActiveSubmixVoiceCount</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ActiveResamplerCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>ActiveResamplerCount</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ActiveMatrixMixCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>ActiveMatrixMixCount</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ActiveXmaSourceVoices</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>ActiveXmaSourceVoices</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ActiveXmaStreams</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>ActiveXmaStreams</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2336,20 +1671,14 @@ XAudio2.UINT32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pOutputVoice</td>
-<td class="tdtype">
-*XAudio2.IXAudio2Voice</td>
-<td class="enumeration">
-</td>
+<td>pOutputVoice</td>
+<td>*XAudio2.IXAudio2Voice</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2365,36 +1694,24 @@ pOutputVoice</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-creationFlags</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>creationFlags</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-activeFlags</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>activeFlags</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-inputChannels</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>inputChannels</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-inputSampleRate</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>inputSampleRate</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2410,20 +1727,14 @@ XAudio2.UINT32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-sendCount</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>sendCount</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pSends</td>
-<td class="tdtype">
-*XAudio2.XAUDIO2_SEND_DESCRIPTOR</td>
-<td class="enumeration">
-</td>
+<td>pSends</td>
+<td>*XAudio2.XAUDIO2_SEND_DESCRIPTOR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2439,28 +1750,19 @@ pSends</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-pCurrentBufferContext</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>pCurrentBufferContext</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buffersQueued</td>
-<td class="tdtype">
-XAudio2.UINT32</td>
-<td class="enumeration">
-</td>
+<td>buffersQueued</td>
+<td>XAudio2.UINT32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-samplesPlayed</td>
-<td class="tdtype">
-XAudio2.UINT64</td>
-<td class="enumeration">
-</td>
+<td>samplesPlayed</td>
+<td>XAudio2.UINT64</td>
+<td></td>
 </tr>
 </table>
 <p>

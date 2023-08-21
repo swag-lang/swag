@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -703,92 +688,59 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Pixel_Bmp_BI_BITFIELDS" class="tdname">
-BI_BITFIELDS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_Bmp_BI_BITFIELDS">BI_BITFIELDS</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RGB" class="tdname">
-BI_RGB</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_Bmp_BI_RGB">BI_RGB</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE4" class="tdname">
-BI_RLE4</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_Bmp_BI_RLE4">BI_RLE4</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE8" class="tdname">
-BI_RLE8</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_Bmp_BI_RLE8">BI_RLE8</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_ClipperScaleCoords" class="tdname">
-ClipperScaleCoords</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_ClipperScaleCoords">ClipperScaleCoords</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetHandle" class="tdname">
-InvalidRenderTargetHandle</td>
-<td class="tdtype">
-Pixel.RenderTargetHandle</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_InvalidRenderTargetHandle">InvalidRenderTargetHandle</td>
+<td>Pixel.RenderTargetHandle</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetSurfaceHandle" class="tdname">
-InvalidRenderTargetSurfaceHandle</td>
-<td class="tdtype">
-Pixel.RenderTargetSurfaceHandle</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_InvalidRenderTargetSurfaceHandle">InvalidRenderTargetSurfaceHandle</td>
+<td>Pixel.RenderTargetSurfaceHandle</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderHandle" class="tdname">
-InvalidShaderHandle</td>
-<td class="tdtype">
-Pixel.ShaderHandle</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_InvalidShaderHandle">InvalidShaderHandle</td>
+<td>Pixel.ShaderHandle</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderParamHandle" class="tdname">
-InvalidShaderParamHandle</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_InvalidShaderParamHandle">InvalidShaderParamHandle</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidTextureHandle" class="tdname">
-InvalidTextureHandle</td>
-<td class="tdtype">
-Pixel.TextureHandle</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_InvalidTextureHandle">InvalidTextureHandle</td>
+<td>Pixel.TextureHandle</td>
+<td></td>
 </tr>
 <tr>
-<td id="Pixel_MaxAAEdge" class="tdname">
-MaxAAEdge</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Pixel_MaxAAEdge">MaxAAEdge</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -804,850 +756,568 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-AliceBlue</td>
-<td class="enumeration">
-</td>
+<td>AliceBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AntiqueWhite</td>
-<td class="enumeration">
-</td>
+<td>AntiqueWhite</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Aqua</td>
-<td class="enumeration">
-</td>
+<td>Aqua</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Aquamarine</td>
-<td class="enumeration">
-</td>
+<td>Aquamarine</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Azure</td>
-<td class="enumeration">
-</td>
+<td>Azure</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Beige</td>
-<td class="enumeration">
-</td>
+<td>Beige</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bisque</td>
-<td class="enumeration">
-</td>
+<td>Bisque</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Black</td>
-<td class="enumeration">
-</td>
+<td>Black</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BlanchedAlmond</td>
-<td class="enumeration">
-</td>
+<td>BlanchedAlmond</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Blue</td>
-<td class="enumeration">
-</td>
+<td>Blue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BlueViolet</td>
-<td class="enumeration">
-</td>
+<td>BlueViolet</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Brown</td>
-<td class="enumeration">
-</td>
+<td>Brown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BurlyWood</td>
-<td class="enumeration">
-</td>
+<td>BurlyWood</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CadetBlue</td>
-<td class="enumeration">
-</td>
+<td>CadetBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Chartreuse</td>
-<td class="enumeration">
-</td>
+<td>Chartreuse</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Chocolate</td>
-<td class="enumeration">
-</td>
+<td>Chocolate</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Coral</td>
-<td class="enumeration">
-</td>
+<td>Coral</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CornflowerBlue</td>
-<td class="enumeration">
-</td>
+<td>CornflowerBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Cornsilk</td>
-<td class="enumeration">
-</td>
+<td>Cornsilk</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Crimson</td>
-<td class="enumeration">
-</td>
+<td>Crimson</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Cyan</td>
-<td class="enumeration">
-</td>
+<td>Cyan</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkBlue</td>
-<td class="enumeration">
-</td>
+<td>DarkBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkCyan</td>
-<td class="enumeration">
-</td>
+<td>DarkCyan</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkGoldenrod</td>
-<td class="enumeration">
-</td>
+<td>DarkGoldenrod</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkGray</td>
-<td class="enumeration">
-</td>
+<td>DarkGray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkGreen</td>
-<td class="enumeration">
-</td>
+<td>DarkGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkKhaki</td>
-<td class="enumeration">
-</td>
+<td>DarkKhaki</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkMagenta</td>
-<td class="enumeration">
-</td>
+<td>DarkMagenta</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkOliveGreen</td>
-<td class="enumeration">
-</td>
+<td>DarkOliveGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkOrange</td>
-<td class="enumeration">
-</td>
+<td>DarkOrange</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkOrchid</td>
-<td class="enumeration">
-</td>
+<td>DarkOrchid</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkRed</td>
-<td class="enumeration">
-</td>
+<td>DarkRed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkSalmon</td>
-<td class="enumeration">
-</td>
+<td>DarkSalmon</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkSeaGreen</td>
-<td class="enumeration">
-</td>
+<td>DarkSeaGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkSlateBlue</td>
-<td class="enumeration">
-</td>
+<td>DarkSlateBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkSlateGray</td>
-<td class="enumeration">
-</td>
+<td>DarkSlateGray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkTurquoise</td>
-<td class="enumeration">
-</td>
+<td>DarkTurquoise</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DarkViolet</td>
-<td class="enumeration">
-</td>
+<td>DarkViolet</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DeepPink</td>
-<td class="enumeration">
-</td>
+<td>DeepPink</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DeepSkyBlue</td>
-<td class="enumeration">
-</td>
+<td>DeepSkyBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DimGray</td>
-<td class="enumeration">
-</td>
+<td>DimGray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DodgerBlue</td>
-<td class="enumeration">
-</td>
+<td>DodgerBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Firebrick</td>
-<td class="enumeration">
-</td>
+<td>Firebrick</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FloralWhite</td>
-<td class="enumeration">
-</td>
+<td>FloralWhite</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ForestGreen</td>
-<td class="enumeration">
-</td>
+<td>ForestGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Fuchsia</td>
-<td class="enumeration">
-</td>
+<td>Fuchsia</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gainsboro</td>
-<td class="enumeration">
-</td>
+<td>Gainsboro</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GhostWhite</td>
-<td class="enumeration">
-</td>
+<td>GhostWhite</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gold</td>
-<td class="enumeration">
-</td>
+<td>Gold</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Goldenrod</td>
-<td class="enumeration">
-</td>
+<td>Goldenrod</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gray</td>
-<td class="enumeration">
-</td>
+<td>Gray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Green</td>
-<td class="enumeration">
-</td>
+<td>Green</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GreenYellow</td>
-<td class="enumeration">
-</td>
+<td>GreenYellow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Honeydew</td>
-<td class="enumeration">
-</td>
+<td>Honeydew</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HotPink</td>
-<td class="enumeration">
-</td>
+<td>HotPink</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-IndianRed</td>
-<td class="enumeration">
-</td>
+<td>IndianRed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Indigo</td>
-<td class="enumeration">
-</td>
+<td>Indigo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Ivory</td>
-<td class="enumeration">
-</td>
+<td>Ivory</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Khaki</td>
-<td class="enumeration">
-</td>
+<td>Khaki</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Lavender</td>
-<td class="enumeration">
-</td>
+<td>Lavender</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LavenderBlush</td>
-<td class="enumeration">
-</td>
+<td>LavenderBlush</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LawnGreen</td>
-<td class="enumeration">
-</td>
+<td>LawnGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LemonChiffon</td>
-<td class="enumeration">
-</td>
+<td>LemonChiffon</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightBlue</td>
-<td class="enumeration">
-</td>
+<td>LightBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightCoral</td>
-<td class="enumeration">
-</td>
+<td>LightCoral</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightCyan</td>
-<td class="enumeration">
-</td>
+<td>LightCyan</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightGoldenrodYellow</td>
-<td class="enumeration">
-</td>
+<td>LightGoldenrodYellow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightGray</td>
-<td class="enumeration">
-</td>
+<td>LightGray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightGreen</td>
-<td class="enumeration">
-</td>
+<td>LightGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightPink</td>
-<td class="enumeration">
-</td>
+<td>LightPink</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightSalmon</td>
-<td class="enumeration">
-</td>
+<td>LightSalmon</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightSeaGreen</td>
-<td class="enumeration">
-</td>
+<td>LightSeaGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightSkyBlue</td>
-<td class="enumeration">
-</td>
+<td>LightSkyBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightSlateGray</td>
-<td class="enumeration">
-</td>
+<td>LightSlateGray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightSteelBlue</td>
-<td class="enumeration">
-</td>
+<td>LightSteelBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightYellow</td>
-<td class="enumeration">
-</td>
+<td>LightYellow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Lime</td>
-<td class="enumeration">
-</td>
+<td>Lime</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LimeGreen</td>
-<td class="enumeration">
-</td>
+<td>LimeGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Linen</td>
-<td class="enumeration">
-</td>
+<td>Linen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Magenta</td>
-<td class="enumeration">
-</td>
+<td>Magenta</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Maroon</td>
-<td class="enumeration">
-</td>
+<td>Maroon</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumAquamarine</td>
-<td class="enumeration">
-</td>
+<td>MediumAquamarine</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumBlue</td>
-<td class="enumeration">
-</td>
+<td>MediumBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumOrchid</td>
-<td class="enumeration">
-</td>
+<td>MediumOrchid</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumPurple</td>
-<td class="enumeration">
-</td>
+<td>MediumPurple</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumSeaGreen</td>
-<td class="enumeration">
-</td>
+<td>MediumSeaGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumSlateBlue</td>
-<td class="enumeration">
-</td>
+<td>MediumSlateBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumSpringGreen</td>
-<td class="enumeration">
-</td>
+<td>MediumSpringGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumTurquoise</td>
-<td class="enumeration">
-</td>
+<td>MediumTurquoise</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MediumVioletRed</td>
-<td class="enumeration">
-</td>
+<td>MediumVioletRed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MidnightBlue</td>
-<td class="enumeration">
-</td>
+<td>MidnightBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MintCream</td>
-<td class="enumeration">
-</td>
+<td>MintCream</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MistyRose</td>
-<td class="enumeration">
-</td>
+<td>MistyRose</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Moccasin</td>
-<td class="enumeration">
-</td>
+<td>Moccasin</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NavajoWhite</td>
-<td class="enumeration">
-</td>
+<td>NavajoWhite</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Navy</td>
-<td class="enumeration">
-</td>
+<td>Navy</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OldLace</td>
-<td class="enumeration">
-</td>
+<td>OldLace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Olive</td>
-<td class="enumeration">
-</td>
+<td>Olive</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OliveDrab</td>
-<td class="enumeration">
-</td>
+<td>OliveDrab</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Orange</td>
-<td class="enumeration">
-</td>
+<td>Orange</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OrangeRed</td>
-<td class="enumeration">
-</td>
+<td>OrangeRed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Orchid</td>
-<td class="enumeration">
-</td>
+<td>Orchid</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PaleGoldenrod</td>
-<td class="enumeration">
-</td>
+<td>PaleGoldenrod</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PaleGreen</td>
-<td class="enumeration">
-</td>
+<td>PaleGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PaleTurquoise</td>
-<td class="enumeration">
-</td>
+<td>PaleTurquoise</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PaleVioletRed</td>
-<td class="enumeration">
-</td>
+<td>PaleVioletRed</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PapayaWhip</td>
-<td class="enumeration">
-</td>
+<td>PapayaWhip</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PeachPuff</td>
-<td class="enumeration">
-</td>
+<td>PeachPuff</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Peru</td>
-<td class="enumeration">
-</td>
+<td>Peru</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Pink</td>
-<td class="enumeration">
-</td>
+<td>Pink</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Plum</td>
-<td class="enumeration">
-</td>
+<td>Plum</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PowderBlue</td>
-<td class="enumeration">
-</td>
+<td>PowderBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Purple</td>
-<td class="enumeration">
-</td>
+<td>Purple</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Red</td>
-<td class="enumeration">
-</td>
+<td>Red</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RosyBrown</td>
-<td class="enumeration">
-</td>
+<td>RosyBrown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RoyalBlue</td>
-<td class="enumeration">
-</td>
+<td>RoyalBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SaddleBrown</td>
-<td class="enumeration">
-</td>
+<td>SaddleBrown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Salmon</td>
-<td class="enumeration">
-</td>
+<td>Salmon</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SandyBrown</td>
-<td class="enumeration">
-</td>
+<td>SandyBrown</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SeaGreen</td>
-<td class="enumeration">
-</td>
+<td>SeaGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SeaShell</td>
-<td class="enumeration">
-</td>
+<td>SeaShell</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sienna</td>
-<td class="enumeration">
-</td>
+<td>Sienna</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Silver</td>
-<td class="enumeration">
-</td>
+<td>Silver</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SkyBlue</td>
-<td class="enumeration">
-</td>
+<td>SkyBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SlateBlue</td>
-<td class="enumeration">
-</td>
+<td>SlateBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SlateGray</td>
-<td class="enumeration">
-</td>
+<td>SlateGray</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Snow</td>
-<td class="enumeration">
-</td>
+<td>Snow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SpringGreen</td>
-<td class="enumeration">
-</td>
+<td>SpringGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SteelBlue</td>
-<td class="enumeration">
-</td>
+<td>SteelBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Tan</td>
-<td class="enumeration">
-</td>
+<td>Tan</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Teal</td>
-<td class="enumeration">
-</td>
+<td>Teal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Thistle</td>
-<td class="enumeration">
-</td>
+<td>Thistle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Tomato</td>
-<td class="enumeration">
-</td>
+<td>Tomato</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Turquoise</td>
-<td class="enumeration">
-</td>
+<td>Turquoise</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Violet</td>
-<td class="enumeration">
-</td>
+<td>Violet</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Wheat</td>
-<td class="enumeration">
-</td>
+<td>Wheat</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-White</td>
-<td class="enumeration">
-</td>
+<td>White</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-WhiteSmoke</td>
-<td class="enumeration">
-</td>
+<td>WhiteSmoke</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Yellow</td>
-<td class="enumeration">
-</td>
+<td>Yellow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-YellowGreen</td>
-<td class="enumeration">
-</td>
+<td>YellowGreen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1678,46 +1348,32 @@ Zero</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Copy</td>
-<td class="enumeration">
-</td>
+<td>Copy</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Alpha</td>
-<td class="enumeration">
-</td>
+<td>Alpha</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Add</td>
-<td class="enumeration">
-</td>
+<td>Add</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sub</td>
-<td class="enumeration">
-</td>
+<td>Sub</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SubDst</td>
-<td class="enumeration">
-</td>
+<td>SubDst</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Min</td>
-<td class="enumeration">
-</td>
+<td>Min</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Max</td>
-<td class="enumeration">
-</td>
+<td>Max</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1811,92 +1467,59 @@ Max</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-biSize</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>biSize</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biWidth</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>biWidth</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biHeight</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>biHeight</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biPlanes</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>biPlanes</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biBitCount</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td>biBitCount</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biCompression</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>biCompression</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biSizeImage</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>biSizeImage</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biXPelsPerMeter</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>biXPelsPerMeter</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biYPelsPerMeter</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>biYPelsPerMeter</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biClrUsed</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>biClrUsed</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biClrImportant</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>biClrImportant</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1912,16 +1535,12 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Inside</td>
-<td class="enumeration">
-</td>
+<td>Inside</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1937,83 +1556,53 @@ Inside</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-color</td>
-<td class="tdtype">
-<a href="#Pixel_Color">Pixel.Color</a></td>
-<td class="enumeration">
-</td>
+<td>color</td>
+<td><a href="#Pixel_Color">Pixel.Color</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-<a href="#Pixel_BrushType">Pixel.BrushType</a></td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td><a href="#Pixel_BrushType">Pixel.BrushType</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hatch</td>
-<td class="tdtype">
-<a href="#Pixel_HatchStyle">Pixel.HatchStyle</a></td>
-<td class="enumeration">
-</td>
+<td>hatch</td>
+<td><a href="#Pixel_HatchStyle">Pixel.HatchStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-texture</td>
-<td class="tdtype">
-<a href="#Pixel_Texture">Pixel.Texture</a></td>
-<td class="enumeration">
-</td>
+<td>texture</td>
+<td><a href="#Pixel_Texture">Pixel.Texture</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uvMode</td>
-<td class="tdtype">
-<a href="#Pixel_UVMode">Pixel.UVMode</a></td>
-<td class="enumeration">
-</td>
+<td>uvMode</td>
+<td><a href="#Pixel_UVMode">Pixel.UVMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uvRect</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>uvRect</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Brush_createHatch">createHatch(HatchStyle, const ref Color)</a></td>
-<td class="enumeration">
-<p>Returns a hatch brush. </p>
-</td>
+<td><a href="#Pixel_Brush_createHatch">createHatch(HatchStyle, const ref Color)</a></td>
+<td>Returns a hatch brush. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Brush_createSolid">createSolid(const ref Color)</a></td>
-<td class="enumeration">
-<p>Returns a solid color brush. </p>
-</td>
+<td><a href="#Pixel_Brush_createSolid">createSolid(const ref Color)</a></td>
+<td>Returns a solid color brush. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Brush_createTexture">createTexture(const ref Texture)</a></td>
-<td class="enumeration">
-<p>Returns a full texture brush. </p>
-</td>
+<td><a href="#Pixel_Brush_createTexture">createTexture(const ref Texture)</a></td>
+<td>Returns a full texture brush. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Brush_createTiled">createTiled(const ref Texture)</a></td>
-<td class="enumeration">
-<p>Returns a tiled texture brush. </p>
-</td>
+<td><a href="#Pixel_Brush_createTiled">createTiled(const ref Texture)</a></td>
+<td>Returns a tiled texture brush. </td>
 </tr>
 </table>
 <p>
@@ -2089,22 +1678,16 @@ Core.Math.Rectangle</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-SolidColor</td>
-<td class="enumeration">
-</td>
+<td>SolidColor</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Texture</td>
-<td class="enumeration">
-</td>
+<td>Texture</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hatch</td>
-<td class="enumeration">
-</td>
+<td>Hatch</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2120,28 +1703,20 @@ Hatch</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Intersection</td>
-<td class="enumeration">
-</td>
+<td>Intersection</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Union</td>
-<td class="enumeration">
-</td>
+<td>Union</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Difference</td>
-<td class="enumeration">
-</td>
+<td>Difference</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Xor</td>
-<td class="enumeration">
-</td>
+<td>Xor</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2157,22 +1732,16 @@ Xor</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-ReverseSolution</td>
-<td class="enumeration">
-</td>
+<td>ReverseSolution</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-StrictlySimple</td>
-<td class="enumeration">
-</td>
+<td>StrictlySimple</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PreserveCollinear</td>
-<td class="enumeration">
-</td>
+<td>PreserveCollinear</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2188,29 +1757,21 @@ PreserveCollinear</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-x</td>
-<td class="tdtype">
-Pixel.Clipper.CInt</td>
-<td class="enumeration">
-</td>
+<td>x</td>
+<td>Pixel.Clipper.CInt</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-y</td>
-<td class="tdtype">
-Pixel.Clipper.CInt</td>
-<td class="enumeration">
-</td>
+<td>y</td>
+<td>Pixel.Clipper.CInt</td>
+<td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Clipper_IntPoint_opEquals">opEquals(self, const ref IntPoint)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals(self, const ref IntPoint)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2240,22 +1801,16 @@ Pixel.Clipper.CInt</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Square</td>
-<td class="enumeration">
-</td>
+<td>Square</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Miter</td>
-<td class="enumeration">
-</td>
+<td>Miter</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2271,28 +1826,20 @@ Miter</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-EvenOdd</td>
-<td class="enumeration">
-</td>
+<td>EvenOdd</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-NonZero</td>
-<td class="enumeration">
-</td>
+<td>NonZero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Positive</td>
-<td class="enumeration">
-</td>
+<td>Positive</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Negative</td>
-<td class="enumeration">
-</td>
+<td>Negative</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2308,16 +1855,12 @@ Negative</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Subject</td>
-<td class="enumeration">
-</td>
+<td>Subject</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Clip</td>
-<td class="enumeration">
-</td>
+<td>Clip</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2344,16 +1887,12 @@ Clip</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Set</td>
-<td class="enumeration">
-</td>
+<td>Set</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Clear</td>
-<td class="enumeration">
-</td>
+<td>Clear</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2369,267 +1908,163 @@ Clear</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-a</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>a</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-r</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>r</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-g</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>g</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-b</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
+<td>b</td>
+<td>u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-argb</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>argb</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromAbgr">fromAbgr(u32)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromAbgr">fromAbgr(u32)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromArgb">fromArgb(Argb)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromArgb">fromArgb(Argb)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromArgb">fromArgb(u32)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromArgb">fromArgb(u32)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromArgb">fromArgb(u8, Argb)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromArgb">fromArgb(u8, Argb)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromArgb">fromArgb(u8, u8, u8, u8)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromArgb">fromArgb(u8, u8, u8, u8)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromArgbf">fromArgbf(f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromArgbf">fromArgbf(f32, f32, f32, f32)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromHsl">fromHsl(f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromHsl">fromHsl(f32, f32, f32)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromRgb">fromRgb(u8, u8, u8)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromRgb">fromRgb(u8, u8, u8)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromRgbf">fromRgbf(f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromRgbf">fromRgbf(f32, f32, f32)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_fromVector4">fromVector4(const ref Vector4)</a></td>
-<td class="enumeration">
-<p>Create a new Color with specified values. </p>
-</td>
+<td><a href="#Pixel_Color_fromVector4">fromVector4(const ref Vector4)</a></td>
+<td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_getBlend">getBlend(const ref Color, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Blend two colors. </p>
-</td>
+<td><a href="#Pixel_Color_getBlend">getBlend(const ref Color, const ref Color, f32)</a></td>
+<td>Blend two colors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha(const ref Color, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Blend two colors, keeping the alpha channel of <code class="incode">col0</code> untouched. </p>
-</td>
+<td><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha(const ref Color, const ref Color, f32)</a></td>
+<td>Blend two colors, keeping the alpha channel of <code class="incode">col0</code> untouched. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_getDarker">getDarker(const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Returns a darker color. </p>
-</td>
+<td><a href="#Pixel_Color_getDarker">getDarker(const ref Color, f32)</a></td>
+<td>Returns a darker color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_getDistanceRgb">getDistanceRgb(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Returns the distance between the other color. </p>
-</td>
+<td><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb(self, const ref Color)</a></td>
+<td>Returns the distance between the other color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_getLighter">getLighter(const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Returns a lighter color. </p>
-</td>
+<td><a href="#Pixel_Color_getLighter">getLighter(const ref Color, f32)</a></td>
+<td>Returns a lighter color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_isOpaque">isOpaque(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Color_isOpaque">isOpaque(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_setArgb">setArgb(self, u8, u8, u8, u8)</a></td>
-<td class="enumeration">
-<p>Set all components. </p>
-</td>
+<td><a href="#Pixel_Color_setArgb">setArgb(self, u8, u8, u8, u8)</a></td>
+<td>Set all components. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_setArgbf">setArgbf(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set all components with floats in the range [0 1]. </p>
-</td>
+<td><a href="#Pixel_Color_setArgbf">setArgbf(self, f32, f32, f32, f32)</a></td>
+<td>Set all components with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_setHsl">setHsl(self, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Initialize color with hue, saturation, lightness. </p>
-</td>
+<td><a href="#Pixel_Color_setHsl">setHsl(self, f32, f32, f32)</a></td>
+<td>Initialize color with hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_setRgb">setRgb(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Just set r, g and b components. </p>
-</td>
+<td><a href="#Pixel_Color_setRgb">setRgb(self, const ref Color)</a></td>
+<td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_setRgb">setRgb(self, u8, u8, u8)</a></td>
-<td class="enumeration">
-<p>Just set r, g and b components. </p>
-</td>
+<td><a href="#Pixel_Color_setRgb">setRgb(self, u8, u8, u8)</a></td>
+<td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_setRgbf">setRgbf(self, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set r,g,b with floats in the range [0 1]. </p>
-</td>
+<td><a href="#Pixel_Color_setRgbf">setRgbf(self, f32, f32, f32)</a></td>
+<td>Set r,g,b with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_toArgbf">toArgbf(self)</a></td>
-<td class="enumeration">
-<p>Retrieve all components as floating point values between 0 and 1. </p>
-</td>
+<td><a href="#Pixel_Color_toArgbf">toArgbf(self)</a></td>
+<td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_toHsl">toHsl(self)</a></td>
-<td class="enumeration">
-<p>Returns hue, saturation, lightness. </p>
-</td>
+<td><a href="#Pixel_Color_toHsl">toHsl(self)</a></td>
+<td>Returns hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_toRgbf">toRgbf(self)</a></td>
-<td class="enumeration">
-<p>Retrieve all components as floating point values between 0 and 1. </p>
-</td>
+<td><a href="#Pixel_Color_toRgbf">toRgbf(self)</a></td>
+<td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_toVector4">toVector4(self)</a></td>
-<td class="enumeration">
-<p>Get the color as a [Math.Vector4]. </p>
-</td>
+<td><a href="#Pixel_Color_toVector4">toVector4(self)</a></td>
+<td>Get the color as a [Math.Vector4]. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_opAffect">opAffect(self, Argb)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Color_opAffect">opAffect(self, Argb)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_opAffect">opAffect(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Color_opAffect">opAffect(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_opAffect">opAffect(self, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Color_opAffect">opAffect(self, u32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_opEquals">opEquals(self, Argb)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Color_opEquals">opEquals(self, Argb)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_opEquals">opEquals(self, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Color_opEquals">opEquals(self, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Color_opEquals">opEquals(self, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Color_opEquals">opEquals(self, u32)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3055,36 +2490,24 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-r</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>r</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-g</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>g</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-b</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>b</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-a</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>a</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3100,20 +2523,14 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-id</td>
-<td class="tdtype">
-<a href="#Pixel_CommandId">Pixel.CommandId</a></td>
-<td class="enumeration">
-</td>
+<td>id</td>
+<td><a href="#Pixel_CommandId">Pixel.CommandId</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-<b>using</b> params</td>
-<td class="tdtype">
-{clear: {color: Pixel.Color}, drawTriangles: {start: u32, count: u32}, transform: {tr: Core.Math.Transform2}, clippingRect: {rect: Core.Math.Rectangle}, clippingRegion: {mode: Pixel.ClippingMode}, font: {fontRef: *Pixel.Font}, blendingMode: {mode: Pixel.BlendingMode}, textureFont: {font: *Pixel.Font, atlasIndex: s32}, colorMask: Pixel.ColorMask, renderTgt: {tgt: *Pixel.RenderTarget, paintAlpha: bool}, shader: {shader: *Pixel.ShaderBase}, shaderParam: {param: Pixel.ShaderParamHandle, type: const *Swag.TypeInfo, _f32: f32, _s32: s32}, texture0: {boundRect: Core.Math.Vector4, textureRect: Core.Math.Vector4, type: Pixel.BrushType, hatch: Pixel.HatchStyle, uvMode: Pixel.UVMode, interpolationMode: Pixel.InterpolationMode, texture: Pixel.Texture}}</td>
-<td class="enumeration">
-</td>
+<td><b>using</b> params</td>
+<td>{clear: {color: Pixel.Color}, drawTriangles: {start: u32, count: u32}, transform: {tr: Core.Math.Transform2}, clippingRect: {rect: Core.Math.Rectangle}, clippingRegion: {mode: Pixel.ClippingMode}, font: {fontRef: *Pixel.Font}, blendingMode: {mode: Pixel.BlendingMode}, textureFont: {font: *Pixel.Font, atlasIndex: s32}, colorMask: Pixel.ColorMask, renderTgt: {tgt: *Pixel.RenderTarget, paintAlpha: bool}, shader: {shader: *Pixel.ShaderBase}, shaderParam: {param: Pixel.ShaderParamHandle, type: const *Swag.TypeInfo, _f32: f32, _s32: s32}, texture0: {boundRect: Core.Math.Vector4, textureRect: Core.Math.Vector4, type: Pixel.BrushType, hatch: Pixel.HatchStyle, uvMode: Pixel.UVMode, interpolationMode: Pixel.InterpolationMode, texture: Pixel.Texture}}</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3129,142 +2546,96 @@ id</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Clear</td>
-<td class="enumeration">
-</td>
+<td>Clear</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ColorMask</td>
-<td class="enumeration">
-</td>
+<td>ColorMask</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Transform</td>
-<td class="enumeration">
-</td>
+<td>Transform</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DrawTriangles</td>
-<td class="enumeration">
-</td>
+<td>DrawTriangles</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BindTexture0</td>
-<td class="enumeration">
-</td>
+<td>BindTexture0</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ResetTexture0</td>
-<td class="enumeration">
-</td>
+<td>ResetTexture0</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BindTextureFont</td>
-<td class="enumeration">
-</td>
+<td>BindTextureFont</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ResetTextureFont</td>
-<td class="enumeration">
-</td>
+<td>ResetTextureFont</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SetClippingRect</td>
-<td class="enumeration">
-</td>
+<td>SetClippingRect</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ResetClippingRect</td>
-<td class="enumeration">
-</td>
+<td>ResetClippingRect</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-StartClippingRegion</td>
-<td class="enumeration">
-</td>
+<td>StartClippingRegion</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EndClippingRegion</td>
-<td class="enumeration">
-</td>
+<td>EndClippingRegion</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ResetClippingRegion</td>
-<td class="enumeration">
-</td>
+<td>ResetClippingRegion</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SetClippingRegionMode</td>
-<td class="enumeration">
-</td>
+<td>SetClippingRegionMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UpdateFont</td>
-<td class="enumeration">
-</td>
+<td>UpdateFont</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-StartNoOverlap</td>
-<td class="enumeration">
-</td>
+<td>StartNoOverlap</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-StopNoOverlap</td>
-<td class="enumeration">
-</td>
+<td>StopNoOverlap</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SetBlendingMode</td>
-<td class="enumeration">
-</td>
+<td>SetBlendingMode</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BindRenderTarget</td>
-<td class="enumeration">
-</td>
+<td>BindRenderTarget</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-UnbindRenderTarget</td>
-<td class="enumeration">
-</td>
+<td>UnbindRenderTarget</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ReleaseRenderTarget</td>
-<td class="enumeration">
-</td>
+<td>ReleaseRenderTarget</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SetShader</td>
-<td class="enumeration">
-</td>
+<td>SetShader</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SetShaderParam</td>
-<td class="enumeration">
-</td>
+<td>SetShaderParam</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3280,28 +2651,20 @@ SetShaderParam</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Triangle</td>
-<td class="enumeration">
-</td>
+<td>Triangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Square</td>
-<td class="enumeration">
-</td>
+<td>Square</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3317,34 +2680,24 @@ Square</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Pattern</td>
-<td class="enumeration">
-</td>
+<td>Pattern</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Dot</td>
-<td class="enumeration">
-</td>
+<td>Dot</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Dash</td>
-<td class="enumeration">
-</td>
+<td>Dash</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DashDot</td>
-<td class="enumeration">
-</td>
+<td>DashDot</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3360,12 +2713,9 @@ DashDot</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-decodePixels</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>decodePixels</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3381,16 +2731,12 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Blur</td>
-<td class="enumeration">
-</td>
+<td>Blur</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3406,16 +2752,12 @@ Blur</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Separate</td>
-<td class="enumeration">
-</td>
+<td>Separate</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Merge</td>
-<td class="enumeration">
-</td>
+<td>Merge</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3431,36 +2773,24 @@ Merge</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-<a href="#Pixel_ElementType">Pixel.ElementType</a></td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td><a href="#Pixel_ElementType">Pixel.ElementType</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-position</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>position</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-p1</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>p1</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-p2</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>p2</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3476,34 +2806,24 @@ Core.Math.Vector2</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Line</td>
-<td class="enumeration">
-</td>
+<td>Line</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Arc</td>
-<td class="enumeration">
-</td>
+<td>Arc</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bezier1</td>
-<td class="enumeration">
-</td>
+<td>Bezier1</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bezier2</td>
-<td class="enumeration">
-</td>
+<td>Bezier2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Curve</td>
-<td class="enumeration">
-</td>
+<td>Curve</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3519,147 +2839,93 @@ Curve</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-ascent</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>ascent</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-descent</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>descent</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-underlinePos</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>underlinePos</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-underlineSize</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>underlineSize</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceBold</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceBold</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceItalic</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceItalic</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fullname</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>fullname</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-typeFace</td>
-<td class="tdtype">
-*Pixel.TypeFace</td>
-<td class="enumeration">
-</td>
+<td>typeFace</td>
+<td>*Pixel.TypeFace</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-atlases</td>
-<td class="tdtype">
-Core.Array'(Pixel.GlyphAtlas)</td>
-<td class="enumeration">
-</td>
+<td>atlases</td>
+<td>Core.Array'(Pixel.GlyphAtlas)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-asciiRef</td>
-<td class="tdtype">
-[128] Pixel.GlyphDesc</td>
-<td class="enumeration">
-</td>
+<td>asciiRef</td>
+<td>[128] Pixel.GlyphDesc</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-unicodeRef</td>
-<td class="tdtype">
-Core.HashTable'(rune, *Pixel.GlyphDesc)</td>
-<td class="enumeration">
-</td>
+<td>unicodeRef</td>
+<td>Core.HashTable'(rune, *Pixel.GlyphDesc)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirty</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>dirty</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Font_create">create(*TypeFace, u32, bool, bool)</a></td>
-<td class="enumeration">
-<p>Creates a new Font of the given typeface and size. </p>
-</td>
+<td><a href="#Pixel_Font_create">create(*TypeFace, u32, bool, bool)</a></td>
+<td>Creates a new Font of the given typeface and size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Font_create">create(string, u32, bool, bool)</a></td>
-<td class="enumeration">
-<p>Creates a new Font with the given filename and size. </p>
-</td>
+<td><a href="#Pixel_Font_create">create(string, u32, bool, bool)</a></td>
+<td>Creates a new Font with the given filename and size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Font_getGlyphDesc">getGlyphDesc(self, rune)</a></td>
-<td class="enumeration">
-<p>Returns the glyph descriptor of a given rune. </p>
-</td>
+<td><a href="#Pixel_Font_getGlyphDesc">getGlyphDesc(self, rune)</a></td>
+<td>Returns the glyph descriptor of a given rune. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Font_release">release(*Font)</a></td>
-<td class="enumeration">
-<p>Release the given font. </p>
-</td>
+<td><a href="#Pixel_Font_release">release(*Font)</a></td>
+<td>Release the given font. </td>
 </tr>
 </table>
 <p>
@@ -3724,74 +2990,47 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-regular</td>
-<td class="tdtype">
-*Pixel.Font</td>
-<td class="enumeration">
-</td>
+<td>regular</td>
+<td>*Pixel.Font</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bold</td>
-<td class="tdtype">
-*Pixel.Font</td>
-<td class="enumeration">
-</td>
+<td>bold</td>
+<td>*Pixel.Font</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-italic</td>
-<td class="tdtype">
-*Pixel.Font</td>
-<td class="enumeration">
-</td>
+<td>italic</td>
+<td>*Pixel.Font</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-boldItalic</td>
-<td class="tdtype">
-*Pixel.Font</td>
-<td class="enumeration">
-</td>
+<td>boldItalic</td>
+<td>*Pixel.Font</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_FontFamily_createTypeFace">createTypeFace(const ref FontFamilyEnumerate, FontFamilyStyle)</a></td>
-<td class="enumeration">
-<p>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </p>
-</td>
+<td><a href="#Pixel_FontFamily_createTypeFace">createTypeFace(const ref FontFamilyEnumerate, FontFamilyStyle)</a></td>
+<td>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs()</a></td>
-<td class="enumeration">
-<p>Enumerate the font families available in the os. </p>
-</td>
+<td><a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs()</a></td>
+<td>Enumerate the font families available in the os. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_FontFamily_getFont">getFont(self, FontFamilyStyle)</a></td>
-<td class="enumeration">
-<p>Get the font corresponding to the style. </p>
-</td>
+<td><a href="#Pixel_FontFamily_getFont">getFont(self, FontFamilyStyle)</a></td>
+<td>Get the font corresponding to the style. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_FontFamily_getFromOs">getFromOs(string)</a></td>
-<td class="enumeration">
-<p>Get a FontFamilyEnumerate from a font family name. </p>
-</td>
+<td><a href="#Pixel_FontFamily_getFromOs">getFromOs(string)</a></td>
+<td>Get a FontFamilyEnumerate from a font family name. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_FontFamily_setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
-<td class="enumeration">
-<p>Set the font corresponding to a given style. </p>
-</td>
+<td><a href="#Pixel_FontFamily_setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
+<td>Set the font corresponding to a given style. </td>
 </tr>
 </table>
 <p>
@@ -3883,20 +3122,14 @@ boldItalic</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>name</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-faces</td>
-<td class="tdtype">
-[4] Pixel.FontFamilyStyleEnumerate</td>
-<td class="enumeration">
-</td>
+<td>faces</td>
+<td>[4] Pixel.FontFamilyStyleEnumerate</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3912,28 +3145,20 @@ faces</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Regular</td>
-<td class="enumeration">
-</td>
+<td>Regular</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bold</td>
-<td class="enumeration">
-</td>
+<td>Bold</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Italic</td>
-<td class="enumeration">
-</td>
+<td>Italic</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BoldItalic</td>
-<td class="enumeration">
-</td>
+<td>BoldItalic</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3949,20 +3174,14 @@ BoldItalic</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-</td>
+<td>name</td>
+<td>Core.String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-face</td>
-<td class="tdtype">
-Gdi32.LOGFONTW</td>
-<td class="enumeration">
-</td>
+<td>face</td>
+<td>Gdi32.LOGFONTW</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3979,39 +3198,24 @@ Gdi32.LOGFONTW</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Gif_Decoder_getFrame">getFrame(self, *Image, bool)</a></td>
-<td class="enumeration">
-<p>Create an image for the current frame. </p>
-</td>
+<td><a href="#Pixel_Gif_Decoder_getFrame">getFrame(self, *Image, bool)</a></td>
+<td>Create an image for the current frame. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames(self)</a></td>
-<td class="enumeration">
-<p>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </p>
-</td>
+<td><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames(self)</a></td>
+<td>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Gif_Decoder_init">init(self, const [..] u8, bool)</a></td>
-<td class="enumeration">
-<p>Initialize the decoder. </p>
-</td>
+<td><a href="#Pixel_Gif_Decoder_init">init(self, const [..] u8, bool)</a></td>
+<td>Initialize the decoder. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Gif_Decoder_nextFrame">nextFrame(self, *Image)</a></td>
-<td class="enumeration">
-<p>Get the next frame. Returns false if we have reached the end. </p>
-</td>
+<td><a href="#Pixel_Gif_Decoder_nextFrame">nextFrame(self, *Image)</a></td>
+<td>Get the next frame. Returns false if we have reached the end. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Gif_Decoder_rewind">rewind(self)</a></td>
-<td class="enumeration">
-<p>Restart at frame 0. </p>
-</td>
+<td><a href="#Pixel_Gif_Decoder_rewind">rewind(self)</a></td>
+<td>Restart at frame 0. </td>
 </tr>
 </table>
 <p>
@@ -4130,76 +3334,49 @@ Gdi32.LOGFONTW</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-texture</td>
-<td class="tdtype">
-<a href="#Pixel_Texture">Pixel.Texture</a></td>
-<td class="enumeration">
-</td>
+<td>texture</td>
+<td><a href="#Pixel_Texture">Pixel.Texture</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bpp</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>bpp</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-datas</td>
-<td class="tdtype">
-Core.Array'(u8)</td>
-<td class="enumeration">
-</td>
+<td>datas</td>
+<td>Core.Array'(u8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirty</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>dirty</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>curX</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>curY</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nextY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>nextY</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4215,68 +3392,44 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-uv</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>uv</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-atlasIndex</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>atlasIndex</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-advanceX</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>advanceX</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-advanceY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>advanceY</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-shiftX</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>shiftX</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-shiftY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>shiftY</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4292,220 +3445,148 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Dot</td>
-<td class="enumeration">
-</td>
+<td>Dot</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Horizontal</td>
-<td class="enumeration">
-</td>
+<td>Horizontal</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HorizontalLight</td>
-<td class="enumeration">
-</td>
+<td>HorizontalLight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HorizontalNarrow</td>
-<td class="enumeration">
-</td>
+<td>HorizontalNarrow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Vertical</td>
-<td class="enumeration">
-</td>
+<td>Vertical</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VerticalLight</td>
-<td class="enumeration">
-</td>
+<td>VerticalLight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VerticalNarrow</td>
-<td class="enumeration">
-</td>
+<td>VerticalNarrow</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SolidDiamond</td>
-<td class="enumeration">
-</td>
+<td>SolidDiamond</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-OutlinedDiamond</td>
-<td class="enumeration">
-</td>
+<td>OutlinedDiamond</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HorizontalDark</td>
-<td class="enumeration">
-</td>
+<td>HorizontalDark</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-VerticalDark</td>
-<td class="enumeration">
-</td>
+<td>VerticalDark</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Grid</td>
-<td class="enumeration">
-</td>
+<td>Grid</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GridLarge</td>
-<td class="enumeration">
-</td>
+<td>GridLarge</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GridDotted</td>
-<td class="enumeration">
-</td>
+<td>GridDotted</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Cross</td>
-<td class="enumeration">
-</td>
+<td>Cross</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CrossLarge</td>
-<td class="enumeration">
-</td>
+<td>CrossLarge</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent5</td>
-<td class="enumeration">
-</td>
+<td>Percent5</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent10</td>
-<td class="enumeration">
-</td>
+<td>Percent10</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent20</td>
-<td class="enumeration">
-</td>
+<td>Percent20</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent25</td>
-<td class="enumeration">
-</td>
+<td>Percent25</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent30</td>
-<td class="enumeration">
-</td>
+<td>Percent30</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent40</td>
-<td class="enumeration">
-</td>
+<td>Percent40</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent50</td>
-<td class="enumeration">
-</td>
+<td>Percent50</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent60</td>
-<td class="enumeration">
-</td>
+<td>Percent60</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent70</td>
-<td class="enumeration">
-</td>
+<td>Percent70</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent75</td>
-<td class="enumeration">
-</td>
+<td>Percent75</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent80</td>
-<td class="enumeration">
-</td>
+<td>Percent80</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Percent90</td>
-<td class="enumeration">
-</td>
+<td>Percent90</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CheckBoard</td>
-<td class="enumeration">
-</td>
+<td>CheckBoard</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CheckBoardLarge</td>
-<td class="enumeration">
-</td>
+<td>CheckBoardLarge</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Weave</td>
-<td class="enumeration">
-</td>
+<td>Weave</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DiagonalForward</td>
-<td class="enumeration">
-</td>
+<td>DiagonalForward</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DiagonalForwardLight</td>
-<td class="enumeration">
-</td>
+<td>DiagonalForwardLight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DiagonalBackward</td>
-<td class="enumeration">
-</td>
+<td>DiagonalBackward</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DiagonalBackwardLight</td>
-<td class="enumeration">
-</td>
+<td>DiagonalBackwardLight</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DiagonalCross</td>
-<td class="enumeration">
-</td>
+<td>DiagonalCross</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4522,20 +3603,14 @@ DiagonalCross</td>
 <p>Interface to decode a buffer. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-canDecode</td>
-<td class="tdtype">
-func(*Pixel.IImageDecoder, string)->bool</td>
-<td class="enumeration">
-</td>
+<td>canDecode</td>
+<td>func(*Pixel.IImageDecoder, string)->bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-decode</td>
-<td class="tdtype">
-func(*Pixel.IImageDecoder, const [..] u8, Pixel.DecodeOptions)->Pixel.Image throw</td>
-<td class="enumeration">
-</td>
+<td>decode</td>
+<td>func(*Pixel.IImageDecoder, const [..] u8, Pixel.DecodeOptions)->Pixel.Image throw</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4552,20 +3627,14 @@ func(*Pixel.IImageDecoder, const [..] u8, Pixel.DecodeOptions)->Pixel.Image thro
 <p>Interface to decode a buffer. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-canEncode</td>
-<td class="tdtype">
-func(*Pixel.IImageEncoder, string)->bool</td>
-<td class="enumeration">
-</td>
+<td>canEncode</td>
+<td>func(*Pixel.IImageEncoder, string)->bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-encode</td>
-<td class="tdtype">
-func(*Pixel.IImageEncoder, *Core.ConcatBuffer, Pixel.Image, any) throw</td>
-<td class="enumeration">
-</td>
+<td>encode</td>
+<td>func(*Pixel.IImageEncoder, *Core.ConcatBuffer, Pixel.Image, any) throw</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4582,493 +3651,287 @@ func(*Pixel.IImageEncoder, *Core.ConcatBuffer, Pixel.Image, any) throw</td>
 <p>An image buffer, in various pixel formats. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-pixels</td>
-<td class="tdtype">
-Core.Array'(u8)</td>
-<td class="enumeration">
-<p>All the pixels. </p>
-</td>
+<td>pixels</td>
+<td>Core.Array'(u8)</td>
+<td>All the pixels. </td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Size in bytes. </p>
-</td>
+<td>size</td>
+<td>u64</td>
+<td>Size in bytes. </td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>The width of the image. </p>
-</td>
+<td>width</td>
+<td>s32</td>
+<td>The width of the image. </td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>The height of the image. </p>
-</td>
+<td>height</td>
+<td>s32</td>
+<td>The height of the image. </td>
 </tr>
 <tr>
-<td class="tdname">
-width8</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>The width, in bytes. </p>
-</td>
+<td>width8</td>
+<td>s32</td>
+<td>The width, in bytes. </td>
 </tr>
 <tr>
-<td class="tdname">
-pf</td>
-<td class="tdtype">
-<a href="#Pixel_PixelFormat">Pixel.PixelFormat</a></td>
-<td class="enumeration">
-<p>Format of one pixel. </p>
-</td>
+<td>pf</td>
+<td><a href="#Pixel_PixelFormat">Pixel.PixelFormat</a></td>
+<td>Format of one pixel. </td>
 </tr>
 <tr>
-<td class="tdname">
-bpp</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-<p>Bits per pixel. </p>
-</td>
+<td>bpp</td>
+<td>u8</td>
+<td>Bits per pixel. </td>
 </tr>
 <tr>
-<td class="tdname">
-bpp8</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-<p>Bytes per pixel. </p>
-</td>
+<td>bpp8</td>
+<td>u8</td>
+<td>Bytes per pixel. </td>
 </tr>
 <tr>
-<td class="tdname">
-workingBuffer</td>
-<td class="tdtype">
-*Pixel.Image</td>
-<td class="enumeration">
-<p>Temporary buffer for filters and transformations. </p>
-</td>
+<td>workingBuffer</td>
+<td>*Pixel.Image</td>
+<td>Temporary buffer for filters and transformations. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_addDecoder">addDecoder()</a></td>
-<td class="enumeration">
-<p>Register an image decoder. </p>
-</td>
+<td><a href="#Pixel_Image_addDecoder">addDecoder()</a></td>
+<td>Register an image decoder. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_addEncoder">addEncoder()</a></td>
-<td class="enumeration">
-<p>Register an image encoder. </p>
-</td>
+<td><a href="#Pixel_Image_addEncoder">addEncoder()</a></td>
+<td>Register an image encoder. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_allocPixels">allocPixels(self)</a></td>
-<td class="enumeration">
-<p>Allocate pixels. </p>
-</td>
+<td><a href="#Pixel_Image_allocPixels">allocPixels(self)</a></td>
+<td>Allocate pixels. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer(self)</a></td>
-<td class="enumeration">
-<p>Allocate a computing buffer with current image size. </p>
-</td>
+<td><a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer(self)</a></td>
+<td>Allocate a computing buffer with current image size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer(self, s32, s32, PixelFormat)</a></td>
-<td class="enumeration">
-<p>Allocate a computing buffer with new sizes. </p>
-</td>
+<td><a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer(self, s32, s32, PixelFormat)</a></td>
+<td>Allocate a computing buffer with new sizes. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_applyKernel">applyKernel(self, Kernel)</a></td>
-<td class="enumeration">
-<p>Apply a kernel to the image. </p>
-</td>
+<td><a href="#Pixel_Image_applyKernel">applyKernel(self, Kernel)</a></td>
+<td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer(self)</a></td>
-<td class="enumeration">
-<p>Replace the current image content with the working buffer. </p>
-</td>
+<td><a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer(self)</a></td>
+<td>Replace the current image content with the working buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_canLoad">canLoad(string)</a></td>
-<td class="enumeration">
-<p>Returns <code class="incode">true</code> if the given filename has a corresponding decoder. </p>
-</td>
+<td><a href="#Pixel_Image_canLoad">canLoad(string)</a></td>
+<td>Returns <code class="incode">true</code> if the given filename has a corresponding decoder. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_canSave">canSave(string)</a></td>
-<td class="enumeration">
-<p>Returns <code class="incode">true</code> if the given filename has a corresponding encoder. </p>
-</td>
+<td><a href="#Pixel_Image_canSave">canSave(string)</a></td>
+<td>Returns <code class="incode">true</code> if the given filename has a corresponding encoder. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear the content of the image. </p>
-</td>
+<td><a href="#Pixel_Image_clear">clear(self)</a></td>
+<td>Clear the content of the image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_colorize">colorize(self, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Colorize the image by setting the hue and saturation. </p>
-</td>
+<td><a href="#Pixel_Image_colorize">colorize(self, f32, f32, f32)</a></td>
+<td>Colorize the image by setting the hue and saturation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_contrast">contrast(self, f32)</a></td>
-<td class="enumeration">
-<p>Change the contrast. <code class="incode">factor</code> is [-1, 1]. </p>
-</td>
+<td><a href="#Pixel_Image_contrast">contrast(self, f32)</a></td>
+<td>Change the contrast. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_copyPixel">copyPixel(^u8, ^u8)</a></td>
-<td class="enumeration">
-<p>Copy one pixel, depending on bpp. </p>
-</td>
+<td><a href="#Pixel_Image_copyPixel">copyPixel(^u8, ^u8)</a></td>
+<td>Copy one pixel, depending on bpp. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_create">create(s32, s32, PixelFormat, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Creates a new image. </p>
-</td>
+<td><a href="#Pixel_Image_create">create(s32, s32, PixelFormat, const [..] u8)</a></td>
+<td>Creates a new image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_crop">crop(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Image_crop">crop(self, const ref Rectangle)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_crop">crop(self, s32, s32, s32, s32)</a></td>
-<td class="enumeration">
-<p>Crop image. </p>
-</td>
+<td><a href="#Pixel_Image_crop">crop(self, s32, s32, s32, s32)</a></td>
+<td>Crop image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_decode">decode(string, const [..] u8, const ref DecodeOptions)</a></td>
-<td class="enumeration">
-<p>Decode the given image buffer. </p>
-</td>
+<td><a href="#Pixel_Image_decode">decode(string, const [..] u8, const ref DecodeOptions)</a></td>
+<td>Decode the given image buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_fade">fade(self, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Fade to a given color. <code class="incode">factor</code> is [0, 1]. </p>
-</td>
+<td><a href="#Pixel_Image_fade">fade(self, const ref Color, f32)</a></td>
+<td>Fade to a given color. <code class="incode">factor</code> is [0, 1]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_fill">fill(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Fill image with <code class="incode">color</code>. </p>
-</td>
+<td><a href="#Pixel_Image_fill">fill(self, const ref Color)</a></td>
+<td>Fill image with <code class="incode">color</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_fillGradient2">fillGradient2(self, const ref Color, const ref Color)</a></td>
-<td class="enumeration">
-<p>Fill with an horizontal gradient from <code class="incode">color0</code> to <code class="incode">color1</code>. </p>
-</td>
+<td><a href="#Pixel_Image_fillGradient2">fillGradient2(self, const ref Color, const ref Color)</a></td>
+<td>Fill with an horizontal gradient from <code class="incode">color0</code> to <code class="incode">color1</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_fillGradient4">fillGradient4(self, const ref Color, const ref Color, const ref Color, const ref Color)</a></td>
-<td class="enumeration">
-<p>Fill with a gradient with a different color at each corner. </p>
-</td>
+<td><a href="#Pixel_Image_fillGradient4">fillGradient4(self, const ref Color, const ref Color, const ref Color, const ref Color)</a></td>
+<td>Fill with a gradient with a different color at each corner. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_fillHsl">fillHsl(self, FillHslType, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Image_fillHsl">fillHsl(self, FillHslType, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_flip">flip(self)</a></td>
-<td class="enumeration">
-<p>Flip image vertically. </p>
-</td>
+<td><a href="#Pixel_Image_flip">flip(self)</a></td>
+<td>Flip image vertically. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer(self)</a></td>
-<td class="enumeration">
-<p>Free the working buffer if allocated. </p>
-</td>
+<td><a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer(self)</a></td>
+<td>Free the working buffer if allocated. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_from">from(HBITMAP)</a></td>
-<td class="enumeration">
-<p>Creates an image from a windows HBITMAP. </p>
-</td>
+<td><a href="#Pixel_Image_from">from(HBITMAP)</a></td>
+<td>Creates an image from a windows HBITMAP. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_from">from(HICON)</a></td>
-<td class="enumeration">
-<p>Creates an image from a windows HICON. </p>
-</td>
+<td><a href="#Pixel_Image_from">from(HICON)</a></td>
+<td>Creates an image from a windows HICON. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_gamma">gamma(self, f32)</a></td>
-<td class="enumeration">
-<p>Change the gamma. </p>
-</td>
+<td><a href="#Pixel_Image_gamma">gamma(self, f32)</a></td>
+<td>Change the gamma. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_getPixelColor">getPixelColor(self, s32, s32)</a></td>
-<td class="enumeration">
-<p>Returns the color at the given coordinate. </p>
-</td>
+<td><a href="#Pixel_Image_getPixelColor">getPixelColor(self, s32, s32)</a></td>
+<td>Returns the color at the given coordinate. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_grayScale">grayScale(self, f32)</a></td>
-<td class="enumeration">
-<p>Transform image to grayscale, with a given factor. </p>
-</td>
+<td><a href="#Pixel_Image_grayScale">grayScale(self, f32)</a></td>
+<td>Transform image to grayscale, with a given factor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_halfSize">halfSize(self)</a></td>
-<td class="enumeration">
-<p>Divide image size by 2 with a bilinear 2x2 filter. </p>
-</td>
+<td><a href="#Pixel_Image_halfSize">halfSize(self)</a></td>
+<td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_init">init(self, s32, s32, PixelFormat)</a></td>
-<td class="enumeration">
-<p>Initialize image informations  <code class="incode">pixels</code> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </p>
-</td>
+<td><a href="#Pixel_Image_init">init(self, s32, s32, PixelFormat)</a></td>
+<td>Initialize image informations  <code class="incode">pixels</code> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_invert">invert(self)</a></td>
-<td class="enumeration">
-<p>Invert colors. </p>
-</td>
+<td><a href="#Pixel_Image_invert">invert(self)</a></td>
+<td>Invert colors. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_isValid">isValid(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the image is valid. </p>
-</td>
+<td><a href="#Pixel_Image_isValid">isValid(self)</a></td>
+<td>Returns true if the image is valid. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_lightness">lightness(self, f32)</a></td>
-<td class="enumeration">
-<p>Change the lightness. <code class="incode">factor</code> is [-1, 1]. </p>
-</td>
+<td><a href="#Pixel_Image_lightness">lightness(self, f32)</a></td>
+<td>Change the lightness. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_load">load(string, const ref DecodeOptions)</a></td>
-<td class="enumeration">
-<p>Load the given image file. </p>
-</td>
+<td><a href="#Pixel_Image_load">load(string, const ref DecodeOptions)</a></td>
+<td>Load the given image file. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_mirror">mirror(self)</a></td>
-<td class="enumeration">
-<p>Flip image horizontally. </p>
-</td>
+<td><a href="#Pixel_Image_mirror">mirror(self)</a></td>
+<td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_mix">mix(self, const ref Image, s32, s32, MixMode)</a></td>
-<td class="enumeration">
-<p>Mix with another image. </p>
-</td>
+<td><a href="#Pixel_Image_mix">mix(self, const ref Image, s32, s32, MixMode)</a></td>
+<td>Mix with another image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_release">release(self)</a></td>
-<td class="enumeration">
-<p>Release the content of the image. </p>
-</td>
+<td><a href="#Pixel_Image_release">release(self)</a></td>
+<td>Release the content of the image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_resize">resize(self, s32, s32, ResizeMode)</a></td>
-<td class="enumeration">
-<p>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </p>
-</td>
+<td><a href="#Pixel_Image_resize">resize(self, s32, s32, ResizeMode)</a></td>
+<td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_save">save(self, string, any)</a></td>
-<td class="enumeration">
-<p>Save the image to a file. </p>
-</td>
+<td><a href="#Pixel_Image_save">save(self, string, any)</a></td>
+<td>Save the image to a file. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_setAlpha">setAlpha(self, u8)</a></td>
-<td class="enumeration">
-<p>Change the alpha channel. </p>
-</td>
+<td><a href="#Pixel_Image_setAlpha">setAlpha(self, u8)</a></td>
+<td>Change the alpha channel. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_setChannel">setChannel(self, ChannelMode, ChannelValueMode, u8)</a></td>
-<td class="enumeration">
-<p>Change specified color channels. </p>
-</td>
+<td><a href="#Pixel_Image_setChannel">setChannel(self, ChannelMode, ChannelValueMode, u8)</a></td>
+<td>Change specified color channels. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_setPixelFormat">setPixelFormat(self, PixelFormat)</a></td>
-<td class="enumeration">
-<p>Change image pixel format. </p>
-</td>
+<td><a href="#Pixel_Image_setPixelFormat">setPixelFormat(self, PixelFormat)</a></td>
+<td>Change image pixel format. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8(^u8, u8, u8, u8, u8)</a></td>
-<td class="enumeration">
-<p>Set pixel values depending on pixel format. </p>
-</td>
+<td><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8(^u8, u8, u8, u8, u8)</a></td>
+<td>Set pixel values depending on pixel format. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toApplyKernel">toApplyKernel(self, Kernel)</a></td>
-<td class="enumeration">
-<p>Apply a kernel to the image. </p>
-</td>
+<td><a href="#Pixel_Image_toApplyKernel">toApplyKernel(self, Kernel)</a></td>
+<td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toCrop">toCrop(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Image_toCrop">toCrop(self, const ref Rectangle)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toCrop">toCrop(self, s32, s32, s32, s32)</a></td>
-<td class="enumeration">
-<p>Crop image. </p>
-</td>
+<td><a href="#Pixel_Image_toCrop">toCrop(self, s32, s32, s32, s32)</a></td>
+<td>Crop image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toFlip">toFlip(self)</a></td>
-<td class="enumeration">
-<p>Flip image vertically. </p>
-</td>
+<td><a href="#Pixel_Image_toFlip">toFlip(self)</a></td>
+<td>Flip image vertically. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toHICON">toHICON(self)</a></td>
-<td class="enumeration">
-<p>Transform an image to a windows icon. </p>
-</td>
+<td><a href="#Pixel_Image_toHICON">toHICON(self)</a></td>
+<td>Transform an image to a windows icon. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toHalfSize">toHalfSize(self)</a></td>
-<td class="enumeration">
-<p>Divide image size by 2 with a bilinear 2x2 filter. </p>
-</td>
+<td><a href="#Pixel_Image_toHalfSize">toHalfSize(self)</a></td>
+<td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toMirror">toMirror(self)</a></td>
-<td class="enumeration">
-<p>Flip image horizontally. </p>
-</td>
+<td><a href="#Pixel_Image_toMirror">toMirror(self)</a></td>
+<td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toMix">toMix(self, const ref Image, s32, s32, MixMode)</a></td>
-<td class="enumeration">
-<p>Mix with another image. </p>
-</td>
+<td><a href="#Pixel_Image_toMix">toMix(self, const ref Image, s32, s32, MixMode)</a></td>
+<td>Mix with another image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toResize">toResize(self, s32, s32, ResizeMode)</a></td>
-<td class="enumeration">
-<p>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </p>
-</td>
+<td><a href="#Pixel_Image_toResize">toResize(self, s32, s32, ResizeMode)</a></td>
+<td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat(self, PixelFormat)</a></td>
-<td class="enumeration">
-<p>Change image pixel format. </p>
-</td>
+<td><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat(self, PixelFormat)</a></td>
+<td>Change image pixel format. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_toTurn">toTurn(self, TurnAngle)</a></td>
-<td class="enumeration">
-<p>Turn image by a given predefined angle. </p>
-</td>
+<td><a href="#Pixel_Image_toTurn">toTurn(self, TurnAngle)</a></td>
+<td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_turn">turn(self, TurnAngle)</a></td>
-<td class="enumeration">
-<p>Turn image by a given predefined angle. </p>
-</td>
+<td><a href="#Pixel_Image_turn">turn(self, TurnAngle)</a></td>
+<td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_visitPixels">visitPixels(self, *void, s32, code)</a></td>
-<td class="enumeration">
-<p>Macro to visit all pixels of the image in parallel chunks. </p>
-</td>
+<td><a href="#Pixel_Image_visitPixels">visitPixels(self, *void, s32, code)</a></td>
+<td>Macro to visit all pixels of the image in parallel chunks. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Image_opVisit">opVisit(self, code)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Image_opVisit">opVisit(self, code)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5084,40 +3947,28 @@ workingBuffer</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Red</td>
-<td class="enumeration">
-</td>
+<td>Red</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Green</td>
-<td class="enumeration">
-</td>
+<td>Green</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Blue</td>
-<td class="enumeration">
-</td>
+<td>Blue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Alpha</td>
-<td class="enumeration">
-</td>
+<td>Alpha</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RGB</td>
-<td class="enumeration">
-</td>
+<td>RGB</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RGBA</td>
-<td class="enumeration">
-</td>
+<td>RGBA</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5133,34 +3984,24 @@ RGBA</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Color</td>
-<td class="enumeration">
-</td>
+<td>Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MinRGB</td>
-<td class="enumeration">
-</td>
+<td>MinRGB</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MaxRGB</td>
-<td class="enumeration">
-</td>
+<td>MaxRGB</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MeanRGB</td>
-<td class="enumeration">
-</td>
+<td>MeanRGB</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Alpha</td>
-<td class="enumeration">
-</td>
+<td>Alpha</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5176,77 +4017,52 @@ Alpha</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-HueVert</td>
-<td class="enumeration">
-</td>
+<td>HueVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueHorz</td>
-<td class="enumeration">
-</td>
+<td>HueHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SaturationVert</td>
-<td class="enumeration">
-</td>
+<td>SaturationVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SaturationHorz</td>
-<td class="enumeration">
-</td>
+<td>SaturationHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightnessVert</td>
-<td class="enumeration">
-</td>
+<td>LightnessVert</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-LightnessHorz</td>
-<td class="enumeration">
-</td>
+<td>LightnessHorz</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueSaturation</td>
-<td class="enumeration">
-</td>
+<td>HueSaturation</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-HueLightness</td>
-<td class="enumeration">
-</td>
+<td>HueLightness</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SaturationLightness</td>
-<td class="enumeration">
-<p>(h,0,1) (h,1,0.5) (h,0,0) (h,1,0). </p>
-</td>
+<td>SaturationLightness</td>
+<td>(h,0,1) (h,1,0.5) (h,0,0) (h,1,0). </td>
 </tr>
 <tr>
-<td class="tdname">
-GreenBlue</td>
-<td class="enumeration">
-</td>
+<td>GreenBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedBlue</td>
-<td class="enumeration">
-</td>
+<td>RedBlue</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RedGreen</td>
-<td class="enumeration">
-</td>
+<td>RedGreen</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5263,148 +4079,100 @@ RedGreen</td>
 <p>Kernel format is : kernelSize, kernelNormalizeValue, kernelValues... </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-GaussianBlur3x3A</td>
-<td class="enumeration">
-</td>
+<td>GaussianBlur3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GaussianBlur3x3B</td>
-<td class="enumeration">
-</td>
+<td>GaussianBlur3x3B</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-GaussianBlur5x5A</td>
-<td class="enumeration">
-</td>
+<td>GaussianBlur5x5A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BoxBlur3x3A</td>
-<td class="enumeration">
-</td>
+<td>BoxBlur3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BoxBlur5x5A</td>
-<td class="enumeration">
-</td>
+<td>BoxBlur5x5A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sharpen3x3A</td>
-<td class="enumeration">
-</td>
+<td>Sharpen3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Sharpen3x3B</td>
-<td class="enumeration">
-</td>
+<td>Sharpen3x3B</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Soften3x3A</td>
-<td class="enumeration">
-</td>
+<td>Soften3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EmbossLeft3x3A</td>
-<td class="enumeration">
-</td>
+<td>EmbossLeft3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EmbossLeft3x3B</td>
-<td class="enumeration">
-</td>
+<td>EmbossLeft3x3B</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EmbossLeft3x3C</td>
-<td class="enumeration">
-</td>
+<td>EmbossLeft3x3C</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EmbossRight3x3A</td>
-<td class="enumeration">
-</td>
+<td>EmbossRight3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EmbossRight3x3B</td>
-<td class="enumeration">
-</td>
+<td>EmbossRight3x3B</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EmbossRight3x3C</td>
-<td class="enumeration">
-</td>
+<td>EmbossRight3x3C</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EdgeDetect3x3A</td>
-<td class="enumeration">
-</td>
+<td>EdgeDetect3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EdgeDetect3x3B</td>
-<td class="enumeration">
-</td>
+<td>EdgeDetect3x3B</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EdgeDetect3x3C</td>
-<td class="enumeration">
-</td>
+<td>EdgeDetect3x3C</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EdgeDetect3x3D</td>
-<td class="enumeration">
-</td>
+<td>EdgeDetect3x3D</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EdgeDetect3x3E</td>
-<td class="enumeration">
-</td>
+<td>EdgeDetect3x3E</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-EdgeDetect3x3F</td>
-<td class="enumeration">
-</td>
+<td>EdgeDetect3x3F</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SobelHorizontal3x3A</td>
-<td class="enumeration">
-</td>
+<td>SobelHorizontal3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SobelVertical3x3A</td>
-<td class="enumeration">
-</td>
+<td>SobelVertical3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PrevitHorizontal3x3A</td>
-<td class="enumeration">
-</td>
+<td>PrevitHorizontal3x3A</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PrevitVertical3x3A</td>
-<td class="enumeration">
-</td>
+<td>PrevitVertical3x3A</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5420,16 +4188,12 @@ PrevitVertical3x3A</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Copy</td>
-<td class="enumeration">
-</td>
+<td>Copy</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AlphaBlend</td>
-<td class="enumeration">
-</td>
+<td>AlphaBlend</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5445,52 +4209,36 @@ AlphaBlend</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Raw</td>
-<td class="enumeration">
-</td>
+<td>Raw</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bilinear</td>
-<td class="enumeration">
-</td>
+<td>Bilinear</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bicubic</td>
-<td class="enumeration">
-</td>
+<td>Bicubic</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Gaussian</td>
-<td class="enumeration">
-</td>
+<td>Gaussian</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Quadratic</td>
-<td class="enumeration">
-</td>
+<td>Quadratic</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hermite</td>
-<td class="enumeration">
-</td>
+<td>Hermite</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Hamming</td>
-<td class="enumeration">
-</td>
+<td>Hamming</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Catrom</td>
-<td class="enumeration">
-</td>
+<td>Catrom</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5506,22 +4254,16 @@ Catrom</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-T90</td>
-<td class="enumeration">
-</td>
+<td>T90</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-T180</td>
-<td class="enumeration">
-</td>
+<td>T180</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-T270</td>
-<td class="enumeration">
-</td>
+<td>T270</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6364,16 +5106,12 @@ T270</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Pixel</td>
-<td class="enumeration">
-</td>
+<td>Pixel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Linear</td>
-<td class="enumeration">
-</td>
+<td>Linear</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6389,34 +5127,24 @@ Linear</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bevel</td>
-<td class="enumeration">
-</td>
+<td>Bevel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Miter</td>
-<td class="enumeration">
-</td>
+<td>Miter</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-MiterBevel</td>
-<td class="enumeration">
-</td>
+<td>MiterBevel</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6471,13 +5199,9 @@ MiterBevel</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-quality</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-<p>Encoding quality between 1 and 100. </p>
-</td>
+<td>quality</td>
+<td>u8</td>
+<td>Encoding quality between 1 and 100. </td>
 </tr>
 </table>
 <p>
@@ -6532,46 +5256,32 @@ u8</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Triangle</td>
-<td class="enumeration">
-</td>
+<td>Triangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Round</td>
-<td class="enumeration">
-</td>
+<td>Round</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Square</td>
-<td class="enumeration">
-</td>
+<td>Square</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ArrowAnchor</td>
-<td class="enumeration">
-</td>
+<td>ArrowAnchor</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SquareAnchor</td>
-<td class="enumeration">
-</td>
+<td>SquareAnchor</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RoundAnchor</td>
-<td class="enumeration">
-</td>
+<td>RoundAnchor</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6587,233 +5297,143 @@ RoundAnchor</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-elements</td>
-<td class="tdtype">
-Core.Array'(Pixel.Element)</td>
-<td class="enumeration">
-</td>
+<td>elements</td>
+<td>Core.Array'(Pixel.Element)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-startPoint</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>startPoint</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endPoint</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>endPoint</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isClosed</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isClosed</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isDirty</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isDirty</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-serial</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>serial</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flattenQuality</td>
-<td class="tdtype">
-<a href="#Pixel_PaintQuality">Pixel.PaintQuality</a></td>
-<td class="enumeration">
-</td>
+<td>flattenQuality</td>
+<td><a href="#Pixel_PaintQuality">Pixel.PaintQuality</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isPolyOnly</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isPolyOnly</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isFlatten</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isFlatten</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bvMin</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>bvMin</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bvMax</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>bvMax</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endPosBuffer</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>endPosBuffer</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-polygon</td>
-<td class="tdtype">
-<a href="#Pixel_Polygon">Pixel.Polygon</a></td>
-<td class="enumeration">
-</td>
+<td>polygon</td>
+<td><a href="#Pixel_Polygon">Pixel.Polygon</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-points</td>
-<td class="tdtype">
-Core.Array'(*Pixel.Poly2Tri.Point)</td>
-<td class="enumeration">
-</td>
+<td>points</td>
+<td>Core.Array'(*Pixel.Poly2Tri.Point)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-triangles</td>
-<td class="tdtype">
-Core.Array'(*Pixel.Poly2Tri.Triangle)</td>
-<td class="enumeration">
-</td>
+<td>triangles</td>
+<td>Core.Array'(*Pixel.Poly2Tri.Triangle)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edgeList</td>
-<td class="tdtype">
-Core.Array'(*Pixel.Poly2Tri.Edge)</td>
-<td class="enumeration">
-</td>
+<td>edgeList</td>
+<td>Core.Array'(*Pixel.Poly2Tri.Edge)</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_arcTo">arcTo(self, f32, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
-<td class="enumeration">
-<p>Add an arc from the previous point. </p>
-</td>
+<td><a href="#Pixel_LinePath_arcTo">arcTo(self, f32, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
+<td>Add an arc from the previous point. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_bezierTo">bezierTo(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-</td>
+<td><a href="#Pixel_LinePath_bezierTo">bezierTo(self, f32, f32, f32, f32)</a></td>
+<td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_bezierTo">bezierTo(self, f32, f32, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-</td>
+<td><a href="#Pixel_LinePath_bezierTo">bezierTo(self, f32, f32, f32, f32, f32, f32)</a></td>
+<td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_clearCache">clearCache(self)</a></td>
-<td class="enumeration">
-<p>Clear internal cache. </p>
-</td>
+<td><a href="#Pixel_LinePath_clearCache">clearCache(self)</a></td>
+<td>Clear internal cache. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_close">close(self)</a></td>
-<td class="enumeration">
-<p>Close the figure  Will add a line or a curve to the first point if necessary. </p>
-</td>
+<td><a href="#Pixel_LinePath_close">close(self)</a></td>
+<td>Close the figure  Will add a line or a curve to the first point if necessary. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_curveTo">curveTo(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-</td>
+<td><a href="#Pixel_LinePath_curveTo">curveTo(self, f32, f32)</a></td>
+<td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_flatten">flatten(self, PaintQuality)</a></td>
-<td class="enumeration">
-<p>Convert the path to a list of points. </p>
-</td>
+<td><a href="#Pixel_LinePath_flatten">flatten(self, PaintQuality)</a></td>
+<td>Convert the path to a list of points. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_lineTo">lineTo(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Add a line from the previous point to <code class="incode">pt</code>. </p>
-</td>
+<td><a href="#Pixel_LinePath_lineTo">lineTo(self, f32, f32)</a></td>
+<td>Add a line from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_setArc">setArc(self, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
-<td class="enumeration">
-<p>Initialize the path with an arc. </p>
-</td>
+<td><a href="#Pixel_LinePath_setArc">setArc(self, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
+<td>Initialize the path with an arc. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_setCircle">setCircle(self, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Initialize the path with a circle. </p>
-</td>
+<td><a href="#Pixel_LinePath_setCircle">setCircle(self, f32, f32, f32)</a></td>
+<td>Initialize the path with a circle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_setEllipse">setEllipse(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Initialize the path with an ellipse. </p>
-</td>
+<td><a href="#Pixel_LinePath_setEllipse">setEllipse(self, f32, f32, f32, f32)</a></td>
+<td>Initialize the path with an ellipse. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_setRect">setRect(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Initialize the path with a rectangle. </p>
-</td>
+<td><a href="#Pixel_LinePath_setRect">setRect(self, f32, f32, f32, f32)</a></td>
+<td>Initialize the path with a rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_setRoundRect">setRoundRect(self, f32, f32, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Initialize the path with a round rectangle. </p>
-</td>
+<td><a href="#Pixel_LinePath_setRoundRect">setRoundRect(self, f32, f32, f32, f32, f32, f32)</a></td>
+<td>Initialize the path with a round rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePath_start">start(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Reset the path. </p>
-</td>
+<td><a href="#Pixel_LinePath_start">start(self, f32, f32)</a></td>
+<td>Reset the path. </td>
 </tr>
 </table>
 <p>
@@ -7028,79 +5648,50 @@ Core.Array'(*Pixel.Poly2Tri.Edge)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-paths</td>
-<td class="tdtype">
-Core.Array'(*Pixel.LinePath)</td>
-<td class="enumeration">
-</td>
+<td>paths</td>
+<td>Core.Array'(*Pixel.LinePath)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bvMin</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>bvMin</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bvMax</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>bvMax</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePathList_clean">clean(self)</a></td>
-<td class="enumeration">
-<p>Clean all paths  They must before be flattened. </p>
-</td>
+<td><a href="#Pixel_LinePathList_clean">clean(self)</a></td>
+<td>Clean all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePathList_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Remove all internal line paths. </p>
-</td>
+<td><a href="#Pixel_LinePathList_clear">clear(self)</a></td>
+<td>Remove all internal line paths. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePathList_count">count(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_LinePathList_count">count(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePathList_flatten">flatten(self, PaintQuality)</a></td>
-<td class="enumeration">
-<p>Flatten all paths. </p>
-</td>
+<td><a href="#Pixel_LinePathList_flatten">flatten(self, PaintQuality)</a></td>
+<td>Flatten all paths. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePathList_newPath">newPath(self)</a></td>
-<td class="enumeration">
-<p>Returns a new path. </p>
-</td>
+<td><a href="#Pixel_LinePathList_newPath">newPath(self)</a></td>
+<td>Returns a new path. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePathList_offset">offset(self, f32)</a></td>
-<td class="enumeration">
-<p>Call fast offset on all paths  They must before be flattened. </p>
-</td>
+<td><a href="#Pixel_LinePathList_offset">offset(self, f32)</a></td>
+<td>Call fast offset on all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_LinePathList_offset">offset(self, f32, JoinStyle, f32)</a></td>
-<td class="enumeration">
-<p>Call quality offset on all paths  They must before be flattened. </p>
-</td>
+<td><a href="#Pixel_LinePathList_offset">offset(self, f32, JoinStyle, f32)</a></td>
+<td>Call quality offset on all paths  They must before be flattened. </td>
 </tr>
 </table>
 <p>
@@ -7210,34 +5801,24 @@ Core.Math.Vector2</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_NativeRenderOgl_createContext">createContext(self, HDC, s32, s32, HGLRC)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_NativeRenderOgl_createContext">createContext(self, HDC, s32, s32, HGLRC)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_NativeRenderOgl_createContext">createContext(self, HWND, s32, s32, HGLRC)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_NativeRenderOgl_createContext">createContext(self, HWND, s32, s32, HGLRC)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_NativeRenderOgl_dropContext">dropContext(self, const ref RenderingContext)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_NativeRenderOgl_dropContext">dropContext(self, const ref RenderingContext)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers(self, const ref RenderingContext)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers(self, const ref RenderingContext)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7310,22 +5891,16 @@ Core.Math.Vector2</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Antialiased</td>
-<td class="enumeration">
-</td>
+<td>Antialiased</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7341,16 +5916,12 @@ Default</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Draft</td>
-<td class="enumeration">
-</td>
+<td>Draft</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Normal</td>
-<td class="enumeration">
-</td>
+<td>Normal</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7366,76 +5937,49 @@ Normal</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-paintParams</td>
-<td class="tdtype">
-<a href="#Pixel_PaintParams">Pixel.PaintParams</a></td>
-<td class="enumeration">
-</td>
+<td>paintParams</td>
+<td><a href="#Pixel_PaintParams">Pixel.PaintParams</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paintQuality</td>
-<td class="tdtype">
-<a href="#Pixel_PaintQuality">Pixel.PaintQuality</a></td>
-<td class="enumeration">
-</td>
+<td>paintQuality</td>
+<td><a href="#Pixel_PaintQuality">Pixel.PaintQuality</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-transform</td>
-<td class="tdtype">
-Core.Math.Transform2</td>
-<td class="enumeration">
-</td>
+<td>transform</td>
+<td>Core.Math.Transform2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-blendingMode</td>
-<td class="tdtype">
-<a href="#Pixel_BlendingMode">Pixel.BlendingMode</a></td>
-<td class="enumeration">
-</td>
+<td>blendingMode</td>
+<td><a href="#Pixel_BlendingMode">Pixel.BlendingMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-interpolationMode</td>
-<td class="tdtype">
-<a href="#Pixel_InterpolationMode">Pixel.InterpolationMode</a></td>
-<td class="enumeration">
-</td>
+<td>interpolationMode</td>
+<td><a href="#Pixel_InterpolationMode">Pixel.InterpolationMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-clippingRect</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>clippingRect</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stackClipRect</td>
-<td class="tdtype">
-Core.Array'(Core.Math.Rectangle)</td>
-<td class="enumeration">
-</td>
+<td>stackClipRect</td>
+<td>Core.Array'(Core.Math.Rectangle)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-clippingRectOn</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>clippingRectOn</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colorMask</td>
-<td class="tdtype">
-<a href="#Pixel_ColorMask">Pixel.ColorMask</a></td>
-<td class="enumeration">
-</td>
+<td>colorMask</td>
+<td><a href="#Pixel_ColorMask">Pixel.ColorMask</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -7451,872 +5995,527 @@ colorMask</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-commandBuffer</td>
-<td class="tdtype">
-Core.Array'(Pixel.Command)</td>
-<td class="enumeration">
-</td>
+<td>commandBuffer</td>
+<td>Core.Array'(Pixel.Command)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertexBuffer</td>
-<td class="tdtype">
-Core.Array'(Pixel.VertexLayout)</td>
-<td class="enumeration">
-</td>
+<td>vertexBuffer</td>
+<td>Core.Array'(Pixel.VertexLayout)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-triangulateIdx</td>
-<td class="tdtype">
-Core.Array'(s32)</td>
-<td class="enumeration">
-</td>
+<td>triangulateIdx</td>
+<td>Core.Array'(s32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fake</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>fake</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sharedSolidPen</td>
-<td class="tdtype">
-<a href="#Pixel_Pen">Pixel.Pen</a></td>
-<td class="enumeration">
-</td>
+<td>sharedSolidPen</td>
+<td><a href="#Pixel_Pen">Pixel.Pen</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sharedSolidBrush</td>
-<td class="tdtype">
-<a href="#Pixel_Brush">Pixel.Brush</a></td>
-<td class="enumeration">
-</td>
+<td>sharedSolidBrush</td>
+<td><a href="#Pixel_Brush">Pixel.Brush</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sharedLinePath</td>
-<td class="tdtype">
-<a href="#Pixel_LinePath">Pixel.LinePath</a></td>
-<td class="enumeration">
-</td>
+<td>sharedLinePath</td>
+<td><a href="#Pixel_LinePath">Pixel.LinePath</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sharedLinePathList</td>
-<td class="tdtype">
-<a href="#Pixel_LinePathList">Pixel.LinePathList</a></td>
-<td class="enumeration">
-</td>
+<td>sharedLinePathList</td>
+<td><a href="#Pixel_LinePathList">Pixel.LinePathList</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-sharedRoundTmp</td>
-<td class="tdtype">
-Core.Array'({factor: f32, pos: Core.Math.Vector2})</td>
-<td class="enumeration">
-</td>
+<td>sharedRoundTmp</td>
+<td>Core.Array'({factor: f32, pos: Core.Math.Vector2})</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curState</td>
-<td class="tdtype">
-<a href="#Pixel_PaintState">Pixel.PaintState</a></td>
-<td class="enumeration">
-</td>
+<td>curState</td>
+<td><a href="#Pixel_PaintState">Pixel.PaintState</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stackState</td>
-<td class="tdtype">
-Core.Array'(Pixel.PaintState)</td>
-<td class="enumeration">
-</td>
+<td>stackState</td>
+<td>Core.Array'(Pixel.PaintState)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stackTransform</td>
-<td class="tdtype">
-Core.Array'(Core.Math.Transform2)</td>
-<td class="enumeration">
-</td>
+<td>stackTransform</td>
+<td>Core.Array'(Core.Math.Transform2)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastTexture0Type</td>
-<td class="tdtype">
-<a href="#Pixel_BrushType">Pixel.BrushType</a></td>
-<td class="enumeration">
-</td>
+<td>lastTexture0Type</td>
+<td><a href="#Pixel_BrushType">Pixel.BrushType</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stackRT</td>
-<td class="tdtype">
-Core.Array'(*Pixel.RenderTarget)</td>
-<td class="enumeration">
-</td>
+<td>stackRT</td>
+<td>Core.Array'(*Pixel.RenderTarget)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curRT</td>
-<td class="tdtype">
-*Pixel.RenderTarget</td>
-<td class="enumeration">
-</td>
+<td>curRT</td>
+<td>*Pixel.RenderTarget</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lastTexture0Handle</td>
-<td class="tdtype">
-Pixel.TextureHandle</td>
-<td class="enumeration">
-</td>
+<td>lastTexture0Handle</td>
+<td>Pixel.TextureHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hasTextureFont</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hasTextureFont</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-drawingBegin</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>drawingBegin</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-overlapMode</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>overlapMode</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-canSetTexture0</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>canSetTexture0</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_addParams">addParams(self, PaintParams)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_addParams">addParams(self, PaintParams)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_begin">begin(self)</a></td>
-<td class="enumeration">
-<p>Call this before drawing. </p>
-</td>
+<td><a href="#Pixel_Painter_begin">begin(self)</a></td>
+<td>Call this before drawing. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget(self, *RenderTarget, bool)</a></td>
-<td class="enumeration">
-<p>Bind a render target. </p>
-</td>
+<td><a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget(self, *RenderTarget, bool)</a></td>
+<td>Bind a render target. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_capStyleExtent">capStyleExtent(LineCapStyle, f32, f32)</a></td>
-<td class="enumeration">
-<p>Returns the extent in both directions of a given LineCapStyle. </p>
-</td>
+<td><a href="#Pixel_Painter_capStyleExtent">capStyleExtent(LineCapStyle, f32, f32)</a></td>
+<td>Returns the extent in both directions of a given LineCapStyle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_clear">clear(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Clear the rendering surface. </p>
-</td>
+<td><a href="#Pixel_Painter_clear">clear(self, const ref Color)</a></td>
+<td>Clear the rendering surface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_computeLayout">computeLayout(self, const ref Rectangle, *RichString, const ref RichStringFormat)</a></td>
-<td class="enumeration">
-<p>Recompute the layout for a given rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_computeLayout">computeLayout(self, const ref Rectangle, *RichString, const ref RichStringFormat)</a></td>
+<td>Recompute the layout for a given rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Draw an arc between two angles. </p>
-</td>
+<td><a href="#Pixel_Painter_drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Color, f32)</a></td>
+<td>Draw an arc between two angles. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawCircle">drawCircle(self, f32, f32, f32, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Draw an empty circle. </p>
-</td>
+<td><a href="#Pixel_Painter_drawCircle">drawCircle(self, f32, f32, f32, const ref Color, f32)</a></td>
+<td>Draw an empty circle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawCircle">drawCircle(self, f32, f32, f32, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawCircle">drawCircle(self, f32, f32, f32, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Draw an empty ellipse. </p>
-</td>
+<td><a href="#Pixel_Painter_drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td>Draw an empty ellipse. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawLine">drawLine(self, const ref Vector2, const ref Vector2, const ref Pen)</a></td>
-<td class="enumeration">
-<p>Draw a line. </p>
-</td>
+<td><a href="#Pixel_Painter_drawLine">drawLine(self, const ref Vector2, const ref Vector2, const ref Pen)</a></td>
+<td>Draw a line. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawLine">drawLine(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawLine">drawLine(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawLine">drawLine(self, f32, f32, f32, f32, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawLine">drawLine(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawPath">drawPath(self, *LinePath, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Draw the line path. </p>
-</td>
+<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePath, const ref Color, f32)</a></td>
+<td>Draw the line path. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawPath">drawPath(self, *LinePath, const ref Pen)</a></td>
-<td class="enumeration">
-<p>Draw the line path with the given <code class="incode">pen</code>. </p>
-</td>
+<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePath, const ref Pen)</a></td>
+<td>Draw the line path with the given <code class="incode">pen</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawPath">drawPath(self, *LinePathList, const ref Color, f32, DrawPathListMode)</a></td>
-<td class="enumeration">
-<p>Draw the line path. </p>
-</td>
+<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePathList, const ref Color, f32, DrawPathListMode)</a></td>
+<td>Draw the line path. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawPath">drawPath(self, *LinePathList, const ref Pen, DrawPathListMode)</a></td>
-<td class="enumeration">
-<p>Draw the line path. </p>
-</td>
+<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePathList, const ref Pen, DrawPathListMode)</a></td>
+<td>Draw the line path. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRect">drawRect(self, const ref Rectangle, const ref Color, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawRect">drawRect(self, const ref Rectangle, const ref Color, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRect">drawRect(self, const ref Rectangle, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawRect">drawRect(self, const ref Rectangle, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRect">drawRect(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Draw an empty rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_drawRect">drawRect(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td>Draw an empty rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRect">drawRect(self, f32, f32, f32, f32, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawRect">drawRect(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRichString">drawRichString(self, const ref Rectangle, *RichString, const ref RichStringFormat, bool)</a></td>
-<td class="enumeration">
-<p>Draw a rich string. </p>
-</td>
+<td><a href="#Pixel_Painter_drawRichString">drawRichString(self, const ref Rectangle, *RichString, const ref RichStringFormat, bool)</a></td>
+<td>Draw a rich string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Color, f32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Color, f32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Draw an empty round rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td>Draw an empty round rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Pen)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Pen)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle, f32)</a></td>
-<td class="enumeration">
-<p>Draw a simple string. </p>
-</td>
+<td><a href="#Pixel_Painter_drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle, f32)</a></td>
+<td>Draw a simple string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
-<td class="enumeration">
-<p>Draw a simple string. </p>
-</td>
+<td><a href="#Pixel_Painter_drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
+<td>Draw a simple string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawStringCenter">drawStringCenter(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
-<td class="enumeration">
-<p>Draw a simple string (centered). </p>
-</td>
+<td><a href="#Pixel_Painter_drawStringCenter">drawStringCenter(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
+<td>Draw a simple string (centered). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawTexture">drawTexture(self, const ref Rectangle, const ref Rectangle, const ref Texture, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, const ref Rectangle, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawTexture">drawTexture(self, const ref Rectangle, const ref Texture, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, const ref Texture, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, const ref Texture, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
-<td class="enumeration">
-<p>Draw a portion of an image. </p>
-</td>
+<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td>Draw a portion of an image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Texture, const ref Color)</a></td>
-<td class="enumeration">
-<p>Draw a texture image. </p>
-</td>
+<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Texture, const ref Color)</a></td>
+<td>Draw a texture image. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_end">end(self)</a></td>
-<td class="enumeration">
-<p>Call this after drawing. </p>
-</td>
+<td><a href="#Pixel_Painter_end">end(self)</a></td>
+<td>Call this after drawing. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_endClippingRegion">endClippingRegion(self)</a></td>
-<td class="enumeration">
-<p>Stop painting in the clipping buffer. Back to normal. </p>
-</td>
+<td><a href="#Pixel_Painter_endClippingRegion">endClippingRegion(self)</a></td>
+<td>Stop painting in the clipping buffer. Back to normal. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillCircle">fillCircle(self, f32, f32, f32, const ref Brush)</a></td>
-<td class="enumeration">
-<p>Draw a solid circle. </p>
-</td>
+<td><a href="#Pixel_Painter_fillCircle">fillCircle(self, f32, f32, f32, const ref Brush)</a></td>
+<td>Draw a solid circle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillCircle">fillCircle(self, f32, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillCircle">fillCircle(self, f32, f32, f32, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Brush)</a></td>
-<td class="enumeration">
-<p>Draw a solid ellipse. </p>
-</td>
+<td><a href="#Pixel_Painter_fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Brush)</a></td>
+<td>Draw a solid ellipse. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillPath">fillPath(self, *LinePath, const ref Brush)</a></td>
-<td class="enumeration">
-<p>Fill the line path with the given <code class="incode">brush</code>. </p>
-</td>
+<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePath, const ref Brush)</a></td>
+<td>Fill the line path with the given <code class="incode">brush</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillPath">fillPath(self, *LinePath, const ref Color)</a></td>
-<td class="enumeration">
-<p>Fill the line path. </p>
-</td>
+<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePath, const ref Color)</a></td>
+<td>Fill the line path. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillPath">fillPath(self, *LinePathList, const ref Brush)</a></td>
-<td class="enumeration">
-<p>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </p>
-</td>
+<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePathList, const ref Brush)</a></td>
+<td>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillPath">fillPath(self, *LinePathList, const ref Color)</a></td>
-<td class="enumeration">
-<p>Fill the line path. </p>
-</td>
+<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePathList, const ref Color)</a></td>
+<td>Fill the line path. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillPolygon">fillPolygon(self, *LinePath, const ref Brush)</a></td>
-<td class="enumeration">
-<p>Fill the polygon with the given <code class="incode">brush</code>. </p>
-</td>
+<td><a href="#Pixel_Painter_fillPolygon">fillPolygon(self, *LinePath, const ref Brush)</a></td>
+<td>Fill the polygon with the given <code class="incode">brush</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillPolygon">fillPolygon(self, *LinePath, const ref Color)</a></td>
-<td class="enumeration">
-<p>Fill the polygon with the given color. </p>
-</td>
+<td><a href="#Pixel_Painter_fillPolygon">fillPolygon(self, *LinePath, const ref Color)</a></td>
+<td>Fill the polygon with the given color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRect">fillRect(self, const ref Rectangle, const ref Brush)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillRect">fillRect(self, const ref Rectangle, const ref Brush)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRect">fillRect(self, const ref Rectangle, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillRect">fillRect(self, const ref Rectangle, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRect">fillRect(self, f32, f32, f32, f32, const ref Brush)</a></td>
-<td class="enumeration">
-<p>Draw a filled rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_fillRect">fillRect(self, f32, f32, f32, f32, const ref Brush)</a></td>
+<td>Draw a filled rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRect">fillRect(self, f32, f32, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillRect">fillRect(self, f32, f32, f32, f32, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Brush)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Brush)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Brush)</a></td>
-<td class="enumeration">
-<p>Draw a filled round rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Brush)</a></td>
+<td>Draw a filled round rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_getClippingRect">getClippingRect(self)</a></td>
-<td class="enumeration">
-<p>Get the current clipping rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_getClippingRect">getClippingRect(self)</a></td>
+<td>Get the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_getGlyphs">getGlyphs(const ref Array'(rune), *Font)</a></td>
-<td class="enumeration">
-<p>Returns all the glyphs for a given string and font. </p>
-</td>
+<td><a href="#Pixel_Painter_getGlyphs">getGlyphs(const ref Array'(rune), *Font)</a></td>
+<td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_getGlyphs">getGlyphs(string, *Font)</a></td>
-<td class="enumeration">
-<p>Returns all the glyphs for a given string and font. </p>
-</td>
+<td><a href="#Pixel_Painter_getGlyphs">getGlyphs(string, *Font)</a></td>
+<td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_getParams">getParams(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_getParams">getParams(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_getQuality">getQuality(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_getQuality">getQuality(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_getTransform">getTransform(self)</a></td>
-<td class="enumeration">
-<p>Returns the current tranformation. </p>
-</td>
+<td><a href="#Pixel_Painter_getTransform">getTransform(self)</a></td>
+<td>Returns the current tranformation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the current clipping rectangle is empty (no drawing !). </p>
-</td>
+<td><a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect(self)</a></td>
+<td>Returns true if the current clipping rectangle is empty (no drawing !). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_measureRune">measureRune(rune, *Font)</a></td>
-<td class="enumeration">
-<p>Get a rune size for a given font. </p>
-</td>
+<td><a href="#Pixel_Painter_measureRune">measureRune(rune, *Font)</a></td>
+<td>Get a rune size for a given font. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_measureString">measureString(const ref Array'(const *GlyphDesc))</a></td>
-<td class="enumeration">
-<p>Returns the bounding rectangle if a given text, at a given position. </p>
-</td>
+<td><a href="#Pixel_Painter_measureString">measureString(const ref Array'(const *GlyphDesc))</a></td>
+<td>Returns the bounding rectangle if a given text, at a given position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_measureString">measureString(string, *Font)</a></td>
-<td class="enumeration">
-<p>Returns the metrics of a given text. </p>
-</td>
+<td><a href="#Pixel_Painter_measureString">measureString(string, *Font)</a></td>
+<td>Returns the metrics of a given text. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_popClippingRect">popClippingRect(self)</a></td>
-<td class="enumeration">
-<p>Restore the original clipping rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_popClippingRect">popClippingRect(self)</a></td>
+<td>Restore the original clipping rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_popState">popState(self)</a></td>
-<td class="enumeration">
-<p>Restore the last paint state. </p>
-</td>
+<td><a href="#Pixel_Painter_popState">popState(self)</a></td>
+<td>Restore the last paint state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_popTransform">popTransform(self)</a></td>
-<td class="enumeration">
-<p>Restore the pushed transformation. </p>
-</td>
+<td><a href="#Pixel_Painter_popTransform">popTransform(self)</a></td>
+<td>Restore the pushed transformation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_pushClippingRect">pushClippingRect(self, const ref Rectangle, bool)</a></td>
-<td class="enumeration">
-<p>Interface the given rectangle with the current clipping rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_pushClippingRect">pushClippingRect(self, const ref Rectangle, bool)</a></td>
+<td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Interface the given rectangle with the current clipping rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect(self, const ref Rectangle)</a></td>
+<td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_pushState">pushState(self)</a></td>
-<td class="enumeration">
-<p>Save the current paint state. </p>
-</td>
+<td><a href="#Pixel_Painter_pushState">pushState(self)</a></td>
+<td>Save the current paint state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_pushTransform">pushTransform(self)</a></td>
-<td class="enumeration">
-<p>Push the current transformation. </p>
-</td>
+<td><a href="#Pixel_Painter_pushTransform">pushTransform(self)</a></td>
+<td>Push the current transformation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
-<td class="enumeration">
-<p>Release the render target. </p>
-</td>
+<td><a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
+<td>Release the render target. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_removeParams">removeParams(self, PaintParams)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_removeParams">removeParams(self, PaintParams)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_resetClippingRect">resetClippingRect(self)</a></td>
-<td class="enumeration">
-<p>Reset the current clipping rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_resetClippingRect">resetClippingRect(self)</a></td>
+<td>Reset the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion(self)</a></td>
-<td class="enumeration">
-<p>Reset clipping buffer to its default value (no more clipping). </p>
-</td>
+<td><a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion(self)</a></td>
+<td>Reset clipping buffer to its default value (no more clipping). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_resetState">resetState(self)</a></td>
-<td class="enumeration">
-<p>Reset the current painting state. </p>
-</td>
+<td><a href="#Pixel_Painter_resetState">resetState(self)</a></td>
+<td>Reset the current painting state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_resetTransform">resetTransform(self)</a></td>
-<td class="enumeration">
-<p>Reset the paint position, rotation, scale. </p>
-</td>
+<td><a href="#Pixel_Painter_resetTransform">resetTransform(self)</a></td>
+<td>Reset the paint position, rotation, scale. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle)</a></td>
-<td class="enumeration">
-<p>Set the paint rotation. </p>
-</td>
+<td><a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle)</a></td>
+<td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the paint rotation. </p>
-</td>
+<td><a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
+<td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace(self, const ref Angle)</a></td>
-<td class="enumeration">
-<p>Set the paint rotation. </p>
-</td>
+<td><a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace(self, const ref Angle)</a></td>
+<td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_scaleTransform">scaleTransform(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the paint scale. </p>
-</td>
+<td><a href="#Pixel_Painter_scaleTransform">scaleTransform(self, f32, f32)</a></td>
+<td>Set the paint scale. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setAntialiased">setAntialiased(self, bool)</a></td>
-<td class="enumeration">
-<p>Set antialiased mode on/off. </p>
-</td>
+<td><a href="#Pixel_Painter_setAntialiased">setAntialiased(self, bool)</a></td>
+<td>Set antialiased mode on/off. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setBlendingMode">setBlendingMode(self, BlendingMode)</a></td>
-<td class="enumeration">
-<p>Set the current blending mode. </p>
-</td>
+<td><a href="#Pixel_Painter_setBlendingMode">setBlendingMode(self, BlendingMode)</a></td>
+<td>Set the current blending mode. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setClippingRect">setClippingRect(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Set the current clipping rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_setClippingRect">setClippingRect(self, const ref Rectangle)</a></td>
+<td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setClippingRect">setClippingRect(self, f32, f32, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the current clipping rectangle. </p>
-</td>
+<td><a href="#Pixel_Painter_setClippingRect">setClippingRect(self, f32, f32, f32, f32)</a></td>
+<td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode(self, ClippingMode)</a></td>
-<td class="enumeration">
-<p>Set the clipping region mode. </p>
-</td>
+<td><a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode(self, ClippingMode)</a></td>
+<td>Set the clipping region mode. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
-<td class="enumeration">
-<p>Set color mask. </p>
-</td>
+<td><a href="#Pixel_Painter_setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
+<td>Set color mask. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setColorMask">setColorMask(self, const ref ColorMask)</a></td>
-<td class="enumeration">
-<p>Set color mask. </p>
-</td>
+<td><a href="#Pixel_Painter_setColorMask">setColorMask(self, const ref ColorMask)</a></td>
+<td>Set color mask. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode(self, InterpolationMode)</a></td>
-<td class="enumeration">
-<p>Set the texture interpolation mode. </p>
-</td>
+<td><a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode(self, InterpolationMode)</a></td>
+<td>Set the texture interpolation mode. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setParams">setParams(self, PaintParams, PaintParams)</a></td>
-<td class="enumeration">
-<p>Set the paint parameters. </p>
-</td>
+<td><a href="#Pixel_Painter_setParams">setParams(self, PaintParams, PaintParams)</a></td>
+<td>Set the paint parameters. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setQuality">setQuality(self, PaintQuality)</a></td>
-<td class="enumeration">
-<p>Set the paint quality. </p>
-</td>
+<td><a href="#Pixel_Painter_setQuality">setQuality(self, PaintQuality)</a></td>
+<td>Set the paint quality. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setShader">setShader(self, *ShaderBase)</a></td>
-<td class="enumeration">
-<p>Set the current shader. </p>
-</td>
+<td><a href="#Pixel_Painter_setShader">setShader(self, *ShaderBase)</a></td>
+<td>Set the current shader. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setShaderParam">setShaderParam(self, ShaderParamHandle, f32)</a></td>
-<td class="enumeration">
-<p>Set a shader parameter. </p>
-</td>
+<td><a href="#Pixel_Painter_setShaderParam">setShaderParam(self, ShaderParamHandle, f32)</a></td>
+<td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setShaderParam">setShaderParam(self, ShaderParamHandle, s32)</a></td>
-<td class="enumeration">
-<p>Set a shader parameter. </p>
-</td>
+<td><a href="#Pixel_Painter_setShaderParam">setShaderParam(self, ShaderParamHandle, s32)</a></td>
+<td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setState">setState(self, const ref PaintState)</a></td>
-<td class="enumeration">
-<p>Set the current painting state. </p>
-</td>
+<td><a href="#Pixel_Painter_setState">setState(self, const ref PaintState)</a></td>
+<td>Set the current painting state. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_setTransform">setTransform(self, const ref Transform2)</a></td>
-<td class="enumeration">
-<p>Set the paint transformation. </p>
-</td>
+<td><a href="#Pixel_Painter_setTransform">setTransform(self, const ref Transform2)</a></td>
+<td>Set the paint transformation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_startClippingRegion">startClippingRegion(self, ClippingMode)</a></td>
-<td class="enumeration">
-<p>Start painting in the clipping buffer. </p>
-</td>
+<td><a href="#Pixel_Painter_startClippingRegion">startClippingRegion(self, ClippingMode)</a></td>
+<td>Start painting in the clipping buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_translateTransform">translateTransform(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Set the paint position. </p>
-</td>
+<td><a href="#Pixel_Painter_translateTransform">translateTransform(self, f32, f32)</a></td>
+<td>Set the paint position. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget(self)</a></td>
-<td class="enumeration">
-<p>Bind a render target. </p>
-</td>
+<td><a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget(self)</a></td>
+<td>Bind a render target. </td>
 </tr>
 </table>
 <p>
@@ -9444,156 +7643,99 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-brush</td>
-<td class="tdtype">
-<a href="#Pixel_Brush">Pixel.Brush</a></td>
-<td class="enumeration">
-</td>
+<td>brush</td>
+<td><a href="#Pixel_Brush">Pixel.Brush</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pattern</td>
-<td class="tdtype">
-Core.Array'(f32)</td>
-<td class="enumeration">
-</td>
+<td>pattern</td>
+<td>Core.Array'(f32)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dashBeginCapStyle</td>
-<td class="tdtype">
-<a href="#Pixel_DashCapStyle">Pixel.DashCapStyle</a></td>
-<td class="enumeration">
-</td>
+<td>dashBeginCapStyle</td>
+<td><a href="#Pixel_DashCapStyle">Pixel.DashCapStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dashEndCapStyle</td>
-<td class="tdtype">
-<a href="#Pixel_DashCapStyle">Pixel.DashCapStyle</a></td>
-<td class="enumeration">
-</td>
+<td>dashEndCapStyle</td>
+<td><a href="#Pixel_DashCapStyle">Pixel.DashCapStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-borderPos</td>
-<td class="tdtype">
-<a href="#Pixel_BorderPos">Pixel.BorderPos</a></td>
-<td class="enumeration">
-</td>
+<td>borderPos</td>
+<td><a href="#Pixel_BorderPos">Pixel.BorderPos</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-capStartScaleX</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>capStartScaleX</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-capStartScaleY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>capStartScaleY</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-capEndScaleX</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>capEndScaleX</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-capEndScaleY</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>capEndScaleY</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-joinMiterLimit</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>joinMiterLimit</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-plotOffset</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>plotOffset</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dashStyle</td>
-<td class="tdtype">
-<a href="#Pixel_DashStyle">Pixel.DashStyle</a></td>
-<td class="enumeration">
-</td>
+<td>dashStyle</td>
+<td><a href="#Pixel_DashStyle">Pixel.DashStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-beginCapStyle</td>
-<td class="tdtype">
-<a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a></td>
-<td class="enumeration">
-</td>
+<td>beginCapStyle</td>
+<td><a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-endCapStyle</td>
-<td class="tdtype">
-<a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a></td>
-<td class="enumeration">
-</td>
+<td>endCapStyle</td>
+<td><a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-joinStyle</td>
-<td class="tdtype">
-<a href="#Pixel_JoinStyle">Pixel.JoinStyle</a></td>
-<td class="enumeration">
-</td>
+<td>joinStyle</td>
+<td><a href="#Pixel_JoinStyle">Pixel.JoinStyle</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Pen_createDash">createDash(DashStyle, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Returns a dash pen. </p>
-</td>
+<td><a href="#Pixel_Pen_createDash">createDash(DashStyle, const ref Color, f32)</a></td>
+<td>Returns a dash pen. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Pen_createHatch">createHatch(HatchStyle, const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Return a predefined hatch pen. </p>
-</td>
+<td><a href="#Pixel_Pen_createHatch">createHatch(HatchStyle, const ref Color, f32)</a></td>
+<td>Return a predefined hatch pen. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Pen_createSolid">createSolid(const ref Color, f32)</a></td>
-<td class="enumeration">
-<p>Returns a solid color pen. </p>
-</td>
+<td><a href="#Pixel_Pen_createSolid">createSolid(const ref Color, f32)</a></td>
+<td>Returns a solid color pen. </td>
 </tr>
 </table>
 <p>
@@ -9655,28 +7797,20 @@ joinStyle</td>
 <p>Desribe the layout format of one image pixel. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-BGR8</td>
-<td class="enumeration">
-</td>
+<td>BGR8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-BGRA8</td>
-<td class="enumeration">
-</td>
+<td>BGRA8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RGB8</td>
-<td class="enumeration">
-</td>
+<td>RGB8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-RGBA8</td>
-<td class="enumeration">
-</td>
+<td>RGBA8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9791,20 +7925,14 @@ RGBA8</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-compressionLevel</td>
-<td class="tdtype">
-Core.Compress.Deflate.CompressionLevel</td>
-<td class="enumeration">
-</td>
+<td>compressionLevel</td>
+<td>Core.Compress.Deflate.CompressionLevel</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-filtering</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>filtering</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9859,20 +7987,14 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-p</td>
-<td class="tdtype">
-*Pixel.Poly2Tri.Point</td>
-<td class="enumeration">
-</td>
+<td>p</td>
+<td>*Pixel.Poly2Tri.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-q</td>
-<td class="tdtype">
-*Pixel.Poly2Tri.Point</td>
-<td class="enumeration">
-</td>
+<td>q</td>
+<td>*Pixel.Poly2Tri.Point</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9888,28 +8010,19 @@ q</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> v</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td><b>using</b> v</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-edgeList</td>
-<td class="tdtype">
-Core.Array'(*Pixel.Poly2Tri.Edge)</td>
-<td class="enumeration">
-</td>
+<td>edgeList</td>
+<td>Core.Array'(*Pixel.Poly2Tri.Edge)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-border</td>
-<td class="tdtype">
-[2] *Pixel.Poly2Tri.Edge</td>
-<td class="enumeration">
-</td>
+<td>border</td>
+<td>[2] *Pixel.Poly2Tri.Edge</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -9926,46 +8039,28 @@ border</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Register a new point. </p>
-</td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint(self, f32, f32)</a></td>
+<td>Register a new point. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Poly2Tri_Tesselate_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear content. </p>
-</td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_clear">clear(self)</a></td>
+<td>Clear content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine(self)</a></td>
-<td class="enumeration">
-<p>To call to register the polyline. </p>
-</td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine(self)</a></td>
+<td>To call to register the polyline. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles(self)</a></td>
-<td class="enumeration">
-<p>Returns the list of triangles. </p>
-</td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles(self)</a></td>
+<td>Returns the list of triangles. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine(self)</a></td>
-<td class="enumeration">
-<p>To call before adding a polyline. </p>
-</td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine(self)</a></td>
+<td>To call before adding a polyline. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate(self)</a></td>
-<td class="enumeration">
-<p>Triangulate. </p>
-</td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate(self)</a></td>
+<td>Triangulate. </td>
 </tr>
 </table>
 <p>
@@ -10071,44 +8166,29 @@ border</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-constrainedEdge</td>
-<td class="tdtype">
-[3] bool</td>
-<td class="enumeration">
-</td>
+<td>constrainedEdge</td>
+<td>[3] bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-delaunayEdge</td>
-<td class="tdtype">
-[3] bool</td>
-<td class="enumeration">
-</td>
+<td>delaunayEdge</td>
+<td>[3] bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-points</td>
-<td class="tdtype">
-[3] *Pixel.Poly2Tri.Point</td>
-<td class="enumeration">
-</td>
+<td>points</td>
+<td>[3] *Pixel.Poly2Tri.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-neighbors</td>
-<td class="tdtype">
-[3] *Pixel.Poly2Tri.Triangle</td>
-<td class="enumeration">
-</td>
+<td>neighbors</td>
+<td>[3] *Pixel.Poly2Tri.Triangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-interior</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>interior</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -10124,140 +8204,86 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-points</td>
-<td class="tdtype">
-Core.Array'(Core.Math.Vector2)</td>
-<td class="enumeration">
-</td>
+<td>points</td>
+<td>Core.Array'(Core.Math.Vector2)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isClockwise</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isClockwise</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isConvex</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isConvex</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-area</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>area</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-totalLen</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>totalLen</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bvMin</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>bvMin</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bvMax</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>bvMax</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_add">add(self, const ref Vector2)</a></td>
-<td class="enumeration">
-<p>Add a new point. </p>
-</td>
+<td><a href="#Pixel_Polygon_add">add(self, const ref Vector2)</a></td>
+<td>Add a new point. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_clean">clean(self)</a></td>
-<td class="enumeration">
-<p>Clean polygon by removing bad/unecessary points. </p>
-</td>
+<td><a href="#Pixel_Polygon_clean">clean(self)</a></td>
+<td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear all points. </p>
-</td>
+<td><a href="#Pixel_Polygon_clear">clear(self)</a></td>
+<td>Clear all points. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_compute">compute(self)</a></td>
-<td class="enumeration">
-<p>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </p>
-</td>
+<td><a href="#Pixel_Polygon_compute">compute(self)</a></td>
+<td>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_getClean">getClean(self)</a></td>
-<td class="enumeration">
-<p>Clean polygon by removing bad/unecessary points. </p>
-</td>
+<td><a href="#Pixel_Polygon_getClean">getClean(self)</a></td>
+<td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_getOffset">getOffset(self, f32, JoinStyle, f32)</a></td>
-<td class="enumeration">
-<p>Slow but quality offset with a joinStyle. </p>
-</td>
+<td><a href="#Pixel_Polygon_getOffset">getOffset(self, f32, JoinStyle, f32)</a></td>
+<td>Slow but quality offset with a joinStyle. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_getPoint">getPoint(self, u64)</a></td>
-<td class="enumeration">
-<p>Get the given point. </p>
-</td>
+<td><a href="#Pixel_Polygon_getPoint">getPoint(self, u64)</a></td>
+<td>Get the given point. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_getPoint">getPoint(self, u64, f32)</a></td>
-<td class="enumeration">
-<p>Get the given point, with an optional offset. </p>
-</td>
+<td><a href="#Pixel_Polygon_getPoint">getPoint(self, u64, f32)</a></td>
+<td>Get the given point, with an optional offset. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_normalizeDist">normalizeDist(self, f32, bool)</a></td>
-<td class="enumeration">
-<p>Divide by adding points if two points are too far away. </p>
-</td>
+<td><a href="#Pixel_Polygon_normalizeDist">normalizeDist(self, f32, bool)</a></td>
+<td>Divide by adding points if two points are too far away. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_offset">offset(self, f32)</a></td>
-<td class="enumeration">
-<p>Fast expand polygon by a given amount. </p>
-</td>
+<td><a href="#Pixel_Polygon_offset">offset(self, f32)</a></td>
+<td>Fast expand polygon by a given amount. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Polygon_offset">offset(self, f32, JoinStyle, f32)</a></td>
-<td class="enumeration">
-<p>Slow but quality offset with a joinStyle. </p>
-</td>
+<td><a href="#Pixel_Polygon_offset">offset(self, f32, JoinStyle, f32)</a></td>
+<td>Slow but quality offset with a joinStyle. </td>
 </tr>
 </table>
 <p>
@@ -10416,351 +8442,212 @@ Core.Math.Vector2</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> native</td>
-<td class="tdtype">
-<a href="#Pixel_NativeRenderOgl">Pixel.NativeRenderOgl</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> native</td>
+<td><a href="#Pixel_NativeRenderOgl">Pixel.NativeRenderOgl</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertexbuffer</td>
-<td class="tdtype">
-Ogl.GLuint</td>
-<td class="enumeration">
-</td>
+<td>vertexbuffer</td>
+<td>Ogl.GLuint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-shaderSimple</td>
-<td class="tdtype">
-<a href="#Pixel_ShaderSimple">Pixel.ShaderSimple</a></td>
-<td class="enumeration">
-</td>
+<td>shaderSimple</td>
+<td><a href="#Pixel_ShaderSimple">Pixel.ShaderSimple</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-shaderAA</td>
-<td class="tdtype">
-<a href="#Pixel_ShaderAA">Pixel.ShaderAA</a></td>
-<td class="enumeration">
-</td>
+<td>shaderAA</td>
+<td><a href="#Pixel_ShaderAA">Pixel.ShaderAA</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-shaderBlur</td>
-<td class="tdtype">
-<a href="#Pixel_ShaderBlur">Pixel.ShaderBlur</a></td>
-<td class="enumeration">
-</td>
+<td>shaderBlur</td>
+<td><a href="#Pixel_ShaderBlur">Pixel.ShaderBlur</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-worldTransform</td>
-<td class="tdtype">
-Core.Math.Transform2</td>
-<td class="enumeration">
-</td>
+<td>worldTransform</td>
+<td>Core.Math.Transform2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-orthoMatrix</td>
-<td class="tdtype">
-Core.Math.Matrix4x4</td>
-<td class="enumeration">
-</td>
+<td>orthoMatrix</td>
+<td>Core.Math.Matrix4x4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-modelMatrix</td>
-<td class="tdtype">
-Core.Math.Matrix4x4</td>
-<td class="enumeration">
-</td>
+<td>modelMatrix</td>
+<td>Core.Math.Matrix4x4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-whiteTexture</td>
-<td class="tdtype">
-Ogl.GLuint</td>
-<td class="enumeration">
-</td>
+<td>whiteTexture</td>
+<td>Ogl.GLuint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hatchTextures</td>
-<td class="tdtype">
-[36] Ogl.GLuint</td>
-<td class="enumeration">
-</td>
+<td>hatchTextures</td>
+<td>[36] Ogl.GLuint</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-blendingMode</td>
-<td class="tdtype">
-<a href="#Pixel_BlendingMode">Pixel.BlendingMode</a></td>
-<td class="enumeration">
-</td>
+<td>blendingMode</td>
+<td><a href="#Pixel_BlendingMode">Pixel.BlendingMode</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curRC</td>
-<td class="tdtype">
-<a href="#Pixel_RenderingContext">Pixel.RenderingContext</a></td>
-<td class="enumeration">
-</td>
+<td>curRC</td>
+<td><a href="#Pixel_RenderingContext">Pixel.RenderingContext</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stackReleasedRT</td>
-<td class="tdtype">
-Core.Array'(*Pixel.RenderTarget)</td>
-<td class="enumeration">
-</td>
+<td>stackReleasedRT</td>
+<td>Core.Array'(*Pixel.RenderTarget)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stackRT</td>
-<td class="tdtype">
-Core.Array'(*Pixel.RenderTarget)</td>
-<td class="enumeration">
-</td>
+<td>stackRT</td>
+<td>Core.Array'(*Pixel.RenderTarget)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curRT</td>
-<td class="tdtype">
-*Pixel.RenderTarget</td>
-<td class="enumeration">
-</td>
+<td>curRT</td>
+<td>*Pixel.RenderTarget</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-curShader</td>
-<td class="tdtype">
-*Pixel.ShaderBase</td>
-<td class="enumeration">
-</td>
+<td>curShader</td>
+<td>*Pixel.ShaderBase</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-overlapMode</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>overlapMode</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_addImage">addImage(self, const ref Image)</a></td>
-<td class="enumeration">
-<p>Register an image for rendering. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_addImage">addImage(self, const ref Image)</a></td>
+<td>Register an image for rendering. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_addImage">addImage(self, string)</a></td>
-<td class="enumeration">
-<p>Load and register an image for rendering. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_addImage">addImage(self, string)</a></td>
+<td>Load and register an image for rendering. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_begin">begin(self, const ref RenderingContext)</a></td>
-<td class="enumeration">
-<p>To be called before rendering. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_begin">begin(self, const ref RenderingContext)</a></td>
+<td>To be called before rendering. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget(self, *RenderTarget, *Rectangle)</a></td>
-<td class="enumeration">
-<p>Set the current render target. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget(self, *RenderTarget, *Rectangle)</a></td>
+<td>Set the current render target. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_clear">clear(self)</a></td>
-<td class="enumeration">
-<p>Clear current render buffers. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_clear">clear(self)</a></td>
+<td>Clear current render buffers. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_computeMatrices">computeMatrices(self, ShaderParamHandle, ShaderParamHandle)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_RenderOgl_computeMatrices">computeMatrices(self, ShaderParamHandle, ShaderParamHandle)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget(self, s32, s32)</a></td>
-<td class="enumeration">
-<p>Create a render target. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget(self, s32, s32)</a></td>
+<td>Create a render target. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_createShader">createShader(self, *ShaderBase, const [..] u8, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Create the given shader. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_createShader">createShader(self, *ShaderBase, const [..] u8, const [..] u8)</a></td>
+<td>Create the given shader. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget(self, *RenderTarget)</a></td>
-<td class="enumeration">
-<p>Delete a render target. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget(self, *RenderTarget)</a></td>
+<td>Delete a render target. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_draw">draw(self, *Painter)</a></td>
-<td class="enumeration">
-<p>Draw the given painter. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_draw">draw(self, *Painter)</a></td>
+<td>Draw the given painter. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_end">end(self)</a></td>
-<td class="enumeration">
-<p>To be called after rendering. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_end">end(self)</a></td>
+<td>To be called after rendering. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget(self, s32, s32)</a></td>
-<td class="enumeration">
-<p>Get a render target of the given size  releaseRenderTarget must be called to release it. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget(self, s32, s32)</a></td>
+<td>Get a render target of the given size  releaseRenderTarget must be called to release it. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_getTargetSize">getTargetSize(self)</a></td>
-<td class="enumeration">
-<p>Get the actual render target size. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize(self)</a></td>
+<td>Get the actual render target size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels(self, const ref Texture, PixelFormat)</a></td>
-<td class="enumeration">
-<p>Returns the pixels associated to a texture. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels(self, const ref Texture, PixelFormat)</a></td>
+<td>Returns the pixels associated to a texture. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_init">init(self)</a></td>
-<td class="enumeration">
-<p>First init. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_init">init(self)</a></td>
+<td>First init. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative(PixelFormat)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative(PixelFormat)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
-<td class="enumeration">
-<p>Release the given render target. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
+<td>Release the given render target. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_removeTexture">removeTexture(self, *Texture)</a></td>
-<td class="enumeration">
-<p>Unregister a texture created with <code class="incode">addImage</code>. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_removeTexture">removeTexture(self, *Texture)</a></td>
+<td>Unregister a texture created with <code class="incode">addImage</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect(self)</a></td>
-<td class="enumeration">
-<p>Reset the scissor. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect(self)</a></td>
+<td>Reset the scissor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_resetTransform">resetTransform(self)</a></td>
-<td class="enumeration">
-<p>Reset the world transform. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_resetTransform">resetTransform(self)</a></td>
+<td>Reset the world transform. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_rotateTransform">rotateTransform(self, const ref Angle)</a></td>
-<td class="enumeration">
-<p>Rotate the world transform. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_rotateTransform">rotateTransform(self, const ref Angle)</a></td>
+<td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
-<td class="enumeration">
-<p>Rotate the world transform. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
+<td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_scaleTransform">scaleTransform(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Scale the world transform. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform(self, f32, f32)</a></td>
+<td>Scale the world transform. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
-<td class="enumeration">
-<p>Set the current rendering context. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
+<td>Set the current rendering context. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_setScissorRect">setScissorRect(self, const ref Rectangle)</a></td>
-<td class="enumeration">
-<p>Force the scissor. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_setScissorRect">setScissorRect(self, const ref Rectangle)</a></td>
+<td>Force the scissor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_setShader">setShader(self, *ShaderBase)</a></td>
-<td class="enumeration">
-<p>Set the current shader. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_setShader">setShader(self, *ShaderBase)</a></td>
+<td>Set the current shader. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_translateTransform">translateTransform(self, f32, f32)</a></td>
-<td class="enumeration">
-<p>Translate the world transform. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_translateTransform">translateTransform(self, f32, f32)</a></td>
+<td>Translate the world transform. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget(self)</a></td>
-<td class="enumeration">
-<p>Go back to the previous render target, or frame buffer. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget(self)</a></td>
+<td>Go back to the previous render target, or frame buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage(self, s32, s32, s32, s32)</a></td>
-<td class="enumeration">
-<p>Get current render target pixels. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage(self, s32, s32, s32, s32)</a></td>
+<td>Get current render target pixels. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RenderOgl_updateTexture">updateTexture(self, const ref Texture, const *u8)</a></td>
-<td class="enumeration">
-<p>Update content of texture. </p>
-</td>
+<td><a href="#Pixel_RenderOgl_updateTexture">updateTexture(self, const ref Texture, const *u8)</a></td>
+<td>Update content of texture. </td>
 </tr>
 </table>
 <p>
@@ -11206,44 +9093,29 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Pixel.RenderTargetHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Pixel.RenderTargetHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colorBuffer</td>
-<td class="tdtype">
-<a href="#Pixel_Texture">Pixel.Texture</a></td>
-<td class="enumeration">
-</td>
+<td>colorBuffer</td>
+<td><a href="#Pixel_Texture">Pixel.Texture</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-depthStencil</td>
-<td class="tdtype">
-Pixel.RenderTargetSurfaceHandle</td>
-<td class="enumeration">
-</td>
+<td>depthStencil</td>
+<td>Pixel.RenderTargetSurfaceHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paintAlpha</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>paintAlpha</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-paintAlphaIdx</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>paintAlphaIdx</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11259,36 +9131,24 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-hDC</td>
-<td class="tdtype">
-Win32.HDC</td>
-<td class="enumeration">
-</td>
+<td>hDC</td>
+<td>Win32.HDC</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hRC</td>
-<td class="tdtype">
-Ogl.HGLRC</td>
-<td class="enumeration">
-</td>
+<td>hRC</td>
+<td>Ogl.HGLRC</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11304,84 +9164,54 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-slice</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>slice</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fontStyle</td>
-<td class="tdtype">
-<a href="#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a></td>
-<td class="enumeration">
-</td>
+<td>fontStyle</td>
+<td><a href="#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hasFontStyle</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>hasFontStyle</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isSpace</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isSpace</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-isEol</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>isEol</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-colorIdx</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>colorIdx</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-boundRect</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>boundRect</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pos</td>
-<td class="tdtype">
-Core.Math.Point</td>
-<td class="enumeration">
-</td>
+<td>pos</td>
+<td>Core.Math.Point</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-font</td>
-<td class="tdtype">
-*Pixel.Font</td>
-<td class="enumeration">
-</td>
+<td>font</td>
+<td>*Pixel.Font</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-under</td>
-<td class="tdtype">
-<a href="#Pixel_UnderlineStyle">Pixel.UnderlineStyle</a></td>
-<td class="enumeration">
-</td>
+<td>under</td>
+<td><a href="#Pixel_UnderlineStyle">Pixel.UnderlineStyle</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11398,47 +9228,29 @@ under</td>
 <p>Represents a string with embedded formats. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-raw</td>
-<td class="tdtype">
-Core.String</td>
-<td class="enumeration">
-<p>The string as passed by the user. </p>
-</td>
+<td>raw</td>
+<td>Core.String</td>
+<td>The string as passed by the user. </td>
 </tr>
 <tr>
-<td class="tdname">
-chunks</td>
-<td class="tdtype">
-Core.Array'(Pixel.RichChunk)</td>
-<td class="enumeration">
-<p>The corresponding list of chunks. </p>
-</td>
+<td>chunks</td>
+<td>Core.Array'(Pixel.RichChunk)</td>
+<td>The corresponding list of chunks. </td>
 </tr>
 <tr>
-<td class="tdname">
-layoutRect</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>layoutRect</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-boundRect</td>
-<td class="tdtype">
-Core.Math.Rectangle</td>
-<td class="enumeration">
-</td>
+<td>boundRect</td>
+<td>Core.Math.Rectangle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dirty</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>If dirty, <code class="incode">Compute</code>. </p>
-</td>
+<td>dirty</td>
+<td>bool</td>
+<td>If dirty, <code class="incode">Compute</code>. </td>
 </tr>
 </table>
 <p> This kind of string is a specific version of [Core.String] but specific for painting. It can contains  some special markers to change it's appearence. </p>
@@ -11451,60 +9263,39 @@ bool</td>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_compute">compute(self, bool)</a></td>
-<td class="enumeration">
-<p>Compute layout. </p>
-</td>
+<td><a href="#Pixel_RichString_compute">compute(self, bool)</a></td>
+<td>Compute layout. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_getNaked">getNaked(string)</a></td>
-<td class="enumeration">
-<p>Transform the given string to a naked one. </p>
-</td>
+<td><a href="#Pixel_RichString_getNaked">getNaked(string)</a></td>
+<td>Transform the given string to a naked one. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_invalidate">invalidate(self)</a></td>
-<td class="enumeration">
-<p>Force the string to be repainted. </p>
-</td>
+<td><a href="#Pixel_RichString_invalidate">invalidate(self)</a></td>
+<td>Force the string to be repainted. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_isEmpty">isEmpty(self)</a></td>
-<td class="enumeration">
-<p>Returns <code class="incode">true</code> if the string is empty. </p>
-</td>
+<td><a href="#Pixel_RichString_isEmpty">isEmpty(self)</a></td>
+<td>Returns <code class="incode">true</code> if the string is empty. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_set">set(self, string)</a></td>
-<td class="enumeration">
-<p>Associate a string. </p>
-</td>
+<td><a href="#Pixel_RichString_set">set(self, string)</a></td>
+<td>Associate a string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_opAffect">opAffect(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_RichString_opAffect">opAffect(self, string)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_opCount">opCount(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_RichString_opCount">opCount(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_RichString_opEquals">opEquals(self, string)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_RichString_opEquals">opEquals(self, string)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11651,68 +9442,44 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-font</td>
-<td class="tdtype">
-<a href="#Pixel_FontFamily">Pixel.FontFamily</a></td>
-<td class="enumeration">
-</td>
+<td>font</td>
+<td><a href="#Pixel_FontFamily">Pixel.FontFamily</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fontStyle</td>
-<td class="tdtype">
-<a href="#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a></td>
-<td class="enumeration">
-</td>
+<td>fontStyle</td>
+<td><a href="#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-palette</td>
-<td class="tdtype">
-[4] Pixel.Color</td>
-<td class="enumeration">
-</td>
+<td>palette</td>
+<td>[4] Pixel.Color</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-brush</td>
-<td class="tdtype">
-<a href="#Pixel_Brush">Pixel.Brush</a></td>
-<td class="enumeration">
-</td>
+<td>brush</td>
+<td><a href="#Pixel_Brush">Pixel.Brush</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-horzAlignment</td>
-<td class="tdtype">
-<a href="#Pixel_StringHorzAlignment">Pixel.StringHorzAlignment</a></td>
-<td class="enumeration">
-</td>
+<td>horzAlignment</td>
+<td><a href="#Pixel_StringHorzAlignment">Pixel.StringHorzAlignment</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-vertAlignment</td>
-<td class="tdtype">
-<a href="#Pixel_StringVertAlignment">Pixel.StringVertAlignment</a></td>
-<td class="enumeration">
-</td>
+<td>vertAlignment</td>
+<td><a href="#Pixel_StringVertAlignment">Pixel.StringVertAlignment</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lineGap</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>lineGap</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-<a href="#Pixel_StringFormatFlags">Pixel.StringFormatFlags</a></td>
-<td class="enumeration">
-</td>
+<td>flags</td>
+<td><a href="#Pixel_StringFormatFlags">Pixel.StringFormatFlags</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11728,12 +9495,9 @@ flags</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11749,76 +9513,49 @@ flags</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Pixel.ShaderHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Pixel.ShaderHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mvp</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>mvp</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mdl</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>mdl</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-boundRect</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>boundRect</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-textureRect</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>textureRect</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uvMode</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>uvMode</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-copyMode</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>copyMode</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-textureW</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>textureW</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-textureH</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>textureH</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11834,28 +9571,19 @@ Pixel.ShaderParamHandle</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-radius</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>radius</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-axis</td>
-<td class="tdtype">
-Pixel.ShaderParamHandle</td>
-<td class="enumeration">
-</td>
+<td>axis</td>
+<td>Pixel.ShaderParamHandle</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11871,12 +9599,9 @@ Pixel.ShaderParamHandle</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11892,28 +9617,20 @@ Pixel.ShaderParamHandle</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-WordWrap</td>
-<td class="enumeration">
-</td>
+<td>WordWrap</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Clip</td>
-<td class="enumeration">
-</td>
+<td>Clip</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-DontAdaptSingleLineHeight</td>
-<td class="enumeration">
-</td>
+<td>DontAdaptSingleLineHeight</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11929,28 +9646,20 @@ DontAdaptSingleLineHeight</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Center</td>
-<td class="enumeration">
-</td>
+<td>Center</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Left</td>
-<td class="enumeration">
-</td>
+<td>Left</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Right</td>
-<td class="enumeration">
-</td>
+<td>Right</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Justify</td>
-<td class="enumeration">
-</td>
+<td>Justify</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -11966,39 +9675,24 @@ Justify</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-ascent</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Maximum size above baseline. </p>
-</td>
+<td>ascent</td>
+<td>f32</td>
+<td>Maximum size above baseline. </td>
 </tr>
 <tr>
-<td class="tdname">
-descent</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Maximum size below baseline. </p>
-</td>
+<td>descent</td>
+<td>f32</td>
+<td>Maximum size below baseline. </td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>ascent + descent. </p>
-</td>
+<td>height</td>
+<td>f32</td>
+<td>ascent + descent. </td>
 </tr>
 </table>
 <p>
@@ -12014,65 +9708,41 @@ f32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-str</td>
-<td class="tdtype">
-<a href="#Pixel_RichString">Pixel.RichString</a></td>
-<td class="enumeration">
-</td>
+<td>str</td>
+<td><a href="#Pixel_RichString">Pixel.RichString</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fmt</td>
-<td class="tdtype">
-<a href="#Pixel_RichStringFormat">Pixel.RichStringFormat</a></td>
-<td class="enumeration">
-</td>
+<td>fmt</td>
+<td><a href="#Pixel_RichStringFormat">Pixel.RichStringFormat</a></td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_StringPainter_color">color(self, const ref Color)</a></td>
-<td class="enumeration">
-<p>Set text color. </p>
-</td>
+<td><a href="#Pixel_StringPainter_color">color(self, const ref Color)</a></td>
+<td>Set text color. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_StringPainter_draw">draw(self, *Painter, const ref Rectangle, string)</a></td>
-<td class="enumeration">
-<p>Draw string. </p>
-</td>
+<td><a href="#Pixel_StringPainter_draw">draw(self, *Painter, const ref Rectangle, string)</a></td>
+<td>Draw string. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_StringPainter_flags">flags(self, StringFormatFlags)</a></td>
-<td class="enumeration">
-<p>Set drawing flags. </p>
-</td>
+<td><a href="#Pixel_StringPainter_flags">flags(self, StringFormatFlags)</a></td>
+<td>Set drawing flags. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_StringPainter_font">font(self, *Font)</a></td>
-<td class="enumeration">
-<p>Set font. </p>
-</td>
+<td><a href="#Pixel_StringPainter_font">font(self, *Font)</a></td>
+<td>Set font. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_StringPainter_horzAlign">horzAlign(self, StringHorzAlignment)</a></td>
-<td class="enumeration">
-<p>Set horizontal alignment. </p>
-</td>
+<td><a href="#Pixel_StringPainter_horzAlign">horzAlign(self, StringHorzAlignment)</a></td>
+<td>Set horizontal alignment. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_StringPainter_vertAlign">vertAlign(self, StringVertAlignment)</a></td>
-<td class="enumeration">
-<p>Set vertical alignment. </p>
-</td>
+<td><a href="#Pixel_StringPainter_vertAlign">vertAlign(self, StringVertAlignment)</a></td>
+<td>Set vertical alignment. </td>
 </tr>
 </table>
 <p>
@@ -12178,22 +9848,16 @@ fmt</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Center</td>
-<td class="enumeration">
-</td>
+<td>Center</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Top</td>
-<td class="enumeration">
-</td>
+<td>Top</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bottom</td>
-<td class="enumeration">
-</td>
+<td>Bottom</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12209,59 +9873,40 @@ Bottom</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-handle</td>
-<td class="tdtype">
-Pixel.TextureHandle</td>
-<td class="enumeration">
-</td>
+<td>handle</td>
+<td>Pixel.TextureHandle</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pf</td>
-<td class="tdtype">
-<a href="#Pixel_PixelFormat">Pixel.PixelFormat</a></td>
-<td class="enumeration">
-</td>
+<td>pf</td>
+<td><a href="#Pixel_PixelFormat">Pixel.PixelFormat</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-width</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>width</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-height</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td>height</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-valid</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>valid</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Texture_getByteSize">getByteSize(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Texture_getByteSize">getByteSize(self)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_Texture_isValid">isValid(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Pixel_Texture_isValid">isValid(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12383,125 +10028,77 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fullname</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>fullname</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-buffer</td>
-<td class="tdtype">
-Core.Array'(u8)</td>
-<td class="enumeration">
-</td>
+<td>buffer</td>
+<td>Core.Array'(u8)</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-face</td>
-<td class="tdtype">
-FreeType.FT_Face</td>
-<td class="enumeration">
-</td>
+<td>face</td>
+<td>FreeType.FT_Face</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceBoldDiv</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>forceBoldDiv</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceItalic</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceItalic</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-forceBold</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>forceBold</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_create">create(string, const [..] u8)</a></td>
-<td class="enumeration">
-<p>Get or create a new typeface from a memory buffer. </p>
-</td>
+<td><a href="#Pixel_TypeFace_create">create(string, const [..] u8)</a></td>
+<td>Get or create a new typeface from a memory buffer. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT(string, HFONT)</a></td>
-<td class="enumeration">
-<p>Create a new typeface from a HFONT. </p>
-</td>
+<td><a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT(string, HFONT)</a></td>
+<td>Create a new typeface from a HFONT. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_getFamilyName">getFamilyName(self)</a></td>
-<td class="enumeration">
-<p>Returns the underlying font family name. </p>
-</td>
+<td><a href="#Pixel_TypeFace_getFamilyName">getFamilyName(self)</a></td>
+<td>Returns the underlying font family name. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline(self, *LinePathList, rune, u32, u32)</a></td>
-<td class="enumeration">
-<p>Convert a rune to its outline, at a given size. </p>
-</td>
+<td><a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline(self, *LinePathList, rune, u32, u32)</a></td>
+<td>Convert a rune to its outline, at a given size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_getStringOutline">getStringOutline(self, *LinePathList, string, u32, u32)</a></td>
-<td class="enumeration">
-<p>Convert a string to its outline, at a given size. </p>
-</td>
+<td><a href="#Pixel_TypeFace_getStringOutline">getStringOutline(self, *LinePathList, string, u32, u32)</a></td>
+<td>Convert a string to its outline, at a given size. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_isBold">isBold(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the typeface is bold. </p>
-</td>
+<td><a href="#Pixel_TypeFace_isBold">isBold(self)</a></td>
+<td>Returns true if the typeface is bold. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_isItalic">isItalic(self)</a></td>
-<td class="enumeration">
-<p>Returns true if the typeface is italic. </p>
-</td>
+<td><a href="#Pixel_TypeFace_isItalic">isItalic(self)</a></td>
+<td>Returns true if the typeface is italic. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_load">load(string)</a></td>
-<td class="enumeration">
-<p>Get or load a new typeface. </p>
-</td>
+<td><a href="#Pixel_TypeFace_load">load(string)</a></td>
+<td>Get or load a new typeface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_release">release(*TypeFace)</a></td>
-<td class="enumeration">
-<p>Release the given typeface. </p>
-</td>
+<td><a href="#Pixel_TypeFace_release">release(*TypeFace)</a></td>
+<td>Release the given typeface. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Pixel_TypeFace_renderGlyph">renderGlyph(self, rune, u32, bool, bool)</a></td>
-<td class="enumeration">
-<p>Render one glyph. </p>
-</td>
+<td><a href="#Pixel_TypeFace_renderGlyph">renderGlyph(self, rune, u32, bool, bool)</a></td>
+<td>Render one glyph. </td>
 </tr>
 </table>
 <p>
@@ -12667,22 +10264,16 @@ bool</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Fill</td>
-<td class="enumeration">
-</td>
+<td>Fill</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FillSubRect</td>
-<td class="enumeration">
-</td>
+<td>FillSubRect</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Tile</td>
-<td class="enumeration">
-</td>
+<td>Tile</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12698,22 +10289,16 @@ Tile</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Underline</td>
-<td class="enumeration">
-</td>
+<td>Underline</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Strikeout</td>
-<td class="enumeration">
-</td>
+<td>Strikeout</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -12729,44 +10314,29 @@ Strikeout</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-pos</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>pos</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-uv</td>
-<td class="tdtype">
-Core.Math.Vector2</td>
-<td class="enumeration">
-</td>
+<td>uv</td>
+<td>Core.Math.Vector2</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-color</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>color</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aa</td>
-<td class="tdtype">
-[12] Core.Math.Vector4</td>
-<td class="enumeration">
-</td>
+<td>aa</td>
+<td>[12] Core.Math.Vector4</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-aanum</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td>aanum</td>
+<td>f32</td>
+<td></td>
 </tr>
 </table>
 </div>

@@ -73,12 +73,6 @@ void GenDoc::outputStyles()
             .right {\n\
                 overflow-y: scroll;\n\
             }\n\
-            @media only screen and (max-width: 600px) {\n\
-                td {\n\
-                    display: block;\n\
-                    width:   100%;\n\
-                }\n\
-            }\n\
             @media screen and (max-width: 600px) {\n\
                 .left {\n\
                     display: none;\n\
@@ -115,27 +109,18 @@ void GenDoc::outputStyles()
             width:              100%;\n\
             font-size:          90%;\n\
         }\n\
-        .container td.enumeration {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              30%;\n\
-        }\n\
-        .container td.tdname {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              20%;\n\
-            background-color:   #f8f8f8;\n\
-        }\n\
-        .container td.tdtype {\n\
+        .container .enumeration td {\n\
             padding:            6px;\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              auto;\n\
+        }\n\
+        .container .enumeration td:first-child {\n\
+            background-color:   #f8f8f8;\n\
+            white-space:        nowrap;\n\
         }\n\
         .container td:last-child {\n\
-            width:              auto;\n\
+            width:              100%;\n\
         }\n\
         .left ul {\n\
             list-style-type:    none;\n\
@@ -490,7 +475,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
     }
 }
 
-void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel)
+void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDescTd)
 {
     if (user.lines.empty())
         return;
@@ -520,7 +505,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel)
         break;
 
     case UserBlockKind::Paragraph:
-        helpContent += "<p>";
+        if (!shortDescTd)
+            helpContent += "<p>";
         break;
 
     case UserBlockKind::List:
@@ -555,10 +541,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel)
             for (int it = 0; it < tkn.size(); it++)
             {
                 auto& t = tkn[it];
-                if (it == 0)
-                    helpContent += "<td class=\"tdname\">";
-                else
-                    helpContent += "<td class=\"tdtype\">";
+                helpContent += "<td>";
                 helpContent += getFormattedText(t);
                 helpContent += "</td>";
             }
@@ -602,7 +585,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel)
         helpContent += "</p>\n";
         break;
     case UserBlockKind::Paragraph:
-        helpContent += "</p>\n";
+        if (!shortDescTd)
+            helpContent += "</p>\n";
         break;
     case UserBlockKind::Blockquote:
         helpContent += "</p>\n";

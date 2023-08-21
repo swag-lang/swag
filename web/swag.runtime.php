@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -490,377 +475,234 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Swag_F32_Bias" class="tdname">
-Bias</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_Bias">Bias</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F32_ExpBits" class="tdname">
-ExpBits</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_ExpBits">ExpBits</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Inf" class="tdname">
-Inf</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_Inf">Inf</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F32_MantBits" class="tdname">
-MantBits</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_MantBits">MantBits</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_Max">Max</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_Min">Min</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Nan" class="tdname">
-Nan</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_Nan">Nan</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F32_NegInf" class="tdname">
-NegInf</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F32_NegInf">NegInf</td>
+<td>f32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Bias" class="tdname">
-Bias</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_Bias">Bias</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_ExpBits" class="tdname">
-ExpBits</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_ExpBits">ExpBits</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Inf" class="tdname">
-Inf</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_Inf">Inf</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_MantBits" class="tdname">
-MantBits</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_MantBits">MantBits</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_Max">Max</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_Min">Min</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Nan" class="tdname">
-Nan</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_Nan">Nan</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_F64_NegInf" class="tdname">
-NegInf</td>
-<td class="tdtype">
-f64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_F64_NegInf">NegInf</td>
+<td>f64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_MaxErrors" class="tdname">
-MaxErrors</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum nested errors. </p>
-</td>
+<td id="Swag_MaxErrors">MaxErrors</td>
+<td>s32</td>
+<td>Maximum nested errors. </td>
 </tr>
 <tr>
-<td id="Swag_MaxLenErrorMsg" class="tdname">
-MaxLenErrorMsg</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum length of an error message. </p>
-</td>
+<td id="Swag_MaxLenErrorMsg">MaxLenErrorMsg</td>
+<td>s32</td>
+<td>Maximum length of an error message. </td>
 </tr>
 <tr>
-<td id="Swag_MaxTraces" class="tdname">
-MaxTraces</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Maximum error traces. </p>
-</td>
+<td id="Swag_MaxTraces">MaxTraces</td>
+<td>s32</td>
+<td>Maximum error traces. </td>
 </tr>
 <tr>
-<td id="Swag_S16_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-s16</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S16_Max">Max</td>
+<td>s16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_S16_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-s16</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S16_Min">Min</td>
+<td>s16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S32_Max">Max</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S32_Min">Min</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S64_Max">Max</td>
+<td>s64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-s64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S64_Min">Min</td>
+<td>s64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-s8</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S8_Max">Max</td>
+<td>s8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-s8</td>
-<td class="enumeration">
-</td>
+<td id="Swag_S8_Min">Min</td>
+<td>s8</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAll" class="tdname">
-SafetyAll</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyAll">SafetyAll</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAny" class="tdname">
-SafetyAny</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyAny">SafetyAny</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBool" class="tdname">
-SafetyBool</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyBool">SafetyBool</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBoundCheck" class="tdname">
-SafetyBoundCheck</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyBoundCheck">SafetyBoundCheck</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyMath" class="tdname">
-SafetyMath</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyMath">SafetyMath</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNaN" class="tdname">
-SafetyNaN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyNaN">SafetyNaN</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNullCheck" class="tdname">
-SafetyNullCheck</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyNullCheck">SafetyNullCheck</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyOverflow" class="tdname">
-SafetyOverflow</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyOverflow">SafetyOverflow</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySanity" class="tdname">
-SafetySanity</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetySanity">SafetySanity</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySwitch" class="tdname">
-SafetySwitch</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetySwitch">SafetySwitch</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyUnreachable" class="tdname">
-SafetyUnreachable</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_SafetyUnreachable">SafetyUnreachable</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="Swag_U16_Max">Max</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-</td>
+<td id="Swag_U16_Min">Min</td>
+<td>u16</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_U32_Max">Max</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Swag_U32_Min">Min</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_U64_Max">Max</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td id="Swag_U64_Min">Min</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td id="Swag_U8_Max" class="tdname">
-Max</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-<p>Max <code class="incode">u8</code> value. </p>
-</td>
+<td id="Swag_U8_Max">Max</td>
+<td>u8</td>
+<td>Max <code class="incode">u8</code> value. </td>
 </tr>
 <tr>
-<td id="Swag_U8_Min" class="tdname">
-Min</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-<p>Min <code class="incode">u8</code> value. </p>
-</td>
+<td id="Swag_U8_Min">Min</td>
+<td>u8</td>
+<td>Min <code class="incode">u8</code> value. </td>
 </tr>
 </table>
 <p>
@@ -1935,593 +1777,362 @@ u8</td>
 <h3>Structs</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Swag_AllocatorRequest">AllocatorRequest</a></td>
-<td class="enumeration">
-<p>Represents the request for a given allocator. </p>
-</td>
+<td><a href="#Swag_AllocatorRequest">AllocatorRequest</a></td>
+<td>Represents the request for a given allocator. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Attribute">Attribute</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Attribute">Attribute</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_AttributeParam">AttributeParam</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_AttributeParam">AttributeParam</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_BuildCfg">BuildCfg</a></td>
-<td class="enumeration">
-<p>The current module build configuration. </p>
-</td>
+<td><a href="#Swag_BuildCfg">BuildCfg</a></td>
+<td>The current module build configuration. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
-<td class="enumeration">
-<p><code class="incode">LLVM</code> backend specific options. </p>
-</td>
+<td><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
+<td><code class="incode">LLVM</code> backend specific options. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></td>
-<td class="enumeration">
-<p><code class="incode">x86_64</code> backend specific options. </p>
-</td>
+<td><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></td>
+<td><code class="incode">x86_64</code> backend specific options. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_CVaList">CVaList</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_CVaList">CVaList</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_CompilerMessage">CompilerMessage</a></td>
-<td class="enumeration">
-<p>A message received in a <code class="incode">#message</code> function. </p>
-</td>
+<td><a href="#Swag_CompilerMessage">CompilerMessage</a></td>
+<td>A message received in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Context">Context</a></td>
-<td class="enumeration">
-<p>Thread context as returned by [@context]. </p>
-</td>
+<td><a href="#Swag_Context">Context</a></td>
+<td>Thread context as returned by [@context]. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator">DebugAllocator</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_DebugAllocator">DebugAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocatorFooter">DebugAllocatorFooter</a></td>
-<td class="enumeration">
-<p>Will be put just after the returned address. </p>
-</td>
+<td><a href="#Swag_DebugAllocatorFooter">DebugAllocatorFooter</a></td>
+<td>Will be put just after the returned address. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></td>
-<td class="enumeration">
-<p>Will be put just before the returned address. </p>
-</td>
+<td><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></td>
+<td>Will be put just before the returned address. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Error">Error</a></td>
-<td class="enumeration">
-<p>Store a <code class="incode">throw</code> error informations. </p>
-</td>
+<td><a href="#Swag_Error">Error</a></td>
+<td>Store a <code class="incode">throw</code> error informations. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Gvtd">Gvtd</a></td>
-<td class="enumeration">
-<p>Defined a global variable. </p>
-</td>
+<td><a href="#Swag_Gvtd">Gvtd</a></td>
+<td>Defined a global variable. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Interface">Interface</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Interface">Interface</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Module">Module</a></td>
-<td class="enumeration">
-<p>Defined some informations about a loaded module. </p>
-</td>
+<td><a href="#Swag_Module">Module</a></td>
+<td>Defined some informations about a loaded module. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ProcessInfos">ProcessInfos</a></td>
-<td class="enumeration">
-<p>Defined some informations about the current process. </p>
-</td>
+<td><a href="#Swag_ProcessInfos">ProcessInfos</a></td>
+<td>Defined some informations about the current process. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ScratchAllocator">ScratchAllocator</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_ScratchAllocator">ScratchAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></td>
-<td class="enumeration">
-<p>Represent a part of a source code file. </p>
-</td>
+<td><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></td>
+<td>Represent a part of a source code file. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_SystemAllocator">SystemAllocator</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_SystemAllocator">SystemAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfo">TypeInfo</a></td>
-<td class="enumeration">
-<p>Will be available for all types. </p>
-</td>
+<td><a href="#Swag_TypeInfo">TypeInfo</a></td>
+<td>Will be available for all types. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoAlias">TypeInfoAlias</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoAlias">TypeInfoAlias</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoArray">TypeInfoArray</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoArray">TypeInfoArray</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoEnum">TypeInfoEnum</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoEnum">TypeInfoEnum</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoFunc">TypeInfoFunc</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoFunc">TypeInfoFunc</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoNative">TypeInfoNative</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoNative">TypeInfoNative</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoPointer">TypeInfoPointer</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoPointer">TypeInfoPointer</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoSlice">TypeInfoSlice</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoSlice">TypeInfoSlice</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeValue">TypeValue</a></td>
-<td class="enumeration">
-<p>Represents a value, like a function parameter or an enum value. </p>
-</td>
+<td><a href="#Swag_TypeValue">TypeValue</a></td>
+<td>Represents a value, like a function parameter or an enum value. </td>
 </tr>
 </table>
 <h3>Enums</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Swag_AllocatorMode">AllocatorMode</a></td>
-<td class="enumeration">
-<p>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
-</td>
+<td><a href="#Swag_AllocatorMode">AllocatorMode</a></td>
+<td>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_AttributeUsage">AttributeUsage</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_AttributeUsage">AttributeUsage</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Backend">Backend</a></td>
-<td class="enumeration">
-<p>The type of backend to use. </p>
-</td>
+<td><a href="#Swag_Backend">Backend</a></td>
+<td>The type of backend to use. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></td>
-<td class="enumeration">
-<p>The kind of native backend to generate. </p>
-</td>
+<td><a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></td>
+<td>The kind of native backend to generate. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></td>
-<td class="enumeration">
-<p>These are the optimization levels for the backend. </p>
-</td>
+<td><a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></td>
+<td>These are the optimization levels for the backend. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></td>
-<td class="enumeration">
-<p>The native backend sub category. </p>
-</td>
+<td><a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></td>
+<td>The native backend sub category. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></td>
-<td class="enumeration">
-<p>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </p>
-</td>
+<td><a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></td>
+<td>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_CompilerMsgMask">CompilerMsgMask</a></td>
-<td class="enumeration">
-<p>The type of message you want to retreive in a <code class="incode">#message</code> function. </p>
-</td>
+<td><a href="#Swag_CompilerMsgMask">CompilerMsgMask</a></td>
+<td>The type of message you want to retreive in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ContextFlags">ContextFlags</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_ContextFlags">ContextFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DocKind">DocKind</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_DocKind">DocKind</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ExceptionKind">ExceptionKind</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_ExceptionKind">ExceptionKind</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_RuntimeFlags">RuntimeFlags</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_RuntimeFlags">RuntimeFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TargetArch">TargetArch</a></td>
-<td class="enumeration">
-<p>Target processor. </p>
-</td>
+<td><a href="#Swag_TargetArch">TargetArch</a></td>
+<td>Target processor. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TargetOs">TargetOs</a></td>
-<td class="enumeration">
-<p>The <code class="incode">OS</code> to target when generating native code. </p>
-</td>
+<td><a href="#Swag_TargetOs">TargetOs</a></td>
+<td>The <code class="incode">OS</code> to target when generating native code. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></td>
-<td class="enumeration">
-<p>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </p>
-</td>
+<td><a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></td>
+<td>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoKind">TypeInfoKind</a></td>
-<td class="enumeration">
-<p>The kind of the typeinfo. </p>
-</td>
+<td><a href="#Swag_TypeInfoKind">TypeInfoKind</a></td>
+<td>The kind of the typeinfo. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></td>
-<td class="enumeration">
-<p>The native type if the type is... native. </p>
-</td>
+<td><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></td>
+<td>The native type if the type is... native. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_WarnLevel">WarnLevel</a></td>
-<td class="enumeration">
-<p>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </p>
-</td>
+<td><a href="#Swag_WarnLevel">WarnLevel</a></td>
+<td>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </td>
 </tr>
 </table>
 <h3>Attributes</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Swag_Align">Align</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Align">Align</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_AttrMulti">AttrMulti</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_AttrMulti">AttrMulti</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_AttrUsage">AttrUsage</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_AttrUsage">AttrUsage</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_CalleeReturn">CalleeReturn</a></td>
-<td class="enumeration">
-<p>A <code class="incode">return</code> in the following inlined function must be done in the callee context. </p>
-</td>
+<td><a href="#Swag_CalleeReturn">CalleeReturn</a></td>
+<td>A <code class="incode">return</code> in the following inlined function must be done in the callee context. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Compiler">Compiler</a></td>
-<td class="enumeration">
-<p>The following function or variable is only defined at compile time. </p>
-</td>
+<td><a href="#Swag_Compiler">Compiler</a></td>
+<td>The following function or variable is only defined at compile time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Complete">Complete</a></td>
-<td class="enumeration">
-<p>The following switch must be complete. </p>
-</td>
+<td><a href="#Swag_Complete">Complete</a></td>
+<td>The following switch must be complete. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ConstExpr">ConstExpr</a></td>
-<td class="enumeration">
-<p>Can be executed at compile time. </p>
-</td>
+<td><a href="#Swag_ConstExpr">ConstExpr</a></td>
+<td>Can be executed at compile time. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Deprecated">Deprecated</a></td>
-<td class="enumeration">
-<p>The following definition is deprecated and should not be used. </p>
-</td>
+<td><a href="#Swag_Deprecated">Deprecated</a></td>
+<td>The following definition is deprecated and should not be used. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Discardable">Discardable</a></td>
-<td class="enumeration">
-<p>The following function accepts that the called does not use its return value. </p>
-</td>
+<td><a href="#Swag_Discardable">Discardable</a></td>
+<td>The following function accepts that the called does not use its return value. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_EnumFlags">EnumFlags</a></td>
-<td class="enumeration">
-<p>The following enum is a set of flags. </p>
-</td>
+<td><a href="#Swag_EnumFlags">EnumFlags</a></td>
+<td>The following enum is a set of flags. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_EnumIndex">EnumIndex</a></td>
-<td class="enumeration">
-<p>The following enum can be used to index arrays without casting. </p>
-</td>
+<td><a href="#Swag_EnumIndex">EnumIndex</a></td>
+<td>The following enum can be used to index arrays without casting. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ExportType">ExportType</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_ExportType">ExportType</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Foreign">Foreign</a></td>
-<td class="enumeration">
-<p>The following function is foreign (imported). </p>
-</td>
+<td><a href="#Swag_Foreign">Foreign</a></td>
+<td>The following function is foreign (imported). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Global">Global</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Global">Global</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Implicit">Implicit</a></td>
-<td class="enumeration">
-<p>Can force an <code class="incode">opCast</code> special function to work as implicit. </p>
-</td>
+<td><a href="#Swag_Implicit">Implicit</a></td>
+<td>Can force an <code class="incode">opCast</code> special function to work as implicit. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Incomplete">Incomplete</a></td>
-<td class="enumeration">
-<p>The following switch is incomplete. </p>
-</td>
+<td><a href="#Swag_Incomplete">Incomplete</a></td>
+<td>The following switch is incomplete. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Inline">Inline</a></td>
-<td class="enumeration">
-<p>Force a function to be inlined. </p>
-</td>
+<td><a href="#Swag_Inline">Inline</a></td>
+<td>Force a function to be inlined. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Macro">Macro</a></td>
-<td class="enumeration">
-<p>The following function is a <code class="incode">macro</code>. </p>
-</td>
+<td><a href="#Swag_Macro">Macro</a></td>
+<td>The following function is a <code class="incode">macro</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Match">Match</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Match">Match</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Mixin">Mixin</a></td>
-<td class="enumeration">
-<p>The following function is a <code class="incode">mixin</code>. </p>
-</td>
+<td><a href="#Swag_Mixin">Mixin</a></td>
+<td>The following function is a <code class="incode">mixin</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_NoCopy">NoCopy</a></td>
-<td class="enumeration">
-<p>The following struct should never be copied. </p>
-</td>
+<td><a href="#Swag_NoCopy">NoCopy</a></td>
+<td>The following struct should never be copied. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_NoDoc">NoDoc</a></td>
-<td class="enumeration">
-<p>Do not generate documentation. </p>
-</td>
+<td><a href="#Swag_NoDoc">NoDoc</a></td>
+<td>Do not generate documentation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_NoInline">NoInline</a></td>
-<td class="enumeration">
-<p>Never inline the following function. </p>
-</td>
+<td><a href="#Swag_NoInline">NoInline</a></td>
+<td>Never inline the following function. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_NotGeneric">NotGeneric</a></td>
-<td class="enumeration">
-<p>The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>. </p>
-</td>
+<td><a href="#Swag_NotGeneric">NotGeneric</a></td>
+<td>The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Offset">Offset</a></td>
-<td class="enumeration">
-<p>Struct field member relocation. </p>
-</td>
+<td><a href="#Swag_Offset">Offset</a></td>
+<td>Struct field member relocation. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Opaque">Opaque</a></td>
-<td class="enumeration">
-<p>When exporting the following struct, do not export its content. </p>
-</td>
+<td><a href="#Swag_Opaque">Opaque</a></td>
+<td>When exporting the following struct, do not export its content. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Optim">Optim</a></td>
-<td class="enumeration">
-<p>Enable/Disable a given function optimization. </p>
-</td>
+<td><a href="#Swag_Optim">Optim</a></td>
+<td>Enable/Disable a given function optimization. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Overflow">Overflow</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Overflow">Overflow</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Pack">Pack</a></td>
-<td class="enumeration">
-<p><code class="incode">struct</code> packing information. </p>
-</td>
+<td><a href="#Swag_Pack">Pack</a></td>
+<td><code class="incode">struct</code> packing information. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_PrintBc">PrintBc</a></td>
-<td class="enumeration">
-<p>On a function or a struct, this will print the associated generated bytecode (after bytecode optimizations). </p>
-</td>
+<td><a href="#Swag_PrintBc">PrintBc</a></td>
+<td>On a function or a struct, this will print the associated generated bytecode (after bytecode optimizations). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_PrintGenBc">PrintGenBc</a></td>
-<td class="enumeration">
-<p>On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations). </p>
-</td>
+<td><a href="#Swag_PrintGenBc">PrintGenBc</a></td>
+<td>On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Safety">Safety</a></td>
-<td class="enumeration">
-<p>Enable/Disable one or more safety checks. </p>
-</td>
+<td><a href="#Swag_Safety">Safety</a></td>
+<td>Enable/Disable one or more safety checks. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Strict">Strict</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Strict">Strict</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Tls">Tls</a></td>
-<td class="enumeration">
-<p>Put the following global variable in the <code class="incode">tls</code> segment. </p>
-</td>
+<td><a href="#Swag_Tls">Tls</a></td>
+<td>Put the following global variable in the <code class="incode">tls</code> segment. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Using">Using</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_Using">Using</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_Warn">Warn</a></td>
-<td class="enumeration">
-<p>Change the behavior of a given warning or list of warnings. </p>
-</td>
+<td><a href="#Swag_Warn">Warn</a></td>
+<td>Change the behavior of a given warning or list of warnings. </td>
 </tr>
 </table>
 <p>
@@ -2554,39 +2165,24 @@ u8</td>
 <p>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Alloc</td>
-<td class="enumeration">
-<p>Allocate a block of memory. </p>
-</td>
+<td>Alloc</td>
+<td>Allocate a block of memory. </td>
 </tr>
 <tr>
-<td class="tdname">
-Free</td>
-<td class="enumeration">
-<p>Free a block of memory. </p>
-</td>
+<td>Free</td>
+<td>Free a block of memory. </td>
 </tr>
 <tr>
-<td class="tdname">
-Realloc</td>
-<td class="enumeration">
-<p>Reallocate a block of memory. </p>
-</td>
+<td>Realloc</td>
+<td>Reallocate a block of memory. </td>
 </tr>
 <tr>
-<td class="tdname">
-FreeAll</td>
-<td class="enumeration">
-<p>Free all memory allocated with the underlying allocator (ff possible). </p>
-</td>
+<td>FreeAll</td>
+<td>Free all memory allocated with the underlying allocator (ff possible). </td>
 </tr>
 <tr>
-<td class="tdname">
-AssertIsAllocated</td>
-<td class="enumeration">
-<p>The allocator must assert if the address is not currently allocated (if possible). </p>
-</td>
+<td>AssertIsAllocated</td>
+<td>The allocator must assert if the address is not currently allocated (if possible). </td>
 </tr>
 </table>
 <p>
@@ -2603,67 +2199,39 @@ AssertIsAllocated</td>
 <p>Represents the request for a given allocator. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-callerLoc</td>
-<td class="tdtype">
-<a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
-<td class="enumeration">
-<p>The caller code, to help tracking leaks. Optional. </p>
-</td>
+<td>callerLoc</td>
+<td><a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+<td>The caller code, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td class="tdname">
-hint</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>A hint message, to help tracking leaks. Optional. </p>
-</td>
+<td>hint</td>
+<td>string</td>
+<td>A hint message, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td class="tdname">
-address</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>The returned address or the address to deal with. </p>
-</td>
+<td>address</td>
+<td>*void</td>
+<td>The returned address or the address to deal with. </td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>The requested size or the size to deal with. </p>
-</td>
+<td>size</td>
+<td>u64</td>
+<td>The requested size or the size to deal with. </td>
 </tr>
 <tr>
-<td class="tdname">
-oldSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>When reallocating. </p>
-</td>
+<td>oldSize</td>
+<td>u64</td>
+<td>When reallocating. </td>
 </tr>
 <tr>
-<td class="tdname">
-mode</td>
-<td class="tdtype">
-<a href="#Swag_AllocatorMode">Swag.AllocatorMode</a></td>
-<td class="enumeration">
-<p>Alloc, free, reallocate... </p>
-</td>
+<td>mode</td>
+<td><a href="#Swag_AllocatorMode">Swag.AllocatorMode</a></td>
+<td>Alloc, free, reallocate... </td>
 </tr>
 <tr>
-<td class="tdname">
-alignement</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Alignement constraint. </p>
-</td>
+<td>alignement</td>
+<td>u32</td>
+<td>Alignement constraint. </td>
 </tr>
 </table>
 <p> To allocate: </p>
@@ -2731,21 +2299,14 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfo</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-params</td>
-<td class="tdtype">
-const [..] Swag.AttributeParam</td>
-<td class="enumeration">
-<p>Attribute parameters. </p>
-</td>
+<td>params</td>
+<td>const [..] Swag.AttributeParam</td>
+<td>Attribute parameters. </td>
 </tr>
 </table>
 <p>
@@ -2761,22 +2322,14 @@ const [..] Swag.AttributeParam</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Name of the attribute parameter. </p>
-</td>
+<td>name</td>
+<td>string</td>
+<td>Name of the attribute parameter. </td>
 </tr>
 <tr>
-<td class="tdname">
-value</td>
-<td class="tdtype">
-any</td>
-<td class="enumeration">
-<p>Optional default value. </p>
-</td>
+<td>value</td>
+<td>any</td>
+<td>Optional default value. </td>
 </tr>
 </table>
 <p>
@@ -2792,93 +2345,56 @@ any</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Enum</td>
-<td class="enumeration">
-<p>Attribute can be used on an enum. </p>
-</td>
+<td>Enum</td>
+<td>Attribute can be used on an enum. </td>
 </tr>
 <tr>
-<td class="tdname">
-EnumValue</td>
-<td class="enumeration">
-<p>Attribute can be used on an enum value. </p>
-</td>
+<td>EnumValue</td>
+<td>Attribute can be used on an enum value. </td>
 </tr>
 <tr>
-<td class="tdname">
-StructVariable</td>
-<td class="enumeration">
-<p>Attribute can be used on an struct member. </p>
-</td>
+<td>StructVariable</td>
+<td>Attribute can be used on an struct member. </td>
 </tr>
 <tr>
-<td class="tdname">
-GlobalVariable</td>
-<td class="enumeration">
-<p>Attribute can be used on a global variable. </p>
-</td>
+<td>GlobalVariable</td>
+<td>Attribute can be used on a global variable. </td>
 </tr>
 <tr>
-<td class="tdname">
-Variable</td>
-<td class="enumeration">
-<p>Attribute can be used on any variable. </p>
-</td>
+<td>Variable</td>
+<td>Attribute can be used on any variable. </td>
 </tr>
 <tr>
-<td class="tdname">
-Struct</td>
-<td class="enumeration">
-<p>Attribute can be used on a struct. </p>
-</td>
+<td>Struct</td>
+<td>Attribute can be used on a struct. </td>
 </tr>
 <tr>
-<td class="tdname">
-Function</td>
-<td class="enumeration">
-<p>Attribute can be used on a function. </p>
-</td>
+<td>Function</td>
+<td>Attribute can be used on a function. </td>
 </tr>
 <tr>
-<td class="tdname">
-FunctionParameter</td>
-<td class="enumeration">
-<p>Attribute can be used on a struct parameter. </p>
-</td>
+<td>FunctionParameter</td>
+<td>Attribute can be used on a struct parameter. </td>
 </tr>
 <tr>
-<td class="tdname">
-File</td>
-<td class="enumeration">
-<p>Attribute can be used with <code class="incode">#global</code>. </p>
-</td>
+<td>File</td>
+<td>Attribute can be used with <code class="incode">#global</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Constant</td>
-<td class="enumeration">
-<p>Attribute can be used on a constant. </p>
-</td>
+<td>Constant</td>
+<td>Attribute can be used on a constant. </td>
 </tr>
 <tr>
-<td class="tdname">
-Multi</td>
-<td class="enumeration">
-<p>Attribute can be used more than once. </p>
-</td>
+<td>Multi</td>
+<td>Attribute can be used more than once. </td>
 </tr>
 <tr>
-<td class="tdname">
-Gen</td>
-<td class="enumeration">
-</td>
+<td>Gen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-All</td>
-<td class="enumeration">
-</td>
+<td>All</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2895,25 +2411,16 @@ All</td>
 <p>The type of backend to use. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-ByteCode</td>
-<td class="enumeration">
-<p>Bytecode. </p>
-</td>
+<td>ByteCode</td>
+<td>Bytecode. </td>
 </tr>
 <tr>
-<td class="tdname">
-X64</td>
-<td class="enumeration">
-<p>X86_64 backend. </p>
-</td>
+<td>X64</td>
+<td>X86_64 backend. </td>
 </tr>
 <tr>
-<td class="tdname">
-LLVM</td>
-<td class="enumeration">
-<p>LLVM backend. </p>
-</td>
+<td>LLVM</td>
+<td>LLVM backend. </td>
 </tr>
 </table>
 <p>
@@ -2930,380 +2437,214 @@ LLVM</td>
 <p>The current module build configuration. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-moduleVersion</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>The module version. </p>
-</td>
+<td>moduleVersion</td>
+<td>u32</td>
+<td>The module version. </td>
 </tr>
 <tr>
-<td class="tdname">
-moduleRevision</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>The module revision. </p>
-</td>
+<td>moduleRevision</td>
+<td>u32</td>
+<td>The module revision. </td>
 </tr>
 <tr>
-<td class="tdname">
-moduleBuildNum</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>The module build value. </p>
-</td>
+<td>moduleBuildNum</td>
+<td>u32</td>
+<td>The module build value. </td>
 </tr>
 <tr>
-<td class="tdname">
-moduleNamespace</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>The namespace name of the module. </p>
-</td>
+<td>moduleNamespace</td>
+<td>string</td>
+<td>The namespace name of the module. </td>
 </tr>
 <tr>
-<td class="tdname">
-embbedImports</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Module should embbed all its dependencies. </p>
-</td>
+<td>embbedImports</td>
+<td>bool</td>
+<td>Module should embbed all its dependencies. </td>
 </tr>
 <tr>
-<td class="tdname">
-scratchAllocatorCapacity</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Default capacity of the <code class="incode">temp</code> allocator (in bytes). </p>
-</td>
+<td>scratchAllocatorCapacity</td>
+<td>s32</td>
+<td>Default capacity of the <code class="incode">temp</code> allocator (in bytes). </td>
 </tr>
 <tr>
-<td class="tdname">
-safetyGuards</td>
-<td class="tdtype">
-u16</td>
-<td class="enumeration">
-<p>Activate specific safety checks. </p>
-</td>
+<td>safetyGuards</td>
+<td>u16</td>
+<td>Activate specific safety checks. </td>
 </tr>
 <tr>
-<td class="tdname">
-debugAllocator</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Use Swag.DebugAllocator by default. </p>
-</td>
+<td>debugAllocator</td>
+<td>bool</td>
+<td>Use Swag.DebugAllocator by default. </td>
 </tr>
 <tr>
-<td class="tdname">
-debugAllocatorCaptureStack</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Capture the call stack for each allocation. </p>
-</td>
+<td>debugAllocatorCaptureStack</td>
+<td>bool</td>
+<td>Capture the call stack for each allocation. </td>
 </tr>
 <tr>
-<td class="tdname">
-debugAllocatorLeaks</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Detect memory leaks. </p>
-</td>
+<td>debugAllocatorLeaks</td>
+<td>bool</td>
+<td>Detect memory leaks. </td>
 </tr>
 <tr>
-<td class="tdname">
-errorStackTrace</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Add stack trace in case a <code class="incode">throw</code> is raised. </p>
-</td>
+<td>errorStackTrace</td>
+<td>bool</td>
+<td>Add stack trace in case a <code class="incode">throw</code> is raised. </td>
 </tr>
 <tr>
-<td class="tdname">
-warnAsErrors</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX...". </p>
-</td>
+<td>warnAsErrors</td>
+<td>string</td>
+<td>Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX...". </td>
 </tr>
 <tr>
-<td class="tdname">
-warnAsWarning</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Override <code class="incode">warnAsErrors</code>, restoring warnings as warnings. </p>
-</td>
+<td>warnAsWarning</td>
+<td>string</td>
+<td>Override <code class="incode">warnAsErrors</code>, restoring warnings as warnings. </td>
 </tr>
 <tr>
-<td class="tdname">
-warnAsDisabled</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Disable some specific warnings. </p>
-</td>
+<td>warnAsDisabled</td>
+<td>string</td>
+<td>Disable some specific warnings. </td>
 </tr>
 <tr>
-<td class="tdname">
-warnDefaultDisabled</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>All warnings are disabled, except those specified above. </p>
-</td>
+<td>warnDefaultDisabled</td>
+<td>bool</td>
+<td>All warnings are disabled, except those specified above. </td>
 </tr>
 <tr>
-<td class="tdname">
-warnDefaultErrors</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>All warnings are treated as errors, except those specified above. </p>
-</td>
+<td>warnDefaultErrors</td>
+<td>bool</td>
+<td>All warnings are treated as errors, except those specified above. </td>
 </tr>
 <tr>
-<td class="tdname">
-byteCodeOptimizeLevel</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>Optimization level of bytecode [0, 1 or 2]. </p>
-</td>
+<td>byteCodeOptimizeLevel</td>
+<td>s32</td>
+<td>Optimization level of bytecode [0, 1 or 2]. </td>
 </tr>
 <tr>
-<td class="tdname">
-byteCodeDebugInline</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Trace into inlined code when generating debug infos. </p>
-</td>
+<td>byteCodeDebugInline</td>
+<td>bool</td>
+<td>Trace into inlined code when generating debug infos. </td>
 </tr>
 <tr>
-<td class="tdname">
-byteCodeEmitAssume</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p><code class="incode">assume</code> will panic if an error is raised. </p>
-</td>
+<td>byteCodeEmitAssume</td>
+<td>bool</td>
+<td><code class="incode">assume</code> will panic if an error is raised. </td>
 </tr>
 <tr>
-<td class="tdname">
-byteCodeInline</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Enable bytecode inlining with #<a href="#Swag_Inline">Swag.Inline</a>. </p>
-</td>
+<td>byteCodeInline</td>
+<td>bool</td>
+<td>Enable bytecode inlining with #<a href="#Swag_Inline">Swag.Inline</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-byteCodeAutoInline</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Automatic inlining of some other functions. </p>
-</td>
+<td>byteCodeAutoInline</td>
+<td>bool</td>
+<td>Automatic inlining of some other functions. </td>
 </tr>
 <tr>
-<td class="tdname">
-backendKind</td>
-<td class="tdtype">
-<a href="#Swag_BuildCfgBackendKind">Swag.BuildCfgBackendKind</a></td>
-<td class="enumeration">
-<p>Backend type (executable, dynamic lib...). </p>
-</td>
+<td>backendKind</td>
+<td><a href="#Swag_BuildCfgBackendKind">Swag.BuildCfgBackendKind</a></td>
+<td>Backend type (executable, dynamic lib...). </td>
 </tr>
 <tr>
-<td class="tdname">
-backendSubKind</td>
-<td class="tdtype">
-<a href="#Swag_BuildCfgBackendSubKind">Swag.BuildCfgBackendSubKind</a></td>
-<td class="enumeration">
-<p>Backend sub kind. </p>
-</td>
+<td>backendSubKind</td>
+<td><a href="#Swag_BuildCfgBackendSubKind">Swag.BuildCfgBackendSubKind</a></td>
+<td>Backend sub kind. </td>
 </tr>
 <tr>
-<td class="tdname">
-backendDebugInformations</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Output debug informations if <code class="incode">true</code>. </p>
-</td>
+<td>backendDebugInformations</td>
+<td>bool</td>
+<td>Output debug informations if <code class="incode">true</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-backendOptimize</td>
-<td class="tdtype">
-<a href="#Swag_BuildCfgBackendOptim">Swag.BuildCfgBackendOptim</a></td>
-<td class="enumeration">
-<p>Backend optimization level. </p>
-</td>
+<td>backendOptimize</td>
+<td><a href="#Swag_BuildCfgBackendOptim">Swag.BuildCfgBackendOptim</a></td>
+<td>Backend optimization level. </td>
 </tr>
 <tr>
-<td class="tdname">
-backendNumCU</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>backendNumCU</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-linkerArgs</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Additional linker arguments. </p>
-</td>
+<td>linkerArgs</td>
+<td>string</td>
+<td>Additional linker arguments. </td>
 </tr>
 <tr>
-<td class="tdname">
-backendLLVM</td>
-<td class="tdtype">
-<a href="#Swag_BuildCfgBackendLLVM">Swag.BuildCfgBackendLLVM</a></td>
-<td class="enumeration">
-<p>Specific LLVM options. </p>
-</td>
+<td>backendLLVM</td>
+<td><a href="#Swag_BuildCfgBackendLLVM">Swag.BuildCfgBackendLLVM</a></td>
+<td>Specific LLVM options. </td>
 </tr>
 <tr>
-<td class="tdname">
-backendX64</td>
-<td class="tdtype">
-<a href="#Swag_BuildCfgBackendX64">Swag.BuildCfgBackendX64</a></td>
-<td class="enumeration">
-<p>Specific X86_64 options. </p>
-</td>
+<td>backendX64</td>
+<td><a href="#Swag_BuildCfgBackendX64">Swag.BuildCfgBackendX64</a></td>
+<td>Specific X86_64 options. </td>
 </tr>
 <tr>
-<td class="tdname">
-repoPath</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Repository access path to the module. </p>
-</td>
+<td>repoPath</td>
+<td>string</td>
+<td>Repository access path to the module. </td>
 </tr>
 <tr>
-<td class="tdname">
-docKind</td>
-<td class="tdtype">
-<a href="#Swag_DocKind">Swag.DocKind</a></td>
-<td class="enumeration">
-</td>
+<td>docKind</td>
+<td><a href="#Swag_DocKind">Swag.DocKind</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-docOutputName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>The name of the output file (without extension). </p>
-</td>
+<td>docOutputName</td>
+<td>string</td>
+<td>The name of the output file (without extension). </td>
 </tr>
 <tr>
-<td class="tdname">
-docOutputExtension</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>The output extension. </p>
-</td>
+<td>docOutputExtension</td>
+<td>string</td>
+<td>The output extension. </td>
 </tr>
 <tr>
-<td class="tdname">
-docTitleToc</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Title for the table of content. </p>
-</td>
+<td>docTitleToc</td>
+<td>string</td>
+<td>Title for the table of content. </td>
 </tr>
 <tr>
-<td class="tdname">
-docTitleContent</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Title for the main document content. </p>
-</td>
+<td>docTitleContent</td>
+<td>string</td>
+<td>Title for the main document content. </td>
 </tr>
 <tr>
-<td class="tdname">
-docCss</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>The <code class="incode">css</code> file to include in generated documentations. </p>
-</td>
+<td>docCss</td>
+<td>string</td>
+<td>The <code class="incode">css</code> file to include in generated documentations. </td>
 </tr>
 <tr>
-<td class="tdname">
-docStartHead</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>To insert at the start of the &lt;head&gt; section. </p>
-</td>
+<td>docStartHead</td>
+<td>string</td>
+<td>To insert at the start of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td class="tdname">
-docEndHead</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>To insert at the end of the &lt;head&gt; section. </p>
-</td>
+<td>docEndHead</td>
+<td>string</td>
+<td>To insert at the end of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td class="tdname">
-docStartBody</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>To insert add at the start of the &lt;body&gt; section. </p>
-</td>
+<td>docStartBody</td>
+<td>string</td>
+<td>To insert add at the start of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td class="tdname">
-docEndBody</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>To insert add at the end of the &lt;body&gt; section. </p>
-</td>
+<td>docEndBody</td>
+<td>string</td>
+<td>To insert add at the end of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td class="tdname">
-docStyleSection</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Generate a default &lt;style&gt; section. </p>
-</td>
+<td>docStyleSection</td>
+<td>bool</td>
+<td>Generate a default &lt;style&gt; section. </td>
 </tr>
 <tr>
-<td class="tdname">
-docSyntaxColorLum</td>
-<td class="tdtype">
-f32</td>
-<td class="enumeration">
-<p>Code syntax color luminosity between 0 and 1. </p>
-</td>
+<td>docSyntaxColorLum</td>
+<td>f32</td>
+<td>Code syntax color luminosity between 0 and 1. </td>
 </tr>
 </table>
 <p> See <a href="#Swag_ICompiler">ICompiler</a> </p>
@@ -3321,32 +2662,20 @@ f32</td>
 <p>The kind of native backend to generate. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-<p>Nothing. </p>
-</td>
+<td>None</td>
+<td>Nothing. </td>
 </tr>
 <tr>
-<td class="tdname">
-Export</td>
-<td class="enumeration">
-<p>The module is an <code class="incode">export</code> module which does not have its own code. </p>
-</td>
+<td>Export</td>
+<td>The module is an <code class="incode">export</code> module which does not have its own code. </td>
 </tr>
 <tr>
-<td class="tdname">
-Executable</td>
-<td class="enumeration">
-<p>The module needs to be compiled to an executable application. </p>
-</td>
+<td>Executable</td>
+<td>The module needs to be compiled to an executable application. </td>
 </tr>
 <tr>
-<td class="tdname">
-DynamicLib</td>
-<td class="enumeration">
-<p>The module needs to be compiled to an dynamic library. </p>
-</td>
+<td>DynamicLib</td>
+<td>The module needs to be compiled to an dynamic library. </td>
 </tr>
 </table>
 <p>
@@ -3363,65 +2692,39 @@ DynamicLib</td>
 <p><code class="incode">LLVM</code> backend specific options. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-outputIR</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Output IR in a file. </p>
-</td>
+<td>outputIR</td>
+<td>bool</td>
+<td>Output IR in a file. </td>
 </tr>
 <tr>
-<td class="tdname">
-fpMathFma</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>true in <code class="incode">release</code>. </p>
-</td>
+<td>fpMathFma</td>
+<td>bool</td>
+<td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-fpMathNoNaN</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>true in <code class="incode">release</code>. </p>
-</td>
+<td>fpMathNoNaN</td>
+<td>bool</td>
+<td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-fpMathNoInf</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>true in <code class="incode">release</code>. </p>
-</td>
+<td>fpMathNoInf</td>
+<td>bool</td>
+<td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-fpMathNoSignedZero</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>true in <code class="incode">release</code>. </p>
-</td>
+<td>fpMathNoSignedZero</td>
+<td>bool</td>
+<td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-fpMathUnsafe</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>fpMathUnsafe</td>
+<td>bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-fpMathApproxFunc</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-</td>
+<td>fpMathApproxFunc</td>
+<td>bool</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3438,46 +2741,28 @@ bool</td>
 <p>These are the optimization levels for the backend. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-O0</td>
-<td class="enumeration">
-<p>No optimization. </p>
-</td>
+<td>O0</td>
+<td>No optimization. </td>
 </tr>
 <tr>
-<td class="tdname">
-O1</td>
-<td class="enumeration">
-<p>Optimizations level 1. </p>
-</td>
+<td>O1</td>
+<td>Optimizations level 1. </td>
 </tr>
 <tr>
-<td class="tdname">
-O2</td>
-<td class="enumeration">
-<p>Optimizations level 2. </p>
-</td>
+<td>O2</td>
+<td>Optimizations level 2. </td>
 </tr>
 <tr>
-<td class="tdname">
-O3</td>
-<td class="enumeration">
-<p>Optimizations level 3. </p>
-</td>
+<td>O3</td>
+<td>Optimizations level 3. </td>
 </tr>
 <tr>
-<td class="tdname">
-Os</td>
-<td class="enumeration">
-<p>Optim for size level 1. </p>
-</td>
+<td>Os</td>
+<td>Optim for size level 1. </td>
 </tr>
 <tr>
-<td class="tdname">
-Oz</td>
-<td class="enumeration">
-<p>Optim for size level 2. </p>
-</td>
+<td>Oz</td>
+<td>Optim for size level 2. </td>
 </tr>
 </table>
 <p> Only <code class="incode">LLVM</code> backend uses this, as the <code class="incode">X86_64</code> backend does not have an optimization pass. </p>
@@ -3495,16 +2780,12 @@ Oz</td>
 <p>The native backend sub category. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Default</td>
-<td class="enumeration">
-</td>
+<td>Default</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Console</td>
-<td class="enumeration">
-</td>
+<td>Console</td>
+<td></td>
 </tr>
 </table>
 <p> Under windows, by default, the application will be compiled to make a <code class="incode">windowed</code> application. But you can  change it and force the application to behave like a <code class="incode">console</code> one. </p>
@@ -3533,12 +2814,9 @@ Console</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-buf</td>
-<td class="tdtype">
-[2048] u8</td>
-<td class="enumeration">
-</td>
+<td>buf</td>
+<td>[2048] u8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3589,40 +2867,24 @@ buf</td>
 <p>A message received in a <code class="incode">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-moduleName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Name of the module for which the message is sent. </p>
-</td>
+<td>moduleName</td>
+<td>string</td>
+<td>Name of the module for which the message is sent. </td>
 </tr>
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Depends on <code class="incode">kind</code>. </p>
-</td>
+<td>name</td>
+<td>string</td>
+<td>Depends on <code class="incode">kind</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-type</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>Depends on <code class="incode">kind</code>. </p>
-</td>
+<td>type</td>
+<td>const *Swag.TypeInfo</td>
+<td>Depends on <code class="incode">kind</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-kind</td>
-<td class="tdtype">
-<a href="#Swag_CompilerMsgKind">Swag.CompilerMsgKind</a></td>
-<td class="enumeration">
-<p>Kind of the message. </p>
-</td>
+<td>kind</td>
+<td><a href="#Swag_CompilerMsgKind">Swag.CompilerMsgKind</a></td>
+<td>Kind of the message. </td>
 </tr>
 </table>
 <p> In a <code class="incode">#message</code> function, you can retreive the associated message by calling <code class="incode">getMessage</code> of the  interface returned by <a href="#@compiler">@compiler</a> </p>
@@ -3640,59 +2902,36 @@ kind</td>
 <p>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-PassAfterSemantic</td>
-<td class="enumeration">
-<p>Called once the program semantic has been done. </p>
-</td>
+<td>PassAfterSemantic</td>
+<td>Called once the program semantic has been done. </td>
 </tr>
 <tr>
-<td class="tdname">
-PassBeforeRunByteCode</td>
-<td class="enumeration">
-<p>Called just before running bytecode. </p>
-</td>
+<td>PassBeforeRunByteCode</td>
+<td>Called just before running bytecode. </td>
 </tr>
 <tr>
-<td class="tdname">
-PassBeforeOutput</td>
-<td class="enumeration">
-<p>Called just before generating the native code. </p>
-</td>
+<td>PassBeforeOutput</td>
+<td>Called just before generating the native code. </td>
 </tr>
 <tr>
-<td class="tdname">
-PassAllDone</td>
-<td class="enumeration">
-<p>Called when everything has be done. </p>
-</td>
+<td>PassAllDone</td>
+<td>Called when everything has be done. </td>
 </tr>
 <tr>
-<td class="tdname">
-SemFunctions</td>
-<td class="enumeration">
-<p>Called for each function in the module. </p>
-</td>
+<td>SemFunctions</td>
+<td>Called for each function in the module. </td>
 </tr>
 <tr>
-<td class="tdname">
-SemTypes</td>
-<td class="enumeration">
-<p>Called for each type in the module. </p>
-</td>
+<td>SemTypes</td>
+<td>Called for each type in the module. </td>
 </tr>
 <tr>
-<td class="tdname">
-SemGlobals</td>
-<td class="enumeration">
-<p>Called for each global variable in the module. </p>
-</td>
+<td>SemGlobals</td>
+<td>Called for each global variable in the module. </td>
 </tr>
 <tr>
-<td class="tdname">
-AttributeGen</td>
-<td class="enumeration">
-</td>
+<td>AttributeGen</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3709,58 +2948,40 @@ AttributeGen</td>
 <p>The type of message you want to retreive in a <code class="incode">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-PassAfterSemantic</td>
-<td class="enumeration">
-</td>
+<td>PassAfterSemantic</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PassBeforeRun</td>
-<td class="enumeration">
-</td>
+<td>PassBeforeRun</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PassBeforeOutput</td>
-<td class="enumeration">
-</td>
+<td>PassBeforeOutput</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PassAllDone</td>
-<td class="enumeration">
-</td>
+<td>PassAllDone</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SemFunctions</td>
-<td class="enumeration">
-</td>
+<td>SemFunctions</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SemTypes</td>
-<td class="enumeration">
-</td>
+<td>SemTypes</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-SemGlobals</td>
-<td class="enumeration">
-</td>
+<td>SemGlobals</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-AttributeGen</td>
-<td class="enumeration">
-</td>
+<td>AttributeGen</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-All</td>
-<td class="enumeration">
-</td>
+<td>All</td>
+<td></td>
 </tr>
 </table>
 <p> The function could be called for more than one reason, as this is a mask. </p>
@@ -3812,103 +3033,59 @@ All</td>
 <p>Thread context as returned by [@context]. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-<p>The current allocator interface. </p>
-</td>
+<td>allocator</td>
+<td><a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+<td>The current allocator interface. </td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-<a href="#Swag_ContextFlags">Swag.ContextFlags</a></td>
-<td class="enumeration">
-<p>Context flags. </p>
-</td>
+<td>flags</td>
+<td><a href="#Swag_ContextFlags">Swag.ContextFlags</a></td>
+<td>Context flags. </td>
 </tr>
 <tr>
-<td class="tdname">
-tempAllocator</td>
-<td class="tdtype">
-<a href="#Swag_ScratchAllocator">Swag.ScratchAllocator</a></td>
-<td class="enumeration">
-<p>Other fields, can be in any order A temporary allocator. </p>
-</td>
+<td>tempAllocator</td>
+<td><a href="#Swag_ScratchAllocator">Swag.ScratchAllocator</a></td>
+<td>Other fields, can be in any order A temporary allocator. </td>
 </tr>
 <tr>
-<td class="tdname">
-traces</td>
-<td class="tdtype">
-[32] const *Swag.SourceCodeLocation</td>
-<td class="enumeration">
-<p>Stack trace, in case of errors. </p>
-</td>
+<td>traces</td>
+<td>[32] const *Swag.SourceCodeLocation</td>
+<td>Stack trace, in case of errors. </td>
 </tr>
 <tr>
-<td class="tdname">
-errors</td>
-<td class="tdtype">
-[32] Swag.Error</td>
-<td class="enumeration">
-<p>All errors. </p>
-</td>
+<td>errors</td>
+<td>[32] Swag.Error</td>
+<td>All errors. </td>
 </tr>
 <tr>
-<td class="tdname">
-exceptionLoc</td>
-<td class="tdtype">
-<a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
-<td class="enumeration">
-<p>When an exception is raised, this is the code location. </p>
-</td>
+<td>exceptionLoc</td>
+<td><a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+<td>When an exception is raised, this is the code location. </td>
 </tr>
 <tr>
-<td class="tdname">
-exceptionParams</td>
-<td class="tdtype">
-[4] const *void</td>
-<td class="enumeration">
-<p>When an exception is raised, this are the parameters. </p>
-</td>
+<td>exceptionParams</td>
+<td>[4] const *void</td>
+<td>When an exception is raised, this are the parameters. </td>
 </tr>
 <tr>
-<td class="tdname">
-panic</td>
-<td class="tdtype">
-func(string, Swag.SourceCodeLocation)</td>
-<td class="enumeration">
-<p>A function to call if there's a panic. </p>
-</td>
+<td>panic</td>
+<td>func(string, Swag.SourceCodeLocation)</td>
+<td>A function to call if there's a panic. </td>
 </tr>
 <tr>
-<td class="tdname">
-errorIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Number of errors in the array. </p>
-</td>
+<td>errorIndex</td>
+<td>u32</td>
+<td>Number of errors in the array. </td>
 </tr>
 <tr>
-<td class="tdname">
-traceIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>The current trace index. </p>
-</td>
+<td>traceIndex</td>
+<td>u32</td>
+<td>The current trace index. </td>
 </tr>
 <tr>
-<td class="tdname">
-hasError</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>!= 0 if an error is raised. </p>
-</td>
+<td>hasError</td>
+<td>u32</td>
+<td>!= 0 if an error is raised. </td>
 </tr>
 </table>
 <p>
@@ -3924,22 +3101,16 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-</td>
+<td>None</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Test</td>
-<td class="enumeration">
-</td>
+<td>Test</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ByteCode</td>
-<td class="enumeration">
-</td>
+<td>ByteCode</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3955,192 +3126,116 @@ ByteCode</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-</td>
+<td>allocator</td>
+<td><a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-mutex</td>
-<td class="tdtype">
-MutexRW</td>
-<td class="enumeration">
-</td>
+<td>mutex</td>
+<td>MutexRW</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-firstAlloc</td>
-<td class="tdtype">
-*Swag.DebugAllocatorHeader</td>
-<td class="enumeration">
-<p>First allocated block. </p>
-</td>
+<td>firstAlloc</td>
+<td>*Swag.DebugAllocatorHeader</td>
+<td>First allocated block. </td>
 </tr>
 <tr>
-<td class="tdname">
-firstFree</td>
-<td class="tdtype">
-*Swag.DebugAllocatorHeader</td>
-<td class="enumeration">
-<p>First freed block. </p>
-</td>
+<td>firstFree</td>
+<td>*Swag.DebugAllocatorHeader</td>
+<td>First freed block. </td>
 </tr>
 <tr>
-<td class="tdname">
-lastFree</td>
-<td class="tdtype">
-*Swag.DebugAllocatorHeader</td>
-<td class="enumeration">
-<p>Last freed block. </p>
-</td>
+<td>lastFree</td>
+<td>*Swag.DebugAllocatorHeader</td>
+<td>Last freed block. </td>
 </tr>
 <tr>
-<td class="tdname">
-sizeAlloc</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Total allocated memory, in bytes. </p>
-</td>
+<td>sizeAlloc</td>
+<td>u64</td>
+<td>Total allocated memory, in bytes. </td>
 </tr>
 <tr>
-<td class="tdname">
-sizeFree</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Total of free blocks in quarantine. </p>
-</td>
+<td>sizeFree</td>
+<td>u64</td>
+<td>Total of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td class="tdname">
-countAlloc</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Number of allocated blocks. </p>
-</td>
+<td>countAlloc</td>
+<td>u32</td>
+<td>Number of allocated blocks. </td>
 </tr>
 <tr>
-<td class="tdname">
-nextId</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>The next allocated id to assign. </p>
-</td>
+<td>nextId</td>
+<td>u32</td>
+<td>The next allocated id to assign. </td>
 </tr>
 <tr>
-<td class="tdname">
-maxFreeSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine. </p>
-</td>
+<td>maxFreeSize</td>
+<td>u64</td>
+<td>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td class="tdname">
-breakOnAllocId</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Will @assert when the current allocation id reaches that value. </p>
-</td>
+<td>breakOnAllocId</td>
+<td>u32</td>
+<td>Will @assert when the current allocation id reaches that value. </td>
 </tr>
 <tr>
-<td class="tdname">
-showMaxLeaks</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Maximum number of memory leaks to show. </p>
-</td>
+<td>showMaxLeaks</td>
+<td>u32</td>
+<td>Maximum number of memory leaks to show. </td>
 </tr>
 <tr>
-<td class="tdname">
-captureAllocStack</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>For each allocation, capture stack. </p>
-</td>
+<td>captureAllocStack</td>
+<td>bool</td>
+<td>For each allocation, capture stack. </td>
 </tr>
 <tr>
-<td class="tdname">
-detectLeaks</td>
-<td class="tdtype">
-bool</td>
-<td class="enumeration">
-<p>Detect memory leaks if true. </p>
-</td>
+<td>detectLeaks</td>
+<td>bool</td>
+<td>Detect memory leaks if true. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated(self, *void, const ref SourceCodeLocation)</a></td>
-<td class="enumeration">
-<p>This function will assert if the given user address is not conform  to an allocated block. </p>
-</td>
+<td><a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated(self, *void, const ref SourceCodeLocation)</a></td>
+<td>This function will assert if the given user address is not conform  to an allocated block. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory(self)</a></td>
-<td class="enumeration">
-<p>Check all allocated blocks. </p>
-</td>
+<td><a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory(self)</a></td>
+<td>Check all allocated blocks. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_checkIsAllocated">checkIsAllocated(self, ^DebugAllocatorHeader, const ref SourceCodeLocation)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_DebugAllocator_checkIsAllocated">checkIsAllocated(self, ^DebugAllocatorHeader, const ref SourceCodeLocation)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_checkIsFreed">checkIsFreed(self, ^DebugAllocatorHeader)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_DebugAllocator_checkIsFreed">checkIsFreed(self, ^DebugAllocatorHeader)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_memAlign">memAlign(u64, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_DebugAllocator_memAlign">memAlign(u64, u32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_printDisplaySize">printDisplaySize(u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_DebugAllocator_printDisplaySize">printDisplaySize(u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_printLeaks">printLeaks(self)</a></td>
-<td class="enumeration">
-<p>Output to the console the list of all allocated blocks (leaks). </p>
-</td>
+<td><a href="#Swag_DebugAllocator_printLeaks">printLeaks(self)</a></td>
+<td>Output to the console the list of all allocated blocks (leaks). </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_setup">setup(self, IAllocator)</a></td>
-<td class="enumeration">
-<p>Setup the allocator. </p>
-</td>
+<td><a href="#Swag_DebugAllocator_setup">setup(self, IAllocator)</a></td>
+<td>Setup the allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Swag_DebugAllocator_opDrop">opDrop(self)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_DebugAllocator_opDrop">opDrop(self)</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4343,12 +3438,9 @@ bool</td>
 <p>Will be put just after the returned address. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-magic</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>magic</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4365,92 +3457,59 @@ u32</td>
 <p>Will be put just before the returned address. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-loc</td>
-<td class="tdtype">
-<a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
-<td class="enumeration">
-</td>
+<td>loc</td>
+<td><a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-allocAddr</td>
-<td class="tdtype">
-^void</td>
-<td class="enumeration">
-</td>
+<td>allocAddr</td>
+<td>^void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-allocSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>allocSize</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-userSize</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>userSize</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-hint</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-</td>
+<td>hint</td>
+<td>string</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-prev</td>
-<td class="tdtype">
-*Swag.DebugAllocatorHeader</td>
-<td class="enumeration">
-</td>
+<td>prev</td>
+<td>*Swag.DebugAllocatorHeader</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-*Swag.DebugAllocatorHeader</td>
-<td class="enumeration">
-</td>
+<td>next</td>
+<td>*Swag.DebugAllocatorHeader</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stack</td>
-<td class="tdtype">
-[16] *void</td>
-<td class="enumeration">
-</td>
+<td>stack</td>
+<td>[16] *void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-stackCount</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>stackCount</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-magic</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>magic</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-allocId</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>allocId</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4500,32 +3559,20 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-None</td>
-<td class="enumeration">
-<p>Do not generate documentation for that module. </p>
-</td>
+<td>None</td>
+<td>Do not generate documentation for that module. </td>
 </tr>
 <tr>
-<td class="tdname">
-Api</td>
-<td class="enumeration">
-<p>Generate 'api like' documentation. </p>
-</td>
+<td>Api</td>
+<td>Generate 'api like' documentation. </td>
 </tr>
 <tr>
-<td class="tdname">
-Examples</td>
-<td class="enumeration">
-<p>Generate 'examples like' documentation. </p>
-</td>
+<td>Examples</td>
+<td>Generate 'examples like' documentation. </td>
 </tr>
 <tr>
-<td class="tdname">
-Pages</td>
-<td class="enumeration">
-<p>Generate one page per file. </p>
-</td>
+<td>Pages</td>
+<td>Generate one page per file. </td>
 </tr>
 </table>
 <p>
@@ -4576,38 +3623,24 @@ Pages</td>
 <p>Store a <code class="incode">throw</code> error informations. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-msgBuf</td>
-<td class="tdtype">
-[128] u8</td>
-<td class="enumeration">
-<p>Buffer to store the error message. </p>
-</td>
+<td>msgBuf</td>
+<td>[128] u8</td>
+<td>Buffer to store the error message. </td>
 </tr>
 <tr>
-<td class="tdname">
-msg</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Error message. </p>
-</td>
+<td>msg</td>
+<td>string</td>
+<td>Error message. </td>
 </tr>
 <tr>
-<td class="tdname">
-pushHasError</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>pushHasError</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pushTraceIndex</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td>pushTraceIndex</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4623,22 +3656,16 @@ u32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Panic</td>
-<td class="enumeration">
-</td>
+<td>Panic</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Error</td>
-<td class="enumeration">
-</td>
+<td>Error</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Warning</td>
-<td class="enumeration">
-</td>
+<td>Warning</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4722,22 +3749,14 @@ Warning</td>
 <p>Defined a global variable. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-ptr</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>Pointer to the global variable memory. </p>
-</td>
+<td>ptr</td>
+<td>*void</td>
+<td>Pointer to the global variable memory. </td>
 </tr>
 <tr>
-<td class="tdname">
-opDrop</td>
-<td class="tdtype">
-func(*void)</td>
-<td class="enumeration">
-<p>The <code class="incode">opDrop</code> function to call when the process must exit. </p>
-</td>
+<td>opDrop</td>
+<td>func(*void)</td>
+<td>The <code class="incode">opDrop</code> function to call when the process must exit. </td>
 </tr>
 </table>
 <p>
@@ -4753,12 +3772,9 @@ func(*void)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-req</td>
-<td class="tdtype">
-func(*Swag.IAllocator, *Swag.AllocatorRequest)</td>
-<td class="enumeration">
-</td>
+<td>req</td>
+<td>func(*Swag.IAllocator, *Swag.AllocatorRequest)</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -4789,31 +3805,19 @@ func(*Swag.IAllocator, *Swag.AllocatorRequest)</td>
 <p>This is the interface to communicate with the compiler. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-getMessage</td>
-<td class="tdtype">
-func(*Swag.ICompiler)->const *Swag.CompilerMessage</td>
-<td class="enumeration">
-<p>Returns the compiler message in a <code class="incode">#message</code> function. </p>
-</td>
+<td>getMessage</td>
+<td>func(*Swag.ICompiler)->const *Swag.CompilerMessage</td>
+<td>Returns the compiler message in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td class="tdname">
-getBuildCfg</td>
-<td class="tdtype">
-func(*Swag.ICompiler)->*Swag.BuildCfg</td>
-<td class="enumeration">
-<p>Returns the build configuration of the current module. </p>
-</td>
+<td>getBuildCfg</td>
+<td>func(*Swag.ICompiler)->*Swag.BuildCfg</td>
+<td>Returns the build configuration of the current module. </td>
 </tr>
 <tr>
-<td class="tdname">
-compileString</td>
-<td class="tdtype">
-func(*Swag.ICompiler, string)</td>
-<td class="enumeration">
-<p>Compile a global string. </p>
-</td>
+<td>compileString</td>
+<td>func(*Swag.ICompiler, string)</td>
+<td>Compile a global string. </td>
 </tr>
 </table>
 <p> The intrinsic <code class="incode">@compiler</code> will return that interface at compile-time, and <code class="incode">null</code> at runtime. </p>
@@ -4923,22 +3927,14 @@ func(*Swag.ICompiler, string)</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-obj</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-<p>Pointer to the associated struct instance. </p>
-</td>
+<td>obj</td>
+<td>*void</td>
+<td>Pointer to the associated struct instance. </td>
 </tr>
 <tr>
-<td class="tdname">
-itable</td>
-<td class="tdtype">
-const ^^void</td>
-<td class="enumeration">
-<p>Pointer to the virtual table. </p>
-</td>
+<td>itable</td>
+<td>const ^^void</td>
+<td>Pointer to the virtual table. </td>
 </tr>
 </table>
 <p>
@@ -5005,22 +4001,14 @@ const ^^void</td>
 <p>Defined some informations about a loaded module. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Name of the module. </p>
-</td>
+<td>name</td>
+<td>string</td>
+<td>Name of the module. </td>
 </tr>
 <tr>
-<td class="tdname">
-types</td>
-<td class="tdtype">
-const [..] const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>All exported types. </p>
-</td>
+<td>types</td>
+<td>const [..] const *Swag.TypeInfo</td>
+<td>All exported types. </td>
 </tr>
 </table>
 <p>
@@ -5146,8 +4134,8 @@ const [..] const *Swag.TypeInfo</td>
 </pre>
 <p> Options are: </p>
 <table class="enumeration">
-<tr><td class="tdname"> <code class="incode">bytecode</code>   </td><td class="tdtype"> Enable/Disable bytecode optimization for the function</td></tr>
-<tr><td class="tdname"> <code class="incode">backend</code>    </td><td class="tdtype"> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
+<tr><td> <code class="incode">bytecode</code>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
+<tr><td> <code class="incode">backend</code>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
 <p> If <code class="incode">what</code> is null or empty, every options will be affected. </p>
 <p>
@@ -5231,22 +4219,14 @@ const [..] const *Swag.TypeInfo</td>
 <p>Defined some informations about the current process. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-modules</td>
-<td class="tdtype">
-const [..] Swag.Module</td>
-<td class="enumeration">
-<p>The list of all modules. </p>
-</td>
+<td>modules</td>
+<td>const [..] Swag.Module</td>
+<td>The list of all modules. </td>
 </tr>
 <tr>
-<td class="tdname">
-args</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>The application arguments, as returned by <a href="#@args">@args</a>. </p>
-</td>
+<td>args</td>
+<td>string</td>
+<td>The application arguments, as returned by <a href="#@args">@args</a>. </td>
 </tr>
 </table>
 <p>
@@ -5262,16 +4242,12 @@ string</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-FromCompiler</td>
-<td class="enumeration">
-</td>
+<td>FromCompiler</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5334,16 +4310,16 @@ FromCompiler</td>
 </pre>
 <p> Safety checks are: </p>
 <table class="enumeration">
-<tr><td class="tdname"> <code class="incode">boundcheck</code>   </td><td class="tdtype"> Check out of bound access</td></tr>
-<tr><td class="tdname"> <code class="incode">overflow</code>     </td><td class="tdtype"> Check type conversion lost of bits or precision</td></tr>
-<tr><td class="tdname"> <code class="incode">math</code>         </td><td class="tdtype"> Various math checks (like a negative <code class="incode">@sqrt</code>)</td></tr>
-<tr><td class="tdname"> <code class="incode">switch</code>       </td><td class="tdtype"> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
-<tr><td class="tdname"> <code class="incode">unreachable</code>  </td><td class="tdtype"> Panic if an <code class="incode">@unreachable</code> instruction is executed</td></tr>
-<tr><td class="tdname"> <code class="incode">any</code>          </td><td class="tdtype"> Panic if a cast from a <code class="incode">any</code> variable does not match the real underlying type</td></tr>
-<tr><td class="tdname"> <code class="incode">bool</code>         </td><td class="tdtype"> Panic if a <code class="incode">bool</code> does not have a valid value (<code class="incode">true</code> or <code class="incode">false</code>)</td></tr>
-<tr><td class="tdname"> <code class="incode">nan</code>          </td><td class="tdtype"> Panic if a <code class="incode">nan</code> is used in a float arithmetic operation</td></tr>
-<tr><td class="tdname"> <code class="incode">sanity</code>       </td><td class="tdtype"> Do a <code class="incode">sanity</code> check (per function)</td></tr>
-<tr><td class="tdname"> <code class="incode">null</code>         </td><td class="tdtype"> Panic on derefencing some null pointers</td></tr>
+<tr><td> <code class="incode">boundcheck</code>   </td><td> Check out of bound access</td></tr>
+<tr><td> <code class="incode">overflow</code>     </td><td> Check type conversion lost of bits or precision</td></tr>
+<tr><td> <code class="incode">math</code>         </td><td> Various math checks (like a negative <code class="incode">@sqrt</code>)</td></tr>
+<tr><td> <code class="incode">switch</code>       </td><td> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
+<tr><td> <code class="incode">unreachable</code>  </td><td> Panic if an <code class="incode">@unreachable</code> instruction is executed</td></tr>
+<tr><td> <code class="incode">any</code>          </td><td> Panic if a cast from a <code class="incode">any</code> variable does not match the real underlying type</td></tr>
+<tr><td> <code class="incode">bool</code>         </td><td> Panic if a <code class="incode">bool</code> does not have a valid value (<code class="incode">true</code> or <code class="incode">false</code>)</td></tr>
+<tr><td> <code class="incode">nan</code>          </td><td> Panic if a <code class="incode">nan</code> is used in a float arithmetic operation</td></tr>
+<tr><td> <code class="incode">sanity</code>       </td><td> Do a <code class="incode">sanity</code> check (per function)</td></tr>
+<tr><td> <code class="incode">null</code>         </td><td> Panic on derefencing some null pointers</td></tr>
 </table>
 <p> If <code class="incode">what</code> is null or empty, every options are will be affected. </p>
 <p>
@@ -5359,110 +4335,71 @@ FromCompiler</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-allocator</td>
-<td class="tdtype">
-<a href="#Swag_IAllocator">Swag.IAllocator</a></td>
-<td class="enumeration">
-</td>
+<td>allocator</td>
+<td><a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-block</td>
-<td class="tdtype">
-^u8</td>
-<td class="enumeration">
-</td>
+<td>block</td>
+<td>^u8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-capacity</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>capacity</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-used</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>used</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxUsed</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>maxUsed</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-firstLeak</td>
-<td class="tdtype">
-*void</td>
-<td class="enumeration">
-</td>
+<td>firstLeak</td>
+<td>*void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-totalLeak</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>totalLeak</td>
+<td>u64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-maxLeak</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>maxLeak</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td class="enumeration">
-<a href="#Swag_ScratchAllocator_align">align(u64, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_ScratchAllocator_align">align(u64, u32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ScratchAllocator_alloc">alloc(self, u64, u32)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_ScratchAllocator_alloc">alloc(self, u64, u32)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ScratchAllocator_free">free(self, *void, u64)</a></td>
-<td class="enumeration">
-</td>
+<td><a href="#Swag_ScratchAllocator_free">free(self, *void, u64)</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ScratchAllocator_freeAll">freeAll(self)</a></td>
-<td class="enumeration">
-<p>Release all memory. </p>
-</td>
+<td><a href="#Swag_ScratchAllocator_freeAll">freeAll(self)</a></td>
+<td>Release all memory. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ScratchAllocator_release">release(self)</a></td>
-<td class="enumeration">
-<p>Release the allocated block. </p>
-</td>
+<td><a href="#Swag_ScratchAllocator_release">release(self)</a></td>
+<td>Release the allocated block. </td>
 </tr>
 <tr>
-<td class="enumeration">
-<a href="#Swag_ScratchAllocator_setCapacity">setCapacity(self, u64, IAllocator)</a></td>
-<td class="enumeration">
-<p>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </p>
-</td>
+<td><a href="#Swag_ScratchAllocator_setCapacity">setCapacity(self, u64, IAllocator)</a></td>
+<td>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </td>
 </tr>
 </table>
 <p>
@@ -5520,28 +4457,19 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-prev</td>
-<td class="tdtype">
-*Swag.ScratchAllocator.LeakHeader</td>
-<td class="enumeration">
-</td>
+<td>prev</td>
+<td>*Swag.ScratchAllocator.LeakHeader</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-next</td>
-<td class="tdtype">
-*Swag.ScratchAllocator.LeakHeader</td>
-<td class="enumeration">
-</td>
+<td>next</td>
+<td>*Swag.ScratchAllocator.LeakHeader</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-size</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-</td>
+<td>size</td>
+<td>u64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5645,49 +4573,29 @@ u64</td>
 <p>Represent a part of a source code file. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fileName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Full path name of the source file. </p>
-</td>
+<td>fileName</td>
+<td>string</td>
+<td>Full path name of the source file. </td>
 </tr>
 <tr>
-<td class="tdname">
-lineStart</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Start line (starts at 0). </p>
-</td>
+<td>lineStart</td>
+<td>u32</td>
+<td>Start line (starts at 0). </td>
 </tr>
 <tr>
-<td class="tdname">
-colStart</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Start column. </p>
-</td>
+<td>colStart</td>
+<td>u32</td>
+<td>Start column. </td>
 </tr>
 <tr>
-<td class="tdname">
-lineEnd</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>End line. </p>
-</td>
+<td>lineEnd</td>
+<td>u32</td>
+<td>End line. </td>
 </tr>
 <tr>
-<td class="tdname">
-colEnd</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>End column. </p>
-</td>
+<td>colEnd</td>
+<td>u32</td>
+<td>End column. </td>
 </tr>
 </table>
 <p> This is typically what will be returned by <code class="incode">#location</code> or <code class="incode">#callerlocation</code>. </p>
@@ -5760,10 +4668,8 @@ u32</td>
 <p>Target processor. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-X86_64</td>
-<td class="enumeration">
-</td>
+<td>X86_64</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5780,25 +4686,16 @@ X86_64</td>
 <p>The <code class="incode">OS</code> to target when generating native code. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Windows</td>
-<td class="enumeration">
-<p>Windows 10/11. </p>
-</td>
+<td>Windows</td>
+<td>Windows 10/11. </td>
 </tr>
 <tr>
-<td class="tdname">
-Linux</td>
-<td class="enumeration">
-<p>Linux (<b>unsupported</b>). </p>
-</td>
+<td>Linux</td>
+<td>Linux (<b>unsupported</b>). </td>
 </tr>
 <tr>
-<td class="tdname">
-MaxOSX</td>
-<td class="enumeration">
-<p>MacOS (<b>unsupported</b>). </p>
-</td>
+<td>MaxOSX</td>
+<td>MacOS (<b>unsupported</b>). </td>
 </tr>
 </table>
 <p>
@@ -5832,16 +4729,12 @@ MaxOSX</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Strict</td>
-<td class="enumeration">
-</td>
+<td>Strict</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CastAny</td>
-<td class="enumeration">
-</td>
+<td>CastAny</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5858,66 +4751,39 @@ CastAny</td>
 <p>Will be available for all types. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-fullname</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>The full scoped name of the type. </p>
-</td>
+<td>fullname</td>
+<td>string</td>
+<td>The full scoped name of the type. </td>
 </tr>
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>The unscoped name. </p>
-</td>
+<td>name</td>
+<td>string</td>
+<td>The unscoped name. </td>
 </tr>
 <tr>
-<td class="tdname">
-sizeof</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Size in bytes. </p>
-</td>
+<td>sizeof</td>
+<td>u32</td>
+<td>Size in bytes. </td>
 </tr>
 <tr>
-<td class="tdname">
-crc32</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>A unique CRC to identify the type. </p>
-</td>
+<td>crc32</td>
+<td>u32</td>
+<td>A unique CRC to identify the type. </td>
 </tr>
 <tr>
-<td class="tdname">
-flags</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfoFlags">Swag.TypeInfoFlags</a></td>
-<td class="enumeration">
-<p>Some additional flags. </p>
-</td>
+<td>flags</td>
+<td><a href="#Swag_TypeInfoFlags">Swag.TypeInfoFlags</a></td>
+<td>Some additional flags. </td>
 </tr>
 <tr>
-<td class="tdname">
-kind</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfoKind">Swag.TypeInfoKind</a></td>
-<td class="enumeration">
-<p>The kind of the type. </p>
-</td>
+<td>kind</td>
+<td><a href="#Swag_TypeInfoKind">Swag.TypeInfoKind</a></td>
+<td>The kind of the type. </td>
 </tr>
 <tr>
-<td class="tdname">
-padding</td>
-<td class="tdtype">
-[3] u8</td>
-<td class="enumeration">
-</td>
+<td>padding</td>
+<td>[3] u8</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -5933,21 +4799,14 @@ padding</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rawType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>The underlying type. </p>
-</td>
+<td>rawType</td>
+<td>const *Swag.TypeInfo</td>
+<td>The underlying type. </td>
 </tr>
 </table>
 <p>
@@ -5963,48 +4822,29 @@ const *Swag.TypeInfo</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pointedType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>The underlying type. </p>
-</td>
+<td>pointedType</td>
+<td>const *Swag.TypeInfo</td>
+<td>The underlying type. </td>
 </tr>
 <tr>
-<td class="tdname">
-finalType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>If this is an array with multiple dimensions, this will be the final type. </p>
-</td>
+<td>finalType</td>
+<td>const *Swag.TypeInfo</td>
+<td>If this is an array with multiple dimensions, this will be the final type. </td>
 </tr>
 <tr>
-<td class="tdname">
-count</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>Number of elements in the array. </p>
-</td>
+<td>count</td>
+<td>u64</td>
+<td>Number of elements in the array. </td>
 </tr>
 <tr>
-<td class="tdname">
-totalCount</td>
-<td class="tdtype">
-u64</td>
-<td class="enumeration">
-<p>The total number of elements in case this has multiple dimensions. </p>
-</td>
+<td>totalCount</td>
+<td>u64</td>
+<td>The total number of elements in case this has multiple dimensions. </td>
 </tr>
 </table>
 <p>
@@ -6020,39 +4860,24 @@ u64</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-values</td>
-<td class="tdtype">
-const [..] Swag.TypeValue</td>
-<td class="enumeration">
-<p>All the values. </p>
-</td>
+<td>values</td>
+<td>const [..] Swag.TypeValue</td>
+<td>All the values. </td>
 </tr>
 <tr>
-<td class="tdname">
-rawType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>The underlying enum type. </p>
-</td>
+<td>rawType</td>
+<td>const *Swag.TypeInfo</td>
+<td>The underlying enum type. </td>
 </tr>
 <tr>
-<td class="tdname">
-attributes</td>
-<td class="tdtype">
-const [..] Swag.Attribute</td>
-<td class="enumeration">
-<p>All the attributes. </p>
-</td>
+<td>attributes</td>
+<td>const [..] Swag.Attribute</td>
+<td>All the attributes. </td>
 </tr>
 </table>
 <p>
@@ -6069,122 +4894,72 @@ const [..] Swag.Attribute</td>
 <p>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Zero</td>
-<td class="enumeration">
-</td>
+<td>Zero</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-PointerTypeInfo</td>
-<td class="enumeration">
-<p>This is a pointer to a <a href="#Swag_TypeInfo">TypeInfo</a> struct. </p>
-</td>
+<td>PointerTypeInfo</td>
+<td>This is a pointer to a <a href="#Swag_TypeInfo">TypeInfo</a> struct. </td>
 </tr>
 <tr>
-<td class="tdname">
-Integer</td>
-<td class="enumeration">
-<p>This is a native integer. </p>
-</td>
+<td>Integer</td>
+<td>This is a native integer. </td>
 </tr>
 <tr>
-<td class="tdname">
-Float</td>
-<td class="enumeration">
-<p>This is a native float. </p>
-</td>
+<td>Float</td>
+<td>This is a native float. </td>
 </tr>
 <tr>
-<td class="tdname">
-Unsigned</td>
-<td class="enumeration">
-<p>This is a native unsigned integer. </p>
-</td>
+<td>Unsigned</td>
+<td>This is a native unsigned integer. </td>
 </tr>
 <tr>
-<td class="tdname">
-HasPostCopy</td>
-<td class="enumeration">
-<p>This is a struct with a <code class="incode">opPostCopy</code>. </p>
-</td>
+<td>HasPostCopy</td>
+<td>This is a struct with a <code class="incode">opPostCopy</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-HasPostMove</td>
-<td class="enumeration">
-<p>This is a struct with a <code class="incode">opPostMove</code>. </p>
-</td>
+<td>HasPostMove</td>
+<td>This is a struct with a <code class="incode">opPostMove</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-HasDrop</td>
-<td class="enumeration">
-<p>This is a struct with a <code class="incode">opDrop</code>. </p>
-</td>
+<td>HasDrop</td>
+<td>This is a struct with a <code class="incode">opDrop</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Strict</td>
-<td class="enumeration">
-<p>#<a href="swag.runtime.html#Swag_Strict has been defined">Swag.Strict has been defined</a>. </p>
-</td>
+<td>Strict</td>
+<td>#<a href="swag.runtime.html#Swag_Strict has been defined">Swag.Strict has been defined</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-CanCopy</td>
-<td class="enumeration">
-<p>This is a struct that can be copied. </p>
-</td>
+<td>CanCopy</td>
+<td>This is a struct that can be copied. </td>
 </tr>
 <tr>
-<td class="tdname">
-Tuple</td>
-<td class="enumeration">
-<p>This is a tuple. </p>
-</td>
+<td>Tuple</td>
+<td>This is a tuple. </td>
 </tr>
 <tr>
-<td class="tdname">
-CString</td>
-<td class="enumeration">
-<p>This is a <code class="incode">cstring</code>. </p>
-</td>
+<td>CString</td>
+<td>This is a <code class="incode">cstring</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Generic</td>
-<td class="enumeration">
-<p>This is a generic type. </p>
-</td>
+<td>Generic</td>
+<td>This is a generic type. </td>
 </tr>
 <tr>
-<td class="tdname">
-PointerRef</td>
-<td class="enumeration">
-<p>This is a reference. </p>
-</td>
+<td>PointerRef</td>
+<td>This is a reference. </td>
 </tr>
 <tr>
-<td class="tdname">
-PointerMoveRef</td>
-<td class="enumeration">
-<p>This is a move reference. </p>
-</td>
+<td>PointerMoveRef</td>
+<td>This is a move reference. </td>
 </tr>
 <tr>
-<td class="tdname">
-PointerArithmetic</td>
-<td class="enumeration">
-<p>This is a pointer to multiple values. </p>
-</td>
+<td>PointerArithmetic</td>
+<td>This is a pointer to multiple values. </td>
 </tr>
 <tr>
-<td class="tdname">
-Character</td>
-<td class="enumeration">
-<p>This is a 32 bits character. </p>
-</td>
+<td>Character</td>
+<td>This is a 32 bits character. </td>
 </tr>
 </table>
 <p>
@@ -6200,48 +4975,29 @@ Character</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-generics</td>
-<td class="tdtype">
-const [..] Swag.TypeValue</td>
-<td class="enumeration">
-<p>Generic parameters. </p>
-</td>
+<td>generics</td>
+<td>const [..] Swag.TypeValue</td>
+<td>Generic parameters. </td>
 </tr>
 <tr>
-<td class="tdname">
-parameters</td>
-<td class="tdtype">
-const [..] Swag.TypeValue</td>
-<td class="enumeration">
-<p>Parameters. </p>
-</td>
+<td>parameters</td>
+<td>const [..] Swag.TypeValue</td>
+<td>Parameters. </td>
 </tr>
 <tr>
-<td class="tdname">
-returnType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>The return type, or <code class="incode">null</code>. </p>
-</td>
+<td>returnType</td>
+<td>const *Swag.TypeInfo</td>
+<td>The return type, or <code class="incode">null</code>. </td>
 </tr>
 <tr>
-<td class="tdname">
-attributes</td>
-<td class="tdtype">
-const [..] Swag.Attribute</td>
-<td class="enumeration">
-<p>All the attributes. </p>
-</td>
+<td>attributes</td>
+<td>const [..] Swag.Attribute</td>
+<td>All the attributes. </td>
 </tr>
 </table>
 <p>
@@ -6257,20 +5013,14 @@ const [..] Swag.Attribute</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rawType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-</td>
+<td>rawType</td>
+<td>const *Swag.TypeInfo</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6287,143 +5037,84 @@ const *Swag.TypeInfo</td>
 <p>The kind of the typeinfo. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Invalid</td>
-<td class="enumeration">
-</td>
+<td>Invalid</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Native</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoNative">TypeInfoNative</a>. See <a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a> for the underlying type. </p>
-</td>
+<td>Native</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoNative">TypeInfoNative</a>. See <a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a> for the underlying type. </td>
 </tr>
 <tr>
-<td class="tdname">
-Namespace</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a>. </p>
-</td>
+<td>Namespace</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Enum</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoEnum">TypeInfoEnum</a>. </p>
-</td>
+<td>Enum</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoEnum">TypeInfoEnum</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Func</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>. </p>
-</td>
+<td>Func</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Lambda</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a closure. </p>
-</td>
+<td>Lambda</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a closure. </td>
 </tr>
 <tr>
-<td class="tdname">
-Pointer</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoPointer">TypeInfoPointer</a>. </p>
-</td>
+<td>Pointer</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoPointer">TypeInfoPointer</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Array</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </p>
-</td>
+<td>Array</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Slice</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoSlice">TypeInfoSlice</a>. </p>
-</td>
+<td>Slice</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoSlice">TypeInfoSlice</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-TypeListTuple</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </p>
-</td>
+<td>TypeListTuple</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-TypeListArray</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </p>
-</td>
+<td>TypeListArray</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Variadic</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </p>
-</td>
+<td>Variadic</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-TypedVariadic</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </p>
-</td>
+<td>TypedVariadic</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-CVariadic</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </p>
-</td>
+<td>CVariadic</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Struct</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </p>
-</td>
+<td>Struct</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Generic</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a>. </p>
-</td>
+<td>Generic</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Alias</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoAlias">TypeInfoAlias</a>. </p>
-</td>
+<td>Alias</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoAlias">TypeInfoAlias</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Code</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfo">TypeInfo</a>. </p>
-</td>
+<td>Code</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
 </tr>
 <tr>
-<td class="tdname">
-Interface</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>, but this is an interface. </p>
-</td>
+<td>Interface</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>, but this is an interface. </td>
 </tr>
 <tr>
-<td class="tdname">
-Attribute</td>
-<td class="enumeration">
-<p>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an attribute. </p>
-</td>
+<td>Attribute</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an attribute. </td>
 </tr>
 </table>
 <p>
@@ -6439,12 +5130,9 @@ Attribute</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6460,20 +5148,14 @@ Attribute</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nativeKind</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfoNativeKind">Swag.TypeInfoNativeKind</a></td>
-<td class="enumeration">
-</td>
+<td>nativeKind</td>
+<td><a href="#Swag_TypeInfoNativeKind">Swag.TypeInfoNativeKind</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -6490,106 +5172,72 @@ nativeKind</td>
 <p>The native type if the type is... native. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Void</td>
-<td class="enumeration">
-</td>
+<td>Void</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-S8</td>
-<td class="enumeration">
-</td>
+<td>S8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-S16</td>
-<td class="enumeration">
-</td>
+<td>S16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-S32</td>
-<td class="enumeration">
-</td>
+<td>S32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-S64</td>
-<td class="enumeration">
-</td>
+<td>S64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-U8</td>
-<td class="enumeration">
-</td>
+<td>U8</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-U16</td>
-<td class="enumeration">
-</td>
+<td>U16</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-U32</td>
-<td class="enumeration">
-</td>
+<td>U32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-U64</td>
-<td class="enumeration">
-</td>
+<td>U64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F32</td>
-<td class="enumeration">
-</td>
+<td>F32</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-F64</td>
-<td class="enumeration">
-</td>
+<td>F64</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Bool</td>
-<td class="enumeration">
-</td>
+<td>Bool</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Rune</td>
-<td class="enumeration">
-</td>
+<td>Rune</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-String</td>
-<td class="enumeration">
-</td>
+<td>String</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Any</td>
-<td class="enumeration">
-</td>
+<td>Any</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-CString</td>
-<td class="enumeration">
-</td>
+<td>CString</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-Undefined</td>
-<td class="enumeration">
-</td>
+<td>Undefined</td>
+<td></td>
 </tr>
 </table>
 <p> If the <code class="incode">kind</code> of the type is <code class="incode">TypeInfoKind.Native</code>, then this is the real native type. </p>
@@ -6606,21 +5254,14 @@ Undefined</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pointedType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>The pointed type. </p>
-</td>
+<td>pointedType</td>
+<td>const *Swag.TypeInfo</td>
+<td>The pointed type. </td>
 </tr>
 </table>
 <p>
@@ -6636,21 +5277,14 @@ const *Swag.TypeInfo</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-pointedType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>The underlying type. </p>
-</td>
+<td>pointedType</td>
+<td>const *Swag.TypeInfo</td>
+<td>The underlying type. </td>
 </tr>
 </table>
 <p>
@@ -6666,111 +5300,64 @@ const *Swag.TypeInfo</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-opInit</td>
-<td class="tdtype">
-func(*void)</td>
-<td class="enumeration">
-<p>Pointer to the function to initialize an instance of that struct. </p>
-</td>
+<td>opInit</td>
+<td>func(*void)</td>
+<td>Pointer to the function to initialize an instance of that struct. </td>
 </tr>
 <tr>
-<td class="tdname">
-opDrop</td>
-<td class="tdtype">
-func(*void)</td>
-<td class="enumeration">
-<p>Pointer to the function to drop an instance of that struct. </p>
-</td>
+<td>opDrop</td>
+<td>func(*void)</td>
+<td>Pointer to the function to drop an instance of that struct. </td>
 </tr>
 <tr>
-<td class="tdname">
-opPostCopy</td>
-<td class="tdtype">
-func(*void)</td>
-<td class="enumeration">
-<p>Pointer to the function to call after a copy. </p>
-</td>
+<td>opPostCopy</td>
+<td>func(*void)</td>
+<td>Pointer to the function to call after a copy. </td>
 </tr>
 <tr>
-<td class="tdname">
-opPostMove</td>
-<td class="tdtype">
-func(*void)</td>
-<td class="enumeration">
-<p>Pointer to the function to call after a move. </p>
-</td>
+<td>opPostMove</td>
+<td>func(*void)</td>
+<td>Pointer to the function to call after a move. </td>
 </tr>
 <tr>
-<td class="tdname">
-structName</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>User name of the struct. </p>
-</td>
+<td>structName</td>
+<td>string</td>
+<td>User name of the struct. </td>
 </tr>
 <tr>
-<td class="tdname">
-fromGeneric</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>If it comes from a generic instantiation, this is the original generic struct. </p>
-</td>
+<td>fromGeneric</td>
+<td>const *Swag.TypeInfo</td>
+<td>If it comes from a generic instantiation, this is the original generic struct. </td>
 </tr>
 <tr>
-<td class="tdname">
-generics</td>
-<td class="tdtype">
-const [..] Swag.TypeValue</td>
-<td class="enumeration">
-<p>Generic parameters. </p>
-</td>
+<td>generics</td>
+<td>const [..] Swag.TypeValue</td>
+<td>Generic parameters. </td>
 </tr>
 <tr>
-<td class="tdname">
-fields</td>
-<td class="tdtype">
-const [..] Swag.TypeValue</td>
-<td class="enumeration">
-<p>All the fields. </p>
-</td>
+<td>fields</td>
+<td>const [..] Swag.TypeValue</td>
+<td>All the fields. </td>
 </tr>
 <tr>
-<td class="tdname">
-methods</td>
-<td class="tdtype">
-const [..] Swag.TypeValue</td>
-<td class="enumeration">
-<p>All the methods, if exported. </p>
-</td>
+<td>methods</td>
+<td>const [..] Swag.TypeValue</td>
+<td>All the methods, if exported. </td>
 </tr>
 <tr>
-<td class="tdname">
-interfaces</td>
-<td class="tdtype">
-const [..] Swag.TypeValue</td>
-<td class="enumeration">
-<p>All the interfaces. </p>
-</td>
+<td>interfaces</td>
+<td>const [..] Swag.TypeValue</td>
+<td>All the interfaces. </td>
 </tr>
 <tr>
-<td class="tdname">
-attributes</td>
-<td class="tdtype">
-const [..] Swag.Attribute</td>
-<td class="enumeration">
-<p>All the attributes. </p>
-</td>
+<td>attributes</td>
+<td>const [..] Swag.Attribute</td>
+<td>All the attributes. </td>
 </tr>
 </table>
 <p>
@@ -6786,21 +5373,14 @@ const [..] Swag.Attribute</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-<b>using</b> base</td>
-<td class="tdtype">
-<a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
-<td class="enumeration">
-</td>
+<td><b>using</b> base</td>
+<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rawType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>The underlying type. </p>
-</td>
+<td>rawType</td>
+<td>const *Swag.TypeInfo</td>
+<td>The underlying type. </td>
 </tr>
 </table>
 <p>
@@ -6817,58 +5397,34 @@ const *Swag.TypeInfo</td>
 <p>Represents a value, like a function parameter or an enum value. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-name</td>
-<td class="tdtype">
-string</td>
-<td class="enumeration">
-<p>Name of the value. </p>
-</td>
+<td>name</td>
+<td>string</td>
+<td>Name of the value. </td>
 </tr>
 <tr>
-<td class="tdname">
-pointedType</td>
-<td class="tdtype">
-const *Swag.TypeInfo</td>
-<td class="enumeration">
-<p>Type of the value. </p>
-</td>
+<td>pointedType</td>
+<td>const *Swag.TypeInfo</td>
+<td>Type of the value. </td>
 </tr>
 <tr>
-<td class="tdname">
-value</td>
-<td class="tdtype">
-const *void</td>
-<td class="enumeration">
-<p>Pointer to the constant value. </p>
-</td>
+<td>value</td>
+<td>const *void</td>
+<td>Pointer to the constant value. </td>
 </tr>
 <tr>
-<td class="tdname">
-attributes</td>
-<td class="tdtype">
-const [..] Swag.Attribute</td>
-<td class="enumeration">
-<p>Associated attributes. </p>
-</td>
+<td>attributes</td>
+<td>const [..] Swag.Attribute</td>
+<td>Associated attributes. </td>
 </tr>
 <tr>
-<td class="tdname">
-offset</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Offset, in bytes. </p>
-</td>
+<td>offset</td>
+<td>u32</td>
+<td>Offset, in bytes. </td>
 </tr>
 <tr>
-<td class="tdname">
-crc32</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Unique crc32. </p>
-</td>
+<td>crc32</td>
+<td>u32</td>
+<td>Unique crc32. </td>
 </tr>
 </table>
 <p>
@@ -6961,25 +5517,16 @@ u32</td>
 <p>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-Enable</td>
-<td class="enumeration">
-<p>Enable the given warning. </p>
-</td>
+<td>Enable</td>
+<td>Enable the given warning. </td>
 </tr>
 <tr>
-<td class="tdname">
-Disable</td>
-<td class="enumeration">
-<p>Disable the given warning. </p>
-</td>
+<td>Disable</td>
+<td>Disable the given warning. </td>
 </tr>
 <tr>
-<td class="tdname">
-Error</td>
-<td class="enumeration">
-<p>Force the given warning to be raised as an error. </p>
-</td>
+<td>Error</td>
+<td>Force the given warning to be raised as an error. </td>
 </tr>
 </table>
 </div>

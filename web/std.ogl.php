@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -2182,10428 +2167,6484 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Ogl_GL_2D" class="tdname">
-GL_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_2_BYTES" class="tdname">
-GL_2_BYTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_3D" class="tdname">
-GL_3D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_3D_COLOR" class="tdname">
-GL_3D_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_3D_COLOR_TEXTURE" class="tdname">
-GL_3D_COLOR_TEXTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_3_BYTES" class="tdname">
-GL_3_BYTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_4D_COLOR_TEXTURE" class="tdname">
-GL_4D_COLOR_TEXTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>FeedBackToken. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_4_BYTES" class="tdname">
-GL_4_BYTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ACCUM" class="tdname">
-GL_ACCUM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ACCUM_ALPHA_BITS" class="tdname">
-GL_ACCUM_ALPHA_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ACCUM_BLUE_BITS" class="tdname">
-GL_ACCUM_BLUE_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ACCUM_BUFFER_BIT" class="tdname">
-GL_ACCUM_BUFFER_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ACCUM_CLEAR_VALUE" class="tdname">
-GL_ACCUM_CLEAR_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_2D">GL_2D</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_GREEN_BITS" class="tdname">
-GL_ACCUM_GREEN_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_2_BYTES">GL_2_BYTES</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_RED_BITS" class="tdname">
-GL_ACCUM_RED_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_3D">GL_3D</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_ATTRIBUTES" class="tdname">
-GL_ACTIVE_ATTRIBUTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_3D_COLOR">GL_3D_COLOR</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_ATTRIBUTE_MAX_LENGTH" class="tdname">
-GL_ACTIVE_ATTRIBUTE_MAX_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_3D_COLOR_TEXTURE">GL_3D_COLOR_TEXTURE</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_TEXTURE" class="tdname">
-GL_ACTIVE_TEXTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_3_BYTES">GL_3_BYTES</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_UNIFORMS" class="tdname">
-GL_ACTIVE_UNIFORMS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_4D_COLOR_TEXTURE">GL_4D_COLOR_TEXTURE</td>
+<td>u32</td>
+<td>FeedBackToken. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_UNIFORM_MAX_LENGTH" class="tdname">
-GL_ACTIVE_UNIFORM_MAX_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<td id="Ogl_GL_4_BYTES">GL_4_BYTES</td>
+<td>u32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ADD" class="tdname">
-GL_ADD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>AlphaFunction. </p>
-</td>
+<td id="Ogl_GL_ACCUM">GL_ACCUM</td>
+<td>u32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Ogl_GL_ADD_SIGNED" class="tdname">
-GL_ADD_SIGNED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Ogl_GL_ACCUM_ALPHA_BITS">GL_ACCUM_ALPHA_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACCUM_BLUE_BITS">GL_ACCUM_BLUE_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACCUM_BUFFER_BIT">GL_ACCUM_BUFFER_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACCUM_CLEAR_VALUE">GL_ACCUM_CLEAR_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACCUM_GREEN_BITS">GL_ACCUM_GREEN_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACCUM_RED_BITS">GL_ACCUM_RED_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACTIVE_ATTRIBUTES">GL_ACTIVE_ATTRIBUTES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACTIVE_ATTRIBUTE_MAX_LENGTH">GL_ACTIVE_ATTRIBUTE_MAX_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACTIVE_TEXTURE">GL_ACTIVE_TEXTURE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACTIVE_UNIFORMS">GL_ACTIVE_UNIFORMS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ACTIVE_UNIFORM_MAX_LENGTH">GL_ACTIVE_UNIFORM_MAX_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ADD">GL_ADD</td>
+<td>u32</td>
+<td>AlphaFunction. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_ADD_SIGNED">GL_ADD_SIGNED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALIASED_LINE_WIDTH_RANGE">GL_ALIASED_LINE_WIDTH_RANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALIASED_POINT_SIZE_RANGE">GL_ALIASED_POINT_SIZE_RANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALL_ATTRIB_BITS">GL_ALL_ATTRIB_BITS</td>
+<td>u32</td>
+<td>BeginMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA">GL_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA12">GL_ALPHA12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA16">GL_ALPHA16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA4">GL_ALPHA4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA8">GL_ALPHA8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA_BIAS">GL_ALPHA_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA_BITS">GL_ALPHA_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA_INTEGER">GL_ALPHA_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA_SCALE">GL_ALPHA_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA_TEST">GL_ALPHA_TEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA_TEST_FUNC">GL_ALPHA_TEST_FUNC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALPHA_TEST_REF">GL_ALPHA_TEST_REF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ALWAYS">GL_ALWAYS</td>
+<td>u32</td>
+<td>AttribMask. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_AMBIENT">GL_AMBIENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AMBIENT_AND_DIFFUSE">GL_AMBIENT_AND_DIFFUSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AND">GL_AND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AND_INVERTED">GL_AND_INVERTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AND_REVERSE">GL_AND_REVERSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ARRAY_BUFFER">GL_ARRAY_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ARRAY_BUFFER_BINDING">GL_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ATTACHED_SHADERS">GL_ATTACHED_SHADERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ATTRIB_STACK_DEPTH">GL_ATTRIB_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AUTO_NORMAL">GL_AUTO_NORMAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AUX0">GL_AUX0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AUX1">GL_AUX1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AUX2">GL_AUX2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_AUX3">GL_AUX3</td>
+<td>u32</td>
+<td>ErrorCode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_AUX_BUFFERS">GL_AUX_BUFFERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BACK">GL_BACK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BACK_LEFT">GL_BACK_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BACK_RIGHT">GL_BACK_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BGR">GL_BGR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BGRA">GL_BGRA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BGRA_EXT">GL_BGRA_EXT</td>
+<td>u32</td>
+<td>EXT_paletted_texture  These must match the GL_COLOR_TABLE_..._SGI enumerants. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_BGRA_INTEGER">GL_BGRA_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BGR_EXT">GL_BGR_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BGR_INTEGER">GL_BGR_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BITMAP">GL_BITMAP</td>
+<td>u32</td>
+<td>PolygonMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_BITMAP_TOKEN">GL_BITMAP_TOKEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND">GL_BLEND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_COLOR">GL_BLEND_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_DST">GL_BLEND_DST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_DST_ALPHA">GL_BLEND_DST_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_DST_RGB">GL_BLEND_DST_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_EQUATION">GL_BLEND_EQUATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_EQUATION_ALPHA">GL_BLEND_EQUATION_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_EQUATION_RGB">GL_BLEND_EQUATION_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_SRC">GL_BLEND_SRC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_SRC_ALPHA">GL_BLEND_SRC_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLEND_SRC_RGB">GL_BLEND_SRC_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLUE">GL_BLUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLUE_BIAS">GL_BLUE_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLUE_BITS">GL_BLUE_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLUE_INTEGER">GL_BLUE_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BLUE_SCALE">GL_BLUE_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BOOL">GL_BOOL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BOOL_VEC2">GL_BOOL_VEC2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BOOL_VEC3">GL_BOOL_VEC3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BOOL_VEC4">GL_BOOL_VEC4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_ACCESS">GL_BUFFER_ACCESS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_ACCESS_FLAGS">GL_BUFFER_ACCESS_FLAGS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_MAPPED">GL_BUFFER_MAPPED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_MAP_LENGTH">GL_BUFFER_MAP_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_MAP_OFFSET">GL_BUFFER_MAP_OFFSET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_MAP_POINTER">GL_BUFFER_MAP_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_SIZE">GL_BUFFER_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BUFFER_USAGE">GL_BUFFER_USAGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_BYTE">GL_BYTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_C3F_V3F">GL_C3F_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_C4F_N3F_V3F">GL_C4F_N3F_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_C4UB_V2F">GL_C4UB_V2F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_C4UB_V3F">GL_C4UB_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CCW">GL_CCW</td>
+<td>u32</td>
+<td>GetMapTarget. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLAMP">GL_CLAMP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLAMP_FRAGMENT_COLOR">GL_CLAMP_FRAGMENT_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLAMP_READ_COLOR">GL_CLAMP_READ_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLAMP_TO_BORDER">GL_CLAMP_TO_BORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLAMP_TO_EDGE">GL_CLAMP_TO_EDGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLAMP_VERTEX_COLOR">GL_CLAMP_VERTEX_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLEAR">GL_CLEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIENT_ACTIVE_TEXTURE">GL_CLIENT_ACTIVE_TEXTURE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIENT_ALL_ATTRIB_BITS">GL_CLIENT_ALL_ATTRIB_BITS</td>
+<td>u32</td>
+<td>polygon_offset. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIENT_ATTRIB_STACK_DEPTH">GL_CLIENT_ATTRIB_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIENT_PIXEL_STORE_BIT">GL_CLIENT_PIXEL_STORE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIENT_VERTEX_ARRAY_BIT">GL_CLIENT_VERTEX_ARRAY_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIPPING_INPUT_PRIMITIVES">GL_CLIPPING_INPUT_PRIMITIVES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIPPING_OUTPUT_PRIMITIVES">GL_CLIPPING_OUTPUT_PRIMITIVES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_DISTANCE0">GL_CLIP_DISTANCE0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_DISTANCE1">GL_CLIP_DISTANCE1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_DISTANCE2">GL_CLIP_DISTANCE2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_DISTANCE3">GL_CLIP_DISTANCE3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_DISTANCE4">GL_CLIP_DISTANCE4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_DISTANCE5">GL_CLIP_DISTANCE5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_PLANE0">GL_CLIP_PLANE0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_PLANE1">GL_CLIP_PLANE1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_PLANE2">GL_CLIP_PLANE2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_PLANE3">GL_CLIP_PLANE3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_PLANE4">GL_CLIP_PLANE4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CLIP_PLANE5">GL_CLIP_PLANE5</td>
+<td>u32</td>
+<td>DataType. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_COEFF">GL_COEFF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR">GL_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY">GL_COLOR_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_BUFFER_BINDING">GL_COLOR_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_COUNT_EXT">GL_COLOR_ARRAY_COUNT_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_EXT">GL_COLOR_ARRAY_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_POINTER">GL_COLOR_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_POINTER_EXT">GL_COLOR_ARRAY_POINTER_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_SIZE">GL_COLOR_ARRAY_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_SIZE_EXT">GL_COLOR_ARRAY_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_STRIDE">GL_COLOR_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_STRIDE_EXT">GL_COLOR_ARRAY_STRIDE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_TYPE">GL_COLOR_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ARRAY_TYPE_EXT">GL_COLOR_ARRAY_TYPE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT0">GL_COLOR_ATTACHMENT0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT1">GL_COLOR_ATTACHMENT1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT10">GL_COLOR_ATTACHMENT10</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT11">GL_COLOR_ATTACHMENT11</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT12">GL_COLOR_ATTACHMENT12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT13">GL_COLOR_ATTACHMENT13</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT14">GL_COLOR_ATTACHMENT14</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT15">GL_COLOR_ATTACHMENT15</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT2">GL_COLOR_ATTACHMENT2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT3">GL_COLOR_ATTACHMENT3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT4">GL_COLOR_ATTACHMENT4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT5">GL_COLOR_ATTACHMENT5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT6">GL_COLOR_ATTACHMENT6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT7">GL_COLOR_ATTACHMENT7</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT8">GL_COLOR_ATTACHMENT8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_ATTACHMENT9">GL_COLOR_ATTACHMENT9</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_BUFFER_BIT">GL_COLOR_BUFFER_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_CLEAR_VALUE">GL_COLOR_CLEAR_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEX">GL_COLOR_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEX12_EXT">GL_COLOR_INDEX12_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEX16_EXT">GL_COLOR_INDEX16_EXT</td>
+<td>u32</td>
+<td>WIN_draw_range_elements. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEX1_EXT">GL_COLOR_INDEX1_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEX2_EXT">GL_COLOR_INDEX2_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEX4_EXT">GL_COLOR_INDEX4_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEX8_EXT">GL_COLOR_INDEX8_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_INDEXES">GL_COLOR_INDEXES</td>
+<td>u32</td>
+<td>MatrixMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_LOGIC_OP">GL_COLOR_LOGIC_OP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_MATERIAL">GL_COLOR_MATERIAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_MATERIAL_FACE">GL_COLOR_MATERIAL_FACE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_MATERIAL_PARAMETER">GL_COLOR_MATERIAL_PARAMETER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_MATRIX">GL_COLOR_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_MATRIX_STACK_DEPTH">GL_COLOR_MATRIX_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_SUM">GL_COLOR_SUM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE">GL_COLOR_TABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE">GL_COLOR_TABLE_ALPHA_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE_EXT">GL_COLOR_TABLE_ALPHA_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_BIAS">GL_COLOR_TABLE_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE">GL_COLOR_TABLE_BLUE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE_EXT">GL_COLOR_TABLE_BLUE_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_FORMAT">GL_COLOR_TABLE_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_FORMAT_EXT">GL_COLOR_TABLE_FORMAT_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE">GL_COLOR_TABLE_GREEN_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE_EXT">GL_COLOR_TABLE_GREEN_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE">GL_COLOR_TABLE_INTENSITY_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE_EXT">GL_COLOR_TABLE_INTENSITY_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE">GL_COLOR_TABLE_LUMINANCE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE_EXT">GL_COLOR_TABLE_LUMINANCE_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_RED_SIZE">GL_COLOR_TABLE_RED_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_RED_SIZE_EXT">GL_COLOR_TABLE_RED_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_SCALE">GL_COLOR_TABLE_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_WIDTH">GL_COLOR_TABLE_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_TABLE_WIDTH_EXT">GL_COLOR_TABLE_WIDTH_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COLOR_WRITEMASK">GL_COLOR_WRITEMASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMBINE">GL_COMBINE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMBINE_ALPHA">GL_COMBINE_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMBINE_RGB">GL_COMBINE_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPARE_REF_TO_TEXTURE">GL_COMPARE_REF_TO_TEXTURE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPARE_R_TO_TEXTURE">GL_COMPARE_R_TO_TEXTURE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPARE_R_TO_TEXTURE_ARB">GL_COMPARE_R_TO_TEXTURE_ARB</td>
+<td>u32</td>
+<td>----------------------------- GL_ARB_imaging ----------------------------. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPILE">GL_COMPILE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPILE_AND_EXECUTE">GL_COMPILE_AND_EXECUTE</td>
+<td>u32</td>
+<td>LogicOp. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPILE_STATUS">GL_COMPILE_STATUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_ALPHA">GL_COMPRESSED_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_INTENSITY">GL_COMPRESSED_INTENSITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_LUMINANCE">GL_COMPRESSED_LUMINANCE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_LUMINANCE_ALPHA">GL_COMPRESSED_LUMINANCE_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_RGB">GL_COMPRESSED_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_RGBA">GL_COMPRESSED_RGBA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_RGBA_BPTC_UNORM">GL_COMPRESSED_RGBA_BPTC_UNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT">GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT">GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_SLUMINANCE">GL_COMPRESSED_SLUMINANCE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_SLUMINANCE_ALPHA">GL_COMPRESSED_SLUMINANCE_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_SRGB">GL_COMPRESSED_SRGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA">GL_COMPRESSED_SRGB_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM">GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPRESSED_TEXTURE_FORMATS">GL_COMPRESSED_TEXTURE_FORMATS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COMPUTE_SHADER_INVOCATIONS">GL_COMPUTE_SHADER_INVOCATIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONSTANT">GL_CONSTANT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONSTANT_ALPHA">GL_CONSTANT_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONSTANT_ATTENUATION">GL_CONSTANT_ATTENUATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONSTANT_BORDER">GL_CONSTANT_BORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONSTANT_COLOR">GL_CONSTANT_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONTEXT_COMPATIBILITY_PROFILE_BIT">GL_CONTEXT_COMPATIBILITY_PROFILE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONTEXT_CORE_PROFILE_BIT">GL_CONTEXT_CORE_PROFILE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONTEXT_FLAGS">GL_CONTEXT_FLAGS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT">GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONTEXT_FLAG_NO_ERROR_BIT">GL_CONTEXT_FLAG_NO_ERROR_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT">GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONTEXT_PROFILE_MASK">GL_CONTEXT_PROFILE_MASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_1D">GL_CONVOLUTION_1D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_2D">GL_CONVOLUTION_2D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_BORDER_COLOR">GL_CONVOLUTION_BORDER_COLOR</td>
+<td>u32</td>
+<td>------------------- GL_ARB_framebuffer_no_attachments -------------------. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_BORDER_MODE">GL_CONVOLUTION_BORDER_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_FILTER_BIAS">GL_CONVOLUTION_FILTER_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_FILTER_SCALE">GL_CONVOLUTION_FILTER_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_FORMAT">GL_CONVOLUTION_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_HEIGHT">GL_CONVOLUTION_HEIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CONVOLUTION_WIDTH">GL_CONVOLUTION_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COORD_REPLACE">GL_COORD_REPLACE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COPY">GL_COPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COPY_INVERTED">GL_COPY_INVERTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COPY_PIXEL_TOKEN">GL_COPY_PIXEL_TOKEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COPY_READ_BUFFER_BINDING">GL_COPY_READ_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_COPY_WRITE_BUFFER_BINDING">GL_COPY_WRITE_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CULL_FACE">GL_CULL_FACE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CULL_FACE_MODE">GL_CULL_FACE_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_BIT">GL_CURRENT_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_COLOR">GL_CURRENT_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_FOG_COORD">GL_CURRENT_FOG_COORD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_FOG_COORDINATE">GL_CURRENT_FOG_COORDINATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_INDEX">GL_CURRENT_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_NORMAL">GL_CURRENT_NORMAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_PROGRAM">GL_CURRENT_PROGRAM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_QUERY">GL_CURRENT_QUERY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_RASTER_COLOR">GL_CURRENT_RASTER_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_RASTER_DISTANCE">GL_CURRENT_RASTER_DISTANCE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_RASTER_INDEX">GL_CURRENT_RASTER_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_RASTER_POSITION">GL_CURRENT_RASTER_POSITION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_RASTER_POSITION_VALID">GL_CURRENT_RASTER_POSITION_VALID</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_RASTER_SECONDARY_COLOR">GL_CURRENT_RASTER_SECONDARY_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_RASTER_TEXTURE_COORDS">GL_CURRENT_RASTER_TEXTURE_COORDS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_SECONDARY_COLOR">GL_CURRENT_SECONDARY_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_TEXTURE_COORDS">GL_CURRENT_TEXTURE_COORDS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CURRENT_VERTEX_ATTRIB">GL_CURRENT_VERTEX_ATTRIB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_CW">GL_CW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DECAL">GL_DECAL</td>
+<td>u32</td>
+<td>TextureEnvParameter. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_DECR">GL_DECR</td>
+<td>u32</td>
+<td>StringName. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_DECR_WRAP">GL_DECR_WRAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DELETE_STATUS">GL_DELETE_STATUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH">GL_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH24_STENCIL8">GL_DEPTH24_STENCIL8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_ATTACHMENT">GL_DEPTH_ATTACHMENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_BIAS">GL_DEPTH_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_BITS">GL_DEPTH_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_BUFFER">GL_DEPTH_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_BUFFER_BIT">GL_DEPTH_BUFFER_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_CLEAR_VALUE">GL_DEPTH_CLEAR_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_COMPONENT">GL_DEPTH_COMPONENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_COMPONENT16">GL_DEPTH_COMPONENT16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_COMPONENT24">GL_DEPTH_COMPONENT24</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_COMPONENT32">GL_DEPTH_COMPONENT32</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_FUNC">GL_DEPTH_FUNC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_RANGE">GL_DEPTH_RANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_SCALE">GL_DEPTH_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_STENCIL">GL_DEPTH_STENCIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_STENCIL_ATTACHMENT">GL_DEPTH_STENCIL_ATTACHMENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_TEST">GL_DEPTH_TEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_TEXTURE_MODE">GL_DEPTH_TEXTURE_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DEPTH_WRITEMASK">GL_DEPTH_WRITEMASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DIFFUSE">GL_DIFFUSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DITHER">GL_DITHER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DOMAIN">GL_DOMAIN</td>
+<td>u32</td>
+<td>GetTarget. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_DONT_CARE">GL_DONT_CARE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DOT3_RGB">GL_DOT3_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DOT3_RGBA">GL_DOT3_RGBA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DOUBLE">GL_DOUBLE</td>
+<td>u32</td>
+<td>DrawBufferMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_DOUBLEBUFFER">GL_DOUBLEBUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DOUBLE_EXT">GL_DOUBLE_EXT</td>
+<td>u32</td>
+<td>EXT_bgra. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER">GL_DRAW_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER0">GL_DRAW_BUFFER0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER1">GL_DRAW_BUFFER1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER10">GL_DRAW_BUFFER10</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER11">GL_DRAW_BUFFER11</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER12">GL_DRAW_BUFFER12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER13">GL_DRAW_BUFFER13</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER14">GL_DRAW_BUFFER14</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER15">GL_DRAW_BUFFER15</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER2">GL_DRAW_BUFFER2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER3">GL_DRAW_BUFFER3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER4">GL_DRAW_BUFFER4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER5">GL_DRAW_BUFFER5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER6">GL_DRAW_BUFFER6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER7">GL_DRAW_BUFFER7</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER8">GL_DRAW_BUFFER8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_BUFFER9">GL_DRAW_BUFFER9</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_FRAMEBUFFER">GL_DRAW_FRAMEBUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_FRAMEBUFFER_BINDING">GL_DRAW_FRAMEBUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DRAW_PIXEL_TOKEN">GL_DRAW_PIXEL_TOKEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DST_ALPHA">GL_DST_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DST_COLOR">GL_DST_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DYNAMIC_COPY">GL_DYNAMIC_COPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DYNAMIC_DRAW">GL_DYNAMIC_DRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_DYNAMIC_READ">GL_DYNAMIC_READ</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG">GL_EDGE_FLAG</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY">GL_EDGE_FLAG_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_BUFFER_BINDING">GL_EDGE_FLAG_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_COUNT_EXT">GL_EDGE_FLAG_ARRAY_COUNT_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_EXT">GL_EDGE_FLAG_ARRAY_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER">GL_EDGE_FLAG_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER_EXT">GL_EDGE_FLAG_ARRAY_POINTER_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE">GL_EDGE_FLAG_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE_EXT">GL_EDGE_FLAG_ARRAY_STRIDE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER">GL_ELEMENT_ARRAY_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER_BINDING">GL_ELEMENT_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EMISSION">GL_EMISSION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ENABLE_BIT">GL_ENABLE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EQUAL">GL_EQUAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EQUIV">GL_EQUIV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EVAL_BIT">GL_EVAL_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EXP">GL_EXP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EXP2">GL_EXP2</td>
+<td>u32</td>
+<td>FrontFaceDirection. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_EXTENSIONS">GL_EXTENSIONS</td>
+<td>u32</td>
+<td>TextureCoordName. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_EXT_bgra">GL_EXT_bgra</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EXT_paletted_texture">GL_EXT_paletted_texture</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EXT_vertex_array">GL_EXT_vertex_array</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EYE_LINEAR">GL_EYE_LINEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_EYE_PLANE">GL_EYE_PLANE</td>
+<td>u32</td>
+<td>TextureMagFilter. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_FALSE">GL_FALSE</td>
+<td>u8</td>
+<td>ClipPlaneName. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_FASTEST">GL_FASTEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FEEDBACK">GL_FEEDBACK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FEEDBACK_BUFFER_POINTER">GL_FEEDBACK_BUFFER_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FEEDBACK_BUFFER_SIZE">GL_FEEDBACK_BUFFER_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FEEDBACK_BUFFER_TYPE">GL_FEEDBACK_BUFFER_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FILL">GL_FILL</td>
+<td>u32</td>
+<td>RenderingMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_FIXED_ONLY">GL_FIXED_ONLY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLAT">GL_FLAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT">GL_FLOAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT2">GL_FLOAT_MAT2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT2x3">GL_FLOAT_MAT2x3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT2x4">GL_FLOAT_MAT2x4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT3">GL_FLOAT_MAT3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT3x2">GL_FLOAT_MAT3x2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT3x4">GL_FLOAT_MAT3x4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT4">GL_FLOAT_MAT4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT4x2">GL_FLOAT_MAT4x2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_MAT4x3">GL_FLOAT_MAT4x3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_VEC2">GL_FLOAT_VEC2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_VEC3">GL_FLOAT_VEC3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FLOAT_VEC4">GL_FLOAT_VEC4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG">GL_FOG</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_BIT">GL_FOG_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COLOR">GL_FOG_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORD">GL_FOG_COORD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORDINATE">GL_FOG_COORDINATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY">GL_FOG_COORDINATE_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING">GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_POINTER">GL_FOG_COORDINATE_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_STRIDE">GL_FOG_COORDINATE_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_TYPE">GL_FOG_COORDINATE_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORDINATE_SOURCE">GL_FOG_COORDINATE_SOURCE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORD_ARRAY">GL_FOG_COORD_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORD_ARRAY_BUFFER_BINDING">GL_FOG_COORD_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORD_ARRAY_POINTER">GL_FOG_COORD_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORD_ARRAY_STRIDE">GL_FOG_COORD_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORD_ARRAY_TYPE">GL_FOG_COORD_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_COORD_SRC">GL_FOG_COORD_SRC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_DENSITY">GL_FOG_DENSITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_END">GL_FOG_END</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_HINT">GL_FOG_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_INDEX">GL_FOG_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_MODE">GL_FOG_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_SPECULAR_TEXTURE_WIN">GL_FOG_SPECULAR_TEXTURE_WIN</td>
+<td>u32</td>
+<td>For compatibility with OpenGL v1.0. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_FOG_START">GL_FOG_START</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAGMENT_DEPTH">GL_FRAGMENT_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAGMENT_SHADER">GL_FRAGMENT_SHADER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAGMENT_SHADER_DERIVATIVE_HINT">GL_FRAGMENT_SHADER_DERIVATIVE_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAGMENT_SHADER_INVOCATIONS">GL_FRAGMENT_SHADER_INVOCATIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER">GL_FRAMEBUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE">GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE">GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING">GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE">GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE">GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE">GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_LAYERED">GL_FRAMEBUFFER_ATTACHMENT_LAYERED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME">GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE">GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE">GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE">GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_BINDING">GL_FRAMEBUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_COMPLETE">GL_FRAMEBUFFER_COMPLETE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT">GL_FRAMEBUFFER_DEFAULT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS">GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_HEIGHT">GL_FRAMEBUFFER_DEFAULT_HEIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_LAYERS">GL_FRAMEBUFFER_DEFAULT_LAYERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_SAMPLES">GL_FRAMEBUFFER_DEFAULT_SAMPLES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_WIDTH">GL_FRAMEBUFFER_DEFAULT_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT">GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER">GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS">GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT">GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE">GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER">GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_SRGB">GL_FRAMEBUFFER_SRGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_UNDEFINED">GL_FRAMEBUFFER_UNDEFINED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRAMEBUFFER_UNSUPPORTED">GL_FRAMEBUFFER_UNSUPPORTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRONT">GL_FRONT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRONT_AND_BACK">GL_FRONT_AND_BACK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRONT_FACE">GL_FRONT_FACE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRONT_LEFT">GL_FRONT_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FRONT_RIGHT">GL_FRONT_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FUNC_ADD">GL_FUNC_ADD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FUNC_REVERSE_SUBTRACT">GL_FUNC_REVERSE_SUBTRACT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_FUNC_SUBTRACT">GL_FUNC_SUBTRACT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GENERATE_MIPMAP">GL_GENERATE_MIPMAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GENERATE_MIPMAP_HINT">GL_GENERATE_MIPMAP_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GEOMETRY_INPUT_TYPE">GL_GEOMETRY_INPUT_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GEOMETRY_OUTPUT_TYPE">GL_GEOMETRY_OUTPUT_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GEOMETRY_SHADER">GL_GEOMETRY_SHADER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED">GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GEOMETRY_VERTICES_OUT">GL_GEOMETRY_VERTICES_OUT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GEQUAL">GL_GEQUAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GREATER">GL_GREATER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GREEN">GL_GREEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GREEN_BIAS">GL_GREEN_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GREEN_BITS">GL_GREEN_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GREEN_INTEGER">GL_GREEN_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_GREEN_SCALE">GL_GREEN_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HINT_BIT">GL_HINT_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM">GL_HISTOGRAM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_ALPHA_SIZE">GL_HISTOGRAM_ALPHA_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_BLUE_SIZE">GL_HISTOGRAM_BLUE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_FORMAT">GL_HISTOGRAM_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_GREEN_SIZE">GL_HISTOGRAM_GREEN_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_LUMINANCE_SIZE">GL_HISTOGRAM_LUMINANCE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_RED_SIZE">GL_HISTOGRAM_RED_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_SINK">GL_HISTOGRAM_SINK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_HISTOGRAM_WIDTH">GL_HISTOGRAM_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_IGNORE_BORDER">GL_IGNORE_BORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INCR">GL_INCR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INCR_WRAP">GL_INCR_WRAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX">GL_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY">GL_INDEX_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_BUFFER_BINDING">GL_INDEX_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_COUNT_EXT">GL_INDEX_ARRAY_COUNT_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_EXT">GL_INDEX_ARRAY_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_POINTER">GL_INDEX_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_POINTER_EXT">GL_INDEX_ARRAY_POINTER_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_STRIDE">GL_INDEX_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_STRIDE_EXT">GL_INDEX_ARRAY_STRIDE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_TYPE">GL_INDEX_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_ARRAY_TYPE_EXT">GL_INDEX_ARRAY_TYPE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_BITS">GL_INDEX_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_CLEAR_VALUE">GL_INDEX_CLEAR_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_LOGIC_OP">GL_INDEX_LOGIC_OP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_MODE">GL_INDEX_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_OFFSET">GL_INDEX_OFFSET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_SHIFT">GL_INDEX_SHIFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INDEX_WRITEMASK">GL_INDEX_WRITEMASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INFO_LOG_LENGTH">GL_INFO_LOG_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT">GL_INT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INTENSITY">GL_INTENSITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INTENSITY12">GL_INTENSITY12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INTENSITY16">GL_INTENSITY16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INTENSITY4">GL_INTENSITY4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INTENSITY8">GL_INTENSITY8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INTERLEAVED_ATTRIBS">GL_INTERLEAVED_ATTRIBS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INTERPOLATE">GL_INTERPOLATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_1D">GL_INT_SAMPLER_1D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_1D_ARRAY">GL_INT_SAMPLER_1D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_2D">GL_INT_SAMPLER_2D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_2D_ARRAY">GL_INT_SAMPLER_2D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_2D_RECT">GL_INT_SAMPLER_2D_RECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_3D">GL_INT_SAMPLER_3D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_BUFFER">GL_INT_SAMPLER_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_CUBE">GL_INT_SAMPLER_CUBE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_SAMPLER_CUBE_MAP_ARRAY">GL_INT_SAMPLER_CUBE_MAP_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_VEC2">GL_INT_VEC2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_VEC3">GL_INT_VEC3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INT_VEC4">GL_INT_VEC4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INVALID_ENUM">GL_INVALID_ENUM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INVALID_FRAMEBUFFER_OPERATION">GL_INVALID_FRAMEBUFFER_OPERATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INVALID_OPERATION">GL_INVALID_OPERATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INVALID_VALUE">GL_INVALID_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_INVERT">GL_INVERT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_KEEP">GL_KEEP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LEFT">GL_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LEQUAL">GL_LEQUAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LESS">GL_LESS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT0">GL_LIGHT0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT1">GL_LIGHT1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT2">GL_LIGHT2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT3">GL_LIGHT3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT4">GL_LIGHT4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT5">GL_LIGHT5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT6">GL_LIGHT6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT7">GL_LIGHT7</td>
+<td>u32</td>
+<td>LightParameter. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHTING">GL_LIGHTING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHTING_BIT">GL_LIGHTING_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT_MODEL_AMBIENT">GL_LIGHT_MODEL_AMBIENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT_MODEL_COLOR_CONTROL">GL_LIGHT_MODEL_COLOR_CONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT_MODEL_LOCAL_VIEWER">GL_LIGHT_MODEL_LOCAL_VIEWER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIGHT_MODEL_TWO_SIDE">GL_LIGHT_MODEL_TWO_SIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE">GL_LINE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINEAR">GL_LINEAR</td>
+<td>u32</td>
+<td>TextureMinFilter. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINEAR_ATTENUATION">GL_LINEAR_ATTENUATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINEAR_MIPMAP_LINEAR">GL_LINEAR_MIPMAP_LINEAR</td>
+<td>u32</td>
+<td>TextureParameterName. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINEAR_MIPMAP_NEAREST">GL_LINEAR_MIPMAP_NEAREST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINES">GL_LINES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINES_ADJACENCY">GL_LINES_ADJACENCY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_BIT">GL_LINE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_LOOP">GL_LINE_LOOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_RESET_TOKEN">GL_LINE_RESET_TOKEN</td>
+<td>u32</td>
+<td>FogMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_SMOOTH">GL_LINE_SMOOTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_SMOOTH_HINT">GL_LINE_SMOOTH_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_STIPPLE">GL_LINE_STIPPLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_STIPPLE_PATTERN">GL_LINE_STIPPLE_PATTERN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_STIPPLE_REPEAT">GL_LINE_STIPPLE_REPEAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_STRIP">GL_LINE_STRIP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_STRIP_ADJACENCY">GL_LINE_STRIP_ADJACENCY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_TOKEN">GL_LINE_TOKEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_WIDTH">GL_LINE_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_WIDTH_GRANULARITY">GL_LINE_WIDTH_GRANULARITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINE_WIDTH_RANGE">GL_LINE_WIDTH_RANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LINK_STATUS">GL_LINK_STATUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIST_BASE">GL_LIST_BASE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIST_BIT">GL_LIST_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIST_INDEX">GL_LIST_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LIST_MODE">GL_LIST_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LOAD">GL_LOAD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LOGIC_OP">GL_LOGIC_OP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LOGIC_OP_MODE">GL_LOGIC_OP_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LOWER_LEFT">GL_LOWER_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE">GL_LUMINANCE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE12">GL_LUMINANCE12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE12_ALPHA12">GL_LUMINANCE12_ALPHA12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE12_ALPHA4">GL_LUMINANCE12_ALPHA4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE16">GL_LUMINANCE16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE16_ALPHA16">GL_LUMINANCE16_ALPHA16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE4">GL_LUMINANCE4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE4_ALPHA4">GL_LUMINANCE4_ALPHA4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE6_ALPHA2">GL_LUMINANCE6_ALPHA2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE8">GL_LUMINANCE8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE8_ALPHA8">GL_LUMINANCE8_ALPHA8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_LUMINANCE_ALPHA">GL_LUMINANCE_ALPHA</td>
+<td>u32</td>
+<td>PixelType. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAJOR_VERSION">GL_MAJOR_VERSION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_COLOR_4">GL_MAP1_COLOR_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_GRID_DOMAIN">GL_MAP1_GRID_DOMAIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_GRID_SEGMENTS">GL_MAP1_GRID_SEGMENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_INDEX">GL_MAP1_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_NORMAL">GL_MAP1_NORMAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_1">GL_MAP1_TEXTURE_COORD_1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_2">GL_MAP1_TEXTURE_COORD_2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_3">GL_MAP1_TEXTURE_COORD_3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_4">GL_MAP1_TEXTURE_COORD_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_VERTEX_3">GL_MAP1_VERTEX_3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP1_VERTEX_4">GL_MAP1_VERTEX_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_COLOR_4">GL_MAP2_COLOR_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_GRID_DOMAIN">GL_MAP2_GRID_DOMAIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_GRID_SEGMENTS">GL_MAP2_GRID_SEGMENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_INDEX">GL_MAP2_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_NORMAL">GL_MAP2_NORMAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_1">GL_MAP2_TEXTURE_COORD_1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_2">GL_MAP2_TEXTURE_COORD_2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_3">GL_MAP2_TEXTURE_COORD_3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_4">GL_MAP2_TEXTURE_COORD_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_VERTEX_3">GL_MAP2_VERTEX_3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP2_VERTEX_4">GL_MAP2_VERTEX_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP_COLOR">GL_MAP_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAP_STENCIL">GL_MAP_STENCIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MATRIX_MODE">GL_MATRIX_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX">GL_MAX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_3D_TEXTURE_SIZE">GL_MAX_3D_TEXTURE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_ARRAY_TEXTURE_LAYERS">GL_MAX_ARRAY_TEXTURE_LAYERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_ATTRIB_STACK_DEPTH">GL_MAX_ATTRIB_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_CLIENT_ATTRIB_STACK_DEPTH">GL_MAX_CLIENT_ATTRIB_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_CLIP_DISTANCES">GL_MAX_CLIP_DISTANCES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_CLIP_PLANES">GL_MAX_CLIP_PLANES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_COLOR_ATTACHMENTS">GL_MAX_COLOR_ATTACHMENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_COLOR_MATRIX_STACK_DEPTH">GL_MAX_COLOR_MATRIX_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS">GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_CONVOLUTION_HEIGHT">GL_MAX_CONVOLUTION_HEIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_CONVOLUTION_WIDTH">GL_MAX_CONVOLUTION_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_CUBE_MAP_TEXTURE_SIZE">GL_MAX_CUBE_MAP_TEXTURE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_DRAW_BUFFERS">GL_MAX_DRAW_BUFFERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_ELEMENTS_INDICES">GL_MAX_ELEMENTS_INDICES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_ELEMENTS_INDICES_WIN">GL_MAX_ELEMENTS_INDICES_WIN</td>
+<td>u32</td>
+<td>WIN_phong_shading. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_ELEMENTS_VERTICES">GL_MAX_ELEMENTS_VERTICES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_ELEMENTS_VERTICES_WIN">GL_MAX_ELEMENTS_VERTICES_WIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_EVAL_ORDER">GL_MAX_EVAL_ORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_FRAGMENT_INPUT_COMPONENTS">GL_MAX_FRAGMENT_INPUT_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_FRAGMENT_UNIFORM_COMPONENTS">GL_MAX_FRAGMENT_UNIFORM_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_HEIGHT">GL_MAX_FRAMEBUFFER_HEIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_LAYERS">GL_MAX_FRAMEBUFFER_LAYERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_SAMPLES">GL_MAX_FRAMEBUFFER_SAMPLES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_WIDTH">GL_MAX_FRAMEBUFFER_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_GEOMETRY_INPUT_COMPONENTS">GL_MAX_GEOMETRY_INPUT_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_COMPONENTS">GL_MAX_GEOMETRY_OUTPUT_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_VERTICES">GL_MAX_GEOMETRY_OUTPUT_VERTICES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS">GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS">GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_GEOMETRY_UNIFORM_COMPONENTS">GL_MAX_GEOMETRY_UNIFORM_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_LIGHTS">GL_MAX_LIGHTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_LIST_NESTING">GL_MAX_LIST_NESTING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_MODELVIEW_STACK_DEPTH">GL_MAX_MODELVIEW_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_NAME_STACK_DEPTH">GL_MAX_NAME_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_PIXEL_MAP_TABLE">GL_MAX_PIXEL_MAP_TABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_PROGRAM_TEXEL_OFFSET">GL_MAX_PROGRAM_TEXEL_OFFSET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS">GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET">GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_PROJECTION_STACK_DEPTH">GL_MAX_PROJECTION_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_RECTANGLE_TEXTURE_SIZE">GL_MAX_RECTANGLE_TEXTURE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_RENDERBUFFER_SIZE">GL_MAX_RENDERBUFFER_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_SAMPLES">GL_MAX_SAMPLES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_BUFFER_SIZE">GL_MAX_TEXTURE_BUFFER_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_COORDS">GL_MAX_TEXTURE_COORDS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_IMAGE_UNITS">GL_MAX_TEXTURE_IMAGE_UNITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_LOD_BIAS">GL_MAX_TEXTURE_LOD_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_MAX_ANISOTROPY">GL_MAX_TEXTURE_MAX_ANISOTROPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_SIZE">GL_MAX_TEXTURE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_STACK_DEPTH">GL_MAX_TEXTURE_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TEXTURE_UNITS">GL_MAX_TEXTURE_UNITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS">GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS">GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS">GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VARYING_COMPONENTS">GL_MAX_VARYING_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VARYING_FLOATS">GL_MAX_VARYING_FLOATS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VERTEX_ATTRIBS">GL_MAX_VERTEX_ATTRIBS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VERTEX_ATTRIB_STRIDE">GL_MAX_VERTEX_ATTRIB_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VERTEX_OUTPUT_COMPONENTS">GL_MAX_VERTEX_OUTPUT_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS">GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VERTEX_UNIFORM_COMPONENTS">GL_MAX_VERTEX_UNIFORM_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MAX_VIEWPORT_DIMS">GL_MAX_VIEWPORT_DIMS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MIN">GL_MIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MINMAX">GL_MINMAX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MINMAX_FORMAT">GL_MINMAX_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MINMAX_SINK">GL_MINMAX_SINK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MINOR_VERSION">GL_MINOR_VERSION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MIN_PROGRAM_TEXEL_OFFSET">GL_MIN_PROGRAM_TEXEL_OFFSET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET">GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MIN_SAMPLE_SHADING_VALUE">GL_MIN_SAMPLE_SHADING_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MIRRORED_REPEAT">GL_MIRRORED_REPEAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MODELVIEW">GL_MODELVIEW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MODELVIEW_MATRIX">GL_MODELVIEW_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MODELVIEW_STACK_DEPTH">GL_MODELVIEW_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MODULATE">GL_MODULATE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MULT">GL_MULT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MULTISAMPLE">GL_MULTISAMPLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_MULTISAMPLE_BIT">GL_MULTISAMPLE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_N3F_V3F">GL_N3F_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NAMED_STRING_LENGTH_ARB">GL_NAMED_STRING_LENGTH_ARB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NAMED_STRING_TYPE_ARB">GL_NAMED_STRING_TYPE_ARB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NAME_STACK_DEPTH">GL_NAME_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NAND">GL_NAND</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NEAREST">GL_NEAREST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NEAREST_MIPMAP_LINEAR">GL_NEAREST_MIPMAP_LINEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NEAREST_MIPMAP_NEAREST">GL_NEAREST_MIPMAP_NEAREST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NEVER">GL_NEVER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NICEST">GL_NICEST</td>
+<td>u32</td>
+<td>LightName. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_NONE">GL_NONE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NOOP">GL_NOOP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NOR">GL_NOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMALIZE">GL_NORMALIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY">GL_NORMAL_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_BUFFER_BINDING">GL_NORMAL_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_COUNT_EXT">GL_NORMAL_ARRAY_COUNT_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_EXT">GL_NORMAL_ARRAY_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_POINTER">GL_NORMAL_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_POINTER_EXT">GL_NORMAL_ARRAY_POINTER_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_STRIDE">GL_NORMAL_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_STRIDE_EXT">GL_NORMAL_ARRAY_STRIDE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_TYPE">GL_NORMAL_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_ARRAY_TYPE_EXT">GL_NORMAL_ARRAY_TYPE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NORMAL_MAP">GL_NORMAL_MAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NOTEQUAL">GL_NOTEQUAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NO_ERROR">GL_NO_ERROR</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NUM_COMPRESSED_TEXTURE_FORMATS">GL_NUM_COMPRESSED_TEXTURE_FORMATS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NUM_EXTENSIONS">GL_NUM_EXTENSIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NUM_SHADING_LANGUAGE_VERSIONS">GL_NUM_SHADING_LANGUAGE_VERSIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_NUM_SPIR_V_EXTENSIONS">GL_NUM_SPIR_V_EXTENSIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OBJECT_LINEAR">GL_OBJECT_LINEAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OBJECT_PLANE">GL_OBJECT_PLANE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ONE">GL_ONE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ONE_MINUS_CONSTANT_ALPHA">GL_ONE_MINUS_CONSTANT_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ONE_MINUS_CONSTANT_COLOR">GL_ONE_MINUS_CONSTANT_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ONE_MINUS_DST_ALPHA">GL_ONE_MINUS_DST_ALPHA</td>
+<td>u32</td>
+<td>BlendingFactorSrc. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_ONE_MINUS_DST_COLOR">GL_ONE_MINUS_DST_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ONE_MINUS_SRC_ALPHA">GL_ONE_MINUS_SRC_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ONE_MINUS_SRC_COLOR">GL_ONE_MINUS_SRC_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OPERAND0_ALPHA">GL_OPERAND0_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OPERAND0_RGB">GL_OPERAND0_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OPERAND1_ALPHA">GL_OPERAND1_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OPERAND1_RGB">GL_OPERAND1_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OPERAND2_ALPHA">GL_OPERAND2_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OPERAND2_RGB">GL_OPERAND2_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OR">GL_OR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ORDER">GL_ORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OR_INVERTED">GL_OR_INVERTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OR_REVERSE">GL_OR_REVERSE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_OUT_OF_MEMORY">GL_OUT_OF_MEMORY</td>
+<td>u32</td>
+<td>FeedBackMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_ALIGNMENT">GL_PACK_ALIGNMENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_IMAGE_HEIGHT">GL_PACK_IMAGE_HEIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_LSB_FIRST">GL_PACK_LSB_FIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_ROW_LENGTH">GL_PACK_ROW_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_SKIP_IMAGES">GL_PACK_SKIP_IMAGES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_SKIP_PIXELS">GL_PACK_SKIP_PIXELS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_SKIP_ROWS">GL_PACK_SKIP_ROWS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PACK_SWAP_BYTES">GL_PACK_SWAP_BYTES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PARAMETER_BUFFER">GL_PARAMETER_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PARAMETER_BUFFER_BINDING">GL_PARAMETER_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PASS_THROUGH_TOKEN">GL_PASS_THROUGH_TOKEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PERSPECTIVE_CORRECTION_HINT">GL_PERSPECTIVE_CORRECTION_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PHONG_HINT_WIN">GL_PHONG_HINT_WIN</td>
+<td>u32</td>
+<td>WIN_specular_fog. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_PHONG_WIN">GL_PHONG_WIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_A_TO_A">GL_PIXEL_MAP_A_TO_A</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_A_TO_A_SIZE">GL_PIXEL_MAP_A_TO_A_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_B_TO_B">GL_PIXEL_MAP_B_TO_B</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_B_TO_B_SIZE">GL_PIXEL_MAP_B_TO_B_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_G_TO_G">GL_PIXEL_MAP_G_TO_G</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_G_TO_G_SIZE">GL_PIXEL_MAP_G_TO_G_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_A">GL_PIXEL_MAP_I_TO_A</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_A_SIZE">GL_PIXEL_MAP_I_TO_A_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_B">GL_PIXEL_MAP_I_TO_B</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_B_SIZE">GL_PIXEL_MAP_I_TO_B_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_G">GL_PIXEL_MAP_I_TO_G</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_G_SIZE">GL_PIXEL_MAP_I_TO_G_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_I">GL_PIXEL_MAP_I_TO_I</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_I_SIZE">GL_PIXEL_MAP_I_TO_I_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_R">GL_PIXEL_MAP_I_TO_R</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_R_SIZE">GL_PIXEL_MAP_I_TO_R_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_R_TO_R">GL_PIXEL_MAP_R_TO_R</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_R_TO_R_SIZE">GL_PIXEL_MAP_R_TO_R_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_S_TO_S">GL_PIXEL_MAP_S_TO_S</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MAP_S_TO_S_SIZE">GL_PIXEL_MAP_S_TO_S_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_MODE_BIT">GL_PIXEL_MODE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_PACK_BUFFER">GL_PIXEL_PACK_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_PACK_BUFFER_BINDING">GL_PIXEL_PACK_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_UNPACK_BUFFER">GL_PIXEL_UNPACK_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PIXEL_UNPACK_BUFFER_BINDING">GL_PIXEL_UNPACK_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT">GL_POINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINTS">GL_POINTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_BIT">GL_POINT_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_DISTANCE_ATTENUATION">GL_POINT_DISTANCE_ATTENUATION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_FADE_THRESHOLD_SIZE">GL_POINT_FADE_THRESHOLD_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SIZE">GL_POINT_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SIZE_GRANULARITY">GL_POINT_SIZE_GRANULARITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SIZE_MAX">GL_POINT_SIZE_MAX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SIZE_MIN">GL_POINT_SIZE_MIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SIZE_RANGE">GL_POINT_SIZE_RANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SMOOTH">GL_POINT_SMOOTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SMOOTH_HINT">GL_POINT_SMOOTH_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SPRITE">GL_POINT_SPRITE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_SPRITE_COORD_ORIGIN">GL_POINT_SPRITE_COORD_ORIGIN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POINT_TOKEN">GL_POINT_TOKEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON">GL_POLYGON</td>
+<td>u32</td>
+<td>BlendingFactorDest. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_BIT">GL_POLYGON_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_MODE">GL_POLYGON_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_OFFSET_CLAMP">GL_POLYGON_OFFSET_CLAMP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_OFFSET_FACTOR">GL_POLYGON_OFFSET_FACTOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_OFFSET_FILL">GL_POLYGON_OFFSET_FILL</td>
+<td>u32</td>
+<td>texture. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_OFFSET_LINE">GL_POLYGON_OFFSET_LINE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_OFFSET_POINT">GL_POLYGON_OFFSET_POINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_OFFSET_UNITS">GL_POLYGON_OFFSET_UNITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_SMOOTH">GL_POLYGON_SMOOTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_SMOOTH_HINT">GL_POLYGON_SMOOTH_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_STIPPLE">GL_POLYGON_STIPPLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_STIPPLE_BIT">GL_POLYGON_STIPPLE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POLYGON_TOKEN">GL_POLYGON_TOKEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POSITION">GL_POSITION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_BIAS">GL_POST_COLOR_MATRIX_ALPHA_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_SCALE">GL_POST_COLOR_MATRIX_ALPHA_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_BIAS">GL_POST_COLOR_MATRIX_BLUE_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_SCALE">GL_POST_COLOR_MATRIX_BLUE_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_COLOR_TABLE">GL_POST_COLOR_MATRIX_COLOR_TABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_BIAS">GL_POST_COLOR_MATRIX_GREEN_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_SCALE">GL_POST_COLOR_MATRIX_GREEN_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_RED_BIAS">GL_POST_COLOR_MATRIX_RED_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_COLOR_MATRIX_RED_SCALE">GL_POST_COLOR_MATRIX_RED_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_BIAS">GL_POST_CONVOLUTION_ALPHA_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_SCALE">GL_POST_CONVOLUTION_ALPHA_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_BLUE_BIAS">GL_POST_CONVOLUTION_BLUE_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_BLUE_SCALE">GL_POST_CONVOLUTION_BLUE_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_COLOR_TABLE">GL_POST_CONVOLUTION_COLOR_TABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_GREEN_BIAS">GL_POST_CONVOLUTION_GREEN_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_GREEN_SCALE">GL_POST_CONVOLUTION_GREEN_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_RED_BIAS">GL_POST_CONVOLUTION_RED_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_POST_CONVOLUTION_RED_SCALE">GL_POST_CONVOLUTION_RED_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PREVIOUS">GL_PREVIOUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PRIMARY_COLOR">GL_PRIMARY_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PRIMITIVES_GENERATED">GL_PRIMITIVES_GENERATED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PRIMITIVES_SUBMITTED">GL_PRIMITIVES_SUBMITTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PRIMITIVE_RESTART">GL_PRIMITIVE_RESTART</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED">GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PRIMITIVE_RESTART_INDEX">GL_PRIMITIVE_RESTART_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROGRAM_POINT_SIZE">GL_PROGRAM_POINT_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROJECTION">GL_PROJECTION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROJECTION_MATRIX">GL_PROJECTION_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROJECTION_STACK_DEPTH">GL_PROJECTION_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_COLOR_TABLE">GL_PROXY_COLOR_TABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_HISTOGRAM">GL_PROXY_HISTOGRAM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE">GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_POST_CONVOLUTION_COLOR_TABLE">GL_PROXY_POST_CONVOLUTION_COLOR_TABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_1D">GL_PROXY_TEXTURE_1D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_1D_ARRAY">GL_PROXY_TEXTURE_1D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_2D">GL_PROXY_TEXTURE_2D</td>
+<td>u32</td>
+<td>texture_object. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_2D_ARRAY">GL_PROXY_TEXTURE_2D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_3D">GL_PROXY_TEXTURE_3D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP">GL_PROXY_TEXTURE_CUBE_MAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP_ARRAY">GL_PROXY_TEXTURE_CUBE_MAP_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_PROXY_TEXTURE_RECTANGLE">GL_PROXY_TEXTURE_RECTANGLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_Q">GL_Q</td>
+<td>u32</td>
+<td>TextureEnvMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUADRATIC_ATTENUATION">GL_QUADRATIC_ATTENUATION</td>
+<td>u32</td>
+<td>ListMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUADS">GL_QUADS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUAD_STRIP">GL_QUAD_STRIP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY_BY_REGION_NO_WAIT">GL_QUERY_BY_REGION_NO_WAIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY_BY_REGION_WAIT">GL_QUERY_BY_REGION_WAIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY_COUNTER_BITS">GL_QUERY_COUNTER_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY_NO_WAIT">GL_QUERY_NO_WAIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY_RESULT">GL_QUERY_RESULT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY_RESULT_AVAILABLE">GL_QUERY_RESULT_AVAILABLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_QUERY_WAIT">GL_QUERY_WAIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_R">GL_R</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_R11F_G11F_B10F">GL_R11F_G11F_B10F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_R16_SNORM">GL_R16_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_R3_G3_B2">GL_R3_G3_B2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_R8_SNORM">GL_R8_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RASTERIZER_DISCARD">GL_RASTERIZER_DISCARD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_READ_BUFFER">GL_READ_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_READ_FRAMEBUFFER">GL_READ_FRAMEBUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_READ_FRAMEBUFFER_BINDING">GL_READ_FRAMEBUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_READ_ONLY">GL_READ_ONLY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_READ_WRITE">GL_READ_WRITE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RED">GL_RED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_REDUCE">GL_REDUCE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RED_BIAS">GL_RED_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RED_BITS">GL_RED_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RED_INTEGER">GL_RED_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RED_SCALE">GL_RED_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RED_SNORM">GL_RED_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_REFLECTION_MAP">GL_REFLECTION_MAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDER">GL_RENDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER">GL_RENDERBUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_ALPHA_SIZE">GL_RENDERBUFFER_ALPHA_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_BINDING">GL_RENDERBUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_BLUE_SIZE">GL_RENDERBUFFER_BLUE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_DEPTH_SIZE">GL_RENDERBUFFER_DEPTH_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_GREEN_SIZE">GL_RENDERBUFFER_GREEN_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_HEIGHT">GL_RENDERBUFFER_HEIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_INTERNAL_FORMAT">GL_RENDERBUFFER_INTERNAL_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_RED_SIZE">GL_RENDERBUFFER_RED_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_SAMPLES">GL_RENDERBUFFER_SAMPLES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_STENCIL_SIZE">GL_RENDERBUFFER_STENCIL_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERBUFFER_WIDTH">GL_RENDERBUFFER_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDERER">GL_RENDERER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RENDER_MODE">GL_RENDER_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_REPEAT">GL_REPEAT</td>
+<td>u32</td>
+<td>ClientAttribMask. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_REPLACE">GL_REPLACE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_REPLICATE_BORDER">GL_REPLICATE_BORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RESCALE_NORMAL">GL_RESCALE_NORMAL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RETURN">GL_RETURN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RG16_SNORM">GL_RG16_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RG8_SNORM">GL_RG8_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB">GL_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB10">GL_RGB10</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB10_A2">GL_RGB10_A2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB10_A2UI">GL_RGB10_A2UI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB12">GL_RGB12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB16">GL_RGB16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB16F">GL_RGB16F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB16I">GL_RGB16I</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB16UI">GL_RGB16UI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB16_SNORM">GL_RGB16_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB32F">GL_RGB32F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB32I">GL_RGB32I</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB32UI">GL_RGB32UI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB4">GL_RGB4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB5">GL_RGB5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB5_A1">GL_RGB5_A1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB8">GL_RGB8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB8I">GL_RGB8I</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB8UI">GL_RGB8UI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB8_SNORM">GL_RGB8_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB9_E5">GL_RGB9_E5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA">GL_RGBA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA12">GL_RGBA12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA16">GL_RGBA16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA16F">GL_RGBA16F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA16I">GL_RGBA16I</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA16UI">GL_RGBA16UI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA16_SNORM">GL_RGBA16_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA2">GL_RGBA2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA32F">GL_RGBA32F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA32I">GL_RGBA32I</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA32UI">GL_RGBA32UI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA4">GL_RGBA4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA8">GL_RGBA8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA8I">GL_RGBA8I</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA8UI">GL_RGBA8UI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA8_SNORM">GL_RGBA8_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA_INTEGER">GL_RGBA_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA_MODE">GL_RGBA_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGBA_SNORM">GL_RGBA_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB_INTEGER">GL_RGB_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB_SCALE">GL_RGB_SCALE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RGB_SNORM">GL_RGB_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RG_SNORM">GL_RG_SNORM</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_RIGHT">GL_RIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_S">GL_S</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_1D">GL_SAMPLER_1D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_1D_ARRAY">GL_SAMPLER_1D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_1D_ARRAY_SHADOW">GL_SAMPLER_1D_ARRAY_SHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_1D_SHADOW">GL_SAMPLER_1D_SHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_2D">GL_SAMPLER_2D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_2D_ARRAY">GL_SAMPLER_2D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_2D_ARRAY_SHADOW">GL_SAMPLER_2D_ARRAY_SHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_2D_RECT">GL_SAMPLER_2D_RECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_2D_RECT_SHADOW">GL_SAMPLER_2D_RECT_SHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_2D_SHADOW">GL_SAMPLER_2D_SHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_3D">GL_SAMPLER_3D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_BUFFER">GL_SAMPLER_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_CUBE">GL_SAMPLER_CUBE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY">GL_SAMPLER_CUBE_MAP_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW">GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLER_CUBE_SHADOW">GL_SAMPLER_CUBE_SHADOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLES">GL_SAMPLES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLES_PASSED">GL_SAMPLES_PASSED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLE_ALPHA_TO_COVERAGE">GL_SAMPLE_ALPHA_TO_COVERAGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLE_ALPHA_TO_ONE">GL_SAMPLE_ALPHA_TO_ONE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLE_BUFFERS">GL_SAMPLE_BUFFERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLE_COVERAGE">GL_SAMPLE_COVERAGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLE_COVERAGE_INVERT">GL_SAMPLE_COVERAGE_INVERT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLE_COVERAGE_VALUE">GL_SAMPLE_COVERAGE_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SAMPLE_SHADING">GL_SAMPLE_SHADING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SCISSOR_BIT">GL_SCISSOR_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SCISSOR_BOX">GL_SCISSOR_BOX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SCISSOR_TEST">GL_SCISSOR_TEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY">GL_SECONDARY_COLOR_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING">GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_POINTER">GL_SECONDARY_COLOR_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_SIZE">GL_SECONDARY_COLOR_ARRAY_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_STRIDE">GL_SECONDARY_COLOR_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_TYPE">GL_SECONDARY_COLOR_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SELECT">GL_SELECT</td>
+<td>u32</td>
+<td>ShadingModel. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_SELECTION_BUFFER_POINTER">GL_SELECTION_BUFFER_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SELECTION_BUFFER_SIZE">GL_SELECTION_BUFFER_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SEPARABLE_2D">GL_SEPARABLE_2D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SEPARATE_ATTRIBS">GL_SEPARATE_ATTRIBS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SEPARATE_SPECULAR_COLOR">GL_SEPARATE_SPECULAR_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SET">GL_SET</td>
+<td>u32</td>
+<td>MaterialParameter. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHADER_BINARY_FORMAT_SPIR_V">GL_SHADER_BINARY_FORMAT_SPIR_V</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHADER_INCLUDE_ARB">GL_SHADER_INCLUDE_ARB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHADER_SOURCE_LENGTH">GL_SHADER_SOURCE_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHADER_TYPE">GL_SHADER_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHADE_MODEL">GL_SHADE_MODEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHADING_LANGUAGE_VERSION">GL_SHADING_LANGUAGE_VERSION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHININESS">GL_SHININESS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SHORT">GL_SHORT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SIGNED_NORMALIZED">GL_SIGNED_NORMALIZED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SINGLE_COLOR">GL_SINGLE_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SLUMINANCE">GL_SLUMINANCE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SLUMINANCE8">GL_SLUMINANCE8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SLUMINANCE8_ALPHA8">GL_SLUMINANCE8_ALPHA8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SLUMINANCE_ALPHA">GL_SLUMINANCE_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SMOOTH">GL_SMOOTH</td>
+<td>u32</td>
+<td>StencilOp. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_SMOOTH_LINE_WIDTH_GRANULARITY">GL_SMOOTH_LINE_WIDTH_GRANULARITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SMOOTH_LINE_WIDTH_RANGE">GL_SMOOTH_LINE_WIDTH_RANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SMOOTH_POINT_SIZE_GRANULARITY">GL_SMOOTH_POINT_SIZE_GRANULARITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SMOOTH_POINT_SIZE_RANGE">GL_SMOOTH_POINT_SIZE_RANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SOURCE0_ALPHA">GL_SOURCE0_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SOURCE0_RGB">GL_SOURCE0_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SOURCE1_ALPHA">GL_SOURCE1_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SOURCE1_RGB">GL_SOURCE1_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SOURCE2_ALPHA">GL_SOURCE2_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SOURCE2_RGB">GL_SOURCE2_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SPECULAR">GL_SPECULAR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SPHERE_MAP">GL_SPHERE_MAP</td>
+<td>u32</td>
+<td>TextureGenParameter. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_SPIR_V_BINARY">GL_SPIR_V_BINARY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SPIR_V_EXTENSIONS">GL_SPIR_V_EXTENSIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SPOT_CUTOFF">GL_SPOT_CUTOFF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SPOT_DIRECTION">GL_SPOT_DIRECTION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SPOT_EXPONENT">GL_SPOT_EXPONENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC0_ALPHA">GL_SRC0_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC0_RGB">GL_SRC0_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC1_ALPHA">GL_SRC1_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC1_RGB">GL_SRC1_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC2_ALPHA">GL_SRC2_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC2_RGB">GL_SRC2_RGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC_ALPHA">GL_SRC_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC_ALPHA_SATURATE">GL_SRC_ALPHA_SATURATE</td>
+<td>u32</td>
+<td>Boolean. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRC_COLOR">GL_SRC_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRGB">GL_SRGB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRGB8">GL_SRGB8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRGB8_ALPHA8">GL_SRGB8_ALPHA8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SRGB_ALPHA">GL_SRGB_ALPHA</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STACK_OVERFLOW">GL_STACK_OVERFLOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STACK_UNDERFLOW">GL_STACK_UNDERFLOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STATIC_COPY">GL_STATIC_COPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STATIC_DRAW">GL_STATIC_DRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STATIC_READ">GL_STATIC_READ</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL">GL_STENCIL</td>
+<td>u32</td>
+<td>PixelFormat. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_ATTACHMENT">GL_STENCIL_ATTACHMENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BACK_FAIL">GL_STENCIL_BACK_FAIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BACK_FUNC">GL_STENCIL_BACK_FUNC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_FAIL">GL_STENCIL_BACK_PASS_DEPTH_FAIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_PASS">GL_STENCIL_BACK_PASS_DEPTH_PASS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BACK_REF">GL_STENCIL_BACK_REF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BACK_VALUE_MASK">GL_STENCIL_BACK_VALUE_MASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BACK_WRITEMASK">GL_STENCIL_BACK_WRITEMASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BITS">GL_STENCIL_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BUFFER">GL_STENCIL_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_BUFFER_BIT">GL_STENCIL_BUFFER_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_CLEAR_VALUE">GL_STENCIL_CLEAR_VALUE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_FAIL">GL_STENCIL_FAIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_FUNC">GL_STENCIL_FUNC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_INDEX">GL_STENCIL_INDEX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_INDEX1">GL_STENCIL_INDEX1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_INDEX16">GL_STENCIL_INDEX16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_INDEX4">GL_STENCIL_INDEX4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_INDEX8">GL_STENCIL_INDEX8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_PASS_DEPTH_FAIL">GL_STENCIL_PASS_DEPTH_FAIL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_PASS_DEPTH_PASS">GL_STENCIL_PASS_DEPTH_PASS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_REF">GL_STENCIL_REF</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_TEST">GL_STENCIL_TEST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_VALUE_MASK">GL_STENCIL_VALUE_MASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STENCIL_WRITEMASK">GL_STENCIL_WRITEMASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STEREO">GL_STEREO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STREAM_COPY">GL_STREAM_COPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STREAM_DRAW">GL_STREAM_DRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_STREAM_READ">GL_STREAM_READ</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SUBPIXEL_BITS">GL_SUBPIXEL_BITS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_SUBTRACT">GL_SUBTRACT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_T">GL_T</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_T2F_C3F_V3F">GL_T2F_C3F_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_T2F_C4F_N3F_V3F">GL_T2F_C4F_N3F_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_T2F_C4UB_V3F">GL_T2F_C4UB_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_T2F_N3F_V3F">GL_T2F_N3F_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_T2F_V3F">GL_T2F_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_T4F_C4F_N3F_V4F">GL_T4F_C4F_N3F_V4F</td>
+<td>u32</td>
+<td>Extensions. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_T4F_V4F">GL_T4F_V4F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TABLE_TOO_LARGE">GL_TABLE_TOO_LARGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TESS_CONTROL_SHADER_PATCHES">GL_TESS_CONTROL_SHADER_PATCHES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TESS_EVALUATION_SHADER_INVOCATIONS">GL_TESS_EVALUATION_SHADER_INVOCATIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE">GL_TEXTURE</td>
+<td>u32</td>
+<td>PixelCopyType. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE0">GL_TEXTURE0</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE1">GL_TEXTURE1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE10">GL_TEXTURE10</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE11">GL_TEXTURE11</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE12">GL_TEXTURE12</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE13">GL_TEXTURE13</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE14">GL_TEXTURE14</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE15">GL_TEXTURE15</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE16">GL_TEXTURE16</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE17">GL_TEXTURE17</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE18">GL_TEXTURE18</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE19">GL_TEXTURE19</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE2">GL_TEXTURE2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE20">GL_TEXTURE20</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE21">GL_TEXTURE21</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE22">GL_TEXTURE22</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE23">GL_TEXTURE23</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE24">GL_TEXTURE24</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE25">GL_TEXTURE25</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE26">GL_TEXTURE26</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE27">GL_TEXTURE27</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE28">GL_TEXTURE28</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE29">GL_TEXTURE29</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE3">GL_TEXTURE3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE30">GL_TEXTURE30</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE31">GL_TEXTURE31</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE4">GL_TEXTURE4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE5">GL_TEXTURE5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE6">GL_TEXTURE6</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE7">GL_TEXTURE7</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE8">GL_TEXTURE8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE9">GL_TEXTURE9</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_1D">GL_TEXTURE_1D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_1D_ARRAY">GL_TEXTURE_1D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_2D">GL_TEXTURE_2D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_2D_ARRAY">GL_TEXTURE_2D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_3D">GL_TEXTURE_3D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_ALPHA_SIZE">GL_TEXTURE_ALPHA_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_ALPHA_TYPE">GL_TEXTURE_ALPHA_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BASE_LEVEL">GL_TEXTURE_BASE_LEVEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_1D">GL_TEXTURE_BINDING_1D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_1D_ARRAY">GL_TEXTURE_BINDING_1D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_2D">GL_TEXTURE_BINDING_2D</td>
+<td>u32</td>
+<td>vertex_array. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_2D_ARRAY">GL_TEXTURE_BINDING_2D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_3D">GL_TEXTURE_BINDING_3D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_BUFFER">GL_TEXTURE_BINDING_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP">GL_TEXTURE_BINDING_CUBE_MAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP_ARRAY">GL_TEXTURE_BINDING_CUBE_MAP_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BINDING_RECTANGLE">GL_TEXTURE_BINDING_RECTANGLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BIT">GL_TEXTURE_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BLUE_SIZE">GL_TEXTURE_BLUE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BLUE_TYPE">GL_TEXTURE_BLUE_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BORDER">GL_TEXTURE_BORDER</td>
+<td>u32</td>
+<td>HintMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BORDER_COLOR">GL_TEXTURE_BORDER_COLOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BUFFER">GL_TEXTURE_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BUFFER_BINDING">GL_TEXTURE_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BUFFER_DATA_STORE_BINDING">GL_TEXTURE_BUFFER_DATA_STORE_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_BUFFER_FORMAT">GL_TEXTURE_BUFFER_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPARE_FUNC">GL_TEXTURE_COMPARE_FUNC</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPARE_FUNC_ARB">GL_TEXTURE_COMPARE_FUNC_ARB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPARE_MODE">GL_TEXTURE_COMPARE_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPARE_MODE_ARB">GL_TEXTURE_COMPARE_MODE_ARB</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPONENTS">GL_TEXTURE_COMPONENTS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPRESSED">GL_TEXTURE_COMPRESSED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPRESSED_IMAGE_SIZE">GL_TEXTURE_COMPRESSED_IMAGE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COMPRESSION_HINT">GL_TEXTURE_COMPRESSION_HINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY">GL_TEXTURE_COORD_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING">GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_COUNT_EXT">GL_TEXTURE_COORD_ARRAY_COUNT_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_EXT">GL_TEXTURE_COORD_ARRAY_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER">GL_TEXTURE_COORD_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER_EXT">GL_TEXTURE_COORD_ARRAY_POINTER_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE">GL_TEXTURE_COORD_ARRAY_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE_EXT">GL_TEXTURE_COORD_ARRAY_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE">GL_TEXTURE_COORD_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE_EXT">GL_TEXTURE_COORD_ARRAY_STRIDE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE">GL_TEXTURE_COORD_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE_EXT">GL_TEXTURE_COORD_ARRAY_TYPE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP">GL_TEXTURE_CUBE_MAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_ARRAY">GL_TEXTURE_CUBE_MAP_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_X">GL_TEXTURE_CUBE_MAP_NEGATIVE_X</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y">GL_TEXTURE_CUBE_MAP_NEGATIVE_Y</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z">GL_TEXTURE_CUBE_MAP_NEGATIVE_Z</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_X">GL_TEXTURE_CUBE_MAP_POSITIVE_X</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Y">GL_TEXTURE_CUBE_MAP_POSITIVE_Y</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Z">GL_TEXTURE_CUBE_MAP_POSITIVE_Z</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_DEPTH">GL_TEXTURE_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_DEPTH_SIZE">GL_TEXTURE_DEPTH_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_DEPTH_TYPE">GL_TEXTURE_DEPTH_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_ENV">GL_TEXTURE_ENV</td>
+<td>u32</td>
+<td>TextureGenMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_ENV_COLOR">GL_TEXTURE_ENV_COLOR</td>
+<td>u32</td>
+<td>TextureEnvTarget. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_ENV_MODE">GL_TEXTURE_ENV_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_FILTER_CONTROL">GL_TEXTURE_FILTER_CONTROL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_GEN_MODE">GL_TEXTURE_GEN_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_GEN_Q">GL_TEXTURE_GEN_Q</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_GEN_R">GL_TEXTURE_GEN_R</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_GEN_S">GL_TEXTURE_GEN_S</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_GEN_T">GL_TEXTURE_GEN_T</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_GREEN_SIZE">GL_TEXTURE_GREEN_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_GREEN_TYPE">GL_TEXTURE_GREEN_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_HEIGHT">GL_TEXTURE_HEIGHT</td>
+<td>u32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Ogl_GL_ALIASED_LINE_WIDTH_RANGE" class="tdname">
-GL_ALIASED_LINE_WIDTH_RANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Ogl_GL_TEXTURE_INTENSITY_SIZE">GL_TEXTURE_INTENSITY_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_INTENSITY_TYPE">GL_TEXTURE_INTENSITY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_INTERNAL_FORMAT">GL_TEXTURE_INTERNAL_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_LOD_BIAS">GL_TEXTURE_LOD_BIAS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_LUMINANCE_SIZE">GL_TEXTURE_LUMINANCE_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_LUMINANCE_TYPE">GL_TEXTURE_LUMINANCE_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_MAG_FILTER">GL_TEXTURE_MAG_FILTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_MATRIX">GL_TEXTURE_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_MAX_ANISOTROPY">GL_TEXTURE_MAX_ANISOTROPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_MAX_LEVEL">GL_TEXTURE_MAX_LEVEL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_MAX_LOD">GL_TEXTURE_MAX_LOD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_MIN_FILTER">GL_TEXTURE_MIN_FILTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_MIN_LOD">GL_TEXTURE_MIN_LOD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_PRIORITY">GL_TEXTURE_PRIORITY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_RECTANGLE">GL_TEXTURE_RECTANGLE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_RED_SIZE">GL_TEXTURE_RED_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_RED_TYPE">GL_TEXTURE_RED_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_RESIDENT">GL_TEXTURE_RESIDENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_SHARED_SIZE">GL_TEXTURE_SHARED_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_STACK_DEPTH">GL_TEXTURE_STACK_DEPTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_STENCIL_SIZE">GL_TEXTURE_STENCIL_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_WIDTH">GL_TEXTURE_WIDTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_WRAP_R">GL_TEXTURE_WRAP_R</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_WRAP_S">GL_TEXTURE_WRAP_S</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TEXTURE_WRAP_T">GL_TEXTURE_WRAP_T</td>
+<td>u32</td>
+<td>TextureWrapMode. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_BIT">GL_TRANSFORM_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_ACTIVE">GL_TRANSFORM_FEEDBACK_ACTIVE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER">GL_TRANSFORM_FEEDBACK_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_BINDING">GL_TRANSFORM_FEEDBACK_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_MODE">GL_TRANSFORM_FEEDBACK_BUFFER_MODE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_SIZE">GL_TRANSFORM_FEEDBACK_BUFFER_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_START">GL_TRANSFORM_FEEDBACK_BUFFER_START</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_OVERFLOW">GL_TRANSFORM_FEEDBACK_OVERFLOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_PAUSED">GL_TRANSFORM_FEEDBACK_PAUSED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN">GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW">GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYINGS">GL_TRANSFORM_FEEDBACK_VARYINGS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH">GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSPOSE_COLOR_MATRIX">GL_TRANSPOSE_COLOR_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSPOSE_MODELVIEW_MATRIX">GL_TRANSPOSE_MODELVIEW_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSPOSE_PROJECTION_MATRIX">GL_TRANSPOSE_PROJECTION_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRANSPOSE_TEXTURE_MATRIX">GL_TRANSPOSE_TEXTURE_MATRIX</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRIANGLES">GL_TRIANGLES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRIANGLES_ADJACENCY">GL_TRIANGLES_ADJACENCY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRIANGLE_FAN">GL_TRIANGLE_FAN</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRIANGLE_STRIP">GL_TRIANGLE_STRIP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRIANGLE_STRIP_ADJACENCY">GL_TRIANGLE_STRIP_ADJACENCY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_TRUE">GL_TRUE</td>
+<td>u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_ALIGNMENT">GL_UNPACK_ALIGNMENT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_IMAGE_HEIGHT">GL_UNPACK_IMAGE_HEIGHT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_LSB_FIRST">GL_UNPACK_LSB_FIRST</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_ROW_LENGTH">GL_UNPACK_ROW_LENGTH</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_SKIP_IMAGES">GL_UNPACK_SKIP_IMAGES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_SKIP_PIXELS">GL_UNPACK_SKIP_PIXELS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_SKIP_ROWS">GL_UNPACK_SKIP_ROWS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNPACK_SWAP_BYTES">GL_UNPACK_SWAP_BYTES</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_BYTE">GL_UNSIGNED_BYTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_BYTE_2_3_3_REV">GL_UNSIGNED_BYTE_2_3_3_REV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_BYTE_3_3_2">GL_UNSIGNED_BYTE_3_3_2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT">GL_UNSIGNED_INT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_10F_11F_11F_REV">GL_UNSIGNED_INT_10F_11F_11F_REV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_10_10_10_2">GL_UNSIGNED_INT_10_10_10_2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_24_8">GL_UNSIGNED_INT_24_8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_5_9_9_9_REV">GL_UNSIGNED_INT_5_9_9_9_REV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8">GL_UNSIGNED_INT_8_8_8_8</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8_REV">GL_UNSIGNED_INT_8_8_8_8_REV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D">GL_UNSIGNED_INT_SAMPLER_1D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D_ARRAY">GL_UNSIGNED_INT_SAMPLER_1D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D">GL_UNSIGNED_INT_SAMPLER_2D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_ARRAY">GL_UNSIGNED_INT_SAMPLER_2D_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_RECT">GL_UNSIGNED_INT_SAMPLER_2D_RECT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_3D">GL_UNSIGNED_INT_SAMPLER_3D</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_BUFFER">GL_UNSIGNED_INT_SAMPLER_BUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE">GL_UNSIGNED_INT_SAMPLER_CUBE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY">GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_VEC2">GL_UNSIGNED_INT_VEC2</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_VEC3">GL_UNSIGNED_INT_VEC3</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_INT_VEC4">GL_UNSIGNED_INT_VEC4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_NORMALIZED">GL_UNSIGNED_NORMALIZED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_SHORT">GL_UNSIGNED_SHORT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_SHORT_1_5_5_5_REV">GL_UNSIGNED_SHORT_1_5_5_5_REV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4">GL_UNSIGNED_SHORT_4_4_4_4</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4_REV">GL_UNSIGNED_SHORT_4_4_4_4_REV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_SHORT_5_5_5_1">GL_UNSIGNED_SHORT_5_5_5_1</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5">GL_UNSIGNED_SHORT_5_6_5</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5_REV">GL_UNSIGNED_SHORT_5_6_5_REV</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_UPPER_LEFT">GL_UPPER_LEFT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_V2F">GL_V2F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_V3F">GL_V3F</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VALIDATE_STATUS">GL_VALIDATE_STATUS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VENDOR">GL_VENDOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERSION">GL_VERSION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY">GL_VERTEX_ARRAY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_BUFFER_BINDING">GL_VERTEX_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_COUNT_EXT">GL_VERTEX_ARRAY_COUNT_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_EXT">GL_VERTEX_ARRAY_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_POINTER">GL_VERTEX_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_POINTER_EXT">GL_VERTEX_ARRAY_POINTER_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_SIZE">GL_VERTEX_ARRAY_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_SIZE_EXT">GL_VERTEX_ARRAY_SIZE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_STRIDE">GL_VERTEX_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_STRIDE_EXT">GL_VERTEX_ARRAY_STRIDE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_TYPE">GL_VERTEX_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ARRAY_TYPE_EXT">GL_VERTEX_ARRAY_TYPE_EXT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING">GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_DIVISOR">GL_VERTEX_ATTRIB_ARRAY_DIVISOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_ENABLED">GL_VERTEX_ATTRIB_ARRAY_ENABLED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_INTEGER">GL_VERTEX_ATTRIB_ARRAY_INTEGER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_LONG">GL_VERTEX_ATTRIB_ARRAY_LONG</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_NORMALIZED">GL_VERTEX_ATTRIB_ARRAY_NORMALIZED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_POINTER">GL_VERTEX_ATTRIB_ARRAY_POINTER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_SIZE">GL_VERTEX_ATTRIB_ARRAY_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_STRIDE">GL_VERTEX_ATTRIB_ARRAY_STRIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_TYPE">GL_VERTEX_ATTRIB_ARRAY_TYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_PROGRAM_POINT_SIZE">GL_VERTEX_PROGRAM_POINT_SIZE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_PROGRAM_TWO_SIDE">GL_VERTEX_PROGRAM_TWO_SIDE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_SHADER">GL_VERTEX_SHADER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTEX_SHADER_INVOCATIONS">GL_VERTEX_SHADER_INVOCATIONS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VERTICES_SUBMITTED">GL_VERTICES_SUBMITTED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VIEWPORT">GL_VIEWPORT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_VIEWPORT_BIT">GL_VIEWPORT_BIT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_WEIGHT_ARRAY_BUFFER_BINDING">GL_WEIGHT_ARRAY_BUFFER_BINDING</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_WIN_draw_range_elements">GL_WIN_draw_range_elements</td>
+<td>s32</td>
+<td>EXT_vertex_array. </td>
+</tr>
+<tr>
+<td id="Ogl_GL_WIN_swap_hint">GL_WIN_swap_hint</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_WRAP_BORDER">GL_WRAP_BORDER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_WRITE_ONLY">GL_WRITE_ONLY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_XOR">GL_XOR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Ogl_GL_ZERO">GL_ZERO</td>
+<td>u32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Ogl_GL_ALIASED_POINT_SIZE_RANGE" class="tdname">
-GL_ALIASED_POINT_SIZE_RANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Ogl_GL_ZOOM_X">GL_ZOOM_X</td>
+<td>u32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Ogl_GL_ALL_ATTRIB_BITS" class="tdname">
-GL_ALL_ATTRIB_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>BeginMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA" class="tdname">
-GL_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA12" class="tdname">
-GL_ALPHA12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA16" class="tdname">
-GL_ALPHA16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA4" class="tdname">
-GL_ALPHA4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA8" class="tdname">
-GL_ALPHA8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA_BIAS" class="tdname">
-GL_ALPHA_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA_BITS" class="tdname">
-GL_ALPHA_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA_INTEGER" class="tdname">
-GL_ALPHA_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA_SCALE" class="tdname">
-GL_ALPHA_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA_TEST" class="tdname">
-GL_ALPHA_TEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA_TEST_FUNC" class="tdname">
-GL_ALPHA_TEST_FUNC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALPHA_TEST_REF" class="tdname">
-GL_ALPHA_TEST_REF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ALWAYS" class="tdname">
-GL_ALWAYS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>AttribMask. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AMBIENT" class="tdname">
-GL_AMBIENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AMBIENT_AND_DIFFUSE" class="tdname">
-GL_AMBIENT_AND_DIFFUSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AND" class="tdname">
-GL_AND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AND_INVERTED" class="tdname">
-GL_AND_INVERTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AND_REVERSE" class="tdname">
-GL_AND_REVERSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ARRAY_BUFFER" class="tdname">
-GL_ARRAY_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ARRAY_BUFFER_BINDING" class="tdname">
-GL_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ATTACHED_SHADERS" class="tdname">
-GL_ATTACHED_SHADERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ATTRIB_STACK_DEPTH" class="tdname">
-GL_ATTRIB_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AUTO_NORMAL" class="tdname">
-GL_AUTO_NORMAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AUX0" class="tdname">
-GL_AUX0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AUX1" class="tdname">
-GL_AUX1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AUX2" class="tdname">
-GL_AUX2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AUX3" class="tdname">
-GL_AUX3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>ErrorCode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_AUX_BUFFERS" class="tdname">
-GL_AUX_BUFFERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BACK" class="tdname">
-GL_BACK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BACK_LEFT" class="tdname">
-GL_BACK_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BACK_RIGHT" class="tdname">
-GL_BACK_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BGR" class="tdname">
-GL_BGR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BGRA" class="tdname">
-GL_BGRA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BGRA_EXT" class="tdname">
-GL_BGRA_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>EXT_paletted_texture  These must match the GL_COLOR_TABLE_..._SGI enumerants. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BGRA_INTEGER" class="tdname">
-GL_BGRA_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BGR_EXT" class="tdname">
-GL_BGR_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BGR_INTEGER" class="tdname">
-GL_BGR_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BITMAP" class="tdname">
-GL_BITMAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>PolygonMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BITMAP_TOKEN" class="tdname">
-GL_BITMAP_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND" class="tdname">
-GL_BLEND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_COLOR" class="tdname">
-GL_BLEND_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_DST" class="tdname">
-GL_BLEND_DST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_DST_ALPHA" class="tdname">
-GL_BLEND_DST_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_DST_RGB" class="tdname">
-GL_BLEND_DST_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_EQUATION" class="tdname">
-GL_BLEND_EQUATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_EQUATION_ALPHA" class="tdname">
-GL_BLEND_EQUATION_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_EQUATION_RGB" class="tdname">
-GL_BLEND_EQUATION_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_SRC" class="tdname">
-GL_BLEND_SRC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_SRC_ALPHA" class="tdname">
-GL_BLEND_SRC_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLEND_SRC_RGB" class="tdname">
-GL_BLEND_SRC_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLUE" class="tdname">
-GL_BLUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLUE_BIAS" class="tdname">
-GL_BLUE_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLUE_BITS" class="tdname">
-GL_BLUE_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLUE_INTEGER" class="tdname">
-GL_BLUE_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BLUE_SCALE" class="tdname">
-GL_BLUE_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BOOL" class="tdname">
-GL_BOOL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BOOL_VEC2" class="tdname">
-GL_BOOL_VEC2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BOOL_VEC3" class="tdname">
-GL_BOOL_VEC3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BOOL_VEC4" class="tdname">
-GL_BOOL_VEC4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_ACCESS" class="tdname">
-GL_BUFFER_ACCESS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_ACCESS_FLAGS" class="tdname">
-GL_BUFFER_ACCESS_FLAGS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_MAPPED" class="tdname">
-GL_BUFFER_MAPPED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_MAP_LENGTH" class="tdname">
-GL_BUFFER_MAP_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_MAP_OFFSET" class="tdname">
-GL_BUFFER_MAP_OFFSET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_MAP_POINTER" class="tdname">
-GL_BUFFER_MAP_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_SIZE" class="tdname">
-GL_BUFFER_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BUFFER_USAGE" class="tdname">
-GL_BUFFER_USAGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_BYTE" class="tdname">
-GL_BYTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_C3F_V3F" class="tdname">
-GL_C3F_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_C4F_N3F_V3F" class="tdname">
-GL_C4F_N3F_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_C4UB_V2F" class="tdname">
-GL_C4UB_V2F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_C4UB_V3F" class="tdname">
-GL_C4UB_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CCW" class="tdname">
-GL_CCW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>GetMapTarget. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLAMP" class="tdname">
-GL_CLAMP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLAMP_FRAGMENT_COLOR" class="tdname">
-GL_CLAMP_FRAGMENT_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLAMP_READ_COLOR" class="tdname">
-GL_CLAMP_READ_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLAMP_TO_BORDER" class="tdname">
-GL_CLAMP_TO_BORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLAMP_TO_EDGE" class="tdname">
-GL_CLAMP_TO_EDGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLAMP_VERTEX_COLOR" class="tdname">
-GL_CLAMP_VERTEX_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLEAR" class="tdname">
-GL_CLEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIENT_ACTIVE_TEXTURE" class="tdname">
-GL_CLIENT_ACTIVE_TEXTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIENT_ALL_ATTRIB_BITS" class="tdname">
-GL_CLIENT_ALL_ATTRIB_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>polygon_offset. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIENT_ATTRIB_STACK_DEPTH" class="tdname">
-GL_CLIENT_ATTRIB_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIENT_PIXEL_STORE_BIT" class="tdname">
-GL_CLIENT_PIXEL_STORE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIENT_VERTEX_ARRAY_BIT" class="tdname">
-GL_CLIENT_VERTEX_ARRAY_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIPPING_INPUT_PRIMITIVES" class="tdname">
-GL_CLIPPING_INPUT_PRIMITIVES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIPPING_OUTPUT_PRIMITIVES" class="tdname">
-GL_CLIPPING_OUTPUT_PRIMITIVES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_DISTANCE0" class="tdname">
-GL_CLIP_DISTANCE0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_DISTANCE1" class="tdname">
-GL_CLIP_DISTANCE1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_DISTANCE2" class="tdname">
-GL_CLIP_DISTANCE2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_DISTANCE3" class="tdname">
-GL_CLIP_DISTANCE3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_DISTANCE4" class="tdname">
-GL_CLIP_DISTANCE4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_DISTANCE5" class="tdname">
-GL_CLIP_DISTANCE5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_PLANE0" class="tdname">
-GL_CLIP_PLANE0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_PLANE1" class="tdname">
-GL_CLIP_PLANE1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_PLANE2" class="tdname">
-GL_CLIP_PLANE2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_PLANE3" class="tdname">
-GL_CLIP_PLANE3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_PLANE4" class="tdname">
-GL_CLIP_PLANE4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CLIP_PLANE5" class="tdname">
-GL_CLIP_PLANE5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>DataType. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COEFF" class="tdname">
-GL_COEFF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR" class="tdname">
-GL_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY" class="tdname">
-GL_COLOR_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_BUFFER_BINDING" class="tdname">
-GL_COLOR_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_COUNT_EXT" class="tdname">
-GL_COLOR_ARRAY_COUNT_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_EXT" class="tdname">
-GL_COLOR_ARRAY_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_POINTER" class="tdname">
-GL_COLOR_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_POINTER_EXT" class="tdname">
-GL_COLOR_ARRAY_POINTER_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_SIZE" class="tdname">
-GL_COLOR_ARRAY_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_SIZE_EXT" class="tdname">
-GL_COLOR_ARRAY_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_STRIDE" class="tdname">
-GL_COLOR_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_STRIDE_EXT" class="tdname">
-GL_COLOR_ARRAY_STRIDE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_TYPE" class="tdname">
-GL_COLOR_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ARRAY_TYPE_EXT" class="tdname">
-GL_COLOR_ARRAY_TYPE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT0" class="tdname">
-GL_COLOR_ATTACHMENT0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT1" class="tdname">
-GL_COLOR_ATTACHMENT1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT10" class="tdname">
-GL_COLOR_ATTACHMENT10</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT11" class="tdname">
-GL_COLOR_ATTACHMENT11</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT12" class="tdname">
-GL_COLOR_ATTACHMENT12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT13" class="tdname">
-GL_COLOR_ATTACHMENT13</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT14" class="tdname">
-GL_COLOR_ATTACHMENT14</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT15" class="tdname">
-GL_COLOR_ATTACHMENT15</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT2" class="tdname">
-GL_COLOR_ATTACHMENT2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT3" class="tdname">
-GL_COLOR_ATTACHMENT3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT4" class="tdname">
-GL_COLOR_ATTACHMENT4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT5" class="tdname">
-GL_COLOR_ATTACHMENT5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT6" class="tdname">
-GL_COLOR_ATTACHMENT6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT7" class="tdname">
-GL_COLOR_ATTACHMENT7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT8" class="tdname">
-GL_COLOR_ATTACHMENT8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT9" class="tdname">
-GL_COLOR_ATTACHMENT9</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_BUFFER_BIT" class="tdname">
-GL_COLOR_BUFFER_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_CLEAR_VALUE" class="tdname">
-GL_COLOR_CLEAR_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEX" class="tdname">
-GL_COLOR_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEX12_EXT" class="tdname">
-GL_COLOR_INDEX12_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEX16_EXT" class="tdname">
-GL_COLOR_INDEX16_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>WIN_draw_range_elements. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEX1_EXT" class="tdname">
-GL_COLOR_INDEX1_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEX2_EXT" class="tdname">
-GL_COLOR_INDEX2_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEX4_EXT" class="tdname">
-GL_COLOR_INDEX4_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEX8_EXT" class="tdname">
-GL_COLOR_INDEX8_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_INDEXES" class="tdname">
-GL_COLOR_INDEXES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>MatrixMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_LOGIC_OP" class="tdname">
-GL_COLOR_LOGIC_OP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_MATERIAL" class="tdname">
-GL_COLOR_MATERIAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_MATERIAL_FACE" class="tdname">
-GL_COLOR_MATERIAL_FACE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_MATERIAL_PARAMETER" class="tdname">
-GL_COLOR_MATERIAL_PARAMETER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_MATRIX" class="tdname">
-GL_COLOR_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_MATRIX_STACK_DEPTH" class="tdname">
-GL_COLOR_MATRIX_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_SUM" class="tdname">
-GL_COLOR_SUM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE" class="tdname">
-GL_COLOR_TABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE" class="tdname">
-GL_COLOR_TABLE_ALPHA_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE_EXT" class="tdname">
-GL_COLOR_TABLE_ALPHA_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_BIAS" class="tdname">
-GL_COLOR_TABLE_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE" class="tdname">
-GL_COLOR_TABLE_BLUE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE_EXT" class="tdname">
-GL_COLOR_TABLE_BLUE_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_FORMAT" class="tdname">
-GL_COLOR_TABLE_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_FORMAT_EXT" class="tdname">
-GL_COLOR_TABLE_FORMAT_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE" class="tdname">
-GL_COLOR_TABLE_GREEN_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE_EXT" class="tdname">
-GL_COLOR_TABLE_GREEN_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE" class="tdname">
-GL_COLOR_TABLE_INTENSITY_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE_EXT" class="tdname">
-GL_COLOR_TABLE_INTENSITY_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE" class="tdname">
-GL_COLOR_TABLE_LUMINANCE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE_EXT" class="tdname">
-GL_COLOR_TABLE_LUMINANCE_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_RED_SIZE" class="tdname">
-GL_COLOR_TABLE_RED_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_RED_SIZE_EXT" class="tdname">
-GL_COLOR_TABLE_RED_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_SCALE" class="tdname">
-GL_COLOR_TABLE_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_WIDTH" class="tdname">
-GL_COLOR_TABLE_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_TABLE_WIDTH_EXT" class="tdname">
-GL_COLOR_TABLE_WIDTH_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COLOR_WRITEMASK" class="tdname">
-GL_COLOR_WRITEMASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMBINE" class="tdname">
-GL_COMBINE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMBINE_ALPHA" class="tdname">
-GL_COMBINE_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMBINE_RGB" class="tdname">
-GL_COMBINE_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPARE_REF_TO_TEXTURE" class="tdname">
-GL_COMPARE_REF_TO_TEXTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPARE_R_TO_TEXTURE" class="tdname">
-GL_COMPARE_R_TO_TEXTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPARE_R_TO_TEXTURE_ARB" class="tdname">
-GL_COMPARE_R_TO_TEXTURE_ARB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>----------------------------- GL_ARB_imaging ----------------------------. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPILE" class="tdname">
-GL_COMPILE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPILE_AND_EXECUTE" class="tdname">
-GL_COMPILE_AND_EXECUTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>LogicOp. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPILE_STATUS" class="tdname">
-GL_COMPILE_STATUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_ALPHA" class="tdname">
-GL_COMPRESSED_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_INTENSITY" class="tdname">
-GL_COMPRESSED_INTENSITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_LUMINANCE" class="tdname">
-GL_COMPRESSED_LUMINANCE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_LUMINANCE_ALPHA" class="tdname">
-GL_COMPRESSED_LUMINANCE_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_RGB" class="tdname">
-GL_COMPRESSED_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_RGBA" class="tdname">
-GL_COMPRESSED_RGBA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_RGBA_BPTC_UNORM" class="tdname">
-GL_COMPRESSED_RGBA_BPTC_UNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT" class="tdname">
-GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT" class="tdname">
-GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_SLUMINANCE" class="tdname">
-GL_COMPRESSED_SLUMINANCE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_SLUMINANCE_ALPHA" class="tdname">
-GL_COMPRESSED_SLUMINANCE_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_SRGB" class="tdname">
-GL_COMPRESSED_SRGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA" class="tdname">
-GL_COMPRESSED_SRGB_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM" class="tdname">
-GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPRESSED_TEXTURE_FORMATS" class="tdname">
-GL_COMPRESSED_TEXTURE_FORMATS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COMPUTE_SHADER_INVOCATIONS" class="tdname">
-GL_COMPUTE_SHADER_INVOCATIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONSTANT" class="tdname">
-GL_CONSTANT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONSTANT_ALPHA" class="tdname">
-GL_CONSTANT_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONSTANT_ATTENUATION" class="tdname">
-GL_CONSTANT_ATTENUATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONSTANT_BORDER" class="tdname">
-GL_CONSTANT_BORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONSTANT_COLOR" class="tdname">
-GL_CONSTANT_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONTEXT_COMPATIBILITY_PROFILE_BIT" class="tdname">
-GL_CONTEXT_COMPATIBILITY_PROFILE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONTEXT_CORE_PROFILE_BIT" class="tdname">
-GL_CONTEXT_CORE_PROFILE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONTEXT_FLAGS" class="tdname">
-GL_CONTEXT_FLAGS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT" class="tdname">
-GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONTEXT_FLAG_NO_ERROR_BIT" class="tdname">
-GL_CONTEXT_FLAG_NO_ERROR_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT" class="tdname">
-GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONTEXT_PROFILE_MASK" class="tdname">
-GL_CONTEXT_PROFILE_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_1D" class="tdname">
-GL_CONVOLUTION_1D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_2D" class="tdname">
-GL_CONVOLUTION_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_BORDER_COLOR" class="tdname">
-GL_CONVOLUTION_BORDER_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>------------------- GL_ARB_framebuffer_no_attachments -------------------. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_BORDER_MODE" class="tdname">
-GL_CONVOLUTION_BORDER_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_FILTER_BIAS" class="tdname">
-GL_CONVOLUTION_FILTER_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_FILTER_SCALE" class="tdname">
-GL_CONVOLUTION_FILTER_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_FORMAT" class="tdname">
-GL_CONVOLUTION_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_HEIGHT" class="tdname">
-GL_CONVOLUTION_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CONVOLUTION_WIDTH" class="tdname">
-GL_CONVOLUTION_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COORD_REPLACE" class="tdname">
-GL_COORD_REPLACE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COPY" class="tdname">
-GL_COPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COPY_INVERTED" class="tdname">
-GL_COPY_INVERTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COPY_PIXEL_TOKEN" class="tdname">
-GL_COPY_PIXEL_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COPY_READ_BUFFER_BINDING" class="tdname">
-GL_COPY_READ_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_COPY_WRITE_BUFFER_BINDING" class="tdname">
-GL_COPY_WRITE_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CULL_FACE" class="tdname">
-GL_CULL_FACE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CULL_FACE_MODE" class="tdname">
-GL_CULL_FACE_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_BIT" class="tdname">
-GL_CURRENT_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_COLOR" class="tdname">
-GL_CURRENT_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_FOG_COORD" class="tdname">
-GL_CURRENT_FOG_COORD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_FOG_COORDINATE" class="tdname">
-GL_CURRENT_FOG_COORDINATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_INDEX" class="tdname">
-GL_CURRENT_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_NORMAL" class="tdname">
-GL_CURRENT_NORMAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_PROGRAM" class="tdname">
-GL_CURRENT_PROGRAM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_QUERY" class="tdname">
-GL_CURRENT_QUERY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_RASTER_COLOR" class="tdname">
-GL_CURRENT_RASTER_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_RASTER_DISTANCE" class="tdname">
-GL_CURRENT_RASTER_DISTANCE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_RASTER_INDEX" class="tdname">
-GL_CURRENT_RASTER_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_RASTER_POSITION" class="tdname">
-GL_CURRENT_RASTER_POSITION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_RASTER_POSITION_VALID" class="tdname">
-GL_CURRENT_RASTER_POSITION_VALID</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_RASTER_SECONDARY_COLOR" class="tdname">
-GL_CURRENT_RASTER_SECONDARY_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_RASTER_TEXTURE_COORDS" class="tdname">
-GL_CURRENT_RASTER_TEXTURE_COORDS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_SECONDARY_COLOR" class="tdname">
-GL_CURRENT_SECONDARY_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_TEXTURE_COORDS" class="tdname">
-GL_CURRENT_TEXTURE_COORDS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CURRENT_VERTEX_ATTRIB" class="tdname">
-GL_CURRENT_VERTEX_ATTRIB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_CW" class="tdname">
-GL_CW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DECAL" class="tdname">
-GL_DECAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureEnvParameter. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DECR" class="tdname">
-GL_DECR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>StringName. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DECR_WRAP" class="tdname">
-GL_DECR_WRAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DELETE_STATUS" class="tdname">
-GL_DELETE_STATUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH" class="tdname">
-GL_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH24_STENCIL8" class="tdname">
-GL_DEPTH24_STENCIL8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_ATTACHMENT" class="tdname">
-GL_DEPTH_ATTACHMENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_BIAS" class="tdname">
-GL_DEPTH_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_BITS" class="tdname">
-GL_DEPTH_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_BUFFER" class="tdname">
-GL_DEPTH_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_BUFFER_BIT" class="tdname">
-GL_DEPTH_BUFFER_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_CLEAR_VALUE" class="tdname">
-GL_DEPTH_CLEAR_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_COMPONENT" class="tdname">
-GL_DEPTH_COMPONENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_COMPONENT16" class="tdname">
-GL_DEPTH_COMPONENT16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_COMPONENT24" class="tdname">
-GL_DEPTH_COMPONENT24</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_COMPONENT32" class="tdname">
-GL_DEPTH_COMPONENT32</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_FUNC" class="tdname">
-GL_DEPTH_FUNC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_RANGE" class="tdname">
-GL_DEPTH_RANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_SCALE" class="tdname">
-GL_DEPTH_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_STENCIL" class="tdname">
-GL_DEPTH_STENCIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_STENCIL_ATTACHMENT" class="tdname">
-GL_DEPTH_STENCIL_ATTACHMENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_TEST" class="tdname">
-GL_DEPTH_TEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_TEXTURE_MODE" class="tdname">
-GL_DEPTH_TEXTURE_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DEPTH_WRITEMASK" class="tdname">
-GL_DEPTH_WRITEMASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DIFFUSE" class="tdname">
-GL_DIFFUSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DITHER" class="tdname">
-GL_DITHER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DOMAIN" class="tdname">
-GL_DOMAIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>GetTarget. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DONT_CARE" class="tdname">
-GL_DONT_CARE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DOT3_RGB" class="tdname">
-GL_DOT3_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DOT3_RGBA" class="tdname">
-GL_DOT3_RGBA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DOUBLE" class="tdname">
-GL_DOUBLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>DrawBufferMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DOUBLEBUFFER" class="tdname">
-GL_DOUBLEBUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DOUBLE_EXT" class="tdname">
-GL_DOUBLE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>EXT_bgra. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER" class="tdname">
-GL_DRAW_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER0" class="tdname">
-GL_DRAW_BUFFER0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER1" class="tdname">
-GL_DRAW_BUFFER1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER10" class="tdname">
-GL_DRAW_BUFFER10</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER11" class="tdname">
-GL_DRAW_BUFFER11</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER12" class="tdname">
-GL_DRAW_BUFFER12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER13" class="tdname">
-GL_DRAW_BUFFER13</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER14" class="tdname">
-GL_DRAW_BUFFER14</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER15" class="tdname">
-GL_DRAW_BUFFER15</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER2" class="tdname">
-GL_DRAW_BUFFER2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER3" class="tdname">
-GL_DRAW_BUFFER3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER4" class="tdname">
-GL_DRAW_BUFFER4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER5" class="tdname">
-GL_DRAW_BUFFER5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER6" class="tdname">
-GL_DRAW_BUFFER6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER7" class="tdname">
-GL_DRAW_BUFFER7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER8" class="tdname">
-GL_DRAW_BUFFER8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_BUFFER9" class="tdname">
-GL_DRAW_BUFFER9</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_FRAMEBUFFER" class="tdname">
-GL_DRAW_FRAMEBUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_FRAMEBUFFER_BINDING" class="tdname">
-GL_DRAW_FRAMEBUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DRAW_PIXEL_TOKEN" class="tdname">
-GL_DRAW_PIXEL_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DST_ALPHA" class="tdname">
-GL_DST_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DST_COLOR" class="tdname">
-GL_DST_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DYNAMIC_COPY" class="tdname">
-GL_DYNAMIC_COPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DYNAMIC_DRAW" class="tdname">
-GL_DYNAMIC_DRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_DYNAMIC_READ" class="tdname">
-GL_DYNAMIC_READ</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG" class="tdname">
-GL_EDGE_FLAG</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY" class="tdname">
-GL_EDGE_FLAG_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_BUFFER_BINDING" class="tdname">
-GL_EDGE_FLAG_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_COUNT_EXT" class="tdname">
-GL_EDGE_FLAG_ARRAY_COUNT_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_EXT" class="tdname">
-GL_EDGE_FLAG_ARRAY_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER" class="tdname">
-GL_EDGE_FLAG_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER_EXT" class="tdname">
-GL_EDGE_FLAG_ARRAY_POINTER_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE" class="tdname">
-GL_EDGE_FLAG_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE_EXT" class="tdname">
-GL_EDGE_FLAG_ARRAY_STRIDE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER" class="tdname">
-GL_ELEMENT_ARRAY_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER_BINDING" class="tdname">
-GL_ELEMENT_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EMISSION" class="tdname">
-GL_EMISSION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ENABLE_BIT" class="tdname">
-GL_ENABLE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EQUAL" class="tdname">
-GL_EQUAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EQUIV" class="tdname">
-GL_EQUIV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EVAL_BIT" class="tdname">
-GL_EVAL_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EXP" class="tdname">
-GL_EXP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EXP2" class="tdname">
-GL_EXP2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>FrontFaceDirection. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EXTENSIONS" class="tdname">
-GL_EXTENSIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureCoordName. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EXT_bgra" class="tdname">
-GL_EXT_bgra</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EXT_paletted_texture" class="tdname">
-GL_EXT_paletted_texture</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EXT_vertex_array" class="tdname">
-GL_EXT_vertex_array</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EYE_LINEAR" class="tdname">
-GL_EYE_LINEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_EYE_PLANE" class="tdname">
-GL_EYE_PLANE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureMagFilter. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FALSE" class="tdname">
-GL_FALSE</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-<p>ClipPlaneName. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FASTEST" class="tdname">
-GL_FASTEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FEEDBACK" class="tdname">
-GL_FEEDBACK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FEEDBACK_BUFFER_POINTER" class="tdname">
-GL_FEEDBACK_BUFFER_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FEEDBACK_BUFFER_SIZE" class="tdname">
-GL_FEEDBACK_BUFFER_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FEEDBACK_BUFFER_TYPE" class="tdname">
-GL_FEEDBACK_BUFFER_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FILL" class="tdname">
-GL_FILL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>RenderingMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FIXED_ONLY" class="tdname">
-GL_FIXED_ONLY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLAT" class="tdname">
-GL_FLAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT" class="tdname">
-GL_FLOAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT2" class="tdname">
-GL_FLOAT_MAT2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT2x3" class="tdname">
-GL_FLOAT_MAT2x3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT2x4" class="tdname">
-GL_FLOAT_MAT2x4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT3" class="tdname">
-GL_FLOAT_MAT3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT3x2" class="tdname">
-GL_FLOAT_MAT3x2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT3x4" class="tdname">
-GL_FLOAT_MAT3x4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT4" class="tdname">
-GL_FLOAT_MAT4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT4x2" class="tdname">
-GL_FLOAT_MAT4x2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_MAT4x3" class="tdname">
-GL_FLOAT_MAT4x3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_VEC2" class="tdname">
-GL_FLOAT_VEC2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_VEC3" class="tdname">
-GL_FLOAT_VEC3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FLOAT_VEC4" class="tdname">
-GL_FLOAT_VEC4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG" class="tdname">
-GL_FOG</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_BIT" class="tdname">
-GL_FOG_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COLOR" class="tdname">
-GL_FOG_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORD" class="tdname">
-GL_FOG_COORD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORDINATE" class="tdname">
-GL_FOG_COORDINATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY" class="tdname">
-GL_FOG_COORDINATE_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING" class="tdname">
-GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_POINTER" class="tdname">
-GL_FOG_COORDINATE_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_STRIDE" class="tdname">
-GL_FOG_COORDINATE_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_TYPE" class="tdname">
-GL_FOG_COORDINATE_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORDINATE_SOURCE" class="tdname">
-GL_FOG_COORDINATE_SOURCE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY" class="tdname">
-GL_FOG_COORD_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_BUFFER_BINDING" class="tdname">
-GL_FOG_COORD_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_POINTER" class="tdname">
-GL_FOG_COORD_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_STRIDE" class="tdname">
-GL_FOG_COORD_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_TYPE" class="tdname">
-GL_FOG_COORD_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_COORD_SRC" class="tdname">
-GL_FOG_COORD_SRC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_DENSITY" class="tdname">
-GL_FOG_DENSITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_END" class="tdname">
-GL_FOG_END</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_HINT" class="tdname">
-GL_FOG_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_INDEX" class="tdname">
-GL_FOG_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_MODE" class="tdname">
-GL_FOG_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_SPECULAR_TEXTURE_WIN" class="tdname">
-GL_FOG_SPECULAR_TEXTURE_WIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>For compatibility with OpenGL v1.0. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FOG_START" class="tdname">
-GL_FOG_START</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAGMENT_DEPTH" class="tdname">
-GL_FRAGMENT_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAGMENT_SHADER" class="tdname">
-GL_FRAGMENT_SHADER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAGMENT_SHADER_DERIVATIVE_HINT" class="tdname">
-GL_FRAGMENT_SHADER_DERIVATIVE_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAGMENT_SHADER_INVOCATIONS" class="tdname">
-GL_FRAGMENT_SHADER_INVOCATIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER" class="tdname">
-GL_FRAMEBUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_LAYERED" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_LAYERED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL" class="tdname">
-GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_BINDING" class="tdname">
-GL_FRAMEBUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_COMPLETE" class="tdname">
-GL_FRAMEBUFFER_COMPLETE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT" class="tdname">
-GL_FRAMEBUFFER_DEFAULT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS" class="tdname">
-GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_HEIGHT" class="tdname">
-GL_FRAMEBUFFER_DEFAULT_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_LAYERS" class="tdname">
-GL_FRAMEBUFFER_DEFAULT_LAYERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_SAMPLES" class="tdname">
-GL_FRAMEBUFFER_DEFAULT_SAMPLES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_WIDTH" class="tdname">
-GL_FRAMEBUFFER_DEFAULT_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT" class="tdname">
-GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER" class="tdname">
-GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS" class="tdname">
-GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT" class="tdname">
-GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE" class="tdname">
-GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER" class="tdname">
-GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_SRGB" class="tdname">
-GL_FRAMEBUFFER_SRGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_UNDEFINED" class="tdname">
-GL_FRAMEBUFFER_UNDEFINED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRAMEBUFFER_UNSUPPORTED" class="tdname">
-GL_FRAMEBUFFER_UNSUPPORTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRONT" class="tdname">
-GL_FRONT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRONT_AND_BACK" class="tdname">
-GL_FRONT_AND_BACK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRONT_FACE" class="tdname">
-GL_FRONT_FACE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRONT_LEFT" class="tdname">
-GL_FRONT_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FRONT_RIGHT" class="tdname">
-GL_FRONT_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FUNC_ADD" class="tdname">
-GL_FUNC_ADD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FUNC_REVERSE_SUBTRACT" class="tdname">
-GL_FUNC_REVERSE_SUBTRACT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_FUNC_SUBTRACT" class="tdname">
-GL_FUNC_SUBTRACT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GENERATE_MIPMAP" class="tdname">
-GL_GENERATE_MIPMAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GENERATE_MIPMAP_HINT" class="tdname">
-GL_GENERATE_MIPMAP_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GEOMETRY_INPUT_TYPE" class="tdname">
-GL_GEOMETRY_INPUT_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GEOMETRY_OUTPUT_TYPE" class="tdname">
-GL_GEOMETRY_OUTPUT_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GEOMETRY_SHADER" class="tdname">
-GL_GEOMETRY_SHADER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED" class="tdname">
-GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GEOMETRY_VERTICES_OUT" class="tdname">
-GL_GEOMETRY_VERTICES_OUT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GEQUAL" class="tdname">
-GL_GEQUAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GREATER" class="tdname">
-GL_GREATER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GREEN" class="tdname">
-GL_GREEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GREEN_BIAS" class="tdname">
-GL_GREEN_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GREEN_BITS" class="tdname">
-GL_GREEN_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GREEN_INTEGER" class="tdname">
-GL_GREEN_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_GREEN_SCALE" class="tdname">
-GL_GREEN_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HINT_BIT" class="tdname">
-GL_HINT_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM" class="tdname">
-GL_HISTOGRAM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_ALPHA_SIZE" class="tdname">
-GL_HISTOGRAM_ALPHA_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_BLUE_SIZE" class="tdname">
-GL_HISTOGRAM_BLUE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_FORMAT" class="tdname">
-GL_HISTOGRAM_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_GREEN_SIZE" class="tdname">
-GL_HISTOGRAM_GREEN_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_LUMINANCE_SIZE" class="tdname">
-GL_HISTOGRAM_LUMINANCE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_RED_SIZE" class="tdname">
-GL_HISTOGRAM_RED_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_SINK" class="tdname">
-GL_HISTOGRAM_SINK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_HISTOGRAM_WIDTH" class="tdname">
-GL_HISTOGRAM_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_IGNORE_BORDER" class="tdname">
-GL_IGNORE_BORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INCR" class="tdname">
-GL_INCR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INCR_WRAP" class="tdname">
-GL_INCR_WRAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX" class="tdname">
-GL_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY" class="tdname">
-GL_INDEX_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_BUFFER_BINDING" class="tdname">
-GL_INDEX_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_COUNT_EXT" class="tdname">
-GL_INDEX_ARRAY_COUNT_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_EXT" class="tdname">
-GL_INDEX_ARRAY_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_POINTER" class="tdname">
-GL_INDEX_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_POINTER_EXT" class="tdname">
-GL_INDEX_ARRAY_POINTER_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_STRIDE" class="tdname">
-GL_INDEX_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_STRIDE_EXT" class="tdname">
-GL_INDEX_ARRAY_STRIDE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_TYPE" class="tdname">
-GL_INDEX_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_ARRAY_TYPE_EXT" class="tdname">
-GL_INDEX_ARRAY_TYPE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_BITS" class="tdname">
-GL_INDEX_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_CLEAR_VALUE" class="tdname">
-GL_INDEX_CLEAR_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_LOGIC_OP" class="tdname">
-GL_INDEX_LOGIC_OP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_MODE" class="tdname">
-GL_INDEX_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_OFFSET" class="tdname">
-GL_INDEX_OFFSET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_SHIFT" class="tdname">
-GL_INDEX_SHIFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INDEX_WRITEMASK" class="tdname">
-GL_INDEX_WRITEMASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INFO_LOG_LENGTH" class="tdname">
-GL_INFO_LOG_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT" class="tdname">
-GL_INT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INTENSITY" class="tdname">
-GL_INTENSITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INTENSITY12" class="tdname">
-GL_INTENSITY12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INTENSITY16" class="tdname">
-GL_INTENSITY16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INTENSITY4" class="tdname">
-GL_INTENSITY4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INTENSITY8" class="tdname">
-GL_INTENSITY8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INTERLEAVED_ATTRIBS" class="tdname">
-GL_INTERLEAVED_ATTRIBS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INTERPOLATE" class="tdname">
-GL_INTERPOLATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_1D" class="tdname">
-GL_INT_SAMPLER_1D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_1D_ARRAY" class="tdname">
-GL_INT_SAMPLER_1D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_2D" class="tdname">
-GL_INT_SAMPLER_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_2D_ARRAY" class="tdname">
-GL_INT_SAMPLER_2D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_2D_RECT" class="tdname">
-GL_INT_SAMPLER_2D_RECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_3D" class="tdname">
-GL_INT_SAMPLER_3D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_BUFFER" class="tdname">
-GL_INT_SAMPLER_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_CUBE" class="tdname">
-GL_INT_SAMPLER_CUBE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_SAMPLER_CUBE_MAP_ARRAY" class="tdname">
-GL_INT_SAMPLER_CUBE_MAP_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_VEC2" class="tdname">
-GL_INT_VEC2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_VEC3" class="tdname">
-GL_INT_VEC3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INT_VEC4" class="tdname">
-GL_INT_VEC4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INVALID_ENUM" class="tdname">
-GL_INVALID_ENUM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INVALID_FRAMEBUFFER_OPERATION" class="tdname">
-GL_INVALID_FRAMEBUFFER_OPERATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INVALID_OPERATION" class="tdname">
-GL_INVALID_OPERATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INVALID_VALUE" class="tdname">
-GL_INVALID_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_INVERT" class="tdname">
-GL_INVERT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_KEEP" class="tdname">
-GL_KEEP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LEFT" class="tdname">
-GL_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LEQUAL" class="tdname">
-GL_LEQUAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LESS" class="tdname">
-GL_LESS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT0" class="tdname">
-GL_LIGHT0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT1" class="tdname">
-GL_LIGHT1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT2" class="tdname">
-GL_LIGHT2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT3" class="tdname">
-GL_LIGHT3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT4" class="tdname">
-GL_LIGHT4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT5" class="tdname">
-GL_LIGHT5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT6" class="tdname">
-GL_LIGHT6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT7" class="tdname">
-GL_LIGHT7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>LightParameter. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHTING" class="tdname">
-GL_LIGHTING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHTING_BIT" class="tdname">
-GL_LIGHTING_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT_MODEL_AMBIENT" class="tdname">
-GL_LIGHT_MODEL_AMBIENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT_MODEL_COLOR_CONTROL" class="tdname">
-GL_LIGHT_MODEL_COLOR_CONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT_MODEL_LOCAL_VIEWER" class="tdname">
-GL_LIGHT_MODEL_LOCAL_VIEWER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIGHT_MODEL_TWO_SIDE" class="tdname">
-GL_LIGHT_MODEL_TWO_SIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE" class="tdname">
-GL_LINE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINEAR" class="tdname">
-GL_LINEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureMinFilter. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINEAR_ATTENUATION" class="tdname">
-GL_LINEAR_ATTENUATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINEAR_MIPMAP_LINEAR" class="tdname">
-GL_LINEAR_MIPMAP_LINEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureParameterName. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINEAR_MIPMAP_NEAREST" class="tdname">
-GL_LINEAR_MIPMAP_NEAREST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINES" class="tdname">
-GL_LINES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINES_ADJACENCY" class="tdname">
-GL_LINES_ADJACENCY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_BIT" class="tdname">
-GL_LINE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_LOOP" class="tdname">
-GL_LINE_LOOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_RESET_TOKEN" class="tdname">
-GL_LINE_RESET_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>FogMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_SMOOTH" class="tdname">
-GL_LINE_SMOOTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_SMOOTH_HINT" class="tdname">
-GL_LINE_SMOOTH_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_STIPPLE" class="tdname">
-GL_LINE_STIPPLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_STIPPLE_PATTERN" class="tdname">
-GL_LINE_STIPPLE_PATTERN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_STIPPLE_REPEAT" class="tdname">
-GL_LINE_STIPPLE_REPEAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_STRIP" class="tdname">
-GL_LINE_STRIP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_STRIP_ADJACENCY" class="tdname">
-GL_LINE_STRIP_ADJACENCY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_TOKEN" class="tdname">
-GL_LINE_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_WIDTH" class="tdname">
-GL_LINE_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_WIDTH_GRANULARITY" class="tdname">
-GL_LINE_WIDTH_GRANULARITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINE_WIDTH_RANGE" class="tdname">
-GL_LINE_WIDTH_RANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LINK_STATUS" class="tdname">
-GL_LINK_STATUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIST_BASE" class="tdname">
-GL_LIST_BASE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIST_BIT" class="tdname">
-GL_LIST_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIST_INDEX" class="tdname">
-GL_LIST_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LIST_MODE" class="tdname">
-GL_LIST_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LOAD" class="tdname">
-GL_LOAD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LOGIC_OP" class="tdname">
-GL_LOGIC_OP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LOGIC_OP_MODE" class="tdname">
-GL_LOGIC_OP_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LOWER_LEFT" class="tdname">
-GL_LOWER_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE" class="tdname">
-GL_LUMINANCE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE12" class="tdname">
-GL_LUMINANCE12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE12_ALPHA12" class="tdname">
-GL_LUMINANCE12_ALPHA12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE12_ALPHA4" class="tdname">
-GL_LUMINANCE12_ALPHA4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE16" class="tdname">
-GL_LUMINANCE16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE16_ALPHA16" class="tdname">
-GL_LUMINANCE16_ALPHA16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE4" class="tdname">
-GL_LUMINANCE4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE4_ALPHA4" class="tdname">
-GL_LUMINANCE4_ALPHA4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE6_ALPHA2" class="tdname">
-GL_LUMINANCE6_ALPHA2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE8" class="tdname">
-GL_LUMINANCE8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE8_ALPHA8" class="tdname">
-GL_LUMINANCE8_ALPHA8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_LUMINANCE_ALPHA" class="tdname">
-GL_LUMINANCE_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>PixelType. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAJOR_VERSION" class="tdname">
-GL_MAJOR_VERSION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_COLOR_4" class="tdname">
-GL_MAP1_COLOR_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_GRID_DOMAIN" class="tdname">
-GL_MAP1_GRID_DOMAIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_GRID_SEGMENTS" class="tdname">
-GL_MAP1_GRID_SEGMENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_INDEX" class="tdname">
-GL_MAP1_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_NORMAL" class="tdname">
-GL_MAP1_NORMAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_1" class="tdname">
-GL_MAP1_TEXTURE_COORD_1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_2" class="tdname">
-GL_MAP1_TEXTURE_COORD_2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_3" class="tdname">
-GL_MAP1_TEXTURE_COORD_3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_4" class="tdname">
-GL_MAP1_TEXTURE_COORD_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_VERTEX_3" class="tdname">
-GL_MAP1_VERTEX_3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP1_VERTEX_4" class="tdname">
-GL_MAP1_VERTEX_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_COLOR_4" class="tdname">
-GL_MAP2_COLOR_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_GRID_DOMAIN" class="tdname">
-GL_MAP2_GRID_DOMAIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_GRID_SEGMENTS" class="tdname">
-GL_MAP2_GRID_SEGMENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_INDEX" class="tdname">
-GL_MAP2_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_NORMAL" class="tdname">
-GL_MAP2_NORMAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_1" class="tdname">
-GL_MAP2_TEXTURE_COORD_1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_2" class="tdname">
-GL_MAP2_TEXTURE_COORD_2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_3" class="tdname">
-GL_MAP2_TEXTURE_COORD_3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_4" class="tdname">
-GL_MAP2_TEXTURE_COORD_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_VERTEX_3" class="tdname">
-GL_MAP2_VERTEX_3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP2_VERTEX_4" class="tdname">
-GL_MAP2_VERTEX_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP_COLOR" class="tdname">
-GL_MAP_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAP_STENCIL" class="tdname">
-GL_MAP_STENCIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MATRIX_MODE" class="tdname">
-GL_MATRIX_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX" class="tdname">
-GL_MAX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_3D_TEXTURE_SIZE" class="tdname">
-GL_MAX_3D_TEXTURE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_ARRAY_TEXTURE_LAYERS" class="tdname">
-GL_MAX_ARRAY_TEXTURE_LAYERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_ATTRIB_STACK_DEPTH" class="tdname">
-GL_MAX_ATTRIB_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_CLIENT_ATTRIB_STACK_DEPTH" class="tdname">
-GL_MAX_CLIENT_ATTRIB_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_CLIP_DISTANCES" class="tdname">
-GL_MAX_CLIP_DISTANCES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_CLIP_PLANES" class="tdname">
-GL_MAX_CLIP_PLANES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_COLOR_ATTACHMENTS" class="tdname">
-GL_MAX_COLOR_ATTACHMENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_COLOR_MATRIX_STACK_DEPTH" class="tdname">
-GL_MAX_COLOR_MATRIX_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS" class="tdname">
-GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_CONVOLUTION_HEIGHT" class="tdname">
-GL_MAX_CONVOLUTION_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_CONVOLUTION_WIDTH" class="tdname">
-GL_MAX_CONVOLUTION_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_CUBE_MAP_TEXTURE_SIZE" class="tdname">
-GL_MAX_CUBE_MAP_TEXTURE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_DRAW_BUFFERS" class="tdname">
-GL_MAX_DRAW_BUFFERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_ELEMENTS_INDICES" class="tdname">
-GL_MAX_ELEMENTS_INDICES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_ELEMENTS_INDICES_WIN" class="tdname">
-GL_MAX_ELEMENTS_INDICES_WIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>WIN_phong_shading. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_ELEMENTS_VERTICES" class="tdname">
-GL_MAX_ELEMENTS_VERTICES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_ELEMENTS_VERTICES_WIN" class="tdname">
-GL_MAX_ELEMENTS_VERTICES_WIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_EVAL_ORDER" class="tdname">
-GL_MAX_EVAL_ORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_FRAGMENT_INPUT_COMPONENTS" class="tdname">
-GL_MAX_FRAGMENT_INPUT_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_FRAGMENT_UNIFORM_COMPONENTS" class="tdname">
-GL_MAX_FRAGMENT_UNIFORM_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_HEIGHT" class="tdname">
-GL_MAX_FRAMEBUFFER_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_LAYERS" class="tdname">
-GL_MAX_FRAMEBUFFER_LAYERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_SAMPLES" class="tdname">
-GL_MAX_FRAMEBUFFER_SAMPLES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_WIDTH" class="tdname">
-GL_MAX_FRAMEBUFFER_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_GEOMETRY_INPUT_COMPONENTS" class="tdname">
-GL_MAX_GEOMETRY_INPUT_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_COMPONENTS" class="tdname">
-GL_MAX_GEOMETRY_OUTPUT_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_VERTICES" class="tdname">
-GL_MAX_GEOMETRY_OUTPUT_VERTICES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS" class="tdname">
-GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS" class="tdname">
-GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_GEOMETRY_UNIFORM_COMPONENTS" class="tdname">
-GL_MAX_GEOMETRY_UNIFORM_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_LIGHTS" class="tdname">
-GL_MAX_LIGHTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_LIST_NESTING" class="tdname">
-GL_MAX_LIST_NESTING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_MODELVIEW_STACK_DEPTH" class="tdname">
-GL_MAX_MODELVIEW_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_NAME_STACK_DEPTH" class="tdname">
-GL_MAX_NAME_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_PIXEL_MAP_TABLE" class="tdname">
-GL_MAX_PIXEL_MAP_TABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_PROGRAM_TEXEL_OFFSET" class="tdname">
-GL_MAX_PROGRAM_TEXEL_OFFSET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS" class="tdname">
-GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET" class="tdname">
-GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_PROJECTION_STACK_DEPTH" class="tdname">
-GL_MAX_PROJECTION_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_RECTANGLE_TEXTURE_SIZE" class="tdname">
-GL_MAX_RECTANGLE_TEXTURE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_RENDERBUFFER_SIZE" class="tdname">
-GL_MAX_RENDERBUFFER_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_SAMPLES" class="tdname">
-GL_MAX_SAMPLES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_BUFFER_SIZE" class="tdname">
-GL_MAX_TEXTURE_BUFFER_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_COORDS" class="tdname">
-GL_MAX_TEXTURE_COORDS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_IMAGE_UNITS" class="tdname">
-GL_MAX_TEXTURE_IMAGE_UNITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_LOD_BIAS" class="tdname">
-GL_MAX_TEXTURE_LOD_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_MAX_ANISOTROPY" class="tdname">
-GL_MAX_TEXTURE_MAX_ANISOTROPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_SIZE" class="tdname">
-GL_MAX_TEXTURE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_STACK_DEPTH" class="tdname">
-GL_MAX_TEXTURE_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TEXTURE_UNITS" class="tdname">
-GL_MAX_TEXTURE_UNITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS" class="tdname">
-GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS" class="tdname">
-GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS" class="tdname">
-GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VARYING_COMPONENTS" class="tdname">
-GL_MAX_VARYING_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VARYING_FLOATS" class="tdname">
-GL_MAX_VARYING_FLOATS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VERTEX_ATTRIBS" class="tdname">
-GL_MAX_VERTEX_ATTRIBS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VERTEX_ATTRIB_STRIDE" class="tdname">
-GL_MAX_VERTEX_ATTRIB_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VERTEX_OUTPUT_COMPONENTS" class="tdname">
-GL_MAX_VERTEX_OUTPUT_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS" class="tdname">
-GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VERTEX_UNIFORM_COMPONENTS" class="tdname">
-GL_MAX_VERTEX_UNIFORM_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MAX_VIEWPORT_DIMS" class="tdname">
-GL_MAX_VIEWPORT_DIMS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MIN" class="tdname">
-GL_MIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MINMAX" class="tdname">
-GL_MINMAX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MINMAX_FORMAT" class="tdname">
-GL_MINMAX_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MINMAX_SINK" class="tdname">
-GL_MINMAX_SINK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MINOR_VERSION" class="tdname">
-GL_MINOR_VERSION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MIN_PROGRAM_TEXEL_OFFSET" class="tdname">
-GL_MIN_PROGRAM_TEXEL_OFFSET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET" class="tdname">
-GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MIN_SAMPLE_SHADING_VALUE" class="tdname">
-GL_MIN_SAMPLE_SHADING_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MIRRORED_REPEAT" class="tdname">
-GL_MIRRORED_REPEAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MODELVIEW" class="tdname">
-GL_MODELVIEW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MODELVIEW_MATRIX" class="tdname">
-GL_MODELVIEW_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MODELVIEW_STACK_DEPTH" class="tdname">
-GL_MODELVIEW_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MODULATE" class="tdname">
-GL_MODULATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MULT" class="tdname">
-GL_MULT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MULTISAMPLE" class="tdname">
-GL_MULTISAMPLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_MULTISAMPLE_BIT" class="tdname">
-GL_MULTISAMPLE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_N3F_V3F" class="tdname">
-GL_N3F_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NAMED_STRING_LENGTH_ARB" class="tdname">
-GL_NAMED_STRING_LENGTH_ARB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NAMED_STRING_TYPE_ARB" class="tdname">
-GL_NAMED_STRING_TYPE_ARB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NAME_STACK_DEPTH" class="tdname">
-GL_NAME_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NAND" class="tdname">
-GL_NAND</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NEAREST" class="tdname">
-GL_NEAREST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NEAREST_MIPMAP_LINEAR" class="tdname">
-GL_NEAREST_MIPMAP_LINEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NEAREST_MIPMAP_NEAREST" class="tdname">
-GL_NEAREST_MIPMAP_NEAREST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NEVER" class="tdname">
-GL_NEVER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NICEST" class="tdname">
-GL_NICEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>LightName. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NONE" class="tdname">
-GL_NONE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NOOP" class="tdname">
-GL_NOOP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NOR" class="tdname">
-GL_NOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMALIZE" class="tdname">
-GL_NORMALIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY" class="tdname">
-GL_NORMAL_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_BUFFER_BINDING" class="tdname">
-GL_NORMAL_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_COUNT_EXT" class="tdname">
-GL_NORMAL_ARRAY_COUNT_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_EXT" class="tdname">
-GL_NORMAL_ARRAY_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_POINTER" class="tdname">
-GL_NORMAL_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_POINTER_EXT" class="tdname">
-GL_NORMAL_ARRAY_POINTER_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_STRIDE" class="tdname">
-GL_NORMAL_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_STRIDE_EXT" class="tdname">
-GL_NORMAL_ARRAY_STRIDE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_TYPE" class="tdname">
-GL_NORMAL_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_ARRAY_TYPE_EXT" class="tdname">
-GL_NORMAL_ARRAY_TYPE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NORMAL_MAP" class="tdname">
-GL_NORMAL_MAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NOTEQUAL" class="tdname">
-GL_NOTEQUAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NO_ERROR" class="tdname">
-GL_NO_ERROR</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NUM_COMPRESSED_TEXTURE_FORMATS" class="tdname">
-GL_NUM_COMPRESSED_TEXTURE_FORMATS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NUM_EXTENSIONS" class="tdname">
-GL_NUM_EXTENSIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NUM_SHADING_LANGUAGE_VERSIONS" class="tdname">
-GL_NUM_SHADING_LANGUAGE_VERSIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_NUM_SPIR_V_EXTENSIONS" class="tdname">
-GL_NUM_SPIR_V_EXTENSIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OBJECT_LINEAR" class="tdname">
-GL_OBJECT_LINEAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OBJECT_PLANE" class="tdname">
-GL_OBJECT_PLANE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ONE" class="tdname">
-GL_ONE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ONE_MINUS_CONSTANT_ALPHA" class="tdname">
-GL_ONE_MINUS_CONSTANT_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ONE_MINUS_CONSTANT_COLOR" class="tdname">
-GL_ONE_MINUS_CONSTANT_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ONE_MINUS_DST_ALPHA" class="tdname">
-GL_ONE_MINUS_DST_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>BlendingFactorSrc. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ONE_MINUS_DST_COLOR" class="tdname">
-GL_ONE_MINUS_DST_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ONE_MINUS_SRC_ALPHA" class="tdname">
-GL_ONE_MINUS_SRC_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ONE_MINUS_SRC_COLOR" class="tdname">
-GL_ONE_MINUS_SRC_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OPERAND0_ALPHA" class="tdname">
-GL_OPERAND0_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OPERAND0_RGB" class="tdname">
-GL_OPERAND0_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OPERAND1_ALPHA" class="tdname">
-GL_OPERAND1_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OPERAND1_RGB" class="tdname">
-GL_OPERAND1_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OPERAND2_ALPHA" class="tdname">
-GL_OPERAND2_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OPERAND2_RGB" class="tdname">
-GL_OPERAND2_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OR" class="tdname">
-GL_OR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ORDER" class="tdname">
-GL_ORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OR_INVERTED" class="tdname">
-GL_OR_INVERTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OR_REVERSE" class="tdname">
-GL_OR_REVERSE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_OUT_OF_MEMORY" class="tdname">
-GL_OUT_OF_MEMORY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>FeedBackMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_ALIGNMENT" class="tdname">
-GL_PACK_ALIGNMENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_IMAGE_HEIGHT" class="tdname">
-GL_PACK_IMAGE_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_LSB_FIRST" class="tdname">
-GL_PACK_LSB_FIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_ROW_LENGTH" class="tdname">
-GL_PACK_ROW_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_SKIP_IMAGES" class="tdname">
-GL_PACK_SKIP_IMAGES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_SKIP_PIXELS" class="tdname">
-GL_PACK_SKIP_PIXELS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_SKIP_ROWS" class="tdname">
-GL_PACK_SKIP_ROWS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PACK_SWAP_BYTES" class="tdname">
-GL_PACK_SWAP_BYTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PARAMETER_BUFFER" class="tdname">
-GL_PARAMETER_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PARAMETER_BUFFER_BINDING" class="tdname">
-GL_PARAMETER_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PASS_THROUGH_TOKEN" class="tdname">
-GL_PASS_THROUGH_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PERSPECTIVE_CORRECTION_HINT" class="tdname">
-GL_PERSPECTIVE_CORRECTION_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PHONG_HINT_WIN" class="tdname">
-GL_PHONG_HINT_WIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>WIN_specular_fog. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PHONG_WIN" class="tdname">
-GL_PHONG_WIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_A_TO_A" class="tdname">
-GL_PIXEL_MAP_A_TO_A</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_A_TO_A_SIZE" class="tdname">
-GL_PIXEL_MAP_A_TO_A_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_B_TO_B" class="tdname">
-GL_PIXEL_MAP_B_TO_B</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_B_TO_B_SIZE" class="tdname">
-GL_PIXEL_MAP_B_TO_B_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_G_TO_G" class="tdname">
-GL_PIXEL_MAP_G_TO_G</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_G_TO_G_SIZE" class="tdname">
-GL_PIXEL_MAP_G_TO_G_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_A" class="tdname">
-GL_PIXEL_MAP_I_TO_A</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_A_SIZE" class="tdname">
-GL_PIXEL_MAP_I_TO_A_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_B" class="tdname">
-GL_PIXEL_MAP_I_TO_B</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_B_SIZE" class="tdname">
-GL_PIXEL_MAP_I_TO_B_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_G" class="tdname">
-GL_PIXEL_MAP_I_TO_G</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_G_SIZE" class="tdname">
-GL_PIXEL_MAP_I_TO_G_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_I" class="tdname">
-GL_PIXEL_MAP_I_TO_I</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_I_SIZE" class="tdname">
-GL_PIXEL_MAP_I_TO_I_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_R" class="tdname">
-GL_PIXEL_MAP_I_TO_R</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_R_SIZE" class="tdname">
-GL_PIXEL_MAP_I_TO_R_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_R_TO_R" class="tdname">
-GL_PIXEL_MAP_R_TO_R</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_R_TO_R_SIZE" class="tdname">
-GL_PIXEL_MAP_R_TO_R_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_S_TO_S" class="tdname">
-GL_PIXEL_MAP_S_TO_S</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MAP_S_TO_S_SIZE" class="tdname">
-GL_PIXEL_MAP_S_TO_S_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_MODE_BIT" class="tdname">
-GL_PIXEL_MODE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_PACK_BUFFER" class="tdname">
-GL_PIXEL_PACK_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_PACK_BUFFER_BINDING" class="tdname">
-GL_PIXEL_PACK_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_UNPACK_BUFFER" class="tdname">
-GL_PIXEL_UNPACK_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PIXEL_UNPACK_BUFFER_BINDING" class="tdname">
-GL_PIXEL_UNPACK_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT" class="tdname">
-GL_POINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINTS" class="tdname">
-GL_POINTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_BIT" class="tdname">
-GL_POINT_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_DISTANCE_ATTENUATION" class="tdname">
-GL_POINT_DISTANCE_ATTENUATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_FADE_THRESHOLD_SIZE" class="tdname">
-GL_POINT_FADE_THRESHOLD_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SIZE" class="tdname">
-GL_POINT_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SIZE_GRANULARITY" class="tdname">
-GL_POINT_SIZE_GRANULARITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SIZE_MAX" class="tdname">
-GL_POINT_SIZE_MAX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SIZE_MIN" class="tdname">
-GL_POINT_SIZE_MIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SIZE_RANGE" class="tdname">
-GL_POINT_SIZE_RANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SMOOTH" class="tdname">
-GL_POINT_SMOOTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SMOOTH_HINT" class="tdname">
-GL_POINT_SMOOTH_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SPRITE" class="tdname">
-GL_POINT_SPRITE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_SPRITE_COORD_ORIGIN" class="tdname">
-GL_POINT_SPRITE_COORD_ORIGIN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POINT_TOKEN" class="tdname">
-GL_POINT_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON" class="tdname">
-GL_POLYGON</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>BlendingFactorDest. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_BIT" class="tdname">
-GL_POLYGON_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_MODE" class="tdname">
-GL_POLYGON_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_OFFSET_CLAMP" class="tdname">
-GL_POLYGON_OFFSET_CLAMP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_OFFSET_FACTOR" class="tdname">
-GL_POLYGON_OFFSET_FACTOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_OFFSET_FILL" class="tdname">
-GL_POLYGON_OFFSET_FILL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>texture. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_OFFSET_LINE" class="tdname">
-GL_POLYGON_OFFSET_LINE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_OFFSET_POINT" class="tdname">
-GL_POLYGON_OFFSET_POINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_OFFSET_UNITS" class="tdname">
-GL_POLYGON_OFFSET_UNITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_SMOOTH" class="tdname">
-GL_POLYGON_SMOOTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_SMOOTH_HINT" class="tdname">
-GL_POLYGON_SMOOTH_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_STIPPLE" class="tdname">
-GL_POLYGON_STIPPLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_STIPPLE_BIT" class="tdname">
-GL_POLYGON_STIPPLE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POLYGON_TOKEN" class="tdname">
-GL_POLYGON_TOKEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POSITION" class="tdname">
-GL_POSITION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_BIAS" class="tdname">
-GL_POST_COLOR_MATRIX_ALPHA_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_SCALE" class="tdname">
-GL_POST_COLOR_MATRIX_ALPHA_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_BIAS" class="tdname">
-GL_POST_COLOR_MATRIX_BLUE_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_SCALE" class="tdname">
-GL_POST_COLOR_MATRIX_BLUE_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_COLOR_TABLE" class="tdname">
-GL_POST_COLOR_MATRIX_COLOR_TABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_BIAS" class="tdname">
-GL_POST_COLOR_MATRIX_GREEN_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_SCALE" class="tdname">
-GL_POST_COLOR_MATRIX_GREEN_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_RED_BIAS" class="tdname">
-GL_POST_COLOR_MATRIX_RED_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_RED_SCALE" class="tdname">
-GL_POST_COLOR_MATRIX_RED_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_BIAS" class="tdname">
-GL_POST_CONVOLUTION_ALPHA_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_SCALE" class="tdname">
-GL_POST_CONVOLUTION_ALPHA_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_BLUE_BIAS" class="tdname">
-GL_POST_CONVOLUTION_BLUE_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_BLUE_SCALE" class="tdname">
-GL_POST_CONVOLUTION_BLUE_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_COLOR_TABLE" class="tdname">
-GL_POST_CONVOLUTION_COLOR_TABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_GREEN_BIAS" class="tdname">
-GL_POST_CONVOLUTION_GREEN_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_GREEN_SCALE" class="tdname">
-GL_POST_CONVOLUTION_GREEN_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_RED_BIAS" class="tdname">
-GL_POST_CONVOLUTION_RED_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_POST_CONVOLUTION_RED_SCALE" class="tdname">
-GL_POST_CONVOLUTION_RED_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PREVIOUS" class="tdname">
-GL_PREVIOUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PRIMARY_COLOR" class="tdname">
-GL_PRIMARY_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PRIMITIVES_GENERATED" class="tdname">
-GL_PRIMITIVES_GENERATED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PRIMITIVES_SUBMITTED" class="tdname">
-GL_PRIMITIVES_SUBMITTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PRIMITIVE_RESTART" class="tdname">
-GL_PRIMITIVE_RESTART</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED" class="tdname">
-GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PRIMITIVE_RESTART_INDEX" class="tdname">
-GL_PRIMITIVE_RESTART_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROGRAM_POINT_SIZE" class="tdname">
-GL_PROGRAM_POINT_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROJECTION" class="tdname">
-GL_PROJECTION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROJECTION_MATRIX" class="tdname">
-GL_PROJECTION_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROJECTION_STACK_DEPTH" class="tdname">
-GL_PROJECTION_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_COLOR_TABLE" class="tdname">
-GL_PROXY_COLOR_TABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_HISTOGRAM" class="tdname">
-GL_PROXY_HISTOGRAM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE" class="tdname">
-GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_POST_CONVOLUTION_COLOR_TABLE" class="tdname">
-GL_PROXY_POST_CONVOLUTION_COLOR_TABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_1D" class="tdname">
-GL_PROXY_TEXTURE_1D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_1D_ARRAY" class="tdname">
-GL_PROXY_TEXTURE_1D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_2D" class="tdname">
-GL_PROXY_TEXTURE_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>texture_object. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_2D_ARRAY" class="tdname">
-GL_PROXY_TEXTURE_2D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_3D" class="tdname">
-GL_PROXY_TEXTURE_3D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP" class="tdname">
-GL_PROXY_TEXTURE_CUBE_MAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP_ARRAY" class="tdname">
-GL_PROXY_TEXTURE_CUBE_MAP_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_PROXY_TEXTURE_RECTANGLE" class="tdname">
-GL_PROXY_TEXTURE_RECTANGLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_Q" class="tdname">
-GL_Q</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureEnvMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUADRATIC_ATTENUATION" class="tdname">
-GL_QUADRATIC_ATTENUATION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>ListMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUADS" class="tdname">
-GL_QUADS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUAD_STRIP" class="tdname">
-GL_QUAD_STRIP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUERY_BY_REGION_NO_WAIT" class="tdname">
-GL_QUERY_BY_REGION_NO_WAIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUERY_BY_REGION_WAIT" class="tdname">
-GL_QUERY_BY_REGION_WAIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUERY_COUNTER_BITS" class="tdname">
-GL_QUERY_COUNTER_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUERY_NO_WAIT" class="tdname">
-GL_QUERY_NO_WAIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUERY_RESULT" class="tdname">
-GL_QUERY_RESULT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUERY_RESULT_AVAILABLE" class="tdname">
-GL_QUERY_RESULT_AVAILABLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_QUERY_WAIT" class="tdname">
-GL_QUERY_WAIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_R" class="tdname">
-GL_R</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_R11F_G11F_B10F" class="tdname">
-GL_R11F_G11F_B10F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_R16_SNORM" class="tdname">
-GL_R16_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_R3_G3_B2" class="tdname">
-GL_R3_G3_B2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_R8_SNORM" class="tdname">
-GL_R8_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RASTERIZER_DISCARD" class="tdname">
-GL_RASTERIZER_DISCARD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_READ_BUFFER" class="tdname">
-GL_READ_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_READ_FRAMEBUFFER" class="tdname">
-GL_READ_FRAMEBUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_READ_FRAMEBUFFER_BINDING" class="tdname">
-GL_READ_FRAMEBUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_READ_ONLY" class="tdname">
-GL_READ_ONLY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_READ_WRITE" class="tdname">
-GL_READ_WRITE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RED" class="tdname">
-GL_RED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_REDUCE" class="tdname">
-GL_REDUCE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RED_BIAS" class="tdname">
-GL_RED_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RED_BITS" class="tdname">
-GL_RED_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RED_INTEGER" class="tdname">
-GL_RED_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RED_SCALE" class="tdname">
-GL_RED_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RED_SNORM" class="tdname">
-GL_RED_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_REFLECTION_MAP" class="tdname">
-GL_REFLECTION_MAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDER" class="tdname">
-GL_RENDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER" class="tdname">
-GL_RENDERBUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_ALPHA_SIZE" class="tdname">
-GL_RENDERBUFFER_ALPHA_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_BINDING" class="tdname">
-GL_RENDERBUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_BLUE_SIZE" class="tdname">
-GL_RENDERBUFFER_BLUE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_DEPTH_SIZE" class="tdname">
-GL_RENDERBUFFER_DEPTH_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_GREEN_SIZE" class="tdname">
-GL_RENDERBUFFER_GREEN_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_HEIGHT" class="tdname">
-GL_RENDERBUFFER_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_INTERNAL_FORMAT" class="tdname">
-GL_RENDERBUFFER_INTERNAL_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_RED_SIZE" class="tdname">
-GL_RENDERBUFFER_RED_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_SAMPLES" class="tdname">
-GL_RENDERBUFFER_SAMPLES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_STENCIL_SIZE" class="tdname">
-GL_RENDERBUFFER_STENCIL_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERBUFFER_WIDTH" class="tdname">
-GL_RENDERBUFFER_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDERER" class="tdname">
-GL_RENDERER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RENDER_MODE" class="tdname">
-GL_RENDER_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_REPEAT" class="tdname">
-GL_REPEAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>ClientAttribMask. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_REPLACE" class="tdname">
-GL_REPLACE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_REPLICATE_BORDER" class="tdname">
-GL_REPLICATE_BORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RESCALE_NORMAL" class="tdname">
-GL_RESCALE_NORMAL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RETURN" class="tdname">
-GL_RETURN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RG16_SNORM" class="tdname">
-GL_RG16_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RG8_SNORM" class="tdname">
-GL_RG8_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB" class="tdname">
-GL_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB10" class="tdname">
-GL_RGB10</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB10_A2" class="tdname">
-GL_RGB10_A2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB10_A2UI" class="tdname">
-GL_RGB10_A2UI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB12" class="tdname">
-GL_RGB12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB16" class="tdname">
-GL_RGB16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB16F" class="tdname">
-GL_RGB16F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB16I" class="tdname">
-GL_RGB16I</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB16UI" class="tdname">
-GL_RGB16UI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB16_SNORM" class="tdname">
-GL_RGB16_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB32F" class="tdname">
-GL_RGB32F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB32I" class="tdname">
-GL_RGB32I</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB32UI" class="tdname">
-GL_RGB32UI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB4" class="tdname">
-GL_RGB4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB5" class="tdname">
-GL_RGB5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB5_A1" class="tdname">
-GL_RGB5_A1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB8" class="tdname">
-GL_RGB8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB8I" class="tdname">
-GL_RGB8I</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB8UI" class="tdname">
-GL_RGB8UI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB8_SNORM" class="tdname">
-GL_RGB8_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB9_E5" class="tdname">
-GL_RGB9_E5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA" class="tdname">
-GL_RGBA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA12" class="tdname">
-GL_RGBA12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA16" class="tdname">
-GL_RGBA16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA16F" class="tdname">
-GL_RGBA16F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA16I" class="tdname">
-GL_RGBA16I</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA16UI" class="tdname">
-GL_RGBA16UI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA16_SNORM" class="tdname">
-GL_RGBA16_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA2" class="tdname">
-GL_RGBA2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA32F" class="tdname">
-GL_RGBA32F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA32I" class="tdname">
-GL_RGBA32I</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA32UI" class="tdname">
-GL_RGBA32UI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA4" class="tdname">
-GL_RGBA4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA8" class="tdname">
-GL_RGBA8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA8I" class="tdname">
-GL_RGBA8I</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA8UI" class="tdname">
-GL_RGBA8UI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA8_SNORM" class="tdname">
-GL_RGBA8_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA_INTEGER" class="tdname">
-GL_RGBA_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA_MODE" class="tdname">
-GL_RGBA_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGBA_SNORM" class="tdname">
-GL_RGBA_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB_INTEGER" class="tdname">
-GL_RGB_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB_SCALE" class="tdname">
-GL_RGB_SCALE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RGB_SNORM" class="tdname">
-GL_RGB_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RG_SNORM" class="tdname">
-GL_RG_SNORM</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_RIGHT" class="tdname">
-GL_RIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_S" class="tdname">
-GL_S</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_1D" class="tdname">
-GL_SAMPLER_1D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_1D_ARRAY" class="tdname">
-GL_SAMPLER_1D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_1D_ARRAY_SHADOW" class="tdname">
-GL_SAMPLER_1D_ARRAY_SHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_1D_SHADOW" class="tdname">
-GL_SAMPLER_1D_SHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_2D" class="tdname">
-GL_SAMPLER_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_2D_ARRAY" class="tdname">
-GL_SAMPLER_2D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_2D_ARRAY_SHADOW" class="tdname">
-GL_SAMPLER_2D_ARRAY_SHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_2D_RECT" class="tdname">
-GL_SAMPLER_2D_RECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_2D_RECT_SHADOW" class="tdname">
-GL_SAMPLER_2D_RECT_SHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_2D_SHADOW" class="tdname">
-GL_SAMPLER_2D_SHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_3D" class="tdname">
-GL_SAMPLER_3D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_BUFFER" class="tdname">
-GL_SAMPLER_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_CUBE" class="tdname">
-GL_SAMPLER_CUBE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY" class="tdname">
-GL_SAMPLER_CUBE_MAP_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW" class="tdname">
-GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLER_CUBE_SHADOW" class="tdname">
-GL_SAMPLER_CUBE_SHADOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLES" class="tdname">
-GL_SAMPLES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLES_PASSED" class="tdname">
-GL_SAMPLES_PASSED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLE_ALPHA_TO_COVERAGE" class="tdname">
-GL_SAMPLE_ALPHA_TO_COVERAGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLE_ALPHA_TO_ONE" class="tdname">
-GL_SAMPLE_ALPHA_TO_ONE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLE_BUFFERS" class="tdname">
-GL_SAMPLE_BUFFERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLE_COVERAGE" class="tdname">
-GL_SAMPLE_COVERAGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLE_COVERAGE_INVERT" class="tdname">
-GL_SAMPLE_COVERAGE_INVERT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLE_COVERAGE_VALUE" class="tdname">
-GL_SAMPLE_COVERAGE_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SAMPLE_SHADING" class="tdname">
-GL_SAMPLE_SHADING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SCISSOR_BIT" class="tdname">
-GL_SCISSOR_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SCISSOR_BOX" class="tdname">
-GL_SCISSOR_BOX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SCISSOR_TEST" class="tdname">
-GL_SCISSOR_TEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY" class="tdname">
-GL_SECONDARY_COLOR_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING" class="tdname">
-GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_POINTER" class="tdname">
-GL_SECONDARY_COLOR_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_SIZE" class="tdname">
-GL_SECONDARY_COLOR_ARRAY_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_STRIDE" class="tdname">
-GL_SECONDARY_COLOR_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_TYPE" class="tdname">
-GL_SECONDARY_COLOR_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SELECT" class="tdname">
-GL_SELECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>ShadingModel. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SELECTION_BUFFER_POINTER" class="tdname">
-GL_SELECTION_BUFFER_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SELECTION_BUFFER_SIZE" class="tdname">
-GL_SELECTION_BUFFER_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SEPARABLE_2D" class="tdname">
-GL_SEPARABLE_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SEPARATE_ATTRIBS" class="tdname">
-GL_SEPARATE_ATTRIBS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SEPARATE_SPECULAR_COLOR" class="tdname">
-GL_SEPARATE_SPECULAR_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SET" class="tdname">
-GL_SET</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>MaterialParameter. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHADER_BINARY_FORMAT_SPIR_V" class="tdname">
-GL_SHADER_BINARY_FORMAT_SPIR_V</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHADER_INCLUDE_ARB" class="tdname">
-GL_SHADER_INCLUDE_ARB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHADER_SOURCE_LENGTH" class="tdname">
-GL_SHADER_SOURCE_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHADER_TYPE" class="tdname">
-GL_SHADER_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHADE_MODEL" class="tdname">
-GL_SHADE_MODEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHADING_LANGUAGE_VERSION" class="tdname">
-GL_SHADING_LANGUAGE_VERSION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHININESS" class="tdname">
-GL_SHININESS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SHORT" class="tdname">
-GL_SHORT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SIGNED_NORMALIZED" class="tdname">
-GL_SIGNED_NORMALIZED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SINGLE_COLOR" class="tdname">
-GL_SINGLE_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SLUMINANCE" class="tdname">
-GL_SLUMINANCE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SLUMINANCE8" class="tdname">
-GL_SLUMINANCE8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SLUMINANCE8_ALPHA8" class="tdname">
-GL_SLUMINANCE8_ALPHA8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SLUMINANCE_ALPHA" class="tdname">
-GL_SLUMINANCE_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SMOOTH" class="tdname">
-GL_SMOOTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>StencilOp. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SMOOTH_LINE_WIDTH_GRANULARITY" class="tdname">
-GL_SMOOTH_LINE_WIDTH_GRANULARITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SMOOTH_LINE_WIDTH_RANGE" class="tdname">
-GL_SMOOTH_LINE_WIDTH_RANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SMOOTH_POINT_SIZE_GRANULARITY" class="tdname">
-GL_SMOOTH_POINT_SIZE_GRANULARITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SMOOTH_POINT_SIZE_RANGE" class="tdname">
-GL_SMOOTH_POINT_SIZE_RANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SOURCE0_ALPHA" class="tdname">
-GL_SOURCE0_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SOURCE0_RGB" class="tdname">
-GL_SOURCE0_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SOURCE1_ALPHA" class="tdname">
-GL_SOURCE1_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SOURCE1_RGB" class="tdname">
-GL_SOURCE1_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SOURCE2_ALPHA" class="tdname">
-GL_SOURCE2_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SOURCE2_RGB" class="tdname">
-GL_SOURCE2_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SPECULAR" class="tdname">
-GL_SPECULAR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SPHERE_MAP" class="tdname">
-GL_SPHERE_MAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureGenParameter. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SPIR_V_BINARY" class="tdname">
-GL_SPIR_V_BINARY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SPIR_V_EXTENSIONS" class="tdname">
-GL_SPIR_V_EXTENSIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SPOT_CUTOFF" class="tdname">
-GL_SPOT_CUTOFF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SPOT_DIRECTION" class="tdname">
-GL_SPOT_DIRECTION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SPOT_EXPONENT" class="tdname">
-GL_SPOT_EXPONENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC0_ALPHA" class="tdname">
-GL_SRC0_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC0_RGB" class="tdname">
-GL_SRC0_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC1_ALPHA" class="tdname">
-GL_SRC1_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC1_RGB" class="tdname">
-GL_SRC1_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC2_ALPHA" class="tdname">
-GL_SRC2_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC2_RGB" class="tdname">
-GL_SRC2_RGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC_ALPHA" class="tdname">
-GL_SRC_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC_ALPHA_SATURATE" class="tdname">
-GL_SRC_ALPHA_SATURATE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Boolean. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRC_COLOR" class="tdname">
-GL_SRC_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRGB" class="tdname">
-GL_SRGB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRGB8" class="tdname">
-GL_SRGB8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRGB8_ALPHA8" class="tdname">
-GL_SRGB8_ALPHA8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SRGB_ALPHA" class="tdname">
-GL_SRGB_ALPHA</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STACK_OVERFLOW" class="tdname">
-GL_STACK_OVERFLOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STACK_UNDERFLOW" class="tdname">
-GL_STACK_UNDERFLOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STATIC_COPY" class="tdname">
-GL_STATIC_COPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STATIC_DRAW" class="tdname">
-GL_STATIC_DRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STATIC_READ" class="tdname">
-GL_STATIC_READ</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL" class="tdname">
-GL_STENCIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>PixelFormat. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_ATTACHMENT" class="tdname">
-GL_STENCIL_ATTACHMENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BACK_FAIL" class="tdname">
-GL_STENCIL_BACK_FAIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BACK_FUNC" class="tdname">
-GL_STENCIL_BACK_FUNC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_FAIL" class="tdname">
-GL_STENCIL_BACK_PASS_DEPTH_FAIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_PASS" class="tdname">
-GL_STENCIL_BACK_PASS_DEPTH_PASS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BACK_REF" class="tdname">
-GL_STENCIL_BACK_REF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BACK_VALUE_MASK" class="tdname">
-GL_STENCIL_BACK_VALUE_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BACK_WRITEMASK" class="tdname">
-GL_STENCIL_BACK_WRITEMASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BITS" class="tdname">
-GL_STENCIL_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BUFFER" class="tdname">
-GL_STENCIL_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_BUFFER_BIT" class="tdname">
-GL_STENCIL_BUFFER_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_CLEAR_VALUE" class="tdname">
-GL_STENCIL_CLEAR_VALUE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_FAIL" class="tdname">
-GL_STENCIL_FAIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_FUNC" class="tdname">
-GL_STENCIL_FUNC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_INDEX" class="tdname">
-GL_STENCIL_INDEX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_INDEX1" class="tdname">
-GL_STENCIL_INDEX1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_INDEX16" class="tdname">
-GL_STENCIL_INDEX16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_INDEX4" class="tdname">
-GL_STENCIL_INDEX4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_INDEX8" class="tdname">
-GL_STENCIL_INDEX8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_PASS_DEPTH_FAIL" class="tdname">
-GL_STENCIL_PASS_DEPTH_FAIL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_PASS_DEPTH_PASS" class="tdname">
-GL_STENCIL_PASS_DEPTH_PASS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_REF" class="tdname">
-GL_STENCIL_REF</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_TEST" class="tdname">
-GL_STENCIL_TEST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_VALUE_MASK" class="tdname">
-GL_STENCIL_VALUE_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STENCIL_WRITEMASK" class="tdname">
-GL_STENCIL_WRITEMASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STEREO" class="tdname">
-GL_STEREO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STREAM_COPY" class="tdname">
-GL_STREAM_COPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STREAM_DRAW" class="tdname">
-GL_STREAM_DRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_STREAM_READ" class="tdname">
-GL_STREAM_READ</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SUBPIXEL_BITS" class="tdname">
-GL_SUBPIXEL_BITS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_SUBTRACT" class="tdname">
-GL_SUBTRACT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T" class="tdname">
-GL_T</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T2F_C3F_V3F" class="tdname">
-GL_T2F_C3F_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T2F_C4F_N3F_V3F" class="tdname">
-GL_T2F_C4F_N3F_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T2F_C4UB_V3F" class="tdname">
-GL_T2F_C4UB_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T2F_N3F_V3F" class="tdname">
-GL_T2F_N3F_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T2F_V3F" class="tdname">
-GL_T2F_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T4F_C4F_N3F_V4F" class="tdname">
-GL_T4F_C4F_N3F_V4F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>Extensions. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_T4F_V4F" class="tdname">
-GL_T4F_V4F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TABLE_TOO_LARGE" class="tdname">
-GL_TABLE_TOO_LARGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TESS_CONTROL_SHADER_PATCHES" class="tdname">
-GL_TESS_CONTROL_SHADER_PATCHES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TESS_EVALUATION_SHADER_INVOCATIONS" class="tdname">
-GL_TESS_EVALUATION_SHADER_INVOCATIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE" class="tdname">
-GL_TEXTURE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>PixelCopyType. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE0" class="tdname">
-GL_TEXTURE0</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE1" class="tdname">
-GL_TEXTURE1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE10" class="tdname">
-GL_TEXTURE10</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE11" class="tdname">
-GL_TEXTURE11</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE12" class="tdname">
-GL_TEXTURE12</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE13" class="tdname">
-GL_TEXTURE13</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE14" class="tdname">
-GL_TEXTURE14</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE15" class="tdname">
-GL_TEXTURE15</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE16" class="tdname">
-GL_TEXTURE16</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE17" class="tdname">
-GL_TEXTURE17</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE18" class="tdname">
-GL_TEXTURE18</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE19" class="tdname">
-GL_TEXTURE19</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE2" class="tdname">
-GL_TEXTURE2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE20" class="tdname">
-GL_TEXTURE20</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE21" class="tdname">
-GL_TEXTURE21</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE22" class="tdname">
-GL_TEXTURE22</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE23" class="tdname">
-GL_TEXTURE23</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE24" class="tdname">
-GL_TEXTURE24</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE25" class="tdname">
-GL_TEXTURE25</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE26" class="tdname">
-GL_TEXTURE26</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE27" class="tdname">
-GL_TEXTURE27</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE28" class="tdname">
-GL_TEXTURE28</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE29" class="tdname">
-GL_TEXTURE29</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE3" class="tdname">
-GL_TEXTURE3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE30" class="tdname">
-GL_TEXTURE30</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE31" class="tdname">
-GL_TEXTURE31</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE4" class="tdname">
-GL_TEXTURE4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE5" class="tdname">
-GL_TEXTURE5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE6" class="tdname">
-GL_TEXTURE6</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE7" class="tdname">
-GL_TEXTURE7</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE8" class="tdname">
-GL_TEXTURE8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE9" class="tdname">
-GL_TEXTURE9</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_1D" class="tdname">
-GL_TEXTURE_1D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_1D_ARRAY" class="tdname">
-GL_TEXTURE_1D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_2D" class="tdname">
-GL_TEXTURE_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_2D_ARRAY" class="tdname">
-GL_TEXTURE_2D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_3D" class="tdname">
-GL_TEXTURE_3D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_ALPHA_SIZE" class="tdname">
-GL_TEXTURE_ALPHA_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_ALPHA_TYPE" class="tdname">
-GL_TEXTURE_ALPHA_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BASE_LEVEL" class="tdname">
-GL_TEXTURE_BASE_LEVEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_1D" class="tdname">
-GL_TEXTURE_BINDING_1D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_1D_ARRAY" class="tdname">
-GL_TEXTURE_BINDING_1D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_2D" class="tdname">
-GL_TEXTURE_BINDING_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>vertex_array. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_2D_ARRAY" class="tdname">
-GL_TEXTURE_BINDING_2D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_3D" class="tdname">
-GL_TEXTURE_BINDING_3D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_BUFFER" class="tdname">
-GL_TEXTURE_BINDING_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP" class="tdname">
-GL_TEXTURE_BINDING_CUBE_MAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP_ARRAY" class="tdname">
-GL_TEXTURE_BINDING_CUBE_MAP_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BINDING_RECTANGLE" class="tdname">
-GL_TEXTURE_BINDING_RECTANGLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BIT" class="tdname">
-GL_TEXTURE_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BLUE_SIZE" class="tdname">
-GL_TEXTURE_BLUE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BLUE_TYPE" class="tdname">
-GL_TEXTURE_BLUE_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BORDER" class="tdname">
-GL_TEXTURE_BORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>HintMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BORDER_COLOR" class="tdname">
-GL_TEXTURE_BORDER_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BUFFER" class="tdname">
-GL_TEXTURE_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BUFFER_BINDING" class="tdname">
-GL_TEXTURE_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BUFFER_DATA_STORE_BINDING" class="tdname">
-GL_TEXTURE_BUFFER_DATA_STORE_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_BUFFER_FORMAT" class="tdname">
-GL_TEXTURE_BUFFER_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_FUNC" class="tdname">
-GL_TEXTURE_COMPARE_FUNC</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_FUNC_ARB" class="tdname">
-GL_TEXTURE_COMPARE_FUNC_ARB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_MODE" class="tdname">
-GL_TEXTURE_COMPARE_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_MODE_ARB" class="tdname">
-GL_TEXTURE_COMPARE_MODE_ARB</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPONENTS" class="tdname">
-GL_TEXTURE_COMPONENTS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPRESSED" class="tdname">
-GL_TEXTURE_COMPRESSED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPRESSED_IMAGE_SIZE" class="tdname">
-GL_TEXTURE_COMPRESSED_IMAGE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COMPRESSION_HINT" class="tdname">
-GL_TEXTURE_COMPRESSION_HINT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY" class="tdname">
-GL_TEXTURE_COORD_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING" class="tdname">
-GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_COUNT_EXT" class="tdname">
-GL_TEXTURE_COORD_ARRAY_COUNT_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_EXT" class="tdname">
-GL_TEXTURE_COORD_ARRAY_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER" class="tdname">
-GL_TEXTURE_COORD_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER_EXT" class="tdname">
-GL_TEXTURE_COORD_ARRAY_POINTER_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE" class="tdname">
-GL_TEXTURE_COORD_ARRAY_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE_EXT" class="tdname">
-GL_TEXTURE_COORD_ARRAY_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE" class="tdname">
-GL_TEXTURE_COORD_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE_EXT" class="tdname">
-GL_TEXTURE_COORD_ARRAY_STRIDE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE" class="tdname">
-GL_TEXTURE_COORD_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE_EXT" class="tdname">
-GL_TEXTURE_COORD_ARRAY_TYPE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP" class="tdname">
-GL_TEXTURE_CUBE_MAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_ARRAY" class="tdname">
-GL_TEXTURE_CUBE_MAP_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_X" class="tdname">
-GL_TEXTURE_CUBE_MAP_NEGATIVE_X</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y" class="tdname">
-GL_TEXTURE_CUBE_MAP_NEGATIVE_Y</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z" class="tdname">
-GL_TEXTURE_CUBE_MAP_NEGATIVE_Z</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_X" class="tdname">
-GL_TEXTURE_CUBE_MAP_POSITIVE_X</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Y" class="tdname">
-GL_TEXTURE_CUBE_MAP_POSITIVE_Y</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Z" class="tdname">
-GL_TEXTURE_CUBE_MAP_POSITIVE_Z</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_DEPTH" class="tdname">
-GL_TEXTURE_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_DEPTH_SIZE" class="tdname">
-GL_TEXTURE_DEPTH_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_DEPTH_TYPE" class="tdname">
-GL_TEXTURE_DEPTH_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_ENV" class="tdname">
-GL_TEXTURE_ENV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureGenMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_ENV_COLOR" class="tdname">
-GL_TEXTURE_ENV_COLOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureEnvTarget. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_ENV_MODE" class="tdname">
-GL_TEXTURE_ENV_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_FILTER_CONTROL" class="tdname">
-GL_TEXTURE_FILTER_CONTROL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_GEN_MODE" class="tdname">
-GL_TEXTURE_GEN_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_GEN_Q" class="tdname">
-GL_TEXTURE_GEN_Q</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_GEN_R" class="tdname">
-GL_TEXTURE_GEN_R</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_GEN_S" class="tdname">
-GL_TEXTURE_GEN_S</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_GEN_T" class="tdname">
-GL_TEXTURE_GEN_T</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_GREEN_SIZE" class="tdname">
-GL_TEXTURE_GREEN_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_GREEN_TYPE" class="tdname">
-GL_TEXTURE_GREEN_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_HEIGHT" class="tdname">
-GL_TEXTURE_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_INTENSITY_SIZE" class="tdname">
-GL_TEXTURE_INTENSITY_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_INTENSITY_TYPE" class="tdname">
-GL_TEXTURE_INTENSITY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_INTERNAL_FORMAT" class="tdname">
-GL_TEXTURE_INTERNAL_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_LOD_BIAS" class="tdname">
-GL_TEXTURE_LOD_BIAS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_LUMINANCE_SIZE" class="tdname">
-GL_TEXTURE_LUMINANCE_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_LUMINANCE_TYPE" class="tdname">
-GL_TEXTURE_LUMINANCE_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_MAG_FILTER" class="tdname">
-GL_TEXTURE_MAG_FILTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_MATRIX" class="tdname">
-GL_TEXTURE_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_MAX_ANISOTROPY" class="tdname">
-GL_TEXTURE_MAX_ANISOTROPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_MAX_LEVEL" class="tdname">
-GL_TEXTURE_MAX_LEVEL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_MAX_LOD" class="tdname">
-GL_TEXTURE_MAX_LOD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_MIN_FILTER" class="tdname">
-GL_TEXTURE_MIN_FILTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_MIN_LOD" class="tdname">
-GL_TEXTURE_MIN_LOD</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_PRIORITY" class="tdname">
-GL_TEXTURE_PRIORITY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_RECTANGLE" class="tdname">
-GL_TEXTURE_RECTANGLE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_RED_SIZE" class="tdname">
-GL_TEXTURE_RED_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_RED_TYPE" class="tdname">
-GL_TEXTURE_RED_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_RESIDENT" class="tdname">
-GL_TEXTURE_RESIDENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_SHARED_SIZE" class="tdname">
-GL_TEXTURE_SHARED_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_STACK_DEPTH" class="tdname">
-GL_TEXTURE_STACK_DEPTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_STENCIL_SIZE" class="tdname">
-GL_TEXTURE_STENCIL_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_WIDTH" class="tdname">
-GL_TEXTURE_WIDTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_WRAP_R" class="tdname">
-GL_TEXTURE_WRAP_R</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_WRAP_S" class="tdname">
-GL_TEXTURE_WRAP_S</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TEXTURE_WRAP_T" class="tdname">
-GL_TEXTURE_WRAP_T</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-<p>TextureWrapMode. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_BIT" class="tdname">
-GL_TRANSFORM_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_ACTIVE" class="tdname">
-GL_TRANSFORM_FEEDBACK_ACTIVE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER" class="tdname">
-GL_TRANSFORM_FEEDBACK_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_BINDING" class="tdname">
-GL_TRANSFORM_FEEDBACK_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_MODE" class="tdname">
-GL_TRANSFORM_FEEDBACK_BUFFER_MODE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_SIZE" class="tdname">
-GL_TRANSFORM_FEEDBACK_BUFFER_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_START" class="tdname">
-GL_TRANSFORM_FEEDBACK_BUFFER_START</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_OVERFLOW" class="tdname">
-GL_TRANSFORM_FEEDBACK_OVERFLOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_PAUSED" class="tdname">
-GL_TRANSFORM_FEEDBACK_PAUSED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN" class="tdname">
-GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW" class="tdname">
-GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYINGS" class="tdname">
-GL_TRANSFORM_FEEDBACK_VARYINGS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH" class="tdname">
-GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSPOSE_COLOR_MATRIX" class="tdname">
-GL_TRANSPOSE_COLOR_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSPOSE_MODELVIEW_MATRIX" class="tdname">
-GL_TRANSPOSE_MODELVIEW_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSPOSE_PROJECTION_MATRIX" class="tdname">
-GL_TRANSPOSE_PROJECTION_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRANSPOSE_TEXTURE_MATRIX" class="tdname">
-GL_TRANSPOSE_TEXTURE_MATRIX</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRIANGLES" class="tdname">
-GL_TRIANGLES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRIANGLES_ADJACENCY" class="tdname">
-GL_TRIANGLES_ADJACENCY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRIANGLE_FAN" class="tdname">
-GL_TRIANGLE_FAN</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRIANGLE_STRIP" class="tdname">
-GL_TRIANGLE_STRIP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRIANGLE_STRIP_ADJACENCY" class="tdname">
-GL_TRIANGLE_STRIP_ADJACENCY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_TRUE" class="tdname">
-GL_TRUE</td>
-<td class="tdtype">
-u8</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_ALIGNMENT" class="tdname">
-GL_UNPACK_ALIGNMENT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_IMAGE_HEIGHT" class="tdname">
-GL_UNPACK_IMAGE_HEIGHT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_LSB_FIRST" class="tdname">
-GL_UNPACK_LSB_FIRST</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_ROW_LENGTH" class="tdname">
-GL_UNPACK_ROW_LENGTH</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_SKIP_IMAGES" class="tdname">
-GL_UNPACK_SKIP_IMAGES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_SKIP_PIXELS" class="tdname">
-GL_UNPACK_SKIP_PIXELS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_SKIP_ROWS" class="tdname">
-GL_UNPACK_SKIP_ROWS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNPACK_SWAP_BYTES" class="tdname">
-GL_UNPACK_SWAP_BYTES</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_BYTE" class="tdname">
-GL_UNSIGNED_BYTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_BYTE_2_3_3_REV" class="tdname">
-GL_UNSIGNED_BYTE_2_3_3_REV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_BYTE_3_3_2" class="tdname">
-GL_UNSIGNED_BYTE_3_3_2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT" class="tdname">
-GL_UNSIGNED_INT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_10F_11F_11F_REV" class="tdname">
-GL_UNSIGNED_INT_10F_11F_11F_REV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_10_10_10_2" class="tdname">
-GL_UNSIGNED_INT_10_10_10_2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_24_8" class="tdname">
-GL_UNSIGNED_INT_24_8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_5_9_9_9_REV" class="tdname">
-GL_UNSIGNED_INT_5_9_9_9_REV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8" class="tdname">
-GL_UNSIGNED_INT_8_8_8_8</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8_REV" class="tdname">
-GL_UNSIGNED_INT_8_8_8_8_REV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_1D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D_ARRAY" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_1D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_2D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_ARRAY" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_2D_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_RECT" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_2D_RECT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_3D" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_3D</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_BUFFER" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_BUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_CUBE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY" class="tdname">
-GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_VEC2" class="tdname">
-GL_UNSIGNED_INT_VEC2</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_VEC3" class="tdname">
-GL_UNSIGNED_INT_VEC3</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_INT_VEC4" class="tdname">
-GL_UNSIGNED_INT_VEC4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_NORMALIZED" class="tdname">
-GL_UNSIGNED_NORMALIZED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_SHORT" class="tdname">
-GL_UNSIGNED_SHORT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_1_5_5_5_REV" class="tdname">
-GL_UNSIGNED_SHORT_1_5_5_5_REV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4" class="tdname">
-GL_UNSIGNED_SHORT_4_4_4_4</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4_REV" class="tdname">
-GL_UNSIGNED_SHORT_4_4_4_4_REV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_5_5_5_1" class="tdname">
-GL_UNSIGNED_SHORT_5_5_5_1</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5" class="tdname">
-GL_UNSIGNED_SHORT_5_6_5</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5_REV" class="tdname">
-GL_UNSIGNED_SHORT_5_6_5_REV</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_UPPER_LEFT" class="tdname">
-GL_UPPER_LEFT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_V2F" class="tdname">
-GL_V2F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_V3F" class="tdname">
-GL_V3F</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VALIDATE_STATUS" class="tdname">
-GL_VALIDATE_STATUS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VENDOR" class="tdname">
-GL_VENDOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERSION" class="tdname">
-GL_VERSION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY" class="tdname">
-GL_VERTEX_ARRAY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_BUFFER_BINDING" class="tdname">
-GL_VERTEX_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_COUNT_EXT" class="tdname">
-GL_VERTEX_ARRAY_COUNT_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_EXT" class="tdname">
-GL_VERTEX_ARRAY_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_POINTER" class="tdname">
-GL_VERTEX_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_POINTER_EXT" class="tdname">
-GL_VERTEX_ARRAY_POINTER_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_SIZE" class="tdname">
-GL_VERTEX_ARRAY_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_SIZE_EXT" class="tdname">
-GL_VERTEX_ARRAY_SIZE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_STRIDE" class="tdname">
-GL_VERTEX_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_STRIDE_EXT" class="tdname">
-GL_VERTEX_ARRAY_STRIDE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_TYPE" class="tdname">
-GL_VERTEX_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ARRAY_TYPE_EXT" class="tdname">
-GL_VERTEX_ARRAY_TYPE_EXT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_DIVISOR" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_DIVISOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_ENABLED" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_ENABLED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_INTEGER" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_INTEGER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_LONG" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_LONG</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_NORMALIZED" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_NORMALIZED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_POINTER" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_POINTER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_SIZE" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_STRIDE" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_STRIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_TYPE" class="tdname">
-GL_VERTEX_ATTRIB_ARRAY_TYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_PROGRAM_POINT_SIZE" class="tdname">
-GL_VERTEX_PROGRAM_POINT_SIZE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_PROGRAM_TWO_SIDE" class="tdname">
-GL_VERTEX_PROGRAM_TWO_SIDE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_SHADER" class="tdname">
-GL_VERTEX_SHADER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTEX_SHADER_INVOCATIONS" class="tdname">
-GL_VERTEX_SHADER_INVOCATIONS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VERTICES_SUBMITTED" class="tdname">
-GL_VERTICES_SUBMITTED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VIEWPORT" class="tdname">
-GL_VIEWPORT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_VIEWPORT_BIT" class="tdname">
-GL_VIEWPORT_BIT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_WEIGHT_ARRAY_BUFFER_BINDING" class="tdname">
-GL_WEIGHT_ARRAY_BUFFER_BINDING</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_WIN_draw_range_elements" class="tdname">
-GL_WIN_draw_range_elements</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>EXT_vertex_array. </p>
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_WIN_swap_hint" class="tdname">
-GL_WIN_swap_hint</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_WRAP_BORDER" class="tdname">
-GL_WRAP_BORDER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_WRITE_ONLY" class="tdname">
-GL_WRITE_ONLY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_XOR" class="tdname">
-GL_XOR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ZERO" class="tdname">
-GL_ZERO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ZOOM_X" class="tdname">
-GL_ZOOM_X</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Ogl_GL_ZOOM_Y" class="tdname">
-GL_ZOOM_Y</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Ogl_GL_ZOOM_Y">GL_ZOOM_Y</td>
+<td>u32</td>
+<td></td>
 </tr>
 </table>
 <p>

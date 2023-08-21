@@ -60,12 +60,6 @@
             .right {
                 overflow-y: scroll;
             }
-            @media only screen and (max-width: 600px) {
-                td {
-                    display: block;
-                    width:   100%;
-                }
-            }
             @media screen and (max-width: 600px) {
                 .left {
                     display: none;
@@ -99,27 +93,18 @@
             width:              100%;
             font-size:          90%;
         }
-        .container td.enumeration {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              30%;
-        }
-        .container td.tdname {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              20%;
-            background-color:   #f8f8f8;
-        }
-        .container td.tdtype {
+        .container .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              auto;
+        }
+        .container .enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
         }
         .container td:last-child {
-            width:              auto;
+            width:              100%;
         }
         .left ul {
             list-style-type:    none;
@@ -403,985 +388,604 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Gdi32_ANSI_CHARSET" class="tdname">
-ANSI_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_ANSI_FIXED_FONT" class="tdname">
-ANSI_FIXED_FONT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_ANSI_VAR_FONT" class="tdname">
-ANSI_VAR_FONT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_ARABIC_CHARSET" class="tdname">
-ARABIC_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BALTIC_CHARSET" class="tdname">
-BALTIC_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BI_BITFIELDS" class="tdname">
-BI_BITFIELDS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BI_JPEG" class="tdname">
-BI_JPEG</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BI_PNG" class="tdname">
-BI_PNG</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BI_RGB" class="tdname">
-BI_RGB</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BI_RLE4" class="tdname">
-BI_RLE4</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BI_RLE8" class="tdname">
-BI_RLE8</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BKMODE_LAST" class="tdname">
-BKMODE_LAST</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_BLACKNESS" class="tdname">
-BLACKNESS</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = BLACK. </p>
-</td>
+<td id="Gdi32_ANSI_CHARSET">ANSI_CHARSET</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Gdi32_BLACK_BRUSH" class="tdname">
-BLACK_BRUSH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Gdi32_ANSI_FIXED_FONT">ANSI_FIXED_FONT</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Gdi32_BLACK_PEN" class="tdname">
-BLACK_PEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<td id="Gdi32_ANSI_VAR_FONT">ANSI_VAR_FONT</td>
+<td>s32</td>
+<td></td>
 </tr>
 <tr>
-<td id="Gdi32_CAPTUREBLT" class="tdname">
-CAPTUREBLT</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>Include layered windows. </p>
-</td>
+<td id="Gdi32_ARABIC_CHARSET">ARABIC_CHARSET</td>
+<td>s32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_CHINESEBIG5_CHARSET" class="tdname">
-CHINESEBIG5_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_BALTIC_CHARSET">BALTIC_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BI_BITFIELDS">BI_BITFIELDS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BI_JPEG">BI_JPEG</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BI_PNG">BI_PNG</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BI_RGB">BI_RGB</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BI_RLE4">BI_RLE4</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BI_RLE8">BI_RLE8</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BKMODE_LAST">BKMODE_LAST</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BLACKNESS">BLACKNESS</td>
+<td>Win32.DWORD</td>
+<td>dest = BLACK. </td>
+</tr>
+<tr>
+<td id="Gdi32_BLACK_BRUSH">BLACK_BRUSH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_BLACK_PEN">BLACK_PEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_CAPTUREBLT">CAPTUREBLT</td>
+<td>Win32.DWORD</td>
+<td>Include layered windows. </td>
+</tr>
+<tr>
+<td id="Gdi32_CHINESEBIG5_CHARSET">CHINESEBIG5_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DEFAULT_CHARSET">DEFAULT_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DEFAULT_PALETTE">DEFAULT_PALETTE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DEVICE_DEFAULT_FONT">DEVICE_DEFAULT_FONT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DEVICE_FONTTYPE">DEVICE_FONTTYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DIB_PAL_COLORS">DIB_PAL_COLORS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DIB_RGB_COLORS">DIB_RGB_COLORS</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DKGRAY_BRUSH">DKGRAY_BRUSH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_DSTINVERT">DSTINVERT</td>
+<td>Win32.DWORD</td>
+<td>dest = (NOT dest). </td>
+</tr>
+<tr>
+<td id="Gdi32_EASTEUROPE_CHARSET">EASTEUROPE_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_BLACK">FW_BLACK</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_BOLD">FW_BOLD</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_DEMIBOLD">FW_DEMIBOLD</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_DONTCARE">FW_DONTCARE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_EXTRABOLD">FW_EXTRABOLD</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_EXTRALIGHT">FW_EXTRALIGHT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_HEAVY">FW_HEAVY</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_LIGHT">FW_LIGHT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_MEDIUM">FW_MEDIUM</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_NORMAL">FW_NORMAL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_REGULAR">FW_REGULAR</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_SEMIBOLD">FW_SEMIBOLD</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_THIN">FW_THIN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_ULTRABOLD">FW_ULTRABOLD</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FW_ULTRALIGHT">FW_ULTRALIGHT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_GB2312_CHARSET">GB2312_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_GDI_ERROR">GDI_ERROR</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_GRAY_BRUSH">GRAY_BRUSH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_GREEK_CHARSET">GREEK_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HANGEUL_CHARSET">HANGEUL_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HANGUL_CHARSET">HANGUL_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HEBREW_CHARSET">HEBREW_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HOLLOW_BRUSH">HOLLOW_BRUSH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_JOHAB_CHARSET">JOHAB_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_LF_FACESIZE">LF_FACESIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_LF_FULLFACESIZE">LF_FULLFACESIZE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_LTGRAY_BRUSH">LTGRAY_BRUSH</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_MAC_CHARSET">MAC_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_MERGECOPY">MERGECOPY</td>
+<td>Win32.DWORD</td>
+<td>dest = (source AND pattern). </td>
+</tr>
+<tr>
+<td id="Gdi32_MERGEPAINT">MERGEPAINT</td>
+<td>Win32.DWORD</td>
+<td>dest = (NOT source) OR dest. </td>
+</tr>
+<tr>
+<td id="Gdi32_NOMIRRORBITMAP">NOMIRRORBITMAP</td>
+<td>Win32.DWORD</td>
+<td>Do not Mirror the bitmap in this call. </td>
+</tr>
+<tr>
+<td id="Gdi32_NOTSRCCOPY">NOTSRCCOPY</td>
+<td>Win32.DWORD</td>
+<td>dest = (NOT source). </td>
+</tr>
+<tr>
+<td id="Gdi32_NOTSRCERASE">NOTSRCERASE</td>
+<td>Win32.DWORD</td>
+<td>dest = (NOT src) AND (NOT dest). </td>
+</tr>
+<tr>
+<td id="Gdi32_NULL_BRUSH">NULL_BRUSH</td>
+<td>s32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_DEFAULT_CHARSET" class="tdname">
-DEFAULT_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_NULL_PEN">NULL_PEN</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_OEM_CHARSET">OEM_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_OEM_FIXED_FONT">OEM_FIXED_FONT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_OPAQUE">OPAQUE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PATCOPY">PATCOPY</td>
+<td>Win32.DWORD</td>
+<td>dest = pattern. </td>
+</tr>
+<tr>
+<td id="Gdi32_PATINVERT">PATINVERT</td>
+<td>Win32.DWORD</td>
+<td>dest = pattern XOR dest. </td>
+</tr>
+<tr>
+<td id="Gdi32_PATPAINT">PATPAINT</td>
+<td>Win32.DWORD</td>
+<td>dest = DPSnoo. </td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_DEPTH_DONTCARE">PFD_DEPTH_DONTCARE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_DIRECT3D_ACCELERATED">PFD_DIRECT3D_ACCELERATED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_DOUBLEBUFFER">PFD_DOUBLEBUFFER</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_DOUBLEBUFFER_DONTCARE">PFD_DOUBLEBUFFER_DONTCARE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_DRAW_TO_BITMAP">PFD_DRAW_TO_BITMAP</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_DRAW_TO_WINDOW">PFD_DRAW_TO_WINDOW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_GENERIC_ACCELERATED">PFD_GENERIC_ACCELERATED</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_GENERIC_FORMAT">PFD_GENERIC_FORMAT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_MAIN_PLANE">PFD_MAIN_PLANE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_NEED_PALETTE">PFD_NEED_PALETTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_NEED_SYSTEM_PALETTE">PFD_NEED_SYSTEM_PALETTE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_OVERLAY_PLANE">PFD_OVERLAY_PLANE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_STEREO">PFD_STEREO</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_STEREO_DONTCARE">PFD_STEREO_DONTCARE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_SUPPORT_COMPOSITION">PFD_SUPPORT_COMPOSITION</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_SUPPORT_DIRECTDRAW">PFD_SUPPORT_DIRECTDRAW</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_SUPPORT_GDI">PFD_SUPPORT_GDI</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_SUPPORT_OPENGL">PFD_SUPPORT_OPENGL</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_SWAP_COPY">PFD_SWAP_COPY</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_SWAP_EXCHANGE">PFD_SWAP_EXCHANGE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_SWAP_LAYER_BUFFERS">PFD_SWAP_LAYER_BUFFERS</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_TYPE_COLORINDEX">PFD_TYPE_COLORINDEX</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_TYPE_RGBA">PFD_TYPE_RGBA</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PFD_UNDERLAY_PLANE">PFD_UNDERLAY_PLANE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PS_ALTERNATE">PS_ALTERNATE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PS_DASH">PS_DASH</td>
+<td>s32</td>
+<td>-------. </td>
+</tr>
+<tr>
+<td id="Gdi32_PS_DASHDOT">PS_DASHDOT</td>
+<td>s32</td>
+<td>_._._._. </td>
+</tr>
+<tr>
+<td id="Gdi32_PS_DASHDOTDOT">PS_DASHDOTDOT</td>
+<td>s32</td>
+<td>_.._.._. </td>
+</tr>
+<tr>
+<td id="Gdi32_PS_DOT">PS_DOT</td>
+<td>s32</td>
+<td>....... </td>
+</tr>
+<tr>
+<td id="Gdi32_PS_INSIDEFRAME">PS_INSIDEFRAME</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PS_NULL">PS_NULL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PS_SOLID">PS_SOLID</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PS_STYLE_MASK">PS_STYLE_MASK</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_PS_USERSTYLE">PS_USERSTYLE</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_RASTER_FONTTYPE">RASTER_FONTTYPE</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_RUSSIAN_CHARSET">RUSSIAN_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_SHIFTJIS_CHARSET">SHIFTJIS_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_SRCAND">SRCAND</td>
+<td>Win32.DWORD</td>
+<td>dest = source AND dest. </td>
+</tr>
+<tr>
+<td id="Gdi32_SRCCOPY">SRCCOPY</td>
+<td>Win32.DWORD</td>
+<td>dest = source. </td>
+</tr>
+<tr>
+<td id="Gdi32_SRCERASE">SRCERASE</td>
+<td>Win32.DWORD</td>
+<td>dest = source AND (NOT dest ). </td>
+</tr>
+<tr>
+<td id="Gdi32_SRCINVERT">SRCINVERT</td>
+<td>Win32.DWORD</td>
+<td>dest = source XOR dest. </td>
+</tr>
+<tr>
+<td id="Gdi32_SRCPAINT">SRCPAINT</td>
+<td>Win32.DWORD</td>
+<td>dest = source OR dest. </td>
+</tr>
+<tr>
+<td id="Gdi32_SYMBOL_CHARSET">SYMBOL_CHARSET</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_SYSTEM_FIXED_FONT">SYSTEM_FIXED_FONT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_SYSTEM_FONT">SYSTEM_FONT</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_THAI_CHARSET">THAI_CHARSET</td>
+<td>s32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_DEFAULT_PALETTE" class="tdname">
-DEFAULT_PALETTE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_TRANSPARENT">TRANSPARENT</td>
+<td>s32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_DEVICE_DEFAULT_FONT" class="tdname">
-DEVICE_DEFAULT_FONT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_TRUETYPE_FONTTYPE">TRUETYPE_FONTTYPE</td>
+<td>u32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_DEVICE_FONTTYPE" class="tdname">
-DEVICE_FONTTYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_TURKISH_CHARSET">TURKISH_CHARSET</td>
+<td>s32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_DIB_PAL_COLORS" class="tdname">
-DIB_PAL_COLORS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_VIETNAMESE_CHARSET">VIETNAMESE_CHARSET</td>
+<td>s32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_DIB_RGB_COLORS" class="tdname">
-DIB_RGB_COLORS</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_WHITENESS">WHITENESS</td>
+<td>Win32.DWORD</td>
+<td>dest = WHITE. </td>
 </tr>
-<tr>
-<td id="Gdi32_DKGRAY_BRUSH" class="tdname">
-DKGRAY_BRUSH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_WHITE_BRUSH">WHITE_BRUSH</td>
+<td>s32</td>
+<td></td>
 </tr>
-<tr>
-<td id="Gdi32_DSTINVERT" class="tdname">
-DSTINVERT</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = (NOT dest). </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_EASTEUROPE_CHARSET" class="tdname">
-EASTEUROPE_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_BLACK" class="tdname">
-FW_BLACK</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_BOLD" class="tdname">
-FW_BOLD</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_DEMIBOLD" class="tdname">
-FW_DEMIBOLD</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_DONTCARE" class="tdname">
-FW_DONTCARE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_EXTRABOLD" class="tdname">
-FW_EXTRABOLD</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_EXTRALIGHT" class="tdname">
-FW_EXTRALIGHT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_HEAVY" class="tdname">
-FW_HEAVY</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_LIGHT" class="tdname">
-FW_LIGHT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_MEDIUM" class="tdname">
-FW_MEDIUM</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_NORMAL" class="tdname">
-FW_NORMAL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_REGULAR" class="tdname">
-FW_REGULAR</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_SEMIBOLD" class="tdname">
-FW_SEMIBOLD</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_THIN" class="tdname">
-FW_THIN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_ULTRABOLD" class="tdname">
-FW_ULTRABOLD</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_FW_ULTRALIGHT" class="tdname">
-FW_ULTRALIGHT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_GB2312_CHARSET" class="tdname">
-GB2312_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_GDI_ERROR" class="tdname">
-GDI_ERROR</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_GRAY_BRUSH" class="tdname">
-GRAY_BRUSH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_GREEK_CHARSET" class="tdname">
-GREEK_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_HANGEUL_CHARSET" class="tdname">
-HANGEUL_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_HANGUL_CHARSET" class="tdname">
-HANGUL_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_HEBREW_CHARSET" class="tdname">
-HEBREW_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_HOLLOW_BRUSH" class="tdname">
-HOLLOW_BRUSH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_JOHAB_CHARSET" class="tdname">
-JOHAB_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_LF_FACESIZE" class="tdname">
-LF_FACESIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_LF_FULLFACESIZE" class="tdname">
-LF_FULLFACESIZE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_LTGRAY_BRUSH" class="tdname">
-LTGRAY_BRUSH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_MAC_CHARSET" class="tdname">
-MAC_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_MERGECOPY" class="tdname">
-MERGECOPY</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = (source AND pattern). </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_MERGEPAINT" class="tdname">
-MERGEPAINT</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = (NOT source) OR dest. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_NOMIRRORBITMAP" class="tdname">
-NOMIRRORBITMAP</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>Do not Mirror the bitmap in this call. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_NOTSRCCOPY" class="tdname">
-NOTSRCCOPY</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = (NOT source). </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_NOTSRCERASE" class="tdname">
-NOTSRCERASE</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = (NOT src) AND (NOT dest). </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_NULL_BRUSH" class="tdname">
-NULL_BRUSH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_NULL_PEN" class="tdname">
-NULL_PEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_OEM_CHARSET" class="tdname">
-OEM_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_OEM_FIXED_FONT" class="tdname">
-OEM_FIXED_FONT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_OPAQUE" class="tdname">
-OPAQUE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PATCOPY" class="tdname">
-PATCOPY</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = pattern. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PATINVERT" class="tdname">
-PATINVERT</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = pattern XOR dest. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PATPAINT" class="tdname">
-PATPAINT</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = DPSnoo. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_DEPTH_DONTCARE" class="tdname">
-PFD_DEPTH_DONTCARE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_DIRECT3D_ACCELERATED" class="tdname">
-PFD_DIRECT3D_ACCELERATED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_DOUBLEBUFFER" class="tdname">
-PFD_DOUBLEBUFFER</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_DOUBLEBUFFER_DONTCARE" class="tdname">
-PFD_DOUBLEBUFFER_DONTCARE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_DRAW_TO_BITMAP" class="tdname">
-PFD_DRAW_TO_BITMAP</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_DRAW_TO_WINDOW" class="tdname">
-PFD_DRAW_TO_WINDOW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_GENERIC_ACCELERATED" class="tdname">
-PFD_GENERIC_ACCELERATED</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_GENERIC_FORMAT" class="tdname">
-PFD_GENERIC_FORMAT</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_MAIN_PLANE" class="tdname">
-PFD_MAIN_PLANE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_NEED_PALETTE" class="tdname">
-PFD_NEED_PALETTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_NEED_SYSTEM_PALETTE" class="tdname">
-PFD_NEED_SYSTEM_PALETTE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_OVERLAY_PLANE" class="tdname">
-PFD_OVERLAY_PLANE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_STEREO" class="tdname">
-PFD_STEREO</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_STEREO_DONTCARE" class="tdname">
-PFD_STEREO_DONTCARE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_SUPPORT_COMPOSITION" class="tdname">
-PFD_SUPPORT_COMPOSITION</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_SUPPORT_DIRECTDRAW" class="tdname">
-PFD_SUPPORT_DIRECTDRAW</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_SUPPORT_GDI" class="tdname">
-PFD_SUPPORT_GDI</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_SUPPORT_OPENGL" class="tdname">
-PFD_SUPPORT_OPENGL</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_SWAP_COPY" class="tdname">
-PFD_SWAP_COPY</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_SWAP_EXCHANGE" class="tdname">
-PFD_SWAP_EXCHANGE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_SWAP_LAYER_BUFFERS" class="tdname">
-PFD_SWAP_LAYER_BUFFERS</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_TYPE_COLORINDEX" class="tdname">
-PFD_TYPE_COLORINDEX</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_TYPE_RGBA" class="tdname">
-PFD_TYPE_RGBA</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PFD_UNDERLAY_PLANE" class="tdname">
-PFD_UNDERLAY_PLANE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_ALTERNATE" class="tdname">
-PS_ALTERNATE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_DASH" class="tdname">
-PS_DASH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>-------. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_DASHDOT" class="tdname">
-PS_DASHDOT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>_._._._. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_DASHDOTDOT" class="tdname">
-PS_DASHDOTDOT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>_.._.._. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_DOT" class="tdname">
-PS_DOT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-<p>....... </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_INSIDEFRAME" class="tdname">
-PS_INSIDEFRAME</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_NULL" class="tdname">
-PS_NULL</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_SOLID" class="tdname">
-PS_SOLID</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_STYLE_MASK" class="tdname">
-PS_STYLE_MASK</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_PS_USERSTYLE" class="tdname">
-PS_USERSTYLE</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_RASTER_FONTTYPE" class="tdname">
-RASTER_FONTTYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_RUSSIAN_CHARSET" class="tdname">
-RUSSIAN_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SHIFTJIS_CHARSET" class="tdname">
-SHIFTJIS_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SRCAND" class="tdname">
-SRCAND</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = source AND dest. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SRCCOPY" class="tdname">
-SRCCOPY</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = source. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SRCERASE" class="tdname">
-SRCERASE</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = source AND (NOT dest ). </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SRCINVERT" class="tdname">
-SRCINVERT</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = source XOR dest. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SRCPAINT" class="tdname">
-SRCPAINT</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = source OR dest. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SYMBOL_CHARSET" class="tdname">
-SYMBOL_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SYSTEM_FIXED_FONT" class="tdname">
-SYSTEM_FIXED_FONT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_SYSTEM_FONT" class="tdname">
-SYSTEM_FONT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_THAI_CHARSET" class="tdname">
-THAI_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_TRANSPARENT" class="tdname">
-TRANSPARENT</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_TRUETYPE_FONTTYPE" class="tdname">
-TRUETYPE_FONTTYPE</td>
-<td class="tdtype">
-u32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_TURKISH_CHARSET" class="tdname">
-TURKISH_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_VIETNAMESE_CHARSET" class="tdname">
-VIETNAMESE_CHARSET</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_WHITENESS" class="tdname">
-WHITENESS</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-<p>dest = WHITE. </p>
-</td>
-</tr>
-<tr>
-<td id="Gdi32_WHITE_BRUSH" class="tdname">
-WHITE_BRUSH</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
-</tr>
-<tr>
-<td id="Gdi32_WHITE_PEN" class="tdname">
-WHITE_PEN</td>
-<td class="tdtype">
-s32</td>
-<td class="enumeration">
-</td>
+<tr>
+<td id="Gdi32_WHITE_PEN">WHITE_PEN</td>
+<td>s32</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1397,60 +1001,39 @@ s32</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-bmType</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>bmType</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bmWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>bmWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bmHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>bmHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bmWidthBytes</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>bmWidthBytes</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bmPlanes</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>bmPlanes</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bmBitsPixel</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>bmBitsPixel</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bmBits</td>
-<td class="tdtype">
-Win32.LPVOID</td>
-<td class="enumeration">
-</td>
+<td>bmBits</td>
+<td>Win32.LPVOID</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1466,20 +1049,14 @@ Win32.LPVOID</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-bmiHeader</td>
-<td class="tdtype">
-<a href="#Gdi32_BITMAPINFOHEADER">Gdi32.BITMAPINFOHEADER</a></td>
-<td class="enumeration">
-</td>
+<td>bmiHeader</td>
+<td><a href="#Gdi32_BITMAPINFOHEADER">Gdi32.BITMAPINFOHEADER</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bmiColors</td>
-<td class="tdtype">
-[1] Gdi32.RGBQUAD</td>
-<td class="enumeration">
-</td>
+<td>bmiColors</td>
+<td>[1] Gdi32.RGBQUAD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1495,92 +1072,59 @@ bmiColors</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-biSize</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>biSize</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>biWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>biHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biPlanes</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>biPlanes</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biBitCount</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>biBitCount</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biCompression</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>biCompression</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biSizeImage</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>biSizeImage</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biXPelsPerMeter</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>biXPelsPerMeter</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biYPelsPerMeter</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>biYPelsPerMeter</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biClrUsed</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>biClrUsed</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-biClrImportant</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>biClrImportant</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1764,36 +1308,24 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-elfLogFont</td>
-<td class="tdtype">
-<a href="#Gdi32_LOGFONTA">Gdi32.LOGFONTA</a></td>
-<td class="enumeration">
-</td>
+<td>elfLogFont</td>
+<td><a href="#Gdi32_LOGFONTA">Gdi32.LOGFONTA</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-elfFullName</td>
-<td class="tdtype">
-[64] Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>elfFullName</td>
+<td>[64] Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-elfStyle</td>
-<td class="tdtype">
-[32] Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>elfStyle</td>
+<td>[32] Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-elfScript</td>
-<td class="tdtype">
-[32] Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>elfScript</td>
+<td>[32] Win32.BYTE</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1809,36 +1341,24 @@ elfScript</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-elfLogFont</td>
-<td class="tdtype">
-<a href="#Gdi32_LOGFONTW">Gdi32.LOGFONTW</a></td>
-<td class="enumeration">
-</td>
+<td>elfLogFont</td>
+<td><a href="#Gdi32_LOGFONTW">Gdi32.LOGFONTW</a></td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-elfFullName</td>
-<td class="tdtype">
-[64] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>elfFullName</td>
+<td>[64] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-elfStyle</td>
-<td class="tdtype">
-[32] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>elfStyle</td>
+<td>[32] Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-elfScript</td>
-<td class="tdtype">
-[32] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>elfScript</td>
+<td>[32] Win32.WCHAR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2010,116 +1530,74 @@ elfScript</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lfHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfEscapement</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfEscapement</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfOrientation</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfOrientation</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfWeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfWeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfItalic</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfItalic</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfUnderline</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfUnderline</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfStrikeOut</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfStrikeOut</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfCharSet</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfCharSet</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfOutPrecision</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfOutPrecision</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfClipPrecision</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfClipPrecision</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfQuality</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfQuality</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfPitchAndFamily</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfPitchAndFamily</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfFaceName</td>
-<td class="tdtype">
-[32] Win32.CHAR</td>
-<td class="enumeration">
-</td>
+<td>lfFaceName</td>
+<td>[32] Win32.CHAR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2135,116 +1613,74 @@ lfFaceName</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-lfHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfEscapement</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfEscapement</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfOrientation</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfOrientation</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfWeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>lfWeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfItalic</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfItalic</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfUnderline</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfUnderline</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfStrikeOut</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfStrikeOut</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfCharSet</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfCharSet</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfOutPrecision</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfOutPrecision</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfClipPrecision</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfClipPrecision</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfQuality</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfQuality</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfPitchAndFamily</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>lfPitchAndFamily</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-lfFaceName</td>
-<td class="tdtype">
-[32] Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>lfFaceName</td>
+<td>[32] Win32.WCHAR</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2288,196 +1724,124 @@ lfFaceName</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-tmHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAscent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAscent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDescent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDescent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmInternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmInternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmExternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmExternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAveCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAveCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmMaxCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmMaxCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmWeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmWeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmOverhang</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmOverhang</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectX</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectX</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectY</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectY</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmFirstChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmFirstChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmLastChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmLastChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDefaultChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmDefaultChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmBreakChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmBreakChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmItalic</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmItalic</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmUnderlined</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmUnderlined</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmStruckOut</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmStruckOut</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmPitchAndFamily</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmPitchAndFamily</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmCharSet</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmCharSet</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>ntmFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmSizeEM</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>ntmSizeEM</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmCellHeight</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>ntmCellHeight</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmAvgWidth</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>ntmAvgWidth</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2493,196 +1857,124 @@ Win32.UINT</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-tmHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAscent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAscent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDescent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDescent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmInternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmInternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmExternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmExternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAveCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAveCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmMaxCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmMaxCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmWeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmWeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmOverhang</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmOverhang</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectX</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectX</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectY</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectY</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmFirstChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmFirstChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmLastChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmLastChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDefaultChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmDefaultChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmBreakChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmBreakChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmItalic</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmItalic</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmUnderlined</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmUnderlined</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmStruckOut</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmStruckOut</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmPitchAndFamily</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmPitchAndFamily</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmCharSet</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmCharSet</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>ntmFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmSizeEM</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>ntmSizeEM</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmCellHeight</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>ntmCellHeight</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-ntmAvgWidth</td>
-<td class="tdtype">
-Win32.UINT</td>
-<td class="enumeration">
-</td>
+<td>ntmAvgWidth</td>
+<td>Win32.UINT</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2698,212 +1990,134 @@ Win32.UINT</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-nSize</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>nSize</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-nVersion</td>
-<td class="tdtype">
-Win32.WORD</td>
-<td class="enumeration">
-</td>
+<td>nVersion</td>
+<td>Win32.WORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwFlags</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwFlags</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iPixelType</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>iPixelType</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cColorBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cColorBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cRedBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cRedBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cRedShift</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cRedShift</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cGreenBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cGreenBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cGreenShift</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cGreenShift</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cBlueBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cBlueBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cBlueShift</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cBlueShift</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAlphaBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAlphaBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAlphaShift</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAlphaShift</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAccumBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAccumBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAccumRedBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAccumRedBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAccumGreenBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAccumGreenBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAccumBlueBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAccumBlueBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAccumAlphaBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAccumAlphaBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cDepthBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cDepthBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cStencilBits</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cStencilBits</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-cAuxBuffers</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>cAuxBuffers</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-iLayerType</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>iLayerType</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-bReserved</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>bReserved</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwLayerMask</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwLayerMask</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwVisibleMask</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwVisibleMask</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-dwDamageMask</td>
-<td class="tdtype">
-Win32.DWORD</td>
-<td class="enumeration">
-</td>
+<td>dwDamageMask</td>
+<td>Win32.DWORD</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -2933,36 +2147,24 @@ Win32.DWORD</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-rgbBlue</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>rgbBlue</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rgbGreen</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>rgbGreen</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rgbRed</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>rgbRed</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-rgbReserved</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>rgbReserved</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3090,164 +2292,104 @@ Win32.BYTE</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-tmHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAscent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAscent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDescent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDescent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmInternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmInternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmExternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmExternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAveCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAveCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmMaxCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmMaxCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmWeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmWeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmOverhang</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmOverhang</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectX</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectX</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectY</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectY</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmFirstChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmFirstChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmLastChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmLastChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDefaultChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmDefaultChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmBreakChar</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmBreakChar</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmItalic</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmItalic</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmUnderlined</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmUnderlined</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmStruckOut</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmStruckOut</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmPitchAndFamily</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmPitchAndFamily</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmCharSet</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmCharSet</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -3263,164 +2405,104 @@ Win32.BYTE</td>
 </p>
 <table class="enumeration">
 <tr>
-<td class="tdname">
-tmHeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmHeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAscent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAscent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDescent</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDescent</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmInternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmInternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmExternalLeading</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmExternalLeading</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmAveCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmAveCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmMaxCharWidth</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmMaxCharWidth</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmWeight</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmWeight</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmOverhang</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmOverhang</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectX</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectX</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDigitizedAspectY</td>
-<td class="tdtype">
-Win32.LONG</td>
-<td class="enumeration">
-</td>
+<td>tmDigitizedAspectY</td>
+<td>Win32.LONG</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmFirstChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmFirstChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmLastChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmLastChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmDefaultChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmDefaultChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmBreakChar</td>
-<td class="tdtype">
-Win32.WCHAR</td>
-<td class="enumeration">
-</td>
+<td>tmBreakChar</td>
+<td>Win32.WCHAR</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmItalic</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmItalic</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmUnderlined</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmUnderlined</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmStruckOut</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmStruckOut</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmPitchAndFamily</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmPitchAndFamily</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 <tr>
-<td class="tdname">
-tmCharSet</td>
-<td class="tdtype">
-Win32.BYTE</td>
-<td class="enumeration">
-</td>
+<td>tmCharSet</td>
+<td>Win32.BYTE</td>
+<td></td>
 </tr>
 </table>
 <p>

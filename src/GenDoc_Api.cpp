@@ -135,7 +135,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
 
         // Name
         helpContent += "<tr>\n";
-        helpContent += "<td class=\"enumeration\">\n";
+        helpContent += "<td>";
         Utf8 name = n1->token.text;
 
         if (kind == AstNodeKind::FuncDecl)
@@ -170,13 +170,13 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
         helpContent += "</td>\n";
 
         // Short desc
-        helpContent += "<td class=\"enumeration\">\n";
+        helpContent += "<td>";
         auto subDocComment = getDocComment(n1);
         if (!subDocComment.empty())
         {
             UserComment subUserComment;
             computeUserComments(subUserComment, subDocComment);
-            outputUserBlock(subUserComment.shortDesc);
+            outputUserBlock(subUserComment.shortDesc, 1, true);
         }
 
         helpContent += "</td>\n";
@@ -539,20 +539,20 @@ void GenDoc::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\" class=\"tdname\">\n", toRef(n->getScopedName()).c_str());
+                helpContent += Fmt("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
                 helpContent += n->token.ctext();
                 helpContent += "</td>\n";
 
-                helpContent += "<td class=\"tdtype\">\n";
+                helpContent += "<td>";
                 auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 outputType(varDecl);
                 helpContent += "</td>\n";
 
-                helpContent += "<td class=\"enumeration\">\n";
+                helpContent += "<td>";
                 UserComment subUserComment;
                 auto        subDocComment = getDocComment(n);
                 computeUserComments(subUserComment, subDocComment);
-                outputUserBlock(subUserComment.shortDesc);
+                outputUserBlock(subUserComment.shortDesc, 1, true);
                 helpContent += "</td>\n";
 
                 helpContent += "</tr>\n";
@@ -611,21 +611,21 @@ void GenDoc::generateContent()
 
                     helpContent += "<tr>\n";
 
-                    helpContent += "<td class=\"tdname\">\n";
+                    helpContent += "<td>";
                     if (varDecl->flags & AST_DECL_USING)
                         helpContent += "<b>using</b> ";
                     helpContent += structVal->name;
                     helpContent += "</td>\n";
 
-                    helpContent += "<td class=\"tdtype\">\n";
+                    helpContent += "<td>";
                     outputType(varDecl);
                     helpContent += "</td>\n";
 
-                    helpContent += "<td class=\"enumeration\">\n";
+                    helpContent += "<td>";
                     UserComment subUserComment;
                     auto        subDocComment = getDocComment(varDecl);
                     computeUserComments(subUserComment, subDocComment);
-                    outputUserBlock(subUserComment.shortDesc);
+                    outputUserBlock(subUserComment.shortDesc, 1, true);
                     helpContent += "</td>\n";
 
                     helpContent += "</tr>\n";
@@ -664,15 +664,15 @@ void GenDoc::generateContent()
                     continue;
 
                 helpContent += "<tr>\n";
-                helpContent += "<td class=\"tdname\">\n";
+                helpContent += "<td>";
                 helpContent += enumVal->name;
                 helpContent += "</td>\n";
 
-                helpContent += "<td class=\"enumeration\">\n";
+                helpContent += "<td>";
                 UserComment subUserComment;
                 auto        subDocComment = getDocComment(enumVal->nodes[0]);
                 computeUserComments(subUserComment, subDocComment);
-                outputUserBlock(subUserComment.shortDesc);
+                outputUserBlock(subUserComment.shortDesc, 1, true);
                 helpContent += "</td>\n";
 
                 helpContent += "</tr>\n";
