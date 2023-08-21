@@ -13,6 +13,14 @@
             margin:         0px auto;
             padding:        0px;
         }
+        .left {
+            display:    block;
+            overflow-y: scroll;
+            width:      600px;
+        }
+        .leftpage {
+            margin:     10px;
+        }
         .right {
             display:    block;
             width:      100%;
@@ -46,24 +54,19 @@
                 max-width: 1536px;
             }
         }
+        @media screen and (max-width: 600px) {
+            .left {
+                display: none;
+            }
+            .rightpage {
+                margin:  10px;
+            }
+        }
             .container {
                 height:     100vh;
             }
-            .left {
-                display:    block;
-                overflow-y: scroll;
-                width:      600px;
-            }
-            .leftpage {
-                margin:     10px;
-            }
             .right {
                 overflow-y: scroll;
-            }
-            @media screen and (max-width: 600px) {
-                .left {
-                    display: none;
-                }
             }
         body {
             margin:         0px;

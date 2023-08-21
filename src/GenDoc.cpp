@@ -21,6 +21,14 @@ void GenDoc::outputStyles()
             margin:         0px auto;\n\
             padding:        0px;\n\
         }\n\
+        .left {\n\
+            display:    block;\n\
+            overflow-y: scroll;\n\
+            width:      600px;\n\
+        }\n\
+        .leftpage {\n\
+            margin:     10px;\n\
+        }\n\
         .right {\n\
             display:    block;\n\
             width:      100%;\n\
@@ -53,6 +61,14 @@ void GenDoc::outputStyles()
             .container {\n\
                 max-width: 1536px;\n\
             }\n\
+        }\n\
+        @media screen and (max-width: 600px) {\n\
+            .left {\n\
+                display: none;\n\
+            }\n\
+            .rightpage {\n\
+                margin:  10px;\n\
+            }\n\
         }";
 
     // Layout
@@ -62,21 +78,8 @@ void GenDoc::outputStyles()
             .container {\n\
                 height:     100vh;\n\
             }\n\
-            .left {\n\
-                display:    block;\n\
-                overflow-y: scroll;\n\
-                width:      600px;\n\
-            }\n\
-            .leftpage {\n\
-                margin:     10px;\n\
-            }\n\
             .right {\n\
                 overflow-y: scroll;\n\
-            }\n\
-            @media screen and (max-width: 600px) {\n\
-                .left {\n\
-                    display: none;\n\
-                }\n\
             }";
     }
 

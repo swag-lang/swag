@@ -13,6 +13,14 @@
             margin:         0px auto;
             padding:        0px;
         }
+        .left {
+            display:    block;
+            overflow-y: scroll;
+            width:      600px;
+        }
+        .leftpage {
+            margin:     10px;
+        }
         .right {
             display:    block;
             width:      100%;
@@ -44,6 +52,14 @@
         @media(min-width: 1536px) {
             .container {
                 max-width: 1536px;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .left {
+                display: none;
+            }
+            .rightpage {
+                margin:  10px;
             }
         }
         body {
