@@ -14,191 +14,189 @@ void GenDoc::outputStyles()
     helpOutput += "<style>\n";
 
     helpOutput += "\n\
-    .container {\n\
-        display:        flex;\n\
-        flex-wrap:      nowrap;\n\
-        flex-direction: row;\n\
-        margin:         0px auto;\n\
-        padding:        0px;\n\
-    }\n\
-    .right {\n\
-        display:    block;\n\
-        width:      100%;\n\
-    }\n\
-    .rightpage {\n\
-        max-width:  1024px;\n\
-        margin:     10px auto;\n\
-    }\n\
-    @media(min-width: 640px) {\n\
         .container {\n\
-            max-width: 640px;\n\
+            display:        flex;\n\
+            flex-wrap:      nowrap;\n\
+            flex-direction: row;\n\
+            margin:         0px auto;\n\
+            padding:        0px;\n\
         }\n\
-    }\n\
-    @media(min-width: 768px) {\n\
-        .container {\n\
-            max-width: 768px;\n\
+        .right {\n\
+            display:    block;\n\
+            width:      100%;\n\
         }\n\
-    }\n\
-    @media(min-width: 1024px) {\n\
-        .container {\n\
-            max-width: 1024px;\n\
+        .rightpage {\n\
+            max-width:  1024px;\n\
+            margin:     10px auto;\n\
         }\n\
-    }\n\
-    @media(min-width: 1280px) {\n\
-        .container {\n\
-            max-width: 1280px;\n\
+        @media(min-width: 640px) {\n\
+            .container {\n\
+                max-width: 640px;\n\
+            }\n\
         }\n\
-    }\n\
-    @media(min-width: 1536px) {\n\
-        .container {\n\
-            max-width: 1536px;\n\
+        @media(min-width: 768px) {\n\
+            .container {\n\
+                max-width: 768px;\n\
+            }\n\
         }\n\
-    }\n\
-";
+        @media(min-width: 1024px) {\n\
+            .container {\n\
+                max-width: 1024px;\n\
+            }\n\
+        }\n\
+        @media(min-width: 1280px) {\n\
+            .container {\n\
+                max-width: 1280px;\n\
+            }\n\
+        }\n\
+        @media(min-width: 1536px) {\n\
+            .container {\n\
+                max-width: 1536px;\n\
+            }\n\
+        }";
 
     // Layout
     if (docKind != DocKind::Pages)
     {
         helpOutput += "\n\
-    .left {\n\
-        display:    block;\n\
-        overflow-y: scroll;\n\
-        width:      650px;\n\
-        height:     100vh;\n\
-    }\n\
-    .leftpage {\n\
-        margin:    10px;\n\
-    }\n\
-    .right {\n\
-        overflow-y: scroll;\n\
-        height:     100vh;\n\
-    }\n\
-    @media only screen and (max-width: 600px) {\n\
-        td {\n\
-            display: block;\n\
-            width:   100%;\n\
-        }\n\
-    }\n\
-    @media screen and (max-width: 600px) {\n\
-        .left {\n\
-            display: none;\n\
-        }\n\
-    }";
+            .left {\n\
+                display:    block;\n\
+                overflow-y: scroll;\n\
+                width:      600px;\n\
+                height:     100vh;\n\
+            }\n\
+            .leftpage {\n\
+                margin:    10px;\n\
+            }\n\
+            .right {\n\
+                overflow-y: scroll;\n\
+                height:     100vh;\n\
+            }\n\
+            @media only screen and (max-width: 600px) {\n\
+                td {\n\
+                    display: block;\n\
+                    width:   100%;\n\
+                }\n\
+            }\n\
+            @media screen and (max-width: 600px) {\n\
+                .left {\n\
+                    display: none;\n\
+                }\n\
+            }";
     }
 
     helpOutput += "\n\
-    body {\n\
-        margin:         0px;\n\
-        line-height:    1.3em;\n\
-        font-family:    Segoe UI;\n\
-    }\n\
-    .container blockquote {\n\
-        background-color:   LightYellow;\n\
-        border-left:        6px solid Orange;\n\
-        margin-right:       50px;\n\
-        padding:            10px;\n\
-    }\n\
-    .container a {\n\
-        text-decoration: none;\n\
-        color:           DoggerBlue;\n\
-    }\n\
-    .container a:hover {\n\
-        text-decoration: underline;\n\
-    }\n\
-    .container a.src {\n\
-        font-size:          90%;\n\
-        color:              LightGrey;\n\
-    }\n\
-    .container table.enumeration {\n\
-        border:             1px solid LightGrey;\n\
-        border-collapse:    collapse;\n\
-        width:              100%;\n\
-        font-size:          90%;\n\
-    }\n\
-    .container td.enumeration {\n\
-        padding:            6px;\n\
-        border:             1px solid LightGrey;\n\
-        border-collapse:    collapse;\n\
-        width:              30%;\n\
-    }\n\
-    .container td.tdname {\n\
-        padding:            6px;\n\
-        border:             1px solid LightGrey;\n\
-        border-collapse:    collapse;\n\
-        width:              20%;\n\
-        background-color:   #f8f8f8;\n\
-    }\n\
-    .container td.tdtype {\n\
-        padding:            6px;\n\
-        border:             1px solid LightGrey;\n\
-        border-collapse:    collapse;\n\
-        width:              auto;\n\
-    }\n\
-    .container td:last-child {\n\
-        width:              auto;\n\
-    }\n\
-    .left ul {\n\
-        list-style-type:    none;\n\
-        margin-left:        -30px;\n\
-    }\n\
-    .titletype {\n\
-        font-weight:        normal;\n\
-        font-size:          80%;\n\
-    }\n\
-    .titlelight {\n\
-        font-weight:        normal;\n\
-    }\n\
-    .titlestrong {\n\
-        font-weight:        bold;\n\
-        font-size:          100%;\n\
-    }\n\
-    .left h2 {\n\
-        background-color:   Black;\n\
-        color:              White;\n\
-        padding:            6px;\n\
-    }\n\
-    .right h1 {\n\
-        margin-top:         50px;\n\
-        margin-bottom:      50px;\n\
-    }\n\
-    .right h2 {\n\
-        margin-top:         35px;\n\
-    }\n\
-    table.item {\n\
-        background-color:   Black;\n\
-        color:              White;\n\
-        width:              100%;\n\
-        margin-top:         70px;\n\
-        margin-right:       0px;\n\
-        padding:            4px;\n\
-        font-size:          110%;\n\
-    }\n\
-    .srcref {\n\
-        text-align:         right;\n\
-    }\n\
-    .incode {\n\
-        background-color:   #eeeeee;\n\
-        padding:            2px;\n\
-        border: 1px dotted  #cccccc;\n\
-    }\n\
-    .tdname .incode {\n\
-        background-color:   revert;\n\
-        padding:            2px;\n\
-        border:             revert;\n\
-    }\n\
-    .addinfos {\n\
-        font-size:          90%;\n\
-        white-space:        break-spaces;\n\
-        overflow-wrap:      break-word;\n\
-    }\n\
-    .container pre {\n\
-        background-color:   #eeeeee;\n\
-        border:             1px solid LightGrey;\n\
-        padding:            10px;\n\
-        margin-left:        20px;\n\
-        margin-right:       20px;\n\
-    }\n\
-";
+        body {\n\
+            margin:         0px;\n\
+            line-height:    1.3em;\n\
+            font-family:    Segoe UI;\n\
+        }\n\
+        .container blockquote {\n\
+            background-color:   LightYellow;\n\
+            border-left:        6px solid Orange;\n\
+            margin-right:       50px;\n\
+            padding:            10px;\n\
+        }\n\
+        .container a {\n\
+            text-decoration: none;\n\
+            color:           DoggerBlue;\n\
+        }\n\
+        .container a:hover {\n\
+            text-decoration: underline;\n\
+        }\n\
+        .container a.src {\n\
+            font-size:          90%;\n\
+            color:              LightGrey;\n\
+        }\n\
+        .container table.enumeration {\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              100%;\n\
+            font-size:          90%;\n\
+        }\n\
+        .container td.enumeration {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              30%;\n\
+        }\n\
+        .container td.tdname {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              20%;\n\
+            background-color:   #f8f8f8;\n\
+        }\n\
+        .container td.tdtype {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              auto;\n\
+        }\n\
+        .container td:last-child {\n\
+            width:              auto;\n\
+        }\n\
+        .left ul {\n\
+            list-style-type:    none;\n\
+            margin-left:        -30px;\n\
+        }\n\
+        .titletype {\n\
+            font-weight:        normal;\n\
+            font-size:          80%;\n\
+        }\n\
+        .titlelight {\n\
+            font-weight:        normal;\n\
+        }\n\
+        .titlestrong {\n\
+            font-weight:        bold;\n\
+            font-size:          100%;\n\
+        }\n\
+        .left h2 {\n\
+            background-color:   Black;\n\
+            color:              White;\n\
+            padding:            6px;\n\
+        }\n\
+        .right h1 {\n\
+            margin-top:         50px;\n\
+            margin-bottom:      50px;\n\
+        }\n\
+        .right h2 {\n\
+            margin-top:         35px;\n\
+        }\n\
+        table.item {\n\
+            background-color:   Black;\n\
+            color:              White;\n\
+            width:              100%;\n\
+            margin-top:         70px;\n\
+            margin-right:       0px;\n\
+            padding:            4px;\n\
+            font-size:          110%;\n\
+        }\n\
+        .srcref {\n\
+            text-align:         right;\n\
+        }\n\
+        .incode {\n\
+            background-color:   #eeeeee;\n\
+            padding:            2px;\n\
+            border: 1px dotted  #cccccc;\n\
+        }\n\
+        .tdname .incode {\n\
+            background-color:   revert;\n\
+            padding:            2px;\n\
+            border:             revert;\n\
+        }\n\
+        .addinfos {\n\
+            font-size:          90%;\n\
+            white-space:        break-spaces;\n\
+            overflow-wrap:      break-word;\n\
+        }\n\
+        .container pre {\n\
+            background-color:   #eeeeee;\n\
+            border:             1px solid LightGrey;\n\
+            padding:            10px;\n\
+            margin-left:        20px;\n\
+            margin-right:       20px;\n\
+        }";
 
     float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
     helpOutput += Fmt("    .SyntaxCode      { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
