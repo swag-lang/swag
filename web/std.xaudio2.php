@@ -16,14 +16,13 @@
         display:    block;
         overflow-y: scroll;
         width:      650px;
-        height:     100%;
+        height:     98vh;
     }
     .right {
         display:     block;
         overflow-y:  scroll;
-        line-height: 1.3em;
         width:       100%;
-        height:      100%;
+        height:      98vh;
     }
     .page {
         width:  1000px;

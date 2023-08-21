@@ -12,7 +12,25 @@
 void GenDoc::outputStyles()
 {
     helpOutput += "<style>\n";
-    helpOutput += "\n\
+
+    // Layout
+    if (docKind == DocKind::Pages)
+    {
+        helpOutput += "\n\
+    .container {\n\
+        line-height:    1.3em;\n\
+        font-family:    Segoe UI;\n\
+    }\n\
+    .right {\n\
+    }\n\
+    .page {\n\
+        width:  1000px;\n\
+        margin: 0px auto;\n\
+    }";
+    }
+    else
+    {
+        helpOutput += "\n\
     .container {\n\
         display:        flex;\n\
         flex-wrap:      nowrap;\n\
@@ -25,19 +43,21 @@ void GenDoc::outputStyles()
         display:    block;\n\
         overflow-y: scroll;\n\
         width:      650px;\n\
-        height:     100%;\n\
+        height:     98vh;\n\
     }\n\
     .right {\n\
         display:     block;\n\
         overflow-y:  scroll;\n\
-        line-height: 1.3em;\n\
         width:       100%;\n\
-        height:      100%;\n\
+        height:      98vh;\n\
     }\n\
     .page {\n\
         width:  1000px;\n\
         margin: 0px auto;\n\
-    }\n\
+    }";
+    }
+
+    helpOutput += "\n\
     .container blockquote {\n\
         background-color:   LightYellow;\n\
         border-left:        6px solid Orange;\n\

@@ -5,25 +5,10 @@
 <?php include('common/start-head.php'); ?><style>
 
     .container {
-        display:        flex;
-        flex-wrap:      nowrap;
-        flex-direction: row;
-        height:         100%;
         line-height:    1.3em;
         font-family:    Segoe UI;
     }
-    .left {
-        display:    block;
-        overflow-y: scroll;
-        width:      650px;
-        height:     100%;
-    }
     .right {
-        display:     block;
-        overflow-y:  scroll;
-        line-height: 1.3em;
-        width:       100%;
-        height:      100%;
     }
     .page {
         width:  1000px;
