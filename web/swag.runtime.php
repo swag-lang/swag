@@ -87,25 +87,24 @@
             font-size:          90%;
             color:              LightGrey;
         }
-        .container table.enumeration {
+        table.enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
             width:              100%;
             font-size:          90%;
         }
-        .container .enumeration td {
+        .item td:first-child {
+            width: 33%;
+        }
+        .enumeration td {
             padding:            6px;
             border:             1px solid LightGrey;
             border-collapse:    collapse;
-            width:              auto;
+            min-width:          100px;
         }
-        .container .item td:first-child {
-            width: 33%;
-        }
-        .container .enumeration td:first-child {
+        .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
-            max-width:          33%;
         }
         .container td:last-child {
             width:              100%;
@@ -4931,7 +4930,7 @@
 </tr>
 <tr>
 <td>Strict</td>
-<td>#<a href="swag.runtime.html#Swag_Strict has been defined">Swag.Strict has been defined</a>. </td>
+<td>This is a typealias with the Swag.Strict attribute]. </td>
 </tr>
 <tr>
 <td>CanCopy</td>

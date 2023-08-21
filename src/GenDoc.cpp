@@ -103,25 +103,24 @@ void GenDoc::outputStyles()
             font-size:          90%;\n\
             color:              LightGrey;\n\
         }\n\
-        .container table.enumeration {\n\
+        table.enumeration {\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
             width:              100%;\n\
             font-size:          90%;\n\
         }\n\
-        .container .enumeration td {\n\
+        .item td:first-child {\n\
+            width: 33%;\n\
+        }\n\
+        .enumeration td {\n\
             padding:            6px;\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
-            width:              auto;\n\
+            min-width:          100px;\n\
         }\n\
-        .container .item td:first-child {\n\
-            width: 33%;\n\
-        }\n\
-        .container .enumeration td:first-child {\n\
+        .enumeration td:first-child {\n\
             background-color:   #f8f8f8;\n\
             white-space:        nowrap;\n\
-            max-width:          33%;\n\
         }\n\
         .container td:last-child {\n\
             width:              100%;\n\
