@@ -6,6 +6,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php include('common/start-head.php'); ?><style>
 
+    @media(min-width: 640px) {
+        .container {
+            max-width: 640px;
+        }
+    }
+    @media(min-width: 768px) {
+        .container {
+            max-width: 768px;
+        }
+    }
+    @media(min-width: 1024px) {
+        .container {
+            max-width: 1024px;
+        }
+    }
+    @media(min-width: 1280px) {
+        .container {
+            max-width: 1280px;
+        }
+    }
+    @media(min-width: 1536px) {
+        .container {
+            max-width: 1536px;
+        }
+    }
+
     .container {
         display:        flex;
         flex-wrap:      nowrap;
@@ -92,7 +118,7 @@
     }
     .left ul {
         list-style-type:    none;
-        margin-left:        -20px;
+        margin-left:        -30px;
     }
     .titletype {
         font-weight:        normal;

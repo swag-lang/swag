@@ -13,6 +13,34 @@ void GenDoc::outputStyles()
 {
     helpOutput += "<style>\n";
 
+    helpOutput += "\n\
+    @media(min-width: 640px) {\n\
+        .container {\n\
+            max-width: 640px;\n\
+        }\n\
+    }\n\
+    @media(min-width: 768px) {\n\
+        .container {\n\
+            max-width: 768px;\n\
+        }\n\
+    }\n\
+    @media(min-width: 1024px) {\n\
+        .container {\n\
+            max-width: 1024px;\n\
+        }\n\
+    }\n\
+    @media(min-width: 1280px) {\n\
+        .container {\n\
+            max-width: 1280px;\n\
+        }\n\
+    }\n\
+    @media(min-width: 1536px) {\n\
+        .container {\n\
+            max-width: 1536px;\n\
+        }\n\
+    }\n\
+";
+
     // Layout
     if (docKind == DocKind::Pages)
     {
@@ -122,7 +150,7 @@ void GenDoc::outputStyles()
     }\n\
     .left ul {\n\
         list-style-type:    none;\n\
-        margin-left:        -20px;\n\
+        margin-left:        -30px;\n\
     }\n\
     .titletype {\n\
         font-weight:        normal;\n\
