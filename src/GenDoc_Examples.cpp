@@ -58,8 +58,7 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
         }
 
         UserComment result;
-        computeUserComments(result, linesUser);
-        outputUserBlock(result.shortDesc);
+        computeUserComments(result, linesUser, false);
         outputUserComment(result, titleLevel);
     }
 

@@ -298,7 +298,7 @@ Utf8 GenDoc::findReference(const Utf8& name)
     return "";
 }
 
-void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
+void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
 {
     for (auto& l : lines)
     {
@@ -364,7 +364,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
         }
 
         // The short description (first line) can end with '.'.
-        if (!blk.lines.empty() && result.blocks.empty() && !blk.lines[0].empty() && blk.lines[0].back() == '.')
+        if (shortDesc && !blk.lines.empty() && result.blocks.empty() && !blk.lines[0].empty() && blk.lines[0].back() == '.')
         {
             result.blocks.emplace_back(std::move(blk));
             continue;
@@ -483,7 +483,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines)
     }
 
     // First block is the "short description"
-    if (!result.blocks.empty() && result.blocks[0].kind == UserBlockKind::Paragraph)
+    if (shortDesc && !result.blocks.empty() && result.blocks[0].kind == UserBlockKind::Paragraph)
     {
         result.shortDesc = std::move(result.blocks[0]);
         result.blocks.erase(result.blocks.begin());

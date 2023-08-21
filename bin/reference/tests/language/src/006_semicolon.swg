@@ -21,7 +21,8 @@ The semicolons are not mandatory, but it's possible to use them if you want.
 */
 #test
 {
-    // You can notice that the type of x and y is not specified here. This is due to type inference (we will see that later).
+    // You can notice that the type of x and y is not specified here.
+    // This is due to type inference (we will see that later).
     var x, y = 0;
 
     // You can also notice the short syntax to do the same operation on multiple variables at once.

@@ -2,7 +2,9 @@
 Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the [Swag standard modules](std.php).
 
 `#main` is the **program entry point**, a special compiler function (that's why the name starts with `#`). It must be defined only once for a native executable.
-`@print` is an **intrinsic**, a special built-in function (that's why the name starts with `@`). It is part of the [compiler runtime](std/swag.runtime.html) which comes with the compiler.
+`@print` is an **intrinsic**, a special built-in function (that's why the name starts with `@`).
+
+All intrinsics are part of the [compiler runtime](std/swag.runtime.php) which comes with the compiler.
 ```
 #main
 {
@@ -12,8 +14,7 @@ Let's start with the most simple version of the "hello world" example. This is a
 */
 
 /**
-Next, a version that this time uses the `Console.print` function in the [Std.Core](std/std.core.html) module.
-The `Std.Core` module would have to be imported in order to be used, but let's keep it simple.
+Next, a version that this time uses the `Core.Console.print` function in the [Std.Core](std/std.core.html) module. The `Std.Core` module would have to be imported in order to be used, but let's keep it simple.
 ```
 #main
 {

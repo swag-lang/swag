@@ -306,7 +306,7 @@
 <b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
 <h1>Swag language reference</h1>
 
-<h2 id="000_introduction">Introduction</h2><p>This <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="std.php">Swag standard modules</a> (<code class="incode">Std</code>). </p>
+<h2 id="000_introduction">Introduction</h2><p>The <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="std.php">Swag standard modules</a> (<code class="incode">Std</code>). This documentation has been generated directly from the source tree of that module. </p>
 <p>More advanced features such as dynamic arrays, dynamic strings or hash maps can be found in the <a href="std.core.php">Std.Core</a> module and will not be covered in the examples to come. For now we will focus on the language itself. </p>
 <p>As <code class="incode">reference/language</code> is written as a test module, you can run it with : </p>
 <div class="precode"><code></span><span class="SyntaxCode">swag test --workspace:c:/swag-lang/swag/bin/reference
@@ -318,22 +318,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </div>
 
 <h2 id="001_hello_mad_world">Hello mad world</h2><p>Let's start with the most simple version of the "hello world" example. This is a version that does not require external dependencies like the <a href="std.php">Swag standard modules</a>. </p>
-<p><code class="incode">#main</code> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <code class="incode">#</code>). It must be defined only once for a native executable. <code class="incode">@print</code> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <code class="incode">@</code>). It is part of the <a href="std/swag.runtime.html">compiler runtime</a> which comes with the compiler. </p>
+<p><code class="incode">#main</code> is the <b>program entry point</b>, a special compiler function (that's why the name starts with <code class="incode">#</code>). It must be defined only once for a native executable. <code class="incode">@print</code> is an <b>intrinsic</b>, a special built-in function (that's why the name starts with <code class="incode">@</code>). </p>
+<p>All intrinsics are part of the <a href="std/swag.runtime.php">compiler runtime</a> which comes with the compiler. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello mad world !\n"</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>Next, a version that this time uses the <code class="incode">Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module. </p>
-<p>The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple. </p>
+<p>Next, a version that this time uses the <code class="incode">Core.Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module. The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello mad world !"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"\n"</span><span class="SyntaxCode">)
     </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Console</span><span class="SyntaxCode">.</span><span class="SyntaxFunction">printf</span><span class="SyntaxCode">(</span><span class="SyntaxString">"%\n"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"Hello mad world again !"</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>A <code class="incode">#run</code> block is executed at <b>compile time</b>, and can make Swag behaves like a kind of a <b>scripting language</b>. </p>
-<p>So in the following example, the famous message will be printed by the compiler during compilation. </p>
+<p>A <code class="incode">#run</code> block is executed at <b>compile time</b>, and can make Swag behaves like a kind of a <b>scripting language</b>. So in the following example, the famous message will be printed by the compiler during compilation. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Msg</span><span class="SyntaxCode"> = </span><span class="SyntaxString">"Hello mad world !\n"</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// Creates a compiler constant of type 'string'</span><span class="SyntaxCode">
@@ -410,8 +409,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h2 id="002_source_code_organization">Source code organization</h2><p>All source files in Swag have the <code class="incode">.swg</code> extension, except if you write a simple script with the <code class="incode">.swgs</code> extension. </p>
-<p>They must be encoded in <b>UTF8</b>. </p>
+<h2 id="002_source_code_organization">Source code organization</h2><p>All source files in Swag have the <code class="incode">.swg</code> extension, except if you write a simple script with the <code class="incode">.swgs</code> extension. They must be encoded in <b>UTF8</b>. </p>
 <p>In Swag you cannot compile a single file (with the exception of <code class="incode">.swgs</code> script files). The source code is organized in a <b>workspace</b> which contains one or multiple <b>modules</b>. </p>
 <p>For example, <code class="incode">Std</code> is a workspace that contains all the Swag standard modules. </p>
 <p>A module is a <code class="incode">dll</code> (under windows) or an executable, and a workspace can include many of them. So a workspace will contain the modules you write (like your main executable) but also all your dependencies (some external modules you use). </p>
@@ -709,7 +707,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <p>The semicolons are not mandatory, but it's possible to use them if you want. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
-    </span><span class="SyntaxComment">// You can notice that the type of x and y is not specified here. This is due to type inference (we will see that later).</span><span class="SyntaxCode">
+    </span><span class="SyntaxComment">// You can notice that the type of x and y is not specified here.</span><span class="SyntaxCode">
+    </span><span class="SyntaxComment">// This is due to type inference (we will see that later).</span><span class="SyntaxCode">
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x, y = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">;
 
     </span><span class="SyntaxComment">// You can also notice the short syntax to do the same operation on multiple variables at once.</span><span class="SyntaxCode">
@@ -734,16 +733,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// Here we declare a constant 'A' and initialize it with 'B', which is not</span><span class="SyntaxCode">
 </span><span class="SyntaxComment">// yet known (neither its value or its type).</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">A</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">B</span><span class="SyntaxCode">
+
 </span><span class="SyntaxComment">// Declare a constant 'B' equals to 'C', still unknown at this point.</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">B</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">C</span><span class="SyntaxCode">
+
 </span><span class="SyntaxComment">// Declare a constant C of type 'u64' (unsigned 64 bits integer) and assigned it to 1.</span><span class="SyntaxCode">
 </span><span class="SyntaxComment">// At this point A and B are then also defined.</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">C</span><span class="SyntaxCode">: </span><span class="SyntaxType">u64</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode"></code>
 </div>
 <p>In this test, we call the function <code class="incode">functionDeclaredLater</code> before it is known. This is fine. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxComment">// First, call a unknown function named 'functionDeclaredLater'</span><span class="SyntaxCode">
-</span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#run</span><span class="SyntaxCode">
 {
+    </span><span class="SyntaxComment">// First, call a unknown function named 'functionDeclaredLater'</span><span class="SyntaxCode">
     </span><span class="SyntaxFunction">functionDeclaredLater</span><span class="SyntaxCode">()
 }
 
@@ -752,7 +753,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 {
 }</code>
 </div>
-<p>Note that the order is not relevant in the same file, but it is also irrelevant across multiple files. You can for example call a function in one file and declare it in another one. Global ordrer does not matter !. </p>
+<p>Note that the order is not relevant in the same file, but it is also irrelevant across multiple files. You can for example call a function in one file and declare it in another one. Global ordrer does not matter ! </p>
 
 <h2 id="010_basic_types">Basic types</h2><p>These are all signed integers types <code class="incode">s8</code>, <code class="incode">s16</code>, <code class="incode">s32</code> and <code class="incode">s64</code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
@@ -1137,7 +1138,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert a == </span><span class="SyntaxString">@"\u2F46"@</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>This are equivalent. </p>
+<p>This are equivalent </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> a = </span><span class="SyntaxString">"\\hello \\world"</span><span class="SyntaxCode">
@@ -1154,7 +1155,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
                 "@</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>Every blanks <b>before</b> the ending mark <code class="incode">"@</code> will be removed from every other lines, so the string before is equivalent to :. </p>
+<p>Every blanks <b>before</b> the ending mark <code class="incode">"@</code> will be removed from every other lines, so the string before is equivalent to : </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// this is</span><span class="SyntaxCode">
@@ -1235,7 +1236,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(b == </span><span class="SyntaxNumber">123</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>Or. </p>
+<p>Or </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">let</span><span class="SyntaxCode"> a: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">12</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1.5</span><span class="SyntaxCode">
@@ -1550,8 +1551,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">s8</span><span class="SyntaxCode"> + </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u16</span><span class="SyntaxCode">) == </span><span class="SyntaxType">u16</span><span class="SyntaxCode">   </span><span class="SyntaxComment">// Priority to bigger type also</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>This means that a 8/16 bits operation (like an addition) can more easily <b>overflow</b> if you do not take care. </p>
-<p>In that case, you can use the <code class="incode">,up</code> <b>modifier</b> on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly. </p>
+<p>This means that a 8/16 bits operation (like an addition) can more easily <b>overflow</b> if you do not take care. In that case, you can use the <code class="incode">,up</code> <b>modifier</b> on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">255</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> +,up </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">'</span><span class="SyntaxType">u8</span><span class="SyntaxCode">) == </span><span class="SyntaxType">u32</span><span class="SyntaxCode">
@@ -1704,7 +1704,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@countof</span><span class="SyntaxCode">(array1) == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>Like every other types, an array is initialized by default to 0. </p>
+<p>Like every other types, an array is initialized by default to 0 </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> array: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">s32</span><span class="SyntaxCode">
@@ -1963,7 +1963,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">dref</span><span class="SyntaxCode"> ptr == </span><span class="SyntaxString">`s`</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>You can be weird, but is this necessary ?. </p>
+<p>You can be weird, but is this necessary ? </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> ptr:  *</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">        </span><span class="SyntaxComment">// Normal pointer to a const pointer</span><span class="SyntaxCode">
@@ -2044,8 +2044,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">66</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>But unlike C++, you can change the reference (reassign it) and not the pointed value if you want. </p>
-<p>You must then use <code class="incode">ref</code> in the affectation. </p>
+<p>But unlike C++, you can change the reference (reassign it) and not the pointed value if you want. You must then use <code class="incode">ref</code> in the affectation. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> x = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">
@@ -2060,7 +2059,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(myRef == </span><span class="SyntaxNumber">1000</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>Most of the time, you have to take the address of a variable to make a reference to it. The only exception are function parameters, if the reference is <code class="incode">const</code>. In that case, taking the address is not necessary. </p>
+<p>Most of the time, you have to take the address of a variable to make a reference to it. The only exception are function parameters, if the reference is <code class="incode">const</code>. In that case, taking the address is not necessary </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// We can pass a literal because the parameter 'x' of 'toto' is 'const ref' and not just 'ref'.</span><span class="SyntaxCode">
@@ -2797,7 +2796,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </div>
 <h3>Ranges </h3>
 <p>Loop can also be used to iterate on a <b>range</b> of signed values. </p>
-<p>Syntax is <code class="incode">lower bound..upper bound</code>. </p>
+<p>Syntax is <code class="incode">lower bound..upper bound</code> </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> count = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -3423,8 +3422,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxConstant">X</span><span class="SyntaxCode">.y == </span><span class="SyntaxString">"value"</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>A function can take an argument of type <code class="incode">struct</code>. </p>
-<p>No copy is done (this is equivalent to a const reference in C++). </p>
+<p>A function can take an argument of type <code class="incode">struct</code>. No copy is done (this is equivalent to a const reference in C++). </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct3</span><span class="SyntaxCode">
 {
     x, y, z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
@@ -3496,8 +3494,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">returnZ</span><span class="SyntaxCode">(me: </span><span class="SyntaxConstant">Self</span><span class="SyntaxCode">)   =&gt; me.z
 }</code>
 </div>
-<p>If you declare your function with <code class="incode">mtd</code> (method) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">using self</code>. </p>
-<p>If you declare your function with <code class="incode">mtd const</code> (method const) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">const using self</code>. Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <code class="incode">using self</code>. </p>
+<p>If you declare your function with <code class="incode">mtd</code> (method) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">using self</code>. If you declare your function with <code class="incode">mtd const</code> (method const) instead of <code class="incode">func</code>, then the first parameter is forced to be <code class="incode">const using self</code>. Other than that, it's exactly the same. So this is just <b>syntaxic sugar</b> to avoid repeating the <code class="incode">using self</code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode">  </span><span class="SyntaxFunction">methodReturnX</span><span class="SyntaxCode">()          =&gt; x
@@ -3654,8 +3651,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h3 id="064_004_affectation">Affectation</h3><p><code class="incode">opAffect</code> is a way of assigning to a struct with <code class="incode">=</code>. </p>
-<p>You can have more the one <code class="incode">opAffect</code> with different types. </p>
+<h3 id="064_004_affectation">Affectation</h3><p><code class="incode">opAffect</code> is a way of assigning to a struct with <code class="incode">=</code>. You can have more the one <code class="incode">opAffect</code> with different types. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
 {
     x, y, z: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">
@@ -4197,8 +4193,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxKeyword">mtd</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">reset</span><span class="SyntaxCode">()
 }</code>
 </div>
-<p>You can implement an interface for any given struct with <code class="incode">impl</code> and <code class="incode">for</code>. </p>
-<p>For example here, we implement interface <code class="incode">IReset</code> for struct <code class="incode">Point2</code>. </p>
+<p>You can implement an interface for any given struct with <code class="incode">impl</code> and <code class="incode">for</code>. For example here, we implement interface <code class="incode">IReset</code> for struct <code class="incode">Point2</code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IReset</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">for</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// You must add 'impl' to indicate that you want to implement a function of the interface.</span><span class="SyntaxCode">
@@ -4258,8 +4253,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(pt3.x == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"> </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> pt3.y == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>You can also access, with a normal call, all functions declared in an interface implementation block for a given struct. </p>
-<p>They are located in a dedicated scope. </p>
+<p>You can also access, with a normal call, all functions declared in an interface implementation block for a given struct. They are located in a dedicated scope. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> pt2: </span><span class="SyntaxConstant">Point2</span><span class="SyntaxCode">
@@ -4305,15 +4299,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>The return type can be deduced in case of a simple expression, by using <code class="incode">=&gt;</code> instead of <code class="incode">-&gt;</code>. </p>
-<p>Here the return type will be deduced to be <code class="incode">s32</code>. </p>
+<p>The return type can be deduced in case of a simple expression, by using <code class="incode">=&gt;</code> instead of <code class="incode">-&gt;</code>. Here the return type will be deduced to be <code class="incode">s32</code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x + y</code>
 </div>
 <p>A short version exists, in case of a function returning nothing. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">print</span><span class="SyntaxCode">(val: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) = </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(val)</code>
 </div>
-<p>Parameters are specified after the function name, between parenthesis. </p>
-<p>Here we declare two parameters <code class="incode">x</code> and <code class="incode">y</code> of type <code class="incode">s32</code>, and one last parameter of type <code class="incode">f32</code>. </p>
+<p>Parameters are specified after the function name, between parenthesis. Here we declare two parameters <code class="incode">x</code> and <code class="incode">y</code> of type <code class="incode">s32</code>, and one last parameter of type <code class="incode">f32</code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum1</span><span class="SyntaxCode">(x, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, unused: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> x + y
@@ -4325,8 +4317,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> x + y
 }</code>
 </div>
-<p>The type of the parameters can be deduced if you specify a default value. </p>
-<p>Here <code class="incode">x</code> and <code class="incode">y</code> have the type <code class="incode">f32</code> because <code class="incode">0.0</code> is a 32 bits floating point literal. </p>
+<p>The type of the parameters can be deduced if you specify a default value. Here <code class="incode">x</code> and <code class="incode">y</code> have the type <code class="incode">f32</code> because <code class="incode">0.0</code> is a 32 bits floating point literal. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum3</span><span class="SyntaxCode">(x, y = </span><span class="SyntaxNumber">0.0</span><span class="SyntaxCode">)
 {
     #assert </span><span class="SyntaxIntrinsic">@typeof</span><span class="SyntaxCode">(x) == </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
@@ -5172,7 +5163,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <h3 id="111_012_foreign">Foreign</h3><p>Swag can interop with external "modules" (dlls under windows), which contain exported C functions. </p>
 <p>Put a special attribute <code class="incode">Swag.Foreign</code> before the function prototype, and specify the module name where the function is located. </p>
 <p>The module name can be a swag compiled module, or an external system module (where the location depends on the OS). </p>
-<p>In the case below, the function is located in <code class="incode">kernel32.dll</code> (under windows). </p>
+<p>In the case below, the function is located in <code class="incode">kernel32.dll</code> (under windows) </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Foreign("kernel32")]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExitProcess</span><span class="SyntaxCode">(uExitCode: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">);
 
@@ -5188,8 +5179,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <div class="precode"><code></span><span class="SyntaxCode">#foreignlib </span><span class="SyntaxString">"kernel32"</span><span class="SyntaxCode"></code>
 </div>
 
-<h2 id="120_intrinsics">Intrinsics</h2><p>This is the list of all intrinsics. </p>
-<p>All intrinsics start with <code class="incode">@</code>, which is reserved for them. </p>
+<h2 id="120_intrinsics">Intrinsics</h2><p>This is the list of all intrinsics. All intrinsics start with <code class="incode">@</code>, which is reserved for them. </p>
 <div class="precode"><code></span><span class="SyntaxCode">#global skip</code>
 </div>
 <h3>Base </h3>
@@ -5486,8 +5476,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 </div>
 
 <h2 id="130_generic">Generic</h2>
-<h3 id="131_001_declaration">Declaration</h3><p>A function can be generic by specifying some parameters after <code class="incode">func</code>. </p>
-<p>At the call site, you specify the generic parameters with <code class="incode">funcCall'(type1, type2, ...)(parameters)</code>. Note that parenthesis can be omitted if there's only one generic parameter. </p>
+<h3 id="131_001_declaration">Declaration</h3><p>A function can be generic by specifying some parameters after <code class="incode">func</code>. At the call site, you specify the generic parameters with <code class="incode">funcCall'(type1, type2, ...)(parameters)</code>. Note that parenthesis can be omitted if there's only one generic parameter. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     {
@@ -5777,8 +5766,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h3 id="133_003_constraint">Constraint</h3><p>Swag provides also a simple way of checking generic parameters, without the need of <code class="incode">#validif</code>. </p>
-<p>A type constraint can be added when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised. </p>
+<h3 id="133_003_constraint">Constraint</h3><p>Swag provides also a simple way of checking generic parameters, without the need of <code class="incode">#validif</code>. A type constraint can be added when declaring a generic type. If a function or a struct is instantiated with a type that does not conform to the constraint, then an error will be raised. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// The type constraint is a compile time function (with #[Swag.ConstExpr]) that should return a bool.</span><span class="SyntaxCode">
@@ -5802,8 +5790,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxComment">// let res1 = sum'f32(1, 2)</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>The type constraint can be any compile time expression, as long as the resulting type is <code class="incode">bool</code>. </p>
-<p>So you could do something like this. </p>
+<p>The type constraint can be any compile time expression, as long as the resulting type is <code class="incode">bool</code>. So you could do something like this. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.ConstExpr]</span><span class="SyntaxCode">
@@ -5921,7 +5908,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p><code class="incode">using</code> can also be used with a variable. </p>
+<p><code class="incode">using</code> can also be used with a variable </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"> { x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> }
@@ -6136,7 +6123,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 <h3>Name alias </h3>
-<p>You can alias a function name with <code class="incode">namealias</code>. </p>
+<p>You can alias a function name with <code class="incode">namealias</code> </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">thisIsABigFunctionName</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) =&gt; x * x
@@ -6144,7 +6131,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">myFunc</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>You can also alias variables and namespaces. </p>
+<p>You can also alias variables and namespaces </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> myLongVariableName: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
@@ -6154,8 +6141,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h2 id="170_error_management">Error management</h2><p>Swag contains a <b>very</b> simple error system used to deal with function returning errors. </p>
-<p>It will probably be changed/improved at some point. </p>
+<h2 id="170_error_management">Error management</h2><p>Swag contains a <b>very</b> simple error system used to deal with function returning errors. It will probably be changed/improved at some point. </p>
 <blockquote>
 <p>These are <b>not</b> exceptions ! </p>
 </blockquote>
@@ -6564,8 +6550,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h3 id="183_003_run">Run</h3><p><code class="incode">#run</code> is a special function that will be called at <b>compile time</b>. </p>
-<p>It can be used to precompute some global values for example. </p>
+<h3 id="183_003_run">Run</h3><p><code class="incode">#run</code> is a special function that will be called at <b>compile time</b>. It can be used to precompute some global values for example. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode">: [</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">] </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">undefined</span><span class="SyntaxCode"></code>
 </div>
 <p>Initialize <code class="incode">G</code> with <code class="incode">[1,2,4,8,16]</code> at compile time. </p>
@@ -6579,8 +6564,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     }
 }</code>
 </div>
-<p><code class="incode">#test</code> are executed after <code class="incode">#run</code>, even at compile time (during testing). </p>
-<p>So we can test the values of <code class="incode">G</code> here. </p>
+<p><code class="incode">#test</code> are executed after <code class="incode">#run</code>, even at compile time (during testing). So we can test the values of <code class="incode">G</code> here. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">0</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
@@ -6602,8 +6586,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxLogic">return</span><span class="SyntaxCode"> result
 }</code>
 </div>
-<p><code class="incode">#run</code> can also be used as an expression block. </p>
-<p>The return type is deduced from the <code class="incode">return</code> statement. </p>
+<p><code class="incode">#run</code> can also be used as an expression block. The return type is deduced from the <code class="incode">return</code> statement. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Value</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"> {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> result: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">
     </span><span class="SyntaxLogic">loop</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
@@ -6714,8 +6697,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h3 id="192_002_predefined_attributes">Predefined attributes</h3><p>This is the list of predefined attributes. </p>
-<p>All are located in the reserved <code class="incode">Swag</code> namespace. </p>
+<h3 id="192_002_predefined_attributes">Predefined attributes</h3><p>This is the list of predefined attributes. All are located in the reserved <code class="incode">Swag</code> namespace. </p>
 <div class="precode"><code></span><span class="SyntaxCode">#global skip
 
 </span><span class="SyntaxAttribute">#[AttrUsage(AttributeUsage.Function)]</span><span class="SyntaxCode">
@@ -6927,7 +6909,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">666</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>Or it can be a block, with an explicit <code class="incode">return</code>. </p>
+<p>Or it can be a block, with an explicit <code class="incode">return</code> </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> cpt = </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">
@@ -7191,7 +7173,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     }
 }</code>
 </div>
-<p>You can create a list of bullet points with <code class="incode"><i></code>.</i> </p>
+<p> You can create a list of bullet points with <code class="incode"><i></code>.</i> </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
  {
     </span><span class="SyntaxComment">// * This is a bullet point</span><span class="SyntaxCode">
@@ -7203,7 +7185,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     }
 }</code>
 </div>
-<p>You can create a quote with <code class="incode">&gt;</code>. </p>
+<p>You can create a quote with <code class="incode">&gt;</code> </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This is the short description.</span><span class="SyntaxCode">
@@ -7268,7 +7250,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     }
 }</code>
 </div>
-<p>You can create a reference to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code>. </p>
+<p>You can create a reference to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code> </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This is a function with a 'value' parameter.</span><span class="SyntaxCode">
