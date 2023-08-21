@@ -16,5 +16,8 @@
         cfg.docKind = .Examples
         cfg.docOutputName = "language"
         cfg.docOutputExtension = ".php"
+
+        cfg.docStartHead = @"<?php include('common/start-head.php'); ?>"@
+        cfg.docStartBody = @"<?php include('common/start-body.php'); ?>"@
     }
 }

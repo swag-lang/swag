@@ -14,6 +14,5 @@
 
         cfg.docStartHead = @"<?php include('common/start-head.php'); ?>"@
         cfg.docStartBody = @"<?php include('common/start-body.php'); ?>"@
-        cfg.docEndBody   = @"<?php include('common/end-body.php'); ?>"@
     }
 }

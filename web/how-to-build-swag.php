@@ -2,23 +2,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php include('common/start-head.php'); ?><style>
 
     .container {
-        line-height:    1.3em;
-        font-family:    Segoe UI;
-    }
-    .right {
+        margin:         0px auto;
     }
     .page {
-        width:  1000px;
-        margin: 0px auto;
+        max-width:  1024px;
+        margin:     0px auto;
+    }
+    body {
+        margin:         0px;
+        line-height:    1.3em;
+        font-family:    Segoe UI;
     }
     .container blockquote {
         background-color:   LightYellow;
         border-left:        6px solid Orange;
+        margin-right:       50px;
         padding:            10px;
-        width:              90%;
     }
     .container a {
         text-decoration: none;
@@ -117,8 +121,8 @@
         background-color:   #eeeeee;
         border:             1px solid LightGrey;
         padding:            10px;
-        width:              94%;
         margin-left:        20px;
+        margin-right:       20px;
     }
     .SyntaxCode      { color: #7f7f7f; }
     .SyntaxComment   { color: #71a35b; }
@@ -162,5 +166,5 @@
 </div>
 </div>
 </div>
-<?php include('common/end-body.php'); ?></body>
+</body>
 </html>

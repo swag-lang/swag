@@ -2,37 +2,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 
     .container {
         display:        flex;
         flex-wrap:      nowrap;
         flex-direction: row;
-        height:         100%;
-        line-height:    1.3em;
-        font-family:    Segoe UI;
+        margin:         0px auto;
+        padding:        0px;
     }
     .left {
         display:    block;
         overflow-y: scroll;
         width:      650px;
-        height:     98vh;
+        height:     100vh;
     }
     .right {
-        display:     block;
-        overflow-y:  scroll;
-        width:       100%;
-        height:      98vh;
+        display:    block;
+        overflow-y: scroll;
+        width:      100%;
+        height:     100vh;
     }
     .page {
-        width:  1000px;
-        margin: 0px auto;
+        max-width:  1024px;
+        margin:     8px auto;
+    }
+    @media only screen and (max-width: 600px) {
+        td {
+            display: block;
+            width:   100%;
+        }
+    }
+    @media screen and (max-width: 600px) {
+        .left {
+            display: none;
+        }
+    }
+    body {
+        margin:         0px;
+        line-height:    1.3em;
+        font-family:    Segoe UI;
     }
     .container blockquote {
         background-color:   LightYellow;
         border-left:        6px solid Orange;
+        margin-right:       50px;
         padding:            10px;
-        width:              90%;
     }
     .container a {
         text-decoration: none;
@@ -131,8 +148,8 @@
         background-color:   #eeeeee;
         border:             1px solid LightGrey;
         padding:            10px;
-        width:              94%;
         margin-left:        20px;
+        margin-right:       20px;
     }
     .SyntaxCode      { color: #7f7f7f; }
     .SyntaxComment   { color: #71a35b; }

@@ -18,14 +18,11 @@ void GenDoc::outputStyles()
     {
         helpOutput += "\n\
     .container {\n\
-        line-height:    1.3em;\n\
-        font-family:    Segoe UI;\n\
-    }\n\
-    .right {\n\
+        margin:         0px auto;\n\
     }\n\
     .page {\n\
-        width:  1000px;\n\
-        margin: 0px auto;\n\
+        max-width:  1024px;\n\
+        margin:     0px auto;\n\
     }";
     }
     else
@@ -35,34 +32,49 @@ void GenDoc::outputStyles()
         display:        flex;\n\
         flex-wrap:      nowrap;\n\
         flex-direction: row;\n\
-        height:         100%;\n\
-        line-height:    1.3em;\n\
-        font-family:    Segoe UI;\n\
+        margin:         0px auto;\n\
+        padding:        0px;\n\
     }\n\
     .left {\n\
         display:    block;\n\
         overflow-y: scroll;\n\
         width:      650px;\n\
-        height:     98vh;\n\
+        height:     100vh;\n\
     }\n\
     .right {\n\
-        display:     block;\n\
-        overflow-y:  scroll;\n\
-        width:       100%;\n\
-        height:      98vh;\n\
+        display:    block;\n\
+        overflow-y: scroll;\n\
+        width:      100%;\n\
+        height:     100vh;\n\
     }\n\
     .page {\n\
-        width:  1000px;\n\
-        margin: 0px auto;\n\
+        max-width:  1024px;\n\
+        margin:     8px auto;\n\
+    }\n\
+    @media only screen and (max-width: 600px) {\n\
+        td {\n\
+            display: block;\n\
+            width:   100%;\n\
+        }\n\
+    }\n\
+    @media screen and (max-width: 600px) {\n\
+        .left {\n\
+            display: none;\n\
+        }\n\
     }";
     }
 
     helpOutput += "\n\
+    body {\n\
+        margin:         0px;\n\
+        line-height:    1.3em;\n\
+        font-family:    Segoe UI;\n\
+    }\n\
     .container blockquote {\n\
         background-color:   LightYellow;\n\
         border-left:        6px solid Orange;\n\
+        margin-right:       50px;\n\
         padding:            10px;\n\
-        width:              90%;\n\
     }\n\
     .container a {\n\
         text-decoration: none;\n\
@@ -161,8 +173,8 @@ void GenDoc::outputStyles()
         background-color:   #eeeeee;\n\
         border:             1px solid LightGrey;\n\
         padding:            10px;\n\
-        width:              94%;\n\
         margin-left:        20px;\n\
+        margin-right:       20px;\n\
     }\n\
 ";
 
@@ -765,6 +777,8 @@ void GenDoc::constructPage()
     helpOutput += "<html>\n";
     helpOutput += "<head>\n";
     helpOutput += "<meta charset=\"UTF-8\">\n";
+    helpOutput += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
+    helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
     if (module)
     {

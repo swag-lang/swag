@@ -16,4 +16,3 @@
         </ul>
     </div>
 </header>
-<div class="lg:m-auto lg:w-[76rem] pt-2 lg:pt-10 overflow-hidden p-5">
