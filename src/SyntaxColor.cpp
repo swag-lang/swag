@@ -516,6 +516,12 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                 result += identifier;
                 result += getColor(mode, SyntaxColor::SyntaxCode);
             }
+            else if (identifier == "self" || identifier == "Self")
+            {
+                result += getColor(mode, SyntaxColor::SyntaxKeyword);
+                result += identifier;
+                result += getColor(mode, SyntaxColor::SyntaxCode);
+            }
             else
             {
                 if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))

@@ -353,27 +353,27 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_Bus_create">create</a></td>
+<td><a href="#Audio_Bus_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates an audio bus. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_destroy">destroy</a></td>
+<td><a href="#Audio_Bus_destroy"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode"></a></td>
 <td>Destroy the bus (immediatly). </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolume">getVolume</a></td>
+<td><a href="#Audio_Bus_getVolume"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode"></a></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolumeDB">getVolumeDB</a></td>
+<td><a href="#Audio_Bus_getVolumeDB"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode"></a></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolume">setVolume</a></td>
+<td><a href="#Audio_Bus_setVolume"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode"></a></td>
 <td>Set the playing bus volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolumeDB">setVolumeDB</a></td>
+<td><a href="#Audio_Bus_setVolumeDB"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode"></a></td>
 <td>Set the playing bus volume in DB. </td>
 </tr>
 </table>
@@ -404,7 +404,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Destroy the bus (immediatly). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -418,7 +418,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -432,7 +432,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -446,7 +446,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Set the playing bus volume between [0..1]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -460,7 +460,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Set the playing bus volume in DB. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -608,7 +608,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_SoundFile_load">load</a></td>
+<td><a href="#Audio_SoundFile_load"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">load</span><span class="SyntaxCode"></a></td>
 <td>Load a <code class="incode">SoundFile</code> from disk. </td>
 </tr>
 </table>
@@ -738,55 +738,55 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_Voice_create">create</a></td>
+<td><a href="#Audio_Voice_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates a new voice for a given sound file. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_destroy">destroy</a></td>
+<td><a href="#Audio_Voice_destroy"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode"></a></td>
 <td>Destroy the voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolume">getVolume</a></td>
+<td><a href="#Audio_Voice_getVolume"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode"></a></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolumeDB">getVolumeDB</a></td>
+<td><a href="#Audio_Voice_getVolumeDB"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode"></a></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_isPlaying">isPlaying</a></td>
+<td><a href="#Audio_Voice_isPlaying"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isPlaying</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the voice is currently playing. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_pause">pause</a></td>
+<td><a href="#Audio_Voice_pause"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pause</span><span class="SyntaxCode"></a></td>
 <td>Pause the playing voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_play">play(*SoundFile, VoiceCreateFlags, VoicePlayFlags)</a></td>
+<td><a href="#Audio_Voice_play"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">SoundFile</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">VoiceCreateFlags</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">VoicePlayFlags</span><span class="SyntaxCode">)</a></td>
 <td>Creates a voice and plays it. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_play">play(self, VoicePlayFlags)</a></td>
+<td><a href="#Audio_Voice_play"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">VoicePlayFlags</span><span class="SyntaxCode">)</a></td>
 <td>Plays a voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setFrequencyRatio">setFrequencyRatio</a></td>
+<td><a href="#Audio_Voice_setFrequencyRatio"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFrequencyRatio</span><span class="SyntaxCode"></a></td>
 <td>Set the playing pitch. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setRooting">setRooting</a></td>
+<td><a href="#Audio_Voice_setRooting"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRooting</span><span class="SyntaxCode"></a></td>
 <td>Root a voice to a given list of buses. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolume">setVolume</a></td>
+<td><a href="#Audio_Voice_setVolume"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode"></a></td>
 <td>Set the playing voice volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolumeDB">setVolumeDB</a></td>
+<td><a href="#Audio_Voice_setVolumeDB"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode"></a></td>
 <td>Set the playing voice volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_stop">stop</a></td>
+<td><a href="#Audio_Voice_stop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">stop</span><span class="SyntaxCode"></a></td>
 <td>Stop the playing voice. </td>
 </tr>
 </table>
@@ -817,7 +817,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Destroy the voice. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -831,7 +831,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -845,7 +845,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -859,7 +859,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Returns true if the voice is currently playing. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isPlaying</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isPlaying</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -873,7 +873,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Pause the playing voice. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -890,7 +890,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(file: *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span><span class="SyntaxCode">, createFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Default</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>Plays a voice. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, playFlags = </span><span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p> By default, the voice will be destroyed when stopped or finished. </p>
 <p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="incode">DestroyOnStop</code> flag in <code class="incode">playFlags</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
@@ -906,7 +906,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Set the playing pitch. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrequencyRatio</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ratio: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrequencyRatio</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ratio: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p> The voice should have been created with <code class="incode">VoiceCreateFlags.AcceptPitch</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
@@ -921,7 +921,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Root a voice to a given list of buses. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRooting</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buses: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRooting</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buses: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p> You can also set <code class="incode">buses</code> to null if you want to root the voice only to the  main bus (which is the default). </p>
 <p>
@@ -936,7 +936,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Set the playing voice volume between [0..1]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolume</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, volume: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -950,7 +950,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Set the playing voice volume. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVolumeDB</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, volumeDB: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, batchID: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -964,7 +964,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </table>
 </p>
 <p>Stop the playing voice. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">

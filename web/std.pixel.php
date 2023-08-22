@@ -1469,7 +1469,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1482,7 +1482,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1506,7 +1506,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1519,7 +1519,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1656,19 +1656,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Brush_createHatch">createHatch</a></td>
+<td><a href="#Pixel_Brush_createHatch"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createHatch</span><span class="SyntaxCode"></a></td>
 <td>Returns a hatch brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createSolid">createSolid</a></td>
+<td><a href="#Pixel_Brush_createSolid"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createSolid</span><span class="SyntaxCode"></a></td>
 <td>Returns a solid color brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTexture">createTexture</a></td>
+<td><a href="#Pixel_Brush_createTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createTexture</span><span class="SyntaxCode"></a></td>
 <td>Returns a full texture brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTiled">createTiled</a></td>
+<td><a href="#Pixel_Brush_createTiled"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createTiled</span><span class="SyntaxCode"></a></td>
 <td>Returns a tiled texture brush. </td>
 </tr>
 </table>
@@ -1833,7 +1833,7 @@
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals</a></td>
+<td><a href="#Pixel_Clipper_IntPoint_opEquals"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -1848,7 +1848,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Clipper</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Clipper_IntPoint">IntPoint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, other: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Clipper</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Clipper_IntPoint">IntPoint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1998,134 +1998,134 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Color_fromAbgr">fromAbgr</a></td>
+<td><a href="#Pixel_Color_fromAbgr"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromAbgr</span><span class="SyntaxCode"></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb">fromArgb(Argb)</a></td>
+<td><a href="#Pixel_Color_fromArgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromArgb</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">)</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb">fromArgb(u32)</a></td>
+<td><a href="#Pixel_Color_fromArgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromArgb</span><span class="SyntaxCode">(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb">fromArgb(u8, Argb)</a></td>
+<td><a href="#Pixel_Color_fromArgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromArgb</span><span class="SyntaxCode">(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">)</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb">fromArgb(u8, u8, u8, u8)</a></td>
+<td><a href="#Pixel_Color_fromArgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromArgb</span><span class="SyntaxCode">(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgbf">fromArgbf</a></td>
+<td><a href="#Pixel_Color_fromArgbf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromArgbf</span><span class="SyntaxCode"></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromHsl">fromHsl</a></td>
+<td><a href="#Pixel_Color_fromHsl"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromHsl</span><span class="SyntaxCode"></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgb">fromRgb</a></td>
+<td><a href="#Pixel_Color_fromRgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromRgb</span><span class="SyntaxCode"></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgbf">fromRgbf</a></td>
+<td><a href="#Pixel_Color_fromRgbf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromRgbf</span><span class="SyntaxCode"></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromVector4">fromVector4</a></td>
+<td><a href="#Pixel_Color_fromVector4"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fromVector4</span><span class="SyntaxCode"></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlend">getBlend</a></td>
+<td><a href="#Pixel_Color_getBlend"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getBlend</span><span class="SyntaxCode"></a></td>
 <td>Blend two colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></td>
+<td><a href="#Pixel_Color_getBlendKeepAlpha"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getBlendKeepAlpha</span><span class="SyntaxCode"></a></td>
 <td>Blend two colors, keeping the alpha channel of <code class="incode">col0</code> untouched. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDarker">getDarker</a></td>
+<td><a href="#Pixel_Color_getDarker"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getDarker</span><span class="SyntaxCode"></a></td>
 <td>Returns a darker color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb</a></td>
+<td><a href="#Pixel_Color_getDistanceRgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getDistanceRgb</span><span class="SyntaxCode"></a></td>
 <td>Returns the distance between the other color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getLighter">getLighter</a></td>
+<td><a href="#Pixel_Color_getLighter"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getLighter</span><span class="SyntaxCode"></a></td>
 <td>Returns a lighter color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_isOpaque">isOpaque</a></td>
+<td><a href="#Pixel_Color_isOpaque"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isOpaque</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgb">setArgb</a></td>
+<td><a href="#Pixel_Color_setArgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setArgb</span><span class="SyntaxCode"></a></td>
 <td>Set all components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgbf">setArgbf</a></td>
+<td><a href="#Pixel_Color_setArgbf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setArgbf</span><span class="SyntaxCode"></a></td>
 <td>Set all components with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setHsl">setHsl</a></td>
+<td><a href="#Pixel_Color_setHsl"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setHsl</span><span class="SyntaxCode"></a></td>
 <td>Initialize color with hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgb">setRgb(self, const ref Color)</a></td>
+<td><a href="#Pixel_Color_setRgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgb">setRgb(self, u8, u8, u8)</a></td>
+<td><a href="#Pixel_Color_setRgb"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</a></td>
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgbf">setRgbf</a></td>
+<td><a href="#Pixel_Color_setRgbf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRgbf</span><span class="SyntaxCode"></a></td>
 <td>Set r,g,b with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toArgbf">toArgbf</a></td>
+<td><a href="#Pixel_Color_toArgbf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toArgbf</span><span class="SyntaxCode"></a></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toHsl">toHsl</a></td>
+<td><a href="#Pixel_Color_toHsl"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toHsl</span><span class="SyntaxCode"></a></td>
 <td>Returns hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toRgbf">toRgbf</a></td>
+<td><a href="#Pixel_Color_toRgbf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toRgbf</span><span class="SyntaxCode"></a></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toVector4">toVector4</a></td>
+<td><a href="#Pixel_Color_toVector4"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toVector4</span><span class="SyntaxCode"></a></td>
 <td>Get the color as a [Math.Vector4]. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Color_opAffect">opAffect(self, Argb)</a></td>
+<td><a href="#Pixel_Color_opAffect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opAffect">opAffect(self, string)</a></td>
+<td><a href="#Pixel_Color_opAffect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opAffect">opAffect(self, u32)</a></td>
+<td><a href="#Pixel_Color_opAffect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals">opEquals(self, Argb)</a></td>
+<td><a href="#Pixel_Color_opEquals"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals">opEquals(self, const ref Color)</a></td>
+<td><a href="#Pixel_Color_opEquals"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals">opEquals(self, u32)</a></td>
+<td><a href="#Pixel_Color_opEquals"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 </table>
@@ -2140,7 +2140,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">poke</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buf: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">poke</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buf: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2303,7 +2303,7 @@
 </table>
 </p>
 <p>Returns the distance between the other color. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDistanceRgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, col: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDistanceRgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, col: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2330,7 +2330,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isOpaque</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isOpaque</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2343,9 +2343,9 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(self, argb: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(self, argb: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, argb: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, argb: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2358,9 +2358,9 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(self, argb: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(self, other: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(self, argb: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, argb: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, other: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, argb: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2374,7 +2374,7 @@
 </table>
 </p>
 <p>Set all components. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setArgb</span><span class="SyntaxCode">(self, a: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setArgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, a: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2388,7 +2388,7 @@
 </table>
 </p>
 <p>Set all components with floats in the range [0 1]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setArgbf</span><span class="SyntaxCode">(self, a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setArgbf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2402,7 +2402,7 @@
 </table>
 </p>
 <p>Initialize color with hue, saturation, lightness. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setHsl</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, s: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setHsl</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, s: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2416,10 +2416,10 @@
 </table>
 </p>
 <p>Just set r, g and b components. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rgb: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rgb: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Just set r, g and b components. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRgb</span><span class="SyntaxCode">(self, r: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRgb</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </div>
 <p> Alpha will be opaque. </p>
 <p> Alpha will be opaque. </p>
@@ -2435,7 +2435,7 @@
 </table>
 </p>
 <p>Set r,g,b with floats in the range [0 1]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRgbf</span><span class="SyntaxCode">(self, r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRgbf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p> Alpha will be opaque. </p>
 <p>
@@ -2450,7 +2450,7 @@
 </table>
 </p>
 <p>Retrieve all components as floating point values between 0 and 1. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toArgbf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;{a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toArgbf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;{a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
 </div>
 <p>
 <table class="item">
@@ -2464,7 +2464,7 @@
 </table>
 </p>
 <p>Returns hue, saturation, lightness. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toHsl</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;{h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, s: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toHsl</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;{h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, s: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
 </div>
 <p>
 <table class="item">
@@ -2478,7 +2478,7 @@
 </table>
 </p>
 <p>Retrieve all components as floating point values between 0 and 1. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toRgbf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;{r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toRgbf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;{r: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
 </div>
 <p>
 <table class="item">
@@ -2492,7 +2492,7 @@
 </table>
 </p>
 <p>Get the color as a [Math.Vector4]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toVector4</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toVector4</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2929,19 +2929,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Font_create">create(*TypeFace, u32, bool, bool)</a></td>
+<td><a href="#Pixel_Font_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</a></td>
 <td>Creates a new Font of the given typeface and size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_create">create(string, u32, bool, bool)</a></td>
+<td><a href="#Pixel_Font_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</a></td>
 <td>Creates a new Font with the given filename and size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_getGlyphDesc">getGlyphDesc</a></td>
+<td><a href="#Pixel_Font_getGlyphDesc"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getGlyphDesc</span><span class="SyntaxCode"></a></td>
 <td>Returns the glyph descriptor of a given rune. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_release">release</a></td>
+<td><a href="#Pixel_Font_release"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">release</span><span class="SyntaxCode"></a></td>
 <td>Release the given font. </td>
 </tr>
 </table>
@@ -2974,7 +2974,7 @@
 </table>
 </p>
 <p>Returns the glyph descriptor of a given rune. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getGlyphDesc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, c: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getGlyphDesc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, c: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3026,23 +3026,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_FontFamily_createTypeFace">createTypeFace</a></td>
+<td><a href="#Pixel_FontFamily_createTypeFace"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createTypeFace</span><span class="SyntaxCode"></a></td>
 <td>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs</a></td>
+<td><a href="#Pixel_FontFamily_enumerateFromOs"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">enumerateFromOs</span><span class="SyntaxCode"></a></td>
 <td>Enumerate the font families available in the os. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFont">getFont</a></td>
+<td><a href="#Pixel_FontFamily_getFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode"></a></td>
 <td>Get the font corresponding to the style. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFromOs">getFromOs</a></td>
+<td><a href="#Pixel_FontFamily_getFromOs"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFromOs</span><span class="SyntaxCode"></a></td>
 <td>Get a FontFamilyEnumerate from a font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_setFont">setFont</a></td>
+<td><a href="#Pixel_FontFamily_setFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode"></a></td>
 <td>Set the font corresponding to a given style. </td>
 </tr>
 </table>
@@ -3086,7 +3086,7 @@
 </table>
 </p>
 <p>Get the font corresponding to the style. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, style: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, style: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode"></code>
 </div>
 <p> If not evailable, get another one. </p>
 <p>
@@ -3115,7 +3115,7 @@
 </table>
 </p>
 <p>Set the font corresponding to a given style. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fnt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, style: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fnt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, style: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3206,23 +3206,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getFrame">getFrame</a></td>
+<td><a href="#Pixel_Gif_Decoder_getFrame"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFrame</span><span class="SyntaxCode"></a></td>
 <td>Create an image for the current frame. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames</a></td>
+<td><a href="#Pixel_Gif_Decoder_getNumFrames"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getNumFrames</span><span class="SyntaxCode"></a></td>
 <td>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_init">init</a></td>
+<td><a href="#Pixel_Gif_Decoder_init"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">init</span><span class="SyntaxCode"></a></td>
 <td>Initialize the decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_nextFrame">nextFrame</a></td>
+<td><a href="#Pixel_Gif_Decoder_nextFrame"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">nextFrame</span><span class="SyntaxCode"></a></td>
 <td>Get the next frame. Returns false if we have reached the end. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_rewind">rewind</a></td>
+<td><a href="#Pixel_Gif_Decoder_rewind"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">rewind</span><span class="SyntaxCode"></a></td>
 <td>Restart at frame 0. </td>
 </tr>
 </table>
@@ -3237,7 +3237,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3250,7 +3250,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3264,7 +3264,7 @@
 </table>
 </p>
 <p>Create an image for the current frame. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFrame</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, decodePixels = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFrame</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, image: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, decodePixels = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3278,7 +3278,7 @@
 </table>
 </p>
 <p>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getNumFrames</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getNumFrames</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3292,7 +3292,7 @@
 </table>
 </p>
 <p>Initialize the decoder. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, decodePixels: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, decodePixels: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3306,7 +3306,7 @@
 </table>
 </p>
 <p>Get the next frame. Returns false if we have reached the end. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextFrame</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, img: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">nextFrame</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, img: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3320,7 +3320,7 @@
 </table>
 </p>
 <p>Restart at frame 0. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rewind</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rewind</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3700,238 +3700,238 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Image_addDecoder">addDecoder</a></td>
+<td><a href="#Pixel_Image_addDecoder"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addDecoder</span><span class="SyntaxCode"></a></td>
 <td>Register an image decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_addEncoder">addEncoder</a></td>
+<td><a href="#Pixel_Image_addEncoder"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addEncoder</span><span class="SyntaxCode"></a></td>
 <td>Register an image encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocPixels">allocPixels</a></td>
+<td><a href="#Pixel_Image_allocPixels"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">allocPixels</span><span class="SyntaxCode"></a></td>
 <td>Allocate pixels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer(self)</a></td>
+<td><a href="#Pixel_Image_allocWorkingBuffer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">allocWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</a></td>
 <td>Allocate a computing buffer with current image size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer(self, s32, s32, PixelFormat)</a></td>
+<td><a href="#Pixel_Image_allocWorkingBuffer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">allocWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">PixelFormat</span><span class="SyntaxCode">)</a></td>
 <td>Allocate a computing buffer with new sizes. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyKernel">applyKernel</a></td>
+<td><a href="#Pixel_Image_applyKernel"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">applyKernel</span><span class="SyntaxCode"></a></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer</a></td>
+<td><a href="#Pixel_Image_applyWorkingBuffer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">applyWorkingBuffer</span><span class="SyntaxCode"></a></td>
 <td>Replace the current image content with the working buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canLoad">canLoad</a></td>
+<td><a href="#Pixel_Image_canLoad"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">canLoad</span><span class="SyntaxCode"></a></td>
 <td>Returns <code class="incode">true</code> if the given filename has a corresponding decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canSave">canSave</a></td>
+<td><a href="#Pixel_Image_canSave"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">canSave</span><span class="SyntaxCode"></a></td>
 <td>Returns <code class="incode">true</code> if the given filename has a corresponding encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_clear">clear</a></td>
+<td><a href="#Pixel_Image_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Clear the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_colorize">colorize</a></td>
+<td><a href="#Pixel_Image_colorize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">colorize</span><span class="SyntaxCode"></a></td>
 <td>Colorize the image by setting the hue and saturation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_contrast">contrast</a></td>
+<td><a href="#Pixel_Image_contrast"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">contrast</span><span class="SyntaxCode"></a></td>
 <td>Change the contrast. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_copyPixel">copyPixel</a></td>
+<td><a href="#Pixel_Image_copyPixel"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">copyPixel</span><span class="SyntaxCode"></a></td>
 <td>Copy one pixel, depending on bpp. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_create">create</a></td>
+<td><a href="#Pixel_Image_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates a new image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_crop">crop(self, const ref Rectangle)</a></td>
+<td><a href="#Pixel_Image_crop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">crop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_crop">crop(self, s32, s32, s32, s32)</a></td>
+<td><a href="#Pixel_Image_crop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">crop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</a></td>
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_decode">decode</a></td>
+<td><a href="#Pixel_Image_decode"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">decode</span><span class="SyntaxCode"></a></td>
 <td>Decode the given image buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fade">fade</a></td>
+<td><a href="#Pixel_Image_fade"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fade</span><span class="SyntaxCode"></a></td>
 <td>Fade to a given color. <code class="incode">factor</code> is [0, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fill">fill</a></td>
+<td><a href="#Pixel_Image_fill"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fill</span><span class="SyntaxCode"></a></td>
 <td>Fill image with <code class="incode">color</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient2">fillGradient2</a></td>
+<td><a href="#Pixel_Image_fillGradient2"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillGradient2</span><span class="SyntaxCode"></a></td>
 <td>Fill with an horizontal gradient from <code class="incode">color0</code> to <code class="incode">color1</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient4">fillGradient4</a></td>
+<td><a href="#Pixel_Image_fillGradient4"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillGradient4</span><span class="SyntaxCode"></a></td>
 <td>Fill with a gradient with a different color at each corner. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillHsl">fillHsl</a></td>
+<td><a href="#Pixel_Image_fillHsl"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillHsl</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_flip">flip</a></td>
+<td><a href="#Pixel_Image_flip"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">flip</span><span class="SyntaxCode"></a></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer</a></td>
+<td><a href="#Pixel_Image_freeWorkingBuffer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">freeWorkingBuffer</span><span class="SyntaxCode"></a></td>
 <td>Free the working buffer if allocated. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_from">from(HBITMAP)</a></td>
+<td><a href="#Pixel_Image_from"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">from</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">HBITMAP</span><span class="SyntaxCode">)</a></td>
 <td>Creates an image from a windows HBITMAP. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_from">from(HICON)</a></td>
+<td><a href="#Pixel_Image_from"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">from</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode">)</a></td>
 <td>Creates an image from a windows HICON. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_gamma">gamma</a></td>
+<td><a href="#Pixel_Image_gamma"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">gamma</span><span class="SyntaxCode"></a></td>
 <td>Change the gamma. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_getPixelColor">getPixelColor</a></td>
+<td><a href="#Pixel_Image_getPixelColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getPixelColor</span><span class="SyntaxCode"></a></td>
 <td>Returns the color at the given coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_grayScale">grayScale</a></td>
+<td><a href="#Pixel_Image_grayScale"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">grayScale</span><span class="SyntaxCode"></a></td>
 <td>Transform image to grayscale, with a given factor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_halfSize">halfSize</a></td>
+<td><a href="#Pixel_Image_halfSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">halfSize</span><span class="SyntaxCode"></a></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_init">init</a></td>
+<td><a href="#Pixel_Image_init"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">init</span><span class="SyntaxCode"></a></td>
 <td>Initialize image informations  <code class="incode">pixels</code> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_invert">invert</a></td>
+<td><a href="#Pixel_Image_invert"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">invert</span><span class="SyntaxCode"></a></td>
 <td>Invert colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_isValid">isValid</a></td>
+<td><a href="#Pixel_Image_isValid"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the image is valid. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_lightness">lightness</a></td>
+<td><a href="#Pixel_Image_lightness"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">lightness</span><span class="SyntaxCode"></a></td>
 <td>Change the lightness. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_load">load</a></td>
+<td><a href="#Pixel_Image_load"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">load</span><span class="SyntaxCode"></a></td>
 <td>Load the given image file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mirror">mirror</a></td>
+<td><a href="#Pixel_Image_mirror"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">mirror</span><span class="SyntaxCode"></a></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mix">mix</a></td>
+<td><a href="#Pixel_Image_mix"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">mix</span><span class="SyntaxCode"></a></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_release">release</a></td>
+<td><a href="#Pixel_Image_release"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">release</span><span class="SyntaxCode"></a></td>
 <td>Release the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_resize">resize</a></td>
+<td><a href="#Pixel_Image_resize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resize</span><span class="SyntaxCode"></a></td>
 <td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_save">save</a></td>
+<td><a href="#Pixel_Image_save"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">save</span><span class="SyntaxCode"></a></td>
 <td>Save the image to a file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setAlpha">setAlpha</a></td>
+<td><a href="#Pixel_Image_setAlpha"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setAlpha</span><span class="SyntaxCode"></a></td>
 <td>Change the alpha channel. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setChannel">setChannel</a></td>
+<td><a href="#Pixel_Image_setChannel"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setChannel</span><span class="SyntaxCode"></a></td>
 <td>Change specified color channels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelFormat">setPixelFormat</a></td>
+<td><a href="#Pixel_Image_setPixelFormat"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setPixelFormat</span><span class="SyntaxCode"></a></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8</a></td>
+<td><a href="#Pixel_Image_setPixelRGBA8"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setPixelRGBA8</span><span class="SyntaxCode"></a></td>
 <td>Set pixel values depending on pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toApplyKernel">toApplyKernel</a></td>
+<td><a href="#Pixel_Image_toApplyKernel"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toApplyKernel</span><span class="SyntaxCode"></a></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toCrop">toCrop(self, const ref Rectangle)</a></td>
+<td><a href="#Pixel_Image_toCrop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toCrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toCrop">toCrop(self, s32, s32, s32, s32)</a></td>
+<td><a href="#Pixel_Image_toCrop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toCrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</a></td>
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toFlip">toFlip</a></td>
+<td><a href="#Pixel_Image_toFlip"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toFlip</span><span class="SyntaxCode"></a></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHICON">toHICON</a></td>
+<td><a href="#Pixel_Image_toHICON"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toHICON</span><span class="SyntaxCode"></a></td>
 <td>Transform an image to a windows icon. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHalfSize">toHalfSize</a></td>
+<td><a href="#Pixel_Image_toHalfSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toHalfSize</span><span class="SyntaxCode"></a></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMirror">toMirror</a></td>
+<td><a href="#Pixel_Image_toMirror"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toMirror</span><span class="SyntaxCode"></a></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMix">toMix</a></td>
+<td><a href="#Pixel_Image_toMix"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toMix</span><span class="SyntaxCode"></a></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toResize">toResize</a></td>
+<td><a href="#Pixel_Image_toResize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toResize</span><span class="SyntaxCode"></a></td>
 <td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat</a></td>
+<td><a href="#Pixel_Image_toSetPixelFormat"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toSetPixelFormat</span><span class="SyntaxCode"></a></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toTurn">toTurn</a></td>
+<td><a href="#Pixel_Image_toTurn"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toTurn</span><span class="SyntaxCode"></a></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_turn">turn</a></td>
+<td><a href="#Pixel_Image_turn"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">turn</span><span class="SyntaxCode"></a></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_visitPixels">visitPixels</a></td>
+<td><a href="#Pixel_Image_visitPixels"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">visitPixels</span><span class="SyntaxCode"></a></td>
 <td>Macro to visit all pixels of the image in parallel chunks. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Image_opVisit">opVisit</a></td>
+<td><a href="#Pixel_Image_opVisit"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -4307,7 +4307,7 @@
 </table>
 </p>
 <p>Allocate pixels. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">allocPixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">allocPixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4321,10 +4321,10 @@
 </table>
 </p>
 <p>Allocate a computing buffer with current image size. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">allocWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">allocWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>Allocate a computing buffer with new sizes. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">allocWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newPf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">allocWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, newWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newPf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4338,7 +4338,7 @@
 </table>
 </p>
 <p>Apply a kernel to the image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyKernel</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kernel: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_Kernel">Kernel</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyKernel</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, kernel: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_Kernel">Kernel</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4352,7 +4352,7 @@
 </table>
 </p>
 <p>Replace the current image content with the working buffer. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4394,7 +4394,7 @@
 </table>
 </p>
 <p>Clear the content of the image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4408,7 +4408,7 @@
 </table>
 </p>
 <p>Colorize the image by setting the hue and saturation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">colorize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, hue: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, saturation: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, strength = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">colorize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, hue: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, saturation: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, strength = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4422,7 +4422,7 @@
 </table>
 </p>
 <p>Change the contrast. <code class="incode">factor</code> is [-1, 1]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contrast</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">contrast</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4464,8 +4464,8 @@
 </table>
 </p>
 <p>Crop image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">crop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cropRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">crop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">crop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cropRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">crop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4493,7 +4493,7 @@
 </table>
 </p>
 <p>Fade to a given color. <code class="incode">factor</code> is [0, 1]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fade</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fade</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4507,7 +4507,7 @@
 </table>
 </p>
 <p>Fill image with <code class="incode">color</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fill</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fill</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4521,7 +4521,7 @@
 </table>
 </p>
 <p>Fill with an horizontal gradient from <code class="incode">color0</code> to <code class="incode">color1</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillGradient2</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color0: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, color1: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillGradient2</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, color0: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, color1: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4535,7 +4535,7 @@
 </table>
 </p>
 <p>Fill with a gradient with a different color at each corner. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillGradient4</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, topLeft: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, topRight: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, bottomLeft: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, bottomRight: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillGradient4</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, topLeft: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, topRight: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, bottomLeft: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, bottomRight: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4548,7 +4548,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillHsl</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fillType: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_FillHslType">FillHslType</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillHsl</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fillType: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_FillHslType">FillHslType</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4562,7 +4562,7 @@
 </table>
 </p>
 <p>Flip image vertically. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flip</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flip</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4576,7 +4576,7 @@
 </table>
 </p>
 <p>Free the working buffer if allocated. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeWorkingBuffer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4607,7 +4607,7 @@
 </table>
 </p>
 <p>Change the gamma. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">gamma</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, level: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">2.2</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">gamma</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, level: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">2.2</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4621,7 +4621,7 @@
 </table>
 </p>
 <p>Returns the color at the given coordinate. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPixelColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pixX: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, pixY: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Color"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPixelColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pixX: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, pixY: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Color"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4635,7 +4635,7 @@
 </table>
 </p>
 <p>Transform image to grayscale, with a given factor. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">grayScale</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">grayScale</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4649,7 +4649,7 @@
 </table>
 </p>
 <p>Divide image size by 2 with a bilinear 2x2 filter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">halfSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">halfSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4663,7 +4663,7 @@
 </table>
 </p>
 <p>Initialize image informations  <code class="incode">pixels</code> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, pf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, pf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4677,7 +4677,7 @@
 </table>
 </p>
 <p>Invert colors. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invert</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4691,7 +4691,7 @@
 </table>
 </p>
 <p>Returns true if the image is valid. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4705,7 +4705,7 @@
 </table>
 </p>
 <p>Change the lightness. <code class="incode">factor</code> is [-1, 1]. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lightness</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lightness</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4733,7 +4733,7 @@
 </table>
 </p>
 <p>Flip image horizontally. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mirror</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mirror</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4747,7 +4747,7 @@
 </table>
 </p>
 <p>Mix with another image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mix</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, srcImage: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_MixMode">MixMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Copy</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mix</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, srcImage: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_MixMode">MixMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Copy</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4761,7 +4761,7 @@
 </table>
 </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)</code>
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4775,7 +4775,7 @@
 </table>
 </p>
 <p>Release the content of the image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4789,7 +4789,7 @@
 </table>
 </p>
 <p>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Raw</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, newWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Raw</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4803,7 +4803,7 @@
 </table>
 </p>
 <p>Save the image to a file. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">save</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">save</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4817,7 +4817,7 @@
 </table>
 </p>
 <p>Change the alpha channel. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAlpha</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAlpha</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4831,7 +4831,7 @@
 </table>
 </p>
 <p>Change specified color channels. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setChannel</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_ChannelMode">ChannelMode</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_ChannelValueMode">ChannelValueMode</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxType">u8</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setChannel</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_ChannelMode">ChannelMode</a></span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_ChannelValueMode">ChannelValueMode</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxType">u8</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4845,7 +4845,7 @@
 </table>
 </p>
 <p>Change image pixel format. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPixelFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newPf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPixelFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, newPf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4873,7 +4873,7 @@
 </table>
 </p>
 <p>Apply a kernel to the image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toApplyKernel</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kernel: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_Kernel">Kernel</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toApplyKernel</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, kernel: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_Kernel">Kernel</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4887,8 +4887,8 @@
 </table>
 </p>
 <p>Crop image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toCrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, cropRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a>
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toCrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toCrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cropRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a>
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toCrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4902,7 +4902,7 @@
 </table>
 </p>
 <p>Flip image vertically. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toFlip</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toFlip</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4916,7 +4916,7 @@
 </table>
 </p>
 <p>Transform an image to a windows icon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toHICON</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toHICON</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4930,7 +4930,7 @@
 </table>
 </p>
 <p>Divide image size by 2 with a bilinear 2x2 filter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toHalfSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toHalfSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4944,7 +4944,7 @@
 </table>
 </p>
 <p>Flip image horizontally. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toMirror</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toMirror</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4958,7 +4958,7 @@
 </table>
 </p>
 <p>Mix with another image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toMix</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, srcImage: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_MixMode">MixMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Copy</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toMix</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, srcImage: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_MixMode">MixMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Copy</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4972,7 +4972,7 @@
 </table>
 </p>
 <p>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toResize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, newWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Raw</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toResize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, newWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, newHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Raw</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -4986,7 +4986,7 @@
 </table>
 </p>
 <p>Change image pixel format. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toSetPixelFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, newPf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toSetPixelFormat</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, newPf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -5000,7 +5000,7 @@
 </table>
 </p>
 <p>Turn image by a given predefined angle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toTurn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toTurn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, angle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -5014,7 +5014,7 @@
 </table>
 </p>
 <p>Turn image by a given predefined angle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">turn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">turn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, angle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5029,7 +5029,7 @@
 </p>
 <p>Macro to visit all pixels of the image in parallel chunks. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">visitPixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stride: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)</code>
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">visitPixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, userData: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, stride: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)</code>
 </div>
 <p style="white-space: break-spaces"> Exported variables:
  'pix'        address of the pixel
@@ -5114,7 +5114,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5127,7 +5127,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5169,7 +5169,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5182,7 +5182,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5321,59 +5321,59 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_LinePath_arcTo">arcTo</a></td>
+<td><a href="#Pixel_LinePath_arcTo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">arcTo</span><span class="SyntaxCode"></a></td>
 <td>Add an arc from the previous point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_bezierTo">bezierTo(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_bezierTo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">bezierTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_bezierTo">bezierTo(self, f32, f32, f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_bezierTo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">bezierTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_clearCache">clearCache</a></td>
+<td><a href="#Pixel_LinePath_clearCache"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clearCache</span><span class="SyntaxCode"></a></td>
 <td>Clear internal cache. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_close">close</a></td>
+<td><a href="#Pixel_LinePath_close"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">close</span><span class="SyntaxCode"></a></td>
 <td>Close the figure  Will add a line or a curve to the first point if necessary. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_curveTo">curveTo</a></td>
+<td><a href="#Pixel_LinePath_curveTo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">curveTo</span><span class="SyntaxCode"></a></td>
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_flatten">flatten</a></td>
+<td><a href="#Pixel_LinePath_flatten"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">flatten</span><span class="SyntaxCode"></a></td>
 <td>Convert the path to a list of points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_lineTo">lineTo</a></td>
+<td><a href="#Pixel_LinePath_lineTo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">lineTo</span><span class="SyntaxCode"></a></td>
 <td>Add a line from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setArc">setArc</a></td>
+<td><a href="#Pixel_LinePath_setArc"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setArc</span><span class="SyntaxCode"></a></td>
 <td>Initialize the path with an arc. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setCircle">setCircle</a></td>
+<td><a href="#Pixel_LinePath_setCircle"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setCircle</span><span class="SyntaxCode"></a></td>
 <td>Initialize the path with a circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setEllipse">setEllipse</a></td>
+<td><a href="#Pixel_LinePath_setEllipse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setEllipse</span><span class="SyntaxCode"></a></td>
 <td>Initialize the path with an ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRect">setRect</a></td>
+<td><a href="#Pixel_LinePath_setRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRect</span><span class="SyntaxCode"></a></td>
 <td>Initialize the path with a rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRoundRect">setRoundRect</a></td>
+<td><a href="#Pixel_LinePath_setRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRoundRect</span><span class="SyntaxCode"></a></td>
 <td>Initialize the path with a round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_start">start</a></td>
+<td><a href="#Pixel_LinePath_start"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">start</span><span class="SyntaxCode"></a></td>
 <td>Reset the path. </td>
 </tr>
 </table>
@@ -5389,7 +5389,7 @@
 </table>
 </p>
 <p>Add an arc from the previous point. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">arcTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, initAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, maxAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">arcTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, initAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, maxAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5403,10 +5403,10 @@
 </table>
 </p>
 <p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bezierTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ctx: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, cty: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bezierTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ctx: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, cty: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bezierTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct1x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct1y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct2x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct2y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bezierTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct1x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct1y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct2x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, ct2y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5420,7 +5420,7 @@
 </table>
 </p>
 <p>Clear internal cache. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearCache</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearCache</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5434,7 +5434,7 @@
 </table>
 </p>
 <p>Close the figure  Will add a line or a curve to the first point if necessary. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">close</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">close</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5448,7 +5448,7 @@
 </table>
 </p>
 <p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">curveTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">curveTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5462,7 +5462,7 @@
 </table>
 </p>
 <p>Convert the path to a list of points. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flatten</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, quality = </span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Normal</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flatten</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, quality = </span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Normal</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5476,7 +5476,7 @@
 </table>
 </p>
 <p>Add a line from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lineTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lineTo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5490,7 +5490,7 @@
 </table>
 </p>
 <p>Initialize the path with an arc. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, endAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, endAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5504,7 +5504,7 @@
 </table>
 </p>
 <p>Initialize the path with a circle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5518,7 +5518,7 @@
 </table>
 </p>
 <p>Initialize the path with an ellipse. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5532,7 +5532,7 @@
 </table>
 </p>
 <p>Initialize the path with a rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5546,7 +5546,7 @@
 </table>
 </p>
 <p>Initialize the path with a round rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5560,7 +5560,7 @@
 </table>
 </p>
 <p>Reset the path. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">start</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, startX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">start</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, startX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5593,31 +5593,31 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_LinePathList_clean">clean</a></td>
+<td><a href="#Pixel_LinePathList_clean"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clean</span><span class="SyntaxCode"></a></td>
 <td>Clean all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_clear">clear</a></td>
+<td><a href="#Pixel_LinePathList_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Remove all internal line paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_count">count</a></td>
+<td><a href="#Pixel_LinePathList_count"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">count</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_flatten">flatten</a></td>
+<td><a href="#Pixel_LinePathList_flatten"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">flatten</span><span class="SyntaxCode"></a></td>
 <td>Flatten all paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_newPath">newPath</a></td>
+<td><a href="#Pixel_LinePathList_newPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">newPath</span><span class="SyntaxCode"></a></td>
 <td>Returns a new path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_offset">offset(self, f32)</a></td>
+<td><a href="#Pixel_LinePathList_offset"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Call fast offset on all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_offset">offset(self, f32, JoinStyle, f32)</a></td>
+<td><a href="#Pixel_LinePathList_offset"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">JoinStyle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Call quality offset on all paths  They must before be flattened. </td>
 </tr>
 </table>
@@ -5633,7 +5633,7 @@
 </table>
 </p>
 <p>Clean all paths  They must before be flattened. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clean</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clean</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5647,7 +5647,7 @@
 </table>
 </p>
 <p>Remove all internal line paths. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5660,7 +5660,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">count</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5674,7 +5674,7 @@
 </table>
 </p>
 <p>Flatten all paths. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flatten</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, quality: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flatten</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, quality: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5688,7 +5688,7 @@
 </table>
 </p>
 <p>Returns a new path. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">newPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">newPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5702,10 +5702,10 @@
 </table>
 </p>
 <p>Call fast offset on all paths  They must before be flattened. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>Call quality offset on all paths  They must before be flattened. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, joinStyle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span><span class="SyntaxCode">, toler: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, joinStyle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span><span class="SyntaxCode">, toler: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5721,23 +5721,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_createContext">createContext(self, HDC, s32, s32, HGLRC)</a></td>
+<td><a href="#Pixel_NativeRenderOgl_createContext"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">HGLRC</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_createContext">createContext(self, HWND, s32, s32, HGLRC)</a></td>
+<td><a href="#Pixel_NativeRenderOgl_createContext"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">HGLRC</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_dropContext">dropContext</a></td>
+<td><a href="#Pixel_NativeRenderOgl_dropContext"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">dropContext</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext</a></td>
+<td><a href="#Pixel_NativeRenderOgl_setCurrentContext"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setCurrentContext</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers</a></td>
+<td><a href="#Pixel_NativeRenderOgl_swapBuffers"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">swapBuffers</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -5752,8 +5752,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mainRC: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLRC</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_RenderingContext"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mainRC: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLRC</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_RenderingContext"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mainRC: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLRC</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_RenderingContext"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode">
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, mainRC: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLRC</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_RenderingContext"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5766,7 +5766,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dropContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dropContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5779,7 +5779,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCurrentContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCurrentContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5792,7 +5792,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">swapBuffers</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">swapBuffers</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6014,423 +6014,423 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Painter_addParams">addParams</a></td>
+<td><a href="#Pixel_Painter_addParams"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addParams</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_begin">begin</a></td>
+<td><a href="#Pixel_Painter_begin"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">begin</span><span class="SyntaxCode"></a></td>
 <td>Call this before drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget</a></td>
+<td><a href="#Pixel_Painter_bindRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">bindRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Bind a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_capStyleExtent">capStyleExtent</a></td>
+<td><a href="#Pixel_Painter_capStyleExtent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">capStyleExtent</span><span class="SyntaxCode"></a></td>
 <td>Returns the extent in both directions of a given LineCapStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_clear">clear</a></td>
+<td><a href="#Pixel_Painter_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Clear the rendering surface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_computeLayout">computeLayout</a></td>
+<td><a href="#Pixel_Painter_computeLayout"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode"></a></td>
 <td>Recompute the layout for a given rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawArc"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw an arc between two angles. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawArc">drawArc(self, f32, f32, f32, const ref Angle, const ref Angle, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawArc"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawCircle">drawCircle(self, f32, f32, f32, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawCircle"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw an empty circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawCircle">drawCircle(self, f32, f32, f32, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawCircle"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawEllipse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw an empty ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawEllipse">drawEllipse(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawEllipse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine">drawLine(self, const ref Vector2, const ref Vector2, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td>Draw a line. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine">drawLine(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine">drawLine(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePath, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePath</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePath, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePath</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td>Draw the line path with the given <code class="incode">pen</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePathList, const ref Color, f32, DrawPathListMode)</a></td>
+<td><a href="#Pixel_Painter_drawPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePathList</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">DrawPathListMode</span><span class="SyntaxCode">)</a></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath">drawPath(self, *LinePathList, const ref Pen, DrawPathListMode)</a></td>
+<td><a href="#Pixel_Painter_drawPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePathList</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">DrawPathListMode</span><span class="SyntaxCode">)</a></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect">drawRect(self, const ref Rectangle, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect">drawRect(self, const ref Rectangle, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect">drawRect(self, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw an empty rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect">drawRect(self, f32, f32, f32, f32, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRichString">drawRichString</a></td>
+<td><a href="#Pixel_Painter_drawRichString"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRichString</span><span class="SyntaxCode"></a></td>
 <td>Draw a rich string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, const ref Rectangle, f32, f32, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw an empty round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect">drawRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Pen)</a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Pen</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawString">drawString(self, f32, f32, string, *Font, const ref Brush, UnderlineStyle, f32)</a></td>
+<td><a href="#Pixel_Painter_drawString"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">UnderlineStyle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawString">drawString(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
+<td><a href="#Pixel_Painter_drawString"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">UnderlineStyle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawStringCenter">drawStringCenter</a></td>
+<td><a href="#Pixel_Painter_drawStringCenter"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawStringCenter</span><span class="SyntaxCode"></a></td>
 <td>Draw a simple string (centered). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, const ref Rectangle, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_drawTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_drawTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_drawTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, const ref Texture, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_drawTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Rectangle, const ref Texture, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_drawTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td>Draw a portion of an image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture">drawTexture(self, f32, f32, f32, f32, const ref Texture, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_drawTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td>Draw a texture image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_end">end</a></td>
+<td><a href="#Pixel_Painter_end"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">end</span><span class="SyntaxCode"></a></td>
 <td>Call this after drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_endClippingRegion">endClippingRegion</a></td>
+<td><a href="#Pixel_Painter_endClippingRegion"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">endClippingRegion</span><span class="SyntaxCode"></a></td>
 <td>Stop painting in the clipping buffer. Back to normal. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillCircle">fillCircle(self, f32, f32, f32, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillCircle"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td>Draw a solid circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillCircle">fillCircle(self, f32, f32, f32, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillCircle"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillEllipse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td>Draw a solid ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillEllipse">fillEllipse(self, f32, f32, f32, f32, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillEllipse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePath, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePath</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td>Fill the line path with the given <code class="incode">brush</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePath, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePath</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td>Fill the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePathList, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePathList</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath">fillPath(self, *LinePathList, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePathList</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td>Fill the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPolygon">fillPolygon(self, *LinePath, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillPolygon"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillPolygon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePath</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td>Fill the polygon with the given <code class="incode">brush</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPolygon">fillPolygon(self, *LinePath, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillPolygon"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillPolygon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">LinePath</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td>Fill the polygon with the given color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect">fillRect(self, const ref Rectangle, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect">fillRect(self, const ref Rectangle, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect">fillRect(self, f32, f32, f32, f32, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td>Draw a filled rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect">fillRect(self, f32, f32, f32, f32, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, const ref Rectangle, f32, f32, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Brush)</a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Brush</span><span class="SyntaxCode">)</a></td>
 <td>Draw a filled round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect">fillRoundRect(self, f32, f32, f32, f32, f32, f32, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getClippingRect">getClippingRect</a></td>
+<td><a href="#Pixel_Painter_getClippingRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getClippingRect</span><span class="SyntaxCode"></a></td>
 <td>Get the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getGlyphs">getGlyphs(const ref Array'(rune), *Font)</a></td>
+<td><a href="#Pixel_Painter_getGlyphs"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getGlyphs</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">rune</span><span class="SyntaxCode">), *</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">)</a></td>
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getGlyphs">getGlyphs(string, *Font)</a></td>
+<td><a href="#Pixel_Painter_getGlyphs"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getGlyphs</span><span class="SyntaxCode">(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">)</a></td>
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getParams">getParams</a></td>
+<td><a href="#Pixel_Painter_getParams"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getParams</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getQuality">getQuality</a></td>
+<td><a href="#Pixel_Painter_getQuality"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getQuality</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getTransform">getTransform</a></td>
+<td><a href="#Pixel_Painter_getTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTransform</span><span class="SyntaxCode"></a></td>
 <td>Returns the current tranformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect</a></td>
+<td><a href="#Pixel_Painter_isEmptyClippingRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isEmptyClippingRect</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the current clipping rectangle is empty (no drawing !). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureRune">measureRune</a></td>
+<td><a href="#Pixel_Painter_measureRune"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">measureRune</span><span class="SyntaxCode"></a></td>
 <td>Get a rune size for a given font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureString">measureString(const ref Array'(const *GlyphDesc))</a></td>
+<td><a href="#Pixel_Painter_measureString"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">measureString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">GlyphDesc</span><span class="SyntaxCode">))</a></td>
 <td>Returns the bounding rectangle if a given text, at a given position. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureString">measureString(string, *Font)</a></td>
+<td><a href="#Pixel_Painter_measureString"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">measureString</span><span class="SyntaxCode">(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">)</a></td>
 <td>Returns the metrics of a given text. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popClippingRect">popClippingRect</a></td>
+<td><a href="#Pixel_Painter_popClippingRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">popClippingRect</span><span class="SyntaxCode"></a></td>
 <td>Restore the original clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popState">popState</a></td>
+<td><a href="#Pixel_Painter_popState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">popState</span><span class="SyntaxCode"></a></td>
 <td>Restore the last paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popTransform">popTransform</a></td>
+<td><a href="#Pixel_Painter_popTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">popTransform</span><span class="SyntaxCode"></a></td>
 <td>Restore the pushed transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingRect">pushClippingRect</a></td>
+<td><a href="#Pixel_Painter_pushClippingRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pushClippingRect</span><span class="SyntaxCode"></a></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect</a></td>
+<td><a href="#Pixel_Painter_pushClippingSurfaceRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pushClippingSurfaceRect</span><span class="SyntaxCode"></a></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushState">pushState</a></td>
+<td><a href="#Pixel_Painter_pushState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pushState</span><span class="SyntaxCode"></a></td>
 <td>Save the current paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushTransform">pushTransform</a></td>
+<td><a href="#Pixel_Painter_pushTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pushTransform</span><span class="SyntaxCode"></a></td>
 <td>Push the current transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget</a></td>
+<td><a href="#Pixel_Painter_releaseRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">releaseRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Release the render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_removeParams">removeParams</a></td>
+<td><a href="#Pixel_Painter_removeParams"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">removeParams</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRect">resetClippingRect</a></td>
+<td><a href="#Pixel_Painter_resetClippingRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resetClippingRect</span><span class="SyntaxCode"></a></td>
 <td>Reset the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion</a></td>
+<td><a href="#Pixel_Painter_resetClippingRegion"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resetClippingRegion</span><span class="SyntaxCode"></a></td>
 <td>Reset clipping buffer to its default value (no more clipping). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetState">resetState</a></td>
+<td><a href="#Pixel_Painter_resetState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resetState</span><span class="SyntaxCode"></a></td>
 <td>Reset the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetTransform">resetTransform</a></td>
+<td><a href="#Pixel_Painter_resetTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resetTransform</span><span class="SyntaxCode"></a></td>
 <td>Reset the paint position, rotation, scale. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle)</a></td>
+<td><a href="#Pixel_Painter_rotateTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</a></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
+<td><a href="#Pixel_Painter_rotateTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace</a></td>
+<td><a href="#Pixel_Painter_rotateTransformInPlace"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">rotateTransformInPlace</span><span class="SyntaxCode"></a></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></td>
+<td><a href="#Pixel_Painter_scaleTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">scaleTransform</span><span class="SyntaxCode"></a></td>
 <td>Set the paint scale. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setAntialiased">setAntialiased</a></td>
+<td><a href="#Pixel_Painter_setAntialiased"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setAntialiased</span><span class="SyntaxCode"></a></td>
 <td>Set antialiased mode on/off. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setBlendingMode">setBlendingMode</a></td>
+<td><a href="#Pixel_Painter_setBlendingMode"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setBlendingMode</span><span class="SyntaxCode"></a></td>
 <td>Set the current blending mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRect">setClippingRect(self, const ref Rectangle)</a></td>
+<td><a href="#Pixel_Painter_setClippingRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</a></td>
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRect">setClippingRect(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_Painter_setClippingRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode</a></td>
+<td><a href="#Pixel_Painter_setClippingRegionMode"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setClippingRegionMode</span><span class="SyntaxCode"></a></td>
 <td>Set the clipping region mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMask">setColorMask(self, bool, bool, bool, bool)</a></td>
+<td><a href="#Pixel_Painter_setColorMask"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColorMask</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</a></td>
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMask">setColorMask(self, const ref ColorMask)</a></td>
+<td><a href="#Pixel_Painter_setColorMask"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColorMask</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ColorMask</span><span class="SyntaxCode">)</a></td>
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha</a></td>
+<td><a href="#Pixel_Painter_setColorMaskAlpha"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColorMaskAlpha</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor</a></td>
+<td><a href="#Pixel_Painter_setColorMaskColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColorMaskColor</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull</a></td>
+<td><a href="#Pixel_Painter_setColorMaskFull"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColorMaskFull</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode</a></td>
+<td><a href="#Pixel_Painter_setInterpolationMode"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setInterpolationMode</span><span class="SyntaxCode"></a></td>
 <td>Set the texture interpolation mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setParams">setParams</a></td>
+<td><a href="#Pixel_Painter_setParams"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setParams</span><span class="SyntaxCode"></a></td>
 <td>Set the paint parameters. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setQuality">setQuality</a></td>
+<td><a href="#Pixel_Painter_setQuality"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setQuality</span><span class="SyntaxCode"></a></td>
 <td>Set the paint quality. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShader">setShader</a></td>
+<td><a href="#Pixel_Painter_setShader"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setShader</span><span class="SyntaxCode"></a></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShaderParam">setShaderParam(self, ShaderParamHandle, f32)</a></td>
+<td><a href="#Pixel_Painter_setShaderParam"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">ShaderParamHandle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShaderParam">setShaderParam(self, ShaderParamHandle, s32)</a></td>
+<td><a href="#Pixel_Painter_setShaderParam"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">ShaderParamHandle</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</a></td>
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setState">setState</a></td>
+<td><a href="#Pixel_Painter_setState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setState</span><span class="SyntaxCode"></a></td>
 <td>Set the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setTransform">setTransform</a></td>
+<td><a href="#Pixel_Painter_setTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setTransform</span><span class="SyntaxCode"></a></td>
 <td>Set the paint transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_startClippingRegion">startClippingRegion</a></td>
+<td><a href="#Pixel_Painter_startClippingRegion"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">startClippingRegion</span><span class="SyntaxCode"></a></td>
 <td>Start painting in the clipping buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_translateTransform">translateTransform</a></td>
+<td><a href="#Pixel_Painter_translateTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">translateTransform</span><span class="SyntaxCode"></a></td>
 <td>Set the paint position. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget</a></td>
+<td><a href="#Pixel_Painter_unbindRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">unbindRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Bind a render target. </td>
 </tr>
 </table>
@@ -6445,7 +6445,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, add: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6459,7 +6459,7 @@
 </table>
 </p>
 <p>Call this before drawing. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">begin</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">begin</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6473,7 +6473,7 @@
 </table>
 </p>
 <p>Bind a render target. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tgt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">, paintAlpha = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, tgt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">, paintAlpha = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6506,7 +6506,7 @@
 </table>
 </p>
 <p>Clear the rendering surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6520,7 +6520,7 @@
 </table>
 </p>
 <p>Recompute the layout for a given rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, text: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, text: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6534,9 +6534,9 @@
 </table>
 </p>
 <p>Draw an arc between two angles. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, endAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, endAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, endAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawArc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, endAngle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6550,9 +6550,9 @@
 </table>
 </p>
 <p>Draw an empty circle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6566,9 +6566,9 @@
 </table>
 </p>
 <p>Draw an empty ellipse. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6582,10 +6582,10 @@
 </table>
 </p>
 <p>Draw a line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, start: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">, end: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, start: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">, end: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, startX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, startX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, startX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, startX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, startY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, endY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6599,16 +6599,16 @@
 </table>
 </p>
 <p>Draw the line path. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>Draw the line path with the given <code class="incode">pen</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Draw the line path. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span><span class="SyntaxCode"> = .</span><span class="SyntaxConstant">Separate</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span><span class="SyntaxCode"> = .</span><span class="SyntaxConstant">Separate</span><span class="SyntaxCode">)</code>
 </div>
 <p>Draw the line path. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span><span class="SyntaxCode"> = .</span><span class="SyntaxConstant">Separate</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span><span class="SyntaxCode"> = .</span><span class="SyntaxConstant">Separate</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6622,11 +6622,11 @@
 </table>
 </p>
 <p>Draw an empty rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6640,7 +6640,7 @@
 </table>
 </p>
 <p>Draw a rich string. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRichString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, text: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span><span class="SyntaxCode">, forceCompute = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRichString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, text: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span><span class="SyntaxCode">, format: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span><span class="SyntaxCode">, forceCompute = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p> A rich string can be multiline, and accepts  The layout will be computed at the first call, and each time <code class="incode">pos</code> has changed </p>
 <p>
@@ -6655,11 +6655,11 @@
 </table>
 </p>
 <p>Draw an empty round rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, penSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pen: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6673,10 +6673,10 @@
 </table>
 </p>
 <p>Draw a simple string. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">, under = </span><span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">None</span><span class="SyntaxCode">, zoom = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">, under = </span><span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">None</span><span class="SyntaxCode">, zoom = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
 </div>
 <p>Draw a simple string. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, under = </span><span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">None</span><span class="SyntaxCode">, zoom = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, under = </span><span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">None</span><span class="SyntaxCode">, zoom = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6690,7 +6690,7 @@
 </table>
 </p>
 <p>Draw a simple string (centered). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawStringCenter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, under = </span><span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">None</span><span class="SyntaxCode">, zoom = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawStringCenter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">, under = </span><span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">None</span><span class="SyntaxCode">, zoom = </span><span class="SyntaxNumber">1.0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6704,14 +6704,14 @@
 </table>
 </p>
 <p>Draw a portion of an image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, dstRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, srcRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, srcRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, srcRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, dstRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, srcRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, srcRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, srcRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
 </div>
 <p>Draw a texture image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6725,7 +6725,7 @@
 </table>
 </p>
 <p>Call this after drawing. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6739,7 +6739,7 @@
 </table>
 </p>
 <p>Stop painting in the clipping buffer. Back to normal. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">endClippingRegion</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">endClippingRegion</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6753,9 +6753,9 @@
 </table>
 </p>
 <p>Draw a solid circle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillCircle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radius: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6769,9 +6769,9 @@
 </table>
 </p>
 <p>Draw a solid ellipse. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillEllipse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6785,16 +6785,16 @@
 </table>
 </p>
 <p>Fill the line path with the given <code class="incode">brush</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Fill the line path. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Fill the line path. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6808,10 +6808,10 @@
 </table>
 </p>
 <p>Fill the polygon with the given <code class="incode">brush</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPolygon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPolygon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Fill the polygon with the given color. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPolygon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillPolygon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, path: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6825,11 +6825,11 @@
 </table>
 </p>
 <p>Draw a filled rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6843,11 +6843,11 @@
 </table>
 </p>
 <p>Draw a filled round rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, brush: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fillRoundRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, radiusY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6861,7 +6861,7 @@
 </table>
 </p>
 <p>Get the current clipping rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6891,7 +6891,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Pixel_PaintParams"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_PaintParams"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -6904,7 +6904,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getQuality</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Pixel_PaintQuality"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getQuality</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_PaintQuality"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -6918,7 +6918,7 @@
 </table>
 </p>
 <p>Returns the current tranformation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6932,7 +6932,7 @@
 </table>
 </p>
 <p>Returns true if the current clipping rectangle is empty (no drawing !). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmptyClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmptyClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6977,7 +6977,7 @@
 </table>
 </p>
 <p>Restore the original clipping rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6991,7 +6991,7 @@
 </table>
 </p>
 <p>Restore the last paint state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7005,7 +7005,7 @@
 </table>
 </p>
 <p>Restore the pushed transformation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7019,7 +7019,7 @@
 </table>
 </p>
 <p>Interface the given rectangle with the current clipping rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, isSurfacePos = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, isSurfacePos = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7033,7 +7033,7 @@
 </table>
 </p>
 <p>Interface the given rectangle with the current clipping rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushClippingSurfaceRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushClippingSurfaceRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7047,7 +7047,7 @@
 </table>
 </p>
 <p>Save the current paint state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7061,7 +7061,7 @@
 </table>
 </p>
 <p>Push the current transformation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7075,7 +7075,7 @@
 </table>
 </p>
 <p>Release the render target. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tgt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, tgt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7088,7 +7088,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, remove: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, remove: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7102,7 +7102,7 @@
 </table>
 </p>
 <p>Reset the current clipping rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7116,7 +7116,7 @@
 </table>
 </p>
 <p>Reset clipping buffer to its default value (no more clipping). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetClippingRegion</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetClippingRegion</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7130,7 +7130,7 @@
 </table>
 </p>
 <p>Reset the current painting state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7144,7 +7144,7 @@
 </table>
 </p>
 <p>Reset the paint position, rotation, scale. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7158,10 +7158,10 @@
 </table>
 </p>
 <p>Set the paint rotation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
 </div>
 <p>Set the paint rotation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7175,7 +7175,7 @@
 </table>
 </p>
 <p>Set the paint rotation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransformInPlace</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransformInPlace</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
 </div>
 <p> Will rotate around the current transformation position. </p>
 <p>
@@ -7190,7 +7190,7 @@
 </table>
 </p>
 <p>Set the paint scale. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scaleTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scaleTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7204,7 +7204,7 @@
 </table>
 </p>
 <p>Set antialiased mode on/off. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAntialiased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, aa = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAntialiased</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, aa = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7218,7 +7218,7 @@
 </table>
 </p>
 <p>Set the current blending mode. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setBlendingMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setBlendingMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7232,10 +7232,10 @@
 </table>
 </p>
 <p>Set the current clipping rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </div>
 <p>Set the current clipping rectangle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setClippingRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7249,7 +7249,7 @@
 </table>
 </p>
 <p>Set the clipping region mode. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setClippingRegionMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setClippingRegionMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7263,10 +7263,10 @@
 </table>
 </p>
 <p>Set color mask. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMask</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, r: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, a: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMask</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, r: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, g: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, b: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, a: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>Set color mask. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMask</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cm: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ColorMask">ColorMask</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMask</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cm: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ColorMask">ColorMask</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7279,7 +7279,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMaskAlpha</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMaskAlpha</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7292,7 +7292,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMaskColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMaskColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7305,7 +7305,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMaskFull</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColorMaskFull</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7319,7 +7319,7 @@
 </table>
 </p>
 <p>Set the texture interpolation mode. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInterpolationMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInterpolationMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7333,7 +7333,7 @@
 </table>
 </p>
 <p>Set the paint parameters. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode">, remove: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode"> = .</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setParams</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, add: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode">, remove: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode"> = .</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7347,7 +7347,7 @@
 </table>
 </p>
 <p>Set the paint quality. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setQuality</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, quality: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setQuality</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, quality: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7361,7 +7361,7 @@
 </table>
 </p>
 <p>Set the current shader. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShader</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, shader: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShader</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, shader: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7375,10 +7375,10 @@
 </table>
 </p>
 <p>Set a shader parameter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, val: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, val: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>Set a shader parameter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, val: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, val: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7392,7 +7392,7 @@
 </table>
 </p>
 <p>Set the current painting state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, state: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintState">PaintState</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, state: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintState">PaintState</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7406,7 +7406,7 @@
 </table>
 </p>
 <p>Set the paint transformation. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tr: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, tr: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7420,7 +7420,7 @@
 </table>
 </p>
 <p>Start painting in the clipping buffer. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startClippingRegion</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode = </span><span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Set</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startClippingRegion</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mode = </span><span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Set</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7434,7 +7434,7 @@
 </table>
 </p>
 <p>Set the paint position. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">translateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">translateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7448,7 +7448,7 @@
 </table>
 </p>
 <p>Bind a render target. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unbindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unbindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7546,15 +7546,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Pen_createDash">createDash</a></td>
+<td><a href="#Pixel_Pen_createDash"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createDash</span><span class="SyntaxCode"></a></td>
 <td>Returns a dash pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createHatch">createHatch</a></td>
+<td><a href="#Pixel_Pen_createHatch"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createHatch</span><span class="SyntaxCode"></a></td>
 <td>Return a predefined hatch pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createSolid">createSolid</a></td>
+<td><a href="#Pixel_Pen_createSolid"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createSolid</span><span class="SyntaxCode"></a></td>
 <td>Returns a solid color pen. </td>
 </tr>
 </table>
@@ -7642,7 +7642,7 @@
 </table>
 </p>
 <p>Returns the bit depth of each channel. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bitDepth</span><span class="SyntaxCode">(self)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bitDepth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7656,7 +7656,7 @@
 </table>
 </p>
 <p>Returns the bpp (bits per pixel) of the given pixel format. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bpp</span><span class="SyntaxCode">(self)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bpp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7670,7 +7670,7 @@
 </table>
 </p>
 <p>Returns the number of image channels. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">channels</span><span class="SyntaxCode">(self)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">channels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7684,7 +7684,7 @@
 </table>
 </p>
 <p>Returns true if the given pixel format has an alpha channel. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasAlpha</span><span class="SyntaxCode">(self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasAlpha</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7708,7 +7708,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7721,7 +7721,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7768,7 +7768,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7781,7 +7781,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7848,27 +7848,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addPoint</span><span class="SyntaxCode"></a></td>
 <td>Register a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_clear">clear</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">endPolyLine</span><span class="SyntaxCode"></a></td>
 <td>To call to register the polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTriangles</span><span class="SyntaxCode"></a></td>
 <td>Returns the list of triangles. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">startPolyLine</span><span class="SyntaxCode"></a></td>
 <td>To call before adding a polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">triangulate</span><span class="SyntaxCode"></a></td>
 <td>Triangulate. </td>
 </tr>
 </table>
@@ -7884,7 +7884,7 @@
 </table>
 </p>
 <p>Register a new point. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7898,7 +7898,7 @@
 </table>
 </p>
 <p>Clear content. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7912,7 +7912,7 @@
 </table>
 </p>
 <p>To call to register the polyline. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">endPolyLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">endPolyLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7926,7 +7926,7 @@
 </table>
 </p>
 <p>Returns the list of triangles. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTriangles</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;[..] *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTriangles</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;[..] *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7940,7 +7940,7 @@
 </table>
 </p>
 <p>To call before adding a polyline. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startPolyLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">startPolyLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7954,7 +7954,7 @@
 </table>
 </p>
 <p>Triangulate. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">triangulate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">triangulate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8045,47 +8045,47 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Polygon_add">add</a></td>
+<td><a href="#Pixel_Polygon_add"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">add</span><span class="SyntaxCode"></a></td>
 <td>Add a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clean">clean</a></td>
+<td><a href="#Pixel_Polygon_clean"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clean</span><span class="SyntaxCode"></a></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clear">clear</a></td>
+<td><a href="#Pixel_Polygon_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Clear all points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_compute">compute</a></td>
+<td><a href="#Pixel_Polygon_compute"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">compute</span><span class="SyntaxCode"></a></td>
 <td>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getClean">getClean</a></td>
+<td><a href="#Pixel_Polygon_getClean"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getClean</span><span class="SyntaxCode"></a></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getOffset">getOffset</a></td>
+<td><a href="#Pixel_Polygon_getOffset"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getOffset</span><span class="SyntaxCode"></a></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getPoint">getPoint(self, u64)</a></td>
+<td><a href="#Pixel_Polygon_getPoint"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</a></td>
 <td>Get the given point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getPoint">getPoint(self, u64, f32)</a></td>
+<td><a href="#Pixel_Polygon_getPoint"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Get the given point, with an optional offset. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_normalizeDist">normalizeDist</a></td>
+<td><a href="#Pixel_Polygon_normalizeDist"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">normalizeDist</span><span class="SyntaxCode"></a></td>
 <td>Divide by adding points if two points are too far away. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_offset">offset(self, f32)</a></td>
+<td><a href="#Pixel_Polygon_offset"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Fast expand polygon by a given amount. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_offset">offset(self, f32, JoinStyle, f32)</a></td>
+<td><a href="#Pixel_Polygon_offset"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">JoinStyle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 </table>
@@ -8101,7 +8101,7 @@
 </table>
 </p>
 <p>Add a new point. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, v: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">add</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, v: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8115,7 +8115,7 @@
 </table>
 </p>
 <p>Clean polygon by removing bad/unecessary points. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clean</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clean</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8129,7 +8129,7 @@
 </table>
 </p>
 <p>Clear all points. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8143,7 +8143,7 @@
 </table>
 </p>
 <p>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8157,7 +8157,7 @@
 </table>
 </p>
 <p>Clean polygon by removing bad/unecessary points. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClean</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Pixel_LinePathList"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClean</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_LinePathList"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -8171,7 +8171,7 @@
 </table>
 </p>
 <p>Slow but quality offset with a joinStyle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOffset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, joinStyle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span><span class="SyntaxCode">, toler: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_LinePathList"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOffset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, joinStyle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span><span class="SyntaxCode">, toler: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_LinePathList"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -8185,10 +8185,10 @@
 </table>
 </p>
 <p>Get the given point. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, i: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, i: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></code>
 </div>
 <p>Get the given point, with an optional offset. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, i: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, offset: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, i: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, offset: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8202,7 +8202,7 @@
 </table>
 </p>
 <p>Divide by adding points if two points are too far away. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">normalizeDist</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, dist: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, closed: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">normalizeDist</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, dist: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, closed: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8216,10 +8216,10 @@
 </table>
 </p>
 <p>Fast expand polygon by a given amount. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>Slow but quality offset with a joinStyle. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, joinStyle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span><span class="SyntaxCode">, toler: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">offset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, joinStyle: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span><span class="SyntaxCode">, toler: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8322,123 +8322,123 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RenderOgl_addImage">addImage(self, const ref Image)</a></td>
+<td><a href="#Pixel_RenderOgl_addImage"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</a></td>
 <td>Register an image for rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_addImage">addImage(self, string)</a></td>
+<td><a href="#Pixel_RenderOgl_addImage"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</a></td>
 <td>Load and register an image for rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_begin">begin</a></td>
+<td><a href="#Pixel_RenderOgl_begin"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">begin</span><span class="SyntaxCode"></a></td>
 <td>To be called before rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget</a></td>
+<td><a href="#Pixel_RenderOgl_bindRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">bindRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Set the current render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_clear">clear</a></td>
+<td><a href="#Pixel_RenderOgl_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Clear current render buffers. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_computeMatrices">computeMatrices</a></td>
+<td><a href="#Pixel_RenderOgl_computeMatrices"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeMatrices</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget</a></td>
+<td><a href="#Pixel_RenderOgl_createRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Create a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createShader">createShader</a></td>
+<td><a href="#Pixel_RenderOgl_createShader"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createShader</span><span class="SyntaxCode"></a></td>
 <td>Create the given shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget</a></td>
+<td><a href="#Pixel_RenderOgl_deleteRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Delete a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_draw">draw</a></td>
+<td><a href="#Pixel_RenderOgl_draw"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">draw</span><span class="SyntaxCode"></a></td>
 <td>Draw the given painter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_end">end</a></td>
+<td><a href="#Pixel_RenderOgl_end"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">end</span><span class="SyntaxCode"></a></td>
 <td>To be called after rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget</a></td>
+<td><a href="#Pixel_RenderOgl_getRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Get a render target of the given size  releaseRenderTarget must be called to release it. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize</a></td>
+<td><a href="#Pixel_RenderOgl_getTargetSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTargetSize</span><span class="SyntaxCode"></a></td>
 <td>Get the actual render target size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels</a></td>
+<td><a href="#Pixel_RenderOgl_getTexturePixels"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTexturePixels</span><span class="SyntaxCode"></a></td>
 <td>Returns the pixels associated to a texture. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_init">init</a></td>
+<td><a href="#Pixel_RenderOgl_init"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">init</span><span class="SyntaxCode"></a></td>
 <td>First init. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative</a></td>
+<td><a href="#Pixel_RenderOgl_pixelFormatToNative"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pixelFormatToNative</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget</a></td>
+<td><a href="#Pixel_RenderOgl_releaseRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">releaseRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Release the given render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_removeTexture">removeTexture</a></td>
+<td><a href="#Pixel_RenderOgl_removeTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">removeTexture</span><span class="SyntaxCode"></a></td>
 <td>Unregister a texture created with <code class="incode">addImage</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect</a></td>
+<td><a href="#Pixel_RenderOgl_resetScissorRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resetScissorRect</span><span class="SyntaxCode"></a></td>
 <td>Reset the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetTransform">resetTransform</a></td>
+<td><a href="#Pixel_RenderOgl_resetTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resetTransform</span><span class="SyntaxCode"></a></td>
 <td>Reset the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_rotateTransform">rotateTransform(self, const ref Angle)</a></td>
+<td><a href="#Pixel_RenderOgl_rotateTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</a></td>
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_rotateTransform">rotateTransform(self, const ref Angle, f32, f32)</a></td>
+<td><a href="#Pixel_RenderOgl_rotateTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></td>
+<td><a href="#Pixel_RenderOgl_scaleTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">scaleTransform</span><span class="SyntaxCode"></a></td>
 <td>Scale the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext</a></td>
+<td><a href="#Pixel_RenderOgl_setCurrentContext"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setCurrentContext</span><span class="SyntaxCode"></a></td>
 <td>Set the current rendering context. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setScissorRect">setScissorRect</a></td>
+<td><a href="#Pixel_RenderOgl_setScissorRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setScissorRect</span><span class="SyntaxCode"></a></td>
 <td>Force the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setShader">setShader</a></td>
+<td><a href="#Pixel_RenderOgl_setShader"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setShader</span><span class="SyntaxCode"></a></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_translateTransform">translateTransform</a></td>
+<td><a href="#Pixel_RenderOgl_translateTransform"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">translateTransform</span><span class="SyntaxCode"></a></td>
 <td>Translate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget</a></td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTarget"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">unbindRenderTarget</span><span class="SyntaxCode"></a></td>
 <td>Go back to the previous render target, or frame buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage</a></td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">unbindRenderTargetToImage</span><span class="SyntaxCode"></a></td>
 <td>Get current render target pixels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_updateTexture">updateTexture</a></td>
+<td><a href="#Pixel_RenderOgl_updateTexture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">updateTexture</span><span class="SyntaxCode"></a></td>
 <td>Update content of texture. </td>
 </tr>
 </table>
@@ -8454,10 +8454,10 @@
 </table>
 </p>
 <p>Register an image for rendering. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Texture"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Texture"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>Load and register an image for rendering. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fullName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Texture"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fullName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Texture"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8471,7 +8471,7 @@
 </table>
 </p>
 <p>To be called before rendering. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">begin</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">begin</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8485,7 +8485,7 @@
 </table>
 </p>
 <p>Set the current render target. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">, vp: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">, vp: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8499,7 +8499,7 @@
 </table>
 </p>
 <p>Clear current render buffers. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8512,7 +8512,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeMatrices</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mvp: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, mdl: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeMatrices</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mvp: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, mdl: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8526,7 +8526,7 @@
 </table>
 </p>
 <p>Create a render target. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_RenderTarget"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_RenderTarget"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -8540,7 +8540,7 @@
 </table>
 </p>
 <p>Create the given shader. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createShader</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, base: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode">, vertex: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, pixel: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createShader</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, base: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode">, vertex: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, pixel: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8554,7 +8554,7 @@
 </table>
 </p>
 <p>Delete a render target. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8568,7 +8568,7 @@
 </table>
 </p>
 <p>Draw the given painter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, dc: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Painter">Painter</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, dc: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Painter">Painter</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8582,7 +8582,7 @@
 </table>
 </p>
 <p>To be called after rendering. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">end</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8596,7 +8596,7 @@
 </table>
 </p>
 <p>Get a render target of the given size  releaseRenderTarget must be called to release it. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8610,7 +8610,7 @@
 </table>
 </p>
 <p>Get the actual render target size. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTargetSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;{width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTargetSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;{width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">}</code>
 </div>
 <p>
 <table class="item">
@@ -8624,7 +8624,7 @@
 </table>
 </p>
 <p>Returns the pixels associated to a texture. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTexturePixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, pf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTexturePixels</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, pf: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8638,7 +8638,7 @@
 </table>
 </p>
 <p>First init. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8665,7 +8665,7 @@
 </table>
 </p>
 <p>Release the given render target. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tgt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, tgt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8679,7 +8679,7 @@
 </table>
 </p>
 <p>Unregister a texture created with <code class="incode">addImage</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, texture: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">removeTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, texture: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8693,7 +8693,7 @@
 </table>
 </p>
 <p>Reset the scissor. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetScissorRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetScissorRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8707,7 +8707,7 @@
 </table>
 </p>
 <p>Reset the world transform. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resetTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8721,10 +8721,10 @@
 </table>
 </p>
 <p>Rotate the world transform. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">)</code>
 </div>
 <p>Rotate the world transform. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">rotateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, angle: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Angle</span><span class="SyntaxCode">, centerX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, centerY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8738,7 +8738,7 @@
 </table>
 </p>
 <p>Scale the world transform. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scaleTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scaleTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8752,7 +8752,7 @@
 </table>
 </p>
 <p>Set the current rendering context. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCurrentContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCurrentContext</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rc: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8766,7 +8766,7 @@
 </table>
 </p>
 <p>Force the scissor. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScissorRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScissorRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8780,7 +8780,7 @@
 </table>
 </p>
 <p>Set the current shader. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShader</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, shader: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShader</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, shader: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8794,7 +8794,7 @@
 </table>
 </p>
 <p>Translate the world transform. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">translateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">translateTransform</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8808,7 +8808,7 @@
 </table>
 </p>
 <p>Go back to the previous render target, or frame buffer. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unbindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unbindRenderTarget</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8822,7 +8822,7 @@
 </table>
 </p>
 <p>Get current render target pixels. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unbindRenderTargetToImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unbindRenderTargetToImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -8836,7 +8836,7 @@
 </table>
 </p>
 <p>Update content of texture. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">updateTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, pixels: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">updateTexture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">, pixels: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9020,38 +9020,38 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RichString_compute">compute</a></td>
+<td><a href="#Pixel_RichString_compute"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">compute</span><span class="SyntaxCode"></a></td>
 <td>Compute layout. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_getNaked">getNaked</a></td>
+<td><a href="#Pixel_RichString_getNaked"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getNaked</span><span class="SyntaxCode"></a></td>
 <td>Transform the given string to a naked one. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_invalidate">invalidate</a></td>
+<td><a href="#Pixel_RichString_invalidate"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode"></a></td>
 <td>Force the string to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_isEmpty">isEmpty</a></td>
+<td><a href="#Pixel_RichString_isEmpty"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode"></a></td>
 <td>Returns <code class="incode">true</code> if the string is empty. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_set">set</a></td>
+<td><a href="#Pixel_RichString_set"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">set</span><span class="SyntaxCode"></a></td>
 <td>Associate a string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RichString_opAffect">opAffect</a></td>
+<td><a href="#Pixel_RichString_opAffect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opCount">opCount</a></td>
+<td><a href="#Pixel_RichString_opCount"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opCount</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opEquals">opEquals</a></td>
+<td><a href="#Pixel_RichString_opEquals"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -9067,7 +9067,7 @@
 </table>
 </p>
 <p>Compute layout. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, force = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, force = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p> This will transform the string in a serie of chunks, each chunk having its one style. The string  will only be recomputed if it's dirty (the text has changed) or if <code class="incode">force</code> is true. </p>
 <p>
@@ -9097,7 +9097,7 @@
 </table>
 </p>
 <p>Force the string to be repainted. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9111,7 +9111,7 @@
 </table>
 </p>
 <p>Returns <code class="incode">true</code> if the string is empty. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9124,7 +9124,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opAffect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9137,7 +9137,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9150,7 +9150,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, other: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9164,7 +9164,7 @@
 </table>
 </p>
 <p>Associate a string. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p> The string can have multiple lines.  Accepted markers are: </p>
 <ul>
@@ -9469,27 +9469,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_StringPainter_color">color</a></td>
+<td><a href="#Pixel_StringPainter_color"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">color</span><span class="SyntaxCode"></a></td>
 <td>Set text color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_draw">draw</a></td>
+<td><a href="#Pixel_StringPainter_draw"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">draw</span><span class="SyntaxCode"></a></td>
 <td>Draw string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_flags">flags</a></td>
+<td><a href="#Pixel_StringPainter_flags"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">flags</span><span class="SyntaxCode"></a></td>
 <td>Set drawing flags. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_font">font</a></td>
+<td><a href="#Pixel_StringPainter_font"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">font</span><span class="SyntaxCode"></a></td>
 <td>Set font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_horzAlign">horzAlign</a></td>
+<td><a href="#Pixel_StringPainter_horzAlign"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">horzAlign</span><span class="SyntaxCode"></a></td>
 <td>Set horizontal alignment. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_vertAlign">vertAlign</a></td>
+<td><a href="#Pixel_StringPainter_vertAlign"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">vertAlign</span><span class="SyntaxCode"></a></td>
 <td>Set vertical alignment. </td>
 </tr>
 </table>
@@ -9505,7 +9505,7 @@
 </table>
 </p>
 <p>Set text color. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">color</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, col: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">color</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, col: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9519,7 +9519,7 @@
 </table>
 </p>
 <p>Draw string. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Painter">Painter</a></span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Painter">Painter</a></span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9533,7 +9533,7 @@
 </table>
 </p>
 <p>Set drawing flags. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, f: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">flags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, f: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9547,7 +9547,7 @@
 </table>
 </p>
 <p>Set font. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">font</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">font</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9561,7 +9561,7 @@
 </table>
 </p>
 <p>Set horizontal alignment. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">horzAlign</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, align: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">horzAlign</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, align: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9575,7 +9575,7 @@
 </table>
 </p>
 <p>Set vertical alignment. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vertAlign</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, align: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vertAlign</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, align: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9643,11 +9643,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Texture_getByteSize">getByteSize</a></td>
+<td><a href="#Pixel_Texture_getByteSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getByteSize</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Texture_isValid">isValid</a></td>
+<td><a href="#Pixel_Texture_isValid"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -9662,7 +9662,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getByteSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getByteSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9675,7 +9675,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9699,7 +9699,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canDecode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9712,7 +9712,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">decode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, buffer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, options: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Pixel_Image"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9736,7 +9736,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canEncode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9749,7 +9749,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">encode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, result: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, options: </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9797,43 +9797,43 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_TypeFace_create">create</a></td>
+<td><a href="#Pixel_TypeFace_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Get or create a new typeface from a memory buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT</a></td>
+<td><a href="#Pixel_TypeFace_createFromHFONT"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createFromHFONT</span><span class="SyntaxCode"></a></td>
 <td>Create a new typeface from a HFONT. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getFamilyName">getFamilyName</a></td>
+<td><a href="#Pixel_TypeFace_getFamilyName"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFamilyName</span><span class="SyntaxCode"></a></td>
 <td>Returns the underlying font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline</a></td>
+<td><a href="#Pixel_TypeFace_getRuneOutline"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getRuneOutline</span><span class="SyntaxCode"></a></td>
 <td>Convert a rune to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getStringOutline">getStringOutline</a></td>
+<td><a href="#Pixel_TypeFace_getStringOutline"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getStringOutline</span><span class="SyntaxCode"></a></td>
 <td>Convert a string to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isBold">isBold</a></td>
+<td><a href="#Pixel_TypeFace_isBold"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isBold</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the typeface is bold. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isItalic">isItalic</a></td>
+<td><a href="#Pixel_TypeFace_isItalic"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isItalic</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the typeface is italic. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_load">load</a></td>
+<td><a href="#Pixel_TypeFace_load"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">load</span><span class="SyntaxCode"></a></td>
 <td>Get or load a new typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_release">release</a></td>
+<td><a href="#Pixel_TypeFace_release"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">release</span><span class="SyntaxCode"></a></td>
 <td>Release the given typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_renderGlyph">renderGlyph</a></td>
+<td><a href="#Pixel_TypeFace_renderGlyph"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">renderGlyph</span><span class="SyntaxCode"></a></td>
 <td>Render one glyph. </td>
 </tr>
 </table>
@@ -9877,7 +9877,7 @@
 </table>
 </p>
 <p>Returns the underlying font family name. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFamilyName</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFamilyName</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9891,7 +9891,7 @@
 </table>
 </p>
 <p>Convert a rune to its outline, at a given size. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRuneOutline</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, c: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, embolden: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRuneOutline</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, c: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, embolden: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9905,7 +9905,7 @@
 </table>
 </p>
 <p>Convert a string to its outline, at a given size. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getStringOutline</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, embolden: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getStringOutline</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pathList: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, embolden: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9919,7 +9919,7 @@
 </table>
 </p>
 <p>Returns true if the typeface is bold. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isBold</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isBold</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9933,7 +9933,7 @@
 </table>
 </p>
 <p>Returns true if the typeface is italic. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isItalic</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isItalic</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9975,7 +9975,7 @@
 </table>
 </p>
 <p>Render one glyph. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">renderGlyph</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, c: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, forceBold = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, forceItalic = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Bitmap</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">renderGlyph</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, c: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, forceBold = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, forceItalic = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_Bitmap</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">

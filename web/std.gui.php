@@ -1319,143 +1319,143 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Application_addTimer">addTimer</a></td>
+<td><a href="#Gui_Application_addTimer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addTimer</span><span class="SyntaxCode"></a></td>
 <td>Register a new timer for the given <code class="incode">target</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_createSurface">createSurface</a></td>
+<td><a href="#Gui_Application_createSurface"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode"></a></td>
 <td>Creates a new surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_deleteTimer">deleteTimer</a></td>
+<td><a href="#Gui_Application_deleteTimer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteTimer</span><span class="SyntaxCode"></a></td>
 <td>Delete and unregister timer. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_destroyWnd">destroyWnd</a></td>
+<td><a href="#Gui_Application_destroyWnd"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">destroyWnd</span><span class="SyntaxCode"></a></td>
 <td>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_doModalLoop">doModalLoop</a></td>
+<td><a href="#Gui_Application_doModalLoop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">doModalLoop</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_exitModal">exitModal</a></td>
+<td><a href="#Gui_Application_exitModal"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">exitModal</span><span class="SyntaxCode"></a></td>
 <td>End current modal loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getDirectoryIcon">getDirectoryIcon</a></td>
+<td><a href="#Gui_Application_getDirectoryIcon"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getDirectoryIcon</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getDt">getDt</a></td>
+<td><a href="#Gui_Application_getDt"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getDt</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getFileIcon">getFileIcon</a></td>
+<td><a href="#Gui_Application_getFileIcon"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFileIcon</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getHotKeyShortcut">getHotKeyShortcut</a></td>
+<td><a href="#Gui_Application_getHotKeyShortcut"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getHotKeyShortcut</span><span class="SyntaxCode"></a></td>
 <td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getHotKeyShortcutNameFor">getHotKeyShortcutNameFor</a></td>
+<td><a href="#Gui_Application_getHotKeyShortcutNameFor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getHotKeyShortcutNameFor</span><span class="SyntaxCode"></a></td>
 <td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getKeyboard">getKeyboard</a></td>
+<td><a href="#Gui_Application_getKeyboard"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getKeyboard</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getMouse">getMouse</a></td>
+<td><a href="#Gui_Application_getMouse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getMouse</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getMouseCapture">getMouseCapture</a></td>
+<td><a href="#Gui_Application_getMouseCapture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getMouseCapture</span><span class="SyntaxCode"></a></td>
 <td>Return the captured wnd for mouse. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getRenderer">getRenderer</a></td>
+<td><a href="#Gui_Application_getRenderer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getRenderer</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getWndAtMouse">getWndAtMouse</a></td>
+<td><a href="#Gui_Application_getWndAtMouse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getWndAtMouse</span><span class="SyntaxCode"></a></td>
 <td>Returns the window under the given point. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_invalidate">invalidate</a></td>
+<td><a href="#Gui_Application_invalidate"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode"></a></td>
 <td>Force all surfaces to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_loadState">loadState</a></td>
+<td><a href="#Gui_Application_loadState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">loadState</span><span class="SyntaxCode"></a></td>
 <td>Load the application state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_popCursor">popCursor</a></td>
+<td><a href="#Gui_Application_popCursor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">popCursor</span><span class="SyntaxCode"></a></td>
 <td>Pop a new mouse cursor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_postEvent">postEvent</a></td>
+<td><a href="#Gui_Application_postEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">postEvent</span><span class="SyntaxCode"></a></td>
 <td>Post a new event (thread safe). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_postQuitEvent">postQuitEvent</a></td>
+<td><a href="#Gui_Application_postQuitEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">postQuitEvent</span><span class="SyntaxCode"></a></td>
 <td>Ask to exit the application. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_pushCursor">pushCursor</a></td>
+<td><a href="#Gui_Application_pushCursor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pushCursor</span><span class="SyntaxCode"></a></td>
 <td>Push a new mouse cursor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerFrameEvent">registerFrameEvent</a></td>
+<td><a href="#Gui_Application_registerFrameEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">registerFrameEvent</span><span class="SyntaxCode"></a></td>
 <td>Register a window to receive a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerHookEvents">registerHookEvents</a></td>
+<td><a href="#Gui_Application_registerHookEvents"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">registerHookEvents</span><span class="SyntaxCode"></a></td>
 <td>Register a window to receive hook events. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerHotKey">registerHotKey</a></td>
+<td><a href="#Gui_Application_registerHotKey"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">registerHotKey</span><span class="SyntaxCode"></a></td>
 <td>Register a global os key action. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_run">run</a></td>
+<td><a href="#Gui_Application_run"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">run</span><span class="SyntaxCode"></a></td>
 <td>Run until exit. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_runFrame">runFrame</a></td>
+<td><a href="#Gui_Application_runFrame"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">runFrame</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_runSurface">runSurface</a></td>
+<td><a href="#Gui_Application_runSurface"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">runSurface</span><span class="SyntaxCode"></a></td>
 <td>Create a main surface, and run. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_saveState">saveState</a></td>
+<td><a href="#Gui_Application_saveState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">saveState</span><span class="SyntaxCode"></a></td>
 <td>Save the application state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_sendEvent">sendEvent</a></td>
+<td><a href="#Gui_Application_sendEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sendEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setActivated">setActivated</a></td>
+<td><a href="#Gui_Application_setActivated"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setActivated</span><span class="SyntaxCode"></a></td>
 <td>Set activated state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setAppIcon">setAppIcon</a></td>
+<td><a href="#Gui_Application_setAppIcon"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setAppIcon</span><span class="SyntaxCode"></a></td>
 <td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setConfigPath">setConfigPath</a></td>
+<td><a href="#Gui_Application_setConfigPath"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setConfigPath</span><span class="SyntaxCode"></a></td>
 <td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent</a></td>
+<td><a href="#Gui_Application_unregisterFrameEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">unregisterFrameEvent</span><span class="SyntaxCode"></a></td>
 <td>Unregister a window that receives a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents</a></td>
+<td><a href="#Gui_Application_unregisterHookEvents"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">unregisterHookEvents</span><span class="SyntaxCode"></a></td>
 <td>Unregister a window to receive hook events. </td>
 </tr>
 </table>
@@ -1471,7 +1471,7 @@
 </table>
 </p>
 <p>Register a new timer for the given <code class="incode">target</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addTimer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, time: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Duration</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addTimer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, time: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Duration</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1485,7 +1485,7 @@
 </table>
 </p>
 <p>Creates a new surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, flags = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">OverlappedWindow</span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hook: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HookEvent">HookEvent</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, flags = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">OverlappedWindow</span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, hook: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HookEvent">HookEvent</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1499,7 +1499,7 @@
 </table>
 </p>
 <p>Delete and unregister timer. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteTimer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, timer: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteTimer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, timer: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1513,7 +1513,7 @@
 </table>
 </p>
 <p>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyWnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyWnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1526,7 +1526,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModalLoop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, surface: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(self) = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_WndId"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModalLoop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, surface: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, cb: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">) = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_WndId"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -1540,7 +1540,7 @@
 </table>
 </p>
 <p>End current modal loop. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exitModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, exitId: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">""</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">exitModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, exitId: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">""</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1553,7 +1553,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDirectoryIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, small = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDirectoryIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, small = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -1566,7 +1566,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getDt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1579,7 +1579,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFileIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, small = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFileIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, small = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -1593,7 +1593,7 @@
 </table>
 </p>
 <p>Get the id associated with a shortcut. null if none. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getHotKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">)-&gt;{id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getHotKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">)-&gt;{id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">}</code>
 </div>
 <p>
 <table class="item">
@@ -1607,7 +1607,7 @@
 </table>
 </p>
 <p>Get the name associated with a given id shortcut. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getHotKeyShortcutNameFor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getHotKeyShortcutNameFor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1620,7 +1620,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyboard</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Keyboard</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyboard</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Keyboard</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1633,7 +1633,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Mouse</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Mouse</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1647,7 +1647,7 @@
 </table>
 </p>
 <p>Return the captured wnd for mouse. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMouseCapture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMouseCapture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1660,7 +1660,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRenderer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RenderOgl</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRenderer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RenderOgl</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1674,7 +1674,7 @@
 </table>
 </p>
 <p>Returns the window under the given point. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getWndAtMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getWndAtMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1688,7 +1688,7 @@
 </table>
 </p>
 <p>Force all surfaces to be painted. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1702,7 +1702,7 @@
 </table>
 </p>
 <p>Load the application state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">loadState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">loadState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1716,7 +1716,7 @@
 </table>
 </p>
 <p>Pop a new mouse cursor. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popCursor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popCursor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1730,7 +1730,7 @@
 </table>
 </p>
 <p>Post a new event (thread safe). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, event: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, event: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1744,7 +1744,7 @@
 </table>
 </p>
 <p>Ask to exit the application. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postQuitEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, quitCode: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postQuitEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, quitCode: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1758,7 +1758,7 @@
 </table>
 </p>
 <p>Push a new mouse cursor. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushCursor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cursor: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Cursor">Cursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushCursor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cursor: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Cursor">Cursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1772,7 +1772,7 @@
 </table>
 </p>
 <p>Register a window to receive a FrameEvent each running loop. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1786,7 +1786,7 @@
 </table>
 </p>
 <p>Register a window to receive hook events. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerHookEvents</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerHookEvents</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1800,7 +1800,7 @@
 </table>
 </p>
 <p>Register a global os key action. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerHotKey</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerHotKey</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1814,7 +1814,7 @@
 </table>
 </p>
 <p>Run until exit. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">run</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">run</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1827,7 +1827,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">runFrame</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">runFrame</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1855,7 +1855,7 @@
 </table>
 </p>
 <p>Save the application state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">saveState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">saveState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1868,7 +1868,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, event: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, event: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1882,7 +1882,7 @@
 </table>
 </p>
 <p>Set activated state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setActivated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, activated: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setActivated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, activated: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1896,7 +1896,7 @@
 </table>
 </p>
 <p>Associate a configuration file. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAppIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, img: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAppIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, img: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1910,7 +1910,7 @@
 </table>
 </p>
 <p>Associate a configuration file. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setConfigPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, path: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setConfigPath</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, path: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1924,7 +1924,7 @@
 </table>
 </p>
 <p>Unregister a window that receives a FrameEvent each running loop. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unregisterFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unregisterFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -1938,7 +1938,7 @@
 </table>
 </p>
 <p>Unregister a window to receive hook events. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unregisterHookEvents</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unregisterHookEvents</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, target: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2062,11 +2062,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_BlendColor_apply">apply</a></td>
+<td><a href="#Gui_BlendColor_apply"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">apply</span><span class="SyntaxCode"></a></td>
 <td>Apply the color lerp to reach <code class="incode">target</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_BlendColor_cur">cur</a></td>
+<td><a href="#Gui_BlendColor_cur"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">cur</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -2082,7 +2082,7 @@
 </table>
 </p>
 <p>Apply the color lerp to reach <code class="incode">target</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">apply</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, target: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">apply</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, wnd: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, target: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2095,7 +2095,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cur</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">cur</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2211,7 +2211,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_CheckButton_create">create</a></td>
+<td><a href="#Gui_CheckButton_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -2226,7 +2226,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2239,7 +2239,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2515,23 +2515,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ColorPicker_change">change</a></td>
+<td><a href="#Gui_ColorPicker_change"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">change</span><span class="SyntaxCode"></a></td>
 <td>Change one component, HSL or alpha. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_create">create</a></td>
+<td><a href="#Gui_ColorPicker_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_getColor">getColor</a></td>
+<td><a href="#Gui_ColorPicker_getColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode"></a></td>
 <td>Returns the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_setColor">setColor</a></td>
+<td><a href="#Gui_ColorPicker_setColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode"></a></td>
 <td>Set the base color, and repaint. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_setMode">setMode</a></td>
+<td><a href="#Gui_ColorPicker_setMode"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode"></a></td>
 <td>Set the color picker box mode. </td>
 </tr>
 </table>
@@ -2546,7 +2546,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeXY</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeXY</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2559,7 +2559,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2572,7 +2572,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2585,7 +2585,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2599,7 +2599,7 @@
 </table>
 </p>
 <p>Change one component, HSL or alpha. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">change</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, s: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">change</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, s: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, l: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, a: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = -</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2626,7 +2626,7 @@
 </table>
 </p>
 <p>Returns the selected color. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2640,7 +2640,7 @@
 </table>
 </p>
 <p>Set the base color, and repaint. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, col: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, col: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2654,7 +2654,7 @@
 </table>
 </p>
 <p>Set the color picker box mode. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2777,19 +2777,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_create">create</a></td>
+<td><a href="#Gui_ColorPickerCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_getColor">getColor</a></td>
+<td><a href="#Gui_ColorPickerCtrl_getColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode"></a></td>
 <td>Returns the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_setColor">setColor</a></td>
+<td><a href="#Gui_ColorPickerCtrl_setColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode"></a></td>
 <td>Set the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_setMode">setMode</a></td>
+<td><a href="#Gui_ColorPickerCtrl_setMode"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode"></a></td>
 <td>Change the display mode. </td>
 </tr>
 </table>
@@ -2804,7 +2804,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2831,7 +2831,7 @@
 </table>
 </p>
 <p>Returns the selected color. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2845,7 +2845,7 @@
 </table>
 </p>
 <p>Set the selected color. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -2859,7 +2859,7 @@
 </table>
 </p>
 <p>Change the display mode. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mode: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMode</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mode: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3072,27 +3072,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ComboBox_addItem">addItem</a></td>
+<td><a href="#Gui_ComboBox_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_addSeparator">addSeparator</a></td>
+<td><a href="#Gui_ComboBox_addSeparator"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode"></a></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_clear">clear</a></td>
+<td><a href="#Gui_ComboBox_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Remove all items. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_create">create</a></td>
+<td><a href="#Gui_ComboBox_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_getSelectedItem">getSelectedItem</a></td>
+<td><a href="#Gui_ComboBox_getSelectedItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSelectedItem</span><span class="SyntaxCode"></a></td>
 <td>Returns the selected item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_selectItem">selectItem</a></td>
+<td><a href="#Gui_ComboBox_selectItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">selectItem</span><span class="SyntaxCode"></a></td>
 <td>Set the selected item index. </td>
 </tr>
 </table>
@@ -3107,7 +3107,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3120,7 +3120,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3133,7 +3133,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3147,7 +3147,7 @@
 </table>
 </p>
 <p>Add a new item. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, userData0: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, userData1: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, userData0: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, userData1: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3161,7 +3161,7 @@
 </table>
 </p>
 <p>Add a separator. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3175,7 +3175,7 @@
 </table>
 </p>
 <p>Remove all items. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3202,7 +3202,7 @@
 </table>
 </p>
 <p>Returns the selected item. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3216,7 +3216,7 @@
 </table>
 </p>
 <p>Set the selected item index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3307,7 +3307,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ComboCtrl_create">create</a></td>
+<td><a href="#Gui_ComboCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -3322,7 +3322,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3477,19 +3477,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Cursor_apply">apply</a></td>
+<td><a href="#Gui_Cursor_apply"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">apply</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_clear">clear</a></td>
+<td><a href="#Gui_Cursor_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_from">from</a></td>
+<td><a href="#Gui_Cursor_from"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">from</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_wait">wait</a></td>
+<td><a href="#Gui_Cursor_wait"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">wait</span><span class="SyntaxCode"></a></td>
 <td>Force the wait cursor. </td>
 </tr>
 </table>
@@ -3517,7 +3517,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3661,23 +3661,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Dialog_addButton">addButton</a></td>
+<td><a href="#Gui_Dialog_addButton"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addButton</span><span class="SyntaxCode"></a></td>
 <td>Add a button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_createDialog">createDialog</a></td>
+<td><a href="#Gui_Dialog_createDialog"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createDialog</span><span class="SyntaxCode"></a></td>
 <td>Creates a simple dialog box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_createSurface">createSurface</a></td>
+<td><a href="#Gui_Dialog_createSurface"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode"></a></td>
 <td>Creates an associated surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_doModal">doModal</a></td>
+<td><a href="#Gui_Dialog_doModal"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode"></a></td>
 <td>Display dialog as modal, and returns the user selected window id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_validateId">validateId</a></td>
+<td><a href="#Gui_Dialog_validateId"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">validateId</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -3692,7 +3692,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3705,7 +3705,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSysCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSysCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3719,7 +3719,7 @@
 </table>
 </p>
 <p>Add a button. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addButton</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, isDefault: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PushButton">PushButton</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addButton</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, isDefault: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PushButton">PushButton</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3747,7 +3747,7 @@
 </table>
 </p>
 <p>Creates an associated surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width = </span><span class="SyntaxNumber">512</span><span class="SyntaxCode">, height = </span><span class="SyntaxNumber">300</span><span class="SyntaxCode">, flags = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, width = </span><span class="SyntaxNumber">512</span><span class="SyntaxCode">, height = </span><span class="SyntaxNumber">300</span><span class="SyntaxCode">, flags = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3761,7 +3761,7 @@
 </table>
 </p>
 <p>Display dialog as modal, and returns the user selected window id. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3774,7 +3774,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">validateId</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">validateId</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3977,51 +3977,51 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EditBox_create">create</a></td>
+<td><a href="#Gui_EditBox_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_deleteSelection">deleteSelection</a></td>
+<td><a href="#Gui_EditBox_deleteSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteSelection</span><span class="SyntaxCode"></a></td>
 <td>Delete selected text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_getText">getText</a></td>
+<td><a href="#Gui_EditBox_getText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getText</span><span class="SyntaxCode"></a></td>
 <td>Get the associated text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_selectAll">selectAll</a></td>
+<td><a href="#Gui_EditBox_selectAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">selectAll</span><span class="SyntaxCode"></a></td>
 <td>Select all text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setForm">setForm</a></td>
+<td><a href="#Gui_EditBox_setForm"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode"></a></td>
 <td>Set the editbox form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputF64">setInputF64</a></td>
+<td><a href="#Gui_EditBox_setInputF64"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setInputF64</span><span class="SyntaxCode"></a></td>
 <td>Editbox will edit floating points. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputS64">setInputS64</a></td>
+<td><a href="#Gui_EditBox_setInputS64"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setInputS64</span><span class="SyntaxCode"></a></td>
 <td>Editbox will edit signed integers. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputU64">setInputU64</a></td>
+<td><a href="#Gui_EditBox_setInputU64"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setInputU64</span><span class="SyntaxCode"></a></td>
 <td>Editbox will edit unsigned integers. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setNote">setNote</a></td>
+<td><a href="#Gui_EditBox_setNote"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setNote</span><span class="SyntaxCode"></a></td>
 <td>Set the editbox note. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setSelection">setSelection</a></td>
+<td><a href="#Gui_EditBox_setSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setSelection</span><span class="SyntaxCode"></a></td>
 <td>Set current selection. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setText">setText</a></td>
+<td><a href="#Gui_EditBox_setText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setText</span><span class="SyntaxCode"></a></td>
 <td>Set the editbox content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setTextSilent">setTextSilent</a></td>
+<td><a href="#Gui_EditBox_setTextSilent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setTextSilent</span><span class="SyntaxCode"></a></td>
 <td>Set the editbox content, but do not notify change. </td>
 </tr>
 </table>
@@ -4036,7 +4036,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFocusEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusEvent">FocusEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFocusEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusEvent">FocusEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4049,7 +4049,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4062,7 +4062,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4075,7 +4075,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4088,7 +4088,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onTimerEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TimerEvent">TimerEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onTimerEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TimerEvent">TimerEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4115,7 +4115,7 @@
 </table>
 </p>
 <p>Delete selected text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4129,7 +4129,7 @@
 </table>
 </p>
 <p>Get the associated text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4143,7 +4143,7 @@
 </table>
 </p>
 <p>Select all text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4157,7 +4157,7 @@
 </table>
 </p>
 <p>Set the editbox form. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxForm">EditBoxForm</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxForm">EditBoxForm</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4171,7 +4171,7 @@
 </table>
 </p>
 <p>Editbox will edit floating points. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputF64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min = -</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputF64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, min = -</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4185,7 +4185,7 @@
 </table>
 </p>
 <p>Editbox will edit signed integers. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">S64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Min</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">S64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, min = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">S64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Min</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">S64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4199,7 +4199,7 @@
 </table>
 </p>
 <p>Editbox will edit unsigned integers. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">U64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setInputU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, min = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">'</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">U64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Max</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4213,7 +4213,7 @@
 </table>
 </p>
 <p>Set the editbox note. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setNote</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, note: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setNote</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, note: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4227,7 +4227,7 @@
 </table>
 </p>
 <p>Set current selection. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, start: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, end: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, start: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, end: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4241,7 +4241,7 @@
 </table>
 </p>
 <p>Set the editbox content. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4255,7 +4255,7 @@
 </table>
 </p>
 <p>Set the editbox content, but do not notify change. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTextSilent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTextSilent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4414,7 +4414,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EditCtrl_create">create</a></td>
+<td><a href="#Gui_EditCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
@@ -4429,7 +4429,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4481,23 +4481,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EditDlg_createMultiLine">createMultiLine</a></td>
+<td><a href="#Gui_EditDlg_createMultiLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createMultiLine</span><span class="SyntaxCode"></a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_createSingleLine">createSingleLine</a></td>
+<td><a href="#Gui_EditDlg_createSingleLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createSingleLine</span><span class="SyntaxCode"></a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_getText">getText</a></td>
+<td><a href="#Gui_EditDlg_getText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getText</span><span class="SyntaxCode"></a></td>
 <td>Get the text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_setMessage">setMessage</a></td>
+<td><a href="#Gui_EditDlg_setMessage"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMessage</span><span class="SyntaxCode"></a></td>
 <td>Associate a message above the editbox. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_setText">setText</a></td>
+<td><a href="#Gui_EditDlg_setText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setText</span><span class="SyntaxCode"></a></td>
 <td>Set the text. </td>
 </tr>
 </table>
@@ -4541,7 +4541,7 @@
 </table>
 </p>
 <p>Get the text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4555,7 +4555,7 @@
 </table>
 </p>
 <p>Associate a message above the editbox. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMessage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMessage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">40</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4569,7 +4569,7 @@
 </table>
 </p>
 <p>Set the text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4597,7 +4597,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EmbInfoCtrl_create">create</a></td>
+<td><a href="#Gui_EmbInfoCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
@@ -4672,11 +4672,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Event_create">create()</a></td>
+<td><a href="#Gui_Event_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode">()</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Event_create">create(EventKind)</a></td>
+<td><a href="#Gui_Event_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">EventKind</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 </table>
@@ -4918,15 +4918,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_FileDlg_create">create</a></td>
+<td><a href="#Gui_FileDlg_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FileDlg_getSelectedName">getSelectedName</a></td>
+<td><a href="#Gui_FileDlg_getSelectedName"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSelectedName</span><span class="SyntaxCode"></a></td>
 <td>Get the first selection. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FileDlg_getSelectedNames">getSelectedNames</a></td>
+<td><a href="#Gui_FileDlg_getSelectedNames"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSelectedNames</span><span class="SyntaxCode"></a></td>
 <td>Get all selections. </td>
 </tr>
 </table>
@@ -4941,7 +4941,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onDestroyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DestroyEvent">DestroyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onDestroyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DestroyEvent">DestroyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4969,7 +4969,7 @@
 </table>
 </p>
 <p>Get the first selection. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedName</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedName</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4983,7 +4983,7 @@
 </table>
 </p>
 <p>Get all selections. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedNames</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedNames</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5213,19 +5213,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_FrameWnd_createView">createView</a></td>
+<td><a href="#Gui_FrameWnd_createView"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createView</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setFrameFlags">setFrameFlags</a></td>
+<td><a href="#Gui_FrameWnd_setFrameFlags"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFrameFlags</span><span class="SyntaxCode"></a></td>
 <td>Set the frame wnd flags. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setFrameForm">setFrameForm</a></td>
+<td><a href="#Gui_FrameWnd_setFrameForm"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFrameForm</span><span class="SyntaxCode"></a></td>
 <td>Set the frame wnd form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setView">setView</a></td>
+<td><a href="#Gui_FrameWnd_setView"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setView</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -5240,7 +5240,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5253,7 +5253,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5266,7 +5266,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPrePaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPrePaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5279,7 +5279,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5292,7 +5292,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">createView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, hook: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HookEvent">HookEvent</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">createView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, hook: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HookEvent">HookEvent</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5306,7 +5306,7 @@
 </table>
 </p>
 <p>Set the frame wnd flags. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add = </span><span class="SyntaxConstant"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, add = </span><span class="SyntaxConstant"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5320,7 +5320,7 @@
 </table>
 </p>
 <p>Set the frame wnd form. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWndForm">FrameWndForm</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWndForm">FrameWndForm</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5333,7 +5333,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, what: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, what: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5483,23 +5483,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_computeLayout">computeLayout</a></td>
+<td><a href="#Gui_GridLayoutCtrl_computeLayout"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode"></a></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_create">create</a></td>
+<td><a href="#Gui_GridLayoutCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create a layout control. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild</a></td>
+<td><a href="#Gui_GridLayoutCtrl_setColRowChild"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColRowChild</span><span class="SyntaxCode"></a></td>
 <td>Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setColSize">setColSize</a></td>
+<td><a href="#Gui_GridLayoutCtrl_setColSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColSize</span><span class="SyntaxCode"></a></td>
 <td>Set size, in pixel, of a given column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setRowSize">setRowSize</a></td>
+<td><a href="#Gui_GridLayoutCtrl_setRowSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRowSize</span><span class="SyntaxCode"></a></td>
 <td>Set size, in pixel, of a given row. </td>
 </tr>
 </table>
@@ -5514,7 +5514,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5528,7 +5528,7 @@
 </table>
 </p>
 <p>Recompute layout of all childs. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5556,7 +5556,7 @@
 </table>
 </p>
 <p>Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColRowChild</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, child: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, col: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, row: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, spanH: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, spanV: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColRowChild</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, child: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, col: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, row: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, spanH: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, spanV: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">1</span><span class="SyntaxCode">)</code>
 </div>
 <p> Window can cover multiple columns and rows. </p>
 <p>
@@ -5571,7 +5571,7 @@
 </table>
 </p>
 <p>Set size, in pixel, of a given column. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, col: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, col: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5585,7 +5585,7 @@
 </table>
 </p>
 <p>Set size, in pixel, of a given row. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRowSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, row: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRowSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, row: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5697,47 +5697,47 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Header_addItem">addItem</a></td>
+<td><a href="#Gui_Header_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_create">create</a></td>
+<td><a href="#Gui_Header_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItem">getItem</a></td>
+<td><a href="#Gui_Header_getItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode"></a></td>
 <td>Returns the given item, by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemByCol">getItemByCol</a></td>
+<td><a href="#Gui_Header_getItemByCol"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getItemByCol</span><span class="SyntaxCode"></a></td>
 <td>Returns the given item, by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemPosition">getItemPosition</a></td>
+<td><a href="#Gui_Header_getItemPosition"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getItemPosition</span><span class="SyntaxCode"></a></td>
 <td>Get an item position by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemPositionByCol">getItemPositionByCol</a></td>
+<td><a href="#Gui_Header_getItemPositionByCol"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getItemPositionByCol</span><span class="SyntaxCode"></a></td>
 <td>Get an item position by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemWidth">getItemWidth</a></td>
+<td><a href="#Gui_Header_getItemWidth"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getItemWidth</span><span class="SyntaxCode"></a></td>
 <td>Get an item width by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemWidthByCol">getItemWidthByCol</a></td>
+<td><a href="#Gui_Header_getItemWidthByCol"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getItemWidthByCol</span><span class="SyntaxCode"></a></td>
 <td>Get an item width by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getTotalItemsWidth">getTotalItemsWidth</a></td>
+<td><a href="#Gui_Header_getTotalItemsWidth"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTotalItemsWidth</span><span class="SyntaxCode"></a></td>
 <td>Get the header total width. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_setItemWidth">setItemWidth</a></td>
+<td><a href="#Gui_Header_setItemWidth"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setItemWidth</span><span class="SyntaxCode"></a></td>
 <td>Set an item width by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_setItemWidthByCol">setItemWidthByCol</a></td>
+<td><a href="#Gui_Header_setItemWidthByCol"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setItemWidthByCol</span><span class="SyntaxCode"></a></td>
 <td>Set an item width by column. </td>
 </tr>
 </table>
@@ -5752,7 +5752,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5765,7 +5765,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5778,7 +5778,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paintItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, bc: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintContext">PaintContext</a></span><span class="SyntaxCode">, item: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paintItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, bc: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintContext">PaintContext</a></span><span class="SyntaxCode">, item: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5792,7 +5792,7 @@
 </table>
 </p>
 <p>Add a new view. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tabName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, width = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, tabName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, width = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5819,7 +5819,7 @@
 </table>
 </p>
 <p>Returns the given item, by index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5833,7 +5833,7 @@
 </table>
 </p>
 <p>Returns the given item, by column. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderItem">HeaderItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5847,7 +5847,7 @@
 </table>
 </p>
 <p>Get an item position by index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5861,7 +5861,7 @@
 </table>
 </p>
 <p>Get an item position by column. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemPositionByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemPositionByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5875,7 +5875,7 @@
 </table>
 </p>
 <p>Get an item width by index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5889,7 +5889,7 @@
 </table>
 </p>
 <p>Get an item width by column. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemWidthByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItemWidthByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5903,7 +5903,7 @@
 </table>
 </p>
 <p>Get the header total width. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTotalItemsWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTotalItemsWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -5917,7 +5917,7 @@
 </table>
 </p>
 <p>Set an item width by index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItemWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItemWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -5931,7 +5931,7 @@
 </table>
 </p>
 <p>Set an item width by column. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItemWidthByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItemWidthByCol</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6252,30 +6252,30 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Icon_clear">clear</a></td>
+<td><a href="#Gui_Icon_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Set icon to invalid. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_from">from</a></td>
+<td><a href="#Gui_Icon_from"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">from</span><span class="SyntaxCode"></a></td>
 <td>Initialize the icon from an image list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_isValid">isValid</a></td>
+<td><a href="#Gui_Icon_isValid"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_paint">paint</a></td>
+<td><a href="#Gui_Icon_paint"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">paint</span><span class="SyntaxCode"></a></td>
 <td>Paint icon at the given position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_set">set</a></td>
+<td><a href="#Gui_Icon_set"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">set</span><span class="SyntaxCode"></a></td>
 <td>Initialize the icon from an image list. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Icon_opEquals">opEquals</a></td>
+<td><a href="#Gui_Icon_opEquals"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -6291,7 +6291,7 @@
 </table>
 </p>
 <p>Set icon to invalid. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6318,7 +6318,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6331,7 +6331,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, other: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6345,7 +6345,7 @@
 </table>
 </p>
 <p>Paint icon at the given position. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">White</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6359,7 +6359,7 @@
 </table>
 </p>
 <p>Initialize the icon from an image list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, imageList: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">, index: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, sizeX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, sizeY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, imageList: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">, index: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, sizeX: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, sizeY: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6407,23 +6407,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_IconBar_addCheckableItem">addCheckableItem</a></td>
+<td><a href="#Gui_IconBar_addCheckableItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addCheckableItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_addCheckableToggleItem">addCheckableToggleItem</a></td>
+<td><a href="#Gui_IconBar_addCheckableToggleItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addCheckableToggleItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_addItem">addItem</a></td>
+<td><a href="#Gui_IconBar_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_create">create</a></td>
+<td><a href="#Gui_IconBar_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_setIconBarFlags">setIconBarFlags</a></td>
+<td><a href="#Gui_IconBar_setIconBarFlags"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setIconBarFlags</span><span class="SyntaxCode"></a></td>
 <td>Change bar flags. </td>
 </tr>
 </table>
@@ -6438,7 +6438,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onComputeStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onComputeStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6452,7 +6452,7 @@
 </table>
 </p>
 <p>Add a new checkable button. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addCheckableItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addCheckableItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6466,7 +6466,7 @@
 </table>
 </p>
 <p>Add a new checkable button. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addCheckableToggleItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addCheckableToggleItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6480,7 +6480,7 @@
 </table>
 </p>
 <p>Add a new button. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, iconBtnFlags = </span><span class="SyntaxConstant"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, btnId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, iconBtnFlags = </span><span class="SyntaxConstant"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6507,7 +6507,7 @@
 </table>
 </p>
 <p>Change bar flags. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIconBarFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add = </span><span class="SyntaxConstant"><a href="#Gui_IconBarFlags">IconBarFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_IconBarFlags">IconBarFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIconBarFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, add = </span><span class="SyntaxConstant"><a href="#Gui_IconBarFlags">IconBarFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_IconBarFlags">IconBarFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6611,15 +6611,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_IconButton_create">create</a></td>
+<td><a href="#Gui_IconButton_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_IconButton_setCheck">setCheck</a></td>
+<td><a href="#Gui_IconButton_setCheck"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setCheck</span><span class="SyntaxCode"></a></td>
 <td>Set the check state of the button (if the button is checkable). </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconButton_setForm">setForm</a></td>
+<td><a href="#Gui_IconButton_setForm"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode"></a></td>
 <td>Set the button form. </td>
 </tr>
 </table>
@@ -6634,7 +6634,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hidePopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hidePopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6647,7 +6647,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onApplyStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onApplyStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6660,7 +6660,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onDestroyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DestroyEvent">DestroyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onDestroyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DestroyEvent">DestroyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6673,7 +6673,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onHookEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onHookEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6686,7 +6686,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6699,7 +6699,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6726,7 +6726,7 @@
 </table>
 </p>
 <p>Set the check state of the button (if the button is checkable). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCheck</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, checked: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCheck</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, checked: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6740,7 +6740,7 @@
 </table>
 </p>
 <p>Set the button form. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonForm">IconButtonForm</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonForm">IconButtonForm</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6943,15 +6943,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ImageList_countX">countX</a></td>
+<td><a href="#Gui_ImageList_countX"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">countX</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageList_countY">countY</a></td>
+<td><a href="#Gui_ImageList_countY"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">countY</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageList_set">set</a></td>
+<td><a href="#Gui_ImageList_set"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">set</span><span class="SyntaxCode"></a></td>
 <td>Initialize image list. </td>
 </tr>
 </table>
@@ -6966,7 +6966,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countX</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countX</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6979,7 +6979,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countY</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">countY</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6993,7 +6993,7 @@
 </table>
 </p>
 <p>Initialize image list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, fsx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, fsy: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, cpt: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, fsx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, fsy: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, cpt: </span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7026,31 +7026,31 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ImageRect_clear">clear</a></td>
+<td><a href="#Gui_ImageRect_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_create">create</a></td>
+<td><a href="#Gui_ImageRect_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setFile">setFile</a></td>
+<td><a href="#Gui_ImageRect_setFile"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFile</span><span class="SyntaxCode"></a></td>
 <td>Load and set movie. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setImage">setImage(self, const ref ImageList)</a></td>
+<td><a href="#Gui_ImageRect_setImage"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ImageList</span><span class="SyntaxCode">)</a></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setImage">setImage(self, const ref Image)</a></td>
+<td><a href="#Gui_ImageRect_setImage"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</a></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setImage">setImage(self, const ref Texture)</a></td>
+<td><a href="#Gui_ImageRect_setImage"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">)</a></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setMovie">setMovie</a></td>
+<td><a href="#Gui_ImageRect_setMovie"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMovie</span><span class="SyntaxCode"></a></td>
 <td>Set movie as an image list. </td>
 </tr>
 </table>
@@ -7065,7 +7065,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7078,7 +7078,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7105,7 +7105,7 @@
 </table>
 </p>
 <p>Load and set movie. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7119,13 +7119,13 @@
 </table>
 </p>
 <p>Associate image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Associate image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</code>
 </div>
 <p>Associate image. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setImage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7139,7 +7139,7 @@
 </table>
 </p>
 <p>Set movie as an image list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMovie</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, image: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMovie</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, image: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7311,15 +7311,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Label_create">create</a></td>
+<td><a href="#Gui_Label_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Label_getText">getText</a></td>
+<td><a href="#Gui_Label_getText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getText</span><span class="SyntaxCode"></a></td>
 <td>Get the text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Label_setText">setText</a></td>
+<td><a href="#Gui_Label_setText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setText</span><span class="SyntaxCode"></a></td>
 <td>Change the text. </td>
 </tr>
 </table>
@@ -7334,7 +7334,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7361,7 +7361,7 @@
 </table>
 </p>
 <p>Get the text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7375,7 +7375,7 @@
 </table>
 </p>
 <p>Change the text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7572,127 +7572,127 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ListCtrl_addColumn">addColumn</a></td>
+<td><a href="#Gui_ListCtrl_addColumn"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addColumn</span><span class="SyntaxCode"></a></td>
 <td>Add one column in a multi columns list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_clear">clear</a></td>
+<td><a href="#Gui_ListCtrl_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Clear all lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_collapse">collapse</a></td>
+<td><a href="#Gui_ListCtrl_collapse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">collapse</span><span class="SyntaxCode"></a></td>
 <td>Collapse the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_collapseAll">collapseAll</a></td>
+<td><a href="#Gui_ListCtrl_collapseAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">collapseAll</span><span class="SyntaxCode"></a></td>
 <td>Collapse all lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_computeLayout">computeLayout</a></td>
+<td><a href="#Gui_ListCtrl_computeLayout"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode"></a></td>
 <td>Compute global layout, once all lines have been added. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createLine">createLine(self, *ListLine)</a></td>
+<td><a href="#Gui_ListCtrl_createLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">ListLine</span><span class="SyntaxCode">)</a></td>
 <td>Add one new line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createLine">createLine(self, string, const ref Icon, *ListLine)</a></td>
+<td><a href="#Gui_ListCtrl_createLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Icon</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">ListLine</span><span class="SyntaxCode">)</a></td>
 <td>Add one line, and set first column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createMultiColumns">createMultiColumns</a></td>
+<td><a href="#Gui_ListCtrl_createMultiColumns"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createMultiColumns</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createSimple">createSimple</a></td>
+<td><a href="#Gui_ListCtrl_createSimple"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createSimple</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_ensureVisibleLine">ensureVisibleLine</a></td>
+<td><a href="#Gui_ListCtrl_ensureVisibleLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">ensureVisibleLine</span><span class="SyntaxCode"></a></td>
 <td>Set the corresponding line visible. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_expand">expand</a></td>
+<td><a href="#Gui_ListCtrl_expand"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">expand</span><span class="SyntaxCode"></a></td>
 <td>Expand the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getCheckedLines">getCheckedLines</a></td>
+<td><a href="#Gui_ListCtrl_getCheckedLines"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getCheckedLines</span><span class="SyntaxCode"></a></td>
 <td>Get all the checked lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getFirstVisibleLineIndex">getFirstVisibleLineIndex</a></td>
+<td><a href="#Gui_ListCtrl_getFirstVisibleLineIndex"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFirstVisibleLineIndex</span><span class="SyntaxCode"></a></td>
 <td>Returns the first visible line index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getFocusLine">getFocusLine</a></td>
+<td><a href="#Gui_ListCtrl_getFocusLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFocusLine</span><span class="SyntaxCode"></a></td>
 <td>Get the line with the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLastVisibleLineIndex">getLastVisibleLineIndex</a></td>
+<td><a href="#Gui_ListCtrl_getLastVisibleLineIndex"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getLastVisibleLineIndex</span><span class="SyntaxCode"></a></td>
 <td>Returns the last visible line index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLine">getLine</a></td>
+<td><a href="#Gui_ListCtrl_getLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getLine</span><span class="SyntaxCode"></a></td>
 <td>Get a line by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLineCount">getLineCount</a></td>
+<td><a href="#Gui_ListCtrl_getLineCount"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getLineCount</span><span class="SyntaxCode"></a></td>
 <td>Returns the number of lines in the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLineHeight">getLineHeight</a></td>
+<td><a href="#Gui_ListCtrl_getLineHeight"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getLineHeight</span><span class="SyntaxCode"></a></td>
 <td>Get the height of one line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine</a></td>
+<td><a href="#Gui_ListCtrl_getSelectedLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSelectedLine</span><span class="SyntaxCode"></a></td>
 <td>Returns a selected line  Mostly for singlesel mode. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines</a></td>
+<td><a href="#Gui_ListCtrl_getSelectedLines"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSelectedLines</span><span class="SyntaxCode"></a></td>
 <td>Get all the selected lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_isLineSelected">isLineSelected</a></td>
+<td><a href="#Gui_ListCtrl_isLineSelected"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isLineSelected</span><span class="SyntaxCode"></a></td>
 <td>Returns. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_isSelectedLine">isSelectedLine</a></td>
+<td><a href="#Gui_ListCtrl_isSelectedLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isSelectedLine</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the line at the given index is selected. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_selectLine">selectLine</a></td>
+<td><a href="#Gui_ListCtrl_selectLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">selectLine</span><span class="SyntaxCode"></a></td>
 <td>Select of unselect the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_selectLines">selectLines</a></td>
+<td><a href="#Gui_ListCtrl_selectLines"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">selectLines</span><span class="SyntaxCode"></a></td>
 <td>Select a range of lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setColumnWidth">setColumnWidth</a></td>
+<td><a href="#Gui_ListCtrl_setColumnWidth"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setColumnWidth</span><span class="SyntaxCode"></a></td>
 <td>Set the column width. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setFocus">setFocus</a></td>
+<td><a href="#Gui_ListCtrl_setFocus"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode"></a></td>
 <td>Set focus to the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setVirtualCount">setVirtualCount</a></td>
+<td><a href="#Gui_ListCtrl_setVirtualCount"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setVirtualCount</span><span class="SyntaxCode"></a></td>
 <td>Set the number of lines in a virtual list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_sort">sort(self)</a></td>
+<td><a href="#Gui_ListCtrl_sort"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</a></td>
 <td>Sort list as before. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_sort">sort(self, u32, bool, bool)</a></td>
+<td><a href="#Gui_ListCtrl_sort"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</a></td>
 <td>Sort the list by a given column  If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_toggleExpand">toggleExpand</a></td>
+<td><a href="#Gui_ListCtrl_toggleExpand"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">toggleExpand</span><span class="SyntaxCode"></a></td>
 <td>Collapse the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_unselectAll">unselectAll</a></td>
+<td><a href="#Gui_ListCtrl_unselectAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode"></a></td>
 <td>Unselect all lines. </td>
 </tr>
 </table>
@@ -7708,7 +7708,7 @@
 </table>
 </p>
 <p>Add one column in a multi columns list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addColumn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addColumn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})</code>
 </div>
 <p>
 <table class="item">
@@ -7722,7 +7722,7 @@
 </table>
 </p>
 <p>Clear all lines. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7736,7 +7736,7 @@
 </table>
 </p>
 <p>Collapse the given line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">collapse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">collapse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7750,7 +7750,7 @@
 </table>
 </p>
 <p>Collapse all lines. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">collapseAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">collapseAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7764,7 +7764,7 @@
 </table>
 </p>
 <p>Compute global layout, once all lines have been added. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7778,10 +7778,10 @@
 </table>
 </p>
 <p>Add one new line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, parentLine: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, parentLine: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </div>
 <p>Add one line, and set first column. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, parentLine: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, parentLine: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7821,7 +7821,7 @@
 </table>
 </p>
 <p>Set the corresponding line visible. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureVisibleLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureVisibleLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7835,7 +7835,7 @@
 </table>
 </p>
 <p>Expand the given line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">expand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7849,7 +7849,7 @@
 </table>
 </p>
 <p>Get all the checked lines. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCheckedLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCheckedLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7863,7 +7863,7 @@
 </table>
 </p>
 <p>Returns the first visible line index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFirstVisibleLineIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFirstVisibleLineIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7877,7 +7877,7 @@
 </table>
 </p>
 <p>Get the line with the keyboard focus. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFocusLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFocusLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7891,7 +7891,7 @@
 </table>
 </p>
 <p>Returns the last visible line index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLastVisibleLineIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLastVisibleLineIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7905,7 +7905,7 @@
 </table>
 </p>
 <p>Get a line by index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7919,7 +7919,7 @@
 </table>
 </p>
 <p>Returns the number of lines in the list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLineCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLineCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7933,7 +7933,7 @@
 </table>
 </p>
 <p>Get the height of one line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLineHeight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getLineHeight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7947,7 +7947,7 @@
 </table>
 </p>
 <p>Returns a selected line  Mostly for singlesel mode. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7961,7 +7961,7 @@
 </table>
 </p>
 <p>Get all the selected lines. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7975,7 +7975,7 @@
 </table>
 </p>
 <p>Returns. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isLineSelected</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isLineSelected</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7989,7 +7989,7 @@
 </table>
 </p>
 <p>Returns true if the line at the given index is selected. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSelectedLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSelectedLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8003,7 +8003,7 @@
 </table>
 </p>
 <p>Select of unselect the given line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8017,7 +8017,7 @@
 </table>
 </p>
 <p>Select a range of lines. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, start: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, end: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectLines</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, start: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, end: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8031,7 +8031,7 @@
 </table>
 </p>
 <p>Set the column width. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColumnWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setColumnWidth</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8045,7 +8045,7 @@
 </table>
 </p>
 <p>Set focus to the list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8059,7 +8059,7 @@
 </table>
 </p>
 <p>Set the number of lines in a virtual list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVirtualCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, count: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setVirtualCount</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, count: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8073,10 +8073,10 @@
 </table>
 </p>
 <p>Sort list as before. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>Sort the list by a given column  If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, descentOrder = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, persistent = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sort</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, descentOrder = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, persistent = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8090,7 +8090,7 @@
 </table>
 </p>
 <p>Collapse the given line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toggleExpand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toggleExpand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8104,7 +8104,7 @@
 </table>
 </p>
 <p>Unselect all lines. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8285,19 +8285,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ListLine_canExpand">canExpand</a></td>
+<td><a href="#Gui_ListLine_canExpand"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">canExpand</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_getItem">getItem</a></td>
+<td><a href="#Gui_ListLine_getItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode"></a></td>
 <td>Get an item by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_isParentOf">isParentOf</a></td>
+<td><a href="#Gui_ListLine_isParentOf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isParentOf</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_setItem">setItem</a></td>
+<td><a href="#Gui_ListLine_setItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setItem</span><span class="SyntaxCode"></a></td>
 <td>Initialize a given column item. </td>
 </tr>
 </table>
@@ -8312,7 +8312,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canExpand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canExpand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8326,7 +8326,7 @@
 </table>
 </p>
 <p>Get an item by index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListItem">ListItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListItem">ListItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8339,7 +8339,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isParentOf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isParentOf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, other: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8353,7 +8353,7 @@
 </table>
 </p>
 <p>Initialize a given column item. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListItem">ListItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, column: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {})-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListItem">ListItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8419,7 +8419,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8432,7 +8432,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8445,7 +8445,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8458,7 +8458,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8551,43 +8551,43 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_MenuCtrl_addItem">addItem(self, WndId)</a></td>
+<td><a href="#Gui_MenuCtrl_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)</a></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addItem">addItem(self, string, WndId, const ref Icon, string, bool, bool)</a></td>
+<td><a href="#Gui_MenuCtrl_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Icon</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</a></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addPopup">addPopup(self, *MenuCtrl, WndId)</a></td>
+<td><a href="#Gui_MenuCtrl_addPopup"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">MenuCtrl</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)</a></td>
 <td>Add a new popup item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addPopup">addPopup(self, string, *MenuCtrl, const ref Icon, WndId)</a></td>
+<td><a href="#Gui_MenuCtrl_addPopup"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">MenuCtrl</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Icon</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">)</a></td>
 <td>Add a new popup item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addSeparator">addSeparator</a></td>
+<td><a href="#Gui_MenuCtrl_addSeparator"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode"></a></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_computeLayoutPopup">computeLayoutPopup</a></td>
+<td><a href="#Gui_MenuCtrl_computeLayoutPopup"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeLayoutPopup</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_createBar">createBar</a></td>
+<td><a href="#Gui_MenuCtrl_createBar"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createBar</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_createPopup">createPopup</a></td>
+<td><a href="#Gui_MenuCtrl_createPopup"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createPopup</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_doModal">doModal</a></td>
+<td><a href="#Gui_MenuCtrl_doModal"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode"></a></td>
 <td>Make the popup menu modal  Will return the selected id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_updateState">updateState</a></td>
+<td><a href="#Gui_MenuCtrl_updateState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">updateState</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -8602,7 +8602,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8615,7 +8615,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8628,7 +8628,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onTimerEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TimerEvent">TimerEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onTimerEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TimerEvent">TimerEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8642,10 +8642,10 @@
 </table>
 </p>
 <p>Add a new item. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Add a new item. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, rightName: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, disabled = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, checked = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, rightName: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, disabled = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, checked = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8659,10 +8659,10 @@
 </table>
 </p>
 <p>Add a new popup item. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, popup: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, popup: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Add a new popup item. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, popup: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, popup: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8676,7 +8676,7 @@
 </table>
 </p>
 <p>Add a separator. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8689,7 +8689,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayoutPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayoutPopup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8729,7 +8729,7 @@
 </table>
 </p>
 <p>Make the popup menu modal  Will return the selected id. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, surfacePos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">, pos = </span><span class="SyntaxConstant"><a href="#Gui_PopupPos">PopupPos</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TopLeft</span><span class="SyntaxCode">, autoDestroy: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_WndId"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, surfacePos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">, pos = </span><span class="SyntaxConstant"><a href="#Gui_PopupPos">PopupPos</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TopLeft</span><span class="SyntaxCode">, autoDestroy: </span><span class="SyntaxType">bool</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_WndId"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -8742,7 +8742,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">updateState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">updateState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8796,43 +8796,43 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_MessageDlg_confirm">confirm</a></td>
+<td><a href="#Gui_MessageDlg_confirm"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">confirm</span><span class="SyntaxCode"></a></td>
 <td>Message box to <code class="incode">confirm</code> something. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_create">create</a></td>
+<td><a href="#Gui_MessageDlg_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_doModal">doModal</a></td>
+<td><a href="#Gui_MessageDlg_doModal"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode"></a></td>
 <td>Display the box, centered, and returns the id of the pressed button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_error">error</a></td>
+<td><a href="#Gui_MessageDlg_error"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">error</span><span class="SyntaxCode"></a></td>
 <td>Message box to show an error. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_ok">ok</a></td>
+<td><a href="#Gui_MessageDlg_ok"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">ok</span><span class="SyntaxCode"></a></td>
 <td>Message box with a <code class="incode">ok</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_okCancel">okCancel</a></td>
+<td><a href="#Gui_MessageDlg_okCancel"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">okCancel</span><span class="SyntaxCode"></a></td>
 <td>Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_setIcon">setIcon</a></td>
+<td><a href="#Gui_MessageDlg_setIcon"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode"></a></td>
 <td>Set big icon. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_setIconColor">setIconColor</a></td>
+<td><a href="#Gui_MessageDlg_setIconColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setIconColor</span><span class="SyntaxCode"></a></td>
 <td>Set big icon color (icon must has been set before). </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_yesNo">yesNo</a></td>
+<td><a href="#Gui_MessageDlg_yesNo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">yesNo</span><span class="SyntaxCode"></a></td>
 <td>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel</a></td>
+<td><a href="#Gui_MessageDlg_yesNoCancel"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">yesNoCancel</span><span class="SyntaxCode"></a></td>
 <td>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </td>
 </tr>
 </table>
@@ -8876,7 +8876,7 @@
 </table>
 </p>
 <p>Display the box, centered, and returns the id of the pressed button. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">doModal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8932,7 +8932,7 @@
 </table>
 </p>
 <p>Set big icon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Argb</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8946,7 +8946,7 @@
 </table>
 </p>
 <p>Set big icon color (icon must has been set before). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIconColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIconColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9128,31 +9128,31 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Movie_clear">clear</a></td>
+<td><a href="#Gui_Movie_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_isValid">isValid</a></td>
+<td><a href="#Gui_Movie_isValid"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the movie has valid content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_pause">pause</a></td>
+<td><a href="#Gui_Movie_pause"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pause</span><span class="SyntaxCode"></a></td>
 <td>Set/Reset pause state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_set">set(self, const ref ImageList)</a></td>
+<td><a href="#Gui_Movie_set"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ImageList</span><span class="SyntaxCode">)</a></td>
 <td>Associate an image list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_set">set(self, string)</a></td>
+<td><a href="#Gui_Movie_set"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</a></td>
 <td>Associate a filename. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_setFrameIndex">setFrameIndex</a></td>
+<td><a href="#Gui_Movie_setFrameIndex"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFrameIndex</span><span class="SyntaxCode"></a></td>
 <td>Set the current video frame. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_update">update</a></td>
+<td><a href="#Gui_Movie_update"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">update</span><span class="SyntaxCode"></a></td>
 <td>Update timing and change frames. </td>
 </tr>
 </table>
@@ -9167,7 +9167,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9181,7 +9181,7 @@
 </table>
 </p>
 <p>Returns true if the movie has valid content. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isValid</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9195,7 +9195,7 @@
 </table>
 </p>
 <p>Set/Reset pause state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, state: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pause</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, state: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9209,10 +9209,10 @@
 </table>
 </p>
 <p>Associate an image list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, imageList: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, imageList: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>Associate a filename. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">set</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fileName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9226,7 +9226,7 @@
 </table>
 </p>
 <p>Set the current video frame. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFrameIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9240,7 +9240,7 @@
 </table>
 </p>
 <p>Update timing and change frames. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, dt: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">update</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, dt: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9401,15 +9401,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PaintImage_draw">draw(self, func(*void, *Application, *Painter))</a></td>
+<td><a href="#Gui_PaintImage_draw"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Application</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">))</a></td>
 <td>Draw to an image by calling the closure. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PaintImage_draw">draw(s32, s32, func(*void, *Application, *Painter))</a></td>
+<td><a href="#Gui_PaintImage_draw"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Application</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">))</a></td>
 <td>One shot paint to image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PaintImage_init">init</a></td>
+<td><a href="#Gui_PaintImage_init"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">init</span><span class="SyntaxCode"></a></td>
 <td>First init the PaintImage instance. </td>
 </tr>
 </table>
@@ -9425,7 +9425,7 @@
 </table>
 </p>
 <p>Draw to an image by calling the closure. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, call: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">))-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, call: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">))-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></code>
 </div>
 <p>One shot paint to image. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">draw</span><span class="SyntaxCode">(w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, call: </span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">))-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></code>
@@ -9442,7 +9442,7 @@
 </table>
 </p>
 <p>First init the PaintImage instance. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">init</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9500,23 +9500,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PalettePicker_addColor">addColor</a></td>
+<td><a href="#Gui_PalettePicker_addColor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addColor</span><span class="SyntaxCode"></a></td>
 <td>Add a color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addHueColors">addHueColors</a></td>
+<td><a href="#Gui_PalettePicker_addHueColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addHueColors</span><span class="SyntaxCode"></a></td>
 <td>Add a range of changing <code class="incode">hue</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addLumColors">addLumColors</a></td>
+<td><a href="#Gui_PalettePicker_addLumColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addLumColors</span><span class="SyntaxCode"></a></td>
 <td>Add a range of changing <code class="incode">luminance</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addSatColors">addSatColors</a></td>
+<td><a href="#Gui_PalettePicker_addSatColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addSatColors</span><span class="SyntaxCode"></a></td>
 <td>Add a range of changing <code class="incode">saturation</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_create">create</a></td>
+<td><a href="#Gui_PalettePicker_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -9531,7 +9531,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9544,7 +9544,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9558,7 +9558,7 @@
 </table>
 </p>
 <p>Add a color. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, c: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addColor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, c: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9572,7 +9572,7 @@
 </table>
 </p>
 <p>Add a range of changing <code class="incode">hue</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addHueColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, sat: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, lum: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addHueColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, sat: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, lum: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9586,7 +9586,7 @@
 </table>
 </p>
 <p>Add a range of changing <code class="incode">luminance</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addLumColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, base: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addLumColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, base: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9600,7 +9600,7 @@
 </table>
 </p>
 <p>Add a range of changing <code class="incode">saturation</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSatColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, base: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, lum: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSatColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, numColors: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, base: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, lum: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0.5</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9686,19 +9686,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PopupListCtrl_addItem">addItem</a></td>
+<td><a href="#Gui_PopupListCtrl_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new item in the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_addSeparator">addSeparator</a></td>
+<td><a href="#Gui_PopupListCtrl_addSeparator"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode"></a></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_create">create</a></td>
+<td><a href="#Gui_PopupListCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_show">show</a></td>
+<td><a href="#Gui_PopupListCtrl_show"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">show</span><span class="SyntaxCode"></a></td>
 <td>Show popup. </td>
 </tr>
 </table>
@@ -9714,7 +9714,7 @@
 </table>
 </p>
 <p>Add a new item in the list. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, userData0: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, userData1: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, id: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"> = {}, userData0: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">, userData1: *</span><span class="SyntaxType">void</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9728,7 +9728,7 @@
 </table>
 </p>
 <p>Add a separator. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addSeparator</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9756,7 +9756,7 @@
 </table>
 </p>
 <p>Show popup. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9835,7 +9835,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFocusEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusEvent">FocusEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFocusEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusEvent">FocusEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9848,7 +9848,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9861,7 +9861,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9987,11 +9987,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ProgressBar_create">create</a></td>
+<td><a href="#Gui_ProgressBar_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ProgressBar_setProgression">setProgression</a></td>
+<td><a href="#Gui_ProgressBar_setProgression"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setProgression</span><span class="SyntaxCode"></a></td>
 <td>Set the progression in [0..1] range. </td>
 </tr>
 </table>
@@ -10006,7 +10006,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10033,7 +10033,7 @@
 </table>
 </p>
 <p>Set the progression in [0..1] range. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setProgression</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, prg: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setProgression</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, prg: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10147,19 +10147,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PropertyList_addItem">addItem</a></td>
+<td><a href="#Gui_PropertyList_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_create">create</a></td>
+<td><a href="#Gui_PropertyList_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates a new PropertyList instance. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_refresh">refresh</a></td>
+<td><a href="#Gui_PropertyList_refresh"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">refresh</span><span class="SyntaxCode"></a></td>
 <td>Refresh displayed values. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_setStringFilter">setStringFilter</a></td>
+<td><a href="#Gui_PropertyList_setStringFilter"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setStringFilter</span><span class="SyntaxCode"></a></td>
 <td>Show hidden content depending on the input filter. </td>
 </tr>
 </table>
@@ -10250,7 +10250,7 @@
 </table>
 </p>
 <p>Add a new struct to display. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, val: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, val: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10278,7 +10278,7 @@
 </table>
 </p>
 <p>Refresh displayed values. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">refresh</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">refresh</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10292,7 +10292,7 @@
 </table>
 </p>
 <p>Show hidden content depending on the input filter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setStringFilter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, filter: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setStringFilter</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, filter: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10330,11 +10330,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PropertyListCtrl_addItem">addItem</a></td>
+<td><a href="#Gui_PropertyListCtrl_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyListCtrl_create">create</a></td>
+<td><a href="#Gui_PropertyListCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates a new PropertyList instance. </td>
 </tr>
 </table>
@@ -10350,7 +10350,7 @@
 </table>
 </p>
 <p>Add a new struct to display. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, val: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, val: </span><span class="SyntaxType">any</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10511,7 +10511,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PushButton_create">create</a></td>
+<td><a href="#Gui_PushButton_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -10526,7 +10526,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10539,7 +10539,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10642,11 +10642,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_RadioButton_create">create</a></td>
+<td><a href="#Gui_RadioButton_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RadioButton_setChecked">setChecked</a></td>
+<td><a href="#Gui_RadioButton_setChecked"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setChecked</span><span class="SyntaxCode"></a></td>
 <td>Set the checked state. </td>
 </tr>
 </table>
@@ -10661,7 +10661,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10674,7 +10674,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10701,7 +10701,7 @@
 </table>
 </p>
 <p>Set the checked state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setChecked</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, checked: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setChecked</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, checked: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11161,299 +11161,299 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_RichEditCtrl_addMapping">addMapping</a></td>
+<td><a href="#Gui_RichEditCtrl_addMapping"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addMapping</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_addText">addText</a></td>
+<td><a href="#Gui_RichEditCtrl_addText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addText</span><span class="SyntaxCode"></a></td>
 <td>Append a text with a given style. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_canRedo">canRedo</a></td>
+<td><a href="#Gui_RichEditCtrl_canRedo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">canRedo</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_canUndo">canUndo</a></td>
+<td><a href="#Gui_RichEditCtrl_canUndo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">canUndo</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_charPressed">charPressed</a></td>
+<td><a href="#Gui_RichEditCtrl_charPressed"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">charPressed</span><span class="SyntaxCode"></a></td>
 <td>Simulate a keyboard character pressed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_checkSelection">checkSelection</a></td>
+<td><a href="#Gui_RichEditCtrl_checkSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">checkSelection</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clear">clear</a></td>
+<td><a href="#Gui_RichEditCtrl_clear"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clear</span><span class="SyntaxCode"></a></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearMapping">clearMapping</a></td>
+<td><a href="#Gui_RichEditCtrl_clearMapping"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clearMapping</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearSelection">clearSelection</a></td>
+<td><a href="#Gui_RichEditCtrl_clearSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clearSelection</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearUndo">clearUndo</a></td>
+<td><a href="#Gui_RichEditCtrl_clearUndo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clearUndo</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_copyToClipboard">copyToClipboard</a></td>
+<td><a href="#Gui_RichEditCtrl_copyToClipboard"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">copyToClipboard</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_create">create</a></td>
+<td><a href="#Gui_RichEditCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteBegLine">deleteBegLine</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteBegLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteBegLine</span><span class="SyntaxCode"></a></td>
 <td>Delete a given text at the start of each selected line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteLeft">deleteLeft</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteLeft"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteLeft</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteLine">deleteLine</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteLine</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteRight">deleteRight</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteRight"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteRight</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteSelection">deleteSelection</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteSelection</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteWordLeft">deleteWordLeft</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteWordLeft"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteWordLeft</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteWordRight">deleteWordRight</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteWordRight"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">deleteWordRight</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_ensureCaretIsVisible">ensureCaretIsVisible</a></td>
+<td><a href="#Gui_RichEditCtrl_ensureCaretIsVisible"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">ensureCaretIsVisible</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_ensureCursorIsVisible">ensureCursorIsVisible</a></td>
+<td><a href="#Gui_RichEditCtrl_ensureCursorIsVisible"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">ensureCursorIsVisible</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_evaluateSize">evaluateSize</a></td>
+<td><a href="#Gui_RichEditCtrl_evaluateSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">evaluateSize</span><span class="SyntaxCode"></a></td>
 <td>Evaluate the rendering size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_executeCommand">executeCommand</a></td>
+<td><a href="#Gui_RichEditCtrl_executeCommand"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">executeCommand</span><span class="SyntaxCode"></a></td>
 <td>Execute a command. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getBegSelection">getBegSelection</a></td>
+<td><a href="#Gui_RichEditCtrl_getBegSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getBegSelection</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCaretPos">getCaretPos</a></td>
+<td><a href="#Gui_RichEditCtrl_getCaretPos"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getCaretPos</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCursorDisplayPos">getCursorDisplayPos</a></td>
+<td><a href="#Gui_RichEditCtrl_getCursorDisplayPos"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getCursorDisplayPos</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCursorPosFromPoint">getCursorPosFromPoint</a></td>
+<td><a href="#Gui_RichEditCtrl_getCursorPosFromPoint"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getCursorPosFromPoint</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getEndSelection">getEndSelection</a></td>
+<td><a href="#Gui_RichEditCtrl_getEndSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getEndSelection</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getMappingCommand">getMappingCommand</a></td>
+<td><a href="#Gui_RichEditCtrl_getMappingCommand"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getMappingCommand</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getRune">getRune</a></td>
+<td><a href="#Gui_RichEditCtrl_getRune"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getRune</span><span class="SyntaxCode"></a></td>
 <td>Get the rune at the given cursor pos. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getRuneSize">getRuneSize</a></td>
+<td><a href="#Gui_RichEditCtrl_getRuneSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getRuneSize</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getSelectedText">getSelectedText</a></td>
+<td><a href="#Gui_RichEditCtrl_getSelectedText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSelectedText</span><span class="SyntaxCode"></a></td>
 <td>Get the selected text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getTabOffset">getTabOffset</a></td>
+<td><a href="#Gui_RichEditCtrl_getTabOffset"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTabOffset</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getText">getText</a></td>
+<td><a href="#Gui_RichEditCtrl_getText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getText</span><span class="SyntaxCode"></a></td>
 <td>Get the full text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getTextAndStyles">getTextAndStyles</a></td>
+<td><a href="#Gui_RichEditCtrl_getTextAndStyles"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTextAndStyles</span><span class="SyntaxCode"></a></td>
 <td>Get the full text with the associated styles per character. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getXExtent">getXExtent</a></td>
+<td><a href="#Gui_RichEditCtrl_getXExtent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getXExtent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertBegLine">insertBegLine</a></td>
+<td><a href="#Gui_RichEditCtrl_insertBegLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">insertBegLine</span><span class="SyntaxCode"></a></td>
 <td>Insert text at the start of each selected line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertRune">insertRune</a></td>
+<td><a href="#Gui_RichEditCtrl_insertRune"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">insertRune</span><span class="SyntaxCode"></a></td>
 <td>Insert a rune. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertText">insertText(self, string)</a></td>
+<td><a href="#Gui_RichEditCtrl_insertText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</a></td>
 <td>Insert a text with a given style. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertText">insertText(self, string, const ref Array'(u8))</a></td>
+<td><a href="#Gui_RichEditCtrl_insertText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">))</a></td>
 <td>Insert a text with a style per character. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_isReadOnly">isReadOnly</a></td>
+<td><a href="#Gui_RichEditCtrl_isReadOnly"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isReadOnly</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the rich edit is read only. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_isSelectionEmpty">isSelectionEmpty</a></td>
+<td><a href="#Gui_RichEditCtrl_isSelectionEmpty"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isSelectionEmpty</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_keyPressed">keyPressed</a></td>
+<td><a href="#Gui_RichEditCtrl_keyPressed"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">keyPressed</span><span class="SyntaxCode"></a></td>
 <td>Simulate a keyboard pressed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_lexAll">lexAll</a></td>
+<td><a href="#Gui_RichEditCtrl_lexAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">lexAll</span><span class="SyntaxCode"></a></td>
 <td>Lex the full text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorDown">moveCursorDown</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorDown"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorDown</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorEndFile">moveCursorEndFile</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorEndFile"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorEndFile</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorEndLine">moveCursorEndLine</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorEndLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorEndLine</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorLeft">moveCursorLeft</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorLeft"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorLeft</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorPageDown">moveCursorPageDown</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorPageDown"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorPageDown</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorPageUp">moveCursorPageUp</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorPageUp"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorPageUp</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorRight">moveCursorRight</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorRight"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorRight</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorStartFile">moveCursorStartFile</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorStartFile"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorStartFile</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorStartLine">moveCursorStartLine</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorStartLine"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorStartLine</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorUp">moveCursorUp</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorUp"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorUp</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorWordLeft">moveCursorWordLeft</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorWordLeft"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorWordLeft</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorWordRight">moveCursorWordRight</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorWordRight"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">moveCursorWordRight</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_pasteFromClipboard">pasteFromClipboard</a></td>
+<td><a href="#Gui_RichEditCtrl_pasteFromClipboard"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pasteFromClipboard</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_popUndo">popUndo</a></td>
+<td><a href="#Gui_RichEditCtrl_popUndo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">popUndo</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_pushUndo">pushUndo</a></td>
+<td><a href="#Gui_RichEditCtrl_pushUndo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">pushUndo</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_redo">redo</a></td>
+<td><a href="#Gui_RichEditCtrl_redo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">redo</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_scrollLineDown">scrollLineDown</a></td>
+<td><a href="#Gui_RichEditCtrl_scrollLineDown"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">scrollLineDown</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_scrollLineUp">scrollLineUp</a></td>
+<td><a href="#Gui_RichEditCtrl_scrollLineUp"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">scrollLineUp</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_selectAll">selectAll</a></td>
+<td><a href="#Gui_RichEditCtrl_selectAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">selectAll</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_selectWord">selectWord</a></td>
+<td><a href="#Gui_RichEditCtrl_selectWord"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">selectWord</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setCursorPos">setCursorPos</a></td>
+<td><a href="#Gui_RichEditCtrl_setCursorPos"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setCursorPos</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setDefaultMapping">setDefaultMapping</a></td>
+<td><a href="#Gui_RichEditCtrl_setDefaultMapping"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setDefaultMapping</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setFocus">setFocus</a></td>
+<td><a href="#Gui_RichEditCtrl_setFocus"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setForm">setForm</a></td>
+<td><a href="#Gui_RichEditCtrl_setForm"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode"></a></td>
 <td>Set form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setLexer">setLexer</a></td>
+<td><a href="#Gui_RichEditCtrl_setLexer"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setLexer</span><span class="SyntaxCode"></a></td>
 <td>Associate a lexer. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setRectangularSelection">setRectangularSelection</a></td>
+<td><a href="#Gui_RichEditCtrl_setRectangularSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRectangularSelection</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setRichEdFlags">setRichEdFlags</a></td>
+<td><a href="#Gui_RichEditCtrl_setRichEdFlags"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRichEdFlags</span><span class="SyntaxCode"></a></td>
 <td>Set richedit flags. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setSelection">setSelection</a></td>
+<td><a href="#Gui_RichEditCtrl_setSelection"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setSelection</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setText">setText</a></td>
+<td><a href="#Gui_RichEditCtrl_setText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setText</span><span class="SyntaxCode"></a></td>
 <td>Set the text content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_undo">undo</a></td>
+<td><a href="#Gui_RichEditCtrl_undo"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">undo</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -11468,7 +11468,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addMapping</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, cmd: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addMapping</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, cmd: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11482,7 +11482,7 @@
 </table>
 </p>
 <p>Append a text with a given style. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, txtStyle: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, txtStyle: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11495,7 +11495,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canRedo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canRedo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11508,7 +11508,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">canUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11522,7 +11522,7 @@
 </table>
 </p>
 <p>Simulate a keyboard character pressed. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">charPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">charPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11535,7 +11535,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11549,7 +11549,7 @@
 </table>
 </p>
 <p>Clear content. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clear</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11562,7 +11562,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearMapping</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearMapping</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11575,7 +11575,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11588,7 +11588,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11601,7 +11601,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copyToClipboard</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">copyToClipboard</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11628,7 +11628,7 @@
 </table>
 </p>
 <p>Delete a given text at the start of each selected line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteBegLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, txt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, lastLine: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteBegLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, txt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, lastLine: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11641,7 +11641,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11654,7 +11654,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11667,7 +11667,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11680,7 +11680,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11693,7 +11693,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteWordLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteWordLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11706,7 +11706,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteWordRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">deleteWordRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11719,7 +11719,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureCaretIsVisible</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, center = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureCaretIsVisible</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, center = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11732,7 +11732,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureCursorIsVisible</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">, center: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ensureCursorIsVisible</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">, center: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11746,7 +11746,7 @@
 </table>
 </p>
 <p>Evaluate the rendering size. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">evaluateSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;{w: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">evaluateSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;{w: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">}</code>
 </div>
 <p>
 <table class="item">
@@ -11760,7 +11760,7 @@
 </table>
 </p>
 <p>Execute a command. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">executeCommand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cmd: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">executeCommand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cmd: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11773,7 +11773,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBegSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCursor"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBegSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCursor"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11786,7 +11786,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCaretPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCaretPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11799,7 +11799,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCursorDisplayPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCursorDisplayPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11812,7 +11812,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCursorPosFromPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCursor"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getCursorPosFromPoint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCursor"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11825,7 +11825,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getEndSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCursor"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getEndSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCursor"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11838,7 +11838,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMappingCommand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCommand"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMappingCommand</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_RichEditCommand"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11852,7 +11852,7 @@
 </table>
 </p>
 <p>Get the rune at the given cursor pos. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;{char: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, style: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span><span class="SyntaxCode">}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;{char: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">, style: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span><span class="SyntaxCode">}</code>
 </div>
 <p>
 <table class="item">
@@ -11865,7 +11865,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRuneSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, i: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRuneSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, i: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11879,7 +11879,7 @@
 </table>
 </p>
 <p>Get the selected text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11892,7 +11892,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTabOffset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, numBlanks: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTabOffset</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, numBlanks: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11906,7 +11906,7 @@
 </table>
 </p>
 <p>Get the full text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11920,7 +11920,7 @@
 </table>
 </p>
 <p>Get the full text with the associated styles per character. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTextAndStyles</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;{text: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">rune</span><span class="SyntaxCode">), styles: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)}</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTextAndStyles</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;{text: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">rune</span><span class="SyntaxCode">), styles: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)}</code>
 </div>
 <p>
 <table class="item">
@@ -11933,7 +11933,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getXExtent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getXExtent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11947,7 +11947,7 @@
 </table>
 </p>
 <p>Insert text at the start of each selected line. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertBegLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, txt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertBegLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, txt: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11961,7 +11961,7 @@
 </table>
 </p>
 <p>Insert a rune. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -11975,10 +11975,10 @@
 </table>
 </p>
 <p>Insert a text with a given style. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>Insert a text with a style per character. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, txtStyles: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">))</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, txtStyles: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">))</code>
 </div>
 <p>
 <table class="item">
@@ -11992,7 +11992,7 @@
 </table>
 </p>
 <p>Returns true if the rich edit is read only. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isReadOnly</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isReadOnly</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12005,7 +12005,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSelectionEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSelectionEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12019,7 +12019,7 @@
 </table>
 </p>
 <p>Simulate a keyboard pressed. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">keyPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">keyPressed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12033,7 +12033,7 @@
 </table>
 </p>
 <p>Lex the full text. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lexAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lexAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12046,7 +12046,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorDown</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorDown</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12059,7 +12059,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorEndFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorEndFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12072,7 +12072,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorEndLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorEndLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12085,7 +12085,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12098,7 +12098,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorPageDown</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorPageDown</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12111,7 +12111,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorPageUp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorPageUp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12124,7 +12124,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12137,7 +12137,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorStartFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorStartFile</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12150,7 +12150,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorStartLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorStartLine</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12163,7 +12163,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorUp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorUp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12176,7 +12176,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorWordLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorWordLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12189,7 +12189,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorWordRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">, withSpace: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">moveCursorWordRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">, withSpace: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12202,7 +12202,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pasteFromClipboard</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pasteFromClipboard</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12215,7 +12215,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">popUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12228,7 +12228,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">pushUndo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12241,7 +12241,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">redo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">redo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12254,7 +12254,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scrollLineDown</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scrollLineDown</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12267,7 +12267,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scrollLineUp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">scrollLineUp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12280,7 +12280,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12293,7 +12293,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectWord</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">selectWord</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12306,7 +12306,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCursorPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCursorPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cp: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12319,7 +12319,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setDefaultMapping</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setDefaultMapping</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12332,7 +12332,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12346,7 +12346,7 @@
 </table>
 </p>
 <p>Set form. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditForm">RichEditForm</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, form: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditForm">RichEditForm</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12360,7 +12360,7 @@
 </table>
 </p>
 <p>Associate a lexer. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setLexer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, lex: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setLexer</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, lex: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12373,7 +12373,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRectangularSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, selRect: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRectangularSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, selRect: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12387,7 +12387,7 @@
 </table>
 </p>
 <p>Set richedit flags. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRichEdFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, flags: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditFlags">RichEditFlags</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRichEdFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditFlags">RichEditFlags</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12400,7 +12400,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, start: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">, end: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSelection</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, start: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">, end: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12414,7 +12414,7 @@
 </table>
 </p>
 <p>Set the text content. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setText</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, text: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12427,7 +12427,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">undo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">undo</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12552,7 +12552,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, linePrev: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, lineNext: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compute</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, linePrev: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, line: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, lineNext: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12565,7 +12565,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ed: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">insertRune</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ed: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">, ch: </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12578,7 +12578,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ed: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ed: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -12655,7 +12655,7 @@
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_RichEditRuneStyle_opEquals">opEquals</a></td>
+<td><a href="#Gui_RichEditRuneStyle_opEquals"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -12670,7 +12670,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opEquals</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, other: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12990,23 +12990,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ScrollWnd_getClientScrollRect">getClientScrollRect</a></td>
+<td><a href="#Gui_ScrollWnd_getClientScrollRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getClientScrollRect</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_getScrollPos">getScrollPos</a></td>
+<td><a href="#Gui_ScrollWnd_getScrollPos"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getScrollPos</span><span class="SyntaxCode"></a></td>
 <td>Get the current scroll position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos(self, const ref Point)</a></td>
+<td><a href="#Gui_ScrollWnd_setScrollPos"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</a></td>
 <td>Set the current scroll position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos(self, f32, f32)</a></td>
+<td><a href="#Gui_ScrollWnd_setScrollPos"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_setScrollSize">setScrollSize</a></td>
+<td><a href="#Gui_ScrollWnd_setScrollSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setScrollSize</span><span class="SyntaxCode"></a></td>
 <td>Set the scroll size (window virtual size). </td>
 </tr>
 </table>
@@ -13021,7 +13021,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13034,7 +13034,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13047,7 +13047,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13060,7 +13060,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientScrollRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientScrollRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13074,7 +13074,7 @@
 </table>
 </p>
 <p>Get the current scroll position. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13088,9 +13088,9 @@
 </table>
 </p>
 <p>Set the current scroll position. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pt: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollPos</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13104,7 +13104,7 @@
 </table>
 </p>
 <p>Set the scroll size (window virtual size). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setScrollSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13160,30 +13160,30 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SelModel_getSelectedRangeIndex">getSelectedRangeIndex</a></td>
+<td><a href="#Gui_SelModel_getSelectedRangeIndex"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSelectedRangeIndex</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_isEmpty">isEmpty</a></td>
+<td><a href="#Gui_SelModel_isEmpty"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_isSelected">isSelected</a></td>
+<td><a href="#Gui_SelModel_isSelected"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isSelected</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_select">select</a></td>
+<td><a href="#Gui_SelModel_select"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">select</span><span class="SyntaxCode"></a></td>
 <td>Select the given index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_unselectAll">unselectAll</a></td>
+<td><a href="#Gui_SelModel_unselectAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode"></a></td>
 <td>Unselect all. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SelModel_opVisit">opVisit</a></td>
+<td><a href="#Gui_SelModel_opVisit"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -13198,7 +13198,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedRangeIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSelectedRangeIndex</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13211,7 +13211,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmpty</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13224,7 +13224,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSelected</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isSelected</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13238,7 +13238,7 @@
 </table>
 </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a>]</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)</code>
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opVisit</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, stmt: </span><span class="SyntaxType">code</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13252,7 +13252,7 @@
 </table>
 </p>
 <p>Select the given index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">select</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">select</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, select: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13266,7 +13266,7 @@
 </table>
 </p>
 <p>Unselect all. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">unselectAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13347,22 +13347,22 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SigArray_call">call</a></td>
+<td><a href="#Gui_SigArray_call"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">call</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SigArray_disable">disable</a></td>
+<td><a href="#Gui_SigArray_disable"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">disable</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SigArray_enable">enable</a></td>
+<td><a href="#Gui_SigArray_enable"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">enable</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SigArray_opAssign">opAssign</a></td>
+<td><a href="#Gui_SigArray_opAssign"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opAssign</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -13377,7 +13377,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">call</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, params: ...)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">call</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, params: ...)</code>
 </div>
 <p>
 <table class="item">
@@ -13390,7 +13390,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13403,7 +13403,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13416,7 +13416,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(op: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opAssign</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fn: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(op: </span><span class="SyntaxType">string</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">opAssign</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fn: </span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13577,39 +13577,39 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Slider_create">create</a></td>
+<td><a href="#Gui_Slider_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValue">getValue</a></td>
+<td><a href="#Gui_Slider_getValue"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getValue</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValueLeft">getValueLeft</a></td>
+<td><a href="#Gui_Slider_getValueLeft"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getValueLeft</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValueRight">getValueRight</a></td>
+<td><a href="#Gui_Slider_getValueRight"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getValueRight</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setMinMax">setMinMax</a></td>
+<td><a href="#Gui_Slider_setMinMax"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMinMax</span><span class="SyntaxCode"></a></td>
 <td>Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setRangeValues">setRangeValues</a></td>
+<td><a href="#Gui_Slider_setRangeValues"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setRangeValues</span><span class="SyntaxCode"></a></td>
 <td>Set left and right values, for a range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValue">setValue</a></td>
+<td><a href="#Gui_Slider_setValue"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setValue</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValueLeft">setValueLeft</a></td>
+<td><a href="#Gui_Slider_setValueLeft"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setValueLeft</span><span class="SyntaxCode"></a></td>
 <td>Set the left value (in case of a range). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValueRight">setValueRight</a></td>
+<td><a href="#Gui_Slider_setValueRight"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setValueRight</span><span class="SyntaxCode"></a></td>
 <td>Set the right value (in case of a range). </td>
 </tr>
 </table>
@@ -13624,7 +13624,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13637,7 +13637,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13663,7 +13663,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13676,7 +13676,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getValueLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getValueLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13689,7 +13689,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getValueRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getValueRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13703,7 +13703,7 @@
 </table>
 </p>
 <p>Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMax</span><span class="SyntaxCode">(self, min: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, steps: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMax</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, min: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, steps: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13717,7 +13717,7 @@
 </table>
 </p>
 <p>Set left and right values, for a range. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRangeValues</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setRangeValues</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13730,7 +13730,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13744,7 +13744,7 @@
 </table>
 </p>
 <p>Set the left value (in case of a range). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValueLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValueLeft</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13758,7 +13758,7 @@
 </table>
 </p>
 <p>Set the right value (in case of a range). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValueRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValueRight</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, f: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13811,23 +13811,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SliderCtrl_create">create</a></td>
+<td><a href="#Gui_SliderCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32</a></td>
+<td><a href="#Gui_SliderCtrl_setMinMaxF32"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMinMaxF32</span><span class="SyntaxCode"></a></td>
 <td>Set a f32 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxS64">setMinMaxS64</a></td>
+<td><a href="#Gui_SliderCtrl_setMinMaxS64"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMinMaxS64</span><span class="SyntaxCode"></a></td>
 <td>Set a f64 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxU64">setMinMaxU64</a></td>
+<td><a href="#Gui_SliderCtrl_setMinMaxU64"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMinMaxU64</span><span class="SyntaxCode"></a></td>
 <td>Set a u64 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setValue">setValue</a></td>
+<td><a href="#Gui_SliderCtrl_setValue"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setValue</span><span class="SyntaxCode"></a></td>
 <td>Set the slider current value. </td>
 </tr>
 </table>
@@ -13842,7 +13842,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13870,7 +13870,7 @@
 </table>
 </p>
 <p>Set a f32 range. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxF32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxF32</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, min: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13884,7 +13884,7 @@
 </table>
 </p>
 <p>Set a f64 range. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxS64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, min: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13898,7 +13898,7 @@
 </table>
 </p>
 <p>Set a u64 range. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, min: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMinMaxU64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, min: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13912,7 +13912,7 @@
 </table>
 </p>
 <p>Set the slider current value. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setValue</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -13993,19 +13993,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SplitterCtrl_addPane">addPane</a></td>
+<td><a href="#Gui_SplitterCtrl_addPane"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addPane</span><span class="SyntaxCode"></a></td>
 <td>Add a new pane. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_create">create</a></td>
+<td><a href="#Gui_SplitterCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates a new SplitterCtrl instance. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_isVertical">isVertical</a></td>
+<td><a href="#Gui_SplitterCtrl_isVertical"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isVertical</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_setPaneSize">setPaneSize</a></td>
+<td><a href="#Gui_SplitterCtrl_setPaneSize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setPaneSize</span><span class="SyntaxCode"></a></td>
 <td>Set the pane size (size of the first view). </td>
 </tr>
 </table>
@@ -14020,7 +14020,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14033,7 +14033,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14046,7 +14046,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14060,7 +14060,7 @@
 </table>
 </p>
 <p>Add a new pane. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPane</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pane: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, paneSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">, title = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SplitterItem">SplitterItem</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addPane</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pane: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, paneSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">100</span><span class="SyntaxCode">, title = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SplitterItem">SplitterItem</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -14087,7 +14087,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isVertical</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isVertical</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -14101,7 +14101,7 @@
 </table>
 </p>
 <p>Set the pane size (size of the first view). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPaneSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, newSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPaneSize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, newSize: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14207,11 +14207,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_StackLayoutCtrl_computeLayout">computeLayout</a></td>
+<td><a href="#Gui_StackLayoutCtrl_computeLayout"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode"></a></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_StackLayoutCtrl_create">create</a></td>
+<td><a href="#Gui_StackLayoutCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create a layout control. </td>
 </tr>
 </table>
@@ -14226,7 +14226,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14240,7 +14240,7 @@
 </table>
 </p>
 <p>Recompute layout of all childs. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14424,95 +14424,95 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Surface_bringToTop">bringToTop</a></td>
+<td><a href="#Gui_Surface_bringToTop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode"></a></td>
 <td>Bring the surface at the top of the Z order. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_center">center</a></td>
+<td><a href="#Gui_Surface_center"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">center</span><span class="SyntaxCode"></a></td>
 <td>Center this surface relative to <code class="incode">from</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_constaintToScreen">constaintToScreen</a></td>
+<td><a href="#Gui_Surface_constaintToScreen"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">constaintToScreen</span><span class="SyntaxCode"></a></td>
 <td>Constraint a window to be inside the closest monitor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_create">create</a></td>
+<td><a href="#Gui_Surface_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Creates the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_destroy">destroy</a></td>
+<td><a href="#Gui_Surface_destroy"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode"></a></td>
 <td>Destroy the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_disable">disable</a></td>
+<td><a href="#Gui_Surface_disable"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">disable</span><span class="SyntaxCode"></a></td>
 <td>Enable the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_enable">enable</a></td>
+<td><a href="#Gui_Surface_enable"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">enable</span><span class="SyntaxCode"></a></td>
 <td>Enable the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_getView">getView</a></td>
+<td><a href="#Gui_Surface_getView"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getView</span><span class="SyntaxCode"></a></td>
 <td>Returns inside view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_hide">hide</a></td>
+<td><a href="#Gui_Surface_hide"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">hide</span><span class="SyntaxCode"></a></td>
 <td>Hide the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_invalidate">invalidate</a></td>
+<td><a href="#Gui_Surface_invalidate"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode"></a></td>
 <td>Invalidate the full surface to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_invalidateRect">invalidateRect</a></td>
+<td><a href="#Gui_Surface_invalidateRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode"></a></td>
 <td>Invalidate one part of the surface to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_paint">paint</a></td>
+<td><a href="#Gui_Surface_paint"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">paint</span><span class="SyntaxCode"></a></td>
 <td>Main surface paint function. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_screenToSurface">screenToSurface</a></td>
+<td><a href="#Gui_Surface_screenToSurface"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode"></a></td>
 <td>Transform a point in screen space relative to the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setIcon">setIcon</a></td>
+<td><a href="#Gui_Surface_setIcon"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode"></a></td>
 <td>Set the surface icon. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setPosition">setPosition</a></td>
+<td><a href="#Gui_Surface_setPosition"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode"></a></td>
 <td>Set the surface position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setSurfaceFlags">setSurfaceFlags</a></td>
+<td><a href="#Gui_Surface_setSurfaceFlags"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setSurfaceFlags</span><span class="SyntaxCode"></a></td>
 <td>Change flag surfaces. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setTitle">setTitle</a></td>
+<td><a href="#Gui_Surface_setTitle"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setTitle</span><span class="SyntaxCode"></a></td>
 <td>Set the surface title. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setView">setView</a></td>
+<td><a href="#Gui_Surface_setView"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setView</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_show">show</a></td>
+<td><a href="#Gui_Surface_show"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">show</span><span class="SyntaxCode"></a></td>
 <td>Show the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showMaximized">showMaximized</a></td>
+<td><a href="#Gui_Surface_showMaximized"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">showMaximized</span><span class="SyntaxCode"></a></td>
 <td>Show the surface as maximized. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showMinimized">showMinimized</a></td>
+<td><a href="#Gui_Surface_showMinimized"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">showMinimized</span><span class="SyntaxCode"></a></td>
 <td>Show the surface as minimized. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showNormal">showNormal</a></td>
+<td><a href="#Gui_Surface_showNormal"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">showNormal</span><span class="SyntaxCode"></a></td>
 <td>Show the surface in its default state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_surfaceToScreen">surfaceToScreen</a></td>
+<td><a href="#Gui_Surface_surfaceToScreen"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">surfaceToScreen</span><span class="SyntaxCode"></a></td>
 <td>Transform a point relative to the surface in screen space. </td>
 </tr>
 </table>
@@ -14528,7 +14528,7 @@
 </table>
 </p>
 <p>Bring the surface at the top of the Z order. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14542,7 +14542,7 @@
 </table>
 </p>
 <p>Center this surface relative to <code class="incode">from</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">center</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">center</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, from: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14556,7 +14556,7 @@
 </table>
 </p>
 <p>Constraint a window to be inside the closest monitor. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">constaintToScreen</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">constaintToScreen</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14584,7 +14584,7 @@
 </table>
 </p>
 <p>Destroy the surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14598,7 +14598,7 @@
 </table>
 </p>
 <p>Enable the surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14612,7 +14612,7 @@
 </table>
 </p>
 <p>Enable the surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14626,7 +14626,7 @@
 </table>
 </p>
 <p>Returns inside view. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -14640,7 +14640,7 @@
 </table>
 </p>
 <p>Hide the surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hide</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hide</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14654,7 +14654,7 @@
 </table>
 </p>
 <p>Invalidate the full surface to be painted. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14668,7 +14668,7 @@
 </table>
 </p>
 <p>Invalidate one part of the surface to be painted. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14682,7 +14682,7 @@
 </table>
 </p>
 <p>Main surface paint function. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14696,7 +14696,7 @@
 </table>
 </p>
 <p>Transform a point in screen space relative to the surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pt: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pt: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14710,7 +14710,7 @@
 </table>
 </p>
 <p>Set the surface icon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setIcon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14724,7 +14724,7 @@
 </table>
 </p>
 <p>Set the surface position. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14738,7 +14738,7 @@
 </table>
 </p>
 <p>Change flag surfaces. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSurfaceFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, add = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setSurfaceFlags</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, add = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">, remove = </span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14752,7 +14752,7 @@
 </table>
 </p>
 <p>Set the surface title. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTitle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTitle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14765,7 +14765,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14779,7 +14779,7 @@
 </table>
 </p>
 <p>Show the surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14793,7 +14793,7 @@
 </table>
 </p>
 <p>Show the surface as maximized. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showMaximized</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showMaximized</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14807,7 +14807,7 @@
 </table>
 </p>
 <p>Show the surface as minimized. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showMinimized</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showMinimized</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14821,7 +14821,7 @@
 </table>
 </p>
 <p>Show the surface in its default state. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showNormal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">showNormal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14835,7 +14835,7 @@
 </table>
 </p>
 <p>Transform a point relative to the surface in screen space. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">surfaceToScreen</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pt: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">surfaceToScreen</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pt: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15112,19 +15112,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Tab_addItem">addItem</a></td>
+<td><a href="#Gui_Tab_addItem"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode"></a></td>
 <td>Add a new view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_create">create</a></td>
+<td><a href="#Gui_Tab_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_select">select</a></td>
+<td><a href="#Gui_Tab_select"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">select</span><span class="SyntaxCode"></a></td>
 <td>Select one tab at the given index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_setForm">setForm</a></td>
+<td><a href="#Gui_Tab_setForm"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode"></a></td>
 <td>Set the tab form. </td>
 </tr>
 </table>
@@ -15139,7 +15139,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15152,7 +15152,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15165,7 +15165,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15178,7 +15178,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paintItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, v: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabItem">TabItem</a></span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paintItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, v: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabItem">TabItem</a></span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15192,7 +15192,7 @@
 </table>
 </p>
 <p>Add a new view. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tabName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addItem</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, tabName: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, icon: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode">, view: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15219,7 +15219,7 @@
 </table>
 </p>
 <p>Select one tab at the given index. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">select</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">select</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15233,7 +15233,7 @@
 </table>
 </p>
 <p>Set the tab form. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, tabForm: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabForm">TabForm</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setForm</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, tabForm: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabForm">TabForm</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -15447,35 +15447,35 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Theme_createDefaultFont">createDefaultFont</a></td>
+<td><a href="#Gui_Theme_createDefaultFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createDefaultFont</span><span class="SyntaxCode"></a></td>
 <td>Create a default font with the given size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_createDefaultFontFS">createDefaultFontFS</a></td>
+<td><a href="#Gui_Theme_createDefaultFontFS"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">createDefaultFontFS</span><span class="SyntaxCode"></a></td>
 <td>Create a default font (fixed size) with the given size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_drawIconText">drawIconText</a></td>
+<td><a href="#Gui_Theme_drawIconText"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawIconText</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_drawSubRect">drawSubRect(self, *Painter, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
+<td><a href="#Gui_Theme_drawSubRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawSubRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">ThemeImageRect</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">InterpolationMode</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_drawSubRect">drawSubRect(*Painter, const ref Texture, const ref Rectangle, *ThemeImageRect, const ref Color, bool, InterpolationMode)</a></td>
+<td><a href="#Gui_Theme_drawSubRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">drawSubRect</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">ThemeImageRect</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">InterpolationMode</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_getIcon24">getIcon24</a></td>
+<td><a href="#Gui_Theme_getIcon24"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getIcon24</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_getIcon64">getIcon64</a></td>
+<td><a href="#Gui_Theme_getIcon64"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getIcon64</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_setTextColors">setTextColors</a></td>
+<td><a href="#Gui_Theme_setTextColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setTextColors</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -15491,7 +15491,7 @@
 </table>
 </p>
 <p>Create a default font with the given size. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createDefaultFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, style = </span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Regular</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createDefaultFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, style = </span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Regular</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -15505,7 +15505,7 @@
 </table>
 </p>
 <p>Create a default font (fixed size) with the given size. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createDefaultFontFS</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, style = </span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Regular</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">createDefaultFontFS</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, style = </span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Regular</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -15531,7 +15531,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawSubRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, dstRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, subRect: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, center = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, interpol = </span><span class="SyntaxConstant">InterpolationMode</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Linear</span><span class="SyntaxCode">)
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawSubRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, dstRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, subRect: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, center = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, interpol = </span><span class="SyntaxConstant">InterpolationMode</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Linear</span><span class="SyntaxCode">)
 </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">drawSubRect</span><span class="SyntaxCode">(painter: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode">, dstRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, subRect: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">, center = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">, interpol = </span><span class="SyntaxConstant">InterpolationMode</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Linear</span><span class="SyntaxCode">)</code>
 </div>
 <p>
@@ -15545,7 +15545,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getIcon24</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeIcons24">ThemeIcons24</a></span><span class="SyntaxCode">, size = </span><span class="SyntaxNumber">24</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getIcon24</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeIcons24">ThemeIcons24</a></span><span class="SyntaxCode">, size = </span><span class="SyntaxNumber">24</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -15558,7 +15558,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getIcon64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, idx: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeIcons64">ThemeIcons64</a></span><span class="SyntaxCode">, size = </span><span class="SyntaxNumber">64</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getIcon64</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, idx: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeIcons64">ThemeIcons64</a></span><span class="SyntaxCode">, size = </span><span class="SyntaxNumber">64</span><span class="SyntaxCode">'</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_Icon"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -15571,7 +15571,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTextColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fmt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RichStringFormat</span><span class="SyntaxCode">, mainColor: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setTextColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fmt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RichStringFormat</span><span class="SyntaxCode">, mainColor: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18306,43 +18306,43 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ThemeStyle_addStyleSheetColors">addStyleSheetColors</a></td>
+<td><a href="#Gui_ThemeStyle_addStyleSheetColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addStyleSheetColors</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_addStyleSheetMetrics">addStyleSheetMetrics</a></td>
+<td><a href="#Gui_ThemeStyle_addStyleSheetMetrics"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">addStyleSheetMetrics</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_clearFont">clearFont</a></td>
+<td><a href="#Gui_ThemeStyle_clearFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clearFont</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_clearStyleSheetColors">clearStyleSheetColors</a></td>
+<td><a href="#Gui_ThemeStyle_clearStyleSheetColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">clearStyleSheetColors</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_create">create</a></td>
+<td><a href="#Gui_ThemeStyle_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create a specific style based on the parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_getFont">getFont</a></td>
+<td><a href="#Gui_ThemeStyle_getFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
+<td><a href="#Gui_ThemeStyle_setFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setFont">setFont(self, const ref FontFamily)</a></td>
+<td><a href="#Gui_ThemeStyle_setFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setStyleSheetColors">setStyleSheetColors</a></td>
+<td><a href="#Gui_ThemeStyle_setStyleSheetColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setStyleSheetColors</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setStyleSheetMetrics">setStyleSheetMetrics</a></td>
+<td><a href="#Gui_ThemeStyle_setStyleSheetMetrics"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setStyleSheetMetrics</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -18357,7 +18357,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addStyleSheetColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addStyleSheetColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18370,7 +18370,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addStyleSheetMetrics</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">addStyleSheetMetrics</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18383,7 +18383,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18396,7 +18396,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearStyleSheetColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clearStyleSheetColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18410,7 +18410,7 @@
 </table>
 </p>
 <p>Create a specific style based on the parent. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyle">ThemeStyle</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, parent: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyle">ThemeStyle</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18423,7 +18423,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -18436,8 +18436,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fnt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">, style: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, fnt: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fnt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Font</span><span class="SyntaxCode">, style: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, fnt: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18450,7 +18450,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setStyleSheetColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setStyleSheetColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18463,7 +18463,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setStyleSheetMetrics</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setStyleSheetMetrics</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18524,7 +18524,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Timer_restart">restart</a></td>
+<td><a href="#Gui_Timer_restart"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">restart</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -18539,7 +18539,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">restart</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">restart</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18610,7 +18610,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ToggleButton_create">create</a></td>
+<td><a href="#Gui_ToggleButton_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -18625,7 +18625,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18638,7 +18638,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -18847,323 +18847,323 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Wnd_applyLayout">applyLayout(self)</a></td>
+<td><a href="#Gui_Wnd_applyLayout"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">applyLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</a></td>
 <td>Apply the current layout (childs constraints). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_applyLayout">applyLayout(self, const ref Point)</a></td>
+<td><a href="#Gui_Wnd_applyLayout"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">applyLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_bringToFront">bringToFront</a></td>
+<td><a href="#Gui_Wnd_bringToFront"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">bringToFront</span><span class="SyntaxCode"></a></td>
 <td>Force the window to be the first painted (before all siblings). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_bringToTop">bringToTop</a></td>
+<td><a href="#Gui_Wnd_bringToTop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode"></a></td>
 <td>Force the window to be the last painted (on top of siblings). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_captureMouse">captureMouse</a></td>
+<td><a href="#Gui_Wnd_captureMouse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">captureMouse</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_computeStyle">computeStyle</a></td>
+<td><a href="#Gui_Wnd_computeStyle"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeStyle</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_create">create(*Wnd, WndId, HookEvent)</a></td>
+<td><a href="#Gui_Wnd_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Wnd</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">HookEvent</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_create">create(*Wnd, const ref Rectangle, WndId, HookEvent)</a></td>
+<td><a href="#Gui_Wnd_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Wnd</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">HookEvent</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_create">create(*Wnd, string, const ref Rectangle, WndId, HookEvent)</a></td>
+<td><a href="#Gui_Wnd_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Wnd</span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">HookEvent</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_destroy">destroy</a></td>
+<td><a href="#Gui_Wnd_destroy"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode"></a></td>
 <td>Destroy the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_destroyNow">destroyNow</a></td>
+<td><a href="#Gui_Wnd_destroyNow"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">destroyNow</span><span class="SyntaxCode"></a></td>
 <td>Destroy the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_disable">disable</a></td>
+<td><a href="#Gui_Wnd_disable"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">disable</span><span class="SyntaxCode"></a></td>
 <td>Disable the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_enable">enable</a></td>
+<td><a href="#Gui_Wnd_enable"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">enable</span><span class="SyntaxCode"></a></td>
 <td>Enable/Disable the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_fitPosInParent">fitPosInParent</a></td>
+<td><a href="#Gui_Wnd_fitPosInParent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">fitPosInParent</span><span class="SyntaxCode"></a></td>
 <td>Be sure rect is fully inside the parent rectangle (if possible). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getApp">getApp</a></td>
+<td><a href="#Gui_Wnd_getApp"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getApp</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getChildById">getChildById</a></td>
+<td><a href="#Gui_Wnd_getChildById"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getChildById</span><span class="SyntaxCode"></a></td>
 <td>Retrieve the child with the given id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getClientRect">getClientRect</a></td>
+<td><a href="#Gui_Wnd_getClientRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getClientRect</span><span class="SyntaxCode"></a></td>
 <td>Returns the client area. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding</a></td>
+<td><a href="#Gui_Wnd_getClientRectPadding"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getClientRectPadding</span><span class="SyntaxCode"></a></td>
 <td>Returns the client area, with <code class="incode">padding</code> applied. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getFocus">getFocus</a></td>
+<td><a href="#Gui_Wnd_getFocus"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFocus</span><span class="SyntaxCode"></a></td>
 <td>Get the window with the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getFont">getFont</a></td>
+<td><a href="#Gui_Wnd_getFont"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getKeyShortcut">getKeyShortcut</a></td>
+<td><a href="#Gui_Wnd_getKeyShortcut"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getKeyShortcut</span><span class="SyntaxCode"></a></td>
 <td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getKeyShortcutNameFor">getKeyShortcutNameFor</a></td>
+<td><a href="#Gui_Wnd_getKeyShortcutNameFor"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getKeyShortcutNameFor</span><span class="SyntaxCode"></a></td>
 <td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getMouseCapture">getMouseCapture</a></td>
+<td><a href="#Gui_Wnd_getMouseCapture"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getMouseCapture</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getOwner">getOwner</a></td>
+<td><a href="#Gui_Wnd_getOwner"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getOwner</span><span class="SyntaxCode"></a></td>
 <td>Get the owner of the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getParentById">getParentById</a></td>
+<td><a href="#Gui_Wnd_getParentById"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getParentById</span><span class="SyntaxCode"></a></td>
 <td>Retrieve the parent with the given id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getRectIn">getRectIn</a></td>
+<td><a href="#Gui_Wnd_getRectIn"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getRectIn</span><span class="SyntaxCode"></a></td>
 <td>Get the wnd position relative to a given parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getSurfaceRect">getSurfaceRect</a></td>
+<td><a href="#Gui_Wnd_getSurfaceRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getSurfaceRect</span><span class="SyntaxCode"></a></td>
 <td>Get the wnd position in the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTheme">getTheme</a></td>
+<td><a href="#Gui_Wnd_getTheme"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTheme</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeColors">getThemeColors</a></td>
+<td><a href="#Gui_Wnd_getThemeColors"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getThemeColors</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeMetrics">getThemeMetrics</a></td>
+<td><a href="#Gui_Wnd_getThemeMetrics"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getThemeMetrics</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeRects">getThemeRects</a></td>
+<td><a href="#Gui_Wnd_getThemeRects"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getThemeRects</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTiming">getTiming</a></td>
+<td><a href="#Gui_Wnd_getTiming"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTiming</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTopView">getTopView</a></td>
+<td><a href="#Gui_Wnd_getTopView"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTopView</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTopWnd">getTopWnd</a></td>
+<td><a href="#Gui_Wnd_getTopWnd"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getTopWnd</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getWndAt">getWndAt</a></td>
+<td><a href="#Gui_Wnd_getWndAt"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">getWndAt</span><span class="SyntaxCode"></a></td>
 <td>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_hasFocus">hasFocus</a></td>
+<td><a href="#Gui_Wnd_hasFocus"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">hasFocus</span><span class="SyntaxCode"></a></td>
 <td>Returns true if the window has the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_hide">hide</a></td>
+<td><a href="#Gui_Wnd_hide"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">hide</span><span class="SyntaxCode"></a></td>
 <td>Hide the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_invalidate">invalidate</a></td>
+<td><a href="#Gui_Wnd_invalidate"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode"></a></td>
 <td>Force the window to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_invalidateRect">invalidateRect</a></td>
+<td><a href="#Gui_Wnd_invalidateRect"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode"></a></td>
 <td>Force o local position to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isEnabled">isEnabled</a></td>
+<td><a href="#Gui_Wnd_isEnabled"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isEnabled</span><span class="SyntaxCode"></a></td>
 <td>Returns true if window, and all its parents, are enabled. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isParentOf">isParentOf</a></td>
+<td><a href="#Gui_Wnd_isParentOf"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isParentOf</span><span class="SyntaxCode"></a></td>
 <td>Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isVisible">isVisible</a></td>
+<td><a href="#Gui_Wnd_isVisible"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isVisible</span><span class="SyntaxCode"></a></td>
 <td>Returns true if window, and all its parents, are visible. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isVisibleState">isVisibleState</a></td>
+<td><a href="#Gui_Wnd_isVisibleState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">isVisibleState</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Point)</a></td>
+<td><a href="#Gui_Wnd_localToSurface"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</a></td>
 <td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_localToSurface">localToSurface(self, const ref Rectangle)</a></td>
+<td><a href="#Gui_Wnd_localToSurface"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</a></td>
 <td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_move">move</a></td>
+<td><a href="#Gui_Wnd_move"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">move</span><span class="SyntaxCode"></a></td>
 <td>Move the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_notifyEvent">notifyEvent</a></td>
+<td><a href="#Gui_Wnd_notifyEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">notifyEvent</span><span class="SyntaxCode"></a></td>
 <td>Send a notification event. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent</a></td>
+<td><a href="#Gui_Wnd_ownerNotifyEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">ownerNotifyEvent</span><span class="SyntaxCode"></a></td>
 <td>Send a notification event. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_paint">paint</a></td>
+<td><a href="#Gui_Wnd_paint"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">paint</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postCommandEvent">postCommandEvent</a></td>
+<td><a href="#Gui_Wnd_postCommandEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">postCommandEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postEvent">postEvent</a></td>
+<td><a href="#Gui_Wnd_postEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">postEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postInvalidateEvent">postInvalidateEvent</a></td>
+<td><a href="#Gui_Wnd_postInvalidateEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">postInvalidateEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postQuitEvent">postQuitEvent</a></td>
+<td><a href="#Gui_Wnd_postQuitEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">postQuitEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postResizeEvent">postResizeEvent</a></td>
+<td><a href="#Gui_Wnd_postResizeEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">postResizeEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_processEvent">processEvent</a></td>
+<td><a href="#Gui_Wnd_processEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">processEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_registerAction">registerAction</a></td>
+<td><a href="#Gui_Wnd_registerAction"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">registerAction</span><span class="SyntaxCode"></a></td>
 <td>Register one new action. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_registerKeyShortcut">registerKeyShortcut</a></td>
+<td><a href="#Gui_Wnd_registerKeyShortcut"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">registerKeyShortcut</span><span class="SyntaxCode"></a></td>
 <td>Register a keyboard shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_releaseMouse">releaseMouse</a></td>
+<td><a href="#Gui_Wnd_releaseMouse"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">releaseMouse</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_resize">resize</a></td>
+<td><a href="#Gui_Wnd_resize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">resize</span><span class="SyntaxCode"></a></td>
 <td>Resize the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_screenToSurface">screenToSurface</a></td>
+<td><a href="#Gui_Wnd_screenToSurface"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode"></a></td>
 <td>Convert a screen coordinate to a surface coordinate (relative to my surface). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendCommandEvent">sendCommandEvent</a></td>
+<td><a href="#Gui_Wnd_sendCommandEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sendCommandEvent</span><span class="SyntaxCode"></a></td>
 <td>Send the command event with the given id to the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendComputeCommandStateEvent">sendComputeCommandStateEvent</a></td>
+<td><a href="#Gui_Wnd_sendComputeCommandStateEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sendComputeCommandStateEvent</span><span class="SyntaxCode"></a></td>
 <td>Send the command state event with the given id to the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendCreateEvent">sendCreateEvent</a></td>
+<td><a href="#Gui_Wnd_sendCreateEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sendCreateEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendEvent">sendEvent</a></td>
+<td><a href="#Gui_Wnd_sendEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sendEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendResizeEvent">sendResizeEvent</a></td>
+<td><a href="#Gui_Wnd_sendResizeEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sendResizeEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendStateEvent">sendStateEvent</a></td>
+<td><a href="#Gui_Wnd_sendStateEvent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">sendStateEvent</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_serializeState">serializeState</a></td>
+<td><a href="#Gui_Wnd_serializeState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">serializeState</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllMargins">setAllMargins(self, const ref Vector4)</a></td>
+<td><a href="#Gui_Wnd_setAllMargins"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setAllMargins</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllMargins">setAllMargins(self, f32)</a></td>
+<td><a href="#Gui_Wnd_setAllMargins"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setAllMargins</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllPaddings">setAllPaddings(self, const ref Vector4)</a></td>
+<td><a href="#Gui_Wnd_setAllPaddings"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setAllPaddings</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllPaddings">setAllPaddings(self, f32)</a></td>
+<td><a href="#Gui_Wnd_setAllPaddings"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setAllPaddings</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setFocus">setFocus</a></td>
+<td><a href="#Gui_Wnd_setFocus"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode"></a></td>
 <td>Set the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setMargin">setMargin</a></td>
+<td><a href="#Gui_Wnd_setMargin"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setMargin</span><span class="SyntaxCode"></a></td>
 <td>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setPadding">setPadding</a></td>
+<td><a href="#Gui_Wnd_setPadding"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setPadding</span><span class="SyntaxCode"></a></td>
 <td>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setParent">setParent</a></td>
+<td><a href="#Gui_Wnd_setParent"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setParent</span><span class="SyntaxCode"></a></td>
 <td>Set window parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setPosition">setPosition(self, const ref Rectangle, bool)</a></td>
+<td><a href="#Gui_Wnd_setPosition"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">ref</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</a></td>
 <td>Move and size the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setPosition">setPosition(self, f32, f32, f32, f32, bool)</a></td>
+<td><a href="#Gui_Wnd_setPosition"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</a></td>
 <td>Move and size the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_show">show</a></td>
+<td><a href="#Gui_Wnd_show"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">show</span><span class="SyntaxCode"></a></td>
 <td>Show the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_surfaceToLocal">surfaceToLocal</a></td>
+<td><a href="#Gui_Wnd_surfaceToLocal"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">surfaceToLocal</span><span class="SyntaxCode"></a></td>
 <td>Convert a surface coordinate to a local coordinate (relative to me). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_updateCommandState">updateCommandState</a></td>
+<td><a href="#Gui_Wnd_updateCommandState"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">updateCommandState</span><span class="SyntaxCode"></a></td>
 <td>Main function to update command state of various windows/widgets. </td>
 </tr>
 </table>
@@ -19178,7 +19178,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onApplyStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onApplyStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19191,7 +19191,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandEvent">CommandEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandEvent">CommandEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19204,7 +19204,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onComputeStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onComputeStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19217,7 +19217,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onCreateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CreateEvent">CreateEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onCreateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CreateEvent">CreateEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19230,7 +19230,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onDestroyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DestroyEvent">DestroyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onDestroyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DestroyEvent">DestroyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19243,7 +19243,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19256,7 +19256,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFocusEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusEvent">FocusEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFocusEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusEvent">FocusEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19269,7 +19269,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameEvent">FrameEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onFrameEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameEvent">FrameEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19282,7 +19282,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onHookEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onHookEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19295,7 +19295,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onKeyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19308,7 +19308,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onMouseEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19321,7 +19321,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onNotifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onNotifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19334,7 +19334,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19347,7 +19347,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPostPaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19360,7 +19360,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPrePaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onPrePaintEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19373,7 +19373,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19386,7 +19386,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSerializeStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSerializeStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19399,7 +19399,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSetThemeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSetThemeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19412,7 +19412,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_StateEvent">StateEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_StateEvent">StateEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19425,7 +19425,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSysCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSysCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19438,7 +19438,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSysUserEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysUserEvent">SysUserEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onSysUserEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysUserEvent">SysUserEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19451,7 +19451,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onTimerEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TimerEvent">TimerEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onTimerEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TimerEvent">TimerEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19465,9 +19465,9 @@
 </table>
 </p>
 <p>Apply the current layout (childs constraints). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, oldSize: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">applyLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, oldSize: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19481,7 +19481,7 @@
 </table>
 </p>
 <p>Force the window to be the first painted (before all siblings). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToFront</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToFront</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19495,7 +19495,7 @@
 </table>
 </p>
 <p>Force the window to be the last painted (on top of siblings). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bringToTop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19508,7 +19508,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">captureMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">captureMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19521,7 +19521,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeStyle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeStyle</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19550,7 +19550,7 @@
 </table>
 </p>
 <p>Destroy the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroy</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19564,7 +19564,7 @@
 </table>
 </p>
 <p>Destroy the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">destroyNow</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19578,7 +19578,7 @@
 </table>
 </p>
 <p>Disable the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">disable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19592,7 +19592,7 @@
 </table>
 </p>
 <p>Enable/Disable the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, state = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">enable</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, state = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19606,7 +19606,7 @@
 </table>
 </p>
 <p>Be sure rect is fully inside the parent rectangle (if possible). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fitPosInParent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, marginW: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, marginH: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, simX = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, simY = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fitPosInParent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, marginW: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, marginH: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">, simX = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, simY = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19619,7 +19619,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getApp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getApp</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19633,7 +19633,7 @@
 </table>
 </p>
 <p>Retrieve the child with the given id. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getChildById</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, childId: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getChildById</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, childId: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19647,7 +19647,7 @@
 </table>
 </p>
 <p>Returns the client area. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19661,7 +19661,7 @@
 </table>
 </p>
 <p>Returns the client area, with <code class="incode">padding</code> applied. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientRectPadding</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getClientRectPadding</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19675,7 +19675,7 @@
 </table>
 </p>
 <p>Get the window with the keyboard focus. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19688,7 +19688,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getFont</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19702,7 +19702,7 @@
 </table>
 </p>
 <p>Get the id associated with a shortcut. null if none. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_WndId"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_WndId"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -19716,7 +19716,7 @@
 </table>
 </p>
 <p>Get the name associated with a given id shortcut. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyShortcutNameFor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getKeyShortcutNameFor</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19729,7 +19729,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMouseCapture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMouseCapture</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19743,7 +19743,7 @@
 </table>
 </p>
 <p>Get the owner of the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOwner</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getOwner</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19757,7 +19757,7 @@
 </table>
 </p>
 <p>Retrieve the parent with the given id. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getParentById</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, parentId: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getParentById</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, parentId: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19771,7 +19771,7 @@
 </table>
 </p>
 <p>Get the wnd position relative to a given parent. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRectIn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, in: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getRectIn</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, in: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19785,7 +19785,7 @@
 </table>
 </p>
 <p>Get the wnd position in the surface. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSurfaceRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getSurfaceRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19798,7 +19798,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTheme</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Theme">Theme</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTheme</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Theme">Theme</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19811,7 +19811,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getThemeColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeColors">ThemeColors</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getThemeColors</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeColors">ThemeColors</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19824,7 +19824,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getThemeMetrics</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getThemeMetrics</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19837,7 +19837,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getThemeRects</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getThemeRects</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19850,7 +19850,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTiming</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FrameTiming</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTiming</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FrameTiming</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19863,7 +19863,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTopView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTopView</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19876,7 +19876,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTopWnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getTopWnd</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19890,7 +19890,7 @@
 </table>
 </p>
 <p>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getWndAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, getDisabled = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, getHidden = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getWndAt</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, getDisabled = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">, getHidden = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19904,7 +19904,7 @@
 </table>
 </p>
 <p>Returns true if the window has the keyboard focus. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hasFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19918,7 +19918,7 @@
 </table>
 </p>
 <p>Hide the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hide</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">hide</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19932,7 +19932,7 @@
 </table>
 </p>
 <p>Force the window to be repainted. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidate</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19946,7 +19946,7 @@
 </table>
 </p>
 <p>Force o local position to be repainted. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">invalidateRect</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -19960,7 +19960,7 @@
 </table>
 </p>
 <p>Returns true if window, and all its parents, are enabled. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEnabled</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEnabled</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19974,7 +19974,7 @@
 </table>
 </p>
 <p>Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isParentOf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, child: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isParentOf</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, child: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -19988,7 +19988,7 @@
 </table>
 </p>
 <p>Returns true if window, and all its parents, are visible. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isVisible</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, onlyMe = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isVisible</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, onlyMe = </span><span class="SyntaxKeyword">false</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -20001,7 +20001,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isVisibleState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isVisibleState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -20015,10 +20015,10 @@
 </table>
 </p>
 <p>Convert a local coordinate to a surface coordinate. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </div>
 <p>Convert a local coordinate to a surface coordinate. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -20032,7 +20032,7 @@
 </table>
 </p>
 <p>Move the wnd. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">move</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">move</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20046,7 +20046,7 @@
 </table>
 </p>
 <p>Send a notification event. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">notifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">notifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20060,7 +20060,7 @@
 </table>
 </p>
 <p>Send a notification event. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ownerNotifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ownerNotifyEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20073,7 +20073,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, bc: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintContext">PaintContext</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">paint</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, bc: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintContext">PaintContext</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20086,7 +20086,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20099,7 +20099,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20112,7 +20112,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postInvalidateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postInvalidateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20125,7 +20125,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postQuitEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postQuitEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20138,7 +20138,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">postResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20151,7 +20151,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">processEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">processEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20165,7 +20165,7 @@
 </table>
 </p>
 <p>Register one new action. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">registerAction</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">) </span><span class="SyntaxFunction">registerAction</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20179,7 +20179,7 @@
 </table>
 </p>
 <p>Register a keyboard shortcut. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">registerKeyShortcut</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, mdf: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode">, key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode">, wndId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20192,7 +20192,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseMouse</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20206,7 +20206,7 @@
 </table>
 </p>
 <p>Resize the wnd. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">resize</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, width: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, height: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20220,7 +20220,7 @@
 </table>
 </p>
 <p>Convert a screen coordinate to a surface coordinate (relative to my surface). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">screenToSurface</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -20234,7 +20234,7 @@
 </table>
 </p>
 <p>Send the command event with the given id to the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendCommandEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</code>
 </div>
 <p> The command will be updated first, and if it is not disabled, it will be sent. </p>
 <p>
@@ -20249,7 +20249,7 @@
 </table>
 </p>
 <p>Send the command state event with the given id to the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendComputeCommandStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_CommandStateEvent"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode"></a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendComputeCommandStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, cmdId: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Gui_CommandStateEvent"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p> Returns the updated command state. </p>
 <p>
@@ -20263,7 +20263,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendCreateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendCreateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20276,7 +20276,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20289,7 +20289,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20302,7 +20302,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EventKind">EventKind</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sendStateEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, kind: </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EventKind">EventKind</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20315,7 +20315,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">serializeState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ser: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serializer</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">serializeState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ser: *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serializer</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -20328,8 +20328,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllMargins</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllMargins</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllMargins</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllMargins</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20342,8 +20342,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllPaddings</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllPaddings</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllPaddings</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setAllPaddings</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20357,7 +20357,7 @@
 </table>
 </p>
 <p>Set the keyboard focus. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setFocus</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20371,7 +20371,7 @@
 </table>
 </p>
 <p>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMargin</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, bottom: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setMargin</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, bottom: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20385,7 +20385,7 @@
 </table>
 </p>
 <p>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPadding</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, bottom: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPadding</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, left: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, top: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, right: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">, bottom: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">F32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20399,7 +20399,7 @@
 </table>
 </p>
 <p>Set window parent. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setParent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, who: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setParent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, who: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20413,10 +20413,10 @@
 </table>
 </p>
 <p>Move and size the wnd. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>Move and size the wnd. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setPosition</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, w: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, h: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, computeLayout = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20430,7 +20430,7 @@
 </table>
 </p>
 <p>Show the window. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, b = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">show</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, b = </span><span class="SyntaxKeyword">true</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20444,7 +20444,7 @@
 </table>
 </p>
 <p>Convert a surface coordinate to a local coordinate (relative to me). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">surfaceToLocal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">surfaceToLocal</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -20458,7 +20458,7 @@
 </table>
 </p>
 <p>Main function to update command state of various windows/widgets. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">updateCommandState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">updateCommandState</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p> This will update the state of this window, and all of its childs </p>
 <p>
@@ -20547,11 +20547,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_WrapLayoutCtrl_computeLayout">computeLayout</a></td>
+<td><a href="#Gui_WrapLayoutCtrl_computeLayout"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode"></a></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_WrapLayoutCtrl_create">create</a></td>
+<td><a href="#Gui_WrapLayoutCtrl_create"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">create</span><span class="SyntaxCode"></a></td>
 <td>Create a layout control. </td>
 </tr>
 </table>
@@ -20566,7 +20566,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">onResizeEvent</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, evt: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -20580,7 +20580,7 @@
 </table>
 </p>
 <p>Recompute layout of all childs. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeLayout</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">

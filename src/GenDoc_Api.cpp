@@ -178,6 +178,14 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                     }
                 }
                 name += ")";
+                name = syntaxColor(name, SyntaxColorMode::ForDoc);
+            }
+            else
+            {
+                name += "()";
+                name = syntaxColor(name, SyntaxColorMode::ForDoc);
+                name.removeBack();
+                name.removeBack();
             }
         }
 

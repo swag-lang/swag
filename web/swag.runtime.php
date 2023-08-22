@@ -3141,42 +3141,42 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated</a></td>
+<td><a href="#Swag_DebugAllocator_assertIsAllocated"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode"></a></td>
 <td>This function will assert if the given user address is not conform  to an allocated block. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory</a></td>
+<td><a href="#Swag_DebugAllocator_checkAllMemory"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">checkAllMemory</span><span class="SyntaxCode"></a></td>
 <td>Check all allocated blocks. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkIsAllocated">checkIsAllocated</a></td>
+<td><a href="#Swag_DebugAllocator_checkIsAllocated"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkIsFreed">checkIsFreed</a></td>
+<td><a href="#Swag_DebugAllocator_checkIsFreed"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_memAlign">memAlign</a></td>
+<td><a href="#Swag_DebugAllocator_memAlign"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">memAlign</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_printDisplaySize">printDisplaySize</a></td>
+<td><a href="#Swag_DebugAllocator_printDisplaySize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">printDisplaySize</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_printLeaks">printLeaks</a></td>
+<td><a href="#Swag_DebugAllocator_printLeaks"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">printLeaks</span><span class="SyntaxCode"></a></td>
 <td>Output to the console the list of all allocated blocks (leaks). </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_setup">setup</a></td>
+<td><a href="#Swag_DebugAllocator_setup"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setup</span><span class="SyntaxCode"></a></td>
 <td>Setup the allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_DebugAllocator_opDrop">opDrop</a></td>
+<td><a href="#Swag_DebugAllocator_opDrop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opDrop</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -3191,7 +3191,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3204,7 +3204,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3217,7 +3217,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseLast</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseLast</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3230,7 +3230,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3244,7 +3244,7 @@
 </table>
 </p>
 <p>This function will assert if the given user address is not conform  to an allocated block. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, callerLoc = #callerlocation)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, callerLoc = #callerlocation)</code>
 </div>
 <p>
 <table class="item">
@@ -3258,7 +3258,7 @@
 </table>
 </p>
 <p>Check all allocated blocks. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkAllMemory</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkAllMemory</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3271,7 +3271,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">, callerLoc = #callerlocation)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">, callerLoc = #callerlocation)</code>
 </div>
 <p>
 <table class="item">
@@ -3284,7 +3284,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3310,7 +3310,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opDrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opDrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3337,7 +3337,7 @@
 </table>
 </p>
 <p>Output to the console the list of all allocated blocks (leaks). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printLeaks</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printLeaks</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3351,7 +3351,7 @@
 </table>
 </p>
 <p>Setup the allocator. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3710,7 +3710,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3753,7 +3753,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compileString</span><span class="SyntaxCode">(self, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compileString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3766,7 +3766,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBuildCfg</span><span class="SyntaxCode">(self)-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBuildCfg</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3779,7 +3779,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">(self)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4277,27 +4277,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_ScratchAllocator_align">align</a></td>
+<td><a href="#Swag_ScratchAllocator_align"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">align</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_alloc">alloc</a></td>
+<td><a href="#Swag_ScratchAllocator_alloc"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_free">free</a></td>
+<td><a href="#Swag_ScratchAllocator_free"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">free</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_freeAll">freeAll</a></td>
+<td><a href="#Swag_ScratchAllocator_freeAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">freeAll</span><span class="SyntaxCode"></a></td>
 <td>Release all memory. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_release">release</a></td>
+<td><a href="#Swag_ScratchAllocator_release"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">release</span><span class="SyntaxCode"></a></td>
 <td>Release the allocated block. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_setCapacity">setCapacity</a></td>
+<td><a href="#Swag_ScratchAllocator_setCapacity"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode"></a></td>
 <td>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </td>
 </tr>
 </table>
@@ -4312,7 +4312,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4325,7 +4325,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4338,7 +4338,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4392,7 +4392,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4405,7 +4405,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4419,7 +4419,7 @@
 </table>
 </p>
 <p>Release all memory. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4433,7 +4433,7 @@
 </table>
 </p>
 <p>Release the allocated block. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4447,7 +4447,7 @@
 </table>
 </p>
 <p>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -4539,7 +4539,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
