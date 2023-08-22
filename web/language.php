@@ -133,7 +133,7 @@
             white-space:        nowrap;
         }
         .codetype {
-            background-color:   #f8f8f8;
+            background-color:   #eeeeee;
         }
         .container td:last-child {
             width:              100%;
@@ -2439,7 +2439,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 <h3>Enum as flags </h3>
-<p>An enum can be a set of flags if you declare it with the <code class="incode">#<a href="swag.runtime.html#Swag_EnumFlags">Swag.EnumFlags</a></code> <b>attribute</b>. Its type should be <code class="incode">u8</code>, <code class="incode">u16</code>, <code class="incode">u32</code> or <code class="incode">u64</code>. </p>
+<p>An enum can be a set of flags if you declare it with the <code class="incode">#<a href="swag.runtime.php#Swag_EnumFlags">Swag.EnumFlags</a></code> <b>attribute</b>. Its type should be <code class="incode">u8</code>, <code class="incode">u16</code>, <code class="incode">u32</code> or <code class="incode">u64</code>. </p>
 <p>That kind of enum starts by default at 1, and not 0, and each value should be a power of 2. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
@@ -3522,7 +3522,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(c.</span><span class="SyntaxFunction">returnZ</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>All functions in an <code class="incode">impl</code> block can be retrieved by reflection, as long as the struct is declared with <code class="incode">#<a href="swag.runtime.html#Swag_ExportType("methods")">Swag.ExportType("methods")</a></code> (by default, methods are not exported). </p>
+<p>All functions in an <code class="incode">impl</code> block can be retrieved by reflection, as long as the struct is declared with <code class="incode">#<a href="swag.runtime.php#Swag_ExportType("methods")">Swag.ExportType("methods")</a></code> (by default, methods are not exported). </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// Creates a type alias named 'Lambda'</span><span class="SyntaxCode">
@@ -3695,7 +3695,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(v1.y == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>If <code class="incode">opAffect</code> is supposed to initialize the full content of the struct, you can add <code class="incode">#<a href="swag.runtime.html#Swag_Complete">Swag.Complete</a></code>. This will avoid every variables to be initialized to the default values, then changed later with the <code class="incode">opAffect</code> call. </p>
+<p>If <code class="incode">opAffect</code> is supposed to initialize the full content of the struct, you can add <code class="incode">#<a href="swag.runtime.php#Swag_Complete">Swag.Complete</a></code>. This will avoid every variables to be initialized to the default values, then changed later with the <code class="incode">opAffect</code> call. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Complete]</span><span class="SyntaxCode">
@@ -3895,7 +3895,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 <p>You can visit a struct variable if a macro <code class="incode">opVisit</code> has been defined. This is the equivalent of an <b>iterator</b>. </p>
-<p><code class="incode">opVisit</code> is a macro, so it should be marked with the <code class="incode">#<a href="swag.runtime.html#Swag_Macro">Swag.Macro</a></code> attribute. <code class="incode">opVisit</code> is also a generic function which takes a constant generic parameter of type <code class="incode">bool</code>. </p>
+<p><code class="incode">opVisit</code> is a macro, so it should be marked with the <code class="incode">#<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a></code> attribute. <code class="incode">opVisit</code> is also a generic function which takes a constant generic parameter of type <code class="incode">bool</code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">impl</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Macro]</span><span class="SyntaxCode">
@@ -4047,8 +4047,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h3 id="068_009_packing">Packing</h3><p>You can also control the struct layout with two attributes: <code class="incode">#<a href="swag.runtime.html#Swag_Pack">Swag.Pack</a></code> and <code class="incode">#<a href="swag.runtime.html#Swag_Align">Swag.Align</a></code>. </p>
-<p>The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <code class="incode">#<a href="swag.runtime.html#Swag_Pack(0)">Swag.Pack(0)</a></code>. </p>
+<h3 id="068_009_packing">Packing</h3><p>You can also control the struct layout with two attributes: <code class="incode">#<a href="swag.runtime.php#Swag_Pack">Swag.Pack</a></code> and <code class="incode">#<a href="swag.runtime.php#Swag_Align">Swag.Align</a></code>. </p>
+<p>The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <code class="incode">#<a href="swag.runtime.php#Swag_Pack(0)">Swag.Pack(0)</a></code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">
@@ -4065,7 +4065,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct</span><span class="SyntaxCode">)     == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>You can <i>reduce</i> the packing of the fields with <code class="incode">#<a href="swag.runtime.html#Swag_Pack">Swag.Pack</a></code>. </p>
+<p>You can <i>reduce</i> the packing of the fields with <code class="incode">#<a href="swag.runtime.php#Swag_Pack">Swag.Pack</a></code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Pack(1)]</span><span class="SyntaxCode">
@@ -4115,7 +4115,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     #assert </span><span class="SyntaxIntrinsic">@sizeof</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">) == </span><span class="SyntaxNumber">8</span><span class="SyntaxCode">
 }</code>
 </div>
-<p>You can force the struct alignement with <code class="incode">#<a href="swag.runtime.html#Swag_Align">Swag.Align</a></code>. </p>
+<p>You can force the struct alignement with <code class="incode">#<a href="swag.runtime.php#Swag_Align">Swag.Align</a></code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MyStruct1</span><span class="SyntaxCode">
@@ -4628,7 +4628,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h3 id="104_004_mixin">Mixin</h3><p>A mixin is declared like a function, with the attribute <code class="incode">#<a href="swag.runtime.html#Swag_Mixin">Swag.Mixin</a></code>. </p>
+<h3 id="104_004_mixin">Mixin</h3><p>A mixin is declared like a function, with the attribute <code class="incode">#<a href="swag.runtime.php#Swag_Mixin">Swag.Mixin</a></code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxAttribute">#[Swag.Mixin]</span><span class="SyntaxCode">
@@ -6294,7 +6294,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 }</code>
 </div>
 
-<h2 id="175_safety">Safety</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <code class="incode">#<a href="swag.runtime.html#Swag_Safety">Swag.Safety</a></code> attribute. </p>
+<h2 id="175_safety">Safety</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <code class="incode">#<a href="swag.runtime.php#Swag_Safety">Swag.Safety</a></code> attribute. </p>
 <p>Safety checks can also be changed for a specific build configuration (<code class="incode">--cfg:&lt;config&gt;</code>) with <code class="incode">buildCfg.safetyGuards</code>. </p>
 <blockquote>
 <p>Swag comes with four predefined configurations : <code class="incode">debug</code>, <code class="incode">fast-debug</code>, <code class="incode">fast-compile</code> and <code class="incode">release</code>. Safety checks are disabled in <code class="incode">fast-compile</code> and <code class="incode">release</code>. </p>
@@ -6318,7 +6318,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(x == </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>You can also use <code class="incode">#<a href="swag.runtime.html#Swag_Overflow(true)">Swag.Overflow(true)</a></code> to authorize overflow on a more global scale. </p>
+<p>You can also use <code class="incode">#<a href="swag.runtime.php#Swag_Overflow(true)">Swag.Overflow(true)</a></code> to authorize overflow on a more global scale. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Overflow(true)]</span><span class="SyntaxCode">
 </span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
@@ -6443,7 +6443,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 <h3>switch </h3>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("switch", true)]</span><span class="SyntaxCode"></code>
 </div>
-<p>Swag will panic if a switch is marked with <code class="incode">#<a href="swag.runtime.html#Swag_Complete">Swag.Complete</a></code>, but the value is not covered by a <code class="incode">case</code>. </p>
+<p>Swag will panic if a switch is marked with <code class="incode">#<a href="swag.runtime.php#Swag_Complete">Swag.Complete</a></code>, but the value is not covered by a <code class="incode">case</code>. </p>
 <h3>bool </h3>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("bool", true)]</span><span class="SyntaxCode"></code>
 </div>
@@ -6585,7 +6585,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">G</span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] == </span><span class="SyntaxNumber">16</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p><code class="incode">#run</code> can also be used as an expression, to call for example a function not marked with <code class="incode">#<a href="swag.runtime.html#Swag_ConstExpr">Swag.ConstExpr</a></code>. </p>
+<p><code class="incode">#run</code> can also be used as an expression, to call for example a function not marked with <code class="incode">#<a href="swag.runtime.php#Swag_ConstExpr">Swag.ConstExpr</a></code>. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SumValue</span><span class="SyntaxCode"> = </span><span class="SyntaxFunction">#run</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">sum</span><span class="SyntaxCode">(</span><span class="SyntaxNumber">1</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">2</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">, </span><span class="SyntaxNumber">4</span><span class="SyntaxCode">) + </span><span class="SyntaxNumber">10</span><span class="SyntaxCode">
 #assert </span><span class="SyntaxConstant">SumValue</span><span class="SyntaxCode"> == </span><span class="SyntaxNumber">20</span><span class="SyntaxCode">
 
@@ -6633,11 +6633,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
 #foreignlib </span><span class="SyntaxString">"windows.lib"</span><span class="SyntaxCode"></code>
 </div>
 
-<h3 id="185_005_var">Var</h3><p>A global variable can be tagged with <code class="incode">#<a href="swag.runtime.html#Swag_Tls">Swag.Tls</a></code> to store it in the thread local storage (one copy per thread). </p>
+<h3 id="185_005_var">Var</h3><p>A global variable can be tagged with <code class="incode">#<a href="swag.runtime.php#Swag_Tls">Swag.Tls</a></code> to store it in the thread local storage (one copy per thread). </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Tls]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode"></code>
 </div>
-<p>A local variable can be tagged with <code class="incode">#<a href="swag.runtime.html#Swag_Global">Swag.Global</a></code> to make it global (aka <code class="incode">static</code> in C/C++). </p>
+<p>A local variable can be tagged with <code class="incode">#<a href="swag.runtime.php#Swag_Global">Swag.Global</a></code> to make it global (aka <code class="incode">static</code> in C/C++). </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
@@ -6654,7 +6654,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(</span><span class="SyntaxFunction">toto</span><span class="SyntaxCode">() == </span><span class="SyntaxNumber">3</span><span class="SyntaxCode">)
 }</code>
 </div>
-<p>A global variable can also be marked as <code class="incode">#<a href="swag.runtime.html#Swag_Compiler">Swag.Compiler</a></code>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
+<p>A global variable can also be marked as <code class="incode">#<a href="swag.runtime.php#Swag_Compiler">Swag.Compiler</a></code>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Compiler]</span><span class="SyntaxCode">
 </span><span class="SyntaxKeyword">var</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">G2</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">
 
@@ -7275,7 +7275,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</code>
     }
 }</code>
 </div>
-<p>The attribute <code class="incode">#<a href="swag.runtime.html#Swag_NoDoc">Swag.NoDoc</a></code> can be used to avoid a given element to appear in the documentation. </p>
+<p>The attribute <code class="incode">#<a href="swag.runtime.php#Swag_NoDoc">Swag.NoDoc</a></code> can be used to avoid a given element to appear in the documentation. </p>
 <div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#test</span><span class="SyntaxCode">
 {
     </span><span class="SyntaxComment">// This function will be ignored when generating documentation.</span><span class="SyntaxCode">

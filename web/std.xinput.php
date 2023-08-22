@@ -132,7 +132,7 @@
             white-space:        nowrap;
         }
         .codetype {
-            background-color:   #f8f8f8;
+            background-color:   #eeeeee;
         }
         .container td:last-child {
             width:              100%;

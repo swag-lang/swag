@@ -807,7 +807,7 @@ void GenDoc::generateContent()
                     {
                         typeFunc->returnType->computeScopedNameExport();
                         code += "->";
-                        code += getReference(typeFunc->returnType->scopedNameExport);
+                        code += typeFunc->returnType->scopedNameExport;
                     }
                 }
                 else

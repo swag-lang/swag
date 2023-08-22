@@ -146,7 +146,7 @@ void GenDoc::outputStyles()
             white-space:        nowrap;\n\
         }\n\
         .codetype {\n\
-            background-color:   #f8f8f8;\n\
+            background-color:   #eeeeee;\n\
         }\n\
         .container td:last-child {\n\
             width:              100%;\n\
