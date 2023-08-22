@@ -302,6 +302,14 @@ Utf8 GenDoc::findReference(const Utf8& name)
     return "";
 }
 
+Utf8 GenDoc::getReference(const Utf8& name)
+{
+    auto ref = findReference(name);
+    if (ref.empty())
+        return name;
+    return ref;
+}
+
 void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
 {
     for (auto& l : lines)
@@ -636,14 +644,6 @@ void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
 {
     for (auto& b : user.blocks)
         outputUserBlock(b, titleLevel);
-}
-
-Utf8 GenDoc::getReference(const Utf8& name)
-{
-    auto ref = findReference(name);
-    if (ref.empty())
-        return name;
-    return ref;
 }
 
 Utf8 GenDoc::getFormattedText(const Utf8& user)

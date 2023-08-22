@@ -8856,7 +8856,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glAreTexturesResident</span><span class="SyntaxCode">(n: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLsizei">GLsizei</a></span><span class="SyntaxCode">, textures: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, residences: *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glAreTexturesResident</span><span class="SyntaxCode">(n: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLsizei">GLsizei</a></span><span class="SyntaxCode">, textures: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, residences: *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -9220,7 +9220,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glCheckFramebufferStatus</span><span class="SyntaxCode">(target: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glCheckFramebufferStatus</span><span class="SyntaxCode">(target: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLenum"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -10039,7 +10039,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glCreateProgram</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glCreateProgram</span><span class="SyntaxCode">()-><a href=</span><span class="SyntaxString">"#Ogl_GLuint"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -10052,7 +10052,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glCreateShader</span><span class="SyntaxCode">(type: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glCreateShader</span><span class="SyntaxCode">(type: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLuint"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11001,7 +11001,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGenLists</span><span class="SyntaxCode">(range: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLsizei">GLsizei</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGenLists</span><span class="SyntaxCode">(range: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLsizei">GLsizei</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLuint"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11105,7 +11105,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetAttribLocation</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetAttribLocation</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLint"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11235,7 +11235,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetError</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetError</span><span class="SyntaxCode">()-><a href=</span><span class="SyntaxString">"#Ogl_GLenum"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11261,7 +11261,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetFragDataLocation</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetFragDataLocation</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLint"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11300,7 +11300,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetGraphicsResetStatus</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetGraphicsResetStatus</span><span class="SyntaxCode">()-><a href=</span><span class="SyntaxString">"#Ogl_GLenum"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -11846,7 +11846,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetUniformLocation</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glGetUniformLocation</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLint"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12210,7 +12210,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsBuffer</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsBuffer</span><span class="SyntaxCode">(buffer: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12223,7 +12223,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsEnabled</span><span class="SyntaxCode">(cap: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsEnabled</span><span class="SyntaxCode">(cap: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12236,7 +12236,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsEnabledi</span><span class="SyntaxCode">(cap: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">, index: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsEnabledi</span><span class="SyntaxCode">(cap: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">, index: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12249,7 +12249,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsFramebuffer</span><span class="SyntaxCode">(framebuffer: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsFramebuffer</span><span class="SyntaxCode">(framebuffer: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12262,7 +12262,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsList</span><span class="SyntaxCode">(list: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsList</span><span class="SyntaxCode">(list: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12275,7 +12275,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsNamedStringARB</span><span class="SyntaxCode">(namelen: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsNamedStringARB</span><span class="SyntaxCode">(namelen: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode">, name: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLchar">GLchar</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12288,7 +12288,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsProgram</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsProgram</span><span class="SyntaxCode">(program: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12301,7 +12301,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsQuery</span><span class="SyntaxCode">(id: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsQuery</span><span class="SyntaxCode">(id: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12314,7 +12314,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsRenderbuffer</span><span class="SyntaxCode">(renderbuffer: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsRenderbuffer</span><span class="SyntaxCode">(renderbuffer: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12327,7 +12327,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsShader</span><span class="SyntaxCode">(shader: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsShader</span><span class="SyntaxCode">(shader: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -12340,7 +12340,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsTexture</span><span class="SyntaxCode">(texture: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glIsTexture</span><span class="SyntaxCode">(texture: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLuint">GLuint</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -14303,7 +14303,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glRenderMode</span><span class="SyntaxCode">(mode: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glRenderMode</span><span class="SyntaxCode">(mode: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLint"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLint">GLint</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -15941,7 +15941,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glUnmapBuffer</span><span class="SyntaxCode">(target: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">glUnmapBuffer</span><span class="SyntaxCode">(target: </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLenum">GLenum</a></span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_GLboolean"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_GLboolean">GLboolean</a></span><span class="SyntaxCode"></a></code>
 </div>
 <p>
 <table class="item">
@@ -17293,7 +17293,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wglCreateContext</span><span class="SyntaxCode">(hDc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_HGLRC">HGLRC</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wglCreateContext</span><span class="SyntaxCode">(hDc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">)-><a href=</span><span class="SyntaxString">"#Ogl_HGLRC"</span><span class="SyntaxCode">></span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Ogl_HGLRC">HGLRC</a></span><span class="SyntaxCode"></a> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">

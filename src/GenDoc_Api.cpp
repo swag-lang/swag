@@ -785,7 +785,22 @@ void GenDoc::generateContent()
                     code += "()";
                 else
                     code += getOutputNode(funcNode->parameters);
-                code += getOutputNode(funcNode->returnType);
+
+                if (funcNode->typeInfo)
+                {
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+                    if (typeFunc->returnType && !typeFunc->returnType->isVoid())
+                    {
+                        typeFunc->returnType->computeScopedNameExport();
+                        code += "->";
+                        code += getReference(typeFunc->returnType->scopedNameExport);
+                    }
+                }
+                else
+                {
+                    code += getOutputNode(funcNode->returnType);
+                }
+
                 if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
                     code += " throw";
                 code += "\n";
